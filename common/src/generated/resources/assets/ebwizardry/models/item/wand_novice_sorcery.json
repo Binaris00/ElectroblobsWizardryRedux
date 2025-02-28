@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/handheld",
+  "overrides": [
+    {
+      "model": "ebwizardry:item/wand_point",
+      "predicate": {
+        "minecraft:this_gets_ignored": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "ebwizardry:item/wand_novice_sorcery"
+  }
+}

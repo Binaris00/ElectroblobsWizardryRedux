@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:crystal_block_earth"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ebwizardry:blocks/crystal_block_earth"
+}

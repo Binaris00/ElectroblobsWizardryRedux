@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "package": "com.electroblob.wizardry.common.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "CommandsMixin",
+    "LivingEntityMixin",
+    "PlayerCasterMixin",
+    "ServerLevelMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
