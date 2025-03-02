@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.api.common.spell;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 
 public final class SpellRegistry {
-    private static final ResourceKey<Registry<Spell>> KEY = ResourceKey.createRegistryKey(new ResourceLocation(Wizardry.MOD_ID, "spells"));
+    private static final ResourceKey<Registry<Spell>> KEY = ResourceKey.createRegistryKey(new ResourceLocation(WizardryMainMod.MOD_ID, "spells"));
     private static boolean locationsBeenInitialized;
     private static boolean isInAssignPeriod;
 

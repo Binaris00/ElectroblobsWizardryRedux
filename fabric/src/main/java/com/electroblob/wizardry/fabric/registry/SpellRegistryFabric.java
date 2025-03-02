@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.fabric.registry;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.spell.Spell;
 import com.electroblob.wizardry.api.common.spell.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.EBRegister;
@@ -23,7 +23,7 @@ public final class SpellRegistryFabric {
     public static void register() {
         SpellRegistry.initEntryGetter(() -> get().entrySet());
         EBRegister.registerSpells((spellCollection) -> {
-            spellCollection.forEach((spellEntry) -> Registry.register(SpellRegistryFabric.get(), new ResourceLocation(Wizardry.MOD_ID, spellEntry.getKey()), spellEntry.getValue()));
+            spellCollection.forEach((spellEntry) -> Registry.register(SpellRegistryFabric.get(), new ResourceLocation(WizardryMainMod.MOD_ID, spellEntry.getKey()), spellEntry.getValue()));
         });
     }
 

@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.forge.registry;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.setup.registries.EBRegister;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.registries.DeferredRegister;
@@ -11,7 +11,7 @@ import java.util.function.Supplier;
 
 public final class ItemRegistryForge {
 
-    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, Wizardry.MOD_ID);
+    public static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, WizardryMainMod.MOD_ID);
 
     public static void register() {
         EBRegister.registerItems((itemCollection) -> {

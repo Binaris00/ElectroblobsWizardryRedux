@@ -2,6 +2,7 @@ package com.electroblob.wizardry.api.common.util;
 
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
@@ -20,6 +21,28 @@ public class InventoryUtil {
         hotbar.remove(player.getMainHandItem());
         hotbar.add(0, player.getMainHandItem());
         return hotbar;
+    }
+
+    public static boolean doesPlayerHaveItem(Player player, Item item) {
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.getItem() == item) {
+                return true;
+            }
+        }
+
+        for (ItemStack stack : player.getInventory().armor) {
+            if (stack.getItem() == item) {
+                return true;
+            }
+        }
+
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (stack.getItem() == item) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public static List<ItemStack> getHotbar(Player player) {

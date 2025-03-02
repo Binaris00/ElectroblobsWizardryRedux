@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.client.particle;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.particle.ParticleWizardry;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -20,7 +20,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ParticleBuff extends ParticleWizardry {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(Wizardry.MOD_ID, "textures/particle/buff.png");
+    private static final ResourceLocation TEXTURE = new ResourceLocation(WizardryMainMod.MOD_ID, "textures/particle/buff.png");
     private final boolean mirror;
 
 

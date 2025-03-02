@@ -1,10 +1,5 @@
 package com.electroblob.wizardry.setup.registries.client;
 
-import com.electroblob.wizardry.Wizardry;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
-import net.minecraft.sounds.SoundEvent;
-
 @SuppressWarnings("unused")
 public final class EBSounds {
 

@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.forge.datagen;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -12,7 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.concurrent.CompletableFuture;
 
-@Mod.EventBusSubscriber(modid = Wizardry.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+@Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class DataGenerators {
 
     @SubscribeEvent

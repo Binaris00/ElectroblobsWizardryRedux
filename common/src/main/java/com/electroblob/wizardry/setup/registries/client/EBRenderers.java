@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.setup.registries.client;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.client.renderer.entity.BlankRenderer;
 import com.electroblob.wizardry.client.renderer.entity.MagicArrowRenderer;
@@ -40,11 +40,11 @@ public final class EBRenderers {
         register(EBEntities.SPARK, BlankRenderer::new);
         register(EBEntities.LIGHTNING_ARROW, MagicArrowRenderer<LightningArrow>::new);
         register(EBEntities.ICE_CHARGE, (ctx -> new MagicProjectileRenderer<>(ctx,
-                new ResourceLocation(Wizardry.MOD_ID, "textures/entity/ice_charge.png"))));
+                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/ice_charge.png"))));
         register(EBEntities.MAGIC_FIREBALL, (ctx -> new MagicProjectileRenderer<>(ctx,
-                new ResourceLocation(Wizardry.MOD_ID, "textures/entity/magic_fireball.png"))));
+                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/magic_fireball.png"))));
         register(EBEntities.ICE_BALL, (ctx -> new MagicProjectileRenderer<>(ctx,
-                new ResourceLocation(Wizardry.MOD_ID, "textures/entity/iceball.png"))));
+                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/iceball.png"))));
         register(EBEntities.ICE_LANCE, MagicArrowRenderer<IceLance>::new);
         register(EBEntities.FORCE_ARROW, MagicArrowRenderer<ForceArrow>::new);
         register(EBEntities.CONJURED_ARROW, ConjureArrowRenderer::new);

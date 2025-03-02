@@ -16,6 +16,16 @@ public final class GeometryUtil {
         return new Vec3(pos.getX(), pos.getY(), pos.getZ()).add(0.5, 0.5, 0.5);
     }
 
+    public static Vec3 horizontalise(Vec3 vec) {
+        return replaceComponent(vec, Direction.Axis.Y, 0).normalize();
+    }
+
+    public static Vec3 replaceComponent(Vec3 vec, Direction.Axis axis, double newValue) {
+        double[] components = {vec.x, vec.y, vec.z};
+        components[axis.ordinal()] = newValue;
+        return new Vec3(components[0], components[1], components[2]);
+    }
+
     public static Vec3 getFaceCentre(BlockPos pos, Direction face) {
         return getCentre(pos).add(new Vec3(face.step()).scale(0.5));
     }

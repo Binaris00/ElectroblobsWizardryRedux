@@ -52,8 +52,8 @@ public class FlameRay extends RaySpell {
 
     @Override
     protected void spawnParticle(Level world, double x, double y, double z, double vx, double vy, double vz) {
-        //ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).collide(true).spawn(world);
-        //ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).collide(true).spawn(world);
+        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).collide(true).spawn(world);
+        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).collide(true).spawn(world);
     }
 
 

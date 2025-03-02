@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.forge.datagen;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
@@ -14,7 +14,7 @@ import java.util.concurrent.CompletableFuture;
 public class EBBlockTagProvider extends BlockTagsProvider {
 
     public EBBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, @Nullable ExistingFileHelper existingFileHelper) {
-        super(output, lookupProvider, Wizardry.MOD_ID, existingFileHelper);
+        super(output, lookupProvider, WizardryMainMod.MOD_ID, existingFileHelper);
     }
 
     @Override

@@ -12,6 +12,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -141,7 +142,7 @@ public final class ParticleBuilder {
      * @return The particle builder instance, allowing other methods to be chained onto this one
      * @throws IllegalStateException if the particle builder is already building.
      */
-    public static ParticleBuilder create(DeferredObject<SimpleParticleType> type, Random random, double x, double y, double z, double radius, boolean move){
+    public static ParticleBuilder create(DeferredObject<SimpleParticleType> type, RandomSource random, double x, double y, double z, double radius, boolean move){
         double px = x + (random.nextDouble()*2 - 1) * radius;
         double py = y + (random.nextDouble()*2 - 1) * radius;
         double pz = z + (random.nextDouble()*2 - 1) * radius;

@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.forge.registry;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.spell.Spell;
 import com.electroblob.wizardry.api.common.spell.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.EBRegister;
@@ -15,7 +15,7 @@ public final class SpellRegistryForge {
 
     private static boolean spells_registered;
 
-    private static final DeferredRegister<Spell> REGISTER = DeferredRegister.create(SpellRegistry.key(), Wizardry.MOD_ID);
+    private static final DeferredRegister<Spell> REGISTER = DeferredRegister.create(SpellRegistry.key(), WizardryMainMod.MOD_ID);
     private static final Supplier<IForgeRegistry<Spell>> REGISTRY = REGISTER.makeRegistry(() -> new RegistryBuilder<Spell>().disableSaving().disableOverrides());
 
     public static void initialize(IEventBus modBus) {

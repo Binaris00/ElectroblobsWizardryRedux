@@ -12,16 +12,16 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
-@Mod(Wizardry.MOD_ID)
-public final class WizardryForge {
-    public WizardryForge() {
-        Wizardry.init(LoaderEnvironment.FORGE);
+@Mod(WizardryMainMod.MOD_ID)
+public final class WizardryForgeMod {
+    public WizardryForgeMod() {
+        WizardryMainMod.init(LoaderEnvironment.FORGE);
 
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -45,9 +45,9 @@ public final class WizardryForge {
 
         SpellRegistryForge.register();
 
-        modBus.addListener(WizardryForge::commonSetup);
+        modBus.addListener(WizardryForgeMod::commonSetup);
         if(FMLEnvironment.dist.isClient()) {
-            modBus.addListener(WizardryForge::clientSetup);
+            modBus.addListener(WizardryForgeMod::clientSetup);
             ParticleRegistryForge.PARTICLE_TYPES.register(modBus);
             ParticleRegistryForge.register();
         }

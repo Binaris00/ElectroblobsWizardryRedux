@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.fabric.registry;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.minecraft.core.Registry;
@@ -11,7 +11,7 @@ public final class ParticleRegistryFabric {
     public static void register() {
         EBClientRegister.registerParticleTypes(collection ->
                 collection.forEach((name, type) ->
-                        Registry.register(BuiltInRegistries.PARTICLE_TYPE, Wizardry.location(name), type.get())
+                        Registry.register(BuiltInRegistries.PARTICLE_TYPE, WizardryMainMod.location(name), type.get())
                 )
         );
 

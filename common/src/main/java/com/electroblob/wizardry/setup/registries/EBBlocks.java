@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.Wizardry;
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.world.item.BlockItem;

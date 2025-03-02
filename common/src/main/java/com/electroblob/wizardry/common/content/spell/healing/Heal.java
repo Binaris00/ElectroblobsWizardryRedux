@@ -12,7 +12,7 @@ public class Heal extends BuffSpell {
     @Override
     protected boolean applyEffects(LivingEntity caster) {
         if(caster.getHealth() < caster.getMaxHealth() && caster.getHealth() > 0){
-            heal(caster, 10);
+            heal(caster, 4);
             return true;
         }
 
@@ -20,7 +20,6 @@ public class Heal extends BuffSpell {
     }
 
     public static void heal(LivingEntity entity, float health){
-
         float excessHealth = entity.getHealth() + health - entity.getMaxHealth();
 
         entity.heal(health);

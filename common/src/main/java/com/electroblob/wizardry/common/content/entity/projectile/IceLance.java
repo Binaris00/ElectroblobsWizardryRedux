@@ -1,11 +1,7 @@
 package com.electroblob.wizardry.common.content.entity.projectile;
 
-import com.electroblob.wizardry.Wizardry;
-import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
-import com.electroblob.wizardry.setup.registries.EBEntities;
-import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import com.electroblob.wizardry.setup.registries.client.EBSounds;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -15,8 +11,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.resources.ResourceLocation;
-
-import java.util.Random;
 
 public class IceLance extends MagicArrowEntity {
 
@@ -46,7 +40,7 @@ public class IceLance extends MagicArrowEntity {
 
     @Override
     public ResourceLocation getTexture() {
-        return new ResourceLocation(Wizardry.MOD_ID, "textures/entity/ice_lance.png");
+        return new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/ice_lance.png");
     }
 
     @Override

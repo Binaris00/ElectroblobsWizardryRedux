@@ -8,16 +8,20 @@ import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.ArrowSpell;
 import com.electroblob.wizardry.common.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.common.content.spell.abstr.ProjectileSpell;
+import com.electroblob.wizardry.common.content.spell.earth.Fangs;
 import com.electroblob.wizardry.common.content.spell.earth.Leap;
 import com.electroblob.wizardry.common.content.spell.earth.Poison;
+import com.electroblob.wizardry.common.content.spell.fire.FireBreath;
 import com.electroblob.wizardry.common.content.spell.fire.FlameRay;
 import com.electroblob.wizardry.common.content.spell.fire.Ignite;
+import com.electroblob.wizardry.common.content.spell.fire.PocketFurnace;
 import com.electroblob.wizardry.common.content.spell.healing.*;
 import com.electroblob.wizardry.common.content.spell.ice.Freeze;
 import com.electroblob.wizardry.common.content.spell.ice.FrostRay;
 import com.electroblob.wizardry.common.content.spell.lightning.ZapSpell;
 import com.electroblob.wizardry.common.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.common.content.spell.misc.ExampleSpell;
+import com.electroblob.wizardry.common.content.spell.necromancy.DragonFireball;
 import com.electroblob.wizardry.common.content.spell.necromancy.LifeDrain;
 import com.electroblob.wizardry.common.content.spell.necromancy.Wither;
 import com.electroblob.wizardry.common.content.spell.necromancy.WitherSkullSpell;
@@ -61,9 +65,9 @@ public final class Spells {
     public static final Spell REMOVE_CURSE;
     public static final Spell CURE_EFFECTS;
     public static final Spell AGILITY;
-//    public static final Spell FIRE_SKIN;
-//    public static final Spell STATIC_AURA;
-//    public static final Spell GREATER_WARD;
+    public static final Spell FIRE_SKIN;
+    public static final Spell STATIC_AURA;
+    public static final Spell GREATER_WARD;
     public static final Spell FLAME_RAY;
     public static final Spell IGNITE;
     public static final Spell FREEZE;
@@ -72,6 +76,12 @@ public final class Spells {
     public static final Spell WITHER;
     public static final Spell POISON;
     public static final Spell HEAL_ALLY;
+    public static final Spell EVADE;
+    public static final Spell FANGS;
+    public static final Spell DRAGON_FIREBALL;
+    public static final Spell FIRE_BREATH;
+    public static final Spell GREATER_HEAL;
+    public static final Spell POCKET_FURNACE;
 
     static {
         Register.init();
@@ -80,8 +90,6 @@ public final class Spells {
         EXAMPLE = spell("example", ExampleSpell::new);
         ZAP = spell("zap", ZapSpell::new);
 
-        // range: 18
-        // damage: 3
         MAGIC_MISSILE = spell("magic_missile", () -> new ArrowSpell<>(MagicMissile::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 18f)
@@ -89,9 +97,6 @@ public final class Spells {
                         .build()
         ));
 
-        // range: 10
-        // effect radius: 3
-        // effect duration: 120
         SMOKE_BOMB = spell("smoke_bomb", () -> new ProjectileSpell<>(SmokeBomb::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 10f)
@@ -135,8 +140,6 @@ public final class Spells {
                         .build()
         ));
 
-        // Horizontal speed: 0.3
-        // Vertical speed: 0.65
         LEAP = spell("leap", Leap::new);
 
         FORCE_ARROW = spell("force_arrow", () -> new ForceArrowSpell().assignProperties(
@@ -246,20 +249,20 @@ public final class Spells {
                         .build()
         ));
 
-//        FIRE_SKIN = spell("fire_skin", () -> new BuffSpell(1, 0.3f, 0, EBMobEffects.FIRE_SKIN::get).assignProperties(
-//                SpellProperties.builder()
-//                        .build()
-//        ));
-//
-//        STATIC_AURA = spell("static_aura", () -> new BuffSpell(0, 0.5f, 0.7f, EBMobEffects.STATIC_AURA::get).assignProperties(
-//                SpellProperties.builder()
-//                        .build()
-//        ));
-//
-//        GREATER_WARD = spell("greater_ward", () -> new BuffSpell(0.75f, 0.6f, 0.8f, EBMobEffects.WARD).assignProperties(
-//                SpellProperties.builder()
-//                        .build()
-//        ));
+        FIRE_SKIN = spell("fire_skin", () -> new BuffSpell(1, 0.3f, 0, EBMobEffects.FIRE_SKIN::get).assignProperties(
+                SpellProperties.builder()
+                        .build()
+        ));
+
+        STATIC_AURA = spell("static_aura", () -> new BuffSpell(0, 0.5f, 0.7f, EBMobEffects.STATIC_AURA::get).assignProperties(
+                SpellProperties.builder()
+                        .build()
+        ));
+
+        GREATER_WARD = spell("greater_ward", () -> new BuffSpell(0.75f, 0.6f, 0.8f, EBMobEffects.WARD).assignProperties(
+                SpellProperties.builder()
+                        .build()
+        ));
 
         HEAL = spell("heal", Heal::new);
 
@@ -269,24 +272,12 @@ public final class Spells {
 
         CURE_EFFECTS = spell("cure_effects", CureEffects::new);
 
-        // range: 10
-        // burn duration: 10
         IGNITE = spell("ignite", Ignite::new);
 
-        // range: 10
-        // damage: 3
-        // Burn duration: 10
         FLAME_RAY = spell("flame_ray", FlameRay::new);
 
-        // range: 10
-        // damage: 3
-        // effect duration: 200
-        // effect strength: 1
         FREEZE = spell("freeze", Freeze::new);
 
-        // range: 10
-        // damage: 2
-        // heal factor: 0.35F
         LIFE_DRAIN = spell("life_drain", LifeDrain::new);
 
         FROST_RAY = spell("frost_ray", FrostRay::new);
@@ -296,15 +287,26 @@ public final class Spells {
         POISON = spell("poison", Poison::new);
 
         HEAL_ALLY = spell("heal_ally", HealAlly::new);
+
+        EVADE = spell("evade", Evade::new);
+
+        FANGS = spell("fangs", Fangs::new);
+
+        DRAGON_FIREBALL = spell("dragon_fireball", DragonFireball::new);
+
+        FIRE_BREATH = spell("fire_breath", FireBreath::new);
+
+        GREATER_HEAL = spell("greater_heal", GreaterHeal::new);
+
+        POCKET_FURNACE  = spell("pocket_furnace", PocketFurnace::new);
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {
         handler.accept(Collections.unmodifiableSet(Register.SPELLS.entrySet()));
     }
 
-    static class Register {
-
-        static Map<String, Spell> SPELLS = new HashMap<>();
+    public static class Register {
+        public static Map<String, Spell> SPELLS = new HashMap<>();
         
         static Spell spell(String name, Supplier<Spell> spell) {
             var instantiatedSpell = spell.get();

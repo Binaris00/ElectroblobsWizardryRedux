@@ -6,7 +6,7 @@ import com.electroblob.wizardry.setup.ClientSetup;
 import com.electroblob.wizardry.setup.CommonSetup;
 import net.minecraft.resources.ResourceLocation;
 
-public final class Wizardry {
+public final class WizardryMainMod {
     public static final String MOD_ID = "ebwizardry";
     public static final String MOD_NAME = "Electroblob's Wizardry";
     public static final String MOD_VERSION = null;

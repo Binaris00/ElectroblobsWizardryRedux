@@ -1,12 +1,15 @@
 package com.electroblob.wizardry.common.content.spell.abstr;
 
+import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.spell.Caster;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
 import com.electroblob.wizardry.api.common.spell.Spell;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 import java.util.Collections;
 import java.util.Set;
@@ -42,7 +45,7 @@ public class BuffSpell extends Spell {
     protected void perform(Caster caster) {
         if(caster instanceof Player player){
             if(applyEffects(player) && player.level().isClientSide){
-                //spawnParticles(player.getCommandSenderWorld(), player);
+                spawnParticles(player.getCommandSenderWorld(), player);
             }
         }
     }
@@ -58,16 +61,15 @@ public class BuffSpell extends Spell {
         return true;
     }
 
-//    protected void spawnParticles(Level world, LivingEntity caster){
-//
-//        for(int i = 0; i < particleCount; i++){
-//            double x = caster.xo + world.random.nextDouble() * 2 - 1;
-//            double y = caster.yo + caster.getEyeHeight() - 0.5 + world.random.nextDouble();
-//            double z = caster.zo + world.random.nextDouble() * 2 - 1;
-//            ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(0, 0.1, 0).color(r, g, b).spawn(world);
-//        }
-//        ParticleBuilder.create(EBParticles.BUFF).entity(caster).color(r, g, b).spawn(world);
-//    }
+    protected void spawnParticles(Level world, LivingEntity caster){
+        for(int i = 0; i < particleCount; i++){
+            double x = caster.xo + world.random.nextDouble() * 2 - 1;
+            double y = caster.yo + caster.getEyeHeight() - 0.5 + world.random.nextDouble();
+            double z = caster.zo + world.random.nextDouble() * 2 - 1;
+            ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(0, 0.1, 0).color(r, g, b).spawn(world);
+        }
+        ParticleBuilder.create(EBParticles.BUFF).entity(caster).color(r, g, b).spawn(world);
+    }
 
 
 

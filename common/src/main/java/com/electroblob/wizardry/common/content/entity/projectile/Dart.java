@@ -1,10 +1,7 @@
 package com.electroblob.wizardry.common.content.entity.projectile;
 
-import com.electroblob.wizardry.Wizardry;
-import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
-import com.electroblob.wizardry.setup.registries.EBEntities;
-import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -40,7 +37,7 @@ public class Dart extends MagicArrowEntity {
 
     @Override
     public ResourceLocation getTexture() {
-        return new ResourceLocation(Wizardry.MOD_ID, "textures/entity/dart.png");
+        return new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/dart.png");
     }
 
     @Override

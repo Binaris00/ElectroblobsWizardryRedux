@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.api;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import net.minecraft.network.chat.Component;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,7 +42,7 @@ public final class EBLogger {
         private static final EBLogger INSTANCE = new EBLogger();
     }
 
-    private final Logger logger = LoggerFactory.getLogger(Wizardry.MOD_ID);
+    private final Logger logger = LoggerFactory.getLogger(WizardryMainMod.MOD_ID);
     private boolean disabled;
 
     private EBLogger(){}

@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.forge.datagen;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.data.PackOutput;
@@ -11,7 +11,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 public class EBBlockStateProvider extends BlockStateProvider {
 
     public EBBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-        super(output, Wizardry.MOD_ID, exFileHelper);
+        super(output, WizardryMainMod.MOD_ID, exFileHelper);
     }
 
     @Override

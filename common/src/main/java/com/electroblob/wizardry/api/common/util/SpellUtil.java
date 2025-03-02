@@ -65,7 +65,7 @@ public final class SpellUtil {
      * @return The spell with the given id.
      * */
     private static Spell byId(String id) {
-        //return SpellRegistry.fromResourceLocation(new ResourceLocation(id));
-        return null;
+        // TODO Bin: Temp
+        return Spells.Register.SPELLS.get(new ResourceLocation(id).getPath());
     }
 }

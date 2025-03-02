@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.client.renderer.entity;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.common.content.entity.projectile.ConjuredArrow;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -16,7 +16,7 @@ public class ConjureArrowRenderer extends ArrowRenderer<ConjuredArrow> {
 
     @Override
     public @NotNull ResourceLocation getTextureLocation(ConjuredArrow entity) {
-        return new ResourceLocation(Wizardry.MOD_ID, "textures/entity/conjured_arrow.png");
+        return new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/conjured_arrow.png");
     }
 
     @Override

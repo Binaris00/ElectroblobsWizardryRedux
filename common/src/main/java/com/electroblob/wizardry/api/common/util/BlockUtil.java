@@ -24,6 +24,10 @@ public final class BlockUtil {
         return canBlockBeReplaced(world, pos, false);
     }
 
+    public static Integer getNearestFloor(Level world, BlockPos pos, int range) {
+        return getNearestSurface(world, pos, Direction.UP, range, true, SurfaceCriteria.COLLIDABLE);
+    }
+
     public static boolean canBlockBeReplaced(Level world, BlockPos pos, boolean excludeLiquids) {
         return (world.isEmptyBlock(new BlockPos(pos)) || world.getBlockState(pos).canBeReplaced()) && (!excludeLiquids || !world.getBlockState(pos).liquid());
     }

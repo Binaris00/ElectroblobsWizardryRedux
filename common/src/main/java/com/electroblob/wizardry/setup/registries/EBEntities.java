@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-import static com.electroblob.wizardry.Wizardry.location;
+import static com.electroblob.wizardry.WizardryMainMod.location;
 import static com.electroblob.wizardry.setup.registries.EBEntities.Register.entity;
 
 public final class EBEntities {

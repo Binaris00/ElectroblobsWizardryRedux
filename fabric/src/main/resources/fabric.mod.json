@@ -16,7 +16,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.electroblob.wizardry.fabric.WizardryFabric"
+      "com.electroblob.wizardry.fabric.WizardryFabricMod"
     ],
     "client": [
       "com.electroblob.wizardry.fabric.client.WizardryFabricClient"

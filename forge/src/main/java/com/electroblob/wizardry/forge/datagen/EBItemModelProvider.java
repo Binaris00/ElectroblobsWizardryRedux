@@ -1,19 +1,18 @@
 package com.electroblob.wizardry.forge.datagen;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 public class EBItemModelProvider extends ItemModelProvider {
 
     public EBItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
-        super(output, Wizardry.MOD_ID, existingFileHelper);
+        super(output, WizardryMainMod.MOD_ID, existingFileHelper);
     }
 
     @Override
@@ -27,7 +26,7 @@ public class EBItemModelProvider extends ItemModelProvider {
         return withExistingParent(name,
                 new ResourceLocation("item/generated")).texture(
                 "layer0",
-                new ResourceLocation(Wizardry.MOD_ID, "item/" + name)
+                new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + name)
         );
     }
 
@@ -35,7 +34,7 @@ public class EBItemModelProvider extends ItemModelProvider {
         return withExistingParent(
                 name,
                 new ResourceLocation("item/handheld"))
-                .texture("layer0", new ResourceLocation(Wizardry.MOD_ID, "item/" + name))
+                .texture("layer0", new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + name))
                 .override().predicate(new ResourceLocation("this_gets_ignored"), 1)
                 .model(withExistingParent("wand_point", "item/handheld")).end();
     }

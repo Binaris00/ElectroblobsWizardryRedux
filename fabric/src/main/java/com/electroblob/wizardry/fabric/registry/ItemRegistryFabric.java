@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.fabric.registry;
 
-import com.electroblob.wizardry.Wizardry;
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.setup.registries.EBRegister;
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,7 +16,7 @@ public final class ItemRegistryFabric {
     }
 
     private static Item item(String name, Item item) {
-        return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(Wizardry.MOD_ID, name), item);
+        return Registry.register(BuiltInRegistries.ITEM, new ResourceLocation(WizardryMainMod.MOD_ID, name), item);
     }
 
     private ItemRegistryFabric() {}
