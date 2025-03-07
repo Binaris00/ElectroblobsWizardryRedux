@@ -33,6 +33,10 @@ public final class EntityUtil {
         return getEntitiesInRange(world, x, y, z, range, LivingEntity.class);
     }
 
+    public static List<LivingEntity> getLivingWithinRadius(double radius, double x, double y, double z, Level world) {
+        return getEntitiesWithinRadius(radius, x, y, z, world, LivingEntity.class);
+    }
+
     public static <T extends Entity> List<T> getEntitiesInRange(Level world, double x, double y, double z, double range, Class<T> entityClass){
         AABB boundingBox = new AABB(x - range, y - range, z - range, x + range, y + range, z + range);
         Predicate<T> alwaysTrue = entity -> true;

@@ -11,20 +11,17 @@ import com.electroblob.wizardry.common.content.spell.abstr.ProjectileSpell;
 import com.electroblob.wizardry.common.content.spell.earth.Fangs;
 import com.electroblob.wizardry.common.content.spell.earth.Leap;
 import com.electroblob.wizardry.common.content.spell.earth.Poison;
-import com.electroblob.wizardry.common.content.spell.fire.FireBreath;
-import com.electroblob.wizardry.common.content.spell.fire.FlameRay;
-import com.electroblob.wizardry.common.content.spell.fire.Ignite;
-import com.electroblob.wizardry.common.content.spell.fire.PocketFurnace;
+import com.electroblob.wizardry.common.content.spell.fire.*;
 import com.electroblob.wizardry.common.content.spell.healing.*;
 import com.electroblob.wizardry.common.content.spell.ice.Freeze;
 import com.electroblob.wizardry.common.content.spell.ice.FrostRay;
+import com.electroblob.wizardry.common.content.spell.ice.Permafrost;
+import com.electroblob.wizardry.common.content.spell.lightning.BlindingFlash;
+import com.electroblob.wizardry.common.content.spell.lightning.InvokeWeather;
 import com.electroblob.wizardry.common.content.spell.lightning.ZapSpell;
 import com.electroblob.wizardry.common.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.common.content.spell.misc.ExampleSpell;
-import com.electroblob.wizardry.common.content.spell.necromancy.DragonFireball;
-import com.electroblob.wizardry.common.content.spell.necromancy.LifeDrain;
-import com.electroblob.wizardry.common.content.spell.necromancy.Wither;
-import com.electroblob.wizardry.common.content.spell.necromancy.WitherSkullSpell;
+import com.electroblob.wizardry.common.content.spell.necromancy.*;
 import net.minecraft.world.effect.MobEffects;
 
 import java.util.*;
@@ -82,6 +79,14 @@ public final class Spells {
     public static final Spell FIRE_BREATH;
     public static final Spell GREATER_HEAL;
     public static final Spell POCKET_FURNACE;
+    public static final Spell ENRAGE;
+    public static final Spell FIRESTORM;
+    public static final Spell GROUP_HEAL;
+    public static final Spell BLINDING_FLASH;
+    public static final Spell DETONATE;
+    public static final Spell INVOKE_WEATHER;
+    public static final Spell OAKFLESH;
+    public static final Spell PERMAFROST;
 
     static {
         Register.init();
@@ -299,6 +304,24 @@ public final class Spells {
         GREATER_HEAL = spell("greater_heal", GreaterHeal::new);
 
         POCKET_FURNACE  = spell("pocket_furnace", PocketFurnace::new);
+
+        ENRAGE = spell("enrage", Enrage::new);
+
+        FIRESTORM = spell("firestorm", Firestorm::new);
+
+        GROUP_HEAL = spell("group_heal", GroupHeal::new);
+
+        BLINDING_FLASH = spell("blind_flash", BlindingFlash::new);
+
+        DETONATE = spell("detonate", Detonate::new);
+
+        INVOKE_WEATHER = spell("invoke_weather", InvokeWeather::new);
+
+        // TODO BIN: Missing sounds...
+        // .soundValues(0.7f, 1.2f, 0.4f)
+        OAKFLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH));
+
+        PERMAFROST = spell("permafrost", Permafrost::new);
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {

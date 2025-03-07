@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.common.content.block.PermafrostBlock;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
@@ -29,6 +30,9 @@ public final class EBBlocks {
     public static final DeferredObject<Block> EARTH_CRYSTAL_BLOCK = crystalBlock("earth");
     public static final DeferredObject<Block> SORCERY_CRYSTAL_BLOCK = crystalBlock("sorcery");
     public static final DeferredObject<Block> HEALING_CRYSTAL_BLOCK = crystalBlock("healing");
+
+
+    public static final DeferredObject<Block> PERMAFROST = block("permafrost", PermafrostBlock::new);
 
     public static final DeferredObject<Block> ARCANE_WORK_BENCH = block("arcane_workbench", false, true);
 

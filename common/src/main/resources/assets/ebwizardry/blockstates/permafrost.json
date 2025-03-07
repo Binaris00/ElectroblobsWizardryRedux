@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "ebwizardry:block/permafrost_0"
+    },
+    "age=1": {
+      "model": "ebwizardry:block/permafrost_1"
+    },
+    "age=2": {
+      "model": "ebwizardry:block/permafrost_2"
+    },
+    "age=3": {
+      "model": "ebwizardry:block/permafrost_3"
+    }
+  }
+}

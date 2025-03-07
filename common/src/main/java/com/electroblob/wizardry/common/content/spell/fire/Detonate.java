@@ -1,0 +1,56 @@
+package com.electroblob.wizardry.common.content.spell.fire;
+
+import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
+
+public class Detonate extends RaySpell {
+    @Override
+    protected boolean onMiss(Level world, @Nullable LivingEntity caster, Vec3 origin, Vec3 direction, int ticksInUse) {
+        return false;
+    }
+
+    @Override
+    protected boolean onBlockHit(Level world, BlockPos pos, Direction side, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
+        if (!world.isClientSide) {
+            List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(3, pos.getX(), pos.getY(), pos.getZ(), world);
+            for (LivingEntity target : targets) {
+
+                target.hurt(target.damageSources().indirectMagic(caster, target), Math.max(12 - (float) target.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) * 4, 0));
+            }
+        } else {
+            world.addParticle(ParticleTypes.EXPLOSION_EMITTER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
+        }
+
+        world.playSound(null, pos, SoundEvents.GENERIC_EXPLODE, SoundSource.HOSTILE);
+
+        return true;
+    }
+
+    @Override
+    protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
+        return false;
+    }
+
+    @Override
+    protected void spawnParticle(Level world, double x, double y, double z, double vx, double vy, double vz) {
+        world.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
+    }
+
+    @Override
+    protected SpellProperties properties() {
+        return null;
+    }
+}

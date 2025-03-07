@@ -1,0 +1,8 @@
+{
+  "parent": "ebwizardry:block/permafrost_0",
+  "render_type": "translucent",
+  "textures": {
+    "particle": "minecraft:block/frosted_ice_2",
+    "texture": "minecraft:block/frosted_ice_2"
+  }
+}

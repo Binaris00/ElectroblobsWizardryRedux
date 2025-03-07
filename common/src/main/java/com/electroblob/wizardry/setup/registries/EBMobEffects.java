@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.api.common.effect.MagicMobEffect;
 import com.electroblob.wizardry.common.content.effect.FireSkinMobEffect;
 import com.electroblob.wizardry.common.content.effect.FrostMobEffect;
+import com.electroblob.wizardry.common.content.effect.OakFleshMobEffect;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -20,6 +21,7 @@ public class EBMobEffects {
     public static final DeferredObject<MobEffect> STATIC_AURA;
     public static final DeferredObject<MobEffect> WARD;
     public static final DeferredObject<MobEffect> FIRE_SKIN;
+    public static final DeferredObject<MobEffect> OAKFLESH;
 
     static Map<String, DeferredObject<MobEffect>> mobEffects = new HashMap<>();
 
@@ -43,6 +45,7 @@ public class EBMobEffects {
 
         FIRE_SKIN = registerEffect("fire_skin", FireSkinMobEffect::new);
         FROST = registerEffect("frost", FrostMobEffect::new);
+        OAKFLESH = registerEffect("oakflesh", OakFleshMobEffect::new);
     }
 
     private static DeferredObject<MobEffect> registerEffect(String name, Supplier<MobEffect> effect) {

@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -16,6 +17,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -51,6 +54,24 @@ public final class BlockUtil {
         if (world.isOutsideBuildHeight(pos)) return false;
 
         return !(placer instanceof Player) || world.mayInteract((Player) placer, pos);
+    }
+
+    public static List<BlockPos> getBlockSphere(BlockPos centre, double radius) {
+        List<BlockPos> sphere = new ArrayList<>((int) Math.pow(radius, 3));
+
+        for (int i = -(int) radius; i <= radius; i++) {
+            float r1 = Mth.sqrt((float) (radius * radius - i * i));
+
+            for (int j = -(int) r1; j <= r1; j++) {
+                float r2 = Mth.sqrt((float) (radius * radius - i * i - j * j));
+
+                for (int k = -(int) r2; k <= r2; k++) {
+                    sphere.add(centre.offset(i, j, k));
+                }
+            }
+        }
+
+        return sphere;
     }
 
     /**
