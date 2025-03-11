@@ -33,8 +33,7 @@ public class MagicFireball extends MagicProjectileEntity {
     }
 
     public MagicFireball(Level world) {
-        super(null, world);
-        //super(EBEntities.MAGIC_FIREBALL.get(), world);
+        super(EBEntities.MAGIC_FIREBALL.get(), world);
     }
 
     public void setDamage(float damage) {
@@ -81,23 +80,23 @@ public class MagicFireball extends MagicProjectileEntity {
                 double dy = (random.nextDouble() - 0.5) * this.getBbHeight() + this.getBbHeight() / 2 - 0.1;
                 double dz = (random.nextDouble() - 0.5) * this.getBbWidth();
                 double v = 0.06;
-//                ParticleBuilder.create(EBParticles.MAGIC_FIRE)
-//                        .pos(this.position().add(dx - this.getDeltaMovement().x / 2, dy, dz - this.getDeltaMovement().z / 2))
-//                        .velocity(-v * dx, -v * dy, -v * dz)
-//                        .scale(this.getBbWidth() * 2)
-//                        .time(10)
-//                        .spawn(this.level());
+                ParticleBuilder.create(EBParticles.MAGIC_FIRE)
+                        .pos(this.position().add(dx - this.getDeltaMovement().x / 2, dy, dz - this.getDeltaMovement().z / 2))
+                        .velocity(-v * dx, -v * dy, -v * dz)
+                        .scale(this.getBbWidth() * 2)
+                        .time(10)
+                        .spawn(this.level());
 
                 if (tickCount > 1) {
                     dx = (random.nextDouble() - 0.5) * this.getBbWidth();
                     dy = (random.nextDouble() - 0.5) * this.getBbHeight() + this.getBbHeight() / 2 - 0.1;
                     dz = (random.nextDouble() - 0.5) * this.getBbWidth();
-//                    ParticleBuilder.create(EBParticles.MAGIC_FIRE)
-//                            .pos(this.position().add(dx - this.getDeltaMovement().x, dy, dz - this.getDeltaMovement().z))
-//                            .velocity(-v * dx, -v * dy, -v * dz)
-//                            .scale(this.getBbWidth() * 2)
-//                            .time(10)
-//                            .spawn(this.level());
+                    ParticleBuilder.create(EBParticles.MAGIC_FIRE)
+                            .pos(this.position().add(dx - this.getDeltaMovement().x, dy, dz - this.getDeltaMovement().z))
+                            .velocity(-v * dx, -v * dy, -v * dz)
+                            .scale(this.getBbWidth() * 2)
+                            .time(10)
+                            .spawn(this.level());
                 }
             }
         }

@@ -8,9 +8,7 @@ import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.ArrowSpell;
 import com.electroblob.wizardry.common.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.common.content.spell.abstr.ProjectileSpell;
-import com.electroblob.wizardry.common.content.spell.earth.Fangs;
-import com.electroblob.wizardry.common.content.spell.earth.Leap;
-import com.electroblob.wizardry.common.content.spell.earth.Poison;
+import com.electroblob.wizardry.common.content.spell.earth.*;
 import com.electroblob.wizardry.common.content.spell.fire.*;
 import com.electroblob.wizardry.common.content.spell.healing.*;
 import com.electroblob.wizardry.common.content.spell.ice.Freeze;
@@ -22,6 +20,9 @@ import com.electroblob.wizardry.common.content.spell.lightning.ZapSpell;
 import com.electroblob.wizardry.common.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.common.content.spell.misc.ExampleSpell;
 import com.electroblob.wizardry.common.content.spell.necromancy.*;
+import com.electroblob.wizardry.common.content.spell.sorcery.Levitation;
+import com.electroblob.wizardry.common.content.spell.sorcery.PocketWorkbench;
+import com.electroblob.wizardry.common.content.spell.sorcery.VanishingBox;
 import net.minecraft.world.effect.MobEffects;
 
 import java.util.*;
@@ -87,6 +88,15 @@ public final class Spells {
     public static final Spell INVOKE_WEATHER;
     public static final Spell OAKFLESH;
     public static final Spell PERMAFROST;
+    public static final Spell GROWN_AURA;
+    public static final Spell LEVITATION;
+    public static final Spell WHIRLWIND;
+    public static final Spell POCKET_WORKBENCH;
+    public static final Spell SHULKER_BULLET;
+    public static final Spell VANISHING_BOX;
+    public static final Spell REPLENISH_HUNGER;
+    public static final Spell DARKNESS_ORB;
+    public static final Spell FLIGHT;
 
     static {
         Register.init();
@@ -225,6 +235,9 @@ public final class Spells {
                         .build()
         ));
 
+        // TODO BIN sound .soundValues(0.5f, 0.4f, 0.2f)
+        DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrb::new));
+
         FIRE_RESISTANCE = spell("fire_resistance", () -> new BuffSpell(1, 0.5f, 0, () -> MobEffects.FIRE_RESISTANCE).assignProperties(
                 SpellProperties.builder()
                         .build()
@@ -322,6 +335,22 @@ public final class Spells {
         OAKFLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH));
 
         PERMAFROST = spell("permafrost", Permafrost::new);
+
+        GROWN_AURA = spell("grown_aura", GrownAura::new);
+
+        LEVITATION = spell("levitation", Levitation::new);
+
+        WHIRLWIND = spell("whirlwind", Whirlwind::new);
+
+        REPLENISH_HUNGER = spell("replenish_hunger", ReplenishHunger::new);
+
+        VANISHING_BOX = spell("vanishing_box", VanishingBox::new);
+
+        SHULKER_BULLET = spell("shulker_bullet", ShulkerBullet::new);
+
+        POCKET_WORKBENCH = spell("pocket_workbench", PocketWorkbench::new);
+
+        FLIGHT = spell("flight", Flight::new);
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {

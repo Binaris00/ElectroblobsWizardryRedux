@@ -33,6 +33,7 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<SparkBomb>> SPARK_BOMB;
     public static final DeferredObject<EntityType<Thunderbolt>> THUNDERBOLT;
     public static final DeferredObject<EntityType<IceCharge>> ICE_CHARGE;
+    public static final DeferredObject<EntityType<DarknessOrb>> DARKNESS_ORB;
 
     static {
         DART = entity(
@@ -41,6 +42,14 @@ public final class EBEntities {
                         .sized(0.5f, 0.5f)
                         .clientTrackingRange(4)
                         .updateInterval(20)
+        );
+
+        DARKNESS_ORB = entity(
+                "darkness_orb",
+                EntityType.Builder.<DarknessOrb>of(DarknessOrb::new, MobCategory.MISC)
+                        .sized(0.5f, 0.5f)
+                        .clientTrackingRange(64)
+                        .updateInterval(10)
         );
 
         CONJURED_ARROW = entity(

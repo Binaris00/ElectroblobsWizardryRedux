@@ -2,10 +2,7 @@ package com.electroblob.wizardry.setup.registries.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.DeferredObject;
-import com.electroblob.wizardry.client.renderer.entity.BlankRenderer;
-import com.electroblob.wizardry.client.renderer.entity.MagicArrowRenderer;
-import com.electroblob.wizardry.client.renderer.entity.MagicProjectileRenderer;
-import com.electroblob.wizardry.client.renderer.entity.ConjureArrowRenderer;
+import com.electroblob.wizardry.client.renderer.entity.*;
 import com.electroblob.wizardry.common.content.entity.projectile.*;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.google.common.collect.Maps;
@@ -45,8 +42,11 @@ public final class EBRenderers {
                 new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/magic_fireball.png"))));
         register(EBEntities.ICE_BALL, (ctx -> new MagicProjectileRenderer<>(ctx,
                 new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/iceball.png"))));
+        register(EBEntities.DARKNESS_ORB, (ctx -> new MagicProjectileRenderer<>(ctx,
+                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/darkness_orb.png")))
+        );
         register(EBEntities.ICE_LANCE, MagicArrowRenderer<IceLance>::new);
-        register(EBEntities.FORCE_ARROW, MagicArrowRenderer<ForceArrow>::new);
+        register(EBEntities.FORCE_ARROW, ForceArrowRenderer::new);
         register(EBEntities.CONJURED_ARROW, ConjureArrowRenderer::new);
         register(EBEntities.FLAME_CATCHER_ARROW, MagicArrowRenderer<FlamecatcherArrow>::new);
     }

@@ -1,8 +1,11 @@
 package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.api.common.util.InventoryUtil;
+import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -23,8 +26,7 @@ public class ForceArrow extends MagicArrowEntity {
     }
 
     public ForceArrow(Level world) {
-        super(null, world);
-        //super(EBEntities.FORCE_ARROW.get(), world);
+        super(EBEntities.FORCE_ARROW.get(), world);
     }
 
     @Override
@@ -37,32 +39,34 @@ public class ForceArrow extends MagicArrowEntity {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
+    protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
+        // TODO ENTITY SOUND
         //this.playSound(EBSounds.ENTITY_FORCE_ARROW_HIT.get(), 1.0F, 1.0F);
 
         if (this.level().isClientSide()) {
-//            ParticleBuilder.create(EBParticles.FLASH)
-//                    .pos(getX(), getY(), getZ())
-//                    .scale(1.3f)
-//                    .color(0.75f, 1.0f, 0.85f)
-//                    .spawn(level());
+            ParticleBuilder.create(EBParticles.FLASH)
+                    .pos(getX(), getY(), getZ())
+                    .scale(1.3f)
+                    .color(0.75f, 1.0f, 0.85f)
+                    .spawn(level());
         }
 
         super.onHitEntity(entityHitResult);
     }
 
     @Override
-    protected void onHitBlock(BlockHitResult blockHitResult) {
+    protected void onHitBlock(@NotNull BlockHitResult blockHitResult) {
+        // TODO ENTITY SOUND
         //this.playSound(EBSounds.ENTITY_FORCE_ARROW_HIT.get(), 1.0F, 1.0F);
         super.onHitBlock(blockHitResult);
 
         if (this.level().isClientSide()) {
             Vec3 pos = blockHitResult.getLocation().add(Vec3.atLowerCornerOf(blockHitResult.getDirection().getNormal()).scale(0.15));
-//            ParticleBuilder.create(EBParticles.FLASH)
-//                    .pos(pos)
-//                    .scale(1.3f)
-//                    .color(0.75f, 1.0f, 0.85f)
-//                    .spawn(level());
+            ParticleBuilder.create(EBParticles.FLASH)
+                    .pos(pos)
+                    .scale(1.3f)
+                    .color(0.75f, 1.0f, 0.85f)
+                    .spawn(level());
         }
 
     }

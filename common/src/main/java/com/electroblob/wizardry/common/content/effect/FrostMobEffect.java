@@ -23,6 +23,9 @@ public class FrostMobEffect extends MagicMobEffect {
                 livingEntity.setSecondsOnFire(0);
             }
         }
+
+        livingEntity.setIsInPowderSnow(true);
+
         super.applyEffectTick(livingEntity, i);
     }
 
@@ -33,6 +36,6 @@ public class FrostMobEffect extends MagicMobEffect {
 
     @Override
     public void spawnCustomParticle(Level world, double x, double y, double z) {
-        //ParticleBuilder.create(EBParticles.SNOW).pos(x, y, z).time(15 + world.random.nextInt(5)).spawn(world);
+        ParticleBuilder.create(EBParticles.SNOW).pos(x, y, z).time(15 + world.random.nextInt(5)).spawn(world);
     }
 }
