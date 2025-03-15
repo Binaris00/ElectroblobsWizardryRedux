@@ -1,6 +1,10 @@
-package com.electroblob.wizardry.api.common.spell;
+package com.electroblob.wizardry.common.content.spell.abstr;
 
+import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.Spell;
+import com.electroblob.wizardry.api.common.spell.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.common.content.spell.earth.ForestsCurse;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -11,7 +15,7 @@ import javax.annotation.Nullable;
 import java.util.Comparator;
 import java.util.List;
 
-public abstract class AreaEffectSpell extends Spell{
+public abstract class AreaEffectSpell extends Spell {
     protected boolean targetAllies = false;
     protected boolean alwaysSucceed = false;
     protected float particleDensity = 0.65f;
@@ -43,7 +47,11 @@ public abstract class AreaEffectSpell extends Spell{
 
     protected boolean findAndAffectEntities(Level world, Vec3 origin, @Nullable LivingEntity caster, int ticksInUse) {
         // TODO Bin: Effect radius
-        double radius = 15;
+        double radius = 10;
+
+        // TODO TEMP
+        if(this instanceof ForestsCurse) radius = 5;
+
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, origin.x, origin.y, origin.z, world);
 
         if (targetAllies) {

@@ -1,9 +1,7 @@
 package com.electroblob.wizardry.common.content.spell.lightning;
 
-import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.AreaEffectSpell;
+import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
-import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;

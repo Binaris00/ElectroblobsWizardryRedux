@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.common.content.spell.healing;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.AreaEffectSpell;
+import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;

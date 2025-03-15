@@ -2,10 +2,12 @@ package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.common.content.block.PermafrostBlock;
+import com.electroblob.wizardry.common.content.block.VanishingCobwebBlock;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
@@ -33,8 +35,9 @@ public final class EBBlocks {
 
 
     public static final DeferredObject<Block> PERMAFROST = block("permafrost", PermafrostBlock::new);
-
+    public static final DeferredObject<Block> VANISHING_COBWEB = block("vanishing_cobweb", () -> new VanishingCobwebBlock(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)));
     public static final DeferredObject<Block> ARCANE_WORK_BENCH = block("arcane_workbench", false, true);
+    public static final DeferredObject<Block> METEOR = block("meteor", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state) -> 1)));
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, DeferredObject<Block>>>> handler) {
         handler.accept(Collections.unmodifiableSet(BLOCKS.entrySet()));

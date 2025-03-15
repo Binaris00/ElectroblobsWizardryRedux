@@ -1,6 +1,8 @@
 package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.common.content.entity.EntityArrowRain;
+import com.electroblob.wizardry.common.content.entity.EntityMeteor;
 import com.electroblob.wizardry.common.content.entity.projectile.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -34,6 +36,9 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<Thunderbolt>> THUNDERBOLT;
     public static final DeferredObject<EntityType<IceCharge>> ICE_CHARGE;
     public static final DeferredObject<EntityType<DarknessOrb>> DARKNESS_ORB;
+    public static final DeferredObject<EntityType<EntityMeteor>> METEOR;
+    public static final DeferredObject<EntityType<EntityArrowRain>> ARROW_RAIN;
+    public static final DeferredObject<EntityType<EntityForceOrb>> FORCE_ORB;
 
     static {
         DART = entity(
@@ -44,6 +49,21 @@ public final class EBEntities {
                         .updateInterval(20)
         );
 
+        ARROW_RAIN = entity(
+                "arrow_rain",
+                EntityType.Builder.<EntityArrowRain>of(EntityArrowRain::new, MobCategory.MISC)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        FORCE_ORB = entity(
+                "force_orb",
+                EntityType.Builder.<EntityForceOrb>of(EntityForceOrb::new, MobCategory.MISC)
+                        .sized(0.25f, 0.25f)
+                        .clientTrackingRange(64)
+                        .updateInterval(10)
+        );
+
         DARKNESS_ORB = entity(
                 "darkness_orb",
                 EntityType.Builder.<DarknessOrb>of(DarknessOrb::new, MobCategory.MISC)
@@ -52,9 +72,17 @@ public final class EBEntities {
                         .updateInterval(10)
         );
 
+        METEOR = entity(
+                "meteor",
+                EntityType.Builder.<EntityMeteor>of(EntityMeteor::new, MobCategory.MISC)
+                        .sized(0.98f, 0.98f)
+                        .clientTrackingRange(160)
+                        .updateInterval(3)
+        );
+
         CONJURED_ARROW = entity(
                 "conjured_arrow",
-                EntityType.Builder.of(ConjuredArrow::new, MobCategory.MISC)
+                EntityType.Builder.<ConjuredArrow>of(ConjuredArrow::new, MobCategory.MISC)
                         .sized(0.5f, 0.5f)
                         .clientTrackingRange(64)
                         .updateInterval(10)

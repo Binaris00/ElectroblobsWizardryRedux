@@ -20,9 +20,7 @@ import com.electroblob.wizardry.common.content.spell.lightning.ZapSpell;
 import com.electroblob.wizardry.common.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.common.content.spell.misc.ExampleSpell;
 import com.electroblob.wizardry.common.content.spell.necromancy.*;
-import com.electroblob.wizardry.common.content.spell.sorcery.Levitation;
-import com.electroblob.wizardry.common.content.spell.sorcery.PocketWorkbench;
-import com.electroblob.wizardry.common.content.spell.sorcery.VanishingBox;
+import com.electroblob.wizardry.common.content.spell.sorcery.*;
 import net.minecraft.world.effect.MobEffects;
 
 import java.util.*;
@@ -97,6 +95,14 @@ public final class Spells {
     public static final Spell REPLENISH_HUNGER;
     public static final Spell DARKNESS_ORB;
     public static final Spell FLIGHT;
+    public static final Spell BANISH;
+    public static final Spell PHASE_STEP;
+    public static final Spell METEOR;
+    public static final Spell ARROW_RAIN;
+    public static final Spell REVERSAL;
+    public static final Spell PLAGUE_DARKNESS;
+    public static final Spell FORCE_ORB;
+    public static final Spell FOREST_CURSE;
 
     static {
         Register.init();
@@ -235,6 +241,10 @@ public final class Spells {
                         .build()
         ));
 
+
+        // TODO BIN SOUND .soundValues(0.5f, 0.4f, 0.2f)
+        FORCE_ORB = spell("force_orb", () -> new ProjectileSpell<>(EntityForceOrb::new));
+
         // TODO BIN sound .soundValues(0.5f, 0.4f, 0.2f)
         DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrb::new));
 
@@ -351,6 +361,20 @@ public final class Spells {
         POCKET_WORKBENCH = spell("pocket_workbench", PocketWorkbench::new);
 
         FLIGHT = spell("flight", Flight::new);
+
+        BANISH = spell("banish", Banish::new);
+
+        PHASE_STEP = spell("phase_step", PhaseStep::new);
+
+        METEOR = spell("meteor", Meteor::new);
+
+        ARROW_RAIN = spell("arrow_rain", ArrowRain::new);
+
+        REVERSAL = spell("reversal", Reversal::new);
+
+        PLAGUE_DARKNESS = spell("plague_of_darkness", PlagueOfDarkness::new);
+
+        FOREST_CURSE = spell("forest_curse", ForestsCurse::new);
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {

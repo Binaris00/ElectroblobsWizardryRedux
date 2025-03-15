@@ -1,6 +1,10 @@
 package com.electroblob.wizardry.api.common.util;
 
+import com.google.common.collect.Streams;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,9 +14,11 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public final class EntityUtil {
     private EntityUtil() {}
@@ -67,6 +73,69 @@ public final class EntityUtil {
         boolean succeeded = entity.hurt(source, amount);
         entity.setDeltaMovement(originalVec);
         return succeeded;
+    }
+
+    /**
+     * Finds the nearest space to the specified position that the given entity can teleport to without being inside one
+     * or more solid blocks. The search volume is twice the size of the entity's bounding box (meaning that when
+     * teleported to the returned position, the original destination remains within the entity's bounding box).
+     * @param entity The entity being teleported
+     * @param destination The target position to search around
+     * @param accountForPassengers True to take passengers into account when searching for a space, false to ignore them
+     * @return The resulting position, or null if no space was found.
+     */
+    public static Vec3 findSpaceForTeleport(Entity entity, Vec3 destination, boolean accountForPassengers) {
+        Level world = entity.level();
+        AABB box = entity.getBoundingBox();
+
+        if (accountForPassengers) {
+            for (Entity passenger : entity.getPassengers()) {
+                box = box.minmax(passenger.getBoundingBox());
+            }
+        }
+
+        box = box.move(destination.subtract(entity.getX(), entity.getY(), entity.getZ()));
+
+        Iterable<BlockPos> cuboid = BlockPos.betweenClosed(Mth.floor(box.minX), Mth.floor(box.minY),
+                Mth.floor(box.minZ), Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ));
+
+        if (Streams.stream(cuboid).noneMatch(b -> !world.noCollision(new AABB(b)))) {
+            return destination;
+
+        } else {
+            double dx = box.maxX - box.minX;
+            double dy = box.maxY - box.minY;
+            double dz = box.maxZ - box.minZ;
+
+            int nx = Mth.ceil(dx) / 2;
+            int px = Mth.ceil(dx) - nx;
+            int ny = Mth.ceil(dy) / 2;
+            int py = Mth.ceil(dy) - ny;
+            int nz = Mth.ceil(dz) / 2;
+            int pz = Mth.ceil(dz) - nz;
+
+            List<BlockPos> nearby = Streams.stream(BlockPos.betweenClosed(Mth.floor(box.minX) - 1, Mth.floor(box.minY) - 1, Mth.floor(box.minZ) - 1, Mth.floor(box.maxX) + 1, Mth.floor(box.maxY) + 1, Mth.floor(box.maxZ) + 1)).collect(Collectors.toList());
+
+            List<BlockPos> possiblePositions = Streams.stream(cuboid).collect(Collectors.toList());
+
+            while (!nearby.isEmpty()) {
+                BlockPos pos = nearby.remove(0);
+
+                if (!world.noCollision(new AABB(pos))) {
+                    Predicate<BlockPos> nearSolidBlock = b -> b.getX() >= pos.getX() - nx && b.getX() <= pos.getX() + px
+                            && b.getY() >= pos.getY() - ny && b.getY() <= pos.getY() + py
+                            && b.getZ() >= pos.getZ() - nz && b.getZ() <= pos.getZ() + pz;
+                    nearby.removeIf(nearSolidBlock);
+                    possiblePositions.removeIf(nearSolidBlock);
+                }
+            }
+
+            if (possiblePositions.isEmpty()) return null;
+
+            BlockPos nearest = possiblePositions.stream().min(Comparator.comparingDouble(b -> destination.distanceToSqr(b.getX() + 0.5, b.getY() + 0.5, b.getZ() + 0.5))).get();
+
+            return GeometryUtil.getFaceCentre(nearest, Direction.DOWN);
+        }
     }
 
     public static boolean canDamageBlocks(@Nullable Entity entity, Level world) {

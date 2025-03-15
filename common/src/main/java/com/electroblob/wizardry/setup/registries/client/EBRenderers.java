@@ -3,10 +3,12 @@ package com.electroblob.wizardry.setup.registries.client;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.client.renderer.entity.*;
+import com.electroblob.wizardry.common.content.entity.EntityMeteor;
 import com.electroblob.wizardry.common.content.entity.projectile.*;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -24,6 +26,8 @@ public final class EBRenderers {
     }
 
     public static void register() {
+        register(EBEntities.METEOR, MeteorRenderer::new);
+        register(EBEntities.ARROW_RAIN, BlankRenderer::new);
         register(EBEntities.FIRE_BOMB, ThrownItemRenderer::new);
         register(EBEntities.FIRE_BOMB, ThrownItemRenderer::new);
         register(EBEntities.SPARK_BOMB, ThrownItemRenderer::new);
@@ -49,6 +53,10 @@ public final class EBRenderers {
         register(EBEntities.FORCE_ARROW, ForceArrowRenderer::new);
         register(EBEntities.CONJURED_ARROW, ConjureArrowRenderer::new);
         register(EBEntities.FLAME_CATCHER_ARROW, MagicArrowRenderer<FlamecatcherArrow>::new);
+
+        register(EBEntities.FORCE_ORB, (ctx -> new MagicProjectileRenderer<>(ctx,
+                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/force_orb.png")))
+        );
     }
 
     public static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> getRenderers() {

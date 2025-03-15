@@ -56,6 +56,10 @@ public final class BlockUtil {
         return !(placer instanceof Player) || world.mayInteract((Player) placer, pos);
     }
 
+    public static boolean isBlockUnbreakable(Level world, BlockPos pos){
+        return !world.isEmptyBlock(new BlockPos(pos)) && world.getBlockState(pos).isSolid();
+    }
+
     public static List<BlockPos> getBlockSphere(BlockPos centre, double radius) {
         List<BlockPos> sphere = new ArrayList<>((int) Math.pow(radius, 3));
 

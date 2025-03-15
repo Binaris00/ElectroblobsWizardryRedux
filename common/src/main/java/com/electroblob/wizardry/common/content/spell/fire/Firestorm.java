@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.AreaEffectSpell;
+import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.api.common.spell.Caster;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.DrawingUtils;

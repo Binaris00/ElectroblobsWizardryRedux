@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.AreaEffectSpell;
+import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;

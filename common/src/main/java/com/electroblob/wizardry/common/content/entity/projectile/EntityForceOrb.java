@@ -1,0 +1,86 @@
+package com.electroblob.wizardry.common.content.entity.projectile;
+
+import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
+import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+
+public class EntityForceOrb extends BombEntity {
+    public EntityForceOrb(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+        super(entityType, level);
+    }
+
+    public EntityForceOrb(Level level) {
+        super(EBEntities.FORCE_ORB.get(), level);
+    }
+
+    @Override
+    protected void onHit(@NotNull HitResult hitResult) {
+        super.onHit(hitResult);
+
+        if(hitResult.getType() == HitResult.Type.ENTITY){
+            // TODO ENTITY SOUND
+            //this.playSound(WizardrySounds.ENTITY_FORCE_ORB_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+        }
+
+        if(this.level().isClientSide){
+            for(int j = 0; j < 20; j++){
+                float brightness = 0.5f + (random.nextFloat() / 2);
+                ParticleBuilder.create(EBParticles.SPARKLE, random, xo, yo, zo, 0.25, true).time(6)
+                        .color(brightness, 1.0f, brightness + 0.2f).spawn(level());
+            }
+            this.level().addParticle(ParticleTypes.EXPLOSION, this.xo, this.yo, this.zo, 0, 0, 0);
+        }
+
+        if(!this.level().isClientSide){
+
+            // 2 gives a cool flanging effect!
+            float pitch = this.random.nextFloat() * 0.2F + 0.3F;
+            // TODO ENTITY SOUND
+            //this.playSound(WizardrySounds.ENTITY_FORCE_ORB_HIT_BLOCK, 1.5F, pitch);
+            //this.playSound(WizardrySounds.ENTITY_FORCE_ORB_HIT_BLOCK, 1.5F, pitch - 0.01f);
+
+            double blastRadius = 4 * blastMultiplier;
+
+            List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(blastRadius, this.xo,
+                    this.yo, this.zo, this.level());
+
+            for(LivingEntity target : targets){
+                if(target != this.getOwner()){
+
+                    double velY = target.getDeltaMovement().y;
+
+                    double dx = this.xo - target.xo > 0 ? -0.5 - (this.xo - target.xo) / 8
+                            : 0.5 - (this.xo - target.xo) / 8;
+                    double dz = this.zo - target.zo > 0 ? -0.5 - (this.zo - target.zo) / 8
+                            : 0.5 - (this.zo - target.zo) / 8;
+
+                    float damage = 4 * damageMultiplier;
+
+                    // TODO BIN MAGIC ATTACK
+                    target.hurt(damageSources().indirectMagic(this, this.getOwner()), damage);
+                    target.setDeltaMovement(dx, velY + 0.4, dz);
+                }
+            }
+
+            this.discard();
+        }
+    }
+
+    @Override
+    protected @NotNull Item getDefaultItem() {
+        return ItemStack.EMPTY.getItem();
+    }
+}
