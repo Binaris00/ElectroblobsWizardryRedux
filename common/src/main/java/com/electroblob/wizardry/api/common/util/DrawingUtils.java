@@ -3,6 +3,14 @@ package com.electroblob.wizardry.api.common.util;
 import net.minecraft.util.Mth;
 
 public class DrawingUtils {
+
+    public static float smoothScaleFactor(int lifetime, int ticksExisted, float partialTicks, int startLength, int endLength) {
+        float age = ticksExisted + partialTicks;
+        float s = Mth.clamp(age < startLength || lifetime < 0 ? age / startLength : (lifetime - age) / endLength, 0, 1);
+        s = (float) Math.pow(s, 0.4);
+        return s;
+    }
+
     public static int mix(int colour1, int colour2, float proportion) {
         proportion = Mth.clamp(proportion, 0, 1);
 

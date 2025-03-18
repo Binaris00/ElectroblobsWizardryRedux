@@ -3,6 +3,7 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.common.content.entity.EntityArrowRain;
 import com.electroblob.wizardry.common.content.entity.EntityMeteor;
+import com.electroblob.wizardry.common.content.entity.construct.*;
 import com.electroblob.wizardry.common.content.entity.projectile.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -39,6 +40,13 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<EntityMeteor>> METEOR;
     public static final DeferredObject<EntityType<EntityArrowRain>> ARROW_RAIN;
     public static final DeferredObject<EntityType<EntityForceOrb>> FORCE_ORB;
+    public static final DeferredObject<EntityType<EntityBlizzard>> BLIZZARD;
+    public static final DeferredObject<EntityType<EntityFireSigil>> FIRE_SIGIL;
+    public static final DeferredObject<EntityType<EntityFrostSigil>> FROST_SIGIL;
+    public static final DeferredObject<EntityType<EntityLightningSigil>> LIGHTNING_SIGIL;
+    public static final DeferredObject<EntityType<EntityIceSpike>> ICE_SPICKES;
+    public static final DeferredObject<EntityType<EntityFireRing>> RING_OF_FIRE;
+    public static final DeferredObject<EntityType<EntityHealAura>> HEAL_AURA;
 
     static {
         DART = entity(
@@ -49,9 +57,67 @@ public final class EBEntities {
                         .updateInterval(20)
         );
 
+
+        ICE_SPICKES = entity(
+                "ice_spikes",
+                EntityType.Builder.<EntityIceSpike>of(EntityIceSpike::new, MobCategory.MISC)
+                        .sized(0.5f, 1.0f)
+                        .updateInterval(1)
+                        .clientTrackingRange(160)
+        );
+
         ARROW_RAIN = entity(
                 "arrow_rain",
                 EntityType.Builder.<EntityArrowRain>of(EntityArrowRain::new, MobCategory.MISC)
+                        .sized(3, 3)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        BLIZZARD = entity(
+                "blizzard",
+                EntityType.Builder.<EntityBlizzard>of(EntityBlizzard::new, MobCategory.MISC)
+                        .sized(3, 3)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        HEAL_AURA = entity(
+                "heal_aura",
+                EntityType.Builder.<EntityHealAura>of(EntityHealAura::new, MobCategory.MISC)
+                        .sized(3, 3)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        RING_OF_FIRE = entity(
+                "ring_of_fire",
+                EntityType.Builder.<EntityFireRing>of(EntityFireRing::new, MobCategory.MISC)
+                        .sized(3, 3)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        FIRE_SIGIL = entity(
+                "fire_sigil",
+                EntityType.Builder.<EntityFireSigil>of(EntityFireSigil::new, MobCategory.MISC)
+                        .sized(0.2f, 0.2f)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        FROST_SIGIL = entity(
+                "frost_sigil",
+                EntityType.Builder.<EntityFrostSigil>of(EntityFrostSigil::new, MobCategory.MISC)
+                        .sized(0.2f, 0.2f)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        LIGHTNING_SIGIL = entity(
+                "lightning_sigil",
+                EntityType.Builder.<EntityLightningSigil>of(EntityLightningSigil::new, MobCategory.MISC)
+                        .sized(0.2f, 0.2f)
                         .updateInterval(10)
                         .clientTrackingRange(160)
         );

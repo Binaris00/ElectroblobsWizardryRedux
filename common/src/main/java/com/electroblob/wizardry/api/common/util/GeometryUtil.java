@@ -29,4 +29,8 @@ public final class GeometryUtil {
     public static Vec3 getFaceCentre(BlockPos pos, Direction face) {
         return getCentre(pos).add(new Vec3(face.step()).scale(0.5));
     }
+
+    public static float getPitch(Direction facing) {
+        return facing == Direction.UP ? 90 : facing == Direction.DOWN ? -90 : 0;
+    }
 }

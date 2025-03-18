@@ -3,12 +3,10 @@ package com.electroblob.wizardry.setup.registries.client;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.client.renderer.entity.*;
-import com.electroblob.wizardry.common.content.entity.EntityMeteor;
 import com.electroblob.wizardry.common.content.entity.projectile.*;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.FallingBlockRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -21,7 +19,7 @@ public final class EBRenderers {
     private static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> providers = Maps.newHashMap();
 
     @SuppressWarnings("unchecked")
-    private static <T extends Entity> void register(DeferredObject<EntityType<T>> entityType, EntityRendererProvider<T> provider) {
+    private static <T extends Entity> void register(DeferredObject<EntityType<T>> entityType, EntityRendererProvider provider) {
         providers.put((DeferredObject<EntityType<? extends Entity>>) (Object)entityType, provider);
     }
 
@@ -57,6 +55,29 @@ public final class EBRenderers {
         register(EBEntities.FORCE_ORB, (ctx -> new MagicProjectileRenderer<>(ctx,
                 new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/force_orb.png")))
         );
+
+        register(EBEntities.BLIZZARD, BlankRenderer::new);
+
+        register(EBEntities.FIRE_SIGIL, (ctx ->
+                new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/fire_sigil.png"),
+                        0, true)));
+
+        register(EBEntities.FROST_SIGIL, (ctx ->
+                new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/frost_sigil.png"),
+                        0, true)));
+
+        register(EBEntities.LIGHTNING_SIGIL, (ctx ->
+                new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/lightning_sigil.png"),
+                        0, true)));
+
+        register(EBEntities.HEAL_AURA, (ctx ->
+                new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/healing_aura.png"),
+                        0.3F, true)));
+
+        register(EBEntities.RING_OF_FIRE, (ctx ->
+                new FireRingRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/ring_of_fire.png"))));
+
+        register(EBEntities.ICE_SPICKES, IceSpikeRenderer::new);
     }
 
     public static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> getRenderers() {

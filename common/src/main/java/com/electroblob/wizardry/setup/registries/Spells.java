@@ -3,16 +3,16 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.api.common.spell.NoneSpell;
 import com.electroblob.wizardry.api.common.spell.Spell;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.common.content.entity.construct.*;
 import com.electroblob.wizardry.common.content.entity.projectile.*;
 import com.electroblob.wizardry.common.content.spell.DefaultProperties;
-import com.electroblob.wizardry.common.content.spell.abstr.ArrowSpell;
-import com.electroblob.wizardry.common.content.spell.abstr.BuffSpell;
-import com.electroblob.wizardry.common.content.spell.abstr.ProjectileSpell;
+import com.electroblob.wizardry.common.content.spell.abstr.*;
 import com.electroblob.wizardry.common.content.spell.earth.*;
 import com.electroblob.wizardry.common.content.spell.fire.*;
 import com.electroblob.wizardry.common.content.spell.healing.*;
 import com.electroblob.wizardry.common.content.spell.ice.Freeze;
 import com.electroblob.wizardry.common.content.spell.ice.FrostRay;
+import com.electroblob.wizardry.common.content.spell.ice.IceSpickes;
 import com.electroblob.wizardry.common.content.spell.ice.Permafrost;
 import com.electroblob.wizardry.common.content.spell.lightning.BlindingFlash;
 import com.electroblob.wizardry.common.content.spell.lightning.InvokeWeather;
@@ -103,6 +103,16 @@ public final class Spells {
     public static final Spell PLAGUE_DARKNESS;
     public static final Spell FORCE_ORB;
     public static final Spell FOREST_CURSE;
+    public static final Spell BLIZZARD;
+    public static final Spell CURSE_OF_ENFEEBLEMENT;
+    public static final Spell CURSE_OF_UNDEATH;
+    public static final Spell FIRE_SIGIL;
+    public static final Spell FROST_SIGIL;
+    public static final Spell LIGHTNING_SIGIL;
+    public static final Spell ICE_SPICKES;
+    public static final Spell INVIGORATING_PRESENCE;
+    public static final Spell RING_OF_FIRE;
+    public static final Spell HEALING_AURA;
 
     static {
         Register.init();
@@ -272,7 +282,7 @@ public final class Spells {
                         .build()
         ));
 
-        AGILITY = spell("agility", () -> new BuffSpell( 0.4f, 1.0f, 0.8f, () -> MobEffects.MOVEMENT_SPEED).assignProperties(
+        AGILITY = spell("agility", () -> new BuffSpell(0.4f, 1.0f, 0.8f, () -> MobEffects.MOVEMENT_SPEED).assignProperties(
                 SpellProperties.builder()
                         .build()
         ));
@@ -326,7 +336,7 @@ public final class Spells {
 
         GREATER_HEAL = spell("greater_heal", GreaterHeal::new);
 
-        POCKET_FURNACE  = spell("pocket_furnace", PocketFurnace::new);
+        POCKET_FURNACE = spell("pocket_furnace", PocketFurnace::new);
 
         ENRAGE = spell("enrage", Enrage::new);
 
@@ -375,6 +385,26 @@ public final class Spells {
         PLAGUE_DARKNESS = spell("plague_of_darkness", PlagueOfDarkness::new);
 
         FOREST_CURSE = spell("forest_curse", ForestsCurse::new);
+
+        BLIZZARD = spell("blizzard", () -> new ConstructRangedSpell<>(EntityBlizzard::new, false));
+
+        CURSE_OF_ENFEEBLEMENT = spell("curse_of_enfeeblement", CurseOfEnfeeblement::new);
+
+        CURSE_OF_UNDEATH = spell("curse_of_undeath", CurseOfUndeath::new);
+
+        FIRE_SIGIL = spell("fire_sigil", () -> new ConstructRangedSpell<>(EntityFireSigil::new, true).floor(true));
+
+        FROST_SIGIL = spell("frost_sigil", () -> new ConstructRangedSpell<>(EntityFrostSigil::new, true).floor(true));
+
+        LIGHTNING_SIGIL = spell("lightning_sigil", () -> new ConstructRangedSpell<>(EntityLightningSigil::new, true).floor(true));
+
+        ICE_SPICKES = spell("ice_spickes", IceSpickes::new);
+
+        INVIGORATING_PRESENCE = spell("invigorating_presence", InvigoratingPresence::new);
+
+        RING_OF_FIRE = spell("ring_of_fire", () -> new ConstructSpell<>(EntityFireRing::new, false).floor(true));
+
+        HEALING_AURA = spell("healing_aura", () -> new ConstructSpell<>(EntityHealAura::new, false).floor(true));
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {

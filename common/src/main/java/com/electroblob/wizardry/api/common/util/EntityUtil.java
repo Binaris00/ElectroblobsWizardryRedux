@@ -138,6 +138,24 @@ public final class EntityUtil {
         }
     }
 
+
+    public static List<LivingEntity> getLivingWithinCylinder(double radius, double x, double y, double z, double height, Level world) {
+        return getEntitiesWithinCylinder(radius, x, y, z, height, world, LivingEntity.class);
+    }
+
+    public static <T extends Entity> List<T> getEntitiesWithinCylinder(double radius, double x, double y, double z, double height, Level world, Class<T> entityType) {
+        AABB aabb = new AABB(x - radius, y, z - radius, x + radius, y + height, z + radius);
+        List<T> entityList = world.getEntitiesOfClass(entityType, aabb);
+        for(T entity : entityList) {
+            if (entity.distanceToSqr(x, entity.yo, z) > radius) {
+                entityList.remove(entity);
+                break;
+            }
+        }
+        return entityList;
+    }
+
+
     public static boolean canDamageBlocks(@Nullable Entity entity, Level world) {
 //        if (entity == null) return WizardryConfig.dispenserBlockDamage;
 //        else if (entity instanceof PlayerEntity) return ((PlayerEntity) entity).canModifyBlocks() && WizardryConfig.playerBlockDamage;
