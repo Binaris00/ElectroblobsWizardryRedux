@@ -47,6 +47,12 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<EntityIceSpike>> ICE_SPICKES;
     public static final DeferredObject<EntityType<EntityFireRing>> RING_OF_FIRE;
     public static final DeferredObject<EntityType<EntityHealAura>> HEAL_AURA;
+    public static final DeferredObject<EntityType<EntityTornado>> TORNADO;
+    public static final DeferredObject<EntityType<IceBarrierConstruct>> ICE_BARRIER;
+    public static final DeferredObject<EntityType<CombustionRuneConstruct>> COMBUSTION_RUNE;
+    public static final DeferredObject<EntityType<BubbleConstruct>> BUBBLE;
+    public static final DeferredObject<EntityType<HailstormConstruct>> HAILSTORM;
+    public static final DeferredObject<EntityType<DecayConstruct>> DECAY;
 
     static {
         DART = entity(
@@ -74,10 +80,58 @@ public final class EBEntities {
                         .clientTrackingRange(160)
         );
 
+        TORNADO = entity(
+                "tornado",
+                EntityType.Builder.<EntityTornado>of(EntityTornado::new, MobCategory.MISC)
+                        .sized(8, 8)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        BUBBLE = entity(
+                "bubble",
+                EntityType.Builder.<BubbleConstruct>of(BubbleConstruct::new, MobCategory.MISC)
+                        .sized(0.6f, 1.8f)
+                        .updateInterval(3)
+                        .clientTrackingRange(160)
+        );
+
         BLIZZARD = entity(
                 "blizzard",
                 EntityType.Builder.<EntityBlizzard>of(EntityBlizzard::new, MobCategory.MISC)
                         .sized(3, 3)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        HAILSTORM = entity(
+                "hailstorm",
+                EntityType.Builder.<HailstormConstruct>of(HailstormConstruct::new, MobCategory.MISC)
+                        .sized(5, 5)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        DECAY = entity(
+                "decay",
+                EntityType.Builder.<DecayConstruct>of(DecayConstruct::new, MobCategory.MISC)
+                        .sized(2f, 0.2f)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        ICE_BARRIER = entity(
+                "ice_barrier",
+                EntityType.Builder.<IceBarrierConstruct>of(IceBarrierConstruct::new, MobCategory.MISC)
+                        .sized(3, 3)
+                        .updateInterval(10)
+                        .clientTrackingRange(160)
+        );
+
+        COMBUSTION_RUNE = entity(
+                "combustion_rune",
+                EntityType.Builder.<CombustionRuneConstruct>of(CombustionRuneConstruct::new, MobCategory.MISC)
+                        .sized(2, 0.2F)
                         .updateInterval(10)
                         .clientTrackingRange(160)
         );

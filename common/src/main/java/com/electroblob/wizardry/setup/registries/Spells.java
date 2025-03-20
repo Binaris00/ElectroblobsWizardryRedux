@@ -10,10 +10,7 @@ import com.electroblob.wizardry.common.content.spell.abstr.*;
 import com.electroblob.wizardry.common.content.spell.earth.*;
 import com.electroblob.wizardry.common.content.spell.fire.*;
 import com.electroblob.wizardry.common.content.spell.healing.*;
-import com.electroblob.wizardry.common.content.spell.ice.Freeze;
-import com.electroblob.wizardry.common.content.spell.ice.FrostRay;
-import com.electroblob.wizardry.common.content.spell.ice.IceSpickes;
-import com.electroblob.wizardry.common.content.spell.ice.Permafrost;
+import com.electroblob.wizardry.common.content.spell.ice.*;
 import com.electroblob.wizardry.common.content.spell.lightning.BlindingFlash;
 import com.electroblob.wizardry.common.content.spell.lightning.InvokeWeather;
 import com.electroblob.wizardry.common.content.spell.lightning.ZapSpell;
@@ -113,6 +110,12 @@ public final class Spells {
     public static final Spell INVIGORATING_PRESENCE;
     public static final Spell RING_OF_FIRE;
     public static final Spell HEALING_AURA;
+    //public static final Spell FROST_BARRIER;
+    public static final Spell COMBUSTION_RUNE;
+    public static final Spell BUBBLE;
+    public static final Spell ENTRAPMENT;
+    public static final Spell HAILSTORM;
+    public static final Spell DECAY;
 
     static {
         Register.init();
@@ -405,6 +408,18 @@ public final class Spells {
         RING_OF_FIRE = spell("ring_of_fire", () -> new ConstructSpell<>(EntityFireRing::new, false).floor(true));
 
         HEALING_AURA = spell("healing_aura", () -> new ConstructSpell<>(EntityHealAura::new, false).floor(true));
+
+        //FROST_BARRIER = spell("frost_barrier", FrostBarrier::new);
+
+        COMBUSTION_RUNE = spell("combustion_rune", () -> new ConstructRangedSpell<>(CombustionRuneConstruct::new, true).floor(true));
+
+        BUBBLE = spell("bubble", Bubble::new);
+
+        ENTRAPMENT = spell("entrapment", Entrapment::new);
+
+        HAILSTORM = spell("hailstorm", Hailstorm::new);
+
+        DECAY = spell("decay", Decay::new);
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {

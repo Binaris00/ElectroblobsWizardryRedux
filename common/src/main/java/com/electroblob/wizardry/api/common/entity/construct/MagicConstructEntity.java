@@ -113,7 +113,7 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
     }
 
     public boolean isValidTarget(Entity target) {
-        return true;
+        return target != getCaster();
 
         // TODO: AllyDesignationSystem
         //return AllyDesignationSystem.isValidTarget(this.getCaster(), target);

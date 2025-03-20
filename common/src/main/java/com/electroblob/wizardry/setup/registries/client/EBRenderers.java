@@ -78,6 +78,19 @@ public final class EBRenderers {
                 new FireRingRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/ring_of_fire.png"))));
 
         register(EBEntities.ICE_SPICKES, IceSpikeRenderer::new);
+
+        register(EBEntities.TORNADO, BlankRenderer::new);
+
+        register(EBEntities.COMBUSTION_RUNE, (ctx) ->
+        {
+            return new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/combustion_rune.png"), 0, true);
+        });
+
+        register(EBEntities.BUBBLE, BubbleRenderer::new);
+
+        register(EBEntities.HAILSTORM, BlankRenderer::new);
+
+        register(EBEntities.DECAY, DecayRenderer::new);
     }
 
     public static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> getRenderers() {

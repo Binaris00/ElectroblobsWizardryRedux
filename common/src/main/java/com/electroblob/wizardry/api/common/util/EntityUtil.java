@@ -64,6 +64,7 @@ public final class EntityUtil {
         return entityList;
     }
 
+    //@Deprecated(forRemoval = true, since = "1.20.1")
     public static boolean isLiving(Entity entity){
         return entity instanceof LivingEntity && !(entity instanceof ArmorStand);
     }
@@ -73,6 +74,11 @@ public final class EntityUtil {
         boolean succeeded = entity.hurt(source, amount);
         entity.setDeltaMovement(originalVec);
         return succeeded;
+    }
+
+    @Nullable
+    public static Entity getRider(Entity entity) {
+        return !entity.getPassengers().isEmpty() ? entity.getPassengers().get(0) : null;
     }
 
     /**

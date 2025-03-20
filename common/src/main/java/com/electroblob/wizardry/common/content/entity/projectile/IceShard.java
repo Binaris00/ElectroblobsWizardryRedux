@@ -1,10 +1,10 @@
 package com.electroblob.wizardry.common.content.entity.projectile;
 
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import com.electroblob.wizardry.setup.registries.client.EBSounds;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -26,8 +26,7 @@ public class IceShard extends MagicArrowEntity {
     }
 
     public IceShard(Level world) {
-        //super(EBEntities.ICE_SHARD.get(), world);
-        super(null, world);
+        super(EBEntities.ICE_SHARD.get(), world);
     }
 
     @Override
@@ -47,7 +46,7 @@ public class IceShard extends MagicArrowEntity {
 
     @Override
     public ResourceLocation getTexture() {
-        return new ResourceLocation("ebwizardry", "textures/entity/ice_shard.png");
+        return new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/ice_shard.png");
     }
 
     @Override
@@ -58,23 +57,25 @@ public class IceShard extends MagicArrowEntity {
                     0, false, false));
         }
 
+        // TODO ENTITY SOUND
         //this.playSound(EBSounds.ENTITY_ICE_SHARD_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
         super.onHitEntity(entityHitResult);
     }
 
     @Override
-    protected void onHitBlock(BlockHitResult blockHitResult) {
-//        if (this.level().isClientSide()) {
-//            Vec3 pos = blockHitResult.getLocation();
-//            ParticleBuilder.create(EBParticles.FLASH).pos(pos).color(0.75f, 1.0f, 1.0f).spawn(level());
-//
-//            for (int i = 0; i < 8; i++) {
-//                ParticleBuilder.create(EBParticles.ICE, new Random(), this.getX(), this.getY(), this.getZ(), 0.5, true)
-//                        .time(20 + this.random.nextInt(10)).gravity(true).spawn(this.level());
-//            }
-//        }
-//
-//        this.playSound(EBSounds.ENTITY_ICE_SHARD_SMASH.get(), 1.0F, random.nextFloat() * 0.4F + 1.2F);
+    protected void onHitBlock(@NotNull BlockHitResult blockHitResult) {
+        if (this.level().isClientSide()) {
+            Vec3 pos = blockHitResult.getLocation();
+            ParticleBuilder.create(EBParticles.FLASH).pos(pos).color(0.75f, 1.0f, 1.0f).spawn(level());
+
+            for (int i = 0; i < 8; i++) {
+                ParticleBuilder.create(EBParticles.ICE, this.random, this.getX(), this.getY(), this.getZ(), 0.5, true)
+                        .time(20 + this.random.nextInt(10)).gravity(true).spawn(this.level());
+            }
+        }
+
+        // TODO ENTITY SOUND
+        //this.playSound(EBSounds.ENTITY_ICE_SHARD_SMASH.get(), 1.0F, random.nextFloat() * 0.4F + 1.2F);
         super.onHitBlock(blockHitResult);
     }
 

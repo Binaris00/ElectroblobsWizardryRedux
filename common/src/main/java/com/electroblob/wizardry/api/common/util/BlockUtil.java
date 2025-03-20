@@ -8,6 +8,7 @@ import net.minecraft.tags.BlockTags;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -15,6 +16,8 @@ import net.minecraft.world.level.block.CactusBlock;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.HitResult;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -54,6 +57,32 @@ public final class BlockUtil {
         if (world.isOutsideBuildHeight(pos)) return false;
 
         return !(placer instanceof Player) || world.mayInteract((Player) placer, pos);
+    }
+
+    @Nullable
+    public static BlockPos findNearbyFloorSpace(Level world, BlockPos origin, int horizontalRange, int verticalRange, boolean lineOfSight) {
+        List<BlockPos> possibleLocations = new ArrayList<>();
+        final Vec3 centre = GeometryUtil.getCentre(origin);
+
+        for (int x = -horizontalRange; x <= horizontalRange; x++) {
+            for (int z = -horizontalRange; z <= horizontalRange; z++) {
+                Integer y = getNearestFloor(world, origin.offset(x, 0, z), verticalRange);
+                if (y != null) {
+                    BlockPos location = new BlockPos(origin.getX() + x, y, origin.getZ() + z);
+                    if (lineOfSight) {
+                        HitResult rayTrace = world.clip(new ClipContext(centre, GeometryUtil.getCentre(location), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, null));
+                        if (rayTrace.getType() == HitResult.Type.BLOCK) continue;
+                    }
+                    possibleLocations.add(location);
+                }
+            }
+        }
+
+        if (possibleLocations.isEmpty()) {
+            return null;
+        } else {
+            return possibleLocations.get(world.random.nextInt(possibleLocations.size()));
+        }
     }
 
     public static boolean isBlockUnbreakable(Level world, BlockPos pos){

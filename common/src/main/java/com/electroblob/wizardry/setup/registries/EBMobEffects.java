@@ -15,6 +15,8 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class EBMobEffects {
+    static Map<String, DeferredObject<MobEffect>> mobEffects = new HashMap<>();
+
     public static final DeferredObject<MobEffect> FROST;
     public static final DeferredObject<MobEffect> STATIC_AURA;
     public static final DeferredObject<MobEffect> WARD;
@@ -22,8 +24,7 @@ public class EBMobEffects {
     public static final DeferredObject<MobEffect> OAKFLESH;
     public static final DeferredObject<MobEffect> CURSE_OF_ENFEEBLEMENT;
     public static final DeferredObject<MobEffect> CURSE_OF_UNDEATH;
-
-    static Map<String, DeferredObject<MobEffect>> mobEffects = new HashMap<>();
+    public static final DeferredObject<MobEffect> DECAY;
 
     static void handleRegistration(Consumer<Map<String, DeferredObject<MobEffect>>> handler) {
         handler.accept(mobEffects);
@@ -49,6 +50,8 @@ public class EBMobEffects {
 
         CURSE_OF_ENFEEBLEMENT = registerEffect("curse_of_enfeeblement", EnfeeblementCurse::new);
         CURSE_OF_UNDEATH = registerEffect("curse_of_undeath", UndeathCurse::new);
+
+        DECAY = registerEffect("decay", DecayMobEffect::new);
     }
 
     private static DeferredObject<MobEffect> registerEffect(String name, Supplier<MobEffect> effect) {
