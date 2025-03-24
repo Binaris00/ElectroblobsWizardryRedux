@@ -19,8 +19,7 @@ public class GroupHeal extends AreaEffectSpell {
             Heal.heal(target, 6);
 
             if(world.isClientSide) ParticleBuilder.spawnHealParticles(world, target);
-            // TODO Bin: Spell sound
-            //playSound(world, target, ticksInUse, -1, modifiers);
+            playSound(caster.level(), target, 0, -1);
             return true;
         }
 

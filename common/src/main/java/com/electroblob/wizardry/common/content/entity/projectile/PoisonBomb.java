@@ -5,8 +5,8 @@ import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import com.electroblob.wizardry.setup.registries.client.EBSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -21,7 +21,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 
 import java.util.List;
-import java.util.Random;
 
 public class PoisonBomb extends BombEntity {
     public PoisonBomb(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
@@ -29,19 +28,16 @@ public class PoisonBomb extends BombEntity {
     }
 
     public PoisonBomb(LivingEntity livingEntity, Level world) {
-        //super(EBEntities.POISON_BOMB.get(), livingEntity, world);
-        super(null, livingEntity, world);
+        super(EBEntities.POISON_BOMB.get(), livingEntity, world);
     }
 
     public PoisonBomb(Level world) {
-        //super(EBEntities.POISON_BOMB.get(), world);
-        super(null, world);
+        super(EBEntities.POISON_BOMB.get(), world);
     }
 
     @Override
     protected Item getDefaultItem() {
-        return null;
-        //return EBItems.POISON_BOMB.get();
+        return EBItems.POISON_BOMB.get();
     }
 
     @Override
@@ -64,8 +60,8 @@ public class PoisonBomb extends BombEntity {
         }
 
         if (!this.level().isClientSide()) {
-            //this.playSound(EBSounds.ENTITY_POISON_BOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
-            //this.playSound(EBSounds.ENTITY_POISON_BOMB_POISON.get(), 1.2F, 1.0F);
+            this.playSound(EBSounds.ENTITY_POISON_BOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
+            this.playSound(EBSounds.ENTITY_POISON_BOMB_POISON.get(), 1.2F, 1.0F);
 
             this.level().broadcastEntityEvent(this, (byte) 3);
             this.discard();
@@ -76,11 +72,11 @@ public class PoisonBomb extends BombEntity {
     public void handleEntityEvent(byte status) {
         if (status == 3) {
             for (int i = 0; i < 60 * blastMultiplier; i++) {
-//                ParticleBuilder.create(EBParticles.SPARKLE, new Random(), this.xo, this.yo, this.zo, 2 * blastMultiplier).scale(2)
-//                        .color(0.2f + random.nextFloat() * 0.3f, 0.6f, 0.0f).time(35).spawn(this.level());
-//
-//                ParticleBuilder.create(EBParticles.DARK_MAGIC, new Random(), this.xo, this.yo, this.zo, 2 * blastMultiplier, false)
-//                        .color(0.2f + random.nextFloat() * 0.2f, 0.8f, 0.0f).spawn(this.level());
+                ParticleBuilder.create(EBParticles.SPARKLE, level().getRandom(), this.xo, this.yo, this.zo, 2 * blastMultiplier).scale(2)
+                        .color(0.2f + random.nextFloat() * 0.3f, 0.6f, 0.0f).time(35).spawn(this.level());
+
+                ParticleBuilder.create(EBParticles.DARK_MAGIC, level().getRandom(), this.xo, this.yo, this.zo, 2 * blastMultiplier, false)
+                        .color(0.2f + random.nextFloat() * 0.2f, 0.8f, 0.0f).spawn(this.level());
             }
             this.level().addParticle(ParticleTypes.EXPLOSION, this.xo, this.yo, this.zo, 0, 0, 0);
         }

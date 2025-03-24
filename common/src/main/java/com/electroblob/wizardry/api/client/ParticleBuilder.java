@@ -119,7 +119,7 @@ public final class ParticleBuilder {
      * @param z The z position
      * @param radius The radius
      * */
-    public static ParticleBuilder create(DeferredObject<SimpleParticleType> type, Random random, double x, double y, double z, double radius){
+    public static ParticleBuilder create(DeferredObject<SimpleParticleType> type, RandomSource random, double x, double y, double z, double radius){
         double px = x + (random.nextDouble()*2 - 1) * radius;
         double py = y + (random.nextDouble()*2 - 1) * radius;
         double pz = z + (random.nextDouble()*2 - 1) * radius;

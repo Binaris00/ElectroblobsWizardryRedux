@@ -21,8 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public class Freeze extends RaySpell {
 
     public Freeze() {
-        // Todo: freeze sound
-        //this.soundValues(1, 1.4f, 0.4f);
+        this.soundValues(1, 1.4f, 0.4f);
         this.hitLiquids(true);
         this.ignoreUncollidables(false);
     }
@@ -49,7 +48,7 @@ public class Freeze extends RaySpell {
             }
 
             if(target instanceof LivingEntity livingEntity){
-                //livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 1));
+                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 1));
             }
 
             if (target.isOnFire()) target.clearFire();
@@ -63,9 +62,9 @@ public class Freeze extends RaySpell {
     @Override
     protected void spawnParticle(Level world, double x, double y, double z, double vx, double vy, double vz) {
         float brightness = 0.5f + (world.random.nextFloat() / 2);
-//        ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).time(12 + world.random.nextInt(8))
-//                .color(brightness, brightness + 0.1f, 1).spawn(world);
-//        ParticleBuilder.create(EBParticles.SNOW).pos(x, y, z).spawn(world);
+        ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).time(12 + world.random.nextInt(8))
+                .color(brightness, brightness + 0.1f, 1).spawn(world);
+        ParticleBuilder.create(EBParticles.SNOW).pos(x, y, z).spawn(world);
     }
 
     @Override

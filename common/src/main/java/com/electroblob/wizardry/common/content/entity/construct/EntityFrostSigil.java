@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -55,8 +56,7 @@ public class EntityFrostSigil extends ScaledConstructEntity {
                     //if (!MagicDamage.isEntityImmune(DamageType.FROST, target))
                     target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 1));
 
-                    // TODO ENTITY SOUND
-                    //this.playSound(WizardrySounds.ENTITY_FROST_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
+                    this.playSound(EBSounds.ENTITY_FROST_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
                     this.discard();
                 }
             }

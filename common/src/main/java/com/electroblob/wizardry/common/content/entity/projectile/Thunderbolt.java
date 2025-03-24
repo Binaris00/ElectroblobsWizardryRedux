@@ -3,8 +3,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import com.electroblob.wizardry.setup.registries.client.EBSounds;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -17,12 +17,9 @@ import net.minecraft.world.phys.HitResult;
 import net.minecraft.core.particles.ParticleTypes;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Random;
-
 public class Thunderbolt extends MagicProjectileEntity {
     public Thunderbolt(Level world) {
-        super(null, world);
-        //super(EBEntities.THUNDERBOLT.get(), world);
+        super(EBEntities.THUNDERBOLT.get(), world);
     }
 
     public Thunderbolt(EntityType<Thunderbolt> entityThunderboltEntityType, Level world) {
@@ -53,7 +50,7 @@ public class Thunderbolt extends MagicProjectileEntity {
             }
         }
 
-        //this.playSound(EBSounds.ENTITY_THUNDERBOLT_HIT.get(), 1.4F, 0.5F + this.random.nextFloat() * 0.1F);
+        this.playSound(EBSounds.ENTITY_THUNDERBOLT_HIT.get(), 1.4F, 0.5F + this.random.nextFloat() * 0.1F);
 
         if (!this.level().isClientSide()) {
             this.level().broadcastEntityEvent(this, (byte) 2);
@@ -79,7 +76,7 @@ public class Thunderbolt extends MagicProjectileEntity {
         }
 
         if (status == 3) {
-            //ParticleBuilder.create(EBParticles.SPARK, new Random(), this.xo, this.yo + this.getBbHeight() / 2, this.zo, 0.1, false).spawn(this.level());
+            ParticleBuilder.create(EBParticles.SPARK, level().getRandom(), this.xo, this.yo + this.getBbHeight() / 2, this.zo, 0.1, false).spawn(this.level());
             for (int i = 0; i < 4; i++) {
                 this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.xo + random.nextFloat() * 0.2 - 0.1,
                         this.yo + this.getBbHeight() / 2 + random.nextFloat() * 0.2 - 0.1,

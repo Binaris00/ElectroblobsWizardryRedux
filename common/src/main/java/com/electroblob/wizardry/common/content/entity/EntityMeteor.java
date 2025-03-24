@@ -58,7 +58,7 @@ public class EntityMeteor extends FallingBlockEntity {
 	public void tick() {
 
 		if(this.tickCount % 16 == 1 && level().isClientSide){
-			// TODO ENTITY SOUND METEOR
+			// TODO ENTITY MOVING SOUND
 			//Wizardry.proxy.playMovingSound(this, WizardrySounds.ENTITY_METEOR_FALLING.get(), SoundSource.PLAYERS, 3.0f, 1.0f, false);
 		}
 

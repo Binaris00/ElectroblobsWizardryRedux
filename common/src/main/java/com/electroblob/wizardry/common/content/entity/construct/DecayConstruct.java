@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -32,8 +33,7 @@ public class DecayConstruct extends ScaledConstructEntity {
         super.tick();
 
         if (this.random.nextInt(700) == 0 && this.tickCount + 100 < lifetime) {
-            // TODO ENTITY SOUND
-            //this.playSound(WizardrySounds.ENTITY_DECAY_AMBIENT.get(), 0.2F + random.nextFloat() * 0.2F, 0.6F + random.nextFloat() * 0.15F);
+            this.playSound(EBSounds.ENTITY_DECAY_AMBIENT.get(), 0.2F + random.nextFloat() * 0.2F, 0.6F + random.nextFloat() * 0.15F);
         }
         if (!this.level().isClientSide) {
             List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(1.0d, this.getX(), this.getY(), this.getZ(), this.level());

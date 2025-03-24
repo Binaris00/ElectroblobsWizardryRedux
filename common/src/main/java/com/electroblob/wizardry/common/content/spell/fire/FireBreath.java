@@ -22,9 +22,10 @@ public class FireBreath extends RaySpell {
         this.particleVelocity(1);
         this.particleJitter(0.3);
         this.particleSpacing(0.25);
-        // TODO Bin: Fire breath sound
-        //this.soundValues(3f, 1, 0);
+        this.soundValues(3f, 1, 0);
     }
+
+    // TODO SOUND LOOP
 
 //    @Override
 //    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration, SpellModifiers modifiers, String... sounds) {

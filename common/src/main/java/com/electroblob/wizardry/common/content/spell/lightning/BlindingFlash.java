@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.lightning;
 
+import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -27,7 +29,6 @@ public class BlindingFlash extends AreaEffectSpell {
     @Override
     protected void spawnParticleEffect(Level world, Vec3 origin, double radius, @Nullable LivingEntity caster) {
         if (caster != null) origin = origin.add(0, caster.getBbHeight() + 1, 0);
-        // TODO Bin: Particle sphere crash?
-        //ParticleBuilder.create(EBParticles.SPHERE).pos(origin).scale((float) radius * 0.8f).spawn(world);
+        ParticleBuilder.create(EBParticles.SPHERE).pos(origin).scale((float) radius * 0.8f).spawn(world);
     }
 }

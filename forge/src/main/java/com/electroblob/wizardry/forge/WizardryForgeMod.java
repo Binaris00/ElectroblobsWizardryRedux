@@ -27,6 +27,9 @@ public final class WizardryForgeMod {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
         SpellRegistryForge.initialize(modBus);
+
+        SoundRegistryForge.register();
+
         //Blocks need to be registered before items so the block items are getting added to item registry
         BlockRegistryForge.BLOCKS.register(modBus);
         BlockRegistryForge.register();

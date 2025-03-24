@@ -8,7 +8,6 @@ import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntit
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
@@ -41,8 +40,8 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
 
         if (player.onGround() || !requiresFloor) {
             spawnConstruct(player.level(), player.getX(), player.getY(), player.getZ(), player.onGround() ? Direction.UP : null, player);
-            // TODO SPELL SOUND
-            //this.playSound(world, caster, ticksInUse, -1, modifiers);
+            // TODO spell sound ticks in use
+            this.playSound(caster.getCastLevel(), player, 0, -1);
         }
     }
 

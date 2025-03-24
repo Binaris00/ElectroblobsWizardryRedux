@@ -1,7 +1,10 @@
 package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -17,8 +20,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Dart extends MagicArrowEntity {
     public Dart(Level world) {
-        super(null, world);
-        //super(EBEntities.DART.get(), world);
+        super(EBEntities.DART.get(), world);
     }
 
     public Dart(EntityType<Dart> entityDartEntityType, Level world) {
@@ -65,7 +67,7 @@ public class Dart extends MagicArrowEntity {
     @Override
     public void ticksInAir() {
         if(this.level().isClientSide()){
-            //ParticleBuilder.create(EBParticles.LEAF, this).time(10 + random.nextInt(5)).spawn(level());
+            ParticleBuilder.create(EBParticles.LEAF, this).time(10 + random.nextInt(5)).spawn(level());
         }
     }
 

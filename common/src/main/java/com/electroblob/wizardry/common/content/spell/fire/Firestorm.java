@@ -18,8 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Firestorm extends AreaEffectSpell {
     public Firestorm(){
-        // TODO Bin: Spell sound
-        //this.soundValues(2f, 1.0f, 0);
+        this.soundValues(2f, 1.0f, 0);
         this.alwaysSucceed(true);
     }
 

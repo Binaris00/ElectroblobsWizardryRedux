@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityDimensions;
@@ -38,8 +39,7 @@ public class EntityBlizzard extends ScaledConstructEntity {
     @Override
     public void tick() {
         if (this.tickCount % 120 == 1) {
-            // TODO ENTITY SOUND
-            //this.playSound(WizardrySounds.ENTITY_BLIZZARD_AMBIENT.get(), 1.0f, 1.0f);
+            this.playSound(EBSounds.ENTITY_BLIZZARD_AMBIENT.get(), 1.0f, 1.0f);
         }
 
         super.tick();

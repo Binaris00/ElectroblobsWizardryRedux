@@ -10,8 +10,8 @@ import net.minecraft.world.entity.player.Player;
 public class Levitation extends Spell {
     public Levitation(){
 
-        // TODO BIN SPELL SOUNDING
-        //soundValues(0.5f, 1, 0);
+        // TODO BIN Sound loop
+        soundValues(0.5f, 1, 0);
     }
 //
 //    @Override

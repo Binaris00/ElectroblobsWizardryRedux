@@ -18,14 +18,8 @@ import org.jetbrains.annotations.Nullable;
 public class Bubble extends RaySpell {
 
     public Bubble(){
-        // TODO BIN SPELL SOUND
-        //this.soundValues(0.5f, 1.1f, 0.2f);
+        this.soundValues(0.5f, 1.1f, 0.2f);
     }
-
-//    @Override
-//    protected SoundEvent[] createSounds() {
-//        return this.createSoundsWithSuffixes("shoot", "splash");
-//    }
 
     @Override
     protected boolean onMiss(Level world, @Nullable LivingEntity caster, Vec3 origin, Vec3 direction, int ticksInUse) {

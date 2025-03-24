@@ -58,10 +58,8 @@ public class MagicFireball extends MagicProjectileEntity {
         if (!this.level().isClientSide) {
             if (hitResult instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
-                if (entity != null) {
-                    entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), (float) getDamage());
-                    entity.setSecondsOnFire(getBurnDuration());
-                }
+                entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), (float) getDamage());
+                entity.setSecondsOnFire(getBurnDuration());
             } else if (hitResult instanceof BlockHitResult blockHitResult) {
                 BlockPos pos = blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
                 this.level().setBlock(pos, Blocks.FIRE.defaultBlockState(), 3);

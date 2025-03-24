@@ -12,8 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class InvigoratingPresence extends AreaEffectSpell {
     public InvigoratingPresence(){
-        // TODO SPELL SOUND
-        //this.soundValues(0.7f, 1.2f, 0.4f);
+        this.soundValues(0.7f, 1.2f, 0.4f);
         this.alwaysSucceed(true);
         this.targetAllies(true);
     }

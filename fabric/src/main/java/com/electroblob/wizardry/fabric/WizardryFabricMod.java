@@ -17,5 +17,7 @@ public final class WizardryFabricMod implements ModInitializer {
         SpellRegistryFabric.register();
         CreativeTabRegistryFabric.register();
         MobEffectRegistryFabric.register();
+
+        SoundRegistryFabric.register();
     }
 }

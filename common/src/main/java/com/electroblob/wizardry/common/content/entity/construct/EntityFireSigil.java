@@ -3,6 +3,7 @@ package com.electroblob.wizardry.common.content.entity.construct;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
@@ -56,8 +57,7 @@ public class EntityFireSigil extends ScaledConstructEntity {
 //                    if (!MagicDamage.isEntityImmune(DamageType.FIRE, target))
                     target.setSecondsOnFire(10);
 
-                    // TODO ENTITY MAGIC
-                    //this.playSound(WizardrySounds.ENTITY_FIRE_SIGIL_TRIGGER.get(), 1, 1);
+                    this.playSound(EBSounds.ENTITY_FIRE_SIGIL_TRIGGER.get(), 1, 1);
 
                     this.discard();
                 }

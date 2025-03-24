@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.common.util.GeometryUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.Direction;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -57,8 +58,7 @@ public class EntityIceSpike extends ScaledConstructEntity {
             }
         }
 
-        // TODO ENTITY SOUND
-        //if (lifetime - this.tickCount == 30) this.playSound(WizardrySounds.ENTITY_ICE_SPIKE_EXTEND.get(), 1, 2.5f);
+        if (lifetime - this.tickCount == 30) this.playSound(EBSounds.ENTITY_ICE_SPIKE_EXTEND.get(), 1, 2.5f);
 
         if (!this.level().isClientSide) {
             for (Object entity : this.level().getEntities(this, this.getBoundingBox())) {

@@ -87,14 +87,12 @@ public class PhaseStep extends Spell {
 
         if(destination != null){
             EBLogger.info(Component.literal("Destination: " + destination));
-            // TODO SPELL SOUND
-            //this.playSound(world, caster, ticksInUse, -1, modifiers);
+            this.playSound(world, caster, 0, -1);
 
             if(!teleportMount && caster.getVehicle() != null) caster.stopRiding();
             if(!world.isClientSide) toTeleport.setPos(destination.x, destination.y, destination.z);
 
-            // TODO SPELL SOUND
-            //this.playSound(world, caster, ticksInUse, -1, modifiers);
+            this.playSound(world, caster, 0, -1);
             return true;
         }
 

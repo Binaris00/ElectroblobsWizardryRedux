@@ -15,8 +15,7 @@ public class ForestsCurse extends AreaEffectSpell {
 
     public ForestsCurse(){
         this.alwaysSucceed(true);
-        // TODO BIN SPELL SOUND
-        //this.soundValues(1, 1.1f, 0.2f);
+        this.soundValues(1, 1.1f, 0.2f);
     }
 
     @Override

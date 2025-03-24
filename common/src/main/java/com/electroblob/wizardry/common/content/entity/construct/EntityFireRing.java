@@ -3,6 +3,7 @@ package com.electroblob.wizardry.common.content.entity.construct;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -35,8 +36,7 @@ public class EntityFireRing extends ScaledConstructEntity {
     @Override
     public void tick() {
         if (this.tickCount % 40 == 1) {
-            // TODO ENTITY SOUND
-            //this.playSound(WizardrySounds.ENTITY_FIRE_RING_AMBIENT.get(), 4.0f, 0.7f);
+            this.playSound(EBSounds.ENTITY_FIRE_RING_AMBIENT.get(), 4.0f, 0.7f);
         }
 
         super.tick();

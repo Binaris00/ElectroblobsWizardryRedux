@@ -2,6 +2,7 @@ package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.api.common.spell.Spell;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -30,6 +31,10 @@ public final class EBRegister {
 
     public static void registerBlocks(Consumer<Set<Map.Entry<String, DeferredObject<Block>>>> handler) {
         EBBlocks.handleRegistration(handler);
+    }
+
+    public static void registerSounds(Consumer<Set<Map.Entry<String, DeferredObject<SoundEvent>>>> handler) {
+        EBSounds.handleRegistration(handler);
     }
 
     public static void registerEntityTypes(Consumer<Map<String, DeferredObject<EntityType<? extends Entity>>>> handler) {

@@ -13,6 +13,11 @@ public final class EBLogger {
     public static void info(Component component) {
         if(!load().disabled) load().logger.info(component.getString());
     }
+
+    public static void info(String info){
+        info(Component.literal(info));
+    }
+
     /**
      * Sends an error in the format "EBWizardry Error: "
      */

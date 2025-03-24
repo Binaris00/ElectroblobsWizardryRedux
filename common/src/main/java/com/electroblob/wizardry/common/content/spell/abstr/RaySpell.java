@@ -75,10 +75,11 @@ public abstract class RaySpell extends Spell {
             origin = origin.add(look.scale(1.2));
         }
         // TODO: ticksInUse
-        if (!shootSpell(player.level(), origin, look, player, 0)) return;
+        if (!shootSpell(player.level(), origin, look, player, 0)) {
+            this.playSound(caster.getCastLevel(), player, 0, -1);
+        }
 
         //if (casterSwingsArm()) caster.swingHand(hand);
-        //this.playSound(world, caster, ticksInUse, -1, modifiers);
         //return true;
     }
 

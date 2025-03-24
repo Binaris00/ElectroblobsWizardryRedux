@@ -6,8 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 public class GreaterHeal extends BuffSpell {
     public GreaterHeal() {
         super(1, 1, 0.3f);
-        // TODO Bin: sound
-        //this.soundValues(0.7f, 1.2f, 0.4f);
+        this.soundValues(0.7f, 1.2f, 0.4f);
     }
 
     @Override

@@ -5,8 +5,8 @@ import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import com.electroblob.wizardry.setup.registries.client.EBSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +20,6 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 public class SmokeBomb extends BombEntity {
 
@@ -29,19 +28,16 @@ public class SmokeBomb extends BombEntity {
     }
 
     public SmokeBomb(LivingEntity livingEntity, Level world) {
-        super(null, livingEntity, world);
-        //super(EBEntities.SMOKE_BOMB.get(), livingEntity, world);
+        super(EBEntities.SMOKE_BOMB.get(), livingEntity, world);
     }
 
     public SmokeBomb(Level world) {
-        super(null, world);
-        //super(EBEntities.SMOKE_BOMB.get(), world);
+        super(EBEntities.SMOKE_BOMB.get(), world);
     }
 
     @Override
     protected @NotNull Item getDefaultItem() {
-        return null;
-        //return EBItems.SMOKE_BOMB.get();
+        return EBItems.SMOKE_BOMB.get();
     }
 
     @Override
@@ -65,8 +61,8 @@ public class SmokeBomb extends BombEntity {
         // Handle block hit result
         if (hitResult instanceof BlockHitResult) {
             if (!this.level().isClientSide()) {
-                //this.playSound(EBSounds.ENTITY_SMOKE_BOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
-                //this.playSound(EBSounds.ENTITY_SMOKE_BOMB_SMOKE.get(), 1.2F, 1.0F);
+                this.playSound(EBSounds.ENTITY_SMOKE_BOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
+                this.playSound(EBSounds.ENTITY_SMOKE_BOMB_SMOKE.get(), 1.2F, 1.0F);
 
                 // Particle effect
                 this.level().broadcastEntityEvent(this, (byte) 3);
@@ -84,12 +80,12 @@ public class SmokeBomb extends BombEntity {
 
             for (int i = 0; i < 60 * blastMultiplier; i++) {
                 float brightness = random.nextFloat() * 0.1f + 0.1f;
-//                ParticleBuilder.create(EBParticles.CLOUD, new Random(), this.xo, this.yo, this.zo, 2 * blastMultiplier, false)
-//                        .color(brightness, brightness, brightness).time(80 + this.random.nextInt(12)).shaded(true).scale(5).spawn(this.level());
-//
-//                brightness = random.nextFloat() * 0.3f;
-//                ParticleBuilder.create(EBParticles.DARK_MAGIC, new Random(), this.xo, this.yo, this.zo, 2 * blastMultiplier, false)
-//                        .color(brightness, brightness, brightness).spawn(this.level());
+                ParticleBuilder.create(EBParticles.CLOUD, level().getRandom(), this.xo, this.yo, this.zo, 2 * blastMultiplier, false)
+                        .color(brightness, brightness, brightness).time(80 + this.random.nextInt(12)).shaded(true).scale(5).spawn(this.level());
+
+                brightness = random.nextFloat() * 0.3f;
+                ParticleBuilder.create(EBParticles.DARK_MAGIC, level().getRandom(), this.xo, this.yo, this.zo, 2 * blastMultiplier, false)
+                        .color(brightness, brightness, brightness).spawn(this.level());
             }
         }
 

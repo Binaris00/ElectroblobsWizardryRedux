@@ -25,6 +25,7 @@ public final class SpellRegistryFabric {
         EBRegister.registerSpells((spellCollection) -> {
             spellCollection.forEach((spellEntry) -> Registry.register(SpellRegistryFabric.get(), new ResourceLocation(WizardryMainMod.MOD_ID, spellEntry.getKey()), spellEntry.getValue()));
         });
+        SpellRegistry.initializeSpellLocations();
     }
 
     private SpellRegistryFabric() {}

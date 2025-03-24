@@ -17,8 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Whirlwind extends RaySpell {
     public Whirlwind(){
-        // TODO BIN SPELL SOUND
-        //this.soundValues(0.8f, 0.7f, 0.2f);
+        this.soundValues(0.8f, 0.7f, 0.2f);
     }
 
     @Override

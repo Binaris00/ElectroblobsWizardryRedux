@@ -25,7 +25,7 @@ public class Permafrost extends RaySpell {
         this.ignoreLivingEntities(true);
     }
 
-    // TODO Bin: Spell sound
+    // TODO Bin: Loop sound
 
 //    @Override
 //    protected SoundEvent[] createSounds() {

@@ -18,8 +18,7 @@ public class FlameRay extends RaySpell {
     public FlameRay(){
         this.particleVelocity(1);
         this.particleSpacing(0.5);
-        //this.soundValues(2.5f, 1, 0);
-        // TODO: FlameRay sounds
+        this.soundValues(2.5f, 1, 0);
     }
 
 

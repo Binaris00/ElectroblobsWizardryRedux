@@ -51,9 +51,7 @@ public class GrownAura extends Spell {
             }
         }
 
-        // TODO Bin: Spell sound
-        //if (flag) this.playSound(world, caster, ticksInUse, -1, modifiers);
-        //return flag;
+        if (flag) this.playSound(caster.getCastLevel(), player, 0, -1);
     }
 
     @Override

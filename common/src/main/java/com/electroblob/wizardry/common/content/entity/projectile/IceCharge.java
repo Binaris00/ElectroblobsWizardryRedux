@@ -5,8 +5,8 @@ import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import com.electroblob.wizardry.setup.registries.client.EBSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -23,11 +23,8 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 public class IceCharge extends BombEntity {
-    public static final String ICE_SHARDS = "ice_shards";
-
     public IceCharge(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
         super(entityType, world);
     }
@@ -38,8 +35,7 @@ public class IceCharge extends BombEntity {
     }
 
     public IceCharge(Level world) {
-        super(null, world);
-        //super(EBEntities.ICE_CHARGE.get(), world);
+        super(EBEntities.ICE_CHARGE.get(), world);
     }
 
     @Override
@@ -63,18 +59,18 @@ public class IceCharge extends BombEntity {
         if (this.level().isClientSide()) {
             this.level().addParticle(ParticleTypes.EXPLOSION_EMITTER, this.getX(), this.getY(), this.getZ(), 0, 0, 0);
             for (int i = 0; i < 30 * blastMultiplier; i++) {
-//                ParticleBuilder.create(EBParticles.ICE, new Random(), this.getX(), this.getY(), this.getZ(), 2 * blastMultiplier, false)
-//                        .time(35).gravity(true).spawn(level());
-//
-//                float brightness = 0.4f + random.nextFloat() * 0.5f;
-//                ParticleBuilder.create(EBParticles.DARK_MAGIC, new Random(), this.getX(), this.getY(), this.getZ(), 2 * blastMultiplier, false)
-//                        .color(brightness, brightness + 0.1f, 1.0f).spawn(level());
+                ParticleBuilder.create(EBParticles.ICE, level().getRandom(), this.getX(), this.getY(), this.getZ(), 2 * blastMultiplier, false)
+                        .time(35).gravity(true).spawn(level());
+
+                float brightness = 0.4f + random.nextFloat() * 0.5f;
+                ParticleBuilder.create(EBParticles.DARK_MAGIC, level().getRandom(), this.getX(), this.getY(), this.getZ(), 2 * blastMultiplier, false)
+                        .color(brightness, brightness + 0.1f, 1.0f).spawn(level());
             }
         }
 
         if (!this.level().isClientSide()) {
-            //this.playSound(EBSounds.ENTITY_ICE_CHARGE_SMASH.get(), 1.5f, random.nextFloat() * 0.4f + 0.6f);
-            //this.playSound(EBSounds.ENTITY_ICE_CHARGE_ICE.get(), 1.2f, random.nextFloat() * 0.4f + 1.2f);
+            this.playSound(EBSounds.ENTITY_ICE_CHARGE_SMASH.get(), 1.5f, random.nextFloat() * 0.4f + 0.6f);
+            this.playSound(EBSounds.ENTITY_ICE_CHARGE_ICE.get(), 1.2f, random.nextFloat() * 0.4f + 1.2f);
 
             double radius = 3 * blastMultiplier;
             List<LivingEntity> targets = EntityUtil.getLivingEntitiesInRange(level(), this.getX(), this.getY(), this.getZ(), radius);
@@ -91,7 +87,6 @@ public class IceCharge extends BombEntity {
             for (int i = -1; i < 2; i++) {
                 for (int j = -1; j < 2; j++) {
                     BlockPos pos = new BlockPos((int) (this.getX() + i), (int) this.getY(), (int) (this.getZ() + j));
-                    // TODO: BlockUtil.getNearestSurface
                     Integer y = BlockUtil.getNearestSurface(level(), pos, Direction.UP, 7, true, BlockUtil.SurfaceCriteria.SOLID_LIQUID_TO_AIR);
 
                     if (y != null) {

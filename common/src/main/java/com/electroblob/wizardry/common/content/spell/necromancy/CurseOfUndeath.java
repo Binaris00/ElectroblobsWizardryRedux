@@ -17,8 +17,7 @@ import org.jetbrains.annotations.Nullable;
 public class CurseOfUndeath extends RaySpell {
 
     public CurseOfUndeath() {
-        // TODO SPELL SOUND SYSTEM
-        //this.soundValues(1, 1.1f, 0.2f);
+        this.soundValues(1, 1.1f, 0.2f);
     }
 
     @Override

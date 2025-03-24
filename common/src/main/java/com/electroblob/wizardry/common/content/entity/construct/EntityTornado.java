@@ -56,7 +56,7 @@ public class EntityTornado extends ScaledConstructEntity {
         super.tick();
         double radius = getBbWidth() / 2;
         if (this.tickCount % 120 == 1 && level().isClientSide) {
-            // TODO ENTITY SOUND
+            // TODO ENTITY MOVING SOUND
             //Wizardry.proxy.playMovingSound(this, WizardrySounds.ENTITY_TORNADO_AMBIENT.get(), SoundSource.PLAYERS, 1.0f, 1.0f, false);
         }
 

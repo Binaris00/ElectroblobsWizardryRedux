@@ -5,8 +5,8 @@ import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import com.electroblob.wizardry.setup.registries.client.EBSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -28,13 +28,11 @@ public class FireBomb extends BombEntity {
     }
 
     public FireBomb(LivingEntity livingEntity, Level world) {
-        super(null, livingEntity, world);
-        //super(EBEntities.FIRE_BOMB.get(), livingEntity, world);
+        super(EBEntities.FIRE_BOMB.get(), livingEntity, world);
     }
 
     public FireBomb(Level world) {
-        super(null, world);
-        //super(EBEntities.FIRE_BOMB.get(), world);
+        super(EBEntities.FIRE_BOMB.get(), world);
     }
 
     @Override
@@ -45,8 +43,7 @@ public class FireBomb extends BombEntity {
 
     @Override
     protected @NotNull Item getDefaultItem() {
-        return null;
-        //return EBItems.FIREBOMB.get();
+        return EBItems.FIREBOMB.get();
     }
 
     @Override
@@ -71,8 +68,8 @@ public class FireBomb extends BombEntity {
         }
 
         if(!level().isClientSide()){
-            //this.playSound(EBSounds.ENTITY_FIREBOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
-            //this.playSound(EBSounds.ENTITY_FIREBOMB_FIRE.get(), 1, 1);
+            this.playSound(EBSounds.ENTITY_FIREBOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
+            this.playSound(EBSounds.ENTITY_FIREBOMB_FIRE.get(), 1, 1);
 
             // Spawn particles
             this.level().broadcastEntityEvent(this, (byte) 3);
@@ -83,15 +80,14 @@ public class FireBomb extends BombEntity {
     @Override
     public void handleEntityEvent(byte b) {
         if(b == 3){
-            //ParticleBuilder.create(EBParticles.FLASH).pos(this.position()).scale(5 * blastMultiplier).color(1, 0.6f, 0).spawn(level());
+            ParticleBuilder.create(EBParticles.FLASH).pos(this.position()).scale(5 * blastMultiplier).color(1, 0.6f, 0).spawn(level());
 
             for (int i = 0; i < 60 * blastMultiplier; i++) {
+                ParticleBuilder.create(EBParticles.MAGIC_FIRE, level().getRandom(), xo, yo, zo, 2 * blastMultiplier, false)
+                        .time(10 + random.nextInt(4)).scale(1 + random.nextFloat()).spawn(level());
 
-//                ParticleBuilder.create(EBParticles.MAGIC_FIRE, new Random(), xo, yo, zo, 2 * blastMultiplier, false)
-//                        .time(10 + random.nextInt(4)).scale(1 + random.nextFloat()).spawn(level());
-//
-//                ParticleBuilder.create(EBParticles.DARK_MAGIC, new Random(), xo, yo, zo, 2 * blastMultiplier, false)
-//                        .color(1.0f, 0.2f + random.nextFloat() * 0.4f, 0.0f).spawn(level());
+                ParticleBuilder.create(EBParticles.DARK_MAGIC, level().getRandom(), xo, yo, zo, 2 * blastMultiplier, false)
+                        .color(1.0f, 0.2f + random.nextFloat() * 0.4f, 0.0f).spawn(level());
             }
             level().addParticle(ParticleTypes.EXPLOSION, xo, yo, zo, 0, 0, 0);
         }

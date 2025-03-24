@@ -40,8 +40,7 @@ public class InvokeWeather extends Spell {
                             .color(0.5f, 0.7f, 1).spawn(player.level());
                 }
             }
-            // TODO Bin: Spell sound system
-            //this.playSound(world, caster, ticksInUse, -1, modifiers);
+            this.playSound(caster.getCastLevel(), player, 0, -1);
         }
     }
 

@@ -29,9 +29,10 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             addArrowExtras(arrow, caster);
 
             caster.getCastLevel().addFreshEntity(arrow);
-        }
 
-        // Sound ?
+            // TODO, spell sound ticks in use, not really used, but anyway
+            this.playSound(caster.getCastLevel(), player, 0, -1);
+        }
     }
 
     @Override

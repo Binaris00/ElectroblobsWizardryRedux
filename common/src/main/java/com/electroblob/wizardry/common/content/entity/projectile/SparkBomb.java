@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -21,13 +22,11 @@ public class SparkBomb extends BombEntity {
     }
 
     public SparkBomb(Level world) {
-        //super(EBEntities.SPARK_BOMB.get(), world);
-        super(null, world);
+        super(EBEntities.SPARK_BOMB.get(), world);
     }
 
     public SparkBomb(LivingEntity livingEntity, Level world) {
-        //super(EBEntities.SPARK_BOMB.get(), livingEntity, world);
-        super(null, livingEntity, world);
+        super(EBEntities.SPARK_BOMB.get(), livingEntity, world);
     }
 
     @Override
@@ -37,14 +36,12 @@ public class SparkBomb extends BombEntity {
 
     @Override
     protected @NotNull Item getDefaultItem() {
-        return null;
-        //return EBItems.SPARK_BOMB.get();
+        return EBItems.SPARK_BOMB.get();
     }
 
     @Override
     protected void onHitBlock(BlockHitResult blockHitResult) {
-        // TODO: Add sound
-        //this.playSound(EBSounds.ENTITY_SPARK_BOMB_HIT_BLOCK.get(), 0.5f, 0.5f);
+        this.playSound(EBSounds.ENTITY_SPARK_BOMB_HIT_BLOCK.get(), 0.5f, 0.5f);
         super.onHitBlock(blockHitResult);
 
         LivingEntity closestEntity = this.level().getNearestEntity(
@@ -61,7 +58,7 @@ public class SparkBomb extends BombEntity {
             closestEntity.hurt(closestEntity.damageSources().indirectMagic(this, this.getOwner()), 4);
         }
 
-        //ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight(), this.getZ());
+        ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight(), this.getZ());
     }
 
     @Override
@@ -70,10 +67,9 @@ public class SparkBomb extends BombEntity {
         float damage = 6;
         entityHitResult.getEntity().hurt(entityHitResult.getEntity().damageSources().indirectMagic(this, this.getOwner()), damage);
 
-        // TODO: Add sound
-        //this.playSound(EBSounds.ENTITY_SPARK_BOMB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+        this.playSound(EBSounds.ENTITY_SPARK_BOMB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
 
-        //ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ());
+        ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ());
 
         super.onHitEntity(entityHitResult);
     }

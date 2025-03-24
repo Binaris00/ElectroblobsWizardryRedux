@@ -62,7 +62,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
             //return false;
         }
 
-        // TODO SPELL SOUND
-        // this.playSound(world, caster, ticksInUse, -1, modifiers);
+        // TODO spell sound ticksinuse
+        this.playSound(caster.getCastLevel(), player, 0, -1);
     }
 }

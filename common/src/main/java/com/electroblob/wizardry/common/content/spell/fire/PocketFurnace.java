@@ -64,8 +64,7 @@ public class PocketFurnace extends Spell {
             }
         }
 
-        // TODO Bin: spell sound...
-        //this.playsound(world, caster, ticksInUse, -1, modifiers);
+        this.playSound(player.level(), player, 0, -1);
 
         if (player.level().isClientSide) {
             for (int i = 0; i < 10; i++) {

@@ -119,12 +119,6 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
         //return AllyDesignationSystem.isValidTarget(this.getCaster(), target);
     }
 
-    // TODO: Wizardry Sound
-//    @Override
-//    public SoundSource getSoundSource() {
-//        return WizardrySounds.SPELLS;
-//    }
-
     @Override
     public boolean displayFireAnimation() {
         return false;

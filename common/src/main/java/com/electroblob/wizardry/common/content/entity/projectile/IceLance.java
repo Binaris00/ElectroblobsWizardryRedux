@@ -1,7 +1,11 @@
 package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,8 +23,7 @@ public class IceLance extends MagicArrowEntity {
     }
 
     public IceLance(Level world){
-        super(null, world);
-        //super(EBEntities.ICE_LANCE.get(), world);
+        super(EBEntities.ICE_LANCE.get(), world);
     }
 
     @Override
@@ -56,7 +59,7 @@ public class IceLance extends MagicArrowEntity {
 //            livingEntity.addEffect(new MobEffectInstance(WizardryEffects.FROST, Spells.ICE_LANCE.getIntProperty(Spell.EFFECT_DURATION),
 //                    0));
         }
-        //this.playSound(EBSounds.ENTITY_ICE_LANCE_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+        this.playSound(EBSounds.ENTITY_ICE_LANCE_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
         super.onHitEntity(entityHitResult);
     }
 
@@ -64,11 +67,11 @@ public class IceLance extends MagicArrowEntity {
     protected void onHitBlock(BlockHitResult blockHitResult) {
         if (this.level().isClientSide()) {
             for (int j = 0; j < 10; j++) {
-//                ParticleBuilder.create(EBParticles.ICE, new Random(), this.getX(), this.getY(), this.getZ(), 0.5, true)
-//                        .time(20 + random.nextInt(10)).gravity(true).spawn(this.level());
+                ParticleBuilder.create(EBParticles.ICE, level().getRandom(), this.getX(), this.getY(), this.getZ(), 0.5, true)
+                        .time(20 + random.nextInt(10)).gravity(true).spawn(this.level());
             }
         }
-        //this.playSound(EBSounds.ENTITY_ICE_LANCE_SMASH.get(), 1.0F, random.nextFloat() * 0.4F + 1.2F);
+        this.playSound(EBSounds.ENTITY_ICE_LANCE_SMASH.get(), 1.0F, random.nextFloat() * 0.4F + 1.2F);
         super.onHitBlock(blockHitResult);
     }
 }

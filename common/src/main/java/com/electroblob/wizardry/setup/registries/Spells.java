@@ -255,11 +255,9 @@ public final class Spells {
         ));
 
 
-        // TODO BIN SOUND .soundValues(0.5f, 0.4f, 0.2f)
-        FORCE_ORB = spell("force_orb", () -> new ProjectileSpell<>(EntityForceOrb::new));
+        FORCE_ORB = spell("force_orb", () -> new ProjectileSpell<>(EntityForceOrb::new).soundValues(0.5f, 0.4f, 0.2f));
 
-        // TODO BIN sound .soundValues(0.5f, 0.4f, 0.2f)
-        DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrb::new));
+        DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrb::new).soundValues(0.5f, 0.4f, 0.2f));
 
         FIRE_RESISTANCE = spell("fire_resistance", () -> new BuffSpell(1, 0.5f, 0, () -> MobEffects.FIRE_RESISTANCE).assignProperties(
                 SpellProperties.builder()
@@ -353,9 +351,7 @@ public final class Spells {
 
         INVOKE_WEATHER = spell("invoke_weather", InvokeWeather::new);
 
-        // TODO BIN: Missing sounds...
-        // .soundValues(0.7f, 1.2f, 0.4f)
-        OAKFLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH));
+        OAKFLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH).soundValues(0.7f, 1.2f, 0.4f));
 
         PERMAFROST = spell("permafrost", Permafrost::new);
 

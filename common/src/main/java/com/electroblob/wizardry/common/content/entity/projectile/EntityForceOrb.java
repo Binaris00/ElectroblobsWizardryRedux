@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
@@ -31,8 +32,7 @@ public class EntityForceOrb extends BombEntity {
         super.onHit(hitResult);
 
         if(hitResult.getType() == HitResult.Type.ENTITY){
-            // TODO ENTITY SOUND
-            //this.playSound(WizardrySounds.ENTITY_FORCE_ORB_HIT, 1.0F, 1.2F / (this.rand.nextFloat() * 0.2F + 0.9F));
+            this.playSound(EBSounds.ENTITY_FORCE_ORB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
         }
 
         if(this.level().isClientSide){
@@ -48,9 +48,8 @@ public class EntityForceOrb extends BombEntity {
 
             // 2 gives a cool flanging effect!
             float pitch = this.random.nextFloat() * 0.2F + 0.3F;
-            // TODO ENTITY SOUND
-            //this.playSound(WizardrySounds.ENTITY_FORCE_ORB_HIT_BLOCK, 1.5F, pitch);
-            //this.playSound(WizardrySounds.ENTITY_FORCE_ORB_HIT_BLOCK, 1.5F, pitch - 0.01f);
+            this.playSound(EBSounds.ENTITY_FORCE_ORB_HIT_BLOCK.get(), 1.5F, pitch);
+            this.playSound(EBSounds.ENTITY_FORCE_ORB_HIT_BLOCK.get(), 1.5F, pitch - 0.01f);
 
             double blastRadius = 4 * blastMultiplier;
 

@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
@@ -53,8 +54,7 @@ public class EntityLightningSigil extends ScaledConstructEntity {
                         this.damageSources().indirectMagic(this, getCaster()) : this.damageSources().magic(), 6 * damageMultiplier)) {
                     target.setDeltaMovement(originalVec);
 
-                    // TODO ENTITY SOUND
-                    //this.playSound(WizardrySounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
+                    this.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
 
                     double seekerRange = 1;
 
@@ -71,8 +71,7 @@ public class EntityLightningSigil extends ScaledConstructEntity {
                                 ParticleBuilder.spawnShockParticles(level(), secondaryTarget.getX(), secondaryTarget.getY() + secondaryTarget.getBbHeight() / 2, secondaryTarget.getZ());
                             }
 
-                            // TODO ENTITY SOUND
-                            //secondaryTarget.playSound(WizardrySounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0F, level.random.nextFloat() * 0.4F + 1.5F);
+                            secondaryTarget.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0F, level().random.nextFloat() * 0.4F + 1.5F);
 
 
                             secondaryTarget.hurt(this.damageSources().indirectMagic(this, getCaster()), 4 * damageMultiplier);

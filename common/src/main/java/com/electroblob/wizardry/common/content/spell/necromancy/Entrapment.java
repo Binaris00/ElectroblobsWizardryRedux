@@ -17,8 +17,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Entrapment extends RaySpell {
     public Entrapment(){
-        // TODO ENTITY SOUND
-        //this.soundValues(1, 0.85f, 0.3f);
+        this.soundValues(1, 0.85f, 0.3f);
     }
 
     @Override

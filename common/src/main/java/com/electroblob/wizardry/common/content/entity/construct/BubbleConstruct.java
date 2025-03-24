@@ -3,6 +3,7 @@ package com.electroblob.wizardry.common.content.entity.construct;
 import com.electroblob.wizardry.api.common.entity.construct.MagicConstructEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Entity;
@@ -60,17 +61,15 @@ public class BubbleConstruct extends MagicConstructEntity {
                         (this.random.nextDouble() - 0.5D) * 2.0D);
             }
 
-            // TODO ENTITY SOUND
-
             if (lifetime - this.tickCount == 75) {
-                //this.playSound(WizardrySounds.ENTITY_ENTRAPMENT_VANISH.get(), 1.5f, 1.0f);
+                this.playSound(EBSounds.ENTITY_ENTRAPMENT_VANISH.get(), 1.5f, 1.0f);
             } else if (this.tickCount % 100 == 1 && this.tickCount < 150) {
-                //this.playSound(WizardrySounds.ENTITY_ENTRAPMENT_AMBIENT.get(), 1.5f, 1.0f);
+                this.playSound(EBSounds.ENTITY_ENTRAPMENT_VANISH.get(), 1.5f, 1.0f);
             }
         }
 
         if (EntityUtil.getRider(this) == null && this.tickCount > 1) {
-            //if (!this.isDarkOrb) this.playSound(WizardrySounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
+            if (!this.isDarkOrb) this.playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
             this.discard();
         }
     }
@@ -80,8 +79,7 @@ public class BubbleConstruct extends MagicConstructEntity {
         if (EntityUtil.getRider(this) != null) {
             EntityUtil.getRider(this).stopRiding();
         }
-        // TODO ENTITY SOUND
-        //if (!this.isDarkOrb) this.playSound(WizardrySounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
+        if (!this.isDarkOrb) this.playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
         super.despawn();
     }
 

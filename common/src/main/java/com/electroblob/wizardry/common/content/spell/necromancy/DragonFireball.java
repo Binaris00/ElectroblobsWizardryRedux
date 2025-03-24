@@ -29,8 +29,7 @@ public class DragonFireball extends Spell {
             player.level().addFreshEntity(fireball);
         }
 
-        // TODO Bin: Spell auto sound system
-        //this.playSound(world, caster, ticksInUse, -1, modifiers);
+        this.playSound(player.level(), player, 0, -1);
         player.swing(InteractionHand.MAIN_HAND);
     }
 

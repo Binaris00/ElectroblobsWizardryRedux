@@ -50,7 +50,8 @@ public class Flight extends Spell {
                     .color(1f, 1f, 1f).spawn(player.level());
         }
 
-        // TODO BIN SPELL SOUND
+
+        playSound(caster.getCastLevel(), player, 0, -1);
         //if(ticksInUse % 24 == 0) playSound(world, player, ticksInUse, -1, modifiers);
 
     }

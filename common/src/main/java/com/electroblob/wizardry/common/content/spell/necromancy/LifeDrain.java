@@ -17,8 +17,7 @@ public class LifeDrain extends RaySpell {
     public LifeDrain() {
         this.particleVelocity(-0.5);
         this.particleSpacing(0.4);
-        // Todo: life drain sound
-        //this.soundValues(0.6f, 1, 0);
+        this.soundValues(0.6f, 1, 0);
     }
 
     @Override
@@ -47,10 +46,10 @@ public class LifeDrain extends RaySpell {
     @Override
     protected void spawnParticle(Level world, double x, double y, double z, double vx, double vy, double vz) {
         if (world.random.nextInt(5) == 0) {
-            //ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(x, y, z).color(0.1f, 0, 0).spawn(world);
+            ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(x, y, z).color(0.1f, 0, 0).spawn(world);
         }
-//        ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(vx, vy, vz).time(8 + world.random.nextInt(6))
-//                .color(0.5f, 0, 0).spawn(world);
+        ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(vx, vy, vz).time(8 + world.random.nextInt(6))
+                .color(0.5f, 0, 0).spawn(world);
     }
 
     @Override

@@ -4,6 +4,7 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -57,8 +58,7 @@ public class IceShard extends MagicArrowEntity {
                     0, false, false));
         }
 
-        // TODO ENTITY SOUND
-        //this.playSound(EBSounds.ENTITY_ICE_SHARD_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+        this.playSound(EBSounds.ENTITY_ICE_SHARD_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
         super.onHitEntity(entityHitResult);
     }
 
@@ -74,8 +74,7 @@ public class IceShard extends MagicArrowEntity {
             }
         }
 
-        // TODO ENTITY SOUND
-        //this.playSound(EBSounds.ENTITY_ICE_SHARD_SMASH.get(), 1.0F, random.nextFloat() * 0.4F + 1.2F);
+        this.playSound(EBSounds.ENTITY_ICE_SHARD_SMASH.get(), 1.0F, random.nextFloat() * 0.4F + 1.2F);
         super.onHitBlock(blockHitResult);
     }
 

@@ -79,8 +79,7 @@ public class Banish extends RaySpell {
                 entity.moveTo(x + 0.5, y + 1, z + 0.5);
             }
 
-            // TODO BIN SPELL SOUND
-            //this.playSound(world, entity, 0, -1, new SpellModifiers());
+            this.playSound(world, entity, 0, -1);
         }
 
     }

@@ -18,8 +18,7 @@ import org.jetbrains.annotations.Nullable;
 public class CurseOfEnfeeblement extends RaySpell {
 
     public CurseOfEnfeeblement() {
-        // TODO SPELL SOUND SYSTEM
-        //this.soundValues(1, 1.1f, 0.2f);
+        this.soundValues(1, 1.1f, 0.2f);
     }
 
     @Override

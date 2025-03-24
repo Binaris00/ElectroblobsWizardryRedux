@@ -41,8 +41,8 @@ public abstract class AreaEffectSpell extends Spell {
 
         // TODO Bin: tickuse 0
         findAndAffectEntities(player.level(), player.position(), player, 0);
-        // TODO Bin: Spell sound system and tickuse
-        //if (result) this.playSound(player.level(), caster, ticksInUse, -1);
+        // ticks in use 0
+        this.playSound(player.level(), player, 0, -1);
     }
 
     protected boolean findAndAffectEntities(Level world, Vec3 origin, @Nullable LivingEntity caster, int ticksInUse) {
