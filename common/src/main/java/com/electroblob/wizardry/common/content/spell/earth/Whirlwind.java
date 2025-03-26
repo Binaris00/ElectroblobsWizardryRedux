@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.common.content.spell.earth;
 
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.config.WizardrySettings;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,8 +23,7 @@ public class Whirlwind extends RaySpell {
 
     @Override
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        // TODO BIN Wizardry.settings.playersMoveEachOther
-        if (target instanceof Player && ((caster instanceof Player && !false))) {
+        if (target instanceof Player && ((caster instanceof Player && !WizardrySettings.playersMoveEachOther))) {
             if (!world.isClientSide)
                 ((Player) caster).displayClientMessage(Component.translatable("spell.resist", target.getName(), this.getLocation()), true);
             return false;

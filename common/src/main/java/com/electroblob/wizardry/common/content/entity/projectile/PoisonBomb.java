@@ -3,6 +3,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -19,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -36,7 +39,7 @@ public class PoisonBomb extends BombEntity {
     }
 
     @Override
-    protected Item getDefaultItem() {
+    protected @NotNull Item getDefaultItem() {
         return EBItems.POISON_BOMB.get();
     }
 
@@ -45,7 +48,7 @@ public class PoisonBomb extends BombEntity {
         if (hitResult instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
             float damage = 5;
-            entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), damage);
+            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.POISON, false);
         }
 
         if (hitResult instanceof BlockHitResult) {
@@ -53,8 +56,8 @@ public class PoisonBomb extends BombEntity {
             List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(this.level(), this.getX(), this.getY(), this.getZ(), range);
             for (LivingEntity entity : livingEntities) {
                 if (entity != null && entity != this.getOwner()) {
-                    entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), 3 * damageMultiplier);
-                    entity.addEffect(new MobEffectInstance(MobEffects.POISON, 120, 1));
+                    EBMagicDamageSource.causeMagicDamage(this, entity, 3 * damageMultiplier, EBDamageSources.FIRE, false);
+                    if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, entity)) entity.addEffect(new MobEffectInstance(MobEffects.POISON, 120, 1));
                 }
             }
         }

@@ -3,9 +3,14 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -14,12 +19,9 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.effect.MobEffects;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Random;
 
 public class IceShard extends MagicArrowEntity {
     public IceShard(EntityType<? extends AbstractArrow> entityType, Level world) {
@@ -51,15 +53,14 @@ public class IceShard extends MagicArrowEntity {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
-        if (entityHitResult.getEntity() instanceof LivingEntity livingEntity) {
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN,
-                    200,
-                    0, false, false));
+    protected void onHitEntity(@NotNull EntityHitResult hitResult) {
+        if (hitResult.getEntity() instanceof LivingEntity livingEntity) {
+            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, livingEntity))
+                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 0, false, false));
         }
 
         this.playSound(EBSounds.ENTITY_ICE_SHARD_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-        super.onHitEntity(entityHitResult);
+        super.onHitEntity(hitResult);
     }
 
     @Override
@@ -83,6 +84,11 @@ public class IceShard extends MagicArrowEntity {
         if (this.ticksInGround > 40) {
             this.discard();
         }
+    }
+
+    @Override
+    public ResourceKey<DamageType> getDamageType() {
+        return EBDamageSources.FROST;
     }
 }
 

@@ -4,6 +4,8 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -46,7 +48,7 @@ public class IceCharge extends BombEntity {
         if (entity != null) {
             float damage = 4 * damageMultiplier;
 
-            entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), damage);
+            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FROST, false);
 
             if (entity instanceof LivingEntity livingEntity) {
                 // TODO: Effect Frost

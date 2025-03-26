@@ -22,6 +22,7 @@ public class BuffSpell extends Spell {
     protected final float r, g, b;
     protected float particleCount = 10;
 
+    @SafeVarargs
     public BuffSpell(float r, float g, float b, Supplier<MobEffect>... effects){
         this.effects = effects;
         this.r = r;

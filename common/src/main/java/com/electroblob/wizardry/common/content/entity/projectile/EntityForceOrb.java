@@ -3,6 +3,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -68,8 +70,7 @@ public class EntityForceOrb extends BombEntity {
 
                     float damage = 4 * damageMultiplier;
 
-                    // TODO BIN MAGIC ATTACK
-                    target.hurt(damageSources().indirectMagic(this, this.getOwner()), damage);
+                    target.hurt(EBMagicDamageSource.causeIndirectMagicDamage(this, getOwner(), EBDamageSources.BLAST), damage);
                     target.setDeltaMovement(dx, velY + 0.4, dz);
                 }
             }

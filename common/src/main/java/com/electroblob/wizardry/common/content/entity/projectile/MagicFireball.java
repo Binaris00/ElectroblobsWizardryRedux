@@ -2,6 +2,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.Entity;
@@ -58,8 +60,8 @@ public class MagicFireball extends MagicProjectileEntity {
         if (!this.level().isClientSide) {
             if (hitResult instanceof EntityHitResult entityHitResult) {
                 Entity entity = entityHitResult.getEntity();
-                entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), (float) getDamage());
-                entity.setSecondsOnFire(getBurnDuration());
+                EBMagicDamageSource.causeMagicDamage(this, entity, (float) getDamage(), EBDamageSources.FIRE, false);
+                if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) entity.setSecondsOnFire(getBurnDuration());
             } else if (hitResult instanceof BlockHitResult blockHitResult) {
                 BlockPos pos = blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
                 this.level().setBlock(pos, Blocks.FIRE.defaultBlockState(), 3);

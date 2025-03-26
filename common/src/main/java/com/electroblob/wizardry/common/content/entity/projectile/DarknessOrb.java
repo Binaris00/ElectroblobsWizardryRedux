@@ -2,6 +2,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -32,16 +34,12 @@ public class DarknessOrb extends MagicProjectileEntity {
         super.onHit(rayTrace);
         Entity target = rayTrace.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) rayTrace).getEntity() : null;
 
-        // TODO BIN !MagicDamage.isEntityImmune(this.damageSources().wither(), target) here
-        if (target != null) {
+        if (target != null && !EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
             float damage = 8 * damageMultiplier;
+            EBMagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.WITHER, false);
 
-            target.hurt(this.damageSources().wither(), damage);
-
-            // TODO BIN !MagicDamage.isEntityImmune(this.damageSources().wither(), target) here
-            if (target instanceof LivingEntity)
-                ((LivingEntity) target).addEffect(
-                        new MobEffectInstance(MobEffects.WITHER, 150, 1));
+            if (target instanceof LivingEntity livingEntity)
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 150, 1));
 
             this.playSound(EBSounds.ENTITY_DARKNESS_ORB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
         }

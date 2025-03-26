@@ -1,12 +1,15 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -36,7 +39,10 @@ public class LifeDrain extends RaySpell {
             if (ticksInUse % 12 == 0) {
                 float damage = 2;
 
-                EntityUtil.attackEntityWithoutKnockback(livingTarget, livingTarget.damageSources().indirectMagic(caster, livingTarget), damage);
+                DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.SORCERY)
+                        : livingTarget.damageSources().magic();
+
+                EntityUtil.attackEntityWithoutKnockback(livingTarget, source, damage);
                 if (caster != null) caster.heal(damage * 0.35F);
             }
         }

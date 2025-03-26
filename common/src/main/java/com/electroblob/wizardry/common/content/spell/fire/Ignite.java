@@ -1,8 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -33,7 +35,7 @@ public class Ignite extends RaySpell {
 
     @Override
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if(target instanceof LivingEntity) {
+        if(target instanceof LivingEntity && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
             target.setSecondsOnFire(70);
             return true;
         }

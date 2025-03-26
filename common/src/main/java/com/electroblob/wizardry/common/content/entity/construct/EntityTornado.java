@@ -4,8 +4,10 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.DeferredObject;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.client.particle.ParticleTornado;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
@@ -95,12 +97,7 @@ public class EntityTornado extends ScaledConstructEntity {
                     }
 
                     float damage = 1 * damageMultiplier;
-
-                    if (this.getCaster() != null) {
-                        target.hurt(this.damageSources().indirectMagic(this, getCaster()), damage);
-                    } else {
-                        target.hurt(this.damageSources().magic(), damage);
-                    }
+                    EBMagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.SORCERY, false);
 
                     target.setDeltaMovement(dx, velY + 0.2, dz);
 

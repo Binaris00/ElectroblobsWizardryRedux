@@ -2,7 +2,9 @@ package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -48,13 +50,12 @@ public class EntityFrostSigil extends ScaledConstructEntity {
 
             for (LivingEntity target : targets) {
                 if (this.isValidTarget(target)) {
-                    // TODO Magic Attack
-                    EntityUtil.attackEntityWithoutKnockback(target, this.getCaster() != null ? this.damageSources().indirectMagic(this, this.getCaster()) :
-                            this.damageSources().magic(), 8 * damageMultiplier);
+                    EntityUtil.attackEntityWithoutKnockback(target, this.getCaster() != null ?
+                            EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.FROST) :
+                            EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY), 8 * damageMultiplier);
 
-                    // TODO MAGIC DAMAGE
-                    //if (!MagicDamage.isEntityImmune(DamageType.FROST, target))
-                    target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 1));
+                    if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
+                        target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 1));
 
                     this.playSound(EBSounds.ENTITY_FROST_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
                     this.discard();

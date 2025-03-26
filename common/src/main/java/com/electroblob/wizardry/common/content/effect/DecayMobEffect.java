@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.common.content.effect;
 
 import com.electroblob.wizardry.api.common.effect.MagicMobEffect;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.construct.DecayConstruct;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.Entity;
@@ -34,6 +36,10 @@ public class DecayMobEffect extends MagicMobEffect {
             if(livingEntity instanceof Player player)decay.setCaster(player);
             decay.setPos(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
             livingEntity.level().addFreshEntity(decay);
+
+            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity)){
+                livingEntity.hurt(livingEntity.damageSources().wither(), 1);
+            }
         }
     }
 

@@ -2,12 +2,15 @@ package com.electroblob.wizardry.common.content.spell.fire;
 
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -27,8 +30,9 @@ public class Detonate extends RaySpell {
         if (!world.isClientSide) {
             List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(3, pos.getX(), pos.getY(), pos.getZ(), world);
             for (LivingEntity target : targets) {
-
-                target.hurt(target.damageSources().indirectMagic(caster, target), Math.max(12 - (float) target.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) * 4, 0));
+                DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.BLAST)
+                        : target.damageSources().magic();
+                target.hurt(source, Math.max(12 - (float) target.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) * 4, 0));
             }
         } else {
             world.addParticle(ParticleTypes.EXPLOSION_EMITTER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);

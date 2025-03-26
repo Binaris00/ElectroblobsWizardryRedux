@@ -3,6 +3,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -39,10 +41,9 @@ public class IceBall extends MagicProjectileEntity {
     protected void onHitEntity(EntityHitResult entityHitResult) {
         if (!level().isClientSide()) {
             Entity entity = entityHitResult.getEntity();
-
             float damage = 5 * damageMultiplier;
 
-            entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), damage);
+            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FROST, false);
 
             if (entity instanceof LivingEntity livingEntity) {
                 // TODO: Effect Frost

@@ -71,6 +71,7 @@ public class Fangs extends Spell {
 
     }
 
+    // TODO ALLY SYSTEM AND EVENT
 //    @SubscribeEvent(priority = EventPriority.HIGH)
 //    public static void onLivingAttackEvent(LivingAttackEvent event) {
 //        if (event.getSource().getDirectEntity() instanceof EvokerFangs) {

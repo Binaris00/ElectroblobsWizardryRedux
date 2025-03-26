@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.world.entity.EntityDimensions;
@@ -46,20 +48,14 @@ public class EntityFireRing extends ScaledConstructEntity {
                     this.getZ(), this.level());
 
             for (LivingEntity target : targets) {
-                if (this.isValidTarget(target)) {
+                if (this.isValidTarget(target) && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
                     Vec3 originalVec = target.getDeltaMovement();
 
-                    // TODO MAGIC DAMAGE
-                    //if (!MagicDamage.isEntityImmune(DamageType.FIRE, target))
                     target.setSecondsOnFire(10);
 
                     float damage = 1 * damageMultiplier;
 
-                    if (this.getCaster() != null) {
-                        target.hurt(this.damageSources().onFire(), damage);
-                    } else {
-                        target.hurt(this.damageSources().magic(), damage);
-                    }
+                    EBMagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.FIRE, false);
 
                     target.setDeltaMovement(originalVec);
                 }

@@ -1,12 +1,13 @@
 package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.common.util.GeometryUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.Direction;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -63,9 +64,7 @@ public class EntityIceSpike extends ScaledConstructEntity {
         if (!this.level().isClientSide) {
             for (Object entity : this.level().getEntities(this, this.getBoundingBox())) {
                 if (entity instanceof LivingEntity livingEntity && this.isValidTarget(livingEntity)) {
-                    DamageSource source = this.getCaster() == null ?
-                            this.damageSources().magic() : this.damageSources().indirectMagic(this, this.getCaster());
-                    if (livingEntity.hurt(source, 5 * this.damageMultiplier))
+                    if (EBMagicDamageSource.causeMagicDamage(this, livingEntity, 5 * this.damageMultiplier, EBDamageSources.FROST, false))
                         livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 100, 0));
                 }
             }

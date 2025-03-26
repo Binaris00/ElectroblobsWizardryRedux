@@ -2,6 +2,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -36,7 +38,7 @@ public class Spark extends MagicProjectileEntity {
             EntityHitResult entityHitResult = (EntityHitResult) hitResult;
             float damage = 6 * damageMultiplier;
             Entity entity = entityHitResult.getEntity();
-            entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), damage);
+            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.SHOCK, false);
         }
 
         this.playSound(EBSounds.ENTITY_HOMING_SPARK_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));

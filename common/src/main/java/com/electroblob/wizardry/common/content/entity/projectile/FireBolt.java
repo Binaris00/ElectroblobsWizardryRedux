@@ -3,6 +3,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -38,9 +40,11 @@ public class FireBolt extends MagicProjectileEntity {
             Entity entity = entityHitResult.getEntity();
 
             float damage = 5 * damageMultiplier;
-            entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), damage);
 
-            entity.setSecondsOnFire(5);
+            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) {
+                EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
+                entity.setSecondsOnFire(5);
+            }
         }
 
         this.playSound(EBSounds.ENTITY_FIREBOLT_HIT.get(), 2, 0.8f + random.nextFloat() * 0.3f);

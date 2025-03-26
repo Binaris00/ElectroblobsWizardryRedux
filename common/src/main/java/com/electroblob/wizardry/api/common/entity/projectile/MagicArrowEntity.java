@@ -1,15 +1,25 @@
 package com.electroblob.wizardry.api.common.entity.projectile;
 
 
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.client.renderer.entity.MagicArrowRenderer;
 import com.electroblob.wizardry.common.content.spell.abstr.ArrowSpell;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Originally copied from EntityArrow in 1.7.10 and updated to be more clean and efficient.
@@ -26,6 +36,7 @@ import net.minecraft.world.level.Level;
  * use {@link MagicArrowRenderer} and register the respective texture in {@link  MagicArrowEntity#getTexture()}.
  * */
 public abstract class MagicArrowEntity extends AbstractArrow {
+    // TODO: Replace setOwner and getOwner methods for getCaster and setCaster
     public static final double LAUNCH_Y_OFFSET = 0.1;
     protected int ticksInGround;
     protected int ticksInAir;
@@ -85,6 +96,39 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     }
 
 
+    @Override
+    protected void onHitEntity(@NotNull EntityHitResult hitResult) {
+        if(!(hitResult.getEntity() instanceof LivingEntity target)) return;
+        if(EBMagicDamageSource.isEntityImmune(getDamageType(), target)) {
+            this.discard();
+            return;
+        }
+
+        // Damage stuff
+        DamageSource damageSource = getOwner() == null ? EBMagicDamageSource.causeDirectMagicDamage(this, getDamageType())
+                : EBMagicDamageSource.causeIndirectMagicDamage(this, this.getOwner(), getDamageType());
+
+        target.hurt(damageSource, (float) getDamage());
+
+        // Knockback and post effects
+        if (this.getKnockback() > 0) {
+            double knockback = Math.max(0.0, 1.0 - target.getAttributeValue(Attributes.KNOCKBACK_RESISTANCE));
+            Vec3 vecKnockback = this.getDeltaMovement().multiply(1.0, 0.0, 1.0).normalize().scale((double)this.getKnockback() * 0.6 * knockback);
+            if (vecKnockback.lengthSqr() > 0.0) {
+                target.push(vecKnockback.x, 0.1, vecKnockback.z);
+            }
+        }
+
+        if (!this.level().isClientSide && getOwner() instanceof LivingEntity arrowOwner) {
+            EnchantmentHelper.doPostHurtEffects(target, arrowOwner);
+            EnchantmentHelper.doPostDamageEffects(arrowOwner, target);
+        }
+        this.discard();
+    }
+
+
+
+
     // ======================= Property getters (to be overridden by subclasses) =======================
 
     /** Subclasses must override this to set their own base damage. */
@@ -93,6 +137,10 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     /** Returns the maximum flight time in ticks before this projectile disappears, or -1 if it can continue
      * indefinitely until it hits something. This should be constant. */
     public abstract int getLifetime();
+
+    public ResourceKey<DamageType> getDamageType(){
+        return EBDamageSources.SORCERY;
+    }
 
     /**
      * This method is used to get the texture for the magic arrow.

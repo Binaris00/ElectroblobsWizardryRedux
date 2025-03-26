@@ -3,6 +3,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -20,7 +22,6 @@ import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
-import java.util.Random;
 
 public class FireBomb extends BombEntity {
     public FireBomb(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
@@ -47,23 +48,21 @@ public class FireBomb extends BombEntity {
     }
 
     @Override
-    protected void onHit(HitResult hitResult) {
+    protected void onHit(@NotNull HitResult hitResult) {
         super.onHit(hitResult);
         if(hitResult instanceof EntityHitResult entityHitResult){
             Entity entity = entityHitResult.getEntity();
 
             float damage = 5;
-            entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), damage);
+            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
         }
 
         if(hitResult instanceof BlockHitResult){
             List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), 10);
 
             for(LivingEntity entity: livingEntities){
-                if(entity != null && entity != this.getOwner()){
-                    entity.hurt(entity.damageSources().indirectMagic(this, this.getOwner()), 3 * blastMultiplier);
-                    entity.setSecondsOnFire(7);
-                }
+                EBMagicDamageSource.causeMagicDamage(this, entity, 3 * blastMultiplier, EBDamageSources.FIRE, false);
+                if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) entity.setSecondsOnFire(7);
             }
         }
 

@@ -2,8 +2,10 @@ package com.electroblob.wizardry.common.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,11 +36,10 @@ public class FlameRay extends RaySpell {
 
     @Override
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if (target instanceof LivingEntity livingTarget) {
-            if(ticksInUse % livingTarget.invulnerableDuration == 1){
-                livingTarget.setSecondsOnFire(20);
-                EntityUtil.attackEntityWithoutKnockback(livingTarget, livingTarget.damageSources().indirectMagic(caster, livingTarget), 5);
-            }
+        if (target instanceof LivingEntity livingTarget
+                && ticksInUse % livingTarget.invulnerableDuration == 1 && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, livingTarget)) {
+            livingTarget.setSecondsOnFire(20);
+            EntityUtil.attackEntityWithoutKnockback(livingTarget, livingTarget.damageSources().indirectMagic(caster, livingTarget), 5);
         }
 
         return true;

@@ -2,6 +2,8 @@ package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.common.entity.construct.MagicConstructEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.particles.ParticleTypes;
@@ -45,11 +47,7 @@ public class BubbleConstruct extends MagicConstructEntity {
 
         if (isDarkOrb) {
             if (EntityUtil.getRider(this) != null && EntityUtil.getRider(this).tickCount % 30 == 0) {
-                if (this.getCaster() != null) {
-                    EntityUtil.getRider(this).hurt(this.damageSources().indirectMagic(this, getCaster()), 1 * damageMultiplier);
-                } else {
-                    EntityUtil.getRider(this).hurt(this.damageSources().magic(), 1 * damageMultiplier);
-                }
+                EBMagicDamageSource.causeMagicDamage(this, EntityUtil.getRider(this), 1 * damageMultiplier, EBDamageSources.SORCERY, false);
             }
 
             for (int i = 0; i < 5; i++) {

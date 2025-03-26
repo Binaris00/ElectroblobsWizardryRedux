@@ -2,6 +2,8 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -54,9 +56,8 @@ public class SparkBomb extends BombEntity {
                 this.getBoundingBox().inflate(3)
         );
 
-        if (closestEntity != null) {
-            closestEntity.hurt(closestEntity.damageSources().indirectMagic(this, this.getOwner()), 4);
-        }
+        if (closestEntity != null)
+            EBMagicDamageSource.causeMagicDamage(this, closestEntity, 4, EBDamageSources.SHOCK, false);
 
         ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight(), this.getZ());
     }
@@ -65,8 +66,7 @@ public class SparkBomb extends BombEntity {
     protected void onHitEntity(EntityHitResult entityHitResult) {
         // Direct hit damage
         float damage = 6;
-        entityHitResult.getEntity().hurt(entityHitResult.getEntity().damageSources().indirectMagic(this, this.getOwner()), damage);
-
+        EBMagicDamageSource.causeMagicDamage(this, entityHitResult.getEntity(), damage, EBDamageSources.SHOCK, false);
         this.playSound(EBSounds.ENTITY_SPARK_BOMB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
 
         ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ());

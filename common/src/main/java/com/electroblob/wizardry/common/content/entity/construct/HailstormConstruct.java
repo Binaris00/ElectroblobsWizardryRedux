@@ -37,6 +37,7 @@ public class HailstormConstruct extends ScaledConstructEntity {
 			iceshard.setDeltaMovement(Mth.cos((float)Math.toRadians(this.getYRot() + 90)), -0.6,
 					Mth.sin((float)Math.toRadians(this.getYRot() + 90)));
 
+			// TODO OWNER STUFF
 			//iceshard.setCaster(this.getCaster());
 			//iceshard.damageMultiplier = this.damageMultiplier;
 

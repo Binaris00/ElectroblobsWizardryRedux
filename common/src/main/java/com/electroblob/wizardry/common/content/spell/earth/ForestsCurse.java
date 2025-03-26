@@ -1,9 +1,11 @@
 package com.electroblob.wizardry.common.content.spell.earth;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,11 +22,10 @@ public class ForestsCurse extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
-
-        // TODO SPELL DAMAGE SOUND CUSTOM !MagicDamage.isEntityImmune(DamageType.POISON, target)
-        if(EntityUtil.isLiving(target) && caster != null){
-            //DamageSource source = caster != null ? MagicDamage.causeDirectMagicDamage(caster, DamageType.POISON) : DamageSource.MAGIC;
-            target.hurt(target.damageSources().indirectMagic(caster, target), 4);
+        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, target)){
+            DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.POISON)
+                    : target.damageSources().magic();
+            target.hurt(source, 4);
 
             int bonusAmplifier = 1;
             int duration = 140;

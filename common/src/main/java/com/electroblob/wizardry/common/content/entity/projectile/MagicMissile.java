@@ -49,13 +49,13 @@ public class MagicMissile extends MagicArrowEntity {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
+    protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         this.playSound(EBSounds.ENTITY_MAGIC_MISSILE_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
 
         if (this.level().isClientSide()) {
             ParticleBuilder.create(EBParticles.FLASH).pos(this.xo, this.yo, this.zo).color(1, 1, 0.65f).spawn(this.level());
         }
-        super.onHitEntity(entityHitResult);
+        super.onHitEntity(hitResult);
     }
 
     @Override

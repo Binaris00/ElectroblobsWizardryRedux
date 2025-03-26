@@ -2,7 +2,9 @@ package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.BlockParticleOption;
@@ -11,7 +13,6 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -20,10 +21,10 @@ import org.jetbrains.annotations.Nullable;
 public class PlagueOfDarkness extends AreaEffectSpell {
     @Override
     protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
-        // TODO !MagicDamage.isEntityImmune(DamageType.WITHER, target)
-
-        target.hurt(target.damageSources().wither(), 8);
-        target.addEffect(new MobEffectInstance(MobEffects.WITHER, 140, 2));
+        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
+            target.hurt(target.damageSources().wither(), 8);
+            target.addEffect(new MobEffectInstance(MobEffects.WITHER, 140, 2));
+        }
 
         return true;
     }

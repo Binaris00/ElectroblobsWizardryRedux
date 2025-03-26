@@ -2,8 +2,10 @@ package com.electroblob.wizardry.common.content.spell.earth;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.construct.BubbleConstruct;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,8 +37,7 @@ public class Bubble extends RaySpell {
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
         if (target instanceof LivingEntity) {
             if (!world.isClientSide) {
-                target.hurt(target.damageSources().magic(), 1);
-
+                target.hurt(EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.SORCERY, false), 1);
                 BubbleConstruct bubble = new BubbleConstruct(world);
                 bubble.setPos(target.getX(), target.getY(), target.getZ());
                 bubble.setCaster((Player) caster);

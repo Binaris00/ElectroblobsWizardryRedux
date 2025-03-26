@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.particles.ParticleTypes;
@@ -46,16 +48,12 @@ public class EntityFireSigil extends ScaledConstructEntity {
                 if (this.isValidTarget(target)) {
                     Vec3 originalVec = target.getDeltaMovement();
 
-                    target.hurt(this.getCaster() != null
-                            ? target.damageSources().onFire()
-                            : target.damageSources().magic(), 6
-                            * damageMultiplier);
+                    EBMagicDamageSource.causeMagicDamage(this, target, 6 * damageMultiplier, EBDamageSources.FIRE, false);
 
                     target.setDeltaMovement(originalVec);
 
-                    // TODO MAGIC DAMAGE
-//                    if (!MagicDamage.isEntityImmune(DamageType.FIRE, target))
-                    target.setSecondsOnFire(10);
+                    if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
+                        target.setSecondsOnFire(10);
 
                     this.playSound(EBSounds.ENTITY_FIRE_SIGIL_TRIGGER.get(), 1, 1);
 

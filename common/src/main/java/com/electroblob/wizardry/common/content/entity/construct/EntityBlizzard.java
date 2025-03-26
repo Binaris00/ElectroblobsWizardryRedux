@@ -2,7 +2,9 @@ package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -51,16 +53,11 @@ public class EntityBlizzard extends ScaledConstructEntity {
 
             for (LivingEntity target : targets) {
                 if (this.isValidTarget(target)) {
-                    if (this.getCaster() != null) {
-                        EntityUtil.attackEntityWithoutKnockback(target, target.damageSources().indirectMagic(this, this.getCaster()), 1 * damageMultiplier);
-                    } else {
-                        EntityUtil.attackEntityWithoutKnockback(target, target.damageSources().magic(), 1 * damageMultiplier);
-                    }
+                    EntityUtil.attackEntityWithoutKnockback(target, getCaster() != null ? EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.FROST)
+                                    : EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY),
+                            1 * damageMultiplier);
                 }
                 target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 20));
-                // TODO: MAGIC DAMAGE
-//                if (!MagicDamage.isEntityImmune(DamageType.FROST, target))
-//                    target.addEffect(new MobEffectInstance(WizardryPotions.FROST.get(), 20, 0));
             }
 
         } else {

@@ -4,11 +4,14 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.api.common.util.InventoryUtil;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -41,7 +44,7 @@ public class ForceArrow extends MagicArrowEntity {
     }
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
+    protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         this.playSound(EBSounds.ENTITY_FORCE_ARROW_HIT.get(), 1.0F, 1.0F);
 
         if (this.level().isClientSide()) {
@@ -52,7 +55,7 @@ public class ForceArrow extends MagicArrowEntity {
                     .spawn(level());
         }
 
-        super.onHitEntity(entityHitResult);
+        super.onHitEntity(hitResult);
     }
 
     @Override
@@ -119,5 +122,10 @@ public class ForceArrow extends MagicArrowEntity {
     @Override
     public ResourceLocation getTexture() {
         return new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/force_arrow.png");
+    }
+
+    @Override
+    public ResourceKey<DamageType> getDamageType() {
+        return EBDamageSources.FORCE;
     }
 }

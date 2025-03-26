@@ -49,14 +49,14 @@ public class Dart extends MagicArrowEntity {
 
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
-        Entity entity = entityHitResult.getEntity();
+    protected void onHitEntity(@NotNull EntityHitResult hitResult) {
+        Entity entity = hitResult.getEntity();
         if (entity instanceof LivingEntity livingEntity) {
             livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200,
                     1, false, false));
         }
 
-        super.onHitEntity(entityHitResult);
+        super.onHitEntity(hitResult);
     }
 
     @Override

@@ -3,8 +3,6 @@ package com.electroblob.wizardry.common.content.spell.necromancy;
 import com.electroblob.wizardry.api.common.spell.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
-import com.electroblob.wizardry.setup.registries.client.EBSounds;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.phys.Vec3;

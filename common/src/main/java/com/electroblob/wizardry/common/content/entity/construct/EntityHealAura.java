@@ -2,7 +2,9 @@ package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -38,6 +40,7 @@ public class EntityHealAura extends ScaledConstructEntity {
                 float brightness = 0.5f + (random.nextFloat() * 0.5f);
                 double radius = random.nextDouble() * (getBbWidth()/2);
                 float angle = random.nextFloat() * (float)Math.PI * 2;
+
                 ParticleBuilder.create(EBParticles.SPARKLE)
                         .pos(this.xo + radius * Mth.cos(angle), this.yo, this.zo + radius * Mth.sin(angle))
                         .velocity(0, 0.05, 0)
@@ -59,7 +62,8 @@ public class EntityHealAura extends ScaledConstructEntity {
 
             if(target.getMobType() == MobType.UNDEAD && this.tickCount % 10 == 1) {
                 EntityUtil.attackEntityWithoutKnockback(target, this.getCaster() != null ?
-                                this.damageSources().indirectMagic(this, getCaster()) : this.damageSources().magic(),
+                                EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.RADIANT) :
+                                EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY),
                         1 * damageMultiplier);
             }
         }

@@ -3,9 +3,12 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
@@ -13,8 +16,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.level.Level;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Random;
 
 public class LightningArrow extends MagicArrowEntity {
 
@@ -47,7 +48,7 @@ public class LightningArrow extends MagicArrowEntity {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
+    protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         for (int i = 0; i < 8; i++) {
             if (this.level().isClientSide()) {
                 ParticleBuilder.create(EBParticles.SPARK, level().getRandom(), this.xo, this.yo + this.getBbHeight() / 2, this.zo, 1, false)
@@ -55,7 +56,7 @@ public class LightningArrow extends MagicArrowEntity {
             }
         }
         this.playSound(EBSounds.ENTITY_LIGHTNING_ARROW_HIT.get(), 1.0F, 1.0F);
-        super.onHitEntity(entityHitResult);
+        super.onHitEntity(hitResult);
     }
 
     @Override
@@ -66,5 +67,10 @@ public class LightningArrow extends MagicArrowEntity {
             }
         }
         super.tick();
+    }
+
+    @Override
+    public ResourceKey<DamageType> getDamageType() {
+        return EBDamageSources.SHOCK;
     }
 }

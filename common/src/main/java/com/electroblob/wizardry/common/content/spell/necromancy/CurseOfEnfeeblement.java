@@ -2,12 +2,14 @@ package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
-import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,12 +25,13 @@ public class CurseOfEnfeeblement extends RaySpell {
 
     @Override
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if (target instanceof LivingEntity livingEntity) {
+        if (target instanceof LivingEntity livingEntity && !EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity)) {
             livingEntity.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_ENFEEBLEMENT.get(), Integer.MAX_VALUE, 0));
 
+            DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.WITHER)
+                    : livingEntity.damageSources().wither();
             if (livingEntity.getHealth() > ((LivingEntity) target).getMaxHealth()) {
-                target.hurt(target.damageSources().wither(), ((LivingEntity) target).getHealth() -
-                        ((LivingEntity) target).getMaxHealth());
+                target.hurt(source, livingEntity.getHealth() - livingEntity.getMaxHealth());
             }
         }
 

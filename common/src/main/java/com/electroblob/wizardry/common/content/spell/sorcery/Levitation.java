@@ -47,7 +47,8 @@ public class Levitation extends Spell {
                     .color(0.5f, 1, 0.7f).spawn(player.level());
         }
 
-        //this.playSound(world, caster, ticksInUse, -1, modifiers);
+
+        this.playSound(caster.getCastLevel(), player, 0, -1);
         //return true;
     }
 

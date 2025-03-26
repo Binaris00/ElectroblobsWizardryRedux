@@ -1,11 +1,13 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.api.common.spell.Caster;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.DrawingUtils;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -31,7 +33,7 @@ public class Firestorm extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
-        target.setSecondsOnFire(15);
+        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target) )target.setSecondsOnFire(15);
         return true;
     }
 

@@ -1,14 +1,16 @@
 package com.electroblob.wizardry.common.content.spell.ice;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.api.common.spell.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
-import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -42,17 +44,15 @@ public class Freeze extends RaySpell {
 
     @Override
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if (EntityUtil.isLiving(target)) {
+        if (target instanceof LivingEntity livingEntity && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, livingEntity)) {
             if (target instanceof Blaze || target instanceof MagmaCube) {
-                target.hurt(target.damageSources().indirectMagic(caster, target), 3);
+                DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.FROST)
+                        : target.damageSources().magic();
+                target.hurt(source, 3);
             }
 
-            if(target instanceof LivingEntity livingEntity){
-                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 1));
-            }
-
+            livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 1));
             if (target.isOnFire()) target.clearFire();
-
             return true;
         }
 
