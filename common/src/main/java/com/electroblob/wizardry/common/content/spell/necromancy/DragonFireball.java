@@ -1,13 +1,16 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class DragonFireball extends Spell {
+    public static final SpellProperty<Float> ACCELERATION = SpellProperty.floatProperty("acceleration", 0.1F);
+
     @Override
     protected void perform(Caster caster) {
         if(!(caster instanceof Player player)) return;
@@ -20,7 +23,7 @@ public class DragonFireball extends Spell {
 
             fireball.setPos(player.getX() + look.x, player.getY() + look.y + 1.3, player.getZ() + look.z);
 
-            double acceleration = 0.1;
+            double acceleration = property(ACCELERATION);
 
             fireball.xPower = look.x * acceleration;
             fireball.yPower = look.y * acceleration;
@@ -35,6 +38,6 @@ public class DragonFireball extends Spell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder().add(ACCELERATION).build();
     }
 }

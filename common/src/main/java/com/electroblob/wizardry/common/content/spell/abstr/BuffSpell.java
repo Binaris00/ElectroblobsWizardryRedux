@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.abstr;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.Caster;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.spell.Spell;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -54,7 +55,8 @@ public class BuffSpell extends Spell {
 
     protected boolean applyEffects(LivingEntity caster){
         for(MobEffect effect : potionSet){
-            caster.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? 1 : 100,
+            caster.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? this.property(getEffectStrengthProperty(effect)) :
+                    this.property(getEffectDurationProperty(effect)),
                     1, false, true
             ));
         }
@@ -71,11 +73,17 @@ public class BuffSpell extends Spell {
         }
         ParticleBuilder.create(EBParticles.BUFF).entity(caster).color(r, g, b).spawn(world);
     }
+    
+    public static SpellProperty<Integer> getEffectDurationProperty(MobEffect effect){
+        return SpellProperty.intProperty(effect.getDescriptionId() + "_duration");
+    }
 
-
+    public static SpellProperty<Integer> getEffectStrengthProperty(MobEffect effect){
+        return SpellProperty.intProperty(effect.getDescriptionId() + "_strength");
+    }
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.empty();
     }
 }

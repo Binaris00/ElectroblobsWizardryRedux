@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.earth;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.player.Player;
@@ -56,6 +57,6 @@ public class GrownAura extends Spell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder().add(DefaultProperties.EFFECT_RADIUS, 2).build();
     }
 }

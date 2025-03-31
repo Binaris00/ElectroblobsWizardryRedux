@@ -1,22 +1,22 @@
 package com.electroblob.wizardry.common.content.spell.earth;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
-import com.electroblob.wizardry.api.common.spell.SpellProperty;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class Leap extends Spell {
-    public static final SpellProperty<Float> HORIZONTAL_SPEED = SpellProperty.floatProperty("horizontal_speed");
-    public static final SpellProperty<Float> VERTICAL_SPEED = SpellProperty.floatProperty("vertical_speed");
+    public static final SpellProperty<Float> HORIZONTAL_SPEED = SpellProperty.floatProperty("horizontal_speed", 0.3F);
+    public static final SpellProperty<Float> VERTICAL_SPEED = SpellProperty.floatProperty("vertical_speed", 0.65F);
 
     @Override
     protected void perform(Caster caster) {
         if(caster instanceof Player player && player.onGround()) {
-            player.setDeltaMovement(player.getDeltaMovement().x, 0.65, player.getDeltaMovement().z);
-            double horizontalSpeed = 0.3;
+            player.setDeltaMovement(player.getDeltaMovement().x, property(VERTICAL_SPEED), player.getDeltaMovement().z);
+            double horizontalSpeed = property(HORIZONTAL_SPEED);
             player.addDeltaMovement(new Vec3(player.getLookAngle().x * horizontalSpeed, 0, player.getLookAngle().z * horizontalSpeed));
 
             for (int i = 0; i < 10; i++) {
@@ -30,6 +30,9 @@ public class Leap extends Spell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(HORIZONTAL_SPEED)
+                .add(VERTICAL_SPEED)
+                .build();
     }
 }

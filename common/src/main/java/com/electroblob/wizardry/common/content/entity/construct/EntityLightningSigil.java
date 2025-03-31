@@ -1,12 +1,15 @@
 package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
@@ -20,6 +23,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class EntityLightningSigil extends ScaledConstructEntity {
+    public static final SpellProperty<Integer> SECOND_RANGE = SpellProperty.intProperty("second_range");
+
     public EntityLightningSigil(EntityType<?> entityType, Level level) {
         super(entityType, level);
     }
@@ -30,7 +35,7 @@ public class EntityLightningSigil extends ScaledConstructEntity {
 
     @Override
     public @NotNull EntityDimensions getDimensions(Pose pose) {
-        return EntityDimensions.scalable(1 * 2, 0.2f);
+        return EntityDimensions.scalable(Spells.LIGHTNING_SIGIL.property(DefaultProperties.EFFECT_RADIUS) * 2, 0.2f);
     }
 
     @Override
@@ -52,17 +57,18 @@ public class EntityLightningSigil extends ScaledConstructEntity {
             if (this.isValidTarget(target)) {
                 Vec3 originalVec = target.getDeltaMovement();
 
-                if (EBMagicDamageSource.causeMagicDamage(this, target, 6 * this.damageMultiplier,
+                if (EBMagicDamageSource.causeMagicDamage(this, target,
+                        Spells.LIGHTNING_SIGIL.property(DefaultProperties.DAMAGE) * this.damageMultiplier,
                         EBDamageSources.SHOCK, false)) {
                     target.setDeltaMovement(originalVec);
 
                     this.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
 
-                    double seekerRange = 1;
+                    double seekerRange = Spells.LIGHTNING_SIGIL.property(DefaultProperties.RANGE);
 
                     List<LivingEntity> secondaryTargets = EntityUtil.getLivingWithinRadius(seekerRange, target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), level());
 
-                    for (int j = 0; j < Math.min(secondaryTargets.size(), 3); j++) {
+                    for (int j = 0; j < Math.min(secondaryTargets.size(), Spells.LIGHTNING_SIGIL.property(DefaultProperties.MAX_TARGETS)); j++) {
                         LivingEntity secondaryTarget = secondaryTargets.get(j);
 
                         if (secondaryTarget != target && this.isValidTarget(secondaryTarget)) {
@@ -76,7 +82,8 @@ public class EntityLightningSigil extends ScaledConstructEntity {
                             secondaryTarget.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0F, level().random.nextFloat() * 0.4F + 1.5F);
 
 
-                            secondaryTarget.hurt(EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SHOCK), 4 * damageMultiplier);
+                            secondaryTarget.hurt(EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SHOCK),
+                                    Spells.LIGHTNING_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier);
                         }
 
                     }

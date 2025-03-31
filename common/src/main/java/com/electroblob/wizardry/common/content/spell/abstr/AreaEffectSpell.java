@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.abstr;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.earth.ForestsCurse;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -46,11 +47,7 @@ public abstract class AreaEffectSpell extends Spell {
     }
 
     protected boolean findAndAffectEntities(Level world, Vec3 origin, @Nullable LivingEntity caster, int ticksInUse) {
-        // TODO Bin: Effect radius
-        double radius = 10;
-
-        // TODO TEMP
-        if(this instanceof ForestsCurse) radius = 5;
+        double radius = this.property(DefaultProperties.EFFECT_RADIUS);
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, origin.x, origin.y, origin.z, world);
 
@@ -90,10 +87,5 @@ public abstract class AreaEffectSpell extends Spell {
     }
 
     protected void spawnParticle(Level world, double x, double y, double z) {
-    }
-
-    @Override
-    protected SpellProperties properties() {
-        return null;
     }
 }

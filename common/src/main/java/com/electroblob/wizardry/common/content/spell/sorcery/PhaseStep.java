@@ -1,9 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.sorcery;
 
 import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.api.common.util.GeometryUtil;

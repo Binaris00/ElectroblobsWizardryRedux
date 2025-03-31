@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.ice;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -21,7 +22,7 @@ public class Permafrost extends RaySpell {
     public Permafrost(){
         this.particleVelocity(1);
         this.particleSpacing(0.5);
-        //soundValues(0.5f, 1, 0);
+        soundValues(0.5f, 1, 0);
         this.ignoreLivingEntities(true);
     }
 
@@ -99,8 +100,15 @@ public class Permafrost extends RaySpell {
         ParticleBuilder.create(EBParticles.SNOW).pos(x, y, z).velocity(vx, vy, vz).time(8 + world.random.nextInt(12)).spawn(world);
     }
 
+    // TODO Not really used spell properties (?(
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.DAMAGE, 3F)
+                .add(DefaultProperties.DURATION, 600)
+                .add(DefaultProperties.EFFECT_DURATION, 100)
+                .add(DefaultProperties.EFFECT_STRENGTH, 0)
+                .build();
     }
 }

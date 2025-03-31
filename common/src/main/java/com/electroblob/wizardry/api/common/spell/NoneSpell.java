@@ -1,5 +1,8 @@
 package com.electroblob.wizardry.api.common.spell;
 
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+
 /**
  * This is an empty spell used for whenever a non-null empty spell is needed; it's great for
  * using as a template when making your own spell.

@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.common.content.spell.lightning;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -30,5 +31,11 @@ public class BlindingFlash extends AreaEffectSpell {
     protected void spawnParticleEffect(Level world, Vec3 origin, double radius, @Nullable LivingEntity caster) {
         if (caster != null) origin = origin.add(0, caster.getBbHeight() + 1, 0);
         ParticleBuilder.create(EBParticles.SPHERE).pos(origin).scale((float) radius * 0.8f).spawn(world);
+    }
+
+
+    @Override
+    protected SpellProperties properties() {
+        return null;
     }
 }

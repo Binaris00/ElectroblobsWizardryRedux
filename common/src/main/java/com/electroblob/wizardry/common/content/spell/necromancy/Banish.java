@@ -1,8 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
@@ -16,6 +18,9 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class Banish extends RaySpell {
+    public static final SpellProperty<Integer> MINIMUM_TELEPORT = SpellProperty.intProperty("minimum_teleport_distance", 8);
+    public static final SpellProperty<Integer> MAX_TELEPORT = SpellProperty.intProperty("maximum_teleport_distance", 16);
+
     @Override
     protected boolean onMiss(Level world, @Nullable LivingEntity caster, Vec3 origin, Vec3 direction, int ticksInUse) {
         return true;
@@ -31,8 +36,8 @@ public class Banish extends RaySpell {
         if (target instanceof LivingEntity) {
             LivingEntity entity = (LivingEntity) target;
 
-            double minRadius = 8;
-            double maxRadius = 16;
+            double minRadius = this.property(MINIMUM_TELEPORT);
+            double maxRadius = this.property(MAX_TELEPORT);
             double radius = (minRadius + world.random.nextDouble() * maxRadius - minRadius);
 
             teleport(entity, world, radius);
@@ -86,6 +91,10 @@ public class Banish extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(MINIMUM_TELEPORT)
+                .add(MAX_TELEPORT)
+                .build();
     }
 }

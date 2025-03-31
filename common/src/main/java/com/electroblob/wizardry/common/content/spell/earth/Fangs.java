@@ -1,11 +1,12 @@
 package com.electroblob.wizardry.common.content.spell.earth;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.GeometryUtil;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -50,7 +51,7 @@ public class Fangs extends Spell {
 
             } else {
                 Vec3 direction = GeometryUtil.horizontalise(player.getLookAngle());
-                int count = 10;
+                float count = this.property(DefaultProperties.RANGE);
                 float yaw = (float) Mth.atan2(direction.z, direction.x);
 
                 for (int i = 0; i < count; i++) {
@@ -83,6 +84,6 @@ public class Fangs extends Spell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder().add(DefaultProperties.RANGE, 10F).build();
     }
 }

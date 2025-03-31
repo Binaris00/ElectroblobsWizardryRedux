@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -38,8 +39,9 @@ public class FlameRay extends RaySpell {
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
         if (target instanceof LivingEntity livingTarget
                 && ticksInUse % livingTarget.invulnerableDuration == 1 && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, livingTarget)) {
-            livingTarget.setSecondsOnFire(20);
-            EntityUtil.attackEntityWithoutKnockback(livingTarget, livingTarget.damageSources().indirectMagic(caster, livingTarget), 5);
+            livingTarget.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
+            EntityUtil.attackEntityWithoutKnockback(livingTarget, livingTarget.damageSources().indirectMagic(caster, livingTarget),
+                    property(DefaultProperties.DAMAGE));
         }
 
         return true;
@@ -59,6 +61,10 @@ public class FlameRay extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.DAMAGE, 3F)
+                .add(DefaultProperties.EFFECT_DURATION, 10)
+                .build();
     }
 }

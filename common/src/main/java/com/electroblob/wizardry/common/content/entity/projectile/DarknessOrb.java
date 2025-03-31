@@ -3,9 +3,11 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -35,11 +37,13 @@ public class DarknessOrb extends MagicProjectileEntity {
         Entity target = rayTrace.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) rayTrace).getEntity() : null;
 
         if (target != null && !EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
-            float damage = 8 * damageMultiplier;
+            float damage = Spells.DARKNESS_ORB.property(DefaultProperties.DAMAGE) * damageMultiplier;
             EBMagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.WITHER, false);
 
             if (target instanceof LivingEntity livingEntity)
-                livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER, 150, 1));
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER,
+                        Spells.DARKNESS_ORB.property(DefaultProperties.EFFECT_DURATION),
+                        Spells.DARKNESS_ORB.property(DefaultProperties.EFFECT_STRENGTH)));
 
             this.playSound(EBSounds.ENTITY_DARKNESS_ORB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
         }

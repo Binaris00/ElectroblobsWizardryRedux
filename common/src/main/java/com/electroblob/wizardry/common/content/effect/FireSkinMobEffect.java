@@ -6,6 +6,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
+// TODO, fire if attack event
 public class FireSkinMobEffect extends MagicMobEffect {
     public FireSkinMobEffect() {
         super(MobEffectCategory.BENEFICIAL, 0);

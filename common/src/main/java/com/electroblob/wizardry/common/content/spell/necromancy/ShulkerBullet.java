@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -19,7 +20,7 @@ public class ShulkerBullet extends Spell {
         if(!(caster instanceof Player player)) return;
         if(player.level().isClientSide) return;
 
-        double range = 10;
+        double range = property(DefaultProperties.RANGE);
 
         List<LivingEntity> possibleTargets = EntityUtil.getLivingWithinRadius(range, player.getX(), player.getY(), player.getZ(),
                 player.level());
@@ -37,6 +38,8 @@ public class ShulkerBullet extends Spell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .build();
     }
 }

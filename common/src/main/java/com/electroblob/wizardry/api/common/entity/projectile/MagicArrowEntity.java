@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.api.common.entity.projectile;
 
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.client.renderer.entity.MagicArrowRenderer;
 import com.electroblob.wizardry.common.content.spell.abstr.ArrowSpell;

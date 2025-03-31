@@ -3,7 +3,7 @@ package com.electroblob.wizardry.common.content.spell.ice;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;

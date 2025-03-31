@@ -2,8 +2,9 @@ package com.electroblob.wizardry.common.content.spell.ice;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
@@ -21,7 +22,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 public class FrostRay extends RaySpell {
-
     public FrostRay() {
         this.particleVelocity(1);
         this.particleSpacing(0.5);
@@ -42,9 +42,10 @@ public class FrostRay extends RaySpell {
         if(target instanceof LivingEntity livingTarget && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, livingTarget)){
             if(livingTarget.isOnFire()) livingTarget.clearFire();
 
-            livingTarget.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200 , 1));
+            livingTarget.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), property(DefaultProperties.EFFECT_DURATION),
+                    property(DefaultProperties.EFFECT_STRENGTH)));
             if(ticksInUse % livingTarget.invulnerableDuration == 1){
-                float damage = 10;
+                float damage = property(DefaultProperties.DAMAGE);
                 if(target instanceof Blaze || target instanceof MagmaCube) damage *= 2;
 
                 DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.FROST)
@@ -70,6 +71,10 @@ public class FrostRay extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.DAMAGE, 3F)
+                .add(DefaultProperties.EFFECT_DURATION, 200)
+                .add(DefaultProperties.EFFECT_STRENGTH, 0).build();
     }
 }

@@ -2,9 +2,11 @@ package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.common.content.spell.healing.Heal;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
@@ -37,13 +39,13 @@ public class LifeDrain extends RaySpell {
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
         if (target instanceof LivingEntity livingTarget) {
             if (ticksInUse % 12 == 0) {
-                float damage = 2;
+                float damage = property(DefaultProperties.DAMAGE);
 
                 DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.SORCERY)
                         : livingTarget.damageSources().magic();
 
                 EntityUtil.attackEntityWithoutKnockback(livingTarget, source, damage);
-                if (caster != null) caster.heal(damage * 0.35F);
+                if (caster != null) caster.heal(damage * property(Heal.HEALTH));
             }
         }
         return true;
@@ -65,6 +67,10 @@ public class LifeDrain extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.DAMAGE, 2F)
+                .add(Heal.HEALTH, 0.35F)
+                .build();
     }
 }

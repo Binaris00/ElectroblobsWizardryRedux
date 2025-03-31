@@ -4,10 +4,8 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
-import com.electroblob.wizardry.setup.registries.EBDamageSources;
-import com.electroblob.wizardry.setup.registries.EBEntities;
-import com.electroblob.wizardry.setup.registries.EBMobEffects;
-import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
@@ -39,7 +37,7 @@ public class IceShard extends MagicArrowEntity {
 
     @Override
     public double getDamage() {
-        return 6;
+        return Spells.ICE_SHARD.property(DefaultProperties.DAMAGE);
     }
 
     @Override
@@ -56,7 +54,9 @@ public class IceShard extends MagicArrowEntity {
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         if (hitResult.getEntity() instanceof LivingEntity livingEntity) {
             if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, livingEntity))
-                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 0, false, false));
+                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
+                        Spells.ICE_SHARD.property(DefaultProperties.EFFECT_DURATION),
+                        Spells.ICE_SHARD.property(DefaultProperties.EFFECT_STRENGTH), false, false));
         }
 
         this.playSound(EBSounds.ENTITY_ICE_SHARD_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));

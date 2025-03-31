@@ -1,6 +1,8 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,5 +32,10 @@ public class Enrage extends AreaEffectSpell {
             double z = origin.z - 1 + world.random.nextDouble() * 2;
             ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(x, y, z).color(0.9f, 0.1f, 0).spawn(world);
         }
+    }
+
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.builder().add(DefaultProperties.EFFECT_RADIUS, 8).build();
     }
 }

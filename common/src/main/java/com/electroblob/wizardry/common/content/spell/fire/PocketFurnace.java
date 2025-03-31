@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.common.util.InventoryUtil;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.Container;
@@ -17,10 +18,12 @@ import net.minecraft.world.item.crafting.SmeltingRecipe;
 import java.util.Optional;
 
 public class PocketFurnace extends Spell {
+    public static final SpellProperty<Integer> ITEMS_SMELTED = SpellProperty.intProperty("items_smelted");
+
     @Override
     protected void perform(Caster caster) {
         if(!(caster instanceof Player player)) return;
-        int usesLeft = 5;
+        int usesLeft = property(ITEMS_SMELTED);
 
         ItemStack stack, result;
 
@@ -68,9 +71,9 @@ public class PocketFurnace extends Spell {
 
         if (player.level().isClientSide) {
             for (int i = 0; i < 10; i++) {
-                double x1 = (double) ((float) player.position().x + player.level().random.nextFloat() * 2 - 1.0F);
-                double y1 = (double) ((float) player.position().y + player.getEyeHeight() - 0.5F + player.level().random.nextFloat());
-                double z1 = (double) ((float) player.position().z + player.level().random.nextFloat() * 2 - 1.0F);
+                double x1 = (float) player.position().x + player.level().random.nextFloat() * 2 - 1.0F;
+                double y1 = (float) player.position().y + player.getEyeHeight() - 0.5F + player.level().random.nextFloat();
+                double z1 = (float) player.position().z + player.level().random.nextFloat() * 2 - 1.0F;
                 player.level().addParticle(ParticleTypes.FLAME, x1, y1, z1, 0, 0.01F, 0);
             }
         }
@@ -78,6 +81,8 @@ public class PocketFurnace extends Spell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(ITEMS_SMELTED, 5)
+                .build();
     }
 }

@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.api.common.spell;
+package com.electroblob.wizardry.api.common.spell.internal;
 
 public enum CastingPhase {
     NONE("none"),

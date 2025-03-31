@@ -1,11 +1,16 @@
 package com.electroblob.wizardry.common.content.spell.healing;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import com.electroblob.wizardry.common.content.spell.abstr.BuffSpell;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 
 public class ReplenishHunger extends BuffSpell {
+    public static final SpellProperty<Integer> HUNGER_POINTS = SpellProperty.intProperty("hunger_points", 6);
+    public static final SpellProperty<Float> SATURATION_MODIFIER = SpellProperty.floatProperty("saturation_modifier", 0.1F);
+
     public ReplenishHunger() {
         super(1, 0.7f, 0.4f);
     }
@@ -19,10 +24,17 @@ public class ReplenishHunger extends BuffSpell {
     protected void perform(Caster caster) {
         if(caster instanceof Player player){
             if(player.getFoodData().needsFood()){
-                int foodAmount = 6;
-                player.getFoodData().eat(foodAmount, 0.1F);
+                player.getFoodData().eat(property(HUNGER_POINTS), property(SATURATION_MODIFIER));
             }
         }
         super.perform(caster);
+    }
+
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.builder()
+                .add(HUNGER_POINTS)
+                .add(SATURATION_MODIFIER)
+                .build();
     }
 }

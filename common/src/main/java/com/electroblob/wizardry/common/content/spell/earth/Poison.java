@@ -2,8 +2,9 @@ package com.electroblob.wizardry.common.content.spell.earth;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
@@ -40,8 +41,10 @@ public class Poison extends RaySpell {
             DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.POISON)
                     : livingTarget.damageSources().magic();
 
-            target.hurt(source, 5);
-            livingTarget.addEffect(new MobEffectInstance(MobEffects.POISON, 200, 1));
+            target.hurt(source, property(DefaultProperties.DAMAGE));
+            livingTarget.addEffect(new MobEffectInstance(MobEffects.POISON,
+                    property(DefaultProperties.EFFECT_DURATION),
+                    property(DefaultProperties.EFFECT_STRENGTH)));
         }
         return true;
     }
@@ -54,6 +57,11 @@ public class Poison extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.DAMAGE, 1F)
+                .add(DefaultProperties.EFFECT_DURATION, 200)
+                .add(DefaultProperties.EFFECT_STRENGTH, 1)
+                .build();
     }
 }

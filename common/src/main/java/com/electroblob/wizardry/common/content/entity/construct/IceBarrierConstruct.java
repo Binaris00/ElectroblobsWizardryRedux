@@ -2,6 +2,7 @@ package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.common.entity.ICustomHitbox;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
@@ -69,8 +70,7 @@ public class IceBarrierConstruct extends ScaledConstructEntity implements ICusto
             this.move(MoverType.SELF, new Vec3(0, extensionSpeed, 0));
         }
 
-        // TODO ENTITY SOUND
-        //if (tickCount == delay + 1) this.playSound(WizardrySounds.ENTITY_ICE_BARRIER_EXTEND.get(), 1, 1.5f);
+        if (tickCount == delay + 1) this.playSound(EBSounds.ENTITY_ICE_BARRIER_EXTEND.get(), 1, 1.5f);
 
         super.tick();
 
@@ -104,8 +104,7 @@ public class IceBarrierConstruct extends ScaledConstructEntity implements ICusto
 
     @Override
     public boolean hurt(@NotNull DamageSource source, float amount) {
-        // TODO SOUND ENTITY
-        //this.playSound(WizardrySounds.ENTITY_ICE_BARRIER_DEFLECT.get(), 0.7f, 2.5f);
+        this.playSound(EBSounds.ENTITY_ICE_BARRIER_DEFLECT.get(), 0.7f, 2.5f);
         return super.hurt(source, amount);
     }
 

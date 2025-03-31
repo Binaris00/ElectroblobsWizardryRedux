@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.ice;
 
 import com.electroblob.wizardry.api.common.entity.construct.MagicConstructEntity;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.common.content.entity.construct.HailstormConstruct;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.ConstructRangedSpell;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -29,11 +31,21 @@ public class Hailstorm extends ConstructRangedSpell<HailstormConstruct> {
     }
 
     @Override
-    protected void addConstructExtras(MagicConstructEntity construct, Direction side, @Nullable LivingEntity caster) {
+    protected void addConstructExtras(HailstormConstruct construct, Direction side, @Nullable LivingEntity caster) {
         if(caster != null){
             construct.setYRot(caster.getYHeadRot());
         }else{
             construct.setYRot(side.toYRot());
         }
+    }
+
+
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 20F)
+                .add(DefaultProperties.DURATION, 120)
+                .add(DefaultProperties.EFFECT_RADIUS, 2)
+                .build();
     }
 }

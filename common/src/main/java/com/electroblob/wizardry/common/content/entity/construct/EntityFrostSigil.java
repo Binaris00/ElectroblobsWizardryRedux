@@ -4,10 +4,8 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
-import com.electroblob.wizardry.setup.registries.EBDamageSources;
-import com.electroblob.wizardry.setup.registries.EBEntities;
-import com.electroblob.wizardry.setup.registries.EBMobEffects;
-import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,7 +31,7 @@ public class EntityFrostSigil extends ScaledConstructEntity {
 
     @Override
     public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return EntityDimensions.scalable(1 * 2, 0.2f);
+        return EntityDimensions.scalable(Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_RADIUS) * 2, 0.2f);
     }
 
     @Override
@@ -52,10 +50,11 @@ public class EntityFrostSigil extends ScaledConstructEntity {
                 if (this.isValidTarget(target)) {
                     EntityUtil.attackEntityWithoutKnockback(target, this.getCaster() != null ?
                             EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.FROST) :
-                            EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY), 8 * damageMultiplier);
+                            EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY), Spells.FROST_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier);
 
                     if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
-                        target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200, 1));
+                        target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_DURATION),
+                                Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_STRENGTH)));
 
                     this.playSound(EBSounds.ENTITY_FROST_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
                     this.discard();

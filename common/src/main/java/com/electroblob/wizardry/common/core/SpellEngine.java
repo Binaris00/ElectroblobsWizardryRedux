@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.common.core;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
 import net.minecraft.server.level.ServerLevel;
 

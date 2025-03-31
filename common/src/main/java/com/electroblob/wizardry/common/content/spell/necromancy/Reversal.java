@@ -1,7 +1,8 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
@@ -40,7 +41,7 @@ public class Reversal extends RaySpell {
 
                 // TODO BIN, no bonus effects :c
                 int bonusEffects = 0;
-                int n = 1 + bonusEffects;
+                int n = property(DefaultProperties.EFFECT_STRENGTH) + bonusEffects;
 
                 Collections.shuffle(negativePotions);
                 negativePotions = negativePotions.subList(0, Math.min(negativePotions.size(), n));
@@ -64,6 +65,9 @@ public class Reversal extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 8F)
+                .add(DefaultProperties.EFFECT_STRENGTH, 1)
+                .build();
     }
 }

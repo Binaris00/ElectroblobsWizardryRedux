@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.sorcery;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.player.Player;
 
@@ -35,9 +36,9 @@ public class Levitation extends Spell {
         // TODO BIN CONFIG HERE
         //if(!Wizardry.settings.replaceVanillaFallDamage) caster.fallDistance = 0;
 
-        player.setDeltaMovement(player.getDeltaMovement().x, player.getDeltaMovement().y < 0.5 ?
+        player.setDeltaMovement(player.getDeltaMovement().x, player.getDeltaMovement().y < property(DefaultProperties.SPEED) ?
                 player.getDeltaMovement().y
-                + 0.1 : player.getDeltaMovement().y, player.getDeltaMovement().z);
+                + property(DefaultProperties.ACCCELERATION) : player.getDeltaMovement().y, player.getDeltaMovement().z);
 
         if(player.level().isClientSide){
             double x = player.getX() - 0.25 + player.level().random.nextDouble() * 0.5;
@@ -49,7 +50,6 @@ public class Levitation extends Spell {
 
 
         this.playSound(caster.getCastLevel(), player, 0, -1);
-        //return true;
     }
 
     @Override
@@ -57,8 +57,12 @@ public class Levitation extends Spell {
         return false;
     }
 
+
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.SPEED, 0.5F)
+                .add(DefaultProperties.ACCCELERATION, 0.1F)
+                .build();
     }
 }

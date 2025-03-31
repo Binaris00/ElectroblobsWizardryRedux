@@ -1,8 +1,8 @@
 package com.electroblob.wizardry.common.content.spell.sorcery;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.RayTracer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;

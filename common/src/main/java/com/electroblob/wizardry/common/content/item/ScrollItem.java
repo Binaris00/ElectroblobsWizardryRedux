@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.common.content.item;
 
 import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
 import com.electroblob.wizardry.api.common.util.SpellUtil;
 import net.minecraft.network.chat.Component;

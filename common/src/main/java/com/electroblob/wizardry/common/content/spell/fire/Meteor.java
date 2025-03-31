@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.EntityMeteor;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -65,6 +66,9 @@ public class Meteor extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 40F)
+                .add(DefaultProperties.DAMAGE, 2F)
+                .build();
     }
 }

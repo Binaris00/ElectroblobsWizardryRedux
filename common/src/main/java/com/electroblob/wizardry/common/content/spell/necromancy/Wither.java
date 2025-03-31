@@ -2,8 +2,9 @@ package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
@@ -34,8 +35,10 @@ public class Wither extends RaySpell {
             DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.WITHER)
                     : livingTarget.damageSources().wither();
 
-            livingTarget.hurt(source, 5);
-            livingTarget.addEffect(new MobEffectInstance(MobEffects.WITHER, 200, 1));
+            livingTarget.hurt(source, property(DefaultProperties.DAMAGE));
+            livingTarget.addEffect(new MobEffectInstance(MobEffects.WITHER,
+                    property(DefaultProperties.EFFECT_DURATION),
+                    property(DefaultProperties.EFFECT_STRENGTH)));
         }
 
         return true;
@@ -47,8 +50,14 @@ public class Wither extends RaySpell {
         ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).time(12 + world.random.nextInt(8)).color(0.1f, 0, 0.05f).spawn(world);
     }
 
+
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.DAMAGE, 1F)
+                .add(DefaultProperties.EFFECT_DURATION, 200)
+                .add(DefaultProperties.EFFECT_STRENGTH, 1)
+                .build();
     }
 }

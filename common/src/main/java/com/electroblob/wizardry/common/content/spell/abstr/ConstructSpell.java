@@ -1,9 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.abstr;
 
 import com.electroblob.wizardry.api.common.entity.construct.MagicConstructEntity;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;

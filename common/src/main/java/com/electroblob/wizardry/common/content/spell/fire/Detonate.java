@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.core.BlockPos;
@@ -28,11 +29,11 @@ public class Detonate extends RaySpell {
     @Override
     protected boolean onBlockHit(Level world, BlockPos pos, Direction side, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
         if (!world.isClientSide) {
-            List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(3, pos.getX(), pos.getY(), pos.getZ(), world);
+            List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(this.property(DefaultProperties.BLAST_RADIUS), pos.getX(), pos.getY(), pos.getZ(), world);
             for (LivingEntity target : targets) {
                 DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.BLAST)
                         : target.damageSources().magic();
-                target.hurt(source, Math.max(12 - (float) target.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) * 4, 0));
+                target.hurt(source, Math.max(property(DefaultProperties.DAMAGE) - (float) target.distanceToSqr(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5) * 4, 0));
             }
         } else {
             world.addParticle(ParticleTypes.EXPLOSION_EMITTER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
@@ -55,6 +56,10 @@ public class Detonate extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 16F)
+                .add(DefaultProperties.DAMAGE, 12F)
+                .add(DefaultProperties.BLAST_RADIUS, 3F)
+                .build();
     }
 }

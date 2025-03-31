@@ -1,7 +1,8 @@
 package com.electroblob.wizardry.common.content.spell.earth;
 
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.config.WizardrySettings;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -32,7 +33,7 @@ public class Whirlwind extends RaySpell {
         if (target instanceof LivingEntity) {
             Vec3 vec = target.getEyePosition(1).subtract(origin).normalize();
             if (!world.isClientSide) {
-                float velocity = 1.5f;
+                float velocity = property(DefaultProperties.SPEED);
 
                 target.setDeltaMovement(vec.x * velocity, vec.y * velocity + 1, vec.z * velocity);
 
@@ -69,6 +70,9 @@ public class Whirlwind extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.SPEED, 1.5F)
+                .build();
     }
 }

@@ -1,14 +1,17 @@
 package com.electroblob.wizardry.common.content.spell.earth;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class Flight extends Spell {
+    public static final SpellProperty<Float> ACCELERATION = SpellProperty.floatProperty("acceleration", 0.05F);
     private static final double Y_NUDGE_ACCELERATION = 0.075;
 
     @Override
@@ -17,7 +20,7 @@ public class Flight extends Spell {
 
         if(!player.isInWater() && !player.isInLava() && !player.isFallFlying()){
 
-            float speed = 0.5f;
+            float speed = property(DefaultProperties.SPEED);
             float acceleration = 0.05f;
 
             // The division thingy checks if the look direction is the opposite way to the velocity. If this is the
@@ -52,7 +55,6 @@ public class Flight extends Spell {
 
 
         playSound(caster.getCastLevel(), player, 0, -1);
-        //if(ticksInUse % 24 == 0) playSound(world, player, ticksInUse, -1, modifiers);
 
     }
 
@@ -63,6 +65,9 @@ public class Flight extends Spell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(ACCELERATION)
+                .add(DefaultProperties.SPEED, 0.5F)
+                .build();
     }
 }

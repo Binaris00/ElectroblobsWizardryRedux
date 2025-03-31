@@ -3,7 +3,9 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -52,8 +54,8 @@ public class Dart extends MagicArrowEntity {
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         Entity entity = hitResult.getEntity();
         if (entity instanceof LivingEntity livingEntity) {
-            livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 200,
-                    1, false, false));
+            livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, Spells.DART.property(DefaultProperties.EFFECT_DURATION),
+                    Spells.DART.property(DefaultProperties.EFFECT_STRENGTH), false, false));
         }
 
         super.onHitEntity(hitResult);

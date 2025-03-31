@@ -4,10 +4,8 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
-import com.electroblob.wizardry.setup.registries.EBDamageSources;
-import com.electroblob.wizardry.setup.registries.EBEntities;
-import com.electroblob.wizardry.setup.registries.EBItems;
-import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
@@ -53,16 +51,17 @@ public class FireBomb extends BombEntity {
         if(hitResult instanceof EntityHitResult entityHitResult){
             Entity entity = entityHitResult.getEntity();
 
-            float damage = 5;
+            float damage = Spells.FIRE_BOMB.property(DefaultProperties.DAMAGE);
             EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
         }
 
         if(hitResult instanceof BlockHitResult){
-            List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), 10);
+            List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), Spells.FIRE_BOMB.property(DefaultProperties.EFFECT_RADIUS));
 
             for(LivingEntity entity: livingEntities){
-                EBMagicDamageSource.causeMagicDamage(this, entity, 3 * blastMultiplier, EBDamageSources.FIRE, false);
-                if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) entity.setSecondsOnFire(7);
+                EBMagicDamageSource.causeMagicDamage(this, entity, Spells.FIRE_BOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE, false);
+                if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
+                    entity.setSecondsOnFire(Spells.FIRE_BOMB.property(DefaultProperties.EFFECT_DURATION));
             }
         }
 

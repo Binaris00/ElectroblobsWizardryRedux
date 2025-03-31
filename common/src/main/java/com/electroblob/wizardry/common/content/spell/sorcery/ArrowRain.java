@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.common.content.spell.sorcery;
 
 import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.common.entity.construct.MagicConstructEntity;
 import com.electroblob.wizardry.common.content.entity.EntityArrowRain;
 import com.electroblob.wizardry.common.content.spell.abstr.ConstructRangedSpell;
 import net.minecraft.core.Direction;
@@ -32,8 +31,9 @@ public class ArrowRain extends ConstructRangedSpell<EntityArrowRain> {
         return super.spawnConstruct(world, x, y, z, side, caster);
     }
 
+
     @Override
-    protected void addConstructExtras(MagicConstructEntity construct, Direction side, @Nullable LivingEntity caster) {
+    protected void addConstructExtras(EntityArrowRain construct, Direction side, @Nullable LivingEntity caster) {
         // Makes the arrows shoot in the direction the caster was looking when they cast the spell.
         // TODO FIX YHEAD
         if(caster != null){

@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.healing;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -27,10 +28,10 @@ public class HealAlly extends RaySpell {
         if (target instanceof LivingEntity livingTarget) {
 
             if (livingTarget.getHealth() < livingTarget.getMaxHealth() && livingTarget.getHealth() > 0) {
-                livingTarget.heal(10);
+                livingTarget.heal(property(Heal.HEALTH));
 
-                //if (world.isClientSide) ParticleBuilder.spawnHealParticles(world, livingTarget);
-                //playSound(world, livingTarget, ticksInUse, -1, modifiers);
+                if (world.isClientSide) ParticleBuilder.spawnHealParticles(world, livingTarget);
+                playSound(world, livingTarget, 0, -1);
             }
 
             return true;
@@ -41,6 +42,9 @@ public class HealAlly extends RaySpell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(Heal.HEALTH, 5F)
+                .build();
     }
 }

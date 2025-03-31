@@ -1,9 +1,11 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.DrawingUtils;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
@@ -33,7 +35,7 @@ public class Firestorm extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
-        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target) )target.setSecondsOnFire(15);
+        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target) )target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
         return true;
     }
 
@@ -64,8 +66,7 @@ public class Firestorm extends AreaEffectSpell {
 
     private void burnNearbyBlocks(Level world, Vec3 origin, @Nullable LivingEntity caster) {
         if (!world.isClientSide && EntityUtil.canDamageBlocks(caster, world)) {
-            // TODO Bin: effect radius 6
-            double radius = 6;
+            double radius = property(DefaultProperties.EFFECT_RADIUS);
 
             for (int i = -(int) radius; i <= (int) radius; i++) {
                 for (int j = -(int) radius; j <= (int) radius; j++) {
@@ -85,5 +86,13 @@ public class Firestorm extends AreaEffectSpell {
                 }
             }
         }
+    }
+
+
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.builder().add(DefaultProperties.EFFECT_RADIUS, 6)
+                .add(DefaultProperties.EFFECT_DURATION, 15)
+                .build();
     }
 }

@@ -2,7 +2,9 @@ package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
 import com.electroblob.wizardry.common.content.entity.projectile.IceShard;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
@@ -18,6 +20,7 @@ public class HailstormConstruct extends ScaledConstructEntity {
 
 	public HailstormConstruct(Level level) {
 		super(EBEntities.HAILSTORM.get(), level);
+		this.lifetime = Spells.HAILSTORM.property(DefaultProperties.DURATION);
 	}
 
 	@Override

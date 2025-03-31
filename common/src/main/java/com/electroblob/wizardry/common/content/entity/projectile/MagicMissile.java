@@ -3,8 +3,10 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -15,8 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Random;
 
 public class MagicMissile extends MagicArrowEntity {
 
@@ -35,7 +35,7 @@ public class MagicMissile extends MagicArrowEntity {
 
     @Override
     public double getDamage() {
-        return 3;
+        return Spells.MAGIC_MISSILE.property(DefaultProperties.DAMAGE);
     }
 
     @Override

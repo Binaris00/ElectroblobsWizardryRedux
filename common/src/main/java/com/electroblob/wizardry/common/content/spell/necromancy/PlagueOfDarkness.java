@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -22,16 +23,13 @@ public class PlagueOfDarkness extends AreaEffectSpell {
     @Override
     protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
         if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
-            target.hurt(target.damageSources().wither(), 8);
-            target.addEffect(new MobEffectInstance(MobEffects.WITHER, 140, 2));
+            target.hurt(target.damageSources().wither(), property(DefaultProperties.DAMAGE));
+            target.addEffect(new MobEffectInstance(MobEffects.WITHER,
+                    property(DefaultProperties.EFFECT_DURATION),
+                    property(DefaultProperties.EFFECT_STRENGTH)));
         }
 
         return true;
-    }
-
-    @Override
-    protected SpellProperties properties() {
-        return null;
     }
 
     @Override
@@ -61,5 +59,15 @@ public class PlagueOfDarkness extends AreaEffectSpell {
         }
 
         ParticleBuilder.create(EBParticles.SPHERE).pos(origin.add(0, 0.1, 0)).scale((float)radius * 0.8f).color(0.8f, 0, 0.05f).spawn(world);
+    }
+
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.builder()
+                .add(DefaultProperties.EFFECT_RADIUS, 5)
+                .add(DefaultProperties.DAMAGE, 8F)
+                .add(DefaultProperties.EFFECT_DURATION, 140)
+                .add(DefaultProperties.EFFECT_STRENGTH, 2)
+                .build();
     }
 }

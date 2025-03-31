@@ -1,10 +1,12 @@
 package com.electroblob.wizardry.common.content.spell.ice;
 
-import com.electroblob.wizardry.api.common.entity.construct.MagicConstructEntity;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.GeometryUtil;
 import com.electroblob.wizardry.common.content.entity.construct.EntityIceSpike;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.ConstructRangedSpell;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,9 +36,8 @@ public class IceSpickes extends ConstructRangedSpell<EntityIceSpike> {
 
         super.spawnConstruct(world, pos.x, pos.y, pos.z, side, caster);
 
-        int quantity = 18;
-
-        float maxRadius = 2.5f;
+        int quantity = Spells.ICE_SPICKES.property(DefaultProperties.ENTITIES);
+        float maxRadius = Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_RADIUS);
 
         for (int i = 0; i < quantity; i++) {
             double radius = 0.5 + world.random.nextDouble() * (maxRadius - 0.5);
@@ -63,11 +64,20 @@ public class IceSpickes extends ConstructRangedSpell<EntityIceSpike> {
     }
 
     @Override
-    protected void addConstructExtras(MagicConstructEntity construct, Direction side, @Nullable LivingEntity caster) {
-        // this will always be ice spickes soo...
-        if(!(construct instanceof EntityIceSpike iceSpike)) return;
+    protected void addConstructExtras(EntityIceSpike construct, Direction side, @Nullable LivingEntity caster) {
+        construct.lifetime = 30 + construct.level().random.nextInt(15);
+        construct.setFacing(side);
+    }
 
-        iceSpike.lifetime = 30 + construct.level().random.nextInt(15);
-        iceSpike.setFacing(side);
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 20F)
+                .add(DefaultProperties.EFFECT_RADIUS, 3)
+                .add(DefaultProperties.ENTITIES, 18)
+                .add(DefaultProperties.DAMAGE, 5F)
+                .add(DefaultProperties.EFFECT_DURATION, 100)
+                .add(DefaultProperties.EFFECT_STRENGTH, 0)
+                .build();
     }
 }

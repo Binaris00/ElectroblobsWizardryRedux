@@ -3,9 +3,11 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
@@ -37,7 +39,7 @@ public class IceLance extends MagicArrowEntity {
 
     @Override
     public double getDamage() {
-        return 15;
+        return Spells.ICE_LANCE.property(DefaultProperties.DAMAGE);
     }
 
     @Override

@@ -2,7 +2,9 @@ package com.electroblob.wizardry.common.content.entity.construct;
 
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.EntityType;
@@ -28,7 +30,7 @@ public class CombustionRuneConstruct extends ScaledConstructEntity {
             List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, getX(), getY(), getZ(), level());
             for (LivingEntity target : targets) {
                 if (this.isValidTarget(target)) {
-                    float strength = 2 * sizeMultiplier;
+                    float strength = Spells.COMBUSTION_RUNE.property(DefaultProperties.BLAST_RADIUS) * sizeMultiplier;
                     level().explode(this.getCaster(), this.getX(), this.getY(), this.getZ(), strength, true, EntityUtil.canDamageBlocks(getCaster(), level()) ?
                             Level.ExplosionInteraction.MOB : Level.ExplosionInteraction.NONE);
                     this.discard();

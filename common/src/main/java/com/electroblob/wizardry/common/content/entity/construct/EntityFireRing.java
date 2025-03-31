@@ -3,9 +3,11 @@ package com.electroblob.wizardry.common.content.entity.construct;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -23,11 +25,12 @@ public class EntityFireRing extends ScaledConstructEntity {
 
     public EntityFireRing(Level world) {
         super(EBEntities.RING_OF_FIRE.get(), world);
+        this.lifetime = Spells.RING_OF_FIRE.property(DefaultProperties.DURATION);
     }
 
     @Override
     public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return EntityDimensions.scalable((float) (2.5 * 2), 1);
+        return EntityDimensions.scalable((float) (Spells.RING_OF_FIRE.property(DefaultProperties.EFFECT_RADIUS) * 2), 1);
     }
 
     @Override
@@ -51,9 +54,9 @@ public class EntityFireRing extends ScaledConstructEntity {
                 if (this.isValidTarget(target) && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
                     Vec3 originalVec = target.getDeltaMovement();
 
-                    target.setSecondsOnFire(10);
+                    target.setSecondsOnFire(Spells.RING_OF_FIRE.property(DefaultProperties.EFFECT_DURATION));
 
-                    float damage = 1 * damageMultiplier;
+                    float damage = Spells.RING_OF_FIRE.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
                     EBMagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.FIRE, false);
 

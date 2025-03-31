@@ -1,9 +1,5 @@
 package com.electroblob.wizardry.common.content.item;
 
-import com.electroblob.wizardry.api.Benchmarker;
-import com.electroblob.wizardry.api.common.spell.Caster;
-import com.electroblob.wizardry.setup.registries.Spells;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.player.Player;
@@ -22,9 +18,9 @@ public class WandItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         var itemInHand = player.getItemInHand(hand);
 
-        if(!level.isClientSide) {
-            Caster.of(player).castSpell(Spells.EXAMPLE);
-        }
+//        if(!level.isClientSide) {
+//            Caster.of(player).castSpell(Spells.EXAMPLE);
+//        }
 
         return InteractionResultHolder.consume(itemInHand);
     }

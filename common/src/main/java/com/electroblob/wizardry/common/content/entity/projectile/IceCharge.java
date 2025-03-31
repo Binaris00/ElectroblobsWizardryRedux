@@ -2,12 +2,15 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -27,6 +30,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class IceCharge extends BombEntity {
+    public static final SpellProperty<Integer> ICE_SHARDS = SpellProperty.intProperty("ice_shards");
+
     public IceCharge(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
         super(entityType, world);
     }
@@ -41,12 +46,12 @@ public class IceCharge extends BombEntity {
     }
 
     @Override
-    protected void onHit(HitResult hitResult) {
+    protected void onHit(@NotNull HitResult hitResult) {
         super.onHit(hitResult);
         Entity entity = hitResult.getType() == HitResult.Type.ENTITY ? ((EntityHitResult) hitResult).getEntity() : null;
 
         if (entity != null) {
-            float damage = 4 * damageMultiplier;
+            float damage = Spells.ICE_CHARGE.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
             EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FROST, false);
 
@@ -107,7 +112,7 @@ public class IceCharge extends BombEntity {
                 }
             }
 
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < Spells.ICE_CHARGE.property(ICE_SHARDS); i++) {
                 double dx = random.nextDouble() - 0.5;
                 double dy = random.nextDouble() - 0.5;
                 double dz = random.nextDouble() - 0.5;

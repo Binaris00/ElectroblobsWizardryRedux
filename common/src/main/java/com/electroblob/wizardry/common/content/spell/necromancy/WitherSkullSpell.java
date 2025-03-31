@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.phys.Vec3;
@@ -18,7 +19,7 @@ public class WitherSkullSpell extends Spell {
 
         witherSkull.setPos(player.getX() + look.x, player.getY() + look.y + 1.3, player.getZ() + look.z);
 
-        double acceleration = 0.1;
+        double acceleration = property(DefaultProperties.SPEED);
 
         witherSkull.xPower = look.x * acceleration;
         witherSkull.yPower = look.y * acceleration;
@@ -32,6 +33,8 @@ public class WitherSkullSpell extends Spell {
 
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.SPEED, 0.1F)
+                .build();
     }
 }

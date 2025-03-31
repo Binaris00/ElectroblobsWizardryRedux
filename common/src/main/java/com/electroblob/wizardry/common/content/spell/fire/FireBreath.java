@@ -1,17 +1,18 @@
 package com.electroblob.wizardry.common.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
@@ -64,21 +65,12 @@ public class FireBreath extends RaySpell {
 
     @Override
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if (target instanceof LivingEntity livingEntity) {
-            // TODO Bin: Custom magic damage
-//            if (MagicDamage.isEntityImmune(DamageType.FIRE, target)) {
-//                if (!world.isClientSide && ticksInUse == 1 && caster instanceof Player)
-//                    ((Player) caster).displayClientMessage(Component.translatable("spell.resist", target.getName(), this.getNameForTranslationFormatted()), true);
-//
-//            } else if (ticksInUse % ((LivingEntity) target).invulnerableDuration == 1) {
-//                target.setSecondsOnFire((int) (getProperty(BURN_DURATION).floatValue() * modifiers.get(WizardryItems.DURATION_UPGRADE.get())));
-//                EntityUtils.attackEntityWithoutKnockback(target, MagicDamage.causeDirectMagicDamage(caster, DamageType.FIRE), getProperty(DAMAGE).floatValue() * modifiers.get(SpellModifiers.POTENCY));
-//            }
-
+        if (target instanceof LivingEntity livingEntity && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
             if (ticksInUse % ((LivingEntity) target).invulnerableDuration == 1) {
                 target.setSecondsOnFire(10);
-                //EntityUtil.attackEntityWithoutKnockback(target, MagicDamage.causeDirectMagicDamage(caster, DamageType.FIRE), getProperty(DAMAGE).floatValue() * modifiers.get(SpellModifiers.POTENCY));
-                EntityUtil.attackEntityWithoutKnockback(livingEntity, livingEntity.damageSources().indirectMagic(caster, livingEntity), 5);
+                DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.FIRE)
+                        : target.damageSources().magic();
+                EntityUtil.attackEntityWithoutKnockback(livingEntity, source, 5);
             }
         }
 

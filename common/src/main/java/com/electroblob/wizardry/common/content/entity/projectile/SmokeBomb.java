@@ -3,9 +3,11 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.BombEntity;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.EntityType;
@@ -47,18 +49,16 @@ public class SmokeBomb extends BombEntity {
 
     @Override
     protected void onHit(HitResult hitResult) {
-        int duration = 400; // need property here
-
-        // Apply effect to entities in range
         List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(this.level(), this.getX(), this.getY(), this.getZ(), 10);
 
         for (LivingEntity entity : livingEntities) {
             if (entity != null && entity != this.getOwner()) {
-                entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, duration, 0));
+                entity.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,
+                        Spells.SMOKE_BOMB.property(DefaultProperties.EFFECT_DURATION),
+                        Spells.SMOKE_BOMB.property(DefaultProperties.EFFECT_STRENGTH)));
             }
         }
 
-        // Handle block hit result
         if (hitResult instanceof BlockHitResult) {
             if (!this.level().isClientSide()) {
                 this.playSound(EBSounds.ENTITY_SMOKE_BOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);

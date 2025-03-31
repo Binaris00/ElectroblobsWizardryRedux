@@ -4,9 +4,11 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
@@ -39,11 +41,11 @@ public class FireBolt extends MagicProjectileEntity {
             EntityHitResult entityHitResult = (EntityHitResult) hitResult;
             Entity entity = entityHitResult.getEntity();
 
-            float damage = 5 * damageMultiplier;
+            float damage = Spells.FIREBOLT.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
             if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) {
                 EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
-                entity.setSecondsOnFire(5);
+                entity.setSecondsOnFire(Spells.FIREBOLT.property(DefaultProperties.EFFECT_DURATION));
             }
         }
 

@@ -4,9 +4,11 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.api.common.util.BlockUtil;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -38,10 +40,10 @@ public class IceBall extends MagicProjectileEntity {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
+    protected void onHitEntity(@NotNull EntityHitResult entityHitResult) {
         if (!level().isClientSide()) {
             Entity entity = entityHitResult.getEntity();
-            float damage = 5 * damageMultiplier;
+            float damage = Spells.ICE_BALL.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
             EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FROST, false);
 

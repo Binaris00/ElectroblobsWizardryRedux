@@ -2,7 +2,7 @@ package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.api.common.spell.NoneSpell;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.common.content.entity.construct.*;
 import com.electroblob.wizardry.common.content.entity.projectile.*;
 import com.electroblob.wizardry.common.content.spell.DefaultProperties;
@@ -15,7 +15,6 @@ import com.electroblob.wizardry.common.content.spell.lightning.BlindingFlash;
 import com.electroblob.wizardry.common.content.spell.lightning.InvokeWeather;
 import com.electroblob.wizardry.common.content.spell.lightning.ZapSpell;
 import com.electroblob.wizardry.common.content.spell.magic.ForceArrowSpell;
-import com.electroblob.wizardry.common.content.spell.misc.ExampleSpell;
 import com.electroblob.wizardry.common.content.spell.necromancy.*;
 import com.electroblob.wizardry.common.content.spell.sorcery.*;
 import net.minecraft.world.effect.MobEffects;
@@ -29,7 +28,6 @@ import static com.electroblob.wizardry.setup.registries.Spells.Register.*;
 public final class Spells {
 
     public static final Spell NONE;
-    public static final Spell EXAMPLE;
     public static final Spell ZAP;
     public static final Spell MAGIC_MISSILE;
     public static final Spell SMOKE_BOMB;
@@ -121,7 +119,6 @@ public final class Spells {
         Register.init();
 
         NONE = spell("none", NoneSpell::new);
-        EXAMPLE = spell("example", ExampleSpell::new);
         ZAP = spell("zap", ZapSpell::new);
 
         MAGIC_MISSILE = spell("magic_missile", () -> new ArrowSpell<>(MagicMissile::new).assignProperties(
@@ -142,9 +139,10 @@ public final class Spells {
         POISON_BOMB = spell("poison_bomb", () -> new ProjectileSpell<>(PoisonBomb::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 10f)
-                        .add(DefaultProperties.DAMAGE, 1f)
+                        .add(DefaultProperties.DAMAGE, 5f)
+                        .add(DefaultProperties.EFFECT_RADIUS, 3)
                         .add(DefaultProperties.EFFECT_STRENGTH, 1)
-                        .add(DefaultProperties.EFFECT_DURATION, 200)
+                        .add(DefaultProperties.EFFECT_DURATION, 150)
                         .build()
         ));
 
@@ -168,27 +166,24 @@ public final class Spells {
 
         DART = spell("dart", () -> new ArrowSpell<>(Dart::new).assignProperties(
                 SpellProperties.builder()
-                        .add(DefaultProperties.RANGE, 18f)
-                        .add(DefaultProperties.COOLDOWN, 10)
-                        .add(DefaultProperties.COST, 5)
+                        .add(DefaultProperties.RANGE, 15f)
+                        .add(DefaultProperties.DAMAGE, 4F)
+                        .add(DefaultProperties.EFFECT_DURATION, 200)
+                        .add(DefaultProperties.EFFECT_STRENGTH, 1)
                         .build()
         ));
 
         LEAP = spell("leap", Leap::new);
 
-        FORCE_ARROW = spell("force_arrow", () -> new ForceArrowSpell().assignProperties(
-                SpellProperties.builder()
-                        .add(DefaultProperties.RANGE, 15f)
-                        .add(DefaultProperties.DAMAGE, 5f)
-                        .build()
-        ));
+        FORCE_ARROW = spell("force_arrow", ForceArrowSpell::new);
 
         WITHER_SKULL = spell("wither_skull", WitherSkullSpell::new);
+
 
         ICE_LANCE = spell("ice_lance", () -> new ArrowSpell<>(IceLance::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 15f)
-                        .add(DefaultProperties.DAMAGE, 15f)
+                        .add(DefaultProperties.DAMAGE, 10f)
                         .add(DefaultProperties.EFFECT_DURATION, 300)
                         .add(DefaultProperties.EFFECT_STRENGTH, 0)
                         .build()
@@ -206,7 +201,6 @@ public final class Spells {
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 20f)
                         .add(DefaultProperties.DAMAGE, 5f)
-                        .add(DefaultProperties.SPLASH_DAMAGE, 3f)
                         .add(DefaultProperties.EFFECT_DURATION, 100)
                         .add(DefaultProperties.EFFECT_STRENGTH, 0)
                         .build()
@@ -216,8 +210,7 @@ public final class Spells {
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 6f)
-                        .add(DefaultProperties.SPLASH_DAMAGE, 3f)
-                        .add(DefaultProperties.EFFECT_DURATION, 100)
+                        .add(DefaultProperties.EFFECT_DURATION, 200)
                         .add(DefaultProperties.EFFECT_STRENGTH, 0)
                         .build()
         ));
@@ -226,8 +219,9 @@ public final class Spells {
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 20f)
                         .add(DefaultProperties.DAMAGE, 4f)
-                        .add(DefaultProperties.EFFECT_DURATION, 120)
+                        .add(DefaultProperties.EFFECT_DURATION, 100)
                         .add(DefaultProperties.EFFECT_STRENGTH, 1)
+                        .add(IceCharge.ICE_SHARDS, 10)
                         .build()
         ));
 
@@ -238,6 +232,8 @@ public final class Spells {
                         .add(DefaultProperties.EFFECT_DURATION, 5)
                         .build()
         ));
+
+
 
         HOMING_SPARK = spell("homing_spark", () -> new ProjectileSpell<>(Spark::new).assignProperties(
                 SpellProperties.builder()
@@ -257,49 +253,78 @@ public final class Spells {
 
         FORCE_ORB = spell("force_orb", () -> new ProjectileSpell<>(EntityForceOrb::new).soundValues(0.5f, 0.4f, 0.2f));
 
-        DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrb::new).soundValues(0.5f, 0.4f, 0.2f));
+
+        DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrb::new)
+                .soundValues(0.5f, 0.4f, 0.2f).assignProperties(SpellProperties.builder()
+                        .add(DefaultProperties.RANGE, 30F)
+                        .add(DefaultProperties.DAMAGE, 8F)
+                        .add(DefaultProperties.EFFECT_DURATION, 150)
+                        .add(DefaultProperties.EFFECT_STRENGTH, 1).build()));
 
         FIRE_RESISTANCE = spell("fire_resistance", () -> new BuffSpell(1, 0.5f, 0, () -> MobEffects.FIRE_RESISTANCE).assignProperties(
                 SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(MobEffects.FIRE_RESISTANCE), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(MobEffects.FIRE_RESISTANCE), 0)
                         .build()
         ));
 
         NIGHT_VISION = spell("night_vision", () -> new BuffSpell(0, 0.4f, 0.7f, () -> MobEffects.NIGHT_VISION).assignProperties(
                 SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(MobEffects.NIGHT_VISION), 900)
+                        .add(BuffSpell.getEffectStrengthProperty(MobEffects.NIGHT_VISION), 1)
                         .build()
         ));
 
         FONT_OF_VITALITY = spell("font_of_vitality", () -> new BuffSpell(1, 0.8f, 0.3f, () -> MobEffects.ABSORPTION, () -> MobEffects.REGENERATION).assignProperties(
                 SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(MobEffects.ABSORPTION), 1200)
+                        .add(BuffSpell.getEffectStrengthProperty(MobEffects.ABSORPTION), 1)
+                        .add(BuffSpell.getEffectDurationProperty(MobEffects.REGENERATION), 300)
+                        .add(BuffSpell.getEffectStrengthProperty(MobEffects.REGENERATION), 1)
                         .build()
         ));
 
         INVISIBILITY = spell("invisibility", () -> new BuffSpell(0, 0.5f, 0.5f, () -> MobEffects.INVISIBILITY).assignProperties(
                 SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(MobEffects.INVISIBILITY), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(MobEffects.INVISIBILITY), 0)
                         .build()
         ));
+
         WATER_BREATHING = spell("water_breathing", () -> new BuffSpell(0.3f, 0.3f, 1, () -> MobEffects.WATER_BREATHING).assignProperties(
                 SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(MobEffects.WATER_BREATHING), 1200)
+                        .add(BuffSpell.getEffectStrengthProperty(MobEffects.WATER_BREATHING), 0)
                         .build()
         ));
 
-        AGILITY = spell("agility", () -> new BuffSpell(0.4f, 1.0f, 0.8f, () -> MobEffects.MOVEMENT_SPEED).assignProperties(
+        AGILITY = spell("agility", () -> new BuffSpell(0.4f, 1.0f, 0.8f, () -> MobEffects.MOVEMENT_SPEED,
+                () -> MobEffects.JUMP).assignProperties(
                 SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(MobEffects.MOVEMENT_SPEED), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(MobEffects.MOVEMENT_SPEED), 1)
+                        .add(BuffSpell.getEffectDurationProperty(MobEffects.JUMP), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(MobEffects.JUMP), 1)
                         .build()
         ));
 
-        FIRE_SKIN = spell("fire_skin", () -> new BuffSpell(1, 0.3f, 0, EBMobEffects.FIRE_SKIN::get).assignProperties(
+        FIRE_SKIN = spell("fire_skin", () -> new BuffSpell(1, 0.3f, 0, EBMobEffects.FIRE_SKIN).assignProperties(
                 SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(EBMobEffects.FIRE_SKIN.get()), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.FIRE_SKIN.get()), 0)
+                        .add(DefaultProperties.EFFECT_DURATION, 5)
                         .build()
         ));
 
-        STATIC_AURA = spell("static_aura", () -> new BuffSpell(0, 0.5f, 0.7f, EBMobEffects.STATIC_AURA::get).assignProperties(
+        STATIC_AURA = spell("static_aura", () -> new BuffSpell(0, 0.5f, 0.7f, EBMobEffects.STATIC_AURA).assignProperties(
                 SpellProperties.builder()
                         .build()
         ));
 
         GREATER_WARD = spell("greater_ward", () -> new BuffSpell(0.75f, 0.6f, 0.8f, EBMobEffects.WARD).assignProperties(
                 SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(EBMobEffects.WARD.get()), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.WARD.get()), 1)
                         .build()
         ));
 
@@ -351,7 +376,11 @@ public final class Spells {
 
         INVOKE_WEATHER = spell("invoke_weather", InvokeWeather::new);
 
-        OAKFLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH).soundValues(0.7f, 1.2f, 0.4f));
+        OAKFLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH).soundValues(0.7f, 1.2f, 0.4f)
+                .assignProperties(SpellProperties.builder()
+                        .add(BuffSpell.getEffectDurationProperty(EBMobEffects.OAKFLESH.get()), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.OAKFLESH.get()), 0)
+                        .build()));
 
         PERMAFROST = spell("permafrost", Permafrost::new);
 
@@ -391,23 +420,53 @@ public final class Spells {
 
         CURSE_OF_UNDEATH = spell("curse_of_undeath", CurseOfUndeath::new);
 
-        FIRE_SIGIL = spell("fire_sigil", () -> new ConstructRangedSpell<>(EntityFireSigil::new, true).floor(true));
+        FIRE_SIGIL = spell("fire_sigil", () -> new ConstructRangedSpell<>(EntityFireSigil::new, true).floor(true)
+                .assignProperties(SpellProperties.builder()
+                        .add(DefaultProperties.RANGE, 10F)
+                        .add(DefaultProperties.EFFECT_RADIUS, 1)
+                        .add(DefaultProperties.DAMAGE, 6F)
+                        .add(DefaultProperties.EFFECT_DURATION, 10)
+                        .build()));
 
-        FROST_SIGIL = spell("frost_sigil", () -> new ConstructRangedSpell<>(EntityFrostSigil::new, true).floor(true));
+        FROST_SIGIL = spell("frost_sigil", () -> new ConstructRangedSpell<>(EntityFrostSigil::new, true).floor(true).assignProperties(
+                SpellProperties.builder()
+                        .add(DefaultProperties.RANGE, 10F)
+                        .add(DefaultProperties.EFFECT_RADIUS, 1)
+                        .add(DefaultProperties.DAMAGE, 8F)
+                        .add(DefaultProperties.EFFECT_DURATION, 200)
+                        .add(DefaultProperties.EFFECT_STRENGTH, 1)
+                        .build()));
 
-        LIGHTNING_SIGIL = spell("lightning_sigil", () -> new ConstructRangedSpell<>(EntityLightningSigil::new, true).floor(true));
+        LIGHTNING_SIGIL = spell("lightning_sigil", () -> new ConstructRangedSpell<>(EntityLightningSigil::new, true).floor(true).assignProperties(SpellProperties.builder()
+                        .add(DefaultProperties.RANGE, 10F)
+                        .add(DefaultProperties.EFFECT_RADIUS, 1)
+                        .add(DefaultProperties.DAMAGE, 6F)
+                        .add(EntityLightningSigil.SECOND_RANGE, 1)
+                        .add(DefaultProperties.MAX_TARGETS, 3)
+                .build()));
 
         ICE_SPICKES = spell("ice_spickes", IceSpickes::new);
 
         INVIGORATING_PRESENCE = spell("invigorating_presence", InvigoratingPresence::new);
 
-        RING_OF_FIRE = spell("ring_of_fire", () -> new ConstructSpell<>(EntityFireRing::new, false).floor(true));
+        RING_OF_FIRE = spell("ring_of_fire", () -> new ConstructSpell<>(EntityFireRing::new, false).floor(true)
+                .assignProperties(SpellProperties.builder()
+                        .add(DefaultProperties.DURATION, 600)
+                        .add(DefaultProperties.EFFECT_RADIUS, 3)
+                        .add(DefaultProperties.DAMAGE, 1F)
+                        .add(DefaultProperties.EFFECT_DURATION, 10)
+                        .build()
+                ));
 
         HEALING_AURA = spell("healing_aura", () -> new ConstructSpell<>(EntityHealAura::new, false).floor(true));
 
         //FROST_BARRIER = spell("frost_barrier", FrostBarrier::new);
 
-        COMBUSTION_RUNE = spell("combustion_rune", () -> new ConstructRangedSpell<>(CombustionRuneConstruct::new, true).floor(true));
+        COMBUSTION_RUNE = spell("combustion_rune", () -> new ConstructRangedSpell<>(CombustionRuneConstruct::new, true).floor(true)
+                .assignProperties(SpellProperties.builder()
+                        .add(DefaultProperties.RANGE, 10F)
+                        .add(DefaultProperties.BLAST_RADIUS, 2F)
+                        .build()));
 
         BUBBLE = spell("bubble", Bubble::new);
 

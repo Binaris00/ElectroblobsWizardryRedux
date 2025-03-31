@@ -1,7 +1,8 @@
 package com.electroblob.wizardry.common.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.common.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -23,7 +24,7 @@ public class CurseOfUndeath extends RaySpell {
     @Override
     protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
         if (target instanceof LivingEntity livingEntity) {
-            livingEntity.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_UNDEATH.get(), Integer.MAX_VALUE, 0));
+            livingEntity.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_UNDEATH.get(), Integer.MAX_VALUE, this.property(DefaultProperties.EFFECT_STRENGTH)));
         }
 
         return true;
@@ -43,5 +44,8 @@ public class CurseOfUndeath extends RaySpell {
     }
 
     @Override
-    protected SpellProperties properties() { return null; }
+    protected SpellProperties properties() {
+        return SpellProperties.builder().add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.EFFECT_STRENGTH, 0).build();
+    }
 }

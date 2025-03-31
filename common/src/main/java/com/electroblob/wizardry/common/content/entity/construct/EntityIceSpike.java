@@ -3,10 +3,8 @@ package com.electroblob.wizardry.common.content.entity.construct;
 import com.electroblob.wizardry.api.common.util.GeometryUtil;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
-import com.electroblob.wizardry.setup.registries.EBDamageSources;
-import com.electroblob.wizardry.setup.registries.EBEntities;
-import com.electroblob.wizardry.setup.registries.EBMobEffects;
-import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.Direction;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.EntityType;
@@ -65,7 +63,9 @@ public class EntityIceSpike extends ScaledConstructEntity {
             for (Object entity : this.level().getEntities(this, this.getBoundingBox())) {
                 if (entity instanceof LivingEntity livingEntity && this.isValidTarget(livingEntity)) {
                     if (EBMagicDamageSource.causeMagicDamage(this, livingEntity, 5 * this.damageMultiplier, EBDamageSources.FROST, false))
-                        livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 100, 0));
+                        livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
+                                Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_DURATION),
+                                Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_STRENGTH)));
                 }
             }
         }

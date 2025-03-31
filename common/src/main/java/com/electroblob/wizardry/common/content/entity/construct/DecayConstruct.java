@@ -3,9 +3,11 @@ package com.electroblob.wizardry.common.content.entity.construct;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.util.EntityUtil;
 import com.electroblob.wizardry.common.content.entity.abstr.ScaledConstructEntity;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -26,6 +28,7 @@ public class DecayConstruct extends ScaledConstructEntity {
         super(entityType, world);
         textureIndex = this.random.nextInt(10);
         this.noCulling = true;
+        this.lifetime = Spells.DECAY.property(DefaultProperties.DURATION);
     }
 
     @Override
@@ -40,7 +43,7 @@ public class DecayConstruct extends ScaledConstructEntity {
             for (LivingEntity target : targets) {
                 if (target != this.getCaster()) {
                     if (!target.hasEffect(EBMobEffects.DECAY.get()))
-                        target.addEffect(new MobEffectInstance(EBMobEffects.DECAY.get(), 400));
+                        target.addEffect(new MobEffectInstance(EBMobEffects.DECAY.get(), Spells.DECAY.property(DefaultProperties.EFFECT_DURATION)));
                 }
             }
         } else if (this.random.nextInt(15) == 0) {

@@ -1,8 +1,10 @@
 package com.electroblob.wizardry.common.content.entity;
 
 import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
@@ -78,7 +80,7 @@ public class EntityMeteor extends FallingBlockEntity {
 
 				this.level().explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, Level.ExplosionInteraction.MOB);
 				this.level().explode(this, this.getX(), this.getY(), this.getZ(),
-						2 * blastMultiplier,
+						Spells.METEOR.property(DefaultProperties.DAMAGE) * blastMultiplier,
 						damageBlocks, damageBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE);
 				this.discard();
 

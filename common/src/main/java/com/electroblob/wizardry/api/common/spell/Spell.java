@@ -1,8 +1,11 @@
 package com.electroblob.wizardry.api.common.spell;
 
 
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.CastingPhase;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
 import com.electroblob.wizardry.setup.SpellSoundManager;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.common.core.SpellEngine;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
@@ -10,7 +13,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import static com.electroblob.wizardry.api.common.spell.CastingPhase.*;
+import static com.electroblob.wizardry.api.common.spell.internal.CastingPhase.*;
 
 /**
  * The Spell class serves as a blueprint for different types of spells.
@@ -26,7 +29,7 @@ public abstract class Spell implements Cloneable {
     private SpellProperties properties = SpellProperties.empty();
     private boolean ended;
 
-    private CastingPhase phase = NONE; // This should never be null
+    private @NotNull CastingPhase phase = NONE;
     private int prepareCastTime;
     private int performCastTime;
     private int concludeCastTime;
@@ -38,7 +41,7 @@ public abstract class Spell implements Cloneable {
     public Spell() {
         if(properties() != null) {
             this.properties = properties();
-            propertiesFrozen = true;
+            //propertiesFrozen = true;
         }
     }
 
@@ -50,7 +53,7 @@ public abstract class Spell implements Cloneable {
     public final Spell assignProperties(SpellProperties properties) {
         if(!propertiesFrozen) {
             this.properties = properties;
-            propertiesFrozen = true;
+            //propertiesFrozen = true;
         }
         return this;
     }
@@ -60,24 +63,24 @@ public abstract class Spell implements Cloneable {
     }
 
     public final void cast(@NotNull Caster caster) {
-        EBLogger.info("cast() called. Phase: " + phase + ", Ended: " + ended);
+        //EBLogger.info("cast() called. Phase: " + phase + ", Ended: " + ended);
         execute_cast(caster);
     }
 
     private void execute_cast(@NotNull Caster caster) {
-        EBLogger.info("execute_cast() called. Phase: " + phase + ", Ended: " + ended);
+        //EBLogger.info("execute_cast() called. Phase: " + phase + ", Ended: " + ended);
         if(!phase.isCasting()) {
             phase = PREPARE;
         }
         updateCast(caster);
         if(!this.ended) {
-            EBLogger.info("Adding spell to SpellEngine.");
+            //EBLogger.info("Adding spell to SpellEngine.");
             SpellEngine.addSpellToLevel(this, caster);
         }
     }
 
     public final void updateCast(Caster caster){
-        EBLogger.info("updateCast() called. Phase: " + phase + ", prepareCastTime: " + prepareCastTime + ", performCastTime: " + performCastTime + ", concludeCastTime: " + concludeCastTime);
+        //EBLogger.info("updateCast() called. Phase: " + phase + ", prepareCastTime: " + prepareCastTime + ", performCastTime: " + performCastTime + ", concludeCastTime: " + concludeCastTime);
         switch(this.phase){
             case PREPARE -> updatePrepare(caster);
             case PERFORM -> updatePerform(caster);
@@ -86,7 +89,7 @@ public abstract class Spell implements Cloneable {
     }
 
     private void updatePrepare(Caster caster) {
-        EBLogger.info("updatePrepare() called. prepareCastTime: " + prepareCastTime);
+        //EBLogger.info("updatePrepare() called. prepareCastTime: " + prepareCastTime);
         if(prepareCastTime == 0) onPrepareStart(caster);
         prepare(caster);
         prepareCastTime++;
@@ -94,13 +97,13 @@ public abstract class Spell implements Cloneable {
         if(readyToPerform(caster)) {
             onPrepareEnd(caster);
             phase = PERFORM;
-            EBLogger.info("Transitioning to PERFORM phase.");
+            //EBLogger.info("Transitioning to PERFORM phase.");
             if(updateNextImmediately()) perform(caster);
         }
     }
 
     private void updatePerform(Caster caster){
-        EBLogger.info("updatePerform() called. performCastTime: " + performCastTime);
+        //EBLogger.info("updatePerform() called. performCastTime: " + performCastTime);
         if(performCastTime == 0) onPerformStart(caster);
         perform(caster);
         performCastTime++;
@@ -108,13 +111,13 @@ public abstract class Spell implements Cloneable {
         if(readyToConclude(caster)) {
             onPerformEnd(caster);
             phase = CONCLUDE;
-            EBLogger.info("Transitioning to CONCLUDE phase.");
+            //EBLogger.info("Transitioning to CONCLUDE phase.");
             if(updateNextImmediately()) conclude(caster);
         }
     }
 
     private void updateConclude(Caster caster){
-        EBLogger.info("updateConclude() called. concludeCastTime: " + concludeCastTime);
+        //EBLogger.info("updateConclude() called. concludeCastTime: " + concludeCastTime);
         if(concludeCastTime == 0) onConcludeStart(caster);
         conclude(caster);
         concludeCastTime++;
@@ -122,12 +125,12 @@ public abstract class Spell implements Cloneable {
         if(readyToEnd(caster)) {
             onConcludeEnd(caster);
             endCast(caster);
-            EBLogger.info("Spell casting ended.");
+            //EBLogger.info("Spell casting ended.");
         }
     }
 
     private void endCast(Caster caster){
-        EBLogger.info("endCast() called. Marking spell as ended.");
+        //EBLogger.info("endCast() called. Marking spell as ended.");
         this.phase = NONE;
         this.ended = true;
     }

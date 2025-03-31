@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.abstr;
 
 import com.electroblob.wizardry.api.common.entity.construct.MagicConstructEntity;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
 import com.electroblob.wizardry.api.common.util.RayTracer;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -13,7 +14,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Function;
 
-public class ConstructRangedSpell<T extends MagicConstructEntity> extends ConstructSpell{
+public class ConstructRangedSpell<T extends MagicConstructEntity> extends ConstructSpell<T>{
     protected boolean hitLiquids = false;
 
     protected boolean ignoreUncollidables = false;
@@ -36,8 +37,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
     protected void perform(Caster caster) {
         if(!(caster instanceof Player player)) return;
 
-        // TODO CUSTOM SPELL RANGE
-        double range = 15;
+        double range = this.property(DefaultProperties.RANGE);
         HitResult rayTrace = RayTracer.standardBlockRayTrace(player.level(), player, range, hitLiquids, ignoreUncollidables, false);
 
         if (rayTrace != null && rayTrace.getType() == HitResult.Type.BLOCK && (((BlockHitResult) rayTrace).getDirection() == Direction.UP || !requiresFloor)) {
@@ -58,8 +58,6 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
                 spawnConstruct(player.level(), x, y, z, null, player);
             }
-        } else {
-            //return false;
         }
 
         // TODO spell sound ticksinuse

@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.common.content.spell.abstr;
 
 import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
-import com.electroblob.wizardry.api.common.spell.Caster;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.spell.Spell;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -35,13 +36,8 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         }
     }
 
-    @Override
-    protected SpellProperties properties() {
-        return null;
-    }
-
-    public static float calculateVelocity(MagicArrowEntity projectile, float launchHeight){
-        float range = 10; // this.properties().get(RANGE);
+    public float calculateVelocity(MagicArrowEntity projectile, float launchHeight){
+        float range = this.property(DefaultProperties.RANGE);
 
         if(projectile.isNoGravity()){
             if(projectile.getLifetime() <= 0) return FALLBACK_VELOCITY;
@@ -62,4 +58,9 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         // Subclasses can put spell-specific stuff here
     }
 
+
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.empty();
+    }
 }

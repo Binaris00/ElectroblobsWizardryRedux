@@ -1,9 +1,11 @@
 package com.electroblob.wizardry.common.content.spell.lightning;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.spell.Caster;
+import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -13,6 +15,8 @@ import net.minecraft.world.level.Level;
 import java.util.Random;
 
 public class InvokeWeather extends Spell {
+    public static final SpellProperty<Float> THUNDER_CHANCE = SpellProperty.floatProperty("thunderstorm_chance", 0.2F);
+
     @Override
     protected void perform(Caster caster) {
         if(!(caster instanceof Player player)) return;
@@ -27,7 +31,7 @@ public class InvokeWeather extends Spell {
                     ((ServerLevel) player.level()).setWeatherParameters(standardWeatherTime, 0, false, false);
                 } else {
                     player.displayClientMessage(Component.translatable("spell." + this.getLocation() + ".rain"), true);
-                    ((ServerLevel) player.level()).setWeatherParameters(0, standardWeatherTime, true,  player.level().random.nextFloat() < 0.2D);
+                    ((ServerLevel) player.level()).setWeatherParameters(0, standardWeatherTime, true,  player.level().random.nextFloat() < property(THUNDER_CHANCE));
                 }
             }
 
@@ -43,9 +47,11 @@ public class InvokeWeather extends Spell {
             this.playSound(caster.getCastLevel(), player, 0, -1);
         }
     }
-
     @Override
     protected SpellProperties properties() {
-        return null;
+        return SpellProperties.builder()
+                .add(DefaultProperties.RANGE, 10F)
+                .add(THUNDER_CHANCE)
+                .build();
     }
 }

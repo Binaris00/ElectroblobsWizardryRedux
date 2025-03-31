@@ -3,8 +3,10 @@ package com.electroblob.wizardry.common.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.api.common.util.EBMagicDamageSource;
+import com.electroblob.wizardry.common.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -24,7 +26,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class MagicFireball extends MagicProjectileEntity {
-
     protected static final int ACCELERATION_CONVERSION_FACTOR = 10;
     protected float damage = -1;
     protected int burnDuration = -1;
@@ -47,11 +48,11 @@ public class MagicFireball extends MagicProjectileEntity {
     }
 
     public double getDamage() {
-        return damage == -1 ? 5 : damage;
+        return damage == -1 ? Spells.MAGIC_FIREBALL.property(DefaultProperties.DAMAGE) : damage;
     }
 
     public int getBurnDuration() {
-        return burnDuration == -1 ? 5 : burnDuration;
+        return burnDuration == -1 ? Spells.MAGIC_FIREBALL.property(DefaultProperties.DAMAGE).intValue() : burnDuration;
     }
 
     @Override
