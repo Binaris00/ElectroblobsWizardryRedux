@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class DryFrostedIceBlock extends FrostedIceBlock {
     public DryFrostedIceBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.ICE).noOcclusion().randomTicks().friction(0.98f).sound(SoundType.GLASS));
+        super(Properties.copy(Blocks.ICE).noOcclusion().randomTicks().friction(0.98f).sound(SoundType.GLASS));
     }
 
     @Override

@@ -1,37 +1,38 @@
 {
-  "schemaVersion": 1,
-  "id": "ebwizardry",
-  "version": "${version}",
-  "name": "Wizardry 1.20.1 Multiplatform",
-  "description": "This is an example description! Tell everyone what your mod is about!",
-  "authors": [
-    "Me!"
-  ],
-  "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
-  },
-  "license": "CC0-1.0",
-  "icon": "assets/ebwizardry/icon.png",
-  "environment": "*",
-  "entrypoints": {
-    "main": [
-      "com.electroblob.wizardry.fabric.WizardryFabricMod"
+    "schemaVersion": 1,
+    "id": "mod_id",
+    "version": "${version}",
+    "name": "${mod_name}",
+    "description": "${description}",
+    "authors": [
+        "${mod_author}"
     ],
-    "client": [
-      "com.electroblob.wizardry.fabric.client.WizardryFabricClient"
-    ]
-  },
-  "mixins": [
-    "ebwizardry.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=0.16.0",
-    "minecraft": "~1.20.1",
-    "java": ">=17",
-    "fabric-api": "*"
-  },
-  "suggests": {
-    "another-mod": "*"
-  }
+    "contact": {
+        "homepage": "https://fabricmc.net/"
+    },
+    "license": "${license}",
+    "icon": "assets/ebwizardry/ebwizardry.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.electroblob.wizardry.WizardryFabricMod"
+        ],
+        "client": [
+            "com.electroblob.wizardry.client.WizardryFabricClient"
+        ]
+    },
+    "mixins": [
+        "ebwizardry.mixins.json",
+        "ebwizardry.fabric.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.14",
+        "fabric": "*",
+        "minecraft": "${minecraft_version}",
+        "java": ">=17"
+    },
+    "suggests": {
+        "another-mod": "*"
+    }
 }
+  

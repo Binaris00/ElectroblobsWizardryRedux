@@ -29,7 +29,7 @@ public class EBParticles {
     public static final DeferredObject<SimpleParticleType> LIGHTNING;
     /** Animated flame.<p></p><b>Defaults:</b><br>Lifetime: 12-16 ticks<br> */
     public static final DeferredObject<SimpleParticleType> MAGIC_FIRE;
-    /** Animated sparkle particle.<p></p><b>Defaults:</b><<br>Lifetime: 48-60 ticks<br>Colour: white */
+    /** Animated sparkle particle.<p></p><b>Defaults:</b><br>Lifetime: 48-60 ticks<br>Colour: white */
     public static final DeferredObject<SimpleParticleType> SPARKLE;
     /** Spiral particle, like potions.<p></p><b>Defaults:</b><br>Lifetime: 8-40 ticks<br>Colour: white */
     public static final DeferredObject<SimpleParticleType> DARK_MAGIC;
@@ -59,7 +59,7 @@ public class EBParticles {
     /** 2D lightning effect, normally on the ground.<p></p><b>Defaults:</b><br>Lifetime: 7 ticks
      * <br>Facing: up */
     public static final DeferredObject<SimpleParticleType> LIGHTNING_PULSE;
-    /** 3D-rendered expanding sphere.<p></p><b>Defaults:</b><<br>Lifetime: 6 ticks<br>Colour: white */
+    /** 3D-rendered expanding sphere.<p></p><b>Defaults:</b>Lifetime: 6 ticks<br>Colour: white */
     public static final DeferredObject<SimpleParticleType> SPHERE;
 
 

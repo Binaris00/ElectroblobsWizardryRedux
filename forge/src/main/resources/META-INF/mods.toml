@@ -1,29 +1,26 @@
 modLoader = "javafml"
-loaderVersion = "[47,)"
-#issueTrackerURL = ""
-license = "Insert License Here"
+loaderVersion = "${forge_loader_version_range}"
+license = "${license}"
 
 [[mods]]
-modId = "ebwizardry"
+modId = "${mod_id}"
 version = "${version}"
-displayName = "Wizardry 1.20.1 Multiplatform"
-authors = "Me!"
-description = '''
-This is an example description! Tell everyone what your mod is about!
-'''
-#logoFile = ""
+displayName = "${mod_name}"
+logoFile = "${mod_id}.png"
+credits = "Thanks for this example mod goes to Java"
+authors = "${mod_author}"
+description = '''${description}'''
 
-[[dependencies.ebwizardry]]
+[[dependencies.${mod_id}]]
 modId = "forge"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "[${forge_version},)"
 ordering = "NONE"
 side = "BOTH"
 
-[[dependencies.ebwizardry]]
+[[dependencies.${mod_id}]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.1,)"
+versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
-

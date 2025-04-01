@@ -25,15 +25,15 @@ public class SpellProperties {
         return new SpellProperties(new ArrayList<>());
     }
 
-    public static SpellProperties.Builder builder() {
-        return new SpellProperties.Builder();
+    public static Builder builder() {
+        return new Builder();
     }
 
     @SuppressWarnings("unchecked")
     public <T> T get(SpellProperty<T> property) {
         for (SpellProperty<?> prop : properties) {
             if(prop.equals(property)) {
-                EBLogger.info(Component.literal("Getting Spell property... " +
+                EBLogger.debug(Component.literal("Getting Spell property... " +
                         "Id: %s Default: %s Value: %s".formatted(prop.identifier, prop.defaultValue, prop.value)));
                 return (T) prop.get();
             }
@@ -45,7 +45,7 @@ public class SpellProperties {
         private boolean isEmpty = true;
         private final List<SpellProperty<?>> builder = new ArrayList<>();
 
-        public <T> SpellProperties.Builder add(SpellProperty<T> property) {
+        public <T> Builder add(SpellProperty<T> property) {
             if(property != null){
                 SpellProperty<T> cloned = property.copyOf();
                 builder.add(cloned);
@@ -55,7 +55,7 @@ public class SpellProperties {
             return this;
         }
 
-        public <T> SpellProperties.Builder add(SpellProperty<T> property, T defaultValue) {
+        public <T> Builder add(SpellProperty<T> property, T defaultValue) {
             if(property != null){
                 SpellProperty<T> cloned = property.copyOf();
                 cloned.defaultValue(defaultValue);

@@ -1,19 +1,23 @@
-# Project exclude paths
-/.gradle/
-/common/build/
-/fabric/.gradle/
-/fabric/build/
-/forge/.gradle/
-/forge/build/
-/.idea/
-/forge/run
-/fabric/run
-*.log
-/fabric/run/.architectury-transformer
-/forge/run/logs
-/fabric/run/logs
-/fabric/run/
-/forge/run/
-/common/.gradle
-/common/src/generated/resources/.cache
-/forge/run-data
+# eclipse
+bin
+*.launch
+.settings
+.metadata
+.classpath
+.project
+
+# idea
+out
+*.ipr
+*.iws
+*.iml
+.idea/*
+!.idea/scopes
+
+# gradle
+build
+.gradle
+
+# other
+eclipse
+run

@@ -11,7 +11,7 @@ import org.jetbrains.annotations.NotNull;
 public class WandItem extends Item {
 
     public WandItem() {
-        super(new Item.Properties().stacksTo(1));
+        super(new Properties().stacksTo(1));
     }
 
     @Override

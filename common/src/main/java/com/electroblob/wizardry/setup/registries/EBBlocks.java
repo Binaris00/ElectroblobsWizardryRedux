@@ -34,8 +34,8 @@ public final class EBBlocks {
     public static final DeferredObject<Block> HEALING_CRYSTAL_BLOCK = crystalBlock("healing");
 
 
-    public static final DeferredObject<Block> PERMAFROST = block("permafrost", PermafrostBlock::new);
-    public static final DeferredObject<Block> VANISHING_COBWEB = block("vanishing_cobweb", () -> new VanishingCobwebBlock(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)));
+    public static final DeferredObject<Block> PERMAFROST = block("permafrost", PermafrostBlock::new, false, false);
+    public static final DeferredObject<Block> VANISHING_COBWEB = block("vanishing_cobweb", () -> new VanishingCobwebBlock(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, false);
     public static final DeferredObject<Block> ARCANE_WORK_BENCH = block("arcane_workbench", false, true);
     public static final DeferredObject<Block> METEOR = block("meteor", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state) -> 1)));
 
