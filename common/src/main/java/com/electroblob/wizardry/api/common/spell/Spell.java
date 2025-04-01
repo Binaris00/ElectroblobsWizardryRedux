@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.common.spell.internal.Caster;
 import com.electroblob.wizardry.api.common.spell.internal.CastingPhase;
 import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
+import com.electroblob.wizardry.common.core.SpellRegistry;
 import com.electroblob.wizardry.setup.SpellSoundManager;
 import com.electroblob.wizardry.common.core.SpellEngine;
 import net.minecraft.resources.ResourceLocation;
@@ -45,7 +46,7 @@ public abstract class Spell implements Cloneable {
         }
     }
 
-    final Spell assignLocation(ResourceLocation location) {
+    public final Spell assignLocation(ResourceLocation location) {
         if(this.location == null && SpellRegistry.isInAssignPeriod()) this.location = location;
         return this;
     }

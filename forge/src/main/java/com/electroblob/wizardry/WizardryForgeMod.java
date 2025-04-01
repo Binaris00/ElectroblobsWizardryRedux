@@ -25,6 +25,8 @@ public final class WizardryForgeMod {
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+        TierRegistryForge.initialize(modBus);
+        ElementRegistryForge.initialize(modBus);
         SpellRegistryForge.initialize(modBus);
 
         SoundRegistryForge.register();
@@ -45,6 +47,8 @@ public final class WizardryForgeMod {
         MobEffectRegistryForge.EFFECTS.register(modBus);
         MobEffectRegistryForge.register();
 
+        TierRegistryForge.register();
+        ElementRegistryForge.register();
         SpellRegistryForge.register();
 
         modBus.addListener(WizardryForgeMod::commonSetup);

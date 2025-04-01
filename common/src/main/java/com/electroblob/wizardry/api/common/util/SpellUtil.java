@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.api.common.util;
 
-import com.electroblob.wizardry.api.common.spell.SpellRegistry;
 import com.electroblob.wizardry.api.common.spell.Spell;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.nbt.CompoundTag;

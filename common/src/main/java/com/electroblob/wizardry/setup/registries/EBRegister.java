@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.api.common.spell.Element;
 import com.electroblob.wizardry.api.common.spell.Spell;
+import com.electroblob.wizardry.api.common.spell.Tier;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
@@ -23,6 +25,14 @@ public final class EBRegister {
 
     public static void registerSpells(Consumer<Set<Map.Entry<String, Spell>>> handler) {
         Spells.handleRegistration(handler);
+    }
+
+    public static void registerTiers(Consumer<Set<Map.Entry<String, Tier>>> handler) {
+        Tiers.handleRegistration(handler);
+    }
+
+    public static void registerElements(Consumer<Set<Map.Entry<String, Element>>> handler) {
+        Elements.handleRegistration(handler);
     }
 
     public static void registerCreativeTabs(Consumer<Map<String, Supplier<CreativeModeTab>>> handler) {

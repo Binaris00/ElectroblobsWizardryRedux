@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.api.common.spell.SpellRegistry;
+import com.electroblob.wizardry.common.core.SpellRegistry;
 import com.electroblob.wizardry.api.common.util.SpellUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;

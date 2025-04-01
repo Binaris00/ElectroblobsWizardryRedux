@@ -1,6 +1,7 @@
-package com.electroblob.wizardry.api.common.spell;
+package com.electroblob.wizardry.common.core;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.common.spell.Spell;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +10,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
 
-
+// TODO: Probably going to change stuff, just to help the addon creation
 public final class SpellRegistry {
     private static final ResourceKey<Registry<Spell>> KEY = ResourceKey.createRegistryKey(new ResourceLocation(WizardryMainMod.MOD_ID, "spells"));
     private static boolean locationsBeenInitialized;

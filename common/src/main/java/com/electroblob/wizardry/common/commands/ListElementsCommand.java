@@ -1,26 +1,25 @@
 package com.electroblob.wizardry.common.commands;
 
-import com.electroblob.wizardry.common.core.SpellRegistry;
+import com.electroblob.wizardry.common.core.ElementRegistry;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.Component;
 
-public final class ListSpellsCommand {
+public final class ListElementsCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(Commands.literal("listSpells")
+        dispatcher.register(Commands.literal("elements")
                 .requires((p) -> p.hasPermission(2))
                 .executes(c -> listSpells(c.getSource()))
         );
     }
 
     private static int listSpells(CommandSourceStack pSource) {
-        SpellRegistry.entrySet().forEach((k) -> {
-            pSource.sendSystemMessage(Component.translatable(k.getKey().location().toString()));
+        ElementRegistry.entrySet().forEach((k) -> {
+            pSource.sendSystemMessage(k.getValue().getDisplayName());
         });
         return 1;
     }
 
-    private ListSpellsCommand(){}
+    private ListElementsCommand(){}
 }

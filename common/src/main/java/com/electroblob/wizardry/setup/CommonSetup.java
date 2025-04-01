@@ -3,7 +3,7 @@ package com.electroblob.wizardry.setup;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.common.spell.properties.SpellProperty;
-import com.electroblob.wizardry.api.common.spell.SpellRegistry;
+import com.electroblob.wizardry.common.core.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.network.chat.Component;
 
