@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.client.renderer.entity;
 
-import com.electroblob.wizardry.api.common.entity.construct.MagicConstructEntity;
-import com.electroblob.wizardry.api.common.util.DrawingUtils;
+import com.electroblob.wizardry.api.content.entity.construct.MagicConstructEntity;
+import com.electroblob.wizardry.api.content.util.DrawingUtils;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -17,8 +17,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class SigilRenderer extends EntityRenderer<MagicConstructEntity> {
     private final ResourceLocation texture;
-    private float rotationSpeed;
-    private boolean invisibleToEnemies;
+    private final float rotationSpeed;
+    private final boolean invisibleToEnemies;
 
     public SigilRenderer(Context p_174008_, ResourceLocation texture, float rotationSpeed, boolean invisibleToEnemies) {
         super(p_174008_);

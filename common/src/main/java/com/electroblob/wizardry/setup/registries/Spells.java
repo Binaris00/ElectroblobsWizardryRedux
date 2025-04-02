@@ -1,22 +1,21 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.api.common.spell.NoneSpell;
-import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.api.common.spell.properties.SpellProperties;
-import com.electroblob.wizardry.common.content.entity.construct.*;
-import com.electroblob.wizardry.common.content.entity.projectile.*;
-import com.electroblob.wizardry.common.content.spell.DefaultProperties;
-import com.electroblob.wizardry.common.content.spell.abstr.*;
-import com.electroblob.wizardry.common.content.spell.earth.*;
-import com.electroblob.wizardry.common.content.spell.fire.*;
-import com.electroblob.wizardry.common.content.spell.healing.*;
-import com.electroblob.wizardry.common.content.spell.ice.*;
-import com.electroblob.wizardry.common.content.spell.lightning.BlindingFlash;
-import com.electroblob.wizardry.common.content.spell.lightning.InvokeWeather;
-import com.electroblob.wizardry.common.content.spell.lightning.ZapSpell;
-import com.electroblob.wizardry.common.content.spell.magic.ForceArrowSpell;
-import com.electroblob.wizardry.common.content.spell.necromancy.*;
-import com.electroblob.wizardry.common.content.spell.sorcery.*;
+import com.electroblob.wizardry.api.content.spell.NoneSpell;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.content.spell.abstr.*;
+import com.electroblob.wizardry.content.spell.earth.*;
+import com.electroblob.wizardry.content.spell.fire.*;
+import com.electroblob.wizardry.content.spell.healing.*;
+import com.electroblob.wizardry.content.spell.ice.*;
+import com.electroblob.wizardry.content.spell.lightning.BlindingFlash;
+import com.electroblob.wizardry.content.spell.lightning.InvokeWeather;
+import com.electroblob.wizardry.content.spell.magic.ForceArrowSpell;
+import com.electroblob.wizardry.content.entity.construct.*;
+import com.electroblob.wizardry.content.entity.projectile.*;
+import com.electroblob.wizardry.content.spell.necromancy.*;
+import com.electroblob.wizardry.content.spell.sorcery.*;
 import net.minecraft.world.effect.MobEffects;
 
 import java.util.*;
@@ -28,7 +27,6 @@ import static com.electroblob.wizardry.setup.registries.Spells.Register.*;
 public final class Spells {
 
     public static final Spell NONE;
-    public static final Spell ZAP;
     public static final Spell MAGIC_MISSILE;
     public static final Spell SMOKE_BOMB;
     public static final Spell POISON_BOMB;
@@ -119,16 +117,15 @@ public final class Spells {
         Register.init();
 
         NONE = spell("none", NoneSpell::new);
-        ZAP = spell("zap", ZapSpell::new);
 
-        MAGIC_MISSILE = spell("magic_missile", () -> new ArrowSpell<>(MagicMissile::new).assignProperties(
+        MAGIC_MISSILE = spell("magic_missile", () -> new ArrowSpell<>(MagicMissileEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 18f)
                         .add(DefaultProperties.DAMAGE, 3f)
                         .build()
         ));
 
-        SMOKE_BOMB = spell("smoke_bomb", () -> new ProjectileSpell<>(SmokeBomb::new).assignProperties(
+        SMOKE_BOMB = spell("smoke_bomb", () -> new ProjectileSpell<>(SmokeBombEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 10f)
                         .add(DefaultProperties.EFFECT_RADIUS, 2)
@@ -136,7 +133,7 @@ public final class Spells {
                         .build()
         ));
 
-        POISON_BOMB = spell("poison_bomb", () -> new ProjectileSpell<>(PoisonBomb::new).assignProperties(
+        POISON_BOMB = spell("poison_bomb", () -> new ProjectileSpell<>(PoisonBombEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 10f)
                         .add(DefaultProperties.DAMAGE, 5f)
@@ -146,7 +143,7 @@ public final class Spells {
                         .build()
         ));
 
-        FIRE_BOMB = spell("fire_bomb", () -> new ProjectileSpell<>(FireBomb::new).assignProperties(
+        FIRE_BOMB = spell("fire_bomb", () -> new ProjectileSpell<>(FireBombEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 10f)
                         .add(DefaultProperties.DIRECT_DAMAGE, 5f)
@@ -156,7 +153,7 @@ public final class Spells {
                         .build()
         ));
 
-        THUNDERBOLT = spell("thunderbolt", () -> new ProjectileSpell<>(Thunderbolt::new).assignProperties(
+        THUNDERBOLT = spell("thunderbolt", () -> new ProjectileSpell<>(ThunderboltEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 12f)
                         .add(DefaultProperties.DAMAGE, 3f)
@@ -164,7 +161,7 @@ public final class Spells {
                         .build()
         ));
 
-        DART = spell("dart", () -> new ArrowSpell<>(Dart::new).assignProperties(
+        DART = spell("dart", () -> new ArrowSpell<>(DartEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 4F)
@@ -180,7 +177,7 @@ public final class Spells {
         WITHER_SKULL = spell("wither_skull", WitherSkullSpell::new);
 
 
-        ICE_LANCE = spell("ice_lance", () -> new ArrowSpell<>(IceLance::new).assignProperties(
+        ICE_LANCE = spell("ice_lance", () -> new ArrowSpell<>(IceLanceEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 10f)
@@ -189,7 +186,7 @@ public final class Spells {
                         .build()
         ));
 
-        FIREBOLT = spell("firebolt", () -> new ProjectileSpell<>(FireBolt::new).assignProperties(
+        FIREBOLT = spell("firebolt", () -> new ProjectileSpell<>(FireBoltEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 5f)
@@ -206,7 +203,7 @@ public final class Spells {
                         .build()
         ));
 
-        ICE_SHARD = spell("ice_shard", () -> new ArrowSpell<>(IceShard::new).assignProperties(
+        ICE_SHARD = spell("ice_shard", () -> new ArrowSpell<>(IceShardEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 6f)
@@ -215,17 +212,17 @@ public final class Spells {
                         .build()
         ));
 
-        ICE_CHARGE = spell("ice_charge", () -> new ProjectileSpell<>(IceCharge::new).assignProperties(
+        ICE_CHARGE = spell("ice_charge", () -> new ProjectileSpell<>(IceChargeEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 20f)
                         .add(DefaultProperties.DAMAGE, 4f)
                         .add(DefaultProperties.EFFECT_DURATION, 100)
                         .add(DefaultProperties.EFFECT_STRENGTH, 1)
-                        .add(IceCharge.ICE_SHARDS, 10)
+                        .add(IceChargeEntity.ICE_SHARDS, 10)
                         .build()
         ));
 
-        MAGIC_FIREBALL = spell("magic_fireball", () -> new ProjectileSpell<>(MagicFireball::new).assignProperties(
+        MAGIC_FIREBALL = spell("magic_fireball", () -> new ProjectileSpell<>(MagicFireballEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 20f)
                         .add(DefaultProperties.DAMAGE, 5f)
@@ -235,7 +232,7 @@ public final class Spells {
 
 
 
-        HOMING_SPARK = spell("homing_spark", () -> new ProjectileSpell<>(Spark::new).assignProperties(
+        HOMING_SPARK = spell("homing_spark", () -> new ProjectileSpell<>(SparkEntity::new).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 25f)
                         .add(DefaultProperties.DAMAGE, 6f)
@@ -251,10 +248,16 @@ public final class Spells {
         ));
 
 
-        FORCE_ORB = spell("force_orb", () -> new ProjectileSpell<>(EntityForceOrb::new).soundValues(0.5f, 0.4f, 0.2f));
+        // {'range': 10, 'damage': 4, 'blast_radius': 4}
+        FORCE_ORB = spell("force_orb", () -> new ProjectileSpell<>(ForceOrbEntity::new)
+                .soundValues(0.5f, 0.4f, 0.2f).assignProperties(SpellProperties.builder()
+                        .add(DefaultProperties.RANGE, 10F)
+                        .add(DefaultProperties.DAMAGE, 4F)
+                        .add(DefaultProperties.BLAST_RADIUS, 4F)
+                        .build()));
 
 
-        DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrb::new)
+        DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrbEntity::new)
                 .soundValues(0.5f, 0.4f, 0.2f).assignProperties(SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 30F)
                         .add(DefaultProperties.DAMAGE, 8F)
@@ -414,13 +417,18 @@ public final class Spells {
 
         FOREST_CURSE = spell("forest_curse", ForestsCurse::new);
 
-        BLIZZARD = spell("blizzard", () -> new ConstructRangedSpell<>(EntityBlizzard::new, false));
+        BLIZZARD = spell("blizzard", () -> new ConstructRangedSpell<>(BlizzardConstruct::new, false)
+                .assignProperties(SpellProperties.builder()
+                        .add(DefaultProperties.DURATION, 600)
+                        .add(DefaultProperties.RANGE, 20F)
+                        .add(DefaultProperties.EFFECT_RADIUS, 3)
+                        .build()));
 
         CURSE_OF_ENFEEBLEMENT = spell("curse_of_enfeeblement", CurseOfEnfeeblement::new);
 
         CURSE_OF_UNDEATH = spell("curse_of_undeath", CurseOfUndeath::new);
 
-        FIRE_SIGIL = spell("fire_sigil", () -> new ConstructRangedSpell<>(EntityFireSigil::new, true).floor(true)
+        FIRE_SIGIL = spell("fire_sigil", () -> new ConstructRangedSpell<>(FireSigilConstruct::new, true).floor(true)
                 .assignProperties(SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 10F)
                         .add(DefaultProperties.EFFECT_RADIUS, 1)
@@ -428,7 +436,7 @@ public final class Spells {
                         .add(DefaultProperties.EFFECT_DURATION, 10)
                         .build()));
 
-        FROST_SIGIL = spell("frost_sigil", () -> new ConstructRangedSpell<>(EntityFrostSigil::new, true).floor(true).assignProperties(
+        FROST_SIGIL = spell("frost_sigil", () -> new ConstructRangedSpell<>(FrostSigilConstruct::new, true).floor(true).assignProperties(
                 SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 10F)
                         .add(DefaultProperties.EFFECT_RADIUS, 1)
@@ -437,11 +445,11 @@ public final class Spells {
                         .add(DefaultProperties.EFFECT_STRENGTH, 1)
                         .build()));
 
-        LIGHTNING_SIGIL = spell("lightning_sigil", () -> new ConstructRangedSpell<>(EntityLightningSigil::new, true).floor(true).assignProperties(SpellProperties.builder()
+        LIGHTNING_SIGIL = spell("lightning_sigil", () -> new ConstructRangedSpell<>(LightningSigilConstruct::new, true).floor(true).assignProperties(SpellProperties.builder()
                         .add(DefaultProperties.RANGE, 10F)
                         .add(DefaultProperties.EFFECT_RADIUS, 1)
                         .add(DefaultProperties.DAMAGE, 6F)
-                        .add(EntityLightningSigil.SECOND_RANGE, 1)
+                        .add(LightningSigilConstruct.SECOND_RANGE, 1)
                         .add(DefaultProperties.MAX_TARGETS, 3)
                 .build()));
 
@@ -449,7 +457,7 @@ public final class Spells {
 
         INVIGORATING_PRESENCE = spell("invigorating_presence", InvigoratingPresence::new);
 
-        RING_OF_FIRE = spell("ring_of_fire", () -> new ConstructSpell<>(EntityFireRing::new, false).floor(true)
+        RING_OF_FIRE = spell("ring_of_fire", () -> new ConstructSpell<>(FireRingConstruct::new, false).floor(true)
                 .assignProperties(SpellProperties.builder()
                         .add(DefaultProperties.DURATION, 600)
                         .add(DefaultProperties.EFFECT_RADIUS, 3)
@@ -458,7 +466,13 @@ public final class Spells {
                         .build()
                 ));
 
-        HEALING_AURA = spell("healing_aura", () -> new ConstructSpell<>(EntityHealAura::new, false).floor(true));
+        HEALING_AURA = spell("healing_aura", () -> new ConstructSpell<>(HealAuraConstruct::new, false).floor(true)
+                .assignProperties(SpellProperties.builder()
+                        .add(DefaultProperties.DURATION, 600)
+                        .add(DefaultProperties.EFFECT_RADIUS, 3)
+                        .add(DefaultProperties.DAMAGE, 1F)
+                        .add(DefaultProperties.HEALTH, 1F)
+                        .build()));
 
         //FROST_BARRIER = spell("frost_barrier", FrostBarrier::new);
 
@@ -495,6 +509,6 @@ public final class Spells {
 
     static void load() {}
 
-    private Spells() {};
+    private Spells() {}
 
 }

@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.client.renderer.entity;
 
 
-import com.electroblob.wizardry.api.common.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
 import net.minecraft.client.renderer.entity.ArrowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;

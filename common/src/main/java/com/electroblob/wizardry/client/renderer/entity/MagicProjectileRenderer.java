@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.client.renderer.entity;
 
-import com.electroblob.wizardry.api.common.entity.projectile.MagicProjectileEntity;
+import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -13,8 +13,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class MagicProjectileRenderer<T extends MagicProjectileEntity> extends EntityRenderer<T> {
-    private float scale = 0.7f;
-    private boolean blend = false;
+    private final float scale = 0.7f;
+    private final boolean blend = false;
     private final ResourceLocation texture;
 
     public MagicProjectileRenderer(EntityRendererProvider.Context context, ResourceLocation texture){

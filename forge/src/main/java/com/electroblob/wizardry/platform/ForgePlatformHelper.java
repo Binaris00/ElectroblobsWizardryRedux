@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.platform;
 
-import com.electroblob.wizardry.platform.services.IPlatformHelper;
+import com.electroblob.wizardry.core.platform.services.IPlatformHelper;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.loading.FMLLoader;
 

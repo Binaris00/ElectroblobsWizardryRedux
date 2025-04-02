@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.setup.datagen;
 
-import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.api.content.DeferredObject;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 
@@ -11,10 +11,10 @@ public final class DataGenProcessor {
 
     // TODO: make datagen alive only when datagen is actually running
     private static boolean isDataGening;
-    private Map<String, DeferredObject<? extends Item>> DEFAULT_ITEMS = new HashMap<>();
-    private Map<String, DeferredObject<? extends Item>> WAND_ITEMS = new HashMap<>();
-    private Map<String, DeferredObject<Block>> DEFAULT_BLOCK_MODELS = new HashMap<>();
-    private Map<String, DeferredObject<Block>> DEFAULT_BLOCK_DROP = new HashMap<>();
+    private final Map<String, DeferredObject<? extends Item>> DEFAULT_ITEMS = new HashMap<>();
+    private final Map<String, DeferredObject<? extends Item>> WAND_ITEMS = new HashMap<>();
+    private final Map<String, DeferredObject<Block>> DEFAULT_BLOCK_MODELS = new HashMap<>();
+    private final Map<String, DeferredObject<Block>> DEFAULT_BLOCK_DROP = new HashMap<>();
 
     public void addDefaultItem(String name, DeferredObject<? extends Item> item) {
         DEFAULT_ITEMS.put(name, item);

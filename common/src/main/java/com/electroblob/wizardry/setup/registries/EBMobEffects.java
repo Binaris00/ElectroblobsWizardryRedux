@@ -1,21 +1,23 @@
 package com.electroblob.wizardry.setup.registries;
 
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.DeferredObject;
-import com.electroblob.wizardry.api.common.effect.MagicMobEffect;
-import com.electroblob.wizardry.common.content.effect.*;
+import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
+import com.electroblob.wizardry.api.content.util.RegisterFunction;
+import com.electroblob.wizardry.content.effect.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.level.Level;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class EBMobEffects {
-    static Map<String, DeferredObject<MobEffect>> mobEffects = new HashMap<>();
+    static Map<String, DeferredObject<MobEffect>> MOB_EFFECTS = new HashMap<>();
 
     public static final DeferredObject<MobEffect> FROST;
     public static final DeferredObject<MobEffect> STATIC_AURA;
@@ -26,37 +28,43 @@ public class EBMobEffects {
     public static final DeferredObject<MobEffect> CURSE_OF_UNDEATH;
     public static final DeferredObject<MobEffect> DECAY;
 
-    static void handleRegistration(Consumer<Map<String, DeferredObject<MobEffect>>> handler) {
-        handler.accept(mobEffects);
-    }
 
     static {
-        STATIC_AURA = registerEffect("static_aura", () -> new MagicMobEffect(MobEffectCategory.BENEFICIAL, 0) {
+        STATIC_AURA = mobEffect("static_aura", () -> new MagicMobEffect(MobEffectCategory.BENEFICIAL, 0) {
             @Override
             public void spawnCustomParticle(Level world, double x, double y, double z) {
                 ParticleBuilder.create(EBParticles.SPARK).pos(x, y, z).spawn(world);
             }
         });
 
-        WARD = registerEffect("ward", () -> new MagicMobEffect(MobEffectCategory.BENEFICIAL, 0xc991d0) {
+        WARD = mobEffect("ward", () -> new MagicMobEffect(MobEffectCategory.BENEFICIAL, 0xc991d0) {
             @Override
             public void spawnCustomParticle(Level world, double x, double y, double z) {
             }
         });
 
-        FIRE_SKIN = registerEffect("fire_skin", FireSkinMobEffect::new);
-        FROST = registerEffect("frost", FrostMobEffect::new);
-        OAKFLESH = registerEffect("oakflesh", OakFleshMobEffect::new);
+        FIRE_SKIN = mobEffect("fire_skin", FireSkinMobEffect::new);
+        FROST = mobEffect("frost", FrostMobEffect::new);
+        OAKFLESH = mobEffect("oakflesh", OakFleshMobEffect::new);
 
-        CURSE_OF_ENFEEBLEMENT = registerEffect("curse_of_enfeeblement", EnfeeblementCurse::new);
-        CURSE_OF_UNDEATH = registerEffect("curse_of_undeath", UndeathCurse::new);
+        CURSE_OF_ENFEEBLEMENT = mobEffect("curse_of_enfeeblement", EnfeeblementCurse::new);
+        CURSE_OF_UNDEATH = mobEffect("curse_of_undeath", UndeathCurse::new);
 
-        DECAY = registerEffect("decay", DecayMobEffect::new);
+        DECAY = mobEffect("decay", DecayMobEffect::new);
     }
 
-    private static DeferredObject<MobEffect> registerEffect(String name, Supplier<MobEffect> effect) {
+
+    // ======= Registry =======
+    public static void register(RegisterFunction<MobEffect> function){
+        MOB_EFFECTS.forEach(((id, mobEffect) -> {
+            function.register(BuiltInRegistries.MOB_EFFECT, WizardryMainMod.location(id), mobEffect.get());
+        }));
+    }
+
+    // ======= Helpers =======
+    private static DeferredObject<MobEffect> mobEffect(String name, Supplier<MobEffect> effect) {
         DeferredObject<MobEffect> ret = new DeferredObject<>(effect);
-        mobEffects.put(name, ret);
+        MOB_EFFECTS.put(name, ret);
         return ret;
     }
 

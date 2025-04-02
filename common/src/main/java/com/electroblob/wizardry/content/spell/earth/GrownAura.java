@@ -1,0 +1,56 @@
+package com.electroblob.wizardry.content.spell.earth;
+
+import com.electroblob.wizardry.api.content.spell.internal.Caster;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.util.BlockUtil;
+import com.electroblob.wizardry.content.spell.DefaultProperties;
+import net.minecraft.core.BlockPos;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.BonemealableBlock;
+import net.minecraft.world.level.block.state.BlockState;
+
+import java.util.List;
+
+// TODO Bin:  grown aura need some particles tbh
+public class GrownAura extends Spell {
+    @Override
+    protected void perform(Caster caster) {
+        if (!(caster instanceof Player player)) return;
+        if (player.level().isClientSide) return;
+
+        boolean flag = false;
+        Level level = player.level();
+        List<BlockPos> sphere = BlockUtil.getBlockSphere(player.blockPosition(), property(DefaultProperties.EFFECT_RADIUS));
+
+        for (BlockPos pos : sphere) {
+            BlockState state = level.getBlockState(pos);
+            if(!(state.getBlock() instanceof BonemealableBlock plant) || !(plant.isBonemealSuccess(level, level.random, pos, state))) continue;
+
+            if(!(plant.isValidBonemealTarget(level, pos, state, false))){
+                continue;
+            } else {
+                flag = true;
+            }
+
+            if (level.random.nextFloat() < 0.35f) {
+                for (int i = 0; i < 5 && plant.isValidBonemealTarget(level, pos, state, false); i++) {
+                    plant.performBonemeal((ServerLevel) level, level.random, pos, state);
+                    state = level.getBlockState(pos);
+                    plant = (BonemealableBlock) state.getBlock();
+                }
+            } else {
+                plant.performBonemeal((ServerLevel) level, level.random, pos, state);
+            }
+        }
+
+        if (flag) this.playSound(caster.getCastLevel(), player, 0, -1);
+    }
+
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.builder().add(DefaultProperties.EFFECT_RADIUS, 2).build();
+    }
+}

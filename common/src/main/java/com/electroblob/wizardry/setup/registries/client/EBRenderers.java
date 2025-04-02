@@ -1,9 +1,9 @@
 package com.electroblob.wizardry.setup.registries.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.client.renderer.entity.*;
-import com.electroblob.wizardry.common.content.entity.projectile.*;
+import com.electroblob.wizardry.content.entity.projectile.*;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -16,7 +16,7 @@ import java.util.Map;
 
 public final class EBRenderers {
 
-    private static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> providers = Maps.newHashMap();
+    private static final Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> providers = Maps.newHashMap();
 
     @SuppressWarnings("unchecked")
     private static <T extends Entity> void register(DeferredObject<EntityType<T>> entityType, EntityRendererProvider provider) {
@@ -32,10 +32,10 @@ public final class EBRenderers {
         register(EBEntities.POISON_BOMB, ThrownItemRenderer::new);
         register(EBEntities.SMOKE_BOMB, ThrownItemRenderer::new);
         register(EBEntities.THUNDERBOLT, BlankRenderer::new);
-        register(EBEntities.MAGIC_MISSILE, MagicArrowRenderer<MagicMissile>::new);
-        register(EBEntities.DART, MagicArrowRenderer<Dart>::new);
+        register(EBEntities.MAGIC_MISSILE, MagicArrowRenderer<MagicMissileEntity>::new);
+        register(EBEntities.DART, MagicArrowRenderer<DartEntity>::new);
         register(EBEntities.FIRE_BOLT, BlankRenderer::new);
-        register(EBEntities.ICE_SHARD, MagicArrowRenderer<IceShard>::new);
+        register(EBEntities.ICE_SHARD, MagicArrowRenderer<IceShardEntity>::new);
         register(EBEntities.SPARK, BlankRenderer::new);
         register(EBEntities.LIGHTNING_ARROW, MagicArrowRenderer<LightningArrow>::new);
         register(EBEntities.ICE_CHARGE, (ctx -> new MagicProjectileRenderer<>(ctx,
@@ -47,7 +47,7 @@ public final class EBRenderers {
         register(EBEntities.DARKNESS_ORB, (ctx -> new MagicProjectileRenderer<>(ctx,
                 new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/darkness_orb.png")))
         );
-        register(EBEntities.ICE_LANCE, MagicArrowRenderer<IceLance>::new);
+        register(EBEntities.ICE_LANCE, MagicArrowRenderer<IceLanceEntity>::new);
         register(EBEntities.FORCE_ARROW, ForceArrowRenderer::new);
         register(EBEntities.CONJURED_ARROW, ConjureArrowRenderer::new);
         register(EBEntities.FLAME_CATCHER_ARROW, MagicArrowRenderer<FlamecatcherArrow>::new);

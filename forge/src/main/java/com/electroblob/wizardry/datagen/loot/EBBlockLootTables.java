@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.datagen.loot;
 
-import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;

@@ -1,9 +1,9 @@
 package com.electroblob.wizardry.client.renderer.entity;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.common.util.DrawingUtils;
-import com.electroblob.wizardry.api.common.util.EntityUtil;
-import com.electroblob.wizardry.common.content.entity.construct.BubbleConstruct;
+import com.electroblob.wizardry.api.content.util.DrawingUtils;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
+import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;

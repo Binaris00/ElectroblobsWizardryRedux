@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.api.common.spell.Element;
+import com.electroblob.wizardry.api.content.spell.Element;
 import net.minecraft.ChatFormatting;
 
 import java.util.Collections;

@@ -2,7 +2,7 @@ package com.electroblob.wizardry.api.client;
 
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.particle.ParticleWizardry;
-import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
@@ -18,7 +18,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.Random;
 import java.util.function.BiFunction;
 
 

@@ -1,9 +1,8 @@
 package com.electroblob.wizardry.setup.registries.client;
 
-import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.api.content.DeferredObject;
 import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
-import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 
 import java.util.Map;
@@ -17,7 +16,7 @@ public final class EBClientRegister {
     }
 
     public static void registerParticleProviders(Consumer<Map<DeferredObject<SimpleParticleType>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>>> handler) {
-        EBParticles.handleParticleProviderRegistration(handler);
+        EBParticles.registerProvider(handler);
     }
 
     private EBClientRegister() {}

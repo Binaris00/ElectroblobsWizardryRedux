@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.datagen;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.common.DeferredObject;
+import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;

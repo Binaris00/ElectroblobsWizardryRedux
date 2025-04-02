@@ -2,22 +2,25 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.LoaderEnvironment;
 import com.electroblob.wizardry.registry.*;
+import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
+import net.minecraft.core.Registry;
 
 
 public final class WizardryFabricMod implements ModInitializer {
     @Override
     public void onInitialize() {
         WizardryMainMod.init(LoaderEnvironment.FABRIC);
-        BlockRegistryFabric.register();
-        ItemRegistryFabric.register();
-        EntityRegistryFabric.register();
+
+        EBBlocks.register(Registry::register);
+        EBBlockEntities.register(Registry::register);
+        EBItems.register(Registry::register);
+        EBEntities.register(Registry::register);
         TierRegistryFabric.register();
         ElementRegistryFabric.register();
         SpellRegistryFabric.register();
-        CreativeTabRegistryFabric.register();
-        MobEffectRegistryFabric.register();
-
-        SoundRegistryFabric.register();
+        EBCreativeTabs.register(Registry::register);
+        EBMobEffects.register(Registry::register);
+        EBSounds.register(Registry::register);
     }
 }

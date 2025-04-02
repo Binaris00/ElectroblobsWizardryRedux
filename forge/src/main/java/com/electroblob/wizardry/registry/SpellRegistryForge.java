@@ -1,8 +1,8 @@
 package com.electroblob.wizardry.registry;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.common.spell.Spell;
-import com.electroblob.wizardry.common.core.SpellRegistry;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.EBRegister;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;

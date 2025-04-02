@@ -2,6 +2,7 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.LoaderEnvironment;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.ClientSetup;
 import com.electroblob.wizardry.setup.CommonSetup;
 import net.minecraft.resources.ResourceLocation;
@@ -10,7 +11,6 @@ public final class WizardryMainMod {
     public static final String MOD_ID = "ebwizardry";
     public static final String MOD_NAME = "Electroblob's Wizardry";
     public static final String MOD_VERSION = null;
-    private static final EBConfig CONFIG = EBConfig.instantiate();
     private static LoaderEnvironment loader;
 
     public static void init(LoaderEnvironment environment) {
@@ -35,9 +35,5 @@ public final class WizardryMainMod {
 
     public static boolean isForge(){
         return loader == LoaderEnvironment.FORGE;
-    }
-
-    public static EBConfig config() {
-        return CONFIG;
     }
 }

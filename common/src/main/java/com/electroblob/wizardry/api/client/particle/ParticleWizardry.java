@@ -1,9 +1,9 @@
 package com.electroblob.wizardry.api.client.particle;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.common.DeferredObject;
-import com.electroblob.wizardry.api.common.entity.ICustomHitbox;
-import com.electroblob.wizardry.api.common.util.EntityUtil;
+import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.api.content.entity.ICustomHitbox;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 
 import net.minecraft.client.Camera;

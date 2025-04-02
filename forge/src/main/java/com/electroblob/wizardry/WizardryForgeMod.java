@@ -29,24 +29,6 @@ public final class WizardryForgeMod {
         ElementRegistryForge.initialize(modBus);
         SpellRegistryForge.initialize(modBus);
 
-        SoundRegistryForge.register();
-
-        //Blocks need to be registered before items so the block items are getting added to item registry
-        BlockRegistryForge.BLOCKS.register(modBus);
-        BlockRegistryForge.register();
-
-        ItemRegistryForge.ITEMS.register(modBus);
-        ItemRegistryForge.register();
-
-        CreativeTabRegistryForge.CREATIVE_MODE_TABS.register(modBus);
-        CreativeTabRegistryForge.register();
-
-        EntityRegistryForge.ENTITY_TYPES.register(modBus);
-        EntityRegistryForge.register();
-
-        MobEffectRegistryForge.EFFECTS.register(modBus);
-        MobEffectRegistryForge.register();
-
         TierRegistryForge.register();
         ElementRegistryForge.register();
         SpellRegistryForge.register();
@@ -54,8 +36,6 @@ public final class WizardryForgeMod {
         modBus.addListener(WizardryForgeMod::commonSetup);
         if(FMLEnvironment.dist.isClient()) {
             modBus.addListener(WizardryForgeMod::clientSetup);
-            ParticleRegistryForge.PARTICLE_TYPES.register(modBus);
-            ParticleRegistryForge.register();
         }
     }
 

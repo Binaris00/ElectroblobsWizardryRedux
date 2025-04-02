@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.client.renderer.entity;
 
-import com.electroblob.wizardry.api.common.util.DrawingUtils;
-import com.electroblob.wizardry.common.content.entity.construct.EntityFireRing;
+import com.electroblob.wizardry.api.content.util.DrawingUtils;
+import com.electroblob.wizardry.content.entity.construct.FireRingConstruct;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -17,7 +17,7 @@ import net.minecraft.world.inventory.InventoryMenu;
 import net.minecraft.world.level.block.Blocks;
 import org.jetbrains.annotations.NotNull;
 
-public class FireRingRenderer extends EntityRenderer<EntityFireRing> {
+public class FireRingRenderer extends EntityRenderer<FireRingConstruct> {
     private final ResourceLocation texture;
 
     public FireRingRenderer(EntityRendererProvider.Context context, ResourceLocation texture) {
@@ -26,7 +26,7 @@ public class FireRingRenderer extends EntityRenderer<EntityFireRing> {
     }
 
     @Override
-    public void render(EntityFireRing entity, float p_114486_, float partialTicks, PoseStack p_114488_, @NotNull MultiBufferSource p_114489_, int p_114490_) {
+    public void render(FireRingConstruct entity, float p_114486_, float partialTicks, PoseStack p_114488_, @NotNull MultiBufferSource p_114489_, int p_114490_) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         p_114488_.pushPose();
         RenderSystem.enableDepthTest();
@@ -69,7 +69,7 @@ public class FireRingRenderer extends EntityRenderer<EntityFireRing> {
                 float f2 = 0.5F;
                 float f3 = 0.0F;
                 float f4 = 0.2f;
-                float f5 = (float) (entity.getY() - entity.getY());
+                float f5 = (float) (0.0);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 float f61 = 0.0F;
                 int i = 0;
@@ -114,7 +114,7 @@ public class FireRingRenderer extends EntityRenderer<EntityFireRing> {
                 float f2 = 0.5F;
                 float f3 = 0.0F;
                 float f4 = 0.2f;
-                float f5 = (float) (entity.getY() - entity.getY());
+                float f5 = (float) (0.0);
                 RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
                 float f61 = 0.0F;
                 int i = 0;
@@ -156,7 +156,7 @@ public class FireRingRenderer extends EntityRenderer<EntityFireRing> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull EntityFireRing p_114482_) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull FireRingConstruct p_114482_) {
         return null;
     }
 }

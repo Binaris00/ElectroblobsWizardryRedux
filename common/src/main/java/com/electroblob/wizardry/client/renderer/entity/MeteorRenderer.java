@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.client.renderer.entity;
 
-import com.electroblob.wizardry.common.content.entity.EntityMeteor;
+import com.electroblob.wizardry.content.entity.MeteorEntity;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-public class MeteorRenderer extends EntityRenderer<EntityMeteor> {
+public class MeteorRenderer extends EntityRenderer<MeteorEntity> {
     private final BlockRenderDispatcher dispatcher;
 
     public MeteorRenderer(EntityRendererProvider.Context $$0) {
@@ -27,7 +27,7 @@ public class MeteorRenderer extends EntityRenderer<EntityMeteor> {
     }
 
     @Override
-    public void render(EntityMeteor $$0, float $$1, float $$2, PoseStack $$3, MultiBufferSource $$4, int $$5) {
+    public void render(MeteorEntity $$0, float $$1, float $$2, PoseStack $$3, MultiBufferSource $$4, int $$5) {
         BlockState $$6 = $$0.getBlockState();
         if ($$6.getRenderShape() == RenderShape.MODEL) {
             Level $$7 = $$0.level();
@@ -56,7 +56,7 @@ public class MeteorRenderer extends EntityRenderer<EntityMeteor> {
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(@NotNull EntityMeteor var1) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull MeteorEntity var1) {
         return TextureAtlas.LOCATION_BLOCKS;
     }
 }

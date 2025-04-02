@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.api.common.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.Tier;
 import net.minecraft.ChatFormatting;
 
 import java.util.Collections;
@@ -34,9 +34,5 @@ public class Tiers {
             TIERS.put(name, tier);
             return tier;
         }
-
-        private static void init() {}
     }
-
-    static void load() {}
 }

@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.platform;
 
-import com.electroblob.wizardry.platform.services.IPlatformHelper;
+import com.electroblob.wizardry.core.platform.services.IPlatformHelper;
 import net.fabricmc.loader.api.FabricLoader;
 
 public class FabricPlatformHelper implements IPlatformHelper {
