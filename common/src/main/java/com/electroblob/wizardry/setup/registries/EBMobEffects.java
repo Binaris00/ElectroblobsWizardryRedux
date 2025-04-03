@@ -1,12 +1,10 @@
 package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.effect.*;
-import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -30,19 +28,8 @@ public class EBMobEffects {
 
 
     static {
-        STATIC_AURA = mobEffect("static_aura", () -> new MagicMobEffect(MobEffectCategory.BENEFICIAL, 0) {
-            @Override
-            public void spawnCustomParticle(Level world, double x, double y, double z) {
-                ParticleBuilder.create(EBParticles.SPARK).pos(x, y, z).spawn(world);
-            }
-        });
-
-        WARD = mobEffect("ward", () -> new MagicMobEffect(MobEffectCategory.BENEFICIAL, 0xc991d0) {
-            @Override
-            public void spawnCustomParticle(Level world, double x, double y, double z) {
-            }
-        });
-
+        STATIC_AURA = mobEffect("static_aura", StaticAuraMobEffect::new);
+        WARD = mobEffect("ward", WardMobEffect::new);
         FIRE_SKIN = mobEffect("fire_skin", FireSkinMobEffect::new);
         FROST = mobEffect("frost", FrostMobEffect::new);
         OAKFLESH = mobEffect("oakflesh", OakFleshMobEffect::new);

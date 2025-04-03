@@ -3,6 +3,7 @@ package com.electroblob.wizardry.content.entity.construct;
 import com.electroblob.wizardry.api.content.entity.construct.MagicConstructEntity;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.content.EBLivingHurtEvent;
 import com.electroblob.wizardry.content.spell.necromancy.Entrapment;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
@@ -107,13 +108,13 @@ public class BubbleConstruct extends MagicConstructEntity {
         return super.canRide(entity);
     }
 
-    // TODO ENTITY LIVING ATTACK EVENT
-//
-//    @SubscribeEvent
-//    public static void onLivingAttackEvent(LivingAttackEvent event) {
-//        if (event.getEntity().getVehicle() instanceof EntityBubble && !((EntityBubble) event.getEntity().getVehicle()).isDarkOrb) {
-//            event.getEntity().getVehicle().playSound(WizardrySounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
-//            event.getEntity().getVehicle().discard();
-//        }
-//    }
+    public static void onLivingHurt(EBLivingHurtEvent event){
+        if(event.isCancelled()) return;
+
+        LivingEntity entity = event.getDamagedEntity();
+        if(entity.getVehicle() instanceof BubbleConstruct bubble && !bubble.isDarkOrb){
+            entity.getVehicle().playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
+            entity.getVehicle().discard();
+        }
+    }
 }

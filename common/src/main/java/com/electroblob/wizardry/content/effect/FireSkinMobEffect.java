@@ -1,12 +1,18 @@
 package com.electroblob.wizardry.content.effect;
 
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
+import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.content.EBLivingHurtEvent;
+import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.EBMobEffects;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.effect.MobEffectCategory;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-// TODO, fire if attack event
 public class FireSkinMobEffect extends MagicMobEffect {
     public FireSkinMobEffect() {
         super(MobEffectCategory.BENEFICIAL, 0);
@@ -25,5 +31,17 @@ public class FireSkinMobEffect extends MagicMobEffect {
     @Override
     public boolean isDurationEffectTick(int i, int j) {
         return true;
+    }
+
+    public static void onLivingHurt(EBLivingHurtEvent event){
+        if(event.isCancelled()) return;
+
+        Entity attacker = event.getSource().getEntity();
+        if(attacker == null) return;
+
+        if(event.getDamagedEntity().hasEffect(EBMobEffects.FIRE_SKIN.get()) &&
+                !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, event.getDamagedEntity())){
+            attacker.setSecondsOnFire(Spells.FIRE_BREATH.property(DefaultProperties.EFFECT_DURATION) * 20);
+        }
     }
 }

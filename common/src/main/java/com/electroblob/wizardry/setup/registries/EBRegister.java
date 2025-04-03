@@ -1,14 +1,8 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.Tier;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.effect.MobEffect;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.item.Item;
 
 import java.util.Map;
 import java.util.Set;
@@ -27,9 +21,5 @@ public final class EBRegister {
 
     public static void registerElements(Consumer<Set<Map.Entry<String, Element>>> handler) {
         Elements.handleRegistration(handler);
-    }
-
-    public static void registerSounds(Consumer<Set<Map.Entry<String, DeferredObject<SoundEvent>>>> handler) {
-        EBSounds.handleRegistration(handler);
     }
 }

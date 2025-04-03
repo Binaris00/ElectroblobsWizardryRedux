@@ -5,7 +5,10 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.damagesource.DamageType;
 
+import java.util.ArrayList;
+
 public final class EBDamageSources {
+    public static ArrayList<ResourceKey<DamageType>> TYPES = new ArrayList<>();
     private EBDamageSources(){}
 
     public static final ResourceKey<DamageType> SORCERY = createType("sorcery");
@@ -24,6 +27,8 @@ public final class EBDamageSources {
     }
 
     private static ResourceKey<DamageType> createType(String name){
-        return ResourceKey.create(Registries.DAMAGE_TYPE, WizardryMainMod.location(name));
+        var key = ResourceKey.create(Registries.DAMAGE_TYPE, WizardryMainMod.location(name));
+        TYPES.add(key);
+        return key;
     }
 }
