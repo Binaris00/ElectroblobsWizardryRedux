@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.api.content.spell;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 
 /**
@@ -9,9 +9,10 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
  */
 // You should not be inheriting none spell this can cause big breaks
 public final class NoneSpell extends Spell {
-
     @Override
-    protected void perform(Caster caster) {}
+    public boolean cast(PlayerCastContext ctx) {
+        return true;
+    }
 
     @Override
     protected SpellProperties properties() {

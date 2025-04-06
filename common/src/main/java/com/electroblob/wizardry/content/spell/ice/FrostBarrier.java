@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.content.spell.ice;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
@@ -25,28 +27,64 @@ public class FrostBarrier extends Spell {
     private static final double BARRIER_SPACING = 1.4;
 
     @Override
-    protected void perform(Caster caster) {
-        if(!(caster instanceof Player player) || !player.onGround()) return;
-        if(player.level().isClientSide) return;
-
-        Vec3 direction = GeometryUtil.horizontalise(player.position().subtract(player.position()));
-        Vec3 centre = player.position().add(direction.scale(BARRIER_DISTANCE - BARRIER_ARC_RADIUS));
-
-        List<IceBarrierConstruct> barriers = new ArrayList<>();
-
-        int barrierCount =  3;
-
-        for (int i = 0; i < barrierCount; i++) {
-            IceBarrierConstruct barrier = createBarrier(player.level(), centre, direction.yRot((float) (BARRIER_SPACING / BARRIER_ARC_RADIUS) * i), player, barrierCount, i);
-            if (barrier != null) barriers.add(barrier);
-
-            if (i == 0) continue;
-            barrier = createBarrier(player.level(), centre, direction.yRot(-(float) (BARRIER_SPACING / BARRIER_ARC_RADIUS) * i), player, barrierCount, i);
-            if (barrier != null) barriers.add(barrier);
+    public boolean cast(PlayerCastContext ctx) {
+        if (ctx.caster().onGround()) {
+            if (!createBarriers(ctx.world(), ctx.caster().position(), ctx.caster().getLookAngle(), ctx.caster())) return false;
+            this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+            return true;
         }
 
-        barriers.forEach(player.level()::addFreshEntity);
+        return false;
     }
+
+    @Override
+    public boolean cast(EntityCastContext ctx) {
+        if (ctx.caster().onGround()) {
+            if (!createBarriers(ctx.world(), ctx.caster().position(), ctx.target().position().subtract(ctx.caster().position()), ctx.caster()))
+                return false;
+            this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean cast(LocationCastContext ctx) {
+        if (!createBarriers(ctx.world(), ctx.vec3(), new Vec3(ctx.direction().step()), null)) return false;
+
+        this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
+                ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
+                ctx.ticksInUse(), ctx.duration());
+        return true;
+    }
+
+    private boolean createBarriers(Level world, Vec3 origin, Vec3 direction, @Nullable LivingEntity caster) {
+        if (!world.isClientSide) {
+            direction = GeometryUtil.horizontalise(direction);
+            Vec3 centre = origin.add(direction.scale(BARRIER_DISTANCE - BARRIER_ARC_RADIUS));
+
+            List<IceBarrierConstruct> barriers = new ArrayList<>();
+
+            int barrierCount = 3;
+
+            for (int i = 0; i < barrierCount; i++) {
+                IceBarrierConstruct barrier = createBarrier(world, centre, direction.yRot((float) (BARRIER_SPACING / BARRIER_ARC_RADIUS) * i), caster, barrierCount, i);
+                if (barrier != null) barriers.add(barrier);
+
+                if (i == 0) continue;
+                barrier = createBarrier(world, centre, direction.yRot(-(float) (BARRIER_SPACING / BARRIER_ARC_RADIUS) * i), caster, barrierCount, i);
+                if (barrier != null) barriers.add(barrier);
+            }
+
+            if (barriers.isEmpty()) return false;
+
+            barriers.forEach(world::addFreshEntity);
+        }
+
+        return true;
+    }
+
 
     private IceBarrierConstruct createBarrier(Level world, Vec3 centre, Vec3 direction, @Nullable LivingEntity caster, int barrierCount, int index) {
         Vec3 position = centre.add(direction.scale(BARRIER_ARC_RADIUS));

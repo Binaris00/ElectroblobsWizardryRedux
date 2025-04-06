@@ -1,13 +1,17 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
-import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
-import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,20 +26,77 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
     }
 
     @Override
-    protected void perform(Caster caster) {
-        if(caster instanceof Player player){
-            T projectile = projectileFactory.apply(caster.getCastLevel());
-
-            projectile.aim(player, calculateVelocity(projectile, player.getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
-            addProjectileExtras(projectile, caster);
-
-            caster.getCastLevel().addFreshEntity(projectile);
-            playSound(caster.getCastLevel(), player, 0, -1);
-        }
+    public boolean canCastByEntity() {
+        return true;
     }
 
+    @Override
+    public boolean canCastByLocation() {
+        return true;
+    }
 
+    @Override
+    public boolean cast(PlayerCastContext ctx) {
+        if (!ctx.world().isClientSide) {
+            T projectile = projectileFactory.apply(ctx.world());
+            projectile.aim(ctx.caster(), calculateVelocity(projectile, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET));
+            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            // TODO MODIFIERS
+//            if (projectile instanceof BombEntity bomb)
+//                bomb.blastMultiplier = ctx.modifiers().get(WizardryItems.BLAST_UPGRADE.get());
+            addProjectileExtras(projectile, ctx.caster());
+            ctx.world().addFreshEntity(projectile);
+        }
 
+        ctx.caster().swing(ctx.hand());
+
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+
+        return true;
+    }
+
+    @Override
+    public boolean cast(EntityCastContext ctx) {
+        if(ctx.target() == null) return false;
+
+        if (!ctx.world().isClientSide) {
+            T projectile = projectileFactory.apply(ctx.world());
+            int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
+            projectile.aim(ctx.caster(), ctx.target(), calculateVelocity(projectile, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET), aimingError);
+            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            // TODO MODIFIERS
+//            if (projectile instanceof EntityBomb)
+//                ((EntityBomb) projectile).blastMultiplier = modifiers.get(WizardryItems.BLAST_UPGRADE.get());
+            addProjectileExtras(projectile, ctx.caster());
+            ctx.world().addFreshEntity(projectile);
+        }
+
+        ctx.caster().swing(ctx.hand());
+
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
+
+    @Override
+    public boolean cast(LocationCastContext ctx) {
+        if (!ctx.world().isClientSide) {
+            T projectile = projectileFactory.apply(ctx.world());
+            projectile.setPos(ctx.vec3());
+            Vec3i vec = ctx.direction().getNormal();
+            projectile.shoot(vec.getX(), vec.getY(), vec.getZ(), calculateVelocity(projectile, 0.375f), 1);
+            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            // TODO MODIFIERS
+//            if (projectile instanceof EntityBomb)
+//                ((EntityBomb) projectile).blastMultiplier = modifiers.get(WizardryItems.BLAST_UPGRADE.get());
+            addProjectileExtras(projectile, null);
+            ctx.world().addFreshEntity(projectile);
+        }
+
+        this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
+                ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
+                ctx.ticksInUse(), ctx.duration());
+        return true;
+    }
 
     protected float calculateVelocity(MagicProjectileEntity projectile, float launchHeight){
         float range = property(DefaultProperties.RANGE);
@@ -49,15 +110,7 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
         }
     }
 
-    /**
-     * This method is called just before the projectile is spawned.
-     * It is intended to be overridden by subclasses to add extra methods or behaviors to the projectile.
-     * By default, it does nothing.
-     * Note that this method is only called server-side, so it cannot be used to spawn particles directly.
-     * @param projectile The entity being spawned.
-     * @param caster The caster of this spell, or null if it was cast by a dispenser.
-     */
-    protected void addProjectileExtras(T projectile, @Nullable Caster caster){
+    protected void addProjectileExtras(T projectile, @Nullable LivingEntity caster){
         // Subclasses can put spell-specific stuff here
     }
 

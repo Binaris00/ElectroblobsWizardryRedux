@@ -3,7 +3,8 @@ package com.electroblob.wizardry.api.content.spell.properties;
 import com.electroblob.wizardry.api.content.util.Util;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SpellProperty<T> {
     protected String identifier = null;

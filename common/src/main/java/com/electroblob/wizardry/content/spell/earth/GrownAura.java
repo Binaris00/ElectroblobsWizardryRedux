@@ -1,13 +1,12 @@
 package com.electroblob.wizardry.content.spell.earth;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -17,13 +16,12 @@ import java.util.List;
 // TODO Bin:  grown aura need some particles tbh
 public class GrownAura extends Spell {
     @Override
-    protected void perform(Caster caster) {
-        if (!(caster instanceof Player player)) return;
-        if (player.level().isClientSide) return;
+    public boolean cast(PlayerCastContext ctx) {
+        if (ctx.caster().level().isClientSide) return false;
 
         boolean flag = false;
-        Level level = player.level();
-        List<BlockPos> sphere = BlockUtil.getBlockSphere(player.blockPosition(), property(DefaultProperties.EFFECT_RADIUS));
+        Level level = ctx.caster().level();
+        List<BlockPos> sphere = BlockUtil.getBlockSphere(ctx.caster().blockPosition(), property(DefaultProperties.EFFECT_RADIUS));
 
         for (BlockPos pos : sphere) {
             BlockState state = level.getBlockState(pos);
@@ -46,7 +44,9 @@ public class GrownAura extends Spell {
             }
         }
 
-        if (flag) this.playSound(caster.getCastLevel(), player, 0, -1);
+        if (flag) this.playSound(level, ctx.caster(), ctx.ticksInUse(), -1);
+
+        return flag;
     }
 
     @Override

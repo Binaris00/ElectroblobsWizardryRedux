@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceLocation;
@@ -54,6 +55,7 @@ public class DartEntity extends MagicArrowEntity {
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         Entity entity = hitResult.getEntity();
         if (entity instanceof LivingEntity livingEntity) {
+
             livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, Spells.DART.property(DefaultProperties.EFFECT_DURATION),
                     Spells.DART.property(DefaultProperties.EFFECT_STRENGTH), false, false));
         }
@@ -63,6 +65,7 @@ public class DartEntity extends MagicArrowEntity {
 
     @Override
     protected void onHitBlock(@NotNull BlockHitResult blockHitResult) {
+        this.playSound(EBSounds.ENTITY_DART_HIT_BLOCK.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
         super.onHitBlock(blockHitResult);
     }
 
@@ -84,4 +87,6 @@ public class DartEntity extends MagicArrowEntity {
     protected @NotNull ItemStack getPickupItem() {
         return ItemStack.EMPTY;
     }
+
+
 }

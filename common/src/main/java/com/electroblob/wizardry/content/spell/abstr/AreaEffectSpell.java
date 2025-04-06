@@ -1,12 +1,13 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
@@ -36,13 +37,34 @@ public abstract class AreaEffectSpell extends Spell {
     }
 
     @Override
-    protected void perform(Caster caster) {
-        if(!(caster instanceof Player player)) return;
+    public boolean canCastByEntity() {
+        return true;
+    }
 
-        // TODO Bin: tickuse 0
-        findAndAffectEntities(player.level(), player.position(), player, 0);
-        // ticks in use 0
-        this.playSound(player.level(), player, 0, -1);
+    @Override
+    public boolean canCastByLocation() {
+        return true;
+    }
+
+    @Override
+    public boolean cast(PlayerCastContext ctx) {
+        boolean result = findAndAffectEntities(ctx.world(), ctx.caster().position(), ctx.caster(), ctx.ticksInUse());
+        if(result) this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return result;
+    }
+
+    @Override
+    public boolean cast(EntityCastContext ctx) {
+        boolean result = findAndAffectEntities(ctx.world(), ctx.caster().position(), ctx.caster(), ctx.ticksInUse());
+        if(result) this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return result;
+    }
+
+    @Override
+    public boolean cast(LocationCastContext ctx) {
+        boolean result = findAndAffectEntities(ctx.world(), ctx.vec3(), null, ctx.ticksInUse());
+        if(result) this.playSound(ctx.world(), ctx.vec3(), ctx.ticksInUse(), -1);
+        return result;
     }
 
     protected boolean findAndAffectEntities(Level world, Vec3 origin, @Nullable LivingEntity caster, int ticksInUse) {
@@ -71,8 +93,7 @@ public abstract class AreaEffectSpell extends Spell {
         return result;
     }
 
-    protected abstract boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster,
-                                            LivingEntity target, int targetCount, int ticksInUse);
+    protected abstract boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse);
 
     protected void spawnParticleEffect(Level world, Vec3 origin, double radius, @Nullable LivingEntity caster) {
         int particleCount = (int) Math.round(particleDensity * Math.PI * radius * radius);

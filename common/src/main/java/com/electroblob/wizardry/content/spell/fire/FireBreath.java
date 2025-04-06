@@ -1,22 +1,21 @@
 package com.electroblob.wizardry.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
-import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 public class FireBreath extends RaySpell {
     public FireBreath(){
@@ -27,12 +26,12 @@ public class FireBreath extends RaySpell {
     }
 
     @Override
-    protected boolean onBlockHit(Level world, BlockPos pos, Direction side, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if(!EntityUtil.canDamageBlocks(caster, world)) return false;
-        pos = pos.relative(side);
+    protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
+        if(!EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return false;
+        BlockPos pos = blockHit.getBlockPos().relative(blockHit.getDirection());
 
-        if (world.isEmptyBlock(pos) && BlockUtil.canPlaceBlock(caster, world, pos)) {
-            if(!world.isClientSide) world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+        if (ctx.world().isEmptyBlock(pos) && BlockUtil.canPlaceBlock(ctx.caster(), ctx.world(), pos)) {
+            if(!ctx.world().isClientSide) ctx.world().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
             return true;
         }
 
@@ -40,16 +39,21 @@ public class FireBreath extends RaySpell {
     }
 
     @Override
-    protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if (target instanceof LivingEntity livingTarget && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
-            if (ticksInUse % livingTarget.invulnerableDuration == 1) {
+    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
+        if (entityHit.getEntity() instanceof LivingEntity target && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
+            if (ctx.ticksInUse() % target.invulnerableDuration == 1) {
                 target.setSecondsOnFire(10);
-                DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.FIRE)
+                DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FIRE)
                         : target.damageSources().magic();
-                EntityUtil.attackEntityWithoutKnockback(livingTarget, source, 5);
+                EntityUtil.attackEntityWithoutKnockback(target, source, 5);
             }
         }
 
+        return true;
+    }
+
+    @Override
+    protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
         return true;
     }
 
@@ -66,21 +70,17 @@ public class FireBreath extends RaySpell {
 //    }
 
     @Override
-    protected boolean onMiss(Level world, @Nullable LivingEntity caster, Vec3 origin, Vec3 direction, int ticksInUse) {
-        return true;
-    }
-
-    @Override
     public boolean isInstantCast() {
         return false;
     }
 
     @Override
-    protected void spawnParticle(Level world, double x, double y, double z, double vx, double vy, double vz) {
-        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).scale(2 + world.random.nextFloat()).collide(true).spawn(world);
-        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).scale(2 + world.random.nextFloat()).collide(true).spawn(world);
+    protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz) {
+        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).scale(2 + ctx.world().random.nextFloat()).collide(true).spawn(ctx.world());
+        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).scale(2 + ctx.world().random.nextFloat()).collide(true).spawn(ctx.world());
     }
 
+    // TODO PROPERTIES
     @Override
     protected SpellProperties properties() {
         return null;

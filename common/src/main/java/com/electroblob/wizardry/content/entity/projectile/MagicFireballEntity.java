@@ -8,20 +8,20 @@ import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
-import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class MagicFireballEntity extends MagicProjectileEntity {
@@ -156,15 +156,15 @@ public class MagicFireballEntity extends MagicProjectileEntity {
     }
 
     @Override
-    public boolean save(CompoundTag nbt) {
-        nbt.putInt("lifetime", lifetime);
-        return super.save(nbt);
+    public boolean save(CompoundTag tag) {
+        tag.putInt("lifetime", lifetime);
+        return super.save(tag);
     }
 
     @Override
-    public void load(CompoundTag nbt) {
-        lifetime = nbt.getInt("lifetime");
-        super.load(nbt);
+    public void load(@NotNull CompoundTag tag) {
+        lifetime = tag.getInt("lifetime");
+        super.load(tag);
     }
 
     @Override

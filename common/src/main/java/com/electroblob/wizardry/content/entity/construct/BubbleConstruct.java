@@ -1,8 +1,8 @@
 package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.content.entity.construct.MagicConstructEntity;
-import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.EBLivingHurtEvent;
 import com.electroblob.wizardry.content.spell.necromancy.Entrapment;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;

@@ -1,18 +1,21 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
-import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.AABB;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Supplier;
 
@@ -44,21 +47,65 @@ public class BuffSpell extends Spell {
     }
 
     @Override
-    protected void perform(Caster caster) {
-        if(caster instanceof Player player){
-            if(applyEffects(player) && player.level().isClientSide){
-                spawnParticles(player.getCommandSenderWorld(), player);
-            }
-        }
+    public boolean canCastByEntity() {
+        return true;
     }
 
+    @Override
+    public boolean canCastByLocation() {
+        return true;
+    }
+
+    @Override
+    public boolean cast(PlayerCastContext ctx) {
+        if (!this.applyEffects(ctx.caster()) && !ctx.world().isClientSide) return false;
+        if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), ctx.caster());
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
+
+    @Override
+    public boolean cast(EntityCastContext ctx) {
+        if (!potionSet.isEmpty() && ctx.caster().getActiveEffectsMap().keySet().containsAll(potionSet)) return false;
+        if (!this.applyEffects(ctx.caster()) && !ctx.world().isClientSide) return false;
+        if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), ctx.caster());
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
+
+    @Override
+    public boolean cast(LocationCastContext ctx) {
+        AABB boundingBox = new AABB(ctx.pos());
+        List<LivingEntity> entities = ctx.world().getEntitiesOfClass(LivingEntity.class, boundingBox);
+
+        float distance = -1;
+        LivingEntity nearestEntity = null;
+        for (LivingEntity entity : entities) {
+            float newDistance = (float) entity.distanceToSqr(ctx.x(), ctx.y(), ctx.z());
+            if (distance == -1 || newDistance < distance) {
+                distance = newDistance;
+                nearestEntity = entity;
+            }
+        }
+
+        if (nearestEntity == null) return false;
+
+        if (!this.applyEffects(nearestEntity) && !ctx.world().isClientSide) return false;
+        if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), nearestEntity);
+
+        this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
+                ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
+                ctx.ticksInUse(), ctx.duration());
+
+        return true;
+    }
 
     protected boolean applyEffects(LivingEntity caster){
-        for(MobEffect effect : potionSet){
-            caster.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? this.property(getEffectStrengthProperty(effect)) :
+        for (MobEffect effect : potionSet) {
+            caster.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? 1 :
                     this.property(getEffectDurationProperty(effect)),
-                    1, false, true
-            ));
+                    this.property(getEffectStrengthProperty(effect)),
+                    false, true));
         }
 
         return true;

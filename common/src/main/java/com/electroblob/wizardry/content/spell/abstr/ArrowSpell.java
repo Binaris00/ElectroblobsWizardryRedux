@@ -1,20 +1,35 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
 import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
-import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
+/**
+ * Represents a spell that launches a {@link MagicArrowEntity}-based projectile.
+ * <p>
+ * This class abstracts the logic of casting spells that behave like arrows, handling all the core steps
+ * such as entity creation, aiming, velocity calculation, and launch.
+ * <p>
+ * Check {@link com.electroblob.wizardry.setup.registries.Spells#DART Spells#Dart}
+ * - {@link com.electroblob.wizardry.setup.registries.Spells#MAGIC_MISSILE Spells#MagicMissile} for some examples
+ *
+ * @param <T> The type of {@link MagicArrowEntity} this spell launches.
+ */
 public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
-    private static final float FALLBACK_VELOCITY = 2;
-
+    /** A factory function to create instances of the projectile entity. */
     protected final Function<Level, T> arrowFactory;
 
     public ArrowSpell(Function<Level, T> arrowFactory) {
@@ -22,35 +37,92 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
     }
 
     @Override
-    protected void perform(Caster caster) {
-        if(caster instanceof Player player){
-            T arrow = arrowFactory.apply(caster.getCastLevel());
-
-            arrow.aim(player, calculateVelocity(arrow, player.getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
-            addArrowExtras(arrow, caster);
-
-            caster.getCastLevel().addFreshEntity(arrow);
-
-            // TODO, spell sound ticks in use, not really used, but anyway
-            this.playSound(caster.getCastLevel(), player, 0, -1);
-        }
+    public boolean canCastByEntity() {
+        return true;
     }
 
-    public float calculateVelocity(MagicArrowEntity projectile, float launchHeight){
+    @Override
+    public boolean canCastByLocation() {
+        return true;
+    }
+
+    @Override
+    public boolean cast(PlayerCastContext ctx) {
+        if (!ctx.world().isClientSide) {
+            T arrow = arrowFactory.apply(ctx.world());
+            arrow.aim(ctx.caster(), calculateVelocity(arrow, ctx.caster().getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
+            addArrowExtras(arrow, ctx.caster());
+            ctx.world().addFreshEntity(arrow);
+        }
+
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
+
+    @Override
+    public boolean cast(EntityCastContext ctx) {
+        if (ctx.target() == null) return false;
+
+        if (!ctx.world().isClientSide) {
+            T arrow = arrowFactory.apply(ctx.world());
+            int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
+            arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(arrow, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET), aimingError);
+            addArrowExtras(arrow, ctx.caster());
+            ctx.world().addFreshEntity(arrow);
+        }
+
+        ctx.caster().swing(ctx.hand());
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
+
+
+    @Override
+    public boolean cast(LocationCastContext ctx) {
+        if (!ctx.world().isClientSide) {
+            T projectile = arrowFactory.apply(ctx.world());
+            projectile.setPos(ctx.vec3());
+            Vec3 vec = Vec3.atLowerCornerOf(ctx.direction().getNormal());
+            projectile.shoot(vec.x(), vec.y(), vec.z(), calculateVelocity(projectile, 0.375f), 1);
+            addArrowExtras(projectile, null);
+            ctx.world().addFreshEntity(projectile);
+        }
+
+        this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
+                ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
+                ctx.ticksInUse(), ctx.duration());
+        return true;
+    }
+
+    /**
+     * Calculates the velocity of the projectile based on gravity and range.
+     *
+     * @param projectile    The projectile entity.
+     * @param launchHeight  The vertical height from which the projectile is launched.
+     * @return The velocity value to be used when launching the projectile.
+     */
+    public float calculateVelocity(MagicArrowEntity projectile, float launchHeight) {
         float range = this.property(DefaultProperties.RANGE);
 
-        if(projectile.isNoGravity()){
-            if(projectile.getLifetime() <= 0) return FALLBACK_VELOCITY;
+        if (projectile.isNoGravity()) {
+            if (projectile.getLifetime() <= 0) return 2;
             return range / projectile.getLifetime();
-        }else{
+        } else {
             float g = 0.05f;
-            return range / Mth.sqrt(2 * launchHeight/g);
+            return range / Mth.sqrt(2 * launchHeight / g);
         }
     }
 
-    protected void addArrowExtras(T arrow, @Nullable Caster caster){
+    /**
+     * Makes changes to arrows before it's spawned.
+     * Override this is subclasses to apply special effects
+     *
+     * @param arrow  The arrow instance to modify.
+     * @param caster The entity who cast the spell, may be null in location-based casts.
+     */
+    protected void addArrowExtras(T arrow, @Nullable LivingEntity caster) {
+        // Meant to be overridden by subclasses or anonymous spells.
     }
-
 
     @Override
     protected SpellProperties properties() {

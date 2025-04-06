@@ -1,11 +1,10 @@
 package com.electroblob.wizardry.content.spell.healing;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 public class ReplenishHunger extends BuffSpell {
     public static final SpellProperty<Integer> HUNGER_POINTS = SpellProperty.intProperty("hunger_points", 6);
@@ -21,11 +20,21 @@ public class ReplenishHunger extends BuffSpell {
     }
 
     @Override
-    protected void perform(Caster caster) {
-        if(caster instanceof Player player && player.getFoodData().needsFood()){
-            player.getFoodData().eat(property(HUNGER_POINTS), property(SATURATION_MODIFIER));
+    public boolean cast(PlayerCastContext ctx) {
+        if(ctx.caster().getFoodData().needsFood()){
+            ctx.caster().getFoodData().eat(property(HUNGER_POINTS), property(SATURATION_MODIFIER));
         }
-        super.perform(caster);
+        return super.cast(ctx);
+    }
+
+    @Override
+    public boolean canCastByEntity() {
+        return false;
+    }
+
+    @Override
+    public boolean canCastByLocation() {
+        return false;
     }
 
     @Override

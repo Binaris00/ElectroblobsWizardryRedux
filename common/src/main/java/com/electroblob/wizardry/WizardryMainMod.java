@@ -2,7 +2,6 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.LoaderEnvironment;
-import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.ClientSetup;
 import com.electroblob.wizardry.setup.CommonSetup;
 import net.minecraft.resources.ResourceLocation;

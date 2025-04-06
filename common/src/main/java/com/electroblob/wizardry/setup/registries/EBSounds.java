@@ -1,19 +1,15 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.api.content.util.RegisterFunction;
-import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.api.content.util.RegisterFunction;
+import com.electroblob.wizardry.core.SpellSoundManager;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
-import net.minecraft.world.effect.MobEffect;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 
 @SuppressWarnings("unused")
 public final class EBSounds {

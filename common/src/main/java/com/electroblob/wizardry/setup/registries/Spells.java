@@ -3,6 +3,8 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.content.entity.construct.*;
+import com.electroblob.wizardry.content.entity.projectile.*;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.*;
 import com.electroblob.wizardry.content.spell.earth.*;
@@ -12,17 +14,18 @@ import com.electroblob.wizardry.content.spell.ice.*;
 import com.electroblob.wizardry.content.spell.lightning.BlindingFlash;
 import com.electroblob.wizardry.content.spell.lightning.InvokeWeather;
 import com.electroblob.wizardry.content.spell.magic.ForceArrowSpell;
-import com.electroblob.wizardry.content.entity.construct.*;
-import com.electroblob.wizardry.content.entity.projectile.*;
 import com.electroblob.wizardry.content.spell.necromancy.*;
 import com.electroblob.wizardry.content.spell.sorcery.*;
 import net.minecraft.world.effect.MobEffects;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.electroblob.wizardry.setup.registries.Spells.Register.*;
+import static com.electroblob.wizardry.setup.registries.Spells.Register.spell;
 
 public final class Spells {
 

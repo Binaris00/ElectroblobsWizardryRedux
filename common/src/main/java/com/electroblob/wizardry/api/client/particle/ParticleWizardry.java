@@ -5,7 +5,6 @@ import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.entity.ICustomHitbox;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-
 import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.ParticleRenderType;

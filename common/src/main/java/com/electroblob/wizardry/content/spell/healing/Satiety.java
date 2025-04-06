@@ -1,10 +1,9 @@
 package com.electroblob.wizardry.content.spell.healing;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 
 public class Satiety extends BuffSpell {
     public Satiety() {
@@ -17,11 +16,11 @@ public class Satiety extends BuffSpell {
     }
 
     @Override
-    protected void perform(Caster caster) {
-        if(caster instanceof Player player && player.getFoodData().needsFood()){
-            player.getFoodData().eat(property(ReplenishHunger.HUNGER_POINTS), property(ReplenishHunger.SATURATION_MODIFIER));
+    public boolean cast(PlayerCastContext ctx) {
+        if(ctx.caster().getFoodData().needsFood()){
+            ctx.caster().getFoodData().eat(property(ReplenishHunger.HUNGER_POINTS), property(ReplenishHunger.HUNGER_POINTS));
         }
-        super.perform(caster);
+        return super.cast(ctx);
     }
 
     @Override

@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -25,39 +26,46 @@ public class ScrollItem extends Item {
     }
 
     @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand interactionHand) {
-        Spell spell = SpellUtil.getSpell(player.getItemInHand(interactionHand));
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
+        Spell spell = SpellUtil.getSpell(player.getItemInHand(hand));
 
         if (spell == null) {
             EBLogger.info(Component.literal("Spell is null"));
-            return InteractionResultHolder.fail(player.getItemInHand(interactionHand));
+            return InteractionResultHolder.fail(player.getItemInHand(hand));
         }
 
         if (!spell.isInstantCast()) {
             if(!player.isUsingItem()){
-                player.startUsingItem(interactionHand);
+                player.startUsingItem(hand);
             }
-            return InteractionResultHolder.pass(player.getItemInHand(interactionHand));
+            return InteractionResultHolder.pass(player.getItemInHand(hand));
         } else {
-            Caster.of(player).castSpell(spell);
-            player.getCooldowns().addCooldown(this, 60);
+            PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, new SpellModifiers());
+            if(spell.cast(ctx)){
+                player.getCooldowns().addCooldown(this, 30);
+                return InteractionResultHolder.success(player.getItemInHand(hand));
+            }
         }
-        return InteractionResultHolder.success(player.getItemInHand(interactionHand));
+        return InteractionResultHolder.fail(player.getItemInHand(hand));
     }
 
     @Override
-    public void onUseTick(Level level, LivingEntity livingEntity, ItemStack itemStack, int i) {
+    public void onUseTick(@NotNull Level level, LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
         Spell spell = SpellUtil.getSpell(livingEntity.getItemInHand(livingEntity.getUsedItemHand()));
 
         //EBLogger.info(Component.literal("Spell: " + spell));
-
         if(spell == null) {
             EBLogger.info(Component.literal("Spell is null"));
             return;
         }
 
+        int castingTick = stack.getUseDuration() - timeLeft;
+
         if(!spell.isInstantCast()){
-            Caster.of((Player) livingEntity).castSpell(spell);
+            if(livingEntity instanceof Player player){
+                PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick, new SpellModifiers());
+                spell.cast(ctx);
+            }
         } else {
             livingEntity.stopUsingItem();
         }

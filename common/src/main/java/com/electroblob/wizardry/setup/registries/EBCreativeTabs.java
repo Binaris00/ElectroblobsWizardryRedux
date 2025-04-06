@@ -2,14 +2,17 @@ package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
+import com.electroblob.wizardry.core.registry.SpellRegistry;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Supplier;
 
 public final class EBCreativeTabs {

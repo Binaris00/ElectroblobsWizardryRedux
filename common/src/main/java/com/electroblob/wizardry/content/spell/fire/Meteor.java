@@ -1,23 +1,20 @@
 package com.electroblob.wizardry.content.spell.fire;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.entity.MeteorEntity;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 public class Meteor extends RaySpell {
 
     @Override
-    protected void perform(Caster caster) {
+    public boolean cast(PlayerCastContext ctx) {
         // TODO ARTIFACT
 //        if(ArtefactItem.isArtefactActive(caster, WizardryItems.RING_METEOR.get())){
 //
@@ -38,15 +35,15 @@ public class Meteor extends RaySpell {
 //        }else{
 //            super.perform(caster);
 //        }
-        super.perform(caster);
+        return super.cast(ctx);
     }
 
     @Override
-    protected boolean onBlockHit(Level world, BlockPos pos, Direction side, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if(world.canSeeSky(pos.above())){
-            if(!world.isClientSide){
-                MeteorEntity meteor = new MeteorEntity(world, pos.getX(), pos.getY() + 50, pos.getZ(), 1, EntityUtil.canDamageBlocks(caster, world));
-                world.addFreshEntity(meteor);
+    protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
+        if(ctx.world().canSeeSky(blockHit.getBlockPos().above())){
+            if(!ctx.world().isClientSide){
+                MeteorEntity meteor = new MeteorEntity(ctx.world(), blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY() + 50, blockHit.getBlockPos().getZ(), 1, EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                ctx.world().addFreshEntity(meteor);
             }
             return true;
         }
@@ -54,12 +51,12 @@ public class Meteor extends RaySpell {
     }
 
     @Override
-    protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
+    protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
         return false;
     }
 
     @Override
-    protected boolean onMiss(Level world, @Nullable LivingEntity caster, Vec3 origin, Vec3 direction, int ticksInUse) {
+    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         return false;
     }
 

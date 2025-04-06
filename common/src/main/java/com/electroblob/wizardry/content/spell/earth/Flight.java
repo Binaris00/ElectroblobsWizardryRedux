@@ -1,53 +1,63 @@
 package com.electroblob.wizardry.content.spell.earth;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.Vec3;
 
 public class Flight extends Spell {
     private static final double Y_NUDGE_ACCELERATION = 0.075;
 
     @Override
-    protected void perform(Caster caster) {
-        if(!(caster instanceof Player player)) return;
-        if(player.isInWater() || player.isInLava() || player.isFallFlying()) return;
+    public boolean cast(PlayerCastContext ctx) {
+        if(ctx.caster().isInWater() || ctx.caster().isInLava() || ctx.caster().isFallFlying()) return false;
 
         // Particles
-        if(player.level().isClientSide){
-            double x = player.xo - 1 + player.level().random.nextDouble() * 2;
-            double y = player.yo + player.getEyeHeight() - 0.5 + player.level().random.nextDouble();
-            double z = player.zo - 1 + player.level().random.nextDouble() * 2;
+        if(ctx.caster().level().isClientSide){
+            double x = ctx.caster().xo - 1 + ctx.caster().level().random.nextDouble() * 2;
+            double y = ctx.caster().yo + ctx.caster().getEyeHeight() - 0.5 + ctx.caster().level().random.nextDouble();
+            double z = ctx.caster().zo - 1 + ctx.caster().level().random.nextDouble() * 2;
             ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(0, -0.1, 0).time(15)
-                    .color(0.8f, 1, 0.5f).spawn(player.level());
-            x = player.xo - 1 + player.level().random.nextDouble() * 2;
-            y = player.yo + player.getEyeHeight() - 0.5 + player.level().random.nextDouble();
-            z = player.zo - 1 + player.level().random.nextDouble() * 2;
+                    .color(0.8f, 1, 0.5f).spawn(ctx.caster().level());
+            x = ctx.caster().xo - 1 + ctx.caster().level().random.nextDouble() * 2;
+            y = ctx.caster().yo + ctx.caster().getEyeHeight() - 0.5 + ctx.caster().level().random.nextDouble();
+            z = ctx.caster().zo - 1 + ctx.caster().level().random.nextDouble() * 2;
             ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(0, -0.1, 0).time(15)
-                    .color(1f, 1f, 1f).spawn(player.level());
+                    .color(1f, 1f, 1f).spawn(ctx.caster().level());
         }
 
-        playSound(caster.getCastLevel(), player, 0, -1);
+        if(ctx.ticksInUse() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
 
         // Speed
         float speed = property(DefaultProperties.SPEED);
         float acceleration = 0.05f;
 
-        if((Math.abs(player.getDeltaMovement().x) < speed || player.getDeltaMovement().x / player.getLookAngle().x < 0)
-                && (Math.abs(player.getDeltaMovement().z) < speed || player.getDeltaMovement().z / player.getLookAngle().z < 0)){
-            player.addDeltaMovement(new Vec3(player.getLookAngle().x * acceleration, 0, player.getLookAngle().z * acceleration));
+        if((Math.abs(ctx.caster().getDeltaMovement().x) < speed || ctx.caster().getDeltaMovement().x / ctx.caster().getLookAngle().x < 0)
+                && (Math.abs(ctx.caster().getDeltaMovement().z) < speed || ctx.caster().getDeltaMovement().z / ctx.caster().getLookAngle().z < 0)){
+            ctx.caster().addDeltaMovement(new Vec3(ctx.caster().getLookAngle().x * acceleration, 0, ctx.caster().getLookAngle().z * acceleration));
         }
 
-        if(Math.abs(player.getDeltaMovement().y) < speed || player.getDeltaMovement().y / player.getLookAngle().y < 0){
-            player.setDeltaMovement(player.getDeltaMovement().x, player.getDeltaMovement().y +
-                    player.getLookAngle().y * acceleration + Y_NUDGE_ACCELERATION, player.getDeltaMovement().z);
+        if(Math.abs(ctx.caster().getDeltaMovement().y) < speed || ctx.caster().getDeltaMovement().y / ctx.caster().getLookAngle().y < 0){
+            ctx.caster().setDeltaMovement(ctx.caster().getDeltaMovement().x, ctx.caster().getDeltaMovement().y +
+                    ctx.caster().getLookAngle().y * acceleration + Y_NUDGE_ACCELERATION, ctx.caster().getDeltaMovement().z);
         }
-        if(!EBConfig.replaceVanillaFallDamage) player.fallDistance = 0.0f;
+        if(!EBConfig.replaceVanillaFallDamage) ctx.caster().fallDistance = 0.0f;
+
+        return true;
+    }
+
+    @Override
+    public boolean canCastByEntity() {
+        return false;
+    }
+
+    @Override
+    public boolean canCastByLocation() {
+        return false;
     }
 
     @Override

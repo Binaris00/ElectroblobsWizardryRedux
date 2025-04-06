@@ -1,22 +1,22 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
 import com.electroblob.wizardry.api.client.util.ClientUtils;
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.RayTracer;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("UnusedReturnValue")
 public abstract class RaySpell extends Spell {
@@ -67,66 +67,109 @@ public abstract class RaySpell extends Spell {
     }
 
     @Override
-    protected void perform(Caster caster) {
-        if(!(caster instanceof Player player)) return;
-
-        Vec3 look = player.getLookAngle();
-        Vec3 origin = new Vec3(player.getX(), player.getY() + player.getEyeHeight() - Y_OFFSET, player.getZ());
-
-        if(isInstantCast() && player.level().isClientSide && ClientUtils.isFirstPerson(player)){
-            origin = origin.add(look.scale(1.2));
-        }
-        // TODO: ticksInUse
-        if (!shootSpell(player.level(), origin, look, player, 0)) {
-            this.playSound(caster.getCastLevel(), player, 0, -1);
-        }
+    public boolean canCastByEntity() {
+        return true;
     }
 
-    protected abstract boolean onMiss(Level world, @Nullable LivingEntity caster, Vec3 origin, Vec3 direction, int ticksInUse);
-    protected abstract boolean onBlockHit(Level world, BlockPos pos, Direction side, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse);
-    protected abstract boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse);
+    @Override
+    public boolean canCastByLocation() {
+        return true;
+    }
 
-    protected boolean shootSpell(Level world, Vec3 origin, Vec3 direction, Player caster, int ticksInUse) {
+    @Override
+    public boolean cast(PlayerCastContext ctx) {
+        Vec3 look = ctx.caster().getLookAngle();
+        Vec3 origin = new Vec3(ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight() - Y_OFFSET, ctx.caster().getZ());
+
+        if (this.isInstantCast() && ctx.world().isClientSide && ClientUtils.isFirstPerson(ctx.caster())) origin = origin.add(look.scale(1.2));
+        if (shootSpell(ctx, origin, look)) return false;
+
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
+
+    @Override
+    public boolean cast(EntityCastContext ctx) {
+        Vec3 origin = new Vec3(ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight() - Y_OFFSET, ctx.caster().getZ());
+        Vec3 targetPos = null;
+
+        if (ctx.target() != null) {
+            if (!ignoreLivingEntities || !(ctx.target() instanceof LivingEntity)) {
+                targetPos = new Vec3(ctx.target().getX(), ctx.target().getY() + ctx.target().getBbHeight() / 2, ctx.target().getZ());
+
+            } else {
+                int x = Mth.floor(ctx.target().getX());
+                int y = (int) ctx.target().getY() - 1;
+                int z = Mth.floor(ctx.target().getZ());
+                BlockPos pos = new BlockPos(x, y, z);
+
+                if (!ctx.world().isEmptyBlock(pos) && (!ctx.world().getBlockState(pos).liquid() || hitLiquids)) {
+                    targetPos = new Vec3(x + 0.5, y + 1, z + 0.5);
+                }
+            }
+        }
+
+        if (targetPos == null) return false;
+
+        if (shootSpell(ctx, origin, targetPos.subtract(origin).normalize())) return false;
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
+
+    @Override
+    public boolean cast(LocationCastContext ctx) {
+        Vec3 vec = new Vec3(ctx.direction().step());
+
+        if (shootSpell(ctx, ctx.vec3(), vec)) return false;
+        this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
+                ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
+                ctx.ticksInUse(), ctx.duration());
+        return true;
+    }
+
+    protected abstract boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction);
+    protected abstract boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin);
+    protected abstract boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin);
+
+    protected boolean shootSpell(CastContext ctx, Vec3 origin, Vec3 direction) {
         double range = this.property(DefaultProperties.RANGE);
         Vec3 endpoint = origin.add(direction.scale(range));
 
-        HitResult rayTrace = RayTracer.rayTrace(world, caster, origin, endpoint, aimAssist, hitLiquids, Entity.class, ignoreLivingEntities ? EntityUtil::isLiving : RayTracer.ignoreEntityFilter(caster));
+        HitResult rayTrace = RayTracer.rayTrace(ctx.world(), ctx.caster(), origin, endpoint, aimAssist, hitLiquids, Entity.class, ignoreLivingEntities ? EntityUtil::isLiving : RayTracer.ignoreEntityFilter(ctx.caster()));
 
         boolean flag = false;
 
         if (rayTrace != null) {
-            if (rayTrace.getType() == HitResult.Type.ENTITY) {
-                flag = onEntityHit(world, ((EntityHitResult) rayTrace).getEntity(), rayTrace.getLocation(), caster, origin, ticksInUse);
-
+            if (rayTrace instanceof EntityHitResult entityHit) {
+                flag = onEntityHit(ctx, entityHit, origin);
                 if (flag) range = origin.distanceTo(rayTrace.getLocation());
-            } else if (rayTrace.getType() == HitResult.Type.BLOCK) {
-                BlockHitResult blockHitResult = (BlockHitResult) rayTrace;
-                flag = onBlockHit(world, blockHitResult.getBlockPos(), blockHitResult.getDirection(), rayTrace.getLocation(), caster, origin, ticksInUse);
+            } else if (rayTrace instanceof BlockHitResult blockHit) {
+                flag = onBlockHit(ctx, blockHit, origin);
 
                 range = origin.distanceTo(rayTrace.getLocation());
             }
         }
 
-        if (!flag && !onMiss(world, caster, origin, direction, ticksInUse)) return false;
+        if (!flag && !onMiss(ctx, origin, direction)) return true;
 
 
-        if (world.isClientSide) {
-            spawnParticleRay(world, origin, direction, range);
+        if (ctx.world().isClientSide) {
+            spawnParticleRay(ctx, origin, direction, range);
         }
 
-        return true;
+        return false;
     }
 
-    protected void spawnParticleRay(Level world, Vec3 origin, Vec3 direction, double distance){
+    protected void spawnParticleRay(CastContext ctx, Vec3 origin, Vec3 direction, double distance){
         Vec3 velocity = direction.scale(particleVelocity);
 
         for(double d = particleSpacing; d <= distance; d += particleSpacing){
-            double x = origin.x + d*direction.x + particleJitter * (world.random.nextDouble()*2 - 1);
-            double y = origin.y + d*direction.y + particleJitter * (world.random.nextDouble()*2 - 1);
-            double z = origin.z + d*direction.z + particleJitter * (world.random.nextDouble()*2 - 1);
-            spawnParticle(world, x, y, z, velocity.x, velocity.y, velocity.z);
+            double x = origin.x + d*direction.x + particleJitter * (ctx.world().random.nextDouble()*2 - 1);
+            double y = origin.y + d*direction.y + particleJitter * (ctx.world().random.nextDouble()*2 - 1);
+            double z = origin.z + d*direction.z + particleJitter * (ctx.world().random.nextDouble()*2 - 1);
+            spawnParticle(ctx, x, y, z, velocity.x, velocity.y, velocity.z);
         }
     }
 
-    protected void spawnParticle(Level world, double x, double y, double z, double vx, double vy, double vz){}
+    protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz){}
 }

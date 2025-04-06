@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.spell.ice;
 
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
@@ -11,7 +12,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,33 +22,32 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
     }
 
     @Override
-    protected boolean spawnConstruct(Level world, double x, double y, double z, @Nullable Direction side, @Nullable LivingEntity caster) {
+    protected boolean spawnConstruct(CastContext ctx, Vec3 origin, @Nullable Direction side) {
         if (side == null) return false;
 
-        BlockPos blockHit = BlockPos.containing(x, y, z);
+        BlockPos blockHit = BlockPos.containing(origin);
         if (side.getAxisDirection() == Direction.AxisDirection.NEGATIVE) blockHit = blockHit.relative(side);
-        if (world.getBlockState(blockHit).isCollisionShapeFullBlock(world, blockHit)) return false;
+        if (ctx.world().getBlockState(blockHit).isCollisionShapeFullBlock(ctx.world(), blockHit)) return false;
 
-        Vec3 origin = new Vec3(x, y, z);
         Vec3 pos = origin.add(new Vec3(side.getOpposite().step()));
-        super.spawnConstruct(world, pos.x, pos.y, pos.z, side, caster);
+        super.spawnConstruct(ctx, pos, side);
 
         int quantity = Spells.ICE_SPICKES.property(DefaultProperties.ENTITIES);
         float maxRadius = Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_RADIUS);
         for (int i = 0; i < quantity; i++) {
-            double radius = 0.5 + world.random.nextDouble() * (maxRadius - 0.5);
+            double radius = 0.5 + ctx.world().random.nextDouble() * (maxRadius - 0.5);
 
-            Vec3 offset = Vec3.directionFromRotation(world.random.nextFloat() * 180 - 90, world.random.nextBoolean() ? 0 : 180)
+            Vec3 offset = Vec3.directionFromRotation(ctx.world().random.nextFloat() * 180 - 90, ctx.world().random.nextBoolean() ? 0 : 180)
                     .scale(radius).yRot(side.toYRot() * (float) Math.PI / 180).xRot(GeometryUtil.getPitch(side) * (float) Math.PI / 180);
 
             if (side.getAxis().isHorizontal()) offset = offset.yRot((float) Math.PI / 2);
 
-            Integer surface = BlockUtil.getNearestSurface(world, new BlockPos(BlockPos.containing(origin.add(offset))), side,
+            Integer surface = BlockUtil.getNearestSurface(ctx.world(), new BlockPos(BlockPos.containing(origin.add(offset))), side,
                     (int) maxRadius, true, BlockUtil.SurfaceCriteria.basedOn(this::isCollisionShapeFullBlock));
 
             if (surface != null) {
                 Vec3 vec = GeometryUtil.replaceComponent(origin.add(offset), side.getAxis(), surface).subtract(new Vec3(side.step()));
-                super.spawnConstruct(world, vec.x, vec.y, vec.z, side, caster);
+                super.spawnConstruct(ctx, vec, side);
             }
         }
 

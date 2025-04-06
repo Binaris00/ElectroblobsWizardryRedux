@@ -2,8 +2,6 @@ package com.electroblob.wizardry.core.networking;
 
 import net.minecraft.network.FriendlyByteBuf;
 
-import java.util.function.Supplier;
-
 public abstract class EBPacket {
 
     public EBPacket(FriendlyByteBuf buf) {

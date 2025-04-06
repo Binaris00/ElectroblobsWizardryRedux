@@ -1,9 +1,7 @@
 package com.electroblob.wizardry.setup;
 
 import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 
 public final class ClientSetup {

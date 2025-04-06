@@ -5,6 +5,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class BombEntity extends MagicProjectileEntity {
     /** The entity blast multiplier. This is now synced and saved centrally from {@link BombEntity}. */
@@ -20,14 +21,14 @@ public abstract class BombEntity extends MagicProjectileEntity {
 
 
     @Override
-    public void load(CompoundTag compoundTag) {
-        super.load(compoundTag);
-        blastMultiplier = compoundTag.getFloat("blastMultiplier");
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
+        blastMultiplier = tag.getFloat("blastMultiplier");
     }
 
     @Override
-    public boolean save(CompoundTag compoundTag) {
-        compoundTag.putFloat("blastMultiplier", blastMultiplier);
-        return super.save(compoundTag);
+    public boolean save(CompoundTag tag) {
+        tag.putFloat("blastMultiplier", blastMultiplier);
+        return super.save(tag);
     }
 }

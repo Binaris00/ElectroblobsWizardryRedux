@@ -108,7 +108,7 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
         return (LivingEntity) entity;
     }
 
-    public void setCaster(@Nullable Player caster) {
+    public void setCaster(@Nullable LivingEntity caster) {
         this.casterUUID = caster == null ? null : caster.getUUID();
     }
 

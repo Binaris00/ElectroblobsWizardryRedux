@@ -1,7 +1,8 @@
 package com.electroblob.wizardry.content.spell.necromancy;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
@@ -9,31 +10,44 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 import java.util.Comparator;
 import java.util.List;
 
 public class ShulkerBullet extends Spell {
     @Override
-    protected void perform(Caster caster) {
-        if(!(caster instanceof Player player)) return;
-        if(player.level().isClientSide) return;
+    public boolean cast(PlayerCastContext ctx) {
+        if (shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ())) return false;
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
 
-        double range = property(DefaultProperties.RANGE);
+    @Override
+    public boolean cast(EntityCastContext ctx) {
+        if (shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ())) return false;
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        return true;
+    }
 
-        List<LivingEntity> possibleTargets = EntityUtil.getLivingWithinRadius(range, player.getX(), player.getY(), player.getZ(),
-                player.level());
+    private boolean shoot(Level world, LivingEntity caster, double x, double y, double z) {
+        if (!world.isClientSide) {
+            double range = property(DefaultProperties.RANGE);
 
-        possibleTargets.remove(caster);
-        possibleTargets.removeIf(entity -> entity instanceof ArmorStand);
+            List<LivingEntity> possibleTargets = EntityUtil.getLivingWithinRadius(range, x, y, z, world);
 
-        if(possibleTargets.isEmpty()) return;
+            possibleTargets.remove(caster);
+            possibleTargets.removeIf(t -> t instanceof ArmorStand);
 
-        possibleTargets.sort(Comparator.comparingDouble(entity -> entity.distanceToSqr(player.getX(), player.getY(), player.getZ())));
-        Entity target = possibleTargets.get(0);
+            if (possibleTargets.isEmpty()) return true;
 
-        player.level().addFreshEntity(new net.minecraft.world.entity.projectile.ShulkerBullet(player.level(), player, target, Direction.Axis.Y));
+            possibleTargets.sort(Comparator.comparingDouble(t -> t.distanceToSqr(x, y, z)));
+
+            Entity target = possibleTargets.get(0);
+            world.addFreshEntity(new net.minecraft.world.entity.projectile.ShulkerBullet(world, caster, target, Direction.UP.getAxis()));
+        }
+
+        return false;
     }
 
     @Override

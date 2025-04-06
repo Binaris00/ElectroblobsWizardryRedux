@@ -1,10 +1,10 @@
 package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
-import com.electroblob.wizardry.api.content.util.EntityUtil;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
+import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;

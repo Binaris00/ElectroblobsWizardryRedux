@@ -1,10 +1,10 @@
 package com.electroblob.wizardry.content.spell.magic;
 
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.content.entity.projectile.ForceArrow;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.ArrowSpell;
-import com.electroblob.wizardry.content.entity.projectile.ForceArrow;
+import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.Nullable;
 
 public class ForceArrowSpell extends ArrowSpell<ForceArrow> {
@@ -13,7 +13,7 @@ public class ForceArrowSpell extends ArrowSpell<ForceArrow> {
     }
 
     @Override
-    protected void addArrowExtras(ForceArrow arrow, @Nullable Caster caster) {
+    protected void addArrowExtras(ForceArrow arrow, @Nullable LivingEntity caster) {
         //arrow.setMana((int) (this.getCost() * this.getCostScale()));
     }
 

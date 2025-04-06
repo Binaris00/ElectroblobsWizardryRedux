@@ -5,6 +5,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -168,5 +169,14 @@ public final class EntityUtil {
 //        // TODO: Forge Event Factory
 //        //return ForgeEventFactory.getMobGriefingEvent(world, entity);
         return true;
+    }
+
+    public static int getDefaultAimingError(Difficulty difficulty){
+        switch(difficulty){
+            case EASY: return 10;
+            case NORMAL: return 6;
+            case HARD: return 2;
+            default: return 10; // Peaceful counts as easy; the only time this is used is when a player attacks a (good) wizard.
+        }
     }
 }

@@ -1,20 +1,17 @@
 package com.electroblob.wizardry.api.content.spell;
 
-
-import com.electroblob.wizardry.api.content.spell.internal.Caster;
-import com.electroblob.wizardry.api.content.spell.internal.CastingPhase;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.core.SpellSoundManager;
-import com.electroblob.wizardry.core.SpellEngine;
+import com.electroblob.wizardry.core.registry.SpellRegistry;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
-
-import static com.electroblob.wizardry.api.content.spell.internal.CastingPhase.*;
 
 /**
  * The Spell class serves as a blueprint for different types of spells.
@@ -24,16 +21,10 @@ import static com.electroblob.wizardry.api.content.spell.internal.CastingPhase.*
  * a standardized interface for interacting with spells throughout the codebase.
  * This makes the code more organized, easier to understand, and less prone to errors.
 */
-public abstract class Spell implements Cloneable {
+public abstract class Spell {
     private ResourceLocation location;
-    private boolean propertiesFrozen;
     private SpellProperties properties = SpellProperties.empty();
     private boolean ended;
-
-    private @NotNull CastingPhase phase = NONE;
-    private int prepareCastTime;
-    private int performCastTime;
-    private int concludeCastTime;
 
     protected float volume = 1;
     protected float pitch = 1;
@@ -42,9 +33,51 @@ public abstract class Spell implements Cloneable {
     public Spell() {
         if(properties() != null) {
             this.properties = properties();
-            //propertiesFrozen = true;
         }
     }
+
+    public abstract boolean cast(PlayerCastContext ctx);
+
+    public boolean cast(EntityCastContext ctx){
+        return false;
+    }
+
+    public boolean cast(LocationCastContext ctx){
+        return false;
+    }
+
+    public void endCast(CastContext cxt){
+        this.ended = true;
+    }
+
+    public void onCharge(CastContext ctx){
+    }
+
+    public final boolean hasEnded() {
+        return ended;
+    }
+
+    public boolean isInstantCast() {
+        return true;
+    }
+
+    public boolean canCastByEntity(){
+        return false;
+    }
+
+    public boolean canCastByLocation(){
+        return false;
+    }
+
+    public final Boolean isEmpty(){
+        return this instanceof NoneSpell;
+    }
+
+    // ===================================================
+    // PROPERTIES
+    // ===================================================
+
+    protected abstract SpellProperties properties();
 
     public final Spell assignLocation(ResourceLocation location) {
         if(this.location == null && SpellRegistry.isInAssignPeriod()) this.location = location;
@@ -52,142 +85,9 @@ public abstract class Spell implements Cloneable {
     }
 
     public final Spell assignProperties(SpellProperties properties) {
-        if(!propertiesFrozen) {
-            this.properties = properties;
-            //propertiesFrozen = true;
-        }
+        this.properties = properties;
         return this;
     }
-
-    public final Boolean isEmpty(){
-        return this instanceof NoneSpell;
-    }
-
-    public final void cast(@NotNull Caster caster) {
-        //EBLogger.info("cast() called. Phase: " + phase + ", Ended: " + ended);
-        execute_cast(caster);
-    }
-
-    private void execute_cast(@NotNull Caster caster) {
-        //EBLogger.info("execute_cast() called. Phase: " + phase + ", Ended: " + ended);
-        if(!phase.isCasting()) {
-            phase = PREPARE;
-        }
-        updateCast(caster);
-        if(!this.ended) {
-            //EBLogger.info("Adding spell to SpellEngine.");
-            SpellEngine.addSpellToLevel(this, caster);
-        }
-    }
-
-    public final void updateCast(Caster caster){
-        //EBLogger.info("updateCast() called. Phase: " + phase + ", prepareCastTime: " + prepareCastTime + ", performCastTime: " + performCastTime + ", concludeCastTime: " + concludeCastTime);
-        switch(this.phase){
-            case PREPARE -> updatePrepare(caster);
-            case PERFORM -> updatePerform(caster);
-            case CONCLUDE -> updateConclude(caster);
-        }
-    }
-
-    private void updatePrepare(Caster caster) {
-        //EBLogger.info("updatePrepare() called. prepareCastTime: " + prepareCastTime);
-        if(prepareCastTime == 0) onPrepareStart(caster);
-        prepare(caster);
-        prepareCastTime++;
-
-        if(readyToPerform(caster)) {
-            onPrepareEnd(caster);
-            phase = PERFORM;
-            //EBLogger.info("Transitioning to PERFORM phase.");
-            if(updateNextImmediately()) perform(caster);
-        }
-    }
-
-    private void updatePerform(Caster caster){
-        //EBLogger.info("updatePerform() called. performCastTime: " + performCastTime);
-        if(performCastTime == 0) onPerformStart(caster);
-        perform(caster);
-        performCastTime++;
-
-        if(readyToConclude(caster)) {
-            onPerformEnd(caster);
-            phase = CONCLUDE;
-            //EBLogger.info("Transitioning to CONCLUDE phase.");
-            if(updateNextImmediately()) conclude(caster);
-        }
-    }
-
-    private void updateConclude(Caster caster){
-        //EBLogger.info("updateConclude() called. concludeCastTime: " + concludeCastTime);
-        if(concludeCastTime == 0) onConcludeStart(caster);
-        conclude(caster);
-        concludeCastTime++;
-
-        if(readyToEnd(caster)) {
-            onConcludeEnd(caster);
-            endCast(caster);
-            //EBLogger.info("Spell casting ended.");
-        }
-    }
-
-    private void endCast(Caster caster){
-        //EBLogger.info("endCast() called. Marking spell as ended.");
-        this.phase = NONE;
-        this.ended = true;
-    }
-
-
-    protected void prepare(Caster caster) {}
-    protected abstract void perform(Caster caster);
-    protected void conclude(Caster caster) {}
-
-
-    protected void onPrepareStart(Caster caster) {}
-    protected void onPerformStart(Caster caster) {}
-    protected void onConcludeStart(Caster caster) {}
-    protected void onPrepareEnd(Caster caster) {}
-    protected void onPerformEnd(Caster caster) {}
-    protected void onConcludeEnd(Caster caster) {}
-
-
-    protected boolean readyToPerform(Caster caster) {
-        return prepareCastTime >= prepareDuration() || isInstantCast();
-    }
-
-    protected boolean readyToConclude(Caster caster) {
-        return performCastTime >= performDuration() || isInstantCast();
-    }
-
-    protected boolean readyToEnd(Caster caster) {
-        return concludeCastTime >= concludeDuration() || isInstantCast();
-    }
-
-    /**
-     * If the next phase is ready should it update on the same tick or wait until next tick?
-     */
-    protected boolean updateNextImmediately() {
-        return isInstantCast();
-    }
-
-    public boolean isInstantCast() {
-        return prepareDuration() == 0 && performDuration() == 0 && concludeDuration() == 0;
-    }
-
-    public int prepareDuration() {
-        return 0;
-    }
-    public int performDuration() {
-        return 0;
-    }
-    public int concludeDuration() {
-        return 0;
-    }
-
-    public final boolean hasEnded() {
-        return ended;
-    }
-
-    protected abstract SpellProperties properties();
 
     public final ResourceLocation getLocation() {
         return location;
@@ -207,6 +107,11 @@ public abstract class Spell implements Cloneable {
 
     public final boolean is(String location) {
         return location.equals(this.location.toString());
+    }
+
+    // TODO: Need to do charge time
+    public int getCharge(){
+        return 0;
     }
 
     // ===================================================
@@ -241,12 +146,10 @@ public abstract class Spell implements Cloneable {
         SpellSoundManager.playSound(world, this, pos.x, pos.y, pos.z, ticksInUse, duration);
     }
 
-    @Override
-    public Spell clone() {
-        try {
-            return (Spell) super.clone();
-        } catch (CloneNotSupportedException e) {
-            throw new RuntimeException(e);
-        }
+
+    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration) {
+        SpellSoundManager.playSound(world, this, x, y, z, ticksInUse, duration);
     }
+
+    // ============
 }

@@ -22,9 +22,7 @@ public class RayTracer {
                                      boolean hitLiquids, Class<? extends Entity> entityType, Predicate<? super Entity> filter){
         HitResult result = world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, caster));
 
-        if (result != null) {
-            endpoint = result.getLocation();
-        }
+        endpoint = result.getLocation();
         float borderSize = 1 + aimAssist;
         AABB searchVolume = new AABB(origin.x, origin.y, origin.z, endpoint.x, endpoint.y, endpoint.z).inflate(borderSize, borderSize, borderSize);
         List<? extends Entity> entities = world.getEntitiesOfClass(entityType, searchVolume);
@@ -81,7 +79,7 @@ public class RayTracer {
         return world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, entity));
     }
 
-    public static Predicate<Entity> ignoreEntityFilter(Entity entity) {
+    public static Predicate<Entity> ignoreEntityFilter(@Nullable Entity entity) {
         return e -> e == entity || (e instanceof LivingEntity && ((LivingEntity) e).deathTime > 0);
     }
 }

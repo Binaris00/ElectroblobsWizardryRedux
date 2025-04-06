@@ -14,6 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
@@ -68,10 +69,6 @@ public abstract class MagicArrowEntity extends AbstractArrow {
 
     }
 
-    /** Sets the shooter of the projectile to the given caster, positions the projectile at the given caster's eyes and
-     * aims it at the given target with the given speed. The trajectory will be altered slightly by a random amount
-     * determined by the aimingError parameter. For reference, skeletons set this to 10 on easy, 6 on normal and 2 on hard
-     * difficulty. */
     public void aim(LivingEntity caster, Entity target, float speed, float aimingError){
         this.setOwner(caster);
 
@@ -200,4 +197,9 @@ public abstract class MagicArrowEntity extends AbstractArrow {
 
     public void tickInGround(){}
     public void ticksInAir(){}
+
+    @Override
+    protected boolean tryPickup(@NotNull Player player) {
+        return false;
+    }
 }

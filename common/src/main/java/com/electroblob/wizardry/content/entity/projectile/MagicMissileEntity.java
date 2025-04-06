@@ -8,14 +8,14 @@ import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
-import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class MagicMissileEntity extends MagicArrowEntity {
@@ -55,7 +55,7 @@ public class MagicMissileEntity extends MagicArrowEntity {
         double x = this.xo - this.getDeltaMovement().x / 2;
         double y = this.yo - this.getDeltaMovement().y / 2;
         double z = this.zo - this.getDeltaMovement().z / 2;
-
+//
         ParticleBuilder.create(EBParticles.SPARKLE, level().getRandom(), x, y, z, 0.03, true)
                 .color(1, 1, 0.65f).time(20 + random.nextInt(10)).fade(0.7f, 0, 1).spawn(this.level());
 

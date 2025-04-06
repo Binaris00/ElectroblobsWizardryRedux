@@ -1,36 +1,35 @@
 package com.electroblob.wizardry.content.spell.fire;
 
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.Nullable;
 
 public class Ignite extends RaySpell {
     @Override
-    protected boolean onBlockHit(Level world, BlockPos pos, Direction side, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        BlockPos blockPos = pos.relative(side);
-        if(world.isEmptyBlock(blockPos)){
-            if(!world.isClientSide && BlockUtil.canPlaceBlock(caster, world, blockPos))
-                world.setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
+    protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
+        BlockPos blockPos = blockHit.getBlockPos().relative(blockHit.getDirection());
+        if(ctx.world().isEmptyBlock(blockPos)){
+            if(!ctx.world().isClientSide && BlockUtil.canPlaceBlock(ctx.caster(), ctx.world(), blockPos))
+                ctx.world().setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
             return true;
         }
         return false;
     }
 
     @Override
-    protected boolean onEntityHit(Level world, Entity target, Vec3 hit, @Nullable LivingEntity caster, Vec3 origin, int ticksInUse) {
-        if(target instanceof LivingEntity && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
+    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
+        if(entityHit.getEntity() instanceof LivingEntity target && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
             target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
             return true;
         }
@@ -39,18 +38,13 @@ public class Ignite extends RaySpell {
     }
 
     @Override
-    public boolean isInstantCast() {
-        return true;
-    }
-
-    @Override
-    protected boolean onMiss(Level world, @Nullable LivingEntity caster, Vec3 origin, Vec3 direction, int ticksInUse) {
+    protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
         return false;
     }
 
     @Override
-    protected void spawnParticle(Level world, double x, double y, double z, double vx, double vy, double vz) {
-        world.addParticle(ParticleTypes.FLAME, x, y, z, 0,0,0);
+    protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz) {
+        ctx.world().addParticle(ParticleTypes.FLAME, x, y, z, 0,0,0);
     }
 
     @Override

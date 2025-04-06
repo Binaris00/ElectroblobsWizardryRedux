@@ -3,17 +3,17 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
+import com.electroblob.wizardry.content.item.CrystalItem;
 import com.electroblob.wizardry.content.item.ScrollItem;
 import com.electroblob.wizardry.content.item.SpellBookItem;
-import com.electroblob.wizardry.content.item.CrystalItem;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.item.Item;
 
-import java.util.*;
-import java.util.function.Consumer;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
 import java.util.function.Supplier;
 
 
