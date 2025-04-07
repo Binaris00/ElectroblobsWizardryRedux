@@ -1,8 +1,8 @@
 package com.electroblob.wizardry.core.mixin;
 
 import com.electroblob.wizardry.EBEventHelper;
-import com.electroblob.wizardry.content.EBLivingHurtEvent;
-import com.electroblob.wizardry.content.EBLivingTick;
+import com.electroblob.wizardry.core.event.EBLivingHurtEvent;
+import com.electroblob.wizardry.core.event.EBLivingTick;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;

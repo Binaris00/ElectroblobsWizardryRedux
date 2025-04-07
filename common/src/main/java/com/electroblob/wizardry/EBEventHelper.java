@@ -1,8 +1,8 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
-import com.electroblob.wizardry.content.EBLivingHurtEvent;
-import com.electroblob.wizardry.content.EBLivingTick;
+import com.electroblob.wizardry.core.event.EBLivingHurtEvent;
+import com.electroblob.wizardry.core.event.EBLivingTick;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
 import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
 import com.electroblob.wizardry.content.effect.WardMobEffect;

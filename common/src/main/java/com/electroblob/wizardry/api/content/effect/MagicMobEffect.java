@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.api.content.effect;
 
 
-import com.electroblob.wizardry.content.EBLivingTick;
+import com.electroblob.wizardry.core.event.EBLivingTick;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;

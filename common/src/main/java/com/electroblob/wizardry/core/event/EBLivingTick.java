@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.content;
+package com.electroblob.wizardry.core.event;
 
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
