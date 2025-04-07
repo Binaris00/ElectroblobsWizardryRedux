@@ -1,8 +1,10 @@
 package com.electroblob.wizardry.content.entity;
 
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.sounds.SoundSource;
@@ -55,10 +57,8 @@ public class MeteorEntity extends FallingBlockEntity {
 	@Override
 	public void tick() {
 
-		if(this.tickCount % 16 == 1 && level().isClientSide){
-			// TODO ENTITY MOVING SOUND
-			//Wizardry.proxy.playMovingSound(this, WizardrySounds.ENTITY_METEOR_FALLING.get(), SoundSource.PLAYERS, 3.0f, 1.0f, false);
-		}
+		if(this.tickCount % 16 == 1 && level().isClientSide)
+			SpellSoundManager.playMovingSound(this, EBSounds.ENTITY_METEOR_FALLING.get(), SoundSource.PLAYERS, 3.0f, 1.0f, false);
 
 		this.xo = this.getX();
 		this.yo = this.getY();

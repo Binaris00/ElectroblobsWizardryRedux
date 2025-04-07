@@ -7,8 +7,10 @@ import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.client.particle.ParticleTornado;
+import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
+import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -16,6 +18,7 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundSetEntityMotionPacket;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.player.Player;
@@ -59,7 +62,7 @@ public class TornadoConstruct extends ScaledConstructEntity {
         double radius = getBbWidth() / 2;
 
         if (this.tickCount % 120 == 1 && level().isClientSide) {
-            // TODO ENTITY MOVING SOUND
+            SpellSoundManager.playMovingSound(this, EBSounds.ENTITY_TORNADO_AMBIENT.get(), SoundSource.HOSTILE, 1.0f, 1.0f, false);
         }
 
         this.move(MoverType.SELF, new Vec3(velX, this.getDeltaMovement().y, velZ));

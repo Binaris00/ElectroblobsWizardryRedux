@@ -46,7 +46,7 @@ public final class SpellUtil {
      * @return The spell retrieved from the NbtCompound. If the tag is null, returns Spells.NONE.
      */
     private static Spell getSpellFromNbt(@Nullable CompoundTag tag) {
-        return tag == null ? null : byId(tag.getString(SPELL_KEY)); // Needs to be none spell
+        return tag == null ? Spells.NONE : byId(tag.getString(SPELL_KEY));
     }
 
     public static String getSpellNameTranslationComponent(@Nullable ItemStack stack) {

@@ -15,6 +15,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Blaze;
 import net.minecraft.world.entity.monster.MagmaCube;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -61,6 +62,16 @@ public class FrostRay extends RaySpell {
         ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(vx, vy, vz).time(8 + ctx.world().random.nextInt(12))
                 .color(0.4f + 0.6f * brightness, 0.6f + 0.4f * brightness, 1).collide(true).spawn(ctx.world());
         ParticleBuilder.create(EBParticles.SNOW).pos(x, y, z).velocity(vx, vy, vz).time(8 + ctx.world().random.nextInt(12)).collide(true).spawn(ctx.world());
+    }
+
+    @Override
+    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration) {
+        this.playSoundLoop(world, entity, ticksInUse);
+    }
+
+    @Override
+    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration) {
+        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
     }
 
     @Override

@@ -9,9 +9,14 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The Spell class serves as a blueprint for different types of spells.
@@ -137,18 +142,32 @@ public abstract class Spell {
     }
 
     protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration) {
-        if (!entity.isSilent()) {
-            SpellSoundManager.playSound(world, this, entity.getX(), entity.getY(), entity.getZ(), ticksInUse, duration);
-        }
+        if (!entity.isSilent()) SpellSoundManager.playSound(world, this, entity.getX(), entity.getY(), entity.getZ(), ticksInUse, duration);
     }
 
     protected void playSound(Level world, Vec3 pos, int ticksInUse, int duration) {
         SpellSoundManager.playSound(world, this, pos.x, pos.y, pos.z, ticksInUse, duration);
     }
 
-
     protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration) {
         SpellSoundManager.playSound(world, this, x, y, z, ticksInUse, duration);
+    }
+
+    protected final void playSoundLoop(Level world, LivingEntity entity, int ticksInUse) {
+        if (ticksInUse == 0 && world.isClientSide)
+            SpellSoundManager.playSpellSoundLoop(entity, this, getLoopSounds(), volume, pitch + pitchVariation * (world.random.nextFloat() - 0.5f));
+    }
+
+    protected final void playSoundLoop(Level world, double x, double y, double z, int ticksInUse, int duration) {
+        if (ticksInUse == 0 && world.isClientSide) {
+            SpellSoundManager.playSpellSoundLoop(world, x, y, z, this, getLoopSounds(), volume, pitch + pitchVariation * (world.random.nextFloat() - 0.5f), duration);
+        }
+    }
+
+    protected SoundEvent[] getLoopSounds() {
+        List<String> names = List.of("start", "loop", "end");
+        return names.stream().map(name -> SoundEvent.createVariableRangeEvent(new ResourceLocation(
+                this.getLocation().getNamespace(), "spell." + this.getLocation().getPath() + "." + name))).toArray(SoundEvent[]::new);
     }
 
     // ============

@@ -7,10 +7,10 @@
   "mixins": [
     "ClipContextMixin",
     "CommandsMixin",
-    "LivingEntityMixin",
-    "PlayerCasterMixin"
+    "LivingEntityMixin"
   ],
   "client": [
+    "MinecraftMixin"
   ],
   "server": [
   ],

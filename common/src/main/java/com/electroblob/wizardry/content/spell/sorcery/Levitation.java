@@ -6,11 +6,11 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 
 public class Levitation extends Spell {
     public Levitation(){
-
-        // TODO BIN Sound loop
         soundValues(0.5f, 1, 0);
     }
 
@@ -35,22 +35,16 @@ public class Levitation extends Spell {
         this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
         return true;
     }
-//
-//    @Override
-//    protected SoundEvent[] createSounds(){
-//        return this.createContinuousSpellSounds();
-//    }
-//
-//    @Override
-//    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration, SpellModifiers modifiers, String... sounds){
-//        this.playSoundLoop(world, entity, ticksInUse);
-//    }
-//
-//    @Override
-//    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration, SpellModifiers modifiers, String... sounds){
-//        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
-//    }
 
+    @Override
+    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration) {
+        this.playSoundLoop(world, entity, ticksInUse);
+    }
+
+    @Override
+    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration) {
+        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
+    }
 
     @Override
     public boolean isInstantCast() {

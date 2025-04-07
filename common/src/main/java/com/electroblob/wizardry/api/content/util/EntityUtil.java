@@ -1,8 +1,12 @@
 package com.electroblob.wizardry.api.content.util;
 
+import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
+import com.electroblob.wizardry.api.content.spell.Spell;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
@@ -10,6 +14,8 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
@@ -172,11 +178,36 @@ public final class EntityUtil {
     }
 
     public static int getDefaultAimingError(Difficulty difficulty){
-        switch(difficulty){
-            case EASY: return 10;
-            case NORMAL: return 6;
-            case HARD: return 2;
-            default: return 10; // Peaceful counts as easy; the only time this is used is when a player attacks a (good) wizard.
+        return switch (difficulty) {
+            case EASY -> 10;
+            case NORMAL -> 6;
+            case HARD -> 2;
+            default -> 10;
+        };
+    }
+
+    public static boolean isCasting(LivingEntity caster, Spell spell) {
+        if(spell.isInstantCast()) return false;
+
+        if (caster instanceof Player) {
+            // TODO WIZARD DATA
+//            WizardData data = WizardData.get((Player) caster);
+//            if (data != null && data.currentlyCasting() == spell) return true;
+
+            // TODO Something weird here
+            // Normal to return negative ticks?? anyway, I convert
+            // the ticks to positive to it can be compared correctly with the charge time
+            if (caster.isUsingItem() && Math.abs(caster.getUseItemRemainingTicks()) >= spell.getCharge()) {
+                ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
+                return stack.getItem() instanceof ISpellCastingItem && ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack) == spell;
+            }
         }
+
+        // TODO SPELL CASTER
+//        else if (caster instanceof ISpellCaster) {
+//            if (((ISpellCaster) caster).getContinuousSpell() == spell) return true;
+//        }
+
+        return false;
     }
 }

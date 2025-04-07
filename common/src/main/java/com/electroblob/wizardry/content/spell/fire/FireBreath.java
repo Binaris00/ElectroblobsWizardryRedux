@@ -12,6 +12,7 @@ import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -57,17 +58,15 @@ public class FireBreath extends RaySpell {
         return true;
     }
 
-    // TODO SOUND LOOP
+    @Override
+    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration) {
+        this.playSoundLoop(world, entity, ticksInUse);
+    }
 
-//    @Override
-//    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration, SpellModifiers modifiers, String... sounds) {
-//        this.playSoundLoop(world, entity, ticksInUse);
-//    }
-//
-//    @Override
-//    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration, SpellModifiers modifiers, String... sounds) {
-//        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
-//    }
+    @Override
+    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration) {
+        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
+    }
 
     @Override
     public boolean isInstantCast() {

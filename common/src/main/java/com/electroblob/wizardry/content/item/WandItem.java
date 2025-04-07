@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
@@ -15,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public class WandItem extends Item {
+public class WandItem extends Item implements ISpellCastingItem {
 
     public WandItem() {
         super(new Properties().stacksTo(1));
@@ -25,7 +26,7 @@ public class WandItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         var itemInHand = player.getItemInHand(hand);
 
-        Spell spell = Spells.MAGIC_MISSILE;
+        Spell spell = getCurrentSpell(player.getMainHandItem());
 
         SpellModifiers modifiers = new SpellModifiers();
 
@@ -49,11 +50,7 @@ public class WandItem extends Item {
 
     @Override
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
-        Spell spell = Spells.MAGIC_MISSILE;
-        if(spell == null) {
-            EBLogger.info(Component.literal("Spell is null"));
-            return;
-        }
+        Spell spell = getCurrentSpell(stack);
 
         SpellModifiers modifiers = new SpellModifiers();
         int castingTick = stack.getUseDuration() - timeLeft;
@@ -75,5 +72,11 @@ public class WandItem extends Item {
         } else {
             livingEntity.stopUsingItem();
         }
+    }
+
+    @NotNull
+    @Override
+    public Spell getCurrentSpell(ItemStack stack) {
+        return Spells.MAGIC_MISSILE;
     }
 }

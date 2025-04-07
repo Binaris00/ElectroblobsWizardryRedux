@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
@@ -19,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ScrollItem extends Item {
+public class ScrollItem extends Item implements ISpellCastingItem {
 
     public ScrollItem(Properties properties) {
         super(properties);
@@ -27,7 +28,7 @@ public class ScrollItem extends Item {
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
-        Spell spell = SpellUtil.getSpell(player.getItemInHand(hand));
+        Spell spell = getCurrentSpell(player.getMainHandItem());
 
         if (spell == null) {
             EBLogger.info(Component.literal("Spell is null"));
@@ -71,11 +72,16 @@ public class ScrollItem extends Item {
         }
     }
 
+    @NotNull
+    @Override
+    public Spell getCurrentSpell(ItemStack stack) {
+        return SpellUtil.getSpell(stack);
+    }
+
+
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-
         list.add(Component.translatable(SpellUtil.getSpellNameTranslationComponent(stack)));
-
         super.appendHoverText(stack, level, list, tooltipFlag);
     }
 }

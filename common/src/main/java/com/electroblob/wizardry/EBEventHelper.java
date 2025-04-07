@@ -1,6 +1,8 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
+import com.electroblob.wizardry.client.sound.SoundLoop;
+import com.electroblob.wizardry.core.event.EBClientTickEvent;
 import com.electroblob.wizardry.core.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.core.event.EBLivingTick;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
@@ -34,5 +36,13 @@ public final class EBEventHelper {
      * */
     public static void onLivingTickEvent(EBLivingTick event) {
         MagicMobEffect.onLivingTick(event);
+    }
+
+    /**
+     * This applies to loaders with the Mixin
+     * {@link com.electroblob.wizardry.core.mixin.MinecraftMixin#EBWIZARDRY$clientTick(CallbackInfo) MinecraftMixin#EBWIZARDRY$clientTick}
+     * */
+    public static void onClientTick(EBClientTickEvent event){
+        SoundLoop.onClientTick(event);
     }
 }

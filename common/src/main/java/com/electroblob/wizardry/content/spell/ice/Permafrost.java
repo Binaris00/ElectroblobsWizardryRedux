@@ -69,23 +69,15 @@ public class Permafrost extends RaySpell {
         return false;
     }
 
-    // TODO Bin: Loop sound
+    @Override
+    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration) {
+        this.playSoundLoop(world, entity, ticksInUse);
+    }
 
-//    @Override
-//    protected SoundEvent[] createSounds() {
-//        return this.createContinuousSpellSounds();
-//    }
-//
-//    @Override
-//    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration, SpellModifiers modifiers, String... sounds) {
-//        this.playSoundLoop(world, entity, ticksInUse);
-//    }
-//
-//    @Override
-//    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration, SpellModifiers modifiers, String... sounds) {
-//        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
-//    }
-
+    @Override
+    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration) {
+        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
+    }
 
     @Override
     protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz) {

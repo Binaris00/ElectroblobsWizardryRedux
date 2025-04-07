@@ -82,7 +82,7 @@ public abstract class RaySpell extends Spell {
         Vec3 origin = new Vec3(ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight() - Y_OFFSET, ctx.caster().getZ());
 
         if (this.isInstantCast() && ctx.world().isClientSide && ClientUtils.isFirstPerson(ctx.caster())) origin = origin.add(look.scale(1.2));
-        if (shootSpell(ctx, origin, look)) return false;
+        if (!shootSpell(ctx, origin, look)) return false;
 
         this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
         return true;
@@ -150,14 +150,14 @@ public abstract class RaySpell extends Spell {
             }
         }
 
-        if (!flag && !onMiss(ctx, origin, direction)) return true;
+        if (!flag && !onMiss(ctx, origin, direction)) return false;
 
 
         if (ctx.world().isClientSide) {
             spawnParticleRay(ctx, origin, direction, range);
         }
 
-        return false;
+        return true;
     }
 
     protected void spawnParticleRay(CastContext ctx, Vec3 origin, Vec3 direction, double distance){
