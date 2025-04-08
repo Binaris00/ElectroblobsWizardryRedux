@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.effect;
 
 import com.electroblob.wizardry.api.content.effect.CurseMobEffect;
-import com.electroblob.wizardry.content.item.WizardArmourItem;
+import com.electroblob.wizardry.content.item.WizardArmorItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -28,7 +28,7 @@ public class UndeathCurse extends CurseMobEffect {
                     if (itemstack.isDamageableItem()) {
                         itemstack.setDamageValue(itemstack.getDamageValue() + livingEntity.level().random.nextInt(2));
                         if (itemstack.getDamageValue() >= itemstack.getMaxDamage()) {
-                            if (itemstack.getItem() instanceof WizardArmourItem) {
+                            if (itemstack.getItem() instanceof WizardArmorItem) {
                                 livingEntity.setSecondsOnFire(8);
                             } else {
                                 livingEntity.broadcastBreakEvent(EquipmentSlot.HEAD);

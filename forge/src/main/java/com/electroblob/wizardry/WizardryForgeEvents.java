@@ -4,8 +4,10 @@ import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.core.registries.Registries;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -47,6 +49,11 @@ public class WizardryForgeEvents {
             EBClientRegister.registerParticleProviders(collection -> collection.forEach((type, provider)
                     -> event.registerSpriteSet(type.get(), provider::apply)
             ));
+        }
+
+        @SubscribeEvent
+        public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
+            EBRenderers.createEntityLayers(event::registerLayerDefinition);
         }
     }
 }

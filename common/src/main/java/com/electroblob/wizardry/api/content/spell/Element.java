@@ -23,7 +23,11 @@ public class Element {
     }
 
     public Component getDisplayName(){
-        return Component.translatable("element." + getLocation());
+        return Component.translatable("element_" + getLocation().getPath());
+    }
+
+    public String getName(){
+        return getLocation().getPath();
     }
 
     public ChatFormatting getColor(){
@@ -31,7 +35,7 @@ public class Element {
     }
 
     public Component getWizardName(){
-        return Component.translatable("element." + getLocation() + ".wizard");
+        return Component.translatable("element_" + getLocation() + ".wizard");
     }
 
     public ResourceLocation getIcon(){

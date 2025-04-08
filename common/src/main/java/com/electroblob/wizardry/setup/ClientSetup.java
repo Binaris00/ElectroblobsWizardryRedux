@@ -13,7 +13,7 @@ public final class ClientSetup {
 
     public static void setup() {
         EBLogger.info(Component.translatable("logger.info.ebwizardry.client_started"));
-        EBRenderers.register();
+        EBRenderers.registerRenderers();
     }
 
     public static void loadParticles(){

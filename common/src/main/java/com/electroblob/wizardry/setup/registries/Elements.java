@@ -22,6 +22,7 @@ public class Elements {
     public static final Element EARTH = element("earth", () -> new Element(ChatFormatting.DARK_GREEN, "earth"));
     public static final Element SORCERY = element("sorcery", () -> new Element(ChatFormatting.GREEN, "sorcery"));
     public static final Element HEALING = element("healing", () -> new Element(ChatFormatting.YELLOW, "healing"));
+    public static final Element ICE = element("ice", () -> new Element(ChatFormatting.AQUA, "ice"));
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Element>>> handler) {
         handler.accept(Collections.unmodifiableSet(Register.ELEMENTS.entrySet()));

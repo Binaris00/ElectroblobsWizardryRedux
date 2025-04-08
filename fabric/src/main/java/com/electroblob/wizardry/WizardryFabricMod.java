@@ -1,7 +1,9 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.LoaderEnvironment;
-import com.electroblob.wizardry.registry.*;
+import com.electroblob.wizardry.registry.ElementRegistryFabric;
+import com.electroblob.wizardry.registry.SpellRegistryFabric;
+import com.electroblob.wizardry.registry.TierRegistryFabric;
 import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;

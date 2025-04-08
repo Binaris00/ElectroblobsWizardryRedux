@@ -10,6 +10,8 @@ public final class WizardryMainMod {
     public static final String MOD_ID = "ebwizardry";
     public static final String MOD_NAME = "Electroblob's Wizardry";
     public static final String MOD_VERSION = null;
+    // TODO
+    public static boolean tisTheSeason = false;
     private static LoaderEnvironment loader;
 
     public static void init(LoaderEnvironment environment) {

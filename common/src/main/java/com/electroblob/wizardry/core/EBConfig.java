@@ -8,6 +8,10 @@ public final class EBConfig {
     public static final float MIN_PRECISE_FLOAT = -16_777_216;
     public static final float MAX_PRECISE_FLOAT = 16_777_215;
 
+    public static final int MANA_PER_SHARD = 10;
+    public static final int MANA_PER_CRYSTAL = 100;
+    public static final int GRAND_CRYSTAL_MANA = 400;
+
     public static boolean damageTypePerElement = false;
     public static boolean playersMoveEachOther = true;
     public static boolean replaceVanillaFallDamage = true;
