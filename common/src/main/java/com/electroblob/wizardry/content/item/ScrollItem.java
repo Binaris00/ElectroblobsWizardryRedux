@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
@@ -21,19 +20,13 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class ScrollItem extends Item implements ISpellCastingItem {
-
     public ScrollItem(Properties properties) {
         super(properties);
     }
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
-        Spell spell = getCurrentSpell(player.getMainHandItem());
-
-        if (spell == null) {
-            EBLogger.info(Component.literal("Spell is null"));
-            return InteractionResultHolder.fail(player.getItemInHand(hand));
-        }
+        Spell spell = getCurrentSpell(player.getItemInHand(hand));
 
         if (!spell.isInstantCast()) {
             if(!player.isUsingItem()){
@@ -43,6 +36,9 @@ public class ScrollItem extends Item implements ISpellCastingItem {
         } else {
             PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, new SpellModifiers());
             if(spell.cast(ctx)){
+                if(!player.isUsingItem()){
+                    player.startUsingItem(hand);
+                }
                 player.getCooldowns().addCooldown(this, 30);
                 return InteractionResultHolder.success(player.getItemInHand(hand));
             }
@@ -53,12 +49,6 @@ public class ScrollItem extends Item implements ISpellCastingItem {
     @Override
     public void onUseTick(@NotNull Level level, LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
         Spell spell = SpellUtil.getSpell(livingEntity.getItemInHand(livingEntity.getUsedItemHand()));
-
-        //EBLogger.info(Component.literal("Spell: " + spell));
-        if(spell == null) {
-            EBLogger.info(Component.literal("Spell is null"));
-            return;
-        }
 
         int castingTick = stack.getUseDuration() - timeLeft;
 

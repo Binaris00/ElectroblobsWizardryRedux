@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.spell.fire;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
@@ -43,6 +44,16 @@ public class Firestorm extends AreaEffectSpell {
     public boolean cast(LocationCastContext ctx) {
         burnNearbyBlocks(ctx.world(), ctx.vec3(), null);
         return super.cast(ctx);
+    }
+
+    @Override
+    public SpellAction getAction() {
+        return SpellAction.POINT_DOWN;
+    }
+
+    @Override
+    public int getCharge() {
+        return 20;
     }
 
     @Override

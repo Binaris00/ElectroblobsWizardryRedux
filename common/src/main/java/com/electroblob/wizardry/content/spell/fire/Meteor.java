@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.spell.fire;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
@@ -58,6 +59,11 @@ public class Meteor extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         return false;
+    }
+
+    @Override
+    public SpellAction getAction() {
+        return SpellAction.SUMMON;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
@@ -120,7 +121,13 @@ public class BuffSpell extends Spell {
         }
         ParticleBuilder.create(EBParticles.BUFF).entity(caster).color(r, g, b).spawn(world);
     }
-    
+
+    // TODO TEMP
+    @Override
+    public SpellAction getAction() {
+        return SpellAction.POINT_UP;
+    }
+
     public static SpellProperty<Integer> getEffectDurationProperty(MobEffect effect){
         return SpellProperty.intProperty(effect.getDescriptionId() + "_duration");
     }

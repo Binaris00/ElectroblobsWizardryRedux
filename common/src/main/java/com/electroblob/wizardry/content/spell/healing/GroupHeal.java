@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.spell.healing;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
@@ -30,6 +31,11 @@ public class GroupHeal extends AreaEffectSpell {
     @Override
     protected void spawnParticleEffect(Level world, Vec3 origin, double radius, @Nullable LivingEntity caster) {
 
+    }
+
+    @Override
+    public SpellAction getAction() {
+        return SpellAction.THRUST;
     }
 
     @Override

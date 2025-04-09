@@ -3,7 +3,6 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
-import com.electroblob.wizardry.core.SpellSoundManager;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import org.jetbrains.annotations.Nullable;
@@ -158,7 +157,7 @@ public final class EBSounds {
 
     // ======= Registry =======
     public static void register(RegisterFunction<SoundEvent> function){
-        SpellSoundManager.registerSpellSounds();
+        //SpellSoundManager.registerSpellSounds();
         SOUNDS.forEach(((id, sound) ->
                 function.register(BuiltInRegistries.SOUND_EVENT, WizardryMainMod.location(id), sound.get())));
     }

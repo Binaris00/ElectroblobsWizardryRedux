@@ -10,6 +10,7 @@
     "LivingEntityMixin"
   ],
   "client": [
+    "HumanoidModelMixin",
     "MinecraftMixin"
   ],
   "server": [
