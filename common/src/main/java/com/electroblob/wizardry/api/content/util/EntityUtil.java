@@ -1,12 +1,10 @@
 package com.electroblob.wizardry.api.content.util;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;

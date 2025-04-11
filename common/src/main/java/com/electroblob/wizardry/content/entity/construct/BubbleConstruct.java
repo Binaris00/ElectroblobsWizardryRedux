@@ -1,9 +1,9 @@
 package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.content.entity.construct.MagicConstructEntity;
+import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
-import com.electroblob.wizardry.core.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.content.spell.necromancy.Entrapment;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
@@ -109,7 +109,7 @@ public class BubbleConstruct extends MagicConstructEntity {
     }
 
     public static void onLivingHurt(EBLivingHurtEvent event){
-        if(event.isCancelled()) return;
+        if(event.isCanceled()) return;
 
         LivingEntity entity = event.getDamagedEntity();
         if(entity.getVehicle() instanceof BubbleConstruct bubble && !bubble.isDarkOrb){

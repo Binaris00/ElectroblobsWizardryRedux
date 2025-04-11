@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.effect;
 
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
-import com.electroblob.wizardry.core.event.EBLivingHurtEvent;
+import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.world.effect.MobEffectCategory;
@@ -18,7 +18,7 @@ public class WardMobEffect extends MagicMobEffect {
     }
 
     public static void onLivingHurt(EBLivingHurtEvent event) {
-        if(event.isCancelled()) return;
+        if(event.isCanceled()) return;
 
         if(event.getDamagedEntity().hasEffect(EBMobEffects.WARD.get())){
             EBDamageSources.TYPES.forEach(damageType -> {

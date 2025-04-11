@@ -1,8 +1,8 @@
 package com.electroblob.wizardry.core.mixin;
 
-import com.electroblob.wizardry.EBEventHelper;
-import com.electroblob.wizardry.core.event.EBLivingHurtEvent;
-import com.electroblob.wizardry.core.event.EBLivingTick;
+import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
+import com.electroblob.wizardry.api.content.event.EBLivingTick;
+import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,15 +20,12 @@ public abstract class LivingEntityMixin {
 
     @Inject(at = @At("HEAD"), method = "tick")
     public void EBWIZARDRY$tick(CallbackInfo ci){
-        EBLivingTick event = EBLivingTick.create(livingEntity, livingEntity.level());
-        EBEventHelper.onLivingTickEvent(event);
+        WizardryEventBus.getInstance().fire(new EBLivingTick(livingEntity, livingEntity.level()));
     }
 
     @Inject(method = "hurt", at = @At("HEAD"))
     public void EBWIZARDRY$livingEntityHurt(DamageSource source, float f, CallbackInfoReturnable<Boolean> cir){
-        EBLivingHurtEvent event = EBLivingHurtEvent.create(livingEntity, source, f);
-        EBEventHelper.onLivingHurtEvent(event);
-        if (event.isCancelled()) cir.cancel();
+        if (WizardryEventBus.getInstance().fire(new EBLivingHurtEvent(livingEntity, source, f))) cir.cancel();
     }
 
 

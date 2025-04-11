@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.spell.fire;
 
-import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;

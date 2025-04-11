@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.core.mixin;
 
-import com.electroblob.wizardry.EBEventHelper;
-import com.electroblob.wizardry.core.event.EBClientTickEvent;
+import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
+import com.electroblob.wizardry.core.event.WizardryEventBus;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -14,6 +14,6 @@ public abstract class MinecraftMixin {
     @Inject(method = "tick", at = @At("TAIL"))
     public void EBWIZARDRY$clientTick(CallbackInfo ci){
         Minecraft minecraft = ((Minecraft) (Object) this);
-        EBEventHelper.onClientTick(EBClientTickEvent.create(minecraft));
+        WizardryEventBus.getInstance().fire(new EBClientTickEvent(minecraft));
     }
 }

@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.spell.healing;
 
-import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.AreaEffectSpell;

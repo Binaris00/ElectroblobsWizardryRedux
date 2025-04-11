@@ -1,12 +1,14 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.api.content.util.SpellUtil;
+import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.setup.registries.Spells;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,6 +18,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+// TODO IMPLEMENT CUSTOM EVENTS :D
 public class WandItem extends Item implements ISpellCastingItem {
 
     public WandItem() {
@@ -77,6 +80,25 @@ public class WandItem extends Item implements ISpellCastingItem {
     @NotNull
     @Override
     public Spell getCurrentSpell(ItemStack stack) {
-        return Spells.MAGIC_MISSILE;
+        return Spells.DART;
+    }
+
+    @Override
+    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
+        Spell spell = SpellUtil.getSpell(stack);
+        if(spell.isInstantCast()) return super.finishUsingItem(stack, level, livingEntity);
+
+        SpellModifiers modifiers = new SpellModifiers();
+        // TODO livingEntity.getUseItemRemainingTicks() TEMP FIX MAYBE????
+        int castingTick = stack.getUseDuration() - livingEntity.getUseItemRemainingTicks();
+
+        WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, livingEntity, modifiers, castingTick));
+        spell.endCast(new CastContext(livingEntity.level(), castingTick, modifiers) {
+            @Override
+            public LivingEntity caster() {
+                return livingEntity;
+            }
+        });
+        return super.finishUsingItem(stack, level, livingEntity);
     }
 }

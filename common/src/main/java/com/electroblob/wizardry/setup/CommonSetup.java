@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.setup;
 
+import com.electroblob.wizardry.EBEventHelper;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
@@ -11,6 +12,7 @@ public final class CommonSetup {
 
     public static void init() {
         SpellProperty.load();
+        EBEventHelper.register();
         //EBNetwork.bootstrap();
     }
 

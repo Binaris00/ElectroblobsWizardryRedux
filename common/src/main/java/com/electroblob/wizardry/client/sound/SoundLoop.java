@@ -1,11 +1,12 @@
 package com.electroblob.wizardry.client.sound;
 
-import com.electroblob.wizardry.core.event.EBClientTickEvent;
+import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
+
 import java.util.HashSet;
 import java.util.Set;
 

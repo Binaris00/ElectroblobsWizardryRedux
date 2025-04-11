@@ -1,8 +1,8 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
-import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;

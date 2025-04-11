@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.spell.fire;
 
+import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
@@ -8,6 +9,7 @@ import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.BlockHitResult;
@@ -45,10 +47,9 @@ public class FlameRay extends RaySpell {
         return false;
     }
 
-    // TODO TEMP
     @Override
     public SpellAction getAction() {
-        return SpellAction.THRUST;
+        return SpellAction.POINT;
     }
 
     @Override
@@ -58,8 +59,8 @@ public class FlameRay extends RaySpell {
 
     @Override
     protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz) {
-//        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).collide(true).spawn(ctx.world());
-//        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).collide(true).spawn(ctx.world());
+        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).collide(true).spawn(ctx.world());
+        ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).collide(true).spawn(ctx.world());
     }
 
     @Override
