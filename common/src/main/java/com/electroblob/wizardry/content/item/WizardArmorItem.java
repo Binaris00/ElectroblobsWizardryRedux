@@ -1,15 +1,22 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;
 import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
 import com.electroblob.wizardry.api.content.spell.Element;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.DrawingUtils;
+import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
@@ -20,6 +27,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWorkbenchItem {
@@ -153,5 +161,43 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
             tooltip.add(Component.translatable("item.%s.%s_armour.full_set_bonus"
                     .formatted(WizardryMainMod.MOD_ID, wizardArmorType.name), args).withStyle(ChatFormatting.AQUA));
         }
+    }
+
+    protected void applySpellModifiers(LivingEntity caster, Spell spell, SpellModifiers modifiers){
+        if(spell.getElement() == this.element){
+            modifiers.set(SpellModifiers.COST, modifiers.get(SpellModifiers.COST) - getWizardArmorType().elementalCostReduction, false);
+        }
+        modifiers.set(SpellModifiers.POTENCY, 2, false);
+        modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), modifiers.get(EBItems.COOLDOWN_UPGRADE.get()) - getWizardArmorType().cooldownReduction, true);
+
+        if(getEquipmentSlot() == EquipmentSlot.HEAD && InventoryUtil.isWearingFullSet(caster, element, getWizardArmorType()) && InventoryUtil.doAllArmourPiecesHaveMana(caster)){
+            if(getWizardArmorType() == WizardArmorType.SAGE && spell.getElement() != this.element){
+                modifiers.set(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION, false);
+            }
+        }
+    }
+
+    public static void onSpellPreCast(SpellCastEvent.Pre event){
+        if(event.getCaster() == null) return;
+
+        SpellModifiers armourModifiers = new SpellModifiers();
+
+        Arrays.stream(InventoryUtil.ARMOUR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
+                .filter(i -> i instanceof WizardArmorItem)
+                .forEach(i -> ((WizardArmorItem)i).applySpellModifiers(event.getCaster(), event.getSpell(), armourModifiers));
+
+        event.getModifiers().combine(armourModifiers);
+    }
+
+    public static void onSpellTickCast(SpellCastEvent.Tick event){
+        if(event.getCaster() == null) return;
+
+        SpellModifiers armourModifiers = new SpellModifiers();
+
+        Arrays.stream(InventoryUtil.ARMOUR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
+                .filter(i -> i instanceof WizardArmorItem)
+                .forEach(i -> ((WizardArmorItem)i).applySpellModifiers(event.getCaster(), event.getSpell(), armourModifiers));
+
+        event.getModifiers().combine(armourModifiers);
     }
 }

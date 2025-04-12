@@ -4,11 +4,13 @@ import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
+import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.client.sound.SoundLoop;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
 import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
 import com.electroblob.wizardry.content.effect.WardMobEffect;
 import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
+import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 
 /**
@@ -23,6 +25,8 @@ public final class EBEventHelper {
         onLivingHurtEvent(bus);
         onLivingTickEvent(bus);
         onClientTick(bus);
+        onSpellPreCast(bus);
+        onSpellTickCast(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -38,5 +42,13 @@ public final class EBEventHelper {
 
     private static void onClientTick(WizardryEventBus bus){
         bus.register(EBClientTickEvent.class, SoundLoop::onClientTick);
+    }
+
+    private static void onSpellPreCast(WizardryEventBus bus){
+        bus.register(SpellCastEvent.Pre.class, WizardArmorItem::onSpellPreCast);
+    }
+
+    private static void onSpellTickCast(WizardryEventBus bus){
+        bus.register(SpellCastEvent.Tick.class, WizardArmorItem::onSpellTickCast);
     }
 }

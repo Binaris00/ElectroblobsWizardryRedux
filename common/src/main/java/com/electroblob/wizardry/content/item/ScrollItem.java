@@ -31,14 +31,16 @@ public class ScrollItem extends Item implements ISpellCastingItem {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         Spell spell = getCurrentSpell(player.getItemInHand(hand));
 
-        if(canCast(player.getItemInHand(hand), spell, player, hand, 0, new SpellModifiers())) {
+        SpellModifiers modifiers = new SpellModifiers();
+
+        if(canCast(player.getItemInHand(hand), spell, player, hand, 0, modifiers)) {
             if (!spell.isInstantCast()) {
                 if (!player.isUsingItem()) {
                     player.startUsingItem(hand);
                 }
                 return InteractionResultHolder.pass(player.getItemInHand(hand));
             } else {
-                PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, new SpellModifiers());
+                PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, modifiers);
                 if (spell.cast(ctx)) {
                     if (!player.isUsingItem()) {
                         player.startUsingItem(hand);
@@ -67,8 +69,10 @@ public class ScrollItem extends Item implements ISpellCastingItem {
 
         int castingTick = stack.getUseDuration() - timeLeft;
 
-        if(!spell.isInstantCast() && canCast(stack, spell, player, player.getUsedItemHand(), castingTick, new SpellModifiers())){
-            PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick, new SpellModifiers());
+        SpellModifiers modifiers = new SpellModifiers();
+
+        if(!spell.isInstantCast() && canCast(stack, spell, player, player.getUsedItemHand(), castingTick, modifiers)){
+            PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick, modifiers);
             spell.cast(ctx);
         } else {
             livingEntity.stopUsingItem();

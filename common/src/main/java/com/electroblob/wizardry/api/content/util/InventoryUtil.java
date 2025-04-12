@@ -1,20 +1,30 @@
 package com.electroblob.wizardry.api.content.util;
 
+import com.electroblob.wizardry.api.content.item.IManaStoringItem;
+import com.electroblob.wizardry.api.content.spell.Element;
+import com.electroblob.wizardry.content.item.WizardArmorItem;
+import com.electroblob.wizardry.content.item.WizardArmorType;
 import net.minecraft.core.NonNullList;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
+import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class InventoryUtil {
-    /**
-     * Returns a list of the itemstacks in the given player's hotbar and offhand, sorted into the following order: main
-     * hand, offhand, rest of hotbar left-to-right. The returned list is a modifiable shallow copy of part of the player's
-     * inventory stack list; as such, changes to the list are <b>not</b> written through to the player's inventory.
-     * However, the ItemStack instances themselves are not copied, so changes to any of their fields (size, metadata...)
-     * will change those in the player's inventory.
-     */
+    public static final EquipmentSlot[] ARMOUR_SLOTS;
+
+    static {
+        List<EquipmentSlot> slots = new ArrayList<>(Arrays.asList(EquipmentSlot.values()));
+        slots.removeIf(slot -> slot.getType() != EquipmentSlot.Type.ARMOR);
+        ARMOUR_SLOTS = slots.toArray(new EquipmentSlot[0]);
+    }
+
     public static List<ItemStack> getPrioritisedHotBarAndOffhand(Player player) {
         List<ItemStack> hotbar = getHotbar(player);
         hotbar.add(0, player.getOffhandItem());
@@ -49,5 +59,22 @@ public class InventoryUtil {
         NonNullList<ItemStack> hotBar = NonNullList.create();
         hotBar.addAll(player.getInventory().items.subList(0, 9));
         return hotBar;
+    }
+
+    public static boolean isWearingFullSet(LivingEntity entity, @Nullable Element element, @Nullable WizardArmorType armor){
+        ItemStack helmet = entity.getItemBySlot(EquipmentSlot.HEAD);
+        if(!(helmet.getItem() instanceof WizardArmorItem wizardArmor)) return false;
+
+        Element e = element == null ? wizardArmor.getElement() : element;
+        WizardArmorType ac = armor == null ? wizardArmor.getWizardArmorType() : armor;
+        return Arrays.stream(ARMOUR_SLOTS)
+                .allMatch(slot -> entity.getItemBySlot(slot).getItem() instanceof WizardArmorItem armor2
+                        && armor2.getElement() == e
+                        && armor2.getWizardArmorType() == ac);
+    }
+
+    public static boolean doAllArmourPiecesHaveMana(LivingEntity entity){
+        return Arrays.stream(ARMOUR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaStoringItem manaStoringItem
+                && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
     }
 }

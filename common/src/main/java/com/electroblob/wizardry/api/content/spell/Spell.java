@@ -8,6 +8,7 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
+import com.electroblob.wizardry.setup.registries.Elements;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -120,6 +121,10 @@ public abstract class Spell {
     // TODO: BETTER SPELL ACTION
     public SpellAction getAction(){
         return SpellAction.NONE;
+    }
+
+    public Element getElement(){
+        return Elements.FIRE;
     }
 
     // ===================================================

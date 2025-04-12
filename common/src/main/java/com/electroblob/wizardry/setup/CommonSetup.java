@@ -6,6 +6,7 @@ import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.network.chat.Component;
 
 public final class CommonSetup {
@@ -13,6 +14,7 @@ public final class CommonSetup {
     public static void init() {
         SpellProperty.load();
         EBEventHelper.register();
+        WandUpgrades.initUpgrades();
         //EBNetwork.bootstrap();
     }
 
