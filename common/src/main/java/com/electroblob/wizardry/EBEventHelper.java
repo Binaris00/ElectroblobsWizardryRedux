@@ -27,6 +27,7 @@ public final class EBEventHelper {
         onClientTick(bus);
         onSpellPreCast(bus);
         onSpellTickCast(bus);
+        onPlayerJoin(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -38,6 +39,10 @@ public final class EBEventHelper {
 
     private static void onLivingTickEvent(WizardryEventBus bus) {
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
+    }
+
+    private static void onPlayerJoin(WizardryEventBus bus){
+
     }
 
     private static void onClientTick(WizardryEventBus bus){

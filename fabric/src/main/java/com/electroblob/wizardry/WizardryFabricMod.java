@@ -14,6 +14,10 @@ public final class WizardryFabricMod implements ModInitializer {
     public void onInitialize() {
         WizardryMainMod.init(LoaderEnvironment.FABRIC);
 
+        if(!WizardryMainMod.isClientSide()){
+            WizardryFabricEvents.onServer();
+        }
+
         EBBlocks.register(Registry::register);
         EBBlockEntities.register(Registry::register);
         EBItems.register(Registry::register);

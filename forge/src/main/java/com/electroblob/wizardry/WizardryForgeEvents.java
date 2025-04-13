@@ -1,14 +1,20 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
+import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
@@ -39,6 +45,18 @@ public class WizardryForgeEvents {
 
         private static <T> void register(RegisterEvent event, Consumer<RegisterFunction<T>> consumer) {
             consumer.accept((registry, id, value) -> event.register(registry.key(), id, () -> value));
+        }
+
+//        @SubscribeEvent
+//        public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
+//            if(event.getEntity() instanceof Player player && !player.level().isClientSide) {
+//                WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(player, player.getServer()));
+//            }
+//        }
+
+        @SubscribeEvent
+        public static void register(RegisterCapabilitiesEvent event) {
+            event.register(ForgeWizardData.class);
         }
     }
 

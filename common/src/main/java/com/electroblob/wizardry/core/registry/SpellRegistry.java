@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Set;
@@ -42,6 +43,14 @@ public final class SpellRegistry {
             isInAssignPeriod = false;
             locationsBeenInitialized = true;
         }
+    }
+
+    public static @Nullable Spell get(ResourceLocation location){
+        for(Map.Entry<ResourceKey<Spell>, Spell> entry : entrySet()){
+            if(entry.getValue().getLocation().equals(location)) return entry.getValue();
+        }
+
+        return null;
     }
 
 

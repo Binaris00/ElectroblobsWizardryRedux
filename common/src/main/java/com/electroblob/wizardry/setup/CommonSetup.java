@@ -14,8 +14,8 @@ public final class CommonSetup {
     public static void init() {
         SpellProperty.load();
         EBEventHelper.register();
-        WandUpgrades.initUpgrades();
         //EBNetwork.bootstrap();
+        WandUpgrades.initUpgrades();
     }
 
     public static void setup() {
