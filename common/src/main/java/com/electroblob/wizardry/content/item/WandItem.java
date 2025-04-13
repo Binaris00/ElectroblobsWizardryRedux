@@ -77,6 +77,11 @@ public class WandItem extends Item implements ISpellCastingItem {
         }
     }
 
+    @Override
+    public int getUseDuration(@NotNull ItemStack stack) {
+        return 72000;
+    }
+
     @NotNull
     @Override
     public Spell getCurrentSpell(ItemStack stack) {

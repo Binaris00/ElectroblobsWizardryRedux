@@ -62,9 +62,9 @@ public class ScrollItem extends Item implements ISpellCastingItem {
             } else {
                 PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, modifiers);
                 if (spell.cast(ctx)) {
-                    if (!player.isUsingItem()) {
-                        player.startUsingItem(hand);
-                    }
+//                    if (!player.isUsingItem()) {
+//                        player.startUsingItem(hand);
+//                    }
                     player.getCooldowns().addCooldown(this, 30);
                     return InteractionResultHolder.success(player.getItemInHand(hand));
                 }
@@ -99,7 +99,12 @@ public class ScrollItem extends Item implements ISpellCastingItem {
         }
     }
 
-//    @Override
+    @Override
+    public int getUseDuration(@NotNull ItemStack stack) {
+        return 120;
+    }
+
+    //    @Override
 //    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
 //        Spell spell = SpellUtil.getSpell(stack);
 //        if(spell.isInstantCast()) return super.finishUsingItem(stack, level, livingEntity);
