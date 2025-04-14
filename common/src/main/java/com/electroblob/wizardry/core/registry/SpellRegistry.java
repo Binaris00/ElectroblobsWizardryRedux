@@ -7,9 +7,11 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 // TODO: Probably going to change stuff, just to help the addon creation
 public final class SpellRegistry {
@@ -58,4 +60,10 @@ public final class SpellRegistry {
         return isInAssignPeriod;
     }
 
+    public static List<String> getSpellNames() {
+        return entrySet().stream()
+                .map(entry -> entry.getKey().location().toString())
+                .sorted()
+                .collect(Collectors.toList());
+    }
 }

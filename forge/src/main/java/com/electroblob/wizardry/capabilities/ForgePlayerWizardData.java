@@ -46,6 +46,10 @@ public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
         return player.getCapability(WIZARD_DATA_CAPABILITY).orElse(new ForgePlayerWizardData());
     }
 
+    public void update(Player player){
+        this.wizardData.updateContinuousSpellCasting(player);
+    }
+
     @Override public CompoundTag serializeNBT() {
         return wizardData.serializeNBT(new CompoundTag());
     }
@@ -76,14 +80,9 @@ public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
 
     @SubscribeEvent
     public static void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
-//        if (event.getEntity() instanceof Player) {
-//            Player player = (Player) event.getEntity();
-//
-//            if(WizardData.get(player) != null) {
-//
-//                WizardData.get(player).update();
-//            }
-//        }
+        if (event.getEntity() instanceof Player player) {
+            ForgePlayerWizardData.get(player).update(player);
+        }
     }
 
     public static class Provider implements ICapabilitySerializable<CompoundTag> {

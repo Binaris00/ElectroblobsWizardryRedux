@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.setup.registries;
 
+import com.electroblob.wizardry.content.command.CastCommand;
 import com.electroblob.wizardry.content.command.ListElementsCommand;
 import com.electroblob.wizardry.content.command.ListSpellsCommand;
 import com.electroblob.wizardry.content.command.ListTiersCommand;
@@ -21,6 +22,7 @@ public final class EBCommands {
     public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> COMMANDS_TO_REGISTER = ImmutableList.of(
             ListSpellsCommand::register,
             ListElementsCommand::register,
-            ListTiersCommand::register
+            ListTiersCommand::register,
+            CastCommand::register
     );
 }

@@ -102,7 +102,8 @@ public abstract class SpellCastEvent implements IWizardryEvent {
         SCROLL,
         NPC,
         DISPENSER,
-        OTHER
+        OTHER,
+        COMMAND
     }
 
     public static class Pre extends SpellCastEvent {
