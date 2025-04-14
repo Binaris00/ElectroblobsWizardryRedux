@@ -19,12 +19,20 @@
         ],
         "client": [
             "com.electroblob.wizardry.client.WizardryFabricClient"
+        ],
+        "cardinal-components": [
+            "com.electroblob.wizardry.cca.EBFabricComponents"
         ]
     },
     "mixins": [
         "ebwizardry.mixins.json",
         "ebwizardry.fabric.mixins.json"
     ],
+    "custom": {
+        "cardinal-components": [
+            "ebwizardry:wizard_data"
+        ]
+    },
     "depends": {
         "fabricloader": ">=0.14",
         "fabric": "*",

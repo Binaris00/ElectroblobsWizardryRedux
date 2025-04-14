@@ -1,0 +1,35 @@
+package com.electroblob.wizardry.cca;
+
+import com.electroblob.wizardry.api.PlayerWizardData;
+import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
+
+/** Check {@link PlayerWizardData}, this class is just the implementation to load-save the player's wizard data */
+public class FabricPlayerWizardDataHolder implements FPWizardDataComponent, AutoSyncedComponent {
+    PlayerWizardData wizardData = new PlayerWizardData();
+    private final Player provider;
+
+    public FabricPlayerWizardDataHolder(Player provider) {
+        this.provider = provider;
+    }
+
+    // Quick example to show how to sync
+    public void onSync(PlayerWizardData newWizardData){
+        this.wizardData = newWizardData;
+        EBFabricComponents.WIZARD_DATA.sync(this.provider);
+    }
+
+    @Override public PlayerWizardData getWizardData() {
+        return wizardData;
+    }
+
+    @Override public void readFromNbt(@NotNull CompoundTag tag) {
+        this.wizardData = wizardData.deserializeNBT(tag);
+    }
+
+    @Override public void writeToNbt(@NotNull CompoundTag tag) {
+        wizardData.serializeNBT(tag);
+    }
+}

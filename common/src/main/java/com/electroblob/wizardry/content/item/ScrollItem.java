@@ -1,8 +1,7 @@
 package com.electroblob.wizardry.content.item;
 
+import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
-import com.electroblob.wizardry.api.content.hell.BetterWizardData;
-import com.electroblob.wizardry.api.content.hell.BinWizardDataInternal;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
@@ -37,21 +36,18 @@ public class ScrollItem extends Item implements ISpellCastingItem {
 
         SpellModifiers modifiers = new SpellModifiers();
 
-        // TODO REMOVE THIS, TEMP TEMP
-//        if(!level.isClientSide){
-//            BinWizardDataInternal wizardData = Services.WIZARD_DATA.getWizardData(player, level);
-//            BetterWizardData betterWizardData = new BetterWizardData(wizardData);
-//            if(!betterWizardData.hasSpellBeenDiscovered(spell)){
-//                player.sendSystemMessage(Component.literal("You didn't discover: " + spell.getLocation()).withStyle(ChatFormatting.ITALIC));
-//                player.sendSystemMessage(Component.literal("Discovering!! " + spell.getLocation()).withStyle(ChatFormatting.AQUA));
-//                betterWizardData.discoverSpell(spell);
-//                player.getCooldowns().addCooldown(this, 20);
-//                return InteractionResultHolder.fail(player.getItemInHand(hand));
-//            } else {
-//                player.sendSystemMessage(Component.literal("You knew this spell :0 -> " + spell.getLocation()).withStyle(ChatFormatting.ITALIC));
-//            }
-//        }
-
+        // TODO TEMP TEMP
+        PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, level);
+        if (!wizardData.hasSpellBeenDiscovered(spell)) {
+            player.sendSystemMessage(Component.literal("You didn't discover: " + spell.getLocation()).withStyle(ChatFormatting.ITALIC));
+            player.sendSystemMessage(Component.literal("Discovering!! " + spell.getLocation()).withStyle(ChatFormatting.AQUA));
+            wizardData.discoverSpell(spell);
+            Services.WIZARD_DATA.onUpdate(wizardData, player);
+            player.getCooldowns().addCooldown(this, 20);
+            return InteractionResultHolder.fail(player.getItemInHand(hand));
+        } else {
+            player.sendSystemMessage(Component.literal("You knew this spell :0 -> " + spell.getLocation()).withStyle(ChatFormatting.ITALIC));
+        }
 
         if(canCast(player.getItemInHand(hand), spell, player, hand, 0, modifiers)) {
             if (!spell.isInstantCast()) {
@@ -104,24 +100,24 @@ public class ScrollItem extends Item implements ISpellCastingItem {
         return 120;
     }
 
-    //    @Override
-//    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
-//        Spell spell = SpellUtil.getSpell(stack);
-//        if(spell.isInstantCast()) return super.finishUsingItem(stack, level, livingEntity);
-//
-//        SpellModifiers modifiers = new SpellModifiers();
-//        // TODO livingEntity.getUseItemRemainingTicks() TEMP FIX MAYBE????
-//        int castingTick = stack.getUseDuration() - livingEntity.getUseItemRemainingTicks();
-//
-//        WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, livingEntity, modifiers, castingTick));
-//        spell.endCast(new CastContext(livingEntity.level(), castingTick, modifiers) {
-//            @Override
-//            public LivingEntity caster() {
-//                return livingEntity;
-//            }
-//        });
-//        return super.finishUsingItem(stack, level, livingEntity);
-//    }
+        @Override
+    public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
+        Spell spell = SpellUtil.getSpell(stack);
+        if(spell.isInstantCast()) return super.finishUsingItem(stack, level, livingEntity);
+
+        SpellModifiers modifiers = new SpellModifiers();
+        // TODO livingEntity.getUseItemRemainingTicks() TEMP FIX MAYBE????
+        int castingTick = stack.getUseDuration() - livingEntity.getUseItemRemainingTicks();
+
+        WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, livingEntity, modifiers, castingTick));
+        spell.endCast(new CastContext(livingEntity.level(), castingTick, modifiers) {
+            @Override
+            public LivingEntity caster() {
+                return livingEntity;
+            }
+        });
+        return super.finishUsingItem(stack, level, livingEntity);
+    }
 
     @NotNull
     @Override

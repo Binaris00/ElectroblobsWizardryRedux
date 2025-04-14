@@ -1,12 +1,12 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.LoaderEnvironment;
+import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.registry.ElementRegistryForge;
 import com.electroblob.wizardry.registry.SpellRegistryForge;
 import com.electroblob.wizardry.registry.TierRegistryForge;
 import com.electroblob.wizardry.setup.ClientSetup;
 import com.electroblob.wizardry.setup.CommonSetup;
-import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
@@ -39,7 +39,7 @@ public final class WizardryForgeMod {
         if(FMLEnvironment.dist.isClient()) {
             modBus.addListener(WizardryForgeMod::clientSetup);
         }
-        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ForgeWizardData::attachCapability);
+        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ForgePlayerWizardData::attachCapability);
     }
 
 

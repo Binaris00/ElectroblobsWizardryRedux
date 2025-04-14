@@ -1,7 +1,8 @@
 package com.electroblob.wizardry.platform;
 
-import com.electroblob.wizardry.FabricWizardData;
-import com.electroblob.wizardry.api.content.hell.BinWizardDataInternal;
+import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.cca.EBFabricComponents;
+import com.electroblob.wizardry.cca.FabricPlayerWizardDataHolder;
 import com.electroblob.wizardry.core.platform.services.IWizardPlayerData;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -9,9 +10,17 @@ import net.minecraft.world.level.Level;
 public class FabricPlayerWizardData implements IWizardPlayerData {
 
     @Override
-    public BinWizardDataInternal getWizardData(Player player, Level level) {
-        if(level.isClientSide) throw new RuntimeException("Don't try to access wizard data in client");
-        //MinecraftServer server = level.getServer();
-        return FabricWizardData.getPlayerState(player);
+    public PlayerWizardData getWizardData(Player player, Level level) {
+        FabricPlayerWizardDataHolder dataHolder = EBFabricComponents.WIZARD_DATA.getNullable(player);
+        if(dataHolder == null) {
+            return new PlayerWizardData();
+        } else {
+            return dataHolder.getWizardData();
+        }
+    }
+
+    @Override
+    public void onUpdate(PlayerWizardData wizardData, Player player) {
+        player.getComponent(EBFabricComponents.WIZARD_DATA).onSync(wizardData);
     }
 }
