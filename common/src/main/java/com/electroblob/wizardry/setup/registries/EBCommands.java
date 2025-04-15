@@ -1,9 +1,6 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.content.command.CastCommand;
-import com.electroblob.wizardry.content.command.ListElementsCommand;
-import com.electroblob.wizardry.content.command.ListSpellsCommand;
-import com.electroblob.wizardry.content.command.ListTiersCommand;
+import com.electroblob.wizardry.content.command.*;
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
@@ -23,6 +20,7 @@ public final class EBCommands {
             ListSpellsCommand::register,
             ListElementsCommand::register,
             ListTiersCommand::register,
-            CastCommand::register
+            CastCommand::register,
+            AllyCommand::register
     );
 }

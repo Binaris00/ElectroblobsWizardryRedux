@@ -16,17 +16,21 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class PlayerWizardData {
     public Set<Spell> spellsDiscovered = new HashSet<>();
-
     private Spell castCommandSpell = Spells.NONE;
     private int castCommandTick;
     private SpellModifiers castCommandModifiers = new SpellModifiers();
     private int castCommandDuration;
+    private Set<UUID> allies = new HashSet<>();
+    /** <b> Do not use this for any other purpose than displaying the names! </b> */
+    public Set<String> allyNames = new HashSet<>();
 
     public PlayerWizardData(){
         spellsDiscovered.add(Spells.MAGIC_MISSILE);
@@ -107,6 +111,29 @@ public class PlayerWizardData {
         Services.WIZARD_DATA.onUpdate(this, player);
     }
 
+    public boolean toggleAlly(Player original, Player friend){
+        if(this.isPlayerAlly(original, friend)){
+            this.allies.remove(friend.getUUID());
+            this.allyNames.remove(friend.getDisplayName().getString());
+            return false;
+        }else{
+            this.allies.add(friend.getUUID());
+            this.allyNames.add(friend.getDisplayName().getString());
+            return true;
+        }
+    }
+
+    public boolean isPlayerAlly(@Nullable Player original, Player player){
+        return this.allies.contains(player.getUUID()) || (original != null && original.getTeam() != null &&
+                original.getTeam().getPlayers().contains(player.getDisplayName().getString()));
+    }
+
+    public boolean isPlayerAlly(@Nullable Player original, UUID playerUUID){
+        if (this.allies.contains(playerUUID)) return true;
+        if (original == null || original.getTeam() == null) return false;
+        return original.getTeam().getPlayers().stream().anyMatch(allyNames::contains);
+    }
+
     /** Returns whether this player is currently casting a continuous spell via commands. */
     public boolean isCommandCasting(){
         return this.castCommandSpell != null && this.castCommandSpell != Spells.NONE;
@@ -133,6 +160,13 @@ public class PlayerWizardData {
         tag.putInt("castCommandTick", castCommandTick);
         tag.put("castCommandModifiers", castCommandModifiers.toNBT());
 
+        ListTag alliesTag = new ListTag();
+        allies.forEach(uuid -> alliesTag.add(StringTag.valueOf(uuid.toString())));
+        tag.put("alliesUUID", alliesTag);
+
+        ListTag allyNamesTag = new ListTag();
+        allyNames.forEach(name -> allyNamesTag.add(StringTag.valueOf(name)));
+        tag.put("allyNames", allyNamesTag);
         return tag;
     }
 
@@ -157,12 +191,23 @@ public class PlayerWizardData {
             }
         }
 
-
         wizardData.castCommandDuration = tag.getInt("castCommandDuration");
         wizardData.castCommandTick = tag.getInt("castCommandTick");
 
-        if(tag.contains("castCommandModifiers", Tag.TAG_COMPOUND)) {
-            wizardData.castCommandModifiers = SpellModifiers.fromNBT(tag.getCompound("castCommandModifiers"));
+        if(tag.contains("castCommandModifiers", Tag.TAG_COMPOUND)) wizardData.castCommandModifiers = SpellModifiers.fromNBT(tag.getCompound("castCommandModifiers"));
+
+        if(tag.contains("alliesUUID", Tag.TAG_LIST)) {
+            ListTag listTag = tag.getList("alliesUUID", Tag.TAG_STRING);
+            for (Tag element : listTag) {
+                wizardData.allies.add(UUID.fromString(element.getAsString()));
+            }
+        }
+
+        if(tag.contains("allyNames", Tag.TAG_LIST)) {
+            ListTag listTag = tag.getList("allyNames", Tag.TAG_STRING);
+            for (Tag element : listTag) {
+                wizardData.allyNames.add(element.getAsString());
+            }
         }
 
         return wizardData;

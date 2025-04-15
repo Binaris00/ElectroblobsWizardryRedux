@@ -1,5 +1,7 @@
 package com.electroblob.wizardry.content.item;
 
+import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
@@ -8,8 +10,11 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Spells;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -75,6 +80,20 @@ public class WandItem extends Item implements ISpellCastingItem {
         } else {
             livingEntity.stopUsingItem();
         }
+    }
+
+    @Override
+    public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity interactionTarget, @NotNull InteractionHand usedHand) {
+        if(player.isCrouching() && interactionTarget instanceof Player playerTarget){
+            PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
+
+            String string = wizardData.toggleAlly(player, playerTarget) ? "item." + WizardryMainMod.MOD_ID + ":wand.addally"
+                    : "item." + WizardryMainMod.MOD_ID + ":wand.removeally";
+            if(!player.level().isClientSide) player.sendSystemMessage(Component.translatable(string, playerTarget.getName()));
+            return InteractionResult.SUCCESS;
+        }
+
+        return InteractionResult.FAIL;
     }
 
     @Override
