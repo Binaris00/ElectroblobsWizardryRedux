@@ -14,7 +14,7 @@ public final class ClientSetup {
     }
 
     public static void setup() {
-        EBLogger.info(Component.translatable("logger.info.ebwizardry.client_started"));
+        EBLogger.info("Starting Electroblob's Wizardry Client");
         EBRenderers.registerRenderers();
     }
 

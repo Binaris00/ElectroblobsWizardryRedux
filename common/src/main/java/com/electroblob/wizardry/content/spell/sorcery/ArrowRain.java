@@ -44,13 +44,13 @@ public class ArrowRain extends ConstructRangedSpell<ArrowRainConstruct> {
         // Makes the arrows shoot in the direction the caster was looking when they cast the spell.
         // TODO FIX YHEAD
         if(caster != null){
-            EBLogger.error(Component.literal("Player is using yhead for arrow rain"));
+            EBLogger.error("Player is using yhead for arrow rain");
             //construct.setXRot(caster.getXRot());
             construct.setYHeadRot(caster.getYHeadRot());
         }else{
             //construct.setXRot(0);
             construct.setYHeadRot(side.toYRot());
-            EBLogger.error(Component.literal("Side is using yhead for arrow rain"));
+            EBLogger.error("Side is using yhead for arrow rain");
         }
     }
 

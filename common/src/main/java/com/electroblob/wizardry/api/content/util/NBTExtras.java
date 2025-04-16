@@ -15,7 +15,7 @@ public final class NBTExtras {
 
     public static void storeTagSafely(CompoundTag compound, String key, Tag tag) {
         if (compound == tag || deepContains(tag, compound)) {
-            EBLogger.error(Component.literal("Cannot store tag of type %s under key '%s' as it would result in a circular reference! Please report this (including your full log) to wizardry's issue tracker.".formatted(getTagTypeName(tag.getId()), key)));
+            EBLogger.error("Cannot store tag of type %s under key '{}' as it would result in a circular reference! Please report this (including your full log) to wizardry's issue tracker.", getTagTypeName(tag.getId()), key);
         } else {
             compound.put(key, tag);
         }

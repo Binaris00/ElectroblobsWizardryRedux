@@ -102,7 +102,7 @@ public abstract class ParticleTargeted extends ParticleWizardry {
         }
 
         if (Double.isNaN(targetX) || Double.isNaN(targetY) || Double.isNaN(targetZ)) {
-            EBLogger.error(Component.translatable("logger.warn.ebwizardry.targeted_particle_no_target"));
+            EBLogger.error("Attempted to render a targeted particle, but neither its target entity nor target position was set, and it either had no length assigned or was not linked to an entity!");
             return;
         }
 

@@ -359,7 +359,7 @@ public class PlayerWizardData {
         try {
             storedVariables.forEach(k -> this.spellData.put(k, k.read(tag)));
         } catch (ClassCastException e) {
-            EBLogger.error(Component.literal("Wizard data NBT tag was not of expected type!" + e));
+            EBLogger.error("Wizard data NBT tag was not of expected type!", e);
         }
 
         return wizardData;

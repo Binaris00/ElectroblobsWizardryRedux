@@ -16,7 +16,7 @@ public class Services {
         final T loadedService = ServiceLoader.load(clazz)
                 .findFirst()
                 .orElseThrow(() -> new NullPointerException("Failed to load service for " + clazz.getName()));
-        EBLogger.debug(Component.literal("Loaded {} for service {}".formatted(loadedService, clazz)));
+        EBLogger.debug("Loaded {} for service {}", loadedService, clazz);
         return loadedService;
     }
 }

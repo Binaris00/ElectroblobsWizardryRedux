@@ -48,7 +48,7 @@ public final class BlockUtil {
 
     public static boolean canPlaceBlock(@Nullable Entity placer, Level world, BlockPos pos) {
         if (world.isClientSide) {
-            EBLogger.error(Component.literal("BlockUtils#canPlaceBlock called from the client side! Blocks should be modified server-side only"));
+            EBLogger.error("BlockUtils#canPlaceBlock called from the client side! Blocks should be modified server-side only");
             return true;
         }
 

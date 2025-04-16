@@ -1,54 +1,29 @@
 package com.electroblob.wizardry.api;
 
-import com.electroblob.wizardry.WizardryMainMod;
-import net.minecraft.network.chat.Component;
+import com.mojang.logging.LogUtils;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.util.function.Consumer;
 
 public final class EBLogger {
+    private static final Logger LOGGER = LogUtils.getLogger();
+    private EBLogger(){} // Use your own logger, not mine!! >:C
 
-
-    public static void info(Component component) {
-        if(!load().disabled) load().logger.info(component.getString());
+    public static void info(String info, Object... args) {
+        LOGGER.info(info, args);
     }
 
-    public static void info(String info){
-        info(Component.literal(info));
+    /** Sends an error in the format "EBWizardry Error: <message>" */
+    public static void error(String message, Object... args) {
+        LOGGER.error("======================================"); // I love this format
+        LOGGER.error("EBWizardry Error:");
+        LOGGER.error(message, args);
+        LOGGER.error("======================================");
     }
 
-    /**
-     * Sends an error in the format "EBWizardry Error: "
-     */
-    public static void error(Component component) {
-        if(!load().disabled)
-            load().logger.error("{}: {}", Component.translatable("logger.error.ebwizardry").getString(), component.getString());
+    public static void debug(String message, Object... args) {
+        LOGGER.debug(message, args);
     }
 
-    public static void debug(Component component) {
-        if(!load().disabled) load().logger.debug(component.getString());
+    public static void warn(String message, Object... args) {
+        LOGGER.warn(message, args);
     }
-
-    public static void useIfEnabled(Consumer<Logger> loggerAction){
-        if(!load().disabled) loggerAction.accept(load().logger);
-    }
-
-    public static void disable() {
-        info(Component.translatable("logger.info.ebwizardry.disabled"));
-        load().disabled = true;
-    }
-
-    public static EBLogger load() {
-        return Instance.INSTANCE;
-    }
-
-    private static class Instance {
-        private static final EBLogger INSTANCE = new EBLogger();
-    }
-
-    private final Logger logger = LoggerFactory.getLogger(WizardryMainMod.MOD_ID);
-    private boolean disabled;
-
-    private EBLogger(){}
 }

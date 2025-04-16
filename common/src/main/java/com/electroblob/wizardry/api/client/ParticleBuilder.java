@@ -589,20 +589,19 @@ public final class ParticleBuilder {
 
         // Error checking
         if (x == 0 && y == 0 && z == 0 && entity == null)
-            EBLogger.error(Component.translatable("logger.error.wizardry.particle_builder.particle_spawn_at_origin"));
+            EBLogger.error("Failed to spawn particle of type - %s - are you sure it exists?");
 
         if (!world.isClientSide()) {
-            EBLogger.error(Component.translatable("logger.error.wizardry.particle_builder.particle_server_side_spawn"));
+            EBLogger.error("ParticleBuilder.spawn(...) called on the server side! ParticleBuilder has prevented a server crash, but calling it on the server will do nothing. Consider adding a world.isClientSide() check.");
             reset();
             return;
         }
-
 
         BiFunction<ClientLevel, Vec3, ParticleWizardry> factory = ParticleWizardry.PROVIDERS.get(particle);
         ParticleWizardry particleWizardry = factory == null ? null : factory.apply((ClientLevel) world, new Vec3(x, y, z));
 
         if (particleWizardry == null) {
-            EBLogger.error(Component.translatable("logger.error.wizardry.particle_builder.particle_not_found", particle));
+            EBLogger.error("Failed to spawn particle of type - %s - are you sure it exists?", particle.toString());
             reset();
             return;
         }

@@ -30,8 +30,7 @@ public class SpellProperties {
     public <T> T get(SpellProperty<T> property) {
         for (SpellProperty<?> prop : properties) {
             if(prop.equals(property)) {
-                EBLogger.debug(Component.literal("Getting Spell property... " +
-                        "Id: %s Default: %s Value: %s".formatted(prop.identifier, prop.defaultValue, prop.value)));
+                EBLogger.debug("Getting Spell property... Id: %s Default: %s Value: %s", prop.identifier, prop.defaultValue, prop.value);
                 return (T) prop.get();
             }
         }

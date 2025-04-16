@@ -26,10 +26,7 @@ public final class CommonSetup {
 
 
     private static void informStart() {
-        EBLogger.info(Component.translatable("logger.info.ebwizardry.started"));
-        EBLogger.useIfEnabled(logger ->
-                logger.info("{} {}", Component.translatable("logger.info.ebwizardry.running_on_version").getString(), WizardryMainMod.MOD_VERSION)
-        );
+        EBLogger.info("Electroblob's Wizardry Started");
     }
 
     private CommonSetup() {}

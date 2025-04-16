@@ -16,8 +16,6 @@ public final class WizardryMainMod {
 
     public static void init(LoaderEnvironment environment) {
         loader = environment;
-        //noinspection ResultOfMethodCallIgnored
-        EBLogger.load();
         CommonSetup.init();
         if(isClientSide()) ClientSetup.init();
     }
