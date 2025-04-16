@@ -1,6 +1,10 @@
 package com.electroblob.wizardry.api;
 
+import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.content.data.IStoredVariable;
+import com.electroblob.wizardry.api.content.data.IVariable;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
+import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
@@ -12,10 +16,13 @@ import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.Spells;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
@@ -26,17 +33,21 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
+
 // TODO IMBUEMENTS
 public class PlayerWizardData {
     public Set<Spell> spellsDiscovered = new HashSet<>();
-    private Spell castCommandSpell = Spells.NONE;
-    private int castCommandTick;
-    private SpellModifiers castCommandModifiers = new SpellModifiers();
-    private int castCommandDuration;
-    private final Set<UUID> allies = new HashSet<>();
+    public Spell castCommandSpell = Spells.NONE;
+    public int castCommandTick;
+    public SpellModifiers castCommandModifiers = new SpellModifiers();
+    public int castCommandDuration;
+    public final Set<UUID> allies = new HashSet<>();
     /** <b> Do not use this for any other purpose than displaying the names! </b> */
     public Set<String> allyNames = new HashSet<>();
-    private final List<ImbuementLoader> imbuementLoaders = new ArrayList<>();
+    public final List<ImbuementLoader> imbuementLoaders = new ArrayList<>();
+    @SuppressWarnings("rawtypes") public final Map<IVariable, Object> spellData = new HashMap<>();
+    @SuppressWarnings("rawtypes") public static final Set<IStoredVariable> storedVariables = new HashSet<>();
 
     public PlayerWizardData(){
         spellsDiscovered.add(Spells.MAGIC_MISSILE);
@@ -49,6 +60,28 @@ public class PlayerWizardData {
 
     private void update(Player player){
         Services.WIZARD_DATA.onUpdate(this, player);
+    }
+
+    public <T> void setVariable(IVariable<? super T> variable, T value) {
+        this.spellData.put(variable, value);
+    }
+
+    @SuppressWarnings("unchecked")
+    @Nullable
+    public <T> T getVariable(IVariable<T> variable) {
+        return (T) spellData.get(variable);
+    }
+
+    public Map<IVariable, Object> getSpellData() {
+        return spellData;
+    }
+
+    public static void registerStoredVariables(IStoredVariable<?>... variables) {
+        storedVariables.addAll(Arrays.asList(variables));
+    }
+
+    public static Set<?> getSyncedVariables() {
+        return storedVariables.stream().filter(IVariable::isSynced).collect(Collectors.toSet());
     }
 
     /** Checks if the player has discovered the given spell, or if it's a NoneSpell */
@@ -233,6 +266,14 @@ public class PlayerWizardData {
         //EBLogger.info("Failed to find matching item in inventory to remove imbuement: " + imbue.getDescriptionId());
     }
 
+    // Método para convertir a JSON
+    public String toJson() {
+        Gson gson = new GsonBuilder().setPrettyPrinting().serializeSpecialFloatingPointValues().create();
+        return gson.toJson(this);
+    }
+
+
+
     // ===========================================
     // Compound Tags
     // Just save the data in a compound tag, used in loaders to abstract the way it's saved
@@ -263,6 +304,8 @@ public class PlayerWizardData {
         }
 
         tag.put("imbuedItems", imbuedItemsTag);
+
+        storedVariables.forEach(k -> k.write(tag, this.spellData.get(k)));
         return tag;
     }
 
@@ -313,6 +356,31 @@ public class PlayerWizardData {
             }
         }
 
+        try {
+            storedVariables.forEach(k -> this.spellData.put(k, k.read(tag)));
+        } catch (ClassCastException e) {
+            EBLogger.error(Component.literal("Wizard data NBT tag was not of expected type!" + e));
+        }
+
         return wizardData;
+    }
+
+    public static void onUpdate(EBLivingTick event) {
+        if(!(event.getEntity() instanceof Player player)) return;
+
+//        if(player.level().isClientSide) EBLogger.info("[Client] Wizard data update");
+//        else EBLogger.info("[Server] Wizard data update");
+//        if(player.level().isClientSide && WizardryMainMod.isFabric()) return;
+
+        PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
+        EBLogger.info(wizardData.toJson());
+
+        wizardData.updateContinuousSpellCasting(player);
+        wizardData.updateImbuedItems(player);
+
+        wizardData.getSpellData().forEach((k, v) -> wizardData.getSpellData().put(k, k.update(player, v)));
+        wizardData.getSpellData().keySet().removeIf(k -> k.canPurge(player, wizardData.getSpellData().get(k)));
+
+        Services.WIZARD_DATA.onUpdate(wizardData, player);
     }
 }

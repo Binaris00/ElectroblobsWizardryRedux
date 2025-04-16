@@ -46,10 +46,13 @@ public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
         return player.getCapability(WIZARD_DATA_CAPABILITY).orElse(new ForgePlayerWizardData());
     }
 
-    public void update(Player player){
-        this.wizardData.updateContinuousSpellCasting(player);
-        this.wizardData.updateImbuedItems(player);
-    }
+//    public void update(Player player){
+//        this.wizardData.updateContinuousSpellCasting(player);
+//        this.wizardData.updateImbuedItems(player);
+//
+//        this.wizardData.getSpellData().forEach((k, v) -> this.wizardData.getSpellData().put(k, k.update(player, v)));
+//        this.wizardData.getSpellData().keySet().removeIf(k -> k.canPurge(player, this.wizardData.getSpellData().get(k)));
+//    }
 
     @Override public CompoundTag serializeNBT() {
         return wizardData.serializeNBT(new CompoundTag());
@@ -79,12 +82,12 @@ public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
 //        }
     }
 
-    @SubscribeEvent
-    public static void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
-        if (event.getEntity() instanceof Player player) {
-            ForgePlayerWizardData.get(player).update(player);
-        }
-    }
+//    @SubscribeEvent
+//    public static void onLivingUpdateEvent(LivingEvent.LivingTickEvent event) {
+//        if (event.getEntity() instanceof Player player) {
+//            ForgePlayerWizardData.get(player).update(player);
+//        }
+//    }
 
     public static class Provider implements ICapabilitySerializable<CompoundTag> {
         private final LazyOptional<ForgePlayerWizardData> data;

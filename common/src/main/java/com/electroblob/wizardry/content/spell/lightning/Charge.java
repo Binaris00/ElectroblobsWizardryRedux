@@ -1,0 +1,122 @@
+package com.electroblob.wizardry.content.spell.lightning;
+
+import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.content.data.IVariable;
+import com.electroblob.wizardry.api.content.data.Persistence;
+import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
+import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
+import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.EBItems;
+import com.electroblob.wizardry.setup.registries.Spells;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
+
+import java.util.List;
+
+public class Charge extends Spell {
+    public static final IVariable<Integer> CHARGE_TIME = new IVariable.Variable<Integer>(Persistence.NEVER).withTicker(Charge::update);
+    public static final IVariable<SpellModifiers> CHARGE_MODIFIERS = new IVariable.Variable<>(Persistence.NEVER);
+
+    public static final SpellProperty<Float> CHARGE_SPEED = SpellProperty.floatProperty("charge_speed");
+
+    public Charge() {
+        this.soundValues(0.6f, 1, 0);
+    }
+
+    @Override
+    public boolean cast(PlayerCastContext ctx) {
+        PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(ctx.caster(), ctx.world());
+        wizardData.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+        wizardData.setVariable(CHARGE_MODIFIERS, ctx.modifiers());
+
+        if (ctx.world().isClientSide)
+            ctx.world().addParticle(ParticleTypes.EXPLOSION_EMITTER, ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getBbHeight() / 2, ctx.caster().getZ(), 0, 0, 0);
+
+        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        Services.WIZARD_DATA.onUpdate(wizardData, ctx.caster());
+        return true;
+    }
+
+    private static int update(Player player, Integer chargeTime) {
+        if(!player.level().isClientSide) EBLogger.info("[SERVER] Charge time: " + chargeTime);
+        else EBLogger.info("[CLIENT] Charge time: " + chargeTime);
+
+        if (chargeTime == null) chargeTime = 0;
+
+        if (chargeTime > 0) {
+            SpellModifiers modifiers = Services.WIZARD_DATA.getWizardData(player, player.level()).getVariable(CHARGE_MODIFIERS);
+            if (modifiers == null) modifiers = new SpellModifiers();
+
+            Vec3 look = player.getLookAngle();
+
+            float speed = Spells.CHARGE.property(Charge.CHARGE_SPEED) * modifiers.get(EBItems.RANGE_UPGRADE.get());
+
+            player.setDeltaMovement(look.x * speed, player.getDeltaMovement().y, look.z * speed);
+
+            if (player.level().isClientSide) {
+                for (int i = 0; i < 5; i++) {
+                    ParticleBuilder.create(EBParticles.SPARK, player).spawn(player.level());
+                }
+            }
+
+            List<LivingEntity> collided = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1));
+
+            collided.remove(player);
+            float damage = Spells.CHARGE.property(DefaultProperties.DAMAGE) * modifiers.get(SpellModifiers.POTENCY);
+            float knockback = Spells.CHARGE.property(DefaultProperties.KNOCKBACK);
+
+            collided.forEach(e -> e.hurt(EBMagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), damage));
+            collided.forEach(e -> e.push(player.getDeltaMovement().x * knockback, player.getDeltaMovement().y * knockback + 0.3f, player.getDeltaMovement().z * knockback));
+
+            if (player.level().isClientSide)
+                player.level().addParticle(ParticleTypes.EXPLOSION_EMITTER, player.getX() + player.getDeltaMovement().x, player.getY() + player.getBbHeight() / 2, player.getZ() + player.getDeltaMovement().z, 0, 0, 0);
+
+            if (collided.isEmpty()) chargeTime--;
+            else {
+                EntityUtil.playSoundAtPlayer(player, SoundEvents.GENERIC_HURT, 1, 1);
+                chargeTime = 0;
+            }
+        }
+        if(!player.level().isClientSide) EBLogger.info("[SERVER] Charge time FINAL: " + chargeTime);
+        else EBLogger.info("[CLIENT] Charge time FINAL: " + chargeTime);
+        return chargeTime;
+    }
+
+    public static void onLivingHurt(EBLivingHurtEvent event) {
+        if(event.isCanceled()) return;
+
+        if (event.getDamagedEntity() instanceof Player player && event.getSource().getEntity() instanceof LivingEntity attacker) {
+            PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
+            Integer chargeTime = wizardData.getVariable(CHARGE_TIME);
+
+            if (chargeTime != null && chargeTime > 0 && player.getBoundingBox().inflate(1).intersects(attacker.getBoundingBox())) {
+                event.setCanceled(true);
+            }
+
+        }
+    }
+
+    @Override
+    protected SpellProperties properties() {
+        return SpellProperties.builder()
+                .add(CHARGE_SPEED, 2.0F)
+                .add(DefaultProperties.DURATION, 10)
+                .add(DefaultProperties.DAMAGE, 8F)
+                .add(DefaultProperties.KNOCKBACK, 1.0F)
+                .build();
+    }
+}

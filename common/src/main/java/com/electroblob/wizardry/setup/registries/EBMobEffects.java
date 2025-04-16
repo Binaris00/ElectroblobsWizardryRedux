@@ -2,10 +2,12 @@ package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.api.content.effect.CurseMobEffect;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.effect.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectCategory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,7 @@ public class EBMobEffects {
     public static final DeferredObject<MobEffect> CURSE_OF_ENFEEBLEMENT;
     public static final DeferredObject<MobEffect> CURSE_OF_UNDEATH;
     public static final DeferredObject<MobEffect> DECAY;
+    public static final DeferredObject<MobEffect> CURSE_OF_SOULBINDING;
 
 
     static {
@@ -35,6 +38,8 @@ public class EBMobEffects {
         CURSE_OF_UNDEATH = mobEffect("curse_of_undeath", UndeathCurse::new);
 
         DECAY = mobEffect("decay", DecayMobEffect::new);
+
+        CURSE_OF_SOULBINDING = mobEffect("curse_of_soulbinding", () -> new CurseMobEffect(MobEffectCategory.HARMFUL, 0x0f000f));
     }
 
 

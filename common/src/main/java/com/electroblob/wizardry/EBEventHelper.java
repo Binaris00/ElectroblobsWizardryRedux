@@ -1,5 +1,6 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
@@ -11,6 +12,8 @@ import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
 import com.electroblob.wizardry.content.effect.WardMobEffect;
 import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
+import com.electroblob.wizardry.content.spell.lightning.Charge;
+import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 
 /**
@@ -31,13 +34,16 @@ public final class EBEventHelper {
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
+        bus.register(EBLivingHurtEvent.class, Charge::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, StaticAuraMobEffect::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, FireSkinMobEffect::onLivingHurt);
+        bus.register(EBLivingHurtEvent.class, CurseOfSoulbinding::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, WardMobEffect::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, BubbleConstruct::onLivingHurt);
     }
 
     private static void onLivingTickEvent(WizardryEventBus bus) {
+        bus.register(EBLivingTick.class, PlayerWizardData::onUpdate);
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
     }
 

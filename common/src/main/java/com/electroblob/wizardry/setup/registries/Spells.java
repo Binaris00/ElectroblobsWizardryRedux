@@ -12,6 +12,7 @@ import com.electroblob.wizardry.content.spell.fire.*;
 import com.electroblob.wizardry.content.spell.healing.*;
 import com.electroblob.wizardry.content.spell.ice.*;
 import com.electroblob.wizardry.content.spell.lightning.BlindingFlash;
+import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.lightning.InvokeWeather;
 import com.electroblob.wizardry.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.content.spell.necromancy.*;
@@ -116,6 +117,8 @@ public final class Spells {
     public static final Spell HAILSTORM;
     public static final Spell DECAY;
     public static final Spell FLAME_WEAPON;
+    public static final Spell CHARGE;
+    public static final Spell CURSE_OF_SOULBINDING;
 
     static {
         Register.init();
@@ -495,6 +498,10 @@ public final class Spells {
         DECAY = spell("decay", Decay::new);
 
         FLAME_WEAPON = spell("flaming_weapon", FlamingWeapon::new);
+
+        CHARGE = spell("charge", Charge::new);
+
+        CURSE_OF_SOULBINDING = spell("curse_of_soulbinding", CurseOfSoulbinding::new);
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {

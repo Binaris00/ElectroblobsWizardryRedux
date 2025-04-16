@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 /** Check {@link PlayerWizardData}, this class is just the implementation to load-save the player's wizard data */
-public class FabricPlayerWizardDataHolder implements FPWizardDataComponent, AutoSyncedComponent, ServerTickingComponent, ClientTickingComponent {
+public class FabricPlayerWizardDataHolder implements FPWizardDataComponent, AutoSyncedComponent {
     PlayerWizardData wizardData = new PlayerWizardData();
     private final Player provider;
 
@@ -23,16 +23,27 @@ public class FabricPlayerWizardDataHolder implements FPWizardDataComponent, Auto
         EBFabricComponents.WIZARD_DATA.sync(this.provider);
     }
 
-    @Override
-    public void clientTick() {
-        this.wizardData.updateContinuousSpellCasting(provider);
-        this.wizardData.updateImbuedItems(provider);
-    }
-
-    @Override
-    public void serverTick() {
-        this.wizardData.updateContinuousSpellCasting(provider);
-    }
+//    @Override
+//    public void clientTick() {
+//        this.wizardData.updateContinuousSpellCasting(provider);
+//        this.wizardData.updateImbuedItems(provider);
+//
+//        this.wizardData.getSpellData().forEach((k, v) -> this.wizardData.getSpellData().put(k, k.update(provider, v)));
+//        this.wizardData.getSpellData().keySet().removeIf(k -> k.canPurge(provider, this.wizardData.getSpellData().get(k)));
+//
+//        EBFabricComponents.WIZARD_DATA.sync(this.provider);
+//    }
+//
+//    @Override
+//    public void serverTick() {
+//        this.wizardData.updateContinuousSpellCasting(provider);
+//        this.wizardData.updateImbuedItems(provider);
+//
+//        this.wizardData.getSpellData().forEach((k, v) -> this.wizardData.getSpellData().put(k, k.update(provider, v)));
+//        this.wizardData.getSpellData().keySet().removeIf(k -> k.canPurge(provider, this.wizardData.getSpellData().get(k)));
+//
+//        EBFabricComponents.WIZARD_DATA.sync(this.provider);
+//    }
 
     @Override public PlayerWizardData getWizardData() {
         return wizardData;

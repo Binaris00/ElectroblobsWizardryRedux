@@ -6,6 +6,8 @@ import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
@@ -182,6 +184,10 @@ public final class EntityUtil {
             case HARD -> 2;
             default -> 10;
         };
+    }
+
+    public static void playSoundAtPlayer(Player player, SoundEvent sound, float volume, float pitch) {
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.PLAYERS, volume, pitch);
     }
 
     public static boolean isCasting(LivingEntity caster, Spell spell) {

@@ -23,7 +23,7 @@ public abstract class LivingEntityMixin {
         WizardryEventBus.getInstance().fire(new EBLivingTick(livingEntity, livingEntity.level()));
     }
 
-    @Inject(method = "hurt", at = @At("HEAD"))
+    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void EBWIZARDRY$livingEntityHurt(DamageSource source, float f, CallbackInfoReturnable<Boolean> cir){
         if (WizardryEventBus.getInstance().fire(new EBLivingHurtEvent(livingEntity, source, f))) cir.cancel();
     }
