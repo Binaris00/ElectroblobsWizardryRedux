@@ -115,6 +115,7 @@ public final class Spells {
     public static final Spell ENTRAPMENT;
     public static final Spell HAILSTORM;
     public static final Spell DECAY;
+    public static final Spell FLAME_WEAPON;
 
     static {
         Register.init();
@@ -492,6 +493,8 @@ public final class Spells {
         HAILSTORM = spell("hailstorm", Hailstorm::new);
 
         DECAY = spell("decay", Decay::new);
+
+        FLAME_WEAPON = spell("flaming_weapon", FlamingWeapon::new);
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {

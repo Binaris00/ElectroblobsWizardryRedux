@@ -1,10 +1,13 @@
 package com.electroblob.wizardry.api;
 
+import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.api.content.util.ImbuementLoader;
+import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
@@ -16,21 +19,24 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
+import java.util.*;
+// TODO IMBUEMENTS
 public class PlayerWizardData {
     public Set<Spell> spellsDiscovered = new HashSet<>();
     private Spell castCommandSpell = Spells.NONE;
     private int castCommandTick;
     private SpellModifiers castCommandModifiers = new SpellModifiers();
     private int castCommandDuration;
-    private Set<UUID> allies = new HashSet<>();
+    private final Set<UUID> allies = new HashSet<>();
     /** <b> Do not use this for any other purpose than displaying the names! </b> */
     public Set<String> allyNames = new HashSet<>();
+    private final List<ImbuementLoader> imbuementLoaders = new ArrayList<>();
 
     public PlayerWizardData(){
         spellsDiscovered.add(Spells.MAGIC_MISSILE);
@@ -40,6 +46,10 @@ public class PlayerWizardData {
     // Utils
     // Save-check-use methods related to player data
     // ===========================================
+
+    private void update(Player player){
+        Services.WIZARD_DATA.onUpdate(this, player);
+    }
 
     /** Checks if the player has discovered the given spell, or if it's a NoneSpell */
     public boolean hasSpellBeenDiscovered(Spell spell){
@@ -79,7 +89,7 @@ public class PlayerWizardData {
 //            WizardryPacketHandler.net.sendToDimension(message, this.player.world.provider.getDimension());
         }
 
-        Services.WIZARD_DATA.onUpdate(this, player);
+        update(player);
     }
 
     /** Casts the current continuous spell, fires relevant events and updates the castCommandTick field. */
@@ -112,6 +122,7 @@ public class PlayerWizardData {
     }
 
     public boolean toggleAlly(Player original, Player friend){
+        update(original);
         if(this.isPlayerAlly(original, friend)){
             this.allies.remove(friend.getUUID());
             this.allyNames.remove(friend.getDisplayName().getString());
@@ -144,6 +155,84 @@ public class PlayerWizardData {
     }
 
 
+    public void setImbuementDuration(Player player, ItemStack stack, Enchantment enchantment, int duration) {
+        if (enchantment instanceof Imbuement) {
+            ImbuementLoader loader = new ImbuementLoader(stack.getItem(), enchantment, duration);
+            imbuementLoaders.add(loader);
+            //EBLogger.info("Set imbuement duration: " + enchantment.getDescriptionId() + " -> " + duration + " ticks on item " + stack.getItem().getDescriptionId());
+            update(player);
+            return;
+        }
+
+        throw new IllegalArgumentException("Attempted to set an imbuement duration for something that isn't an Imbuement!");
+    }
+
+
+    public int getImbuementDuration(Enchantment enchantment) {
+        //EBLogger.info("Getting imbuement duration for " + enchantment.getDescriptionId());
+        for(ImbuementLoader loader : imbuementLoaders){
+            if (loader.getImbuement().equals(enchantment)) {
+                EBLogger.info("Found imbuement duration for " + enchantment.getDescriptionId() + " -> " + loader.getTimeLimit());
+                return loader.getTimeLimit();
+            }
+        }
+
+        //EBLogger.info("No imbuement duration found for " + enchantment.getDescriptionId());
+        return 0;
+    }
+
+
+    public void updateImbuedItems(Player player) {
+        if(!imbuementLoaders.isEmpty()) EBLogger.info("Updating imbued items... total items: " + imbuementLoaders.size());
+
+//        Iterator<ImbuementLoader> iterator = imbuementLoaders.iterator();
+//        while(iterator.hasNext()) {
+//            ImbuementLoader loader = iterator.next();
+//            boolean result = loader.hasReachedLimit();
+//
+//            //EBLogger.info("Updating item: " + loader.getItem().getDescriptionId() + " -> New duration: " + loader.getTimeLimit());
+//            if(result){
+//                //EBLogger.info("Imbuement expired for " + loader.getImbuement() + " on item " + loader.getItem().getDescriptionId());
+//                removeImbuement(player, loader.getItem(), loader.getImbuement());
+//                iterator.remove();
+//            }
+//        }
+//        update(player);
+    }
+
+
+    private void removeImbuement(Player player, Item item, Enchantment imbue) {
+        //EBLogger.info("Attempting to remove imbuement: " + imbue.getDescriptionId());
+        update(player);
+
+        for (ItemStack stack : player.getInventory().items) {
+            if (stack.getItem().equals(item) && EnchantmentHelper.getEnchantments(stack).containsKey(imbue)) {
+                //EBLogger.info("Removed imbuement from inventory item: " + stack.getItem().getDescriptionId());
+                InventoryUtil.removeEnchant(stack, imbue);
+                if(imbue instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
+                return;
+            }
+        }
+        for (ItemStack stack : player.getInventory().armor) {
+            if (stack.getItem().equals(item) && EnchantmentHelper.getEnchantments(stack).containsKey(imbue)) {
+                //EBLogger.info("Removed imbuement from armor item: " + stack.getItem().getDescriptionId());
+                InventoryUtil.removeEnchant(stack, imbue);
+                if(imbue instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
+                return;
+            }
+        }
+        for (ItemStack stack : player.getInventory().offhand) {
+            if (stack.getItem().equals(item) && EnchantmentHelper.getEnchantments(stack).containsKey(imbue)){
+                //EBLogger.info("Removed imbuement from offhand item: " + stack.getItem().getDescriptionId());
+                InventoryUtil.removeEnchant(stack, imbue);
+                if(imbue instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
+                return;
+            }
+        }
+
+        //EBLogger.info("Failed to find matching item in inventory to remove imbuement: " + imbue.getDescriptionId());
+    }
+
     // ===========================================
     // Compound Tags
     // Just save the data in a compound tag, used in loaders to abstract the way it's saved
@@ -167,6 +256,13 @@ public class PlayerWizardData {
         ListTag allyNamesTag = new ListTag();
         allyNames.forEach(name -> allyNamesTag.add(StringTag.valueOf(name)));
         tag.put("allyNames", allyNamesTag);
+
+        ListTag imbuedItemsTag = new ListTag();
+        for(ImbuementLoader loader : imbuementLoaders) {
+            imbuedItemsTag.add(loader.serializeNbt(new CompoundTag()));
+        }
+
+        tag.put("imbuedItems", imbuedItemsTag);
         return tag;
     }
 
@@ -207,6 +303,13 @@ public class PlayerWizardData {
             ListTag listTag = tag.getList("allyNames", Tag.TAG_STRING);
             for (Tag element : listTag) {
                 wizardData.allyNames.add(element.getAsString());
+            }
+        }
+
+        if(tag.contains("imbuedItems", Tag.TAG_LIST)) {
+            ListTag listTag = tag.getList("imbuedItems", Tag.TAG_COMPOUND);
+            for (Tag element : listTag) {
+                wizardData.imbuementLoaders.add(ImbuementLoader.deserializeNbt((CompoundTag) element));
             }
         }
 

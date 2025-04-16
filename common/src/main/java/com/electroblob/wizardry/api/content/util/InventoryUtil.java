@@ -5,16 +5,22 @@ import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
 import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 public class InventoryUtil {
     public static final EquipmentSlot[] ARMOUR_SLOTS;
@@ -76,5 +82,13 @@ public class InventoryUtil {
     public static boolean doAllArmourPiecesHaveMana(LivingEntity entity){
         return Arrays.stream(ARMOUR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaStoringItem manaStoringItem
                 && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
+    }
+
+    // There's no method available to remove the enchantments, so I will just ask for the tag,
+    // take the enchantments, remove the wanted one and then put the tag again in the item
+    public static void removeEnchant(ItemStack stack, Enchantment enchantment) {
+        Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack);
+        map.remove(enchantment);
+        EnchantmentHelper.setEnchantments(map, stack);
     }
 }

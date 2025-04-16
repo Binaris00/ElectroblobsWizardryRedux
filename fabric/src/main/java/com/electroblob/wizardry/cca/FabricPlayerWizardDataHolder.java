@@ -26,6 +26,7 @@ public class FabricPlayerWizardDataHolder implements FPWizardDataComponent, Auto
     @Override
     public void clientTick() {
         this.wizardData.updateContinuousSpellCasting(provider);
+        this.wizardData.updateImbuedItems(provider);
     }
 
     @Override

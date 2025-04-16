@@ -32,6 +32,7 @@ public class WizardryForgeEvents {
             else if(event.getRegistryKey() == Registries.ITEM) register(event, EBItems::register);
             else if(event.getRegistryKey() == Registries.PARTICLE_TYPE) register(event, EBParticles::registerType);
             else if(event.getRegistryKey() == Registries.SOUND_EVENT) register(event, EBSounds::register);
+            else if(event.getRegistryKey() == Registries.ENCHANTMENT) register(event, EBEnchantments::register);
         }
 
 //        @SubscribeEvent

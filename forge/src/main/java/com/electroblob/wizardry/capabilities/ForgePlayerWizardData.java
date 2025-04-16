@@ -48,6 +48,7 @@ public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
 
     public void update(Player player){
         this.wizardData.updateContinuousSpellCasting(player);
+        this.wizardData.updateImbuedItems(player);
     }
 
     @Override public CompoundTag serializeNBT() {

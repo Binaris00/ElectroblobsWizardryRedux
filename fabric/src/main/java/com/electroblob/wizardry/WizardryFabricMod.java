@@ -28,5 +28,6 @@ public final class WizardryFabricMod implements ModInitializer {
         EBCreativeTabs.register(Registry::register);
         EBMobEffects.register(Registry::register);
         EBSounds.register(Registry::register);
+        EBEnchantments.register(Registry::register);
     }
 }
