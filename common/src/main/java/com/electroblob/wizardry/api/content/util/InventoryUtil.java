@@ -5,9 +5,6 @@ import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
 import net.minecraft.core.NonNullList;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,18 +14,23 @@ import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import javax.annotation.Nullable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-public class InventoryUtil {
+public final class InventoryUtil {
     public static final EquipmentSlot[] ARMOUR_SLOTS;
 
     static {
         List<EquipmentSlot> slots = new ArrayList<>(Arrays.asList(EquipmentSlot.values()));
         slots.removeIf(slot -> slot.getType() != EquipmentSlot.Type.ARMOR);
         ARMOUR_SLOTS = slots.toArray(new EquipmentSlot[0]);
+    }
+
+    public static Collection<ItemStack> getAllItems(Player player) {
+        List<ItemStack> items = new ArrayList<>();
+        items.addAll(player.getInventory().items);
+        items.addAll(player.getInventory().armor);
+        items.addAll(player.getInventory().offhand);
+        return items;
     }
 
     public static List<ItemStack> getPrioritisedHotBarAndOffhand(Player player) {

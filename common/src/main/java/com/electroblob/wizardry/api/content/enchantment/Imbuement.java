@@ -1,120 +1,89 @@
 package com.electroblob.wizardry.api.content.enchantment;
 
-import com.google.common.collect.Iterables;
+import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.event.EBEntityJoinLevelEvent;
+import com.electroblob.wizardry.api.content.event.EBItemTossEvent;
+import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
+import com.electroblob.wizardry.api.content.util.InventoryUtil;
+import com.electroblob.wizardry.content.spell.sorcery.ImbueWeapon;
+import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.EBEnchantments;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.Iterator;
+import java.util.Map;
 
-// TODO, I didn't make the events because I'm lazy asf :D
 public interface Imbuement {
-//    public static void onLivingDropsEvent(LivingDropsEvent event){
-//        // Instantly disenchants an imbued weapon if it is dropped when the player dies.
-//        for(EntityItem item : event.getDrops()){
-//            // Apparently some mods don't behave and shove null items in the list, quite why I have no idea
-//            if(item != null) removeImbuements(item.getItem());
-//        }
-//    }
-//
-//    @SubscribeEvent
-//    public static void onItemTossEvent(ItemTossEvent event){
-//        // Instantly disenchants an imbued weapon if it is thrown on the ground.
-//        removeImbuements(event.getEntityItem().getItem());
-//    }
-//
-//    /** Removes all imbuements from the given itemstack. */
-//    static void removeImbuements(ItemStack stack){
-//        if(stack.isItemEnchanted()){
-//            // No need to check what enchantments the item has, since remove() does nothing if the element does not exist
-//            NBTTagList enchantmentList = stack.getItem() == Items.ENCHANTED_BOOK ?
-//                    ItemEnchantedBook.getEnchantments(stack) : stack.getEnchantmentTagList();
-//            // Check all enchantments of the item
-//            Iterator<NBTBase> enchantmentIt = enchantmentList.iterator();
-//            while(enchantmentIt.hasNext()){
-//                NBTTagCompound enchantmentTag = (NBTTagCompound) enchantmentIt.next();
-//                Enchantment enchantment = Enchantment.getEnchantmentByID(enchantmentTag.getShort("id"));
-//                // If the item contains a magic weapon enchantment, remove it from the item
-//                if(enchantment instanceof Imbuement){
-//                    ((Imbuement) enchantment).onImbuementRemoval(stack);
-//                    enchantmentIt.remove();
-//                }
-//            }
-//        }
-//    }
-//
-//    /** Allows executing some custom logic before this imbuement is being removed from the stack. Called when the imbuement is about to be removed. */
+
     default void onImbuementRemoval(ItemStack stack){}
+
+
+
+    static void onLivingDeath(EBLivingDeathEvent event){
+        if(!(event.getEntity() instanceof Player player))return;
+
+        InventoryUtil.getAllItems(player).forEach(stack -> removeImbuements(player, stack));
+    }
+
+    static void onItemTossEvent(EBItemTossEvent event){
+        removeImbuements(event.getPlayer(), event.getStack());
+    }
+
+    static boolean removeImbuements(Player player,ItemStack stack){
+        if(stack.isEnchanted()){
+            Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(stack);
+            Iterator<Enchantment> iterator = enchants.keySet().iterator();
+            while(iterator.hasNext()){
+                Enchantment enchantment = iterator.next();
+                if(enchantment instanceof Imbuement imbuement){
+                    imbuement.onImbuementRemoval(stack);
+                    iterator.remove();
+                    PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
+                    wizardData.removeImbuement(stack, enchantment);
+                    Services.WIZARD_DATA.onUpdate(wizardData, player);
+                }
+            }
+            EnchantmentHelper.setEnchantments(enchants, stack);
+        }
+        return false;
+    }
+
+    static void onEntityJoinLevel(EBEntityJoinLevelEvent event) {
+        if(event.getEntity().level().isClientSide() || !(event.getEntity() instanceof AbstractArrow arrow)) return;
+        if(!(arrow.getOwner() instanceof LivingEntity archer)) return;
+
+        ItemStack bow = archer.getMainHandItem();
+
+        if (!ImbueWeapon.isBow(bow)) {
+            bow = archer.getOffhandItem();
+            if (!ImbueWeapon.isBow(bow)) return;
+        }
+
+        // TODO: Make this work again
+//        int level = EnchantmentHelper.getItemEnchantmentLevel(EBEnchantments.MAGIC_BOW.get(), bow);
 //
-//    @SubscribeEvent
-//    public static void onPlayerOpenContainerEvent(PlayerContainerEvent event){
-//        // Brute-force fix to stop enchanted books in dungeon chests from having imbuements on them.
-//        if(event.getContainer() instanceof ContainerChest){
-//            // Still not sure if it's better to set stacks in slots or modify the itemstack list directly, but I would
-//            // imagine it's the former.
-//            for(Slot slot : event.getContainer().inventorySlots){
-//                ItemStack slotStack = slot.getStack();
-//                if(slotStack.getItem() instanceof ItemEnchantedBook){
-//                    // We don't care about the level of the enchantments
-//                    NBTTagList enchantmentList = ItemEnchantedBook.getEnchantments(slotStack);
-//                    // Removes all imbuements
-//                    if(Iterables.removeIf(enchantmentList, tag -> {
-//                        NBTTagCompound enchantmentTag = (NBTTagCompound) tag;
-//                        return Enchantment.getEnchantmentByID(enchantmentTag.getShort("id"))
-//                                instanceof Imbuement;
-//                    })){
-//                        // If any imbuements were removed, inform about the removal of the enchantment(s), or
-//                        // delete the book entirely if there are none left.
-//                        if(enchantmentList.isEmpty()){
-//                            slot.putStack(ItemStack.EMPTY);
-//                            Wizardry.logger.info("Deleted enchanted book with illegal enchantments");
-//                        }else{
-//                            // Inform about enchantment removal
-//                            Wizardry.logger.info("Removed illegal enchantments from enchanted book");
-//                        }
-//                    }
-//                }
+//        if (level > 0) {
+//            arrow.setBaseDamage(arrow.getBaseDamage() + (double) level * 0.5D + 0.5D);
+//        }
+
+
+        if (EnchantmentHelper.getItemEnchantmentLevel(EBEnchantments.FLAMING_WEAPON.get(), bow) > 0) {
+            arrow.setSecondsOnFire(100);
+        }
+
+        // TODO: Make this work again
+//
+//        level = EnchantmentHelper.getTagEnchantmentLevel(WizardryEnchantments.FREEZING_WEAPON.get(), bow);
+//
+//        if (level > 0) {
+//            if (arrow.getPersistentData() != null) {
+//                arrow.getPersistentData().putInt(FreezingWeapon.FREEZING_ARROW_NBT_KEY, level);
 //            }
 //        }
-//    }
-//
-//    @SubscribeEvent
-//    public static void onEntityJoinWorld(EntityJoinWorldEvent event){
-//        // Rather long-winded (but necessary) way of getting an arrow just after it has been fired, checking if the bow
-//        // that fired it has the imbuement enchantment, and applying extra damage accordingly.
-//        if(!event.getEntity().world.isRemote && event.getEntity() instanceof EntityArrow){
-//
-//            EntityArrow arrow = (EntityArrow)event.getEntity();
-//
-//            if(arrow.shootingEntity instanceof EntityLivingBase){
-//
-//                EntityLivingBase archer = (EntityLivingBase)arrow.shootingEntity;
-//
-//                ItemStack bow = archer.getHeldItemMainhand();
-//
-//                if(!ImbueWeapon.isBow(bow)){
-//                    bow = archer.getHeldItemOffhand();
-//                    if(!ImbueWeapon.isBow(bow)) return;
-//                }
-//
-//                // Taken directly from ItemBow, so it works exactly the same as the power enchantment.
-//                int level = EnchantmentHelper.getEnchantmentLevel(WizardryEnchantments.magic_bow, bow);
-//
-//                if(level > 0){
-//                    arrow.setDamage(arrow.getDamage() + (double)level * 0.5D + 0.5D);
-//                }
-//
-//                if(EnchantmentHelper.getEnchantmentLevel(WizardryEnchantments.flaming_weapon, bow) > 0){
-//                    // Again, this is exactly what happens in ItemBow (flame is flame; level does nothing).
-//                    arrow.setFire(100);
-//                }
-//
-//                level = EnchantmentHelper.getEnchantmentLevel(WizardryEnchantments.freezing_weapon, bow);
-//
-//                if(level > 0){
-//                    if(arrow.getEntityData() != null){
-//                        arrow.getEntityData().setInteger(FreezingWeapon.FREEZING_ARROW_NBT_KEY, level);
-//                    }
-//                }
-//            }
-//        }
-//    }
+    }
 }

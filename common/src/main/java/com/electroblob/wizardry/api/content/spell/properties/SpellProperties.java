@@ -2,7 +2,6 @@ package com.electroblob.wizardry.api.content.spell.properties;
 
 
 import com.electroblob.wizardry.api.EBLogger;
-import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.List;

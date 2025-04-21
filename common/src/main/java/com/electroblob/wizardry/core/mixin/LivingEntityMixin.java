@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.core.mixin;
 
+import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
@@ -38,5 +39,13 @@ public abstract class LivingEntityMixin {
                 livingEntity.setDeltaMovement(livingEntity.getDeltaMovement().x, 0, livingEntity.getDeltaMovement().y);
             }
         }
+    }
+
+    @Inject(method = "die", at = @At("HEAD"))
+    public void EBWIZARDRY$LivingEntityDie(DamageSource damageSource, CallbackInfo ci){
+//        if(WizardryEventBus.getInstance().fire(new EBLivingHurtEvent(livingEntity, DamageSource.GENERIC, 0))){
+//            ci.cancel();
+//        }
+        WizardryEventBus.getInstance().fire(new EBLivingDeathEvent(livingEntity, damageSource));
     }
 }

@@ -1,11 +1,9 @@
 package com.electroblob.wizardry.content.command.debug;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
-import com.electroblob.wizardry.setup.registries.Spells;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;

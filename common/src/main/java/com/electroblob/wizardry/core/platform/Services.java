@@ -3,7 +3,6 @@ package com.electroblob.wizardry.core.platform;
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.core.platform.services.IPlatformHelper;
 import com.electroblob.wizardry.core.platform.services.IWizardPlayerData;
-import net.minecraft.network.chat.Component;
 
 import java.util.ServiceLoader;
 

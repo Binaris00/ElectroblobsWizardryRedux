@@ -22,7 +22,7 @@ public class FlamingWeapon extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(ctx.caster(), ctx.world());
-        if(wizardData.getImbuementDuration(EBEnchantments.FLAMING_WEAPON.get()) > 0) return false;
+        if(wizardData.getGeneralImbuementDuration(EBEnchantments.FLAMING_WEAPON.get()) > 0) return false;
 
         for(ItemStack stack : InventoryUtil.getPrioritisedHotBarAndOffhand(ctx.caster())){
             // If the item isn't a sword or a bow, or if it already has the enchantment, skip

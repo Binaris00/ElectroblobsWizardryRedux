@@ -7,9 +7,14 @@
   "mixins": [
     "ClipContextMixin",
     "CommandsMixin",
-    "LivingEntityMixin"
+    "LivingEntityMixin",
+    "PersistentEntitySectionManagerMixin",
+    "PlayerMixin",
+    "ServerLevelMixin",
+    "ServerPlayerMixin"
   ],
   "client": [
+    "ClientLevelMixin",
     "ClientPlayerMixin",
     "HumanoidModelMixin",
     "MinecraftMixin"

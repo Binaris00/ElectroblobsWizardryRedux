@@ -2,8 +2,8 @@ package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
-import com.electroblob.wizardry.content.enchantment.TimedEnchantment;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
+import com.electroblob.wizardry.content.enchantment.TimedEnchantment;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.enchantment.Enchantment;
 

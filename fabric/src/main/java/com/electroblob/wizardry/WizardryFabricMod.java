@@ -1,13 +1,11 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.LoaderEnvironment;
-import com.electroblob.wizardry.client.SpellGUIDisplay;
 import com.electroblob.wizardry.registry.ElementRegistryFabric;
 import com.electroblob.wizardry.registry.SpellRegistryFabric;
 import com.electroblob.wizardry.registry.TierRegistryFabric;
 import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.core.Registry;
 
 

@@ -2,10 +2,8 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
-import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
-import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
-import com.electroblob.wizardry.api.content.event.EBLivingTick;
-import com.electroblob.wizardry.api.content.event.SpellCastEvent;
+import com.electroblob.wizardry.api.content.enchantment.Imbuement;
+import com.electroblob.wizardry.api.content.event.*;
 import com.electroblob.wizardry.client.sound.SoundLoop;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
 import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
@@ -31,6 +29,8 @@ public final class EBEventHelper {
         onSpellPreCast(bus);
         onSpellTickCast(bus);
         onPlayerJoin(bus);
+        onLivingDeathEvent(bus);
+        onItemTossEvent(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -49,6 +49,18 @@ public final class EBEventHelper {
 
     private static void onPlayerJoin(WizardryEventBus bus){
 
+    }
+
+    private static void onEntityJoinLevel(WizardryEventBus bus){
+        bus.register(EBEntityJoinLevelEvent.class, Imbuement::onEntityJoinLevel);
+    }
+
+    private static void onItemTossEvent(WizardryEventBus bus){
+        bus.register(EBItemTossEvent.class, Imbuement::onItemTossEvent);
+    }
+
+    private static void onLivingDeathEvent(WizardryEventBus bus){
+        bus.register(EBLivingDeathEvent.class, Imbuement::onLivingDeath);
     }
 
     private static void onClientTick(WizardryEventBus bus){

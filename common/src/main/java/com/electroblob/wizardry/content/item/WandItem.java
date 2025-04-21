@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
@@ -24,7 +23,6 @@ import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBSounds;
-import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -34,19 +32,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, IWizardryItem {

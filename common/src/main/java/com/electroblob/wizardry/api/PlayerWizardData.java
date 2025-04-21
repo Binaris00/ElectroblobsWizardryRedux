@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.api;
 
-import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.data.IStoredVariable;
 import com.electroblob.wizardry.api.content.data.IVariable;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
@@ -16,20 +15,15 @@ import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.Spells;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -189,11 +183,24 @@ public class PlayerWizardData {
     }
 
 
+    /**
+     * Sets the duration of a given Imbuement on a ItemStack. This adds a
+     * new ImbuementLoader to the list of imbuementLoaders and a new tag to
+     * the ItemStack for saving the UUID of the ImbuementLoader.
+     *
+     * @param player the Player
+     * @param stack the ItemStack to modify
+     * @param enchantment the Imbuement to add
+     * @param duration the duration of the Imbuement in ticks
+     *
+     * @throws IllegalArgumentException if the given enchantment is not an Imbuement
+     */
     public void setImbuementDuration(Player player, ItemStack stack, Enchantment enchantment, int duration) {
         if (enchantment instanceof Imbuement) {
             ImbuementLoader loader = new ImbuementLoader(stack.getItem(), enchantment, duration);
+            stack.getOrCreateTag().putString(ImbuementLoader.getTagName(enchantment), loader.getUuid());
             imbuementLoaders.add(loader);
-            //EBLogger.info("Set imbuement duration: " + enchantment.getDescriptionId() + " -> " + duration + " ticks on item " + stack.getItem().getDescriptionId());
+            EBLogger.info("Set imbuement duration: " + enchantment.getDescriptionId() + " -> " + duration + " ticks on item " + stack.getItem().getDescriptionId());
             update(player);
             return;
         }
@@ -202,8 +209,16 @@ public class PlayerWizardData {
     }
 
 
-    public int getImbuementDuration(Enchantment enchantment) {
-        //EBLogger.info("Getting imbuement duration for " + enchantment.getDescriptionId());
+    /**
+     * Gets the duration of the first Imbuement found in the list of ImbuementLoaders that matches the given Enchantment.
+     * If no matching Imbuement is found, returns 0. <br>
+     * If you want to get the duration of a specific item, use {@link #getImbuementDuration(ItemStack, Enchantment)}
+     *
+     * @param enchantment the Enchantment to search for
+     * @return the duration of the Imbuement in ticks, or 0 if no matching Imbuement is found
+     */
+    public int getGeneralImbuementDuration(Enchantment enchantment) {
+        EBLogger.info("Getting imbuement duration for " + enchantment.getDescriptionId());
         for(ImbuementLoader loader : imbuementLoaders){
             if (loader.getImbuement().equals(enchantment)) {
                 EBLogger.info("Found imbuement duration for " + enchantment.getDescriptionId() + " -> " + loader.getTimeLimit());
@@ -211,67 +226,122 @@ public class PlayerWizardData {
             }
         }
 
-        //EBLogger.info("No imbuement duration found for " + enchantment.getDescriptionId());
+        EBLogger.info("No imbuement duration found for " + enchantment.getDescriptionId());
         return 0;
     }
 
 
-    public void updateImbuedItems(Player player) {
-        if(!imbuementLoaders.isEmpty()) EBLogger.info("Updating imbued items... total items: " + imbuementLoaders.size());
-
-//        Iterator<ImbuementLoader> iterator = imbuementLoaders.iterator();
-//        while(iterator.hasNext()) {
-//            ImbuementLoader loader = iterator.next();
-//            boolean result = loader.hasReachedLimit();
-//
-//            //EBLogger.info("Updating item: " + loader.getItem().getDescriptionId() + " -> New duration: " + loader.getTimeLimit());
-//            if(result){
-//                //EBLogger.info("Imbuement expired for " + loader.getImbuement() + " on item " + loader.getItem().getDescriptionId());
-//                removeImbuement(player, loader.getItem(), loader.getImbuement());
-//                iterator.remove();
-//            }
-//        }
-//        update(player);
+    /**
+     * Gets the duration of the Imbuement on the ItemStack.
+     * If no matching Imbuement is found, returns 0.
+     *
+     * @param stack the ItemStack to check for the Imbuement
+     * @param enchantment the Enchantment
+     * @return the duration of the Imbuement in ticks, or 0 if no matching Imbuement is found
+     */
+    public int getImbuementDuration(ItemStack stack, Enchantment enchantment) {
+        EBLogger.info("Getting imbuement duration for " + enchantment.getDescriptionId());
+        for(ImbuementLoader loader : imbuementLoaders){
+            if (loader.getItem().equals(stack.getItem()) && loader.getImbuement().equals(enchantment)) {
+                EBLogger.info("Found imbuement duration for " + enchantment.getDescriptionId() + " -> " + loader.getTimeLimit());
+                return loader.getTimeLimit();
+            }
+        }
+        return 0;
     }
 
 
-    private void removeImbuement(Player player, Item item, Enchantment imbue) {
-        //EBLogger.info("Attempting to remove imbuement: " + imbue.getDescriptionId());
+    /**
+     * Removes the Imbuement from the given ItemStack.
+     * If the Imbuement is found and removed, this method will also remove the corresponding ImbuementLoader
+     * from the list of ImbuementLoaders.
+     * If the Imbuement is not found, this method will do nothing and return false.
+     *
+     * @param stack the ItemStack to remove the Imbuement from
+     * @param enchantment the Enchantment to remove
+     * @return true if the Imbuement was found and removed, false otherwise
+     */
+    public boolean removeImbuement(ItemStack stack, Enchantment enchantment){
+        Iterator<ImbuementLoader> iterator = imbuementLoaders.iterator();
+        while(iterator.hasNext()){
+            ImbuementLoader loader = iterator.next();
+
+            if(stack.getOrCreateTag().getString(ImbuementLoader.getTagName(enchantment)).equals(loader.getUuid())){
+                stack.getOrCreateTag().remove(ImbuementLoader.getTagName(enchantment));
+                InventoryUtil.removeEnchant(stack, loader.getImbuement());
+                if(loader.getImbuement() instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
+                iterator.remove();
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+
+
+    /**
+     * <b>Internal use only.</b> <br><br>
+     * Updates the list of imbued items for the player, reducing the time limits
+     * of each ImbuementLoader. If an imbued item's time limit has been reached,
+     * the imbuement is removed from the item and the loader is removed from the list.
+     *
+     * @param player the Player whose imbued items are being updated
+     */
+    private void updateImbuedItems(Player player) {
+        Iterator<ImbuementLoader> iterator = imbuementLoaders.iterator();
+        while(iterator.hasNext()) {
+            ImbuementLoader loader = iterator.next();
+            boolean result = loader.hasReachedLimit();
+            if(result){
+                removeImbuement(player, loader);
+                iterator.remove();
+            }
+        }
+        update(player);
+    }
+
+
+    /**
+     * <b>Internal use only.</b> <br><br>
+     * This method is called when an Imbuement's time limit has been reached.
+     * It goes through the player's inventory, armor, and offhand items, and
+     * removes the Imbuement from the first item it finds that matches the given
+     * ImbuementLoader. It then calls the {@link Imbuement#onImbuementRemoval(ItemStack)}
+     * on that item.
+     *
+     * @param player the Player whose inventory is being checked
+     * @param loader the ImbuementLoader to remove from the player's inventory
+     */
+    private void removeImbuement(Player player, ImbuementLoader loader) {
         update(player);
 
         for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem().equals(item) && EnchantmentHelper.getEnchantments(stack).containsKey(imbue)) {
-                //EBLogger.info("Removed imbuement from inventory item: " + stack.getItem().getDescriptionId());
-                InventoryUtil.removeEnchant(stack, imbue);
-                if(imbue instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
+            if (loader.isValid(stack)) {
+                InventoryUtil.removeEnchant(stack, loader.getImbuement());
+                stack.getOrCreateTag().remove(ImbuementLoader.getTagName(loader.getImbuement()));
+                if(loader.getImbuement() instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
                 return;
             }
         }
         for (ItemStack stack : player.getInventory().armor) {
-            if (stack.getItem().equals(item) && EnchantmentHelper.getEnchantments(stack).containsKey(imbue)) {
-                //EBLogger.info("Removed imbuement from armor item: " + stack.getItem().getDescriptionId());
-                InventoryUtil.removeEnchant(stack, imbue);
-                if(imbue instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
+            if (loader.isValid(stack)) {
+                InventoryUtil.removeEnchant(stack, loader.getImbuement());
+                stack.getOrCreateTag().remove(ImbuementLoader.getTagName(loader.getImbuement()));
+                if(loader.getImbuement() instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
                 return;
             }
         }
         for (ItemStack stack : player.getInventory().offhand) {
-            if (stack.getItem().equals(item) && EnchantmentHelper.getEnchantments(stack).containsKey(imbue)){
-                //EBLogger.info("Removed imbuement from offhand item: " + stack.getItem().getDescriptionId());
-                InventoryUtil.removeEnchant(stack, imbue);
-                if(imbue instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
+            if (loader.isValid(stack)){
+                InventoryUtil.removeEnchant(stack, loader.getImbuement());
+                stack.getOrCreateTag().remove(ImbuementLoader.getTagName(loader.getImbuement()));
+                if(loader.getImbuement() instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
                 return;
             }
         }
-
-        //EBLogger.info("Failed to find matching item in inventory to remove imbuement: " + imbue.getDescriptionId());
     }
-
-//    public String toJson() {
-//        Gson gson = new GsonBuilder().setPrettyPrinting().serializeSpecialFloatingPointValues().create();
-//        return gson.toJson(this);
-//    }
-
 
 
     // ===========================================
@@ -371,13 +441,7 @@ public class PlayerWizardData {
 
     public static void onUpdate(EBLivingTick event) {
         if(!(event.getEntity() instanceof Player player)) return;
-
-//        if(player.level().isClientSide) EBLogger.info("[Client] Wizard data update");
-//        else EBLogger.info("[Server] Wizard data update");
-//        if(player.level().isClientSide && WizardryMainMod.isFabric()) return;
-
         PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
-        //EBLogger.info(wizardData.toJson());
 
         wizardData.updateContinuousSpellCasting(player);
         wizardData.updateImbuedItems(player);
