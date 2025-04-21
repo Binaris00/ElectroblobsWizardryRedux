@@ -9,6 +9,7 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -125,6 +126,18 @@ public abstract class Spell {
 
     public Element getElement(){
         return Elements.FIRE;
+    }
+
+    public Tier getTier(){
+        return Tiers.NOVICE;
+    }
+
+    public int getCost(){
+        return 10;
+    }
+
+    public int getCooldown(){
+        return 15;
     }
 
     // ===================================================

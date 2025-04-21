@@ -52,6 +52,16 @@ public class Meteor extends RaySpell {
     }
 
     @Override
+    public int getCharge() {
+        return 20;
+    }
+
+    @Override
+    public int getCooldown() {
+        return 100;
+    }
+
+    @Override
     protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
         return false;
     }

@@ -48,6 +48,7 @@ public class PlayerWizardData {
     public final List<ImbuementLoader> imbuementLoaders = new ArrayList<>();
     @SuppressWarnings("rawtypes") public final Map<IVariable, Object> spellData = new HashMap<>();
     @SuppressWarnings("rawtypes") public static final Set<IStoredVariable> storedVariables = new HashSet<>();
+    public SpellModifiers itemModifiers = new SpellModifiers();
 
     public PlayerWizardData(){
         spellsDiscovered.add(Spells.MAGIC_MISSILE);
@@ -266,11 +267,10 @@ public class PlayerWizardData {
         //EBLogger.info("Failed to find matching item in inventory to remove imbuement: " + imbue.getDescriptionId());
     }
 
-    // Método para convertir a JSON
-    public String toJson() {
-        Gson gson = new GsonBuilder().setPrettyPrinting().serializeSpecialFloatingPointValues().create();
-        return gson.toJson(this);
-    }
+//    public String toJson() {
+//        Gson gson = new GsonBuilder().setPrettyPrinting().serializeSpecialFloatingPointValues().create();
+//        return gson.toJson(this);
+//    }
 
 
 
@@ -304,6 +304,7 @@ public class PlayerWizardData {
         }
 
         tag.put("imbuedItems", imbuedItemsTag);
+        tag.put("itemModifiers", itemModifiers.toNBT());
 
         storedVariables.forEach(k -> k.write(tag, this.spellData.get(k)));
         return tag;
@@ -356,6 +357,9 @@ public class PlayerWizardData {
             }
         }
 
+        if(tag.contains("itemModifiers", Tag.TAG_COMPOUND))
+            wizardData.itemModifiers = SpellModifiers.fromNBT(tag.getCompound("itemModifiers"));
+
         try {
             storedVariables.forEach(k -> this.spellData.put(k, k.read(tag)));
         } catch (ClassCastException e) {
@@ -373,7 +377,7 @@ public class PlayerWizardData {
 //        if(player.level().isClientSide && WizardryMainMod.isFabric()) return;
 
         PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
-        EBLogger.info(wizardData.toJson());
+        //EBLogger.info(wizardData.toJson());
 
         wizardData.updateContinuousSpellCasting(player);
         wizardData.updateImbuedItems(player);

@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.core.mixin;
 
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBCommands;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandBuildContext;
@@ -27,6 +28,9 @@ public abstract class CommandsMixin {
             at = @At(value = "RETURN"))
     public void EBWIZARDRY$commands(Commands.CommandSelection commandSelection, CommandBuildContext commandBuildContext, CallbackInfo ci) {
         EBCommands.COMMANDS_TO_REGISTER.forEach(c -> c.accept(dispatcher));
+        if(Services.PLATFORM.isDevelopmentEnvironment()){
+            EBCommands.DEBUG_COMMANDS.forEach(c -> c.accept(dispatcher));
+        }
     }
 
 }

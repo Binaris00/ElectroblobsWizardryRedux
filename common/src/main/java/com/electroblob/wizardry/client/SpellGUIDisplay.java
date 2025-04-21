@@ -1,0 +1,226 @@
+package com.electroblob.wizardry.client;
+
+import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.api.content.util.DrawingUtils;
+import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.platform.Services;
+import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.Mth;
+import net.minecraft.world.entity.HumanoidArm;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+
+import javax.annotation.Nullable;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+public final class SpellGUIDisplay {
+    public SpellGUIDisplay() {} // Why would you do this
+
+    private static final ResourceLocation CHARGE_METER = WizardryMainMod.location("textures/gui/spell_charge_meter.png");
+    private static final Map<String, SpellHUDSkin> SKINS = new LinkedHashMap<>(14);
+
+    public static final int CHARGE_METER_WIDTH = 25;
+    public static final int CHARGE_METER_HEIGHT = 9;
+    public static final int SPELL_ICON_SIZE = 32;
+    private static final int SPELL_SWITCH_TIME = 4;
+    public static final float SPELL_NAME_SCALE = 0.5f;
+    public static final float SPELL_NAME_OPACITY = 0.3f;
+    private static final int HALF_HOTBAR_WIDTH = 97;
+    private static final int OFFHAND_SLOT_WIDTH = 29;
+
+    private static int switchTimer = 0;
+    private static final Minecraft mc = Minecraft.getInstance();
+
+    // Where the mod saves the default skin
+    // TODO more spell guis
+    public static void init(){
+        addSkin("default", WizardryMainMod.location("gui/spell_hud/default.png"), WizardryMainMod.location("gui/spell_hud/default.json"));
+    }
+
+    public static void addSkin(String key, ResourceLocation texture, ResourceLocation metadata) {
+        EBLogger.debug("Loading spell HUD skin: " + key);
+        SKINS.put(key, new SpellHUDSkin(texture, metadata));
+    }
+    @Nullable
+    public static SpellHUDSkin getSkin(String key) {
+        SpellHUDSkin skin = SKINS.get(key);
+
+        if (skin == null) {
+            EBLogger.info("The spell HUD skin specified in the config did not match any of the loaded skins; using the default skin as a fallback.");
+
+            skin = SKINS.get("default");
+
+            if (skin == null) {
+                EBLogger.warn("The default spell HUD skin is missing! A resource pack must have overridden it" + " with an invalid JSON file (default.json), please try again without any resource packs.");
+                return null;
+            }
+        }
+
+        return skin;
+    }
+
+    public static void draw(GuiGraphics guiGraphics, PoseStack stack, float partialTicks) {
+        if (!EBConfig.showSpellHUD && !EBConfig.showChargeMeter) return;
+
+        Player player = mc.player;
+        if (player.isSpectator()) return;
+
+        ItemStack wand = player.getMainHandItem();
+        boolean mainHand = true;
+
+        if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand))) {
+            wand = player.getOffhandItem();
+            mainHand = false;
+            if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand)))
+                return;
+        }
+
+        int width = mc.getWindow().getGuiScaledWidth();
+        int height = mc.getWindow().getGuiScaledHeight();
+
+        renderChargeMeter(stack, player, wand, width, height, partialTicks);
+        renderSpellHUD(guiGraphics, stack, player, wand, mainHand, width, height, partialTicks, true);
+        renderSpellHUD(guiGraphics, stack, player, wand, mainHand, width, height, partialTicks, false);
+    }
+
+    public static void renderSpellHUD(GuiGraphics guiGraphics, PoseStack stack, Player player, ItemStack wand, boolean mainHand, int width, int height, float partialTicks, boolean textLayer) {
+        if (!EBConfig.showSpellHUD) return;
+
+        if (!(wand.getItem() instanceof ISpellCastingItem))
+            throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
+
+        boolean flipX = false;
+        boolean flipY = false;
+
+//        if (Wizardry.settings.spellHUDPosition.dynamic) {
+//            flipX = flipX == ((mainHand ? player.getMainArm() : player.getMainArm().getOpposite()) == HumanoidArm.LEFT);
+//        }
+
+        SpellHUDSkin skin = getSkin("default");
+        if (skin == null) return;
+
+        stack.pushPose();
+
+        int x = flipX ? width : 0;
+        int y = flipY ? 0 : height;
+
+        float xSpace = (float) (width / 2 - HALF_HOTBAR_WIDTH);
+        if (!player.getOffhandItem().isEmpty() && (player.getMainArm() == HumanoidArm.LEFT) == flipX) {
+            xSpace -= OFFHAND_SLOT_WIDTH;
+        }
+
+        if (!flipY && skin.getWidth() > xSpace) {
+            float scale = xSpace / skin.getWidth();
+            stack.scale(scale, scale, 1);
+            x = Mth.ceil(x / scale);
+            y = Mth.ceil(y / scale);
+        }
+
+        Spell spell = ((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand);
+        int cooldown = ((ISpellCastingItem) wand.getItem()).getCurrentCooldown(wand);
+        int maxCooldown = ((ISpellCastingItem) wand.getItem()).getCurrentMaxCooldown(wand);
+
+        if (textLayer) {
+            float animationProgress = Math.signum(switchTimer) * ((SPELL_SWITCH_TIME - Math.abs(switchTimer) + partialTicks) / SPELL_SWITCH_TIME);
+
+            Component prevSpellName = getFormattedSpellName(((ISpellCastingItem) wand.getItem()).getPreviousSpell(wand), player, 0);
+            Component spellName = getFormattedSpellName(((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand), player, cooldown);
+            Component nextSpellName = getFormattedSpellName(((ISpellCastingItem) wand.getItem()).getNextSpell(wand), player, 0);
+
+            skin.drawText(guiGraphics, x, y, flipX, flipY, prevSpellName, spellName, nextSpellName, animationProgress);
+        } else {
+            boolean discovered = true;
+
+            if (!player.isCreative()) {
+                discovered = Services.WIZARD_DATA.getWizardData(player, player.level()).hasSpellBeenDiscovered(spell);
+            }
+
+            ResourceLocation icon = discovered ? WizardryMainMod.location("textures/spells/%s.png".formatted(spell.getLocation().getPath())) : WizardryMainMod.location("textures/spells/none.png");
+
+            float progress = 1;
+            if (!player.isCreative()) {
+                progress = maxCooldown == 0 ? 1 : (maxCooldown - (float) cooldown + partialTicks) / maxCooldown;
+            }
+
+            // TODO ARCANE JAMMER
+            // player.hasEffect(EBMobEffects.ARCANE_JAMMER.get())
+            skin.drawBackground(stack, x, y, flipX, flipY, icon, progress, player.isCreative(), false);
+        }
+
+        stack.popPose();
+    }
+
+    public static void renderChargeMeter(PoseStack stack, Player player, ItemStack wand, int width, int height, float partialTicks) {
+        if(player.isSpectator()) return;
+        stack.pushPose();
+
+        //if (!Wizardry.settings.showChargeMeter) return;
+        if (mc.options.renderDebug) return;
+        if (mc.options.getCameraType() != CameraType.FIRST_PERSON) return;
+        if (wand != player.getUseItem()) return;
+
+        if (!(wand.getItem() instanceof ISpellCastingItem))
+            throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
+
+        Spell spell = ((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand);
+
+        int chargeup = spell.getCharge();
+
+        chargeup = (int) (chargeup * Services.WIZARD_DATA.getWizardData(player, player.level()).itemModifiers.get(SpellModifiers.CHARGEUP));
+
+        if (chargeup <= 0) return;
+
+        if (player.getTicksUsingItem() == 0) return;
+        float charge = (player.getTicksUsingItem() + partialTicks) / chargeup;
+        if (charge > 1) return;
+
+        RenderSystem.setShaderTexture(0, CHARGE_METER);
+
+        int x1 = width / 2 - CHARGE_METER_WIDTH / 2;
+        int y = height / 2 - CHARGE_METER_HEIGHT / 2;
+        int w = (int) ((float) CHARGE_METER_WIDTH / 2 * charge);
+        int u = CHARGE_METER_WIDTH - w;
+
+        DrawingUtils.drawTexturedRect(x1, y, 0, 0, w, CHARGE_METER_HEIGHT, 32, 32);
+        DrawingUtils.drawTexturedRect(x1 + u, y, u, 0, w, CHARGE_METER_HEIGHT, 32, 32);
+
+        stack.popPose();
+    }
+
+    private static Component getFormattedSpellName(Spell spell, Player player, int cooldown) {
+        boolean discovered = true;
+
+        if (!player.isCreative()) {
+            discovered = Services.WIZARD_DATA.getWizardData(player, player.level()).hasSpellBeenDiscovered(spell);
+        }
+
+        // TODO change this to display spell name inside the spell gui
+        ChatFormatting format = ChatFormatting.GRAY;
+        if (!discovered)
+            format = ChatFormatting.BLUE;
+
+        //if (player.hasEffect(WizardryPotions.ARCANE_JAMMER.get())) format = Style.EMPTY.withObfuscated(true);
+
+        // SpellGlyphData.getGlyphName(spell, Wizardry.proxy.getGlyphData())
+        // TODO spell translation name
+        Component name = discovered ? Component.literal(spell.getLocation().toString()) : Component.literal("none");
+        ((MutableComponent) name).withStyle(Style.EMPTY.withColor(format));
+
+        return name;
+    }
+
+}

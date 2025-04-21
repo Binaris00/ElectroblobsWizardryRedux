@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.network.chat.Component;
 
+// TODO: A REAL CLIENT SETUP
 public final class ClientSetup {
 
     public static void init() {

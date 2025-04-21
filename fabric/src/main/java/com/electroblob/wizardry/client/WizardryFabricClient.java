@@ -7,6 +7,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.Entity;
@@ -26,6 +27,7 @@ public final class WizardryFabricClient implements ClientModInitializer {
                     reg.register(type.get(), provider::apply);
                 })
         );
+        HudRenderCallback.EVENT.register(((guiGraphics, delta) -> SpellGUIDisplay.draw(guiGraphics, guiGraphics.pose(), delta)));
 
         EBRenderers.createEntityLayers((layer, supplier) -> EntityModelLayerRegistry.registerModelLayer(layer, supplier::get));
         EBArmorRenderFabric.load();

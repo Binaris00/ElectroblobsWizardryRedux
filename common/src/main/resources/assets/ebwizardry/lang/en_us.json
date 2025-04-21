@@ -6,13 +6,6 @@
   "creativetab.ebwizardry_spells": "Wizardry Spells",
   "creativetab.ebwizardry_blocks" : "Wizardry Blocks",
 
-
-  "logger.info.ebwizardry.disabled" : "EBWizardry Logger has been disabled",
-  "logger.info.ebwizardry.started" : "EBWizardry Started",
-  "logger.info.ebwizardry.client_started" : "EBWizardry Client Started",
-  "logger.info.ebwizardry.running_on_version" : "Running on version",
-
-  "logger.error.ebwizardry" : "EBWizardry Error",
   "logger.error.ebwizardry.animation_failed_reason_1" : "Animation failed because client player doesn't exist",
   "logger.error.ebwizardry.animation_failed_reason_2" : "Couldn't find the local player to play the animation on",
   "logger.error.ebwizardry.animation_failed_reason_3" : "Couldn't find the animation",
@@ -21,10 +14,9 @@
   "logger.error.vfx_renderer_1" : "Error for getting renderer for VFX",
   "logger.error.vfx_renderer_2" : "Couldn't find VfxRenderer for VFX",
   "logger.error.cannot_create_spell_registry" : "Cannot create spell registry when it has already been created",
-  "logger.warn.ebwizardry.targeted_particle_no_target": "Attempted to render a targeted particle, but neither its target entity nor target position was set, and it either had no length assigned or was not linked to an entity!",
   "logger.error.wizardry.particle_builder.particle_spawn_at_origin": "Spawning particle at (0, 0, 0) - are you sure the position/entity has been set correctly?",
-  "logger.error.wizardry.particle_builder.particle_server_side_spawn": "ParticleBuilder.spawn(...) called on the server side! ParticleBuilder has prevented a server crash, but calling it on the server will do nothing. Consider adding a world.isClientSide() check.",
-  "logger.error.wizardry.particle_builder.particle_not_found": "Failed to spawn particle of type - %s - are you sure it exists?",
+
+  "ebwizardry:none" : "[Empty Slot]",
 
   "spell.ebwizardry.none": "None",
   "spell.ebwizardry.example": "Example",

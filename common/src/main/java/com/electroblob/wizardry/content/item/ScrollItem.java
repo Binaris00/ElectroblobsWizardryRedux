@@ -79,6 +79,11 @@ public class ScrollItem extends Item implements ISpellCastingItem {
     }
 
     @Override
+    public boolean cast(ItemStack stack, Spell spell, Player caster, InteractionHand hand, int castingTick, SpellModifiers modifiers) {
+        return false;
+    }
+
+    @Override
     public void onUseTick(@NotNull Level level, LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
         Spell spell = SpellUtil.getSpell(livingEntity.getItemInHand(livingEntity.getUsedItemHand()));
         if(!(livingEntity instanceof Player player)) return;
@@ -123,6 +128,11 @@ public class ScrollItem extends Item implements ISpellCastingItem {
     @Override
     public Spell getCurrentSpell(ItemStack stack) {
         return SpellUtil.getSpell(stack);
+    }
+
+    @Override
+    public boolean showSpellHUD(Player player, ItemStack stack) {
+        return false;
     }
 
 

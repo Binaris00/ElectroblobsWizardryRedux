@@ -4,7 +4,6 @@ import com.electroblob.wizardry.api.EBLogger;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.network.chat.Component;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -57,7 +56,7 @@ public final class NBTExtras {
         };
     }
 
-    public static <E, T extends Tag> ListTag listToNBT(Collection<E> list, Function<E, T> mapper) {
+    public static <E, T extends Tag> ListTag listToTag(Collection<E> list, Function<E, T> mapper) {
         ListTag tagList = new ListTag();
 
         for (E element : list) {
@@ -68,7 +67,7 @@ public final class NBTExtras {
     }
 
     @SuppressWarnings("unchecked")
-    public static <E, T extends Tag> Collection<E> NBTToList(ListTag tagList, Function<T, E> function) {
+    public static <E, T extends Tag> Collection<E> tagToList(ListTag tagList, Function<T, E> function) {
         Collection<E> list = new ArrayList<>();
 
         ListTag tagList2 = tagList.copy();
@@ -79,9 +78,8 @@ public final class NBTExtras {
             try {
                 list.add(function.apply((T) tag));
             } catch (ClassCastException e) {
-                // TODO LOGGER
-//                EBLogger.error(
-//                        "Error when reading list from NBT: unexpected tag type " + getTagTypeName(tag.getId()), e);
+                EBLogger.error(
+                        "Error when reading list from NBT: unexpected tag type " + getTagTypeName(tag.getId()), e);
             }
         }
 

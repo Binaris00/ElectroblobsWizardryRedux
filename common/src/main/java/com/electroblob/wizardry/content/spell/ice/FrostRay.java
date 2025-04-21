@@ -57,6 +57,11 @@ public class FrostRay extends RaySpell {
     }
 
     @Override
+    public int getCharge() {
+        return 20;
+    }
+
+    @Override
     protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz) {
         float brightness = ctx.world().random.nextFloat();
         ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(vx, vy, vz).time(8 + ctx.world().random.nextInt(12))

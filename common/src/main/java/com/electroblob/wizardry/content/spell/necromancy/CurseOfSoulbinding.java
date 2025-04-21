@@ -33,8 +33,8 @@ import java.util.Set;
 import java.util.UUID;
 
 public class CurseOfSoulbinding extends RaySpell {
-    public static final IStoredVariable<Set<UUID>> TARGETS_KEY = new IStoredVariable.StoredVariable<>("soulboundCreatures", s -> NBTExtras.listToNBT(s, NbtUtils::createUUID),
-            (ListTag t) -> new HashSet<>(NBTExtras.NBTToList(t, NbtUtils::loadUUID)), Persistence.DIMENSION_CHANGE);
+    public static final IStoredVariable<Set<UUID>> TARGETS_KEY = new IStoredVariable.StoredVariable<>("soulboundCreatures", s -> NBTExtras.listToTag(s, NbtUtils::createUUID),
+            (ListTag t) -> new HashSet<>(NBTExtras.tagToList(t, NbtUtils::loadUUID)), Persistence.DIMENSION_CHANGE);
 
     public CurseOfSoulbinding() {
         this.soundValues(1, 1.1f, 0.2f);
