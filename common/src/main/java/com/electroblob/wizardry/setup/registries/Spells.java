@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.entity.construct.*;
 import com.electroblob.wizardry.content.entity.projectile.*;
+import com.electroblob.wizardry.content.spell.BlockWithSurprise;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.*;
 import com.electroblob.wizardry.content.spell.earth.*;
@@ -119,6 +120,7 @@ public final class Spells {
     public static final Spell FLAME_WEAPON;
     public static final Spell CHARGE;
     public static final Spell CURSE_OF_SOULBINDING;
+    public static final Spell BLOCK_SURPRISE;
 
     static {
         Register.init();
@@ -502,6 +504,8 @@ public final class Spells {
         CHARGE = spell("charge", Charge::new);
 
         CURSE_OF_SOULBINDING = spell("curse_of_soulbinding", CurseOfSoulbinding::new);
+
+        BLOCK_SURPRISE = spell("block_surprise", BlockWithSurprise::new);
     }
 
     static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {

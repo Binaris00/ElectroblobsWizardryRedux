@@ -2,6 +2,7 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.LoaderEnvironment;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
+import com.electroblob.wizardry.network.EBForgeNetwork;
 import com.electroblob.wizardry.registry.ElementRegistryForge;
 import com.electroblob.wizardry.registry.SpellRegistryForge;
 import com.electroblob.wizardry.registry.TierRegistryForge;
@@ -46,6 +47,7 @@ public final class WizardryForgeMod {
 
     public static void commonSetup(final FMLCommonSetupEvent event) {
         CommonSetup.setup();
+        EBForgeNetwork.registerMessages();
     }
 
     @SuppressWarnings("unchecked")

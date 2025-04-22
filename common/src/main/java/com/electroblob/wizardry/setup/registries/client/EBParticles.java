@@ -13,6 +13,8 @@ import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.phys.Vec3;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiFunction;
@@ -68,6 +70,15 @@ public class EBParticles {
         PARTICLE_TYPES.put(name, ret);
         PARTICLE_PROVIDERS.put(ret, provider);
         ParticleWizardry.PROVIDERS.put(ret, factory);
+        return ret;
+    }
+
+    public static Collection<String> getParticleNames() {
+        Collection<String> ret = new ArrayList<>();
+
+        PARTICLE_TYPES.forEach((k, v) -> {
+            ret.add(WizardryMainMod.location(k).toString());
+        });
         return ret;
     }
 }

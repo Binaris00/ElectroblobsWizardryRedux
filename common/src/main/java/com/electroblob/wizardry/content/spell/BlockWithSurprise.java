@@ -1,0 +1,27 @@
+package com.electroblob.wizardry.content.spell;
+
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.core.networking.c2s.BlockUsePacketC2S;
+import com.electroblob.wizardry.core.platform.Services;
+import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
+
+public class BlockWithSurprise extends Spell {
+    @Override
+    public boolean cast(PlayerCastContext ctx) {
+        if(ctx.world().isClientSide){
+            ctx.world().addParticle(ParticleTypes.EXPLOSION_EMITTER, ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getBbHeight() / 2, ctx.caster().getZ(), 0, 0, 0);
+            ctx.caster().sendSystemMessage(Component.literal("Surprise!"));
+            Services.NETWORK_HELPER.sendToServer(new BlockUsePacketC2S(ctx.caster().getOnPos()));
+        }
+
+        return true;
+    }
+
+    @Override
+    protected SpellProperties properties() {
+        return null;
+    }
+}

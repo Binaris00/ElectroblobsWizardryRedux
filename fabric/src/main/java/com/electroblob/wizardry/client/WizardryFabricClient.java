@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.client;
 
+import com.electroblob.wizardry.network.EBFabricNetwork;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
@@ -15,6 +16,8 @@ import net.minecraft.world.entity.Entity;
 public final class WizardryFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        EBFabricNetwork.registerS2CMessages();
+
         EBRenderers.registerRenderers();
         EBRenderers.getRenderers().forEach((entity, renderer) -> {
             EntityRendererRegistry.register(entity.get(), (EntityRendererProvider<Entity>) renderer);

@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.content.command.*;
+import com.electroblob.wizardry.content.command.debug.PacketTestCommand;
 import com.electroblob.wizardry.content.command.debug.WandSelectCommand;
 import com.electroblob.wizardry.content.command.debug.WandSpellCommand;
 import com.electroblob.wizardry.content.command.debug.WandSpellListCommand;
@@ -30,6 +31,7 @@ public final class EBCommands {
     public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> DEBUG_COMMANDS = ImmutableList.of(
             WandSpellCommand::register,
             WandSpellListCommand::register,
-            WandSelectCommand::register
+            WandSelectCommand::register,
+            PacketTestCommand::register
     );
 }

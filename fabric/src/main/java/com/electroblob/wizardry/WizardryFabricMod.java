@@ -1,6 +1,7 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.LoaderEnvironment;
+import com.electroblob.wizardry.network.EBFabricNetwork;
 import com.electroblob.wizardry.registry.ElementRegistryFabric;
 import com.electroblob.wizardry.registry.SpellRegistryFabric;
 import com.electroblob.wizardry.registry.TierRegistryFabric;
@@ -30,5 +31,7 @@ public final class WizardryFabricMod implements ModInitializer {
         EBMobEffects.register(Registry::register);
         EBSounds.register(Registry::register);
         EBEnchantments.register(Registry::register);
+
+        EBFabricNetwork.registerC2SMessages();
     }
 }
