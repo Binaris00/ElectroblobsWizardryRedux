@@ -5,7 +5,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.function.BiFunction;
 
-public interface IVariable<T> {
+public interface ISpellVar<T> {
     T update(Player player, T value);
 
     boolean isPersistent(boolean respawn);
@@ -20,17 +20,17 @@ public interface IVariable<T> {
         return false;
     }
 
-    class Variable<T> implements IVariable<T> {
+    class SpellVar<T> implements ISpellVar<T> {
         private final Persistence persistence;
 
         private BiFunction<Player, T, T> ticker;
 
-        public Variable(Persistence persistence) {
+        public SpellVar(Persistence persistence) {
             this.persistence = persistence;
             this.ticker = (p, t) -> t;
         }
 
-        public Variable<T> withTicker(BiFunction<Player, T, T> ticker) {
+        public SpellVar<T> withTicker(BiFunction<Player, T, T> ticker) {
             this.ticker = ticker;
             return this;
         }

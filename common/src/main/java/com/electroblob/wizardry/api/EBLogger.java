@@ -11,7 +11,7 @@ public final class EBLogger {
         LOGGER.info(info, args);
     }
 
-    /** Sends an error in the format "EBWizardry Error: <message>" */
+    /** Sends an error in the format "EBWizardry Error: message" */
     public static void error(String message, Object... args) {
         LOGGER.error("======================================"); // I love this format
         LOGGER.error("EBWizardry Error:");

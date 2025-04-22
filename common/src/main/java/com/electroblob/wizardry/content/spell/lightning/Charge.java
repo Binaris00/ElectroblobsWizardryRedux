@@ -1,9 +1,8 @@
 package com.electroblob.wizardry.content.spell.lightning;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.content.data.IVariable;
+import com.electroblob.wizardry.api.content.data.ISpellVar;
 import com.electroblob.wizardry.api.content.data.Persistence;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
@@ -28,8 +27,8 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 
 public class Charge extends Spell {
-    public static final IVariable<Integer> CHARGE_TIME = new IVariable.Variable<Integer>(Persistence.NEVER).withTicker(Charge::update);
-    public static final IVariable<SpellModifiers> CHARGE_MODIFIERS = new IVariable.Variable<>(Persistence.NEVER);
+    public static final ISpellVar<Integer> CHARGE_TIME = new ISpellVar.SpellVar<Integer>(Persistence.NEVER).withTicker(Charge::update);
+    public static final ISpellVar<SpellModifiers> CHARGE_MODIFIERS = new ISpellVar.SpellVar<>(Persistence.NEVER);
 
     public static final SpellProperty<Float> CHARGE_SPEED = SpellProperty.floatProperty("charge_speed");
 
@@ -52,12 +51,9 @@ public class Charge extends Spell {
     }
 
     private static int update(Player player, Integer chargeTime) {
-        if(!player.level().isClientSide) EBLogger.info("[SERVER] Charge time: " + chargeTime);
-        else EBLogger.info("[CLIENT] Charge time: " + chargeTime);
-
         if (chargeTime == null) chargeTime = 0;
 
-        if (chargeTime > 0) {
+        if (chargeTime > 0 && !player.level().isClientSide) {
             SpellModifiers modifiers = Services.WIZARD_DATA.getWizardData(player, player.level()).getVariable(CHARGE_MODIFIERS);
             if (modifiers == null) modifiers = new SpellModifiers();
 
@@ -90,9 +86,8 @@ public class Charge extends Spell {
                 EntityUtil.playSoundAtPlayer(player, SoundEvents.GENERIC_HURT, 1, 1);
                 chargeTime = 0;
             }
+            player.hurtMarked = true;
         }
-        if(!player.level().isClientSide) EBLogger.info("[SERVER] Charge time FINAL: " + chargeTime);
-        else EBLogger.info("[CLIENT] Charge time FINAL: " + chargeTime);
         return chargeTime;
     }
 

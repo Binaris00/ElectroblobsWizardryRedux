@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.api;
 
-import com.electroblob.wizardry.api.content.data.IStoredVariable;
-import com.electroblob.wizardry.api.content.data.IVariable;
+import com.electroblob.wizardry.api.content.data.ISpellVar;
+import com.electroblob.wizardry.api.content.data.IStoredSpellVar;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
@@ -29,7 +29,6 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-// TODO IMBUEMENTS
 public class PlayerWizardData {
     public Set<Spell> spellsDiscovered = new HashSet<>();
     public Spell castCommandSpell = Spells.NONE;
@@ -40,8 +39,8 @@ public class PlayerWizardData {
     /** <b> Do not use this for any other purpose than displaying the names! </b> */
     public Set<String> allyNames = new HashSet<>();
     public final List<ImbuementLoader> imbuementLoaders = new ArrayList<>();
-    @SuppressWarnings("rawtypes") public final Map<IVariable, Object> spellData = new HashMap<>();
-    @SuppressWarnings("rawtypes") public static final Set<IStoredVariable> storedVariables = new HashSet<>();
+    @SuppressWarnings("rawtypes") public final Map<ISpellVar, Object> spellData = new HashMap<>();
+    @SuppressWarnings("rawtypes") public static final Set<IStoredSpellVar> storedVariables = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
 
     public PlayerWizardData(){
@@ -57,26 +56,26 @@ public class PlayerWizardData {
         Services.WIZARD_DATA.onUpdate(this, player);
     }
 
-    public <T> void setVariable(IVariable<? super T> variable, T value) {
+    public <T> void setVariable(ISpellVar<? super T> variable, T value) {
         this.spellData.put(variable, value);
     }
 
     @SuppressWarnings("unchecked")
     @Nullable
-    public <T> T getVariable(IVariable<T> variable) {
+    public <T> T getVariable(ISpellVar<T> variable) {
         return (T) spellData.get(variable);
     }
 
-    public Map<IVariable, Object> getSpellData() {
+    public Map<ISpellVar, Object> getSpellData() {
         return spellData;
     }
 
-    public static void registerStoredVariables(IStoredVariable<?>... variables) {
+    public static void registerStoredVariables(IStoredSpellVar<?>... variables) {
         storedVariables.addAll(Arrays.asList(variables));
     }
 
     public static Set<?> getSyncedVariables() {
-        return storedVariables.stream().filter(IVariable::isSynced).collect(Collectors.toSet());
+        return storedVariables.stream().filter(ISpellVar::isSynced).collect(Collectors.toSet());
     }
 
     /** Checks if the player has discovered the given spell, or if it's a NoneSpell */
@@ -431,7 +430,7 @@ public class PlayerWizardData {
             wizardData.itemModifiers = SpellModifiers.fromNBT(tag.getCompound("itemModifiers"));
 
         try {
-            storedVariables.forEach(k -> this.spellData.put(k, k.read(tag)));
+            storedVariables.forEach(k -> wizardData.spellData.put(k, k.read(tag)));
         } catch (ClassCastException e) {
             EBLogger.error("Wizard data NBT tag was not of expected type!", e);
         }

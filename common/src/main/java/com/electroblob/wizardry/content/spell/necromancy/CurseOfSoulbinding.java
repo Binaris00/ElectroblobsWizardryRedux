@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.spell.necromancy;
 
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.content.data.IStoredVariable;
+import com.electroblob.wizardry.api.content.data.IStoredSpellVar;
 import com.electroblob.wizardry.api.content.data.Persistence;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
@@ -33,7 +33,7 @@ import java.util.Set;
 import java.util.UUID;
 
 public class CurseOfSoulbinding extends RaySpell {
-    public static final IStoredVariable<Set<UUID>> TARGETS_KEY = new IStoredVariable.StoredVariable<>("soulboundCreatures", s -> NBTExtras.listToTag(s, NbtUtils::createUUID),
+    public static final IStoredSpellVar<Set<UUID>> TARGETS_KEY = new IStoredSpellVar.StoredSpellVar<>("soulboundCreatures", s -> NBTExtras.listToTag(s, NbtUtils::createUUID),
             (ListTag t) -> new HashSet<>(NBTExtras.tagToList(t, NbtUtils::loadUUID)), Persistence.DIMENSION_CHANGE);
 
     public CurseOfSoulbinding() {

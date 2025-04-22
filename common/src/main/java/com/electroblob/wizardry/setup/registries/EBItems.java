@@ -30,7 +30,7 @@ import java.util.function.Supplier;
  *     <li>Wand Upgrades</li>
  *     <li>Wizard Armor</li>
  *     <li>Artifacts</li>
- *     <li>Conjured (Spectral) & Spell Cast Items</li>
+ *     <li>Conjured (Spectral) Spell Cast Items</li>
  * </ul>
  */
 @SuppressWarnings("unused")
