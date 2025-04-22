@@ -2,6 +2,7 @@ package com.electroblob.wizardry.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
@@ -95,6 +96,10 @@ public final class SpellGUIDisplay {
         renderChargeMeter(stack, player, wand, width, height, partialTicks);
         renderSpellHUD(guiGraphics, stack, player, wand, mainHand, width, height, partialTicks, true);
         renderSpellHUD(guiGraphics, stack, player, wand, mainHand, width, height, partialTicks, false);
+    }
+
+    public static void playSpellSwitchAnimation(boolean next) {
+        switchTimer = next ? SPELL_SWITCH_TIME : -SPELL_SWITCH_TIME;
     }
 
     public static void renderSpellHUD(GuiGraphics guiGraphics, PoseStack stack, Player player, ItemStack wand, boolean mainHand, int width, int height, float partialTicks, boolean textLayer) {
@@ -223,4 +228,11 @@ public final class SpellGUIDisplay {
         return name;
     }
 
+
+    public static void onLivingTickEvent(EBLivingTick event) {
+        if (event.getLevel().isClientSide && event.getEntity() == mc.player) {
+            if (switchTimer > 0) switchTimer--;
+            else if (switchTimer < 0) switchTimer++;
+        }
+    }
 }

@@ -79,6 +79,8 @@ public class ForgeClientEvents {
     public static void registerKeyBindings(RegisterKeyMappingsEvent event) {
         event.register(EBKeyBinding.NEXT_SPELL);
         event.register(EBKeyBinding.PREVIOUS_SPELL);
-        for (KeyMapping key : EBKeyBinding.SPELL_QUICK_ACCESS) event.register(key);
+        for (int i = 0; i < EBKeyBinding.SPELL_QUICK_ACCESS.length; i++) {
+            event.register(EBKeyBinding.SPELL_QUICK_ACCESS[i]);
+        }
     }
 }

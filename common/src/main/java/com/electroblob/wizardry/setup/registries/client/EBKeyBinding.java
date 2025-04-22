@@ -3,8 +3,12 @@ package com.electroblob.wizardry.setup.registries.client;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
+import com.electroblob.wizardry.client.SpellGUIDisplay;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.networking.c2s.ControlInputPacketC2S;
+import com.electroblob.wizardry.core.networking.c2s.SpellAccessPacketC2S;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
@@ -30,40 +34,45 @@ public final class EBKeyBinding {
         }
     }
 
+    private EBKeyBinding() {}
+
+    public static void init() {
+
+    }
+
     public static void onClientTick(EBClientTickEvent event){
-        Player player = Minecraft.getInstance().player;
+        Player player = event.getMinecraft().player;
+        if(player == null) return;
 
-        if (player != null) {
-            ItemStack wand = getWandInUse(player);
-            if (wand == null) return;
+        ItemStack wand = getWandInUse(player);
+        if (wand == null) return;
 
-            if (NEXT_SPELL.isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-                if (!NkeyPressed) {
-                    NkeyPressed = true;
-                    selectNextSpell(wand);
+        if (NEXT_SPELL.isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
+            if (!NkeyPressed) {
+                NkeyPressed = true;
+                selectNextSpell(wand);
+            }
+        } else {
+            NkeyPressed = false;
+        }
+
+        if (PREVIOUS_SPELL.isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
+            if (!BkeyPressed) {
+                BkeyPressed = true;
+                selectPreviousSpell(wand);
+            }
+        } else {
+            BkeyPressed = false;
+        }
+
+        for (int i = 0; i < SPELL_QUICK_ACCESS.length; i++) {
+            if (SPELL_QUICK_ACCESS[i].isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
+                if (!quickAccessKeyPressed[i]) {
+                    quickAccessKeyPressed[i] = true;
+                    selectSpell(wand, i);
                 }
             } else {
-                NkeyPressed = false;
-            }
-
-            if (PREVIOUS_SPELL.isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-                if (!BkeyPressed) {
-                    BkeyPressed = true;
-                    selectPreviousSpell(wand);
-                }
-            } else {
-                BkeyPressed = false;
-            }
-
-            for (int i = 0; i < SPELL_QUICK_ACCESS.length; i++) {
-                if (SPELL_QUICK_ACCESS[i].isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-                    if (!quickAccessKeyPressed[i]) {
-                        quickAccessKeyPressed[i] = true;
-                        selectSpell(wand, i);
-                    }
-                } else {
-                    quickAccessKeyPressed[i] = false;
-                }
+                quickAccessKeyPressed[i] = false;
             }
         }
     }
@@ -81,28 +90,51 @@ public final class EBKeyBinding {
     }
 
     private static void selectNextSpell(ItemStack wand) {
-        //PacketControlInput msg = new PacketControlInput(PacketControlInput.ControlType.NEXT_SPELL_KEY);
-        //WizardryPacketHandler.net.sendToServer(msg);
+        ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.NEXT_SPELL_KEY);
+        Services.NETWORK_HELPER.sendToServer(msg);
         ((ISpellCastingItem) wand.getItem()).selectNextSpell(wand);
-        //GuiSpellDisplay.playSpellSwitchAnimation(true);
+        SpellGUIDisplay.playSpellSwitchAnimation(true);
+
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
     }
 
     private static void selectPreviousSpell(ItemStack wand) {
-        //PacketControlInput msg = new PacketControlInput(PacketControlInput.ControlType.PREVIOUS_SPELL_KEY);
-        //WizardryPacketHandler.net.sendToServer(msg);
+        ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.PREVIOUS_SPELL_KEY);
+        Services.NETWORK_HELPER.sendToServer(msg);
         ((ISpellCastingItem) wand.getItem()).selectPreviousSpell(wand);
-        //GuiSpellDisplay.playSpellSwitchAnimation(false);
+        SpellGUIDisplay.playSpellSwitchAnimation(false);
+
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
     }
 
     private static void selectSpell(ItemStack wand, int index) {
         if (((ISpellCastingItem) wand.getItem()).selectSpell(wand, index)) {
-            //PacketSpellQuickAccess msg = new PacketSpellQuickAccess(index);
-            //WizardryPacketHandler.net.sendToServer(msg);
+            SpellAccessPacketC2S msg = new SpellAccessPacketC2S(index);
+            Services.NETWORK_HELPER.sendToServer(msg);
 
-            //GuiSpellDisplay.playSpellSwitchAnimation(true);
+            SpellGUIDisplay.playSpellSwitchAnimation(true);
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
         }
     }
+
+    // TODO MOUSE SCROLL EVENT
+//    @SuppressWarnings("resource")
+//    @SubscribeEvent
+//    public static void onMouseEvent(InputEvent.MouseScrollingEvent event) {
+//        Player player = Minecraft.getInstance().player;
+//        ItemStack wand = getWandInUse(player);
+//        if (wand == null) return;
+//
+//        if (Minecraft.getInstance().mouseHandler.isMouseGrabbed() && !wand.isEmpty() && event.getScrollDelta() != 0 && player.isShiftKeyDown() && Wizardry.settings.shiftScrolling) {
+//            event.setCanceled(true);
+//
+//            int d = (int) (Wizardry.settings.reverseScrollDirection ? -event.getScrollDelta() : event.getScrollDelta());
+//
+//            if (d > 0) {
+//                selectNextSpell(wand);
+//            } else if (d < 0) {
+//                selectPreviousSpell(wand);
+//            }
+//        }
+//    }
 }

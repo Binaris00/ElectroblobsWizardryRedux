@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.*;
+import com.electroblob.wizardry.client.SpellGUIDisplay;
 import com.electroblob.wizardry.client.sound.SoundLoop;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
 import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
@@ -13,6 +14,7 @@ import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
 
 /**
  * Simple class to save all the event helper methods
@@ -45,6 +47,7 @@ public final class EBEventHelper {
     private static void onLivingTickEvent(WizardryEventBus bus) {
         bus.register(EBLivingTick.class, PlayerWizardData::onUpdate);
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
+        bus.register(EBLivingTick.class, SpellGUIDisplay::onLivingTickEvent);
     }
 
     private static void onPlayerJoin(WizardryEventBus bus){
@@ -65,6 +68,7 @@ public final class EBEventHelper {
 
     private static void onClientTick(WizardryEventBus bus){
         bus.register(EBClientTickEvent.class, SoundLoop::onClientTick);
+        bus.register(EBClientTickEvent.class, EBKeyBinding::onClientTick);
     }
 
     private static void onSpellPreCast(WizardryEventBus bus){

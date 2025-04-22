@@ -289,12 +289,14 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public void selectNextSpell(ItemStack stack) {
-        WandHelper.selectNextSpell(stack);
+        Spell nextSpell = WandHelper.getNextSpell(stack);
+        WandHelper.setCurrentSpell(stack, nextSpell);
     }
 
     @Override
     public void selectPreviousSpell(ItemStack stack) {
-        WandHelper.selectPreviousSpell(stack);
+        Spell previousSpell = WandHelper.getPreviousSpell(stack);
+        WandHelper.setCurrentSpell(stack, previousSpell);
     }
 
     @Override

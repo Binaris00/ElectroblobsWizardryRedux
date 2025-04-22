@@ -1,10 +1,13 @@
 package com.electroblob.wizardry.client;
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.network.EBFabricNetwork;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
+import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
@@ -34,5 +37,11 @@ public final class WizardryFabricClient implements ClientModInitializer {
 
         EBRenderers.createEntityLayers((layer, supplier) -> EntityModelLayerRegistry.registerModelLayer(layer, supplier::get));
         EBArmorRenderFabric.load();
+
+        KeyBindingHelper.registerKeyBinding(EBKeyBinding.NEXT_SPELL);
+        KeyBindingHelper.registerKeyBinding(EBKeyBinding.PREVIOUS_SPELL);
+        for (int i = 0; i < EBKeyBinding.SPELL_QUICK_ACCESS.length; i++) {
+            KeyBindingHelper.registerKeyBinding(EBKeyBinding.SPELL_QUICK_ACCESS[i]);
+        }
     }
 }

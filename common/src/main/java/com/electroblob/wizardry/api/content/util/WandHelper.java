@@ -72,11 +72,9 @@ public final class WandHelper {
         }
         Spell current = getCurrentSpell(wand);
         int currentIndex = spells.indexOf(current);
-// Si no se encuentra el actual, se asigna el primero
         if (currentIndex == -1) {
             return spells.get(0);
         }
-// Retroalimentación cíclica: si es el último, el siguiente es el primero.
         int nextIndex = (currentIndex + 1) % spells.size();
         return spells.get(nextIndex);
     }
@@ -86,9 +84,9 @@ public final class WandHelper {
         if (spells.isEmpty()) { return Spells.NONE; }
         Spell current = getCurrentSpell(wand);
         int currentIndex = spells.indexOf(current);
-        // Si no se encuentra el actual, se asigna el primero (o el último, según se prefiera)
+
         if (currentIndex == -1) { return spells.get(0); }
-        // Retroalimentación cíclica: si el actual es 0, previo es el último.
+
         int prevIndex = (currentIndex - 1 + spells.size()) % spells.size();
         return spells.get(prevIndex);
     }
@@ -96,7 +94,6 @@ public final class WandHelper {
     public static void updateSelectedSpell(ItemStack wand, int selectedIndex) {
         List<Spell> spells = getSpells(wand);
         if(selectedIndex < 0 || selectedIndex >= spells.size()){
-            // Si el índice no es válido, se asigna el primero (o un NONE)
             wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, Spells.NONE.getLocation().toString());
         } else {
             wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, spells.get(selectedIndex).getLocation().toString());
@@ -123,10 +120,7 @@ public final class WandHelper {
         List<Spell> spells = getSpells(wand);
         if (spells.isEmpty()) return false;
 
-        int currentIndex = spells.indexOf(getCurrentSpell(wand));
-        int nextIndex = (currentIndex + 1) % spells.size();
-
-        wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, spells.get(nextIndex).getLocation().toString());
+        wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, spells.get(index).getLocation().toString());
         return true;
     }
 
