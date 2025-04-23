@@ -1,8 +1,8 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
+import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
@@ -10,12 +10,12 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
-import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -25,7 +25,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ScrollItem extends Item implements ISpellCastingItem {
+public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchItem {
+    public static final int CASTING_TIME = 120;
+
     public ScrollItem(Properties properties) {
         super(properties);
     }
@@ -33,40 +35,39 @@ public class ScrollItem extends Item implements ISpellCastingItem {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         Spell spell = getCurrentSpell(player.getItemInHand(hand));
-
         SpellModifiers modifiers = new SpellModifiers();
-
-        // TODO TEMP TEMP
-        PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, level);
-        if (!wizardData.hasSpellBeenDiscovered(spell)) {
-            player.sendSystemMessage(Component.literal("You didn't discover: " + spell.getLocation()).withStyle(ChatFormatting.ITALIC));
-            player.sendSystemMessage(Component.literal("Discovering!! " + spell.getLocation()).withStyle(ChatFormatting.AQUA));
-            wizardData.discoverSpell(spell);
-            Services.WIZARD_DATA.onUpdate(wizardData, player);
-            player.getCooldowns().addCooldown(this, 20);
-            return InteractionResultHolder.fail(player.getItemInHand(hand));
-        } else {
-            player.sendSystemMessage(Component.literal("You knew this spell :0 -> " + spell.getLocation()).withStyle(ChatFormatting.ITALIC));
-        }
 
         if(canCast(player.getItemInHand(hand), spell, player, hand, 0, modifiers)) {
             if (!spell.isInstantCast()) {
                 if (!player.isUsingItem()) {
                     player.startUsingItem(hand);
                 }
+                Services.WIZARD_DATA.getWizardData(player, level).itemModifiers = modifiers;
                 return InteractionResultHolder.pass(player.getItemInHand(hand));
             } else {
-                PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, modifiers);
-                if (spell.cast(ctx)) {
-//                    if (!player.isUsingItem()) {
-//                        player.startUsingItem(hand);
-//                    }
-                    player.getCooldowns().addCooldown(this, 30);
+                if (cast(player.getItemInHand(hand), spell, player, hand, 0, modifiers)) {
                     return InteractionResultHolder.success(player.getItemInHand(hand));
                 }
             }
         }
         return InteractionResultHolder.fail(player.getItemInHand(hand));
+    }
+
+    @Override
+    public void onUseTick(@NotNull Level level, @NotNull LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
+        if(!(livingEntity instanceof Player player)) return;
+        Spell spell = SpellUtil.getSpell(livingEntity.getItemInHand(livingEntity.getUsedItemHand()));
+        SpellModifiers modifiers = new SpellModifiers();
+
+        int castingTick = stack.getUseDuration() - timeLeft;
+
+        // Continuous spells
+        if(!spell.isInstantCast() && canCast(stack, spell, player, player.getUsedItemHand(), castingTick, modifiers)){
+            PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick, modifiers);
+            spell.cast(ctx);
+        } else {
+            livingEntity.stopUsingItem();
+        }
     }
 
     public boolean canCast(ItemStack stack, Spell spell, Player caster, InteractionHand hand, int castingTick, SpellModifiers modifiers){
@@ -80,49 +81,49 @@ public class ScrollItem extends Item implements ISpellCastingItem {
 
     @Override
     public boolean cast(ItemStack stack, Spell spell, Player caster, InteractionHand hand, int castingTick, SpellModifiers modifiers) {
-        return false;
+        Level world = caster.level();
+        if(!spell.cast(new PlayerCastContext(world, caster, hand, castingTick, modifiers))) return false;
+
+        if(castingTick == 0) WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.SCROLL, spell, caster, modifiers));
+        if(spell.isInstantCast() && !caster.isCreative()) stack.shrink(1);
+        if(spell.isInstantCast() && !caster.isCreative()) caster.getCooldowns().addCooldown(this, spell.getCooldown());
+
+        return true;
     }
 
     @Override
-    public void onUseTick(@NotNull Level level, LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
-        Spell spell = SpellUtil.getSpell(livingEntity.getItemInHand(livingEntity.getUsedItemHand()));
-        if(!(livingEntity instanceof Player player)) return;
-
-        int castingTick = stack.getUseDuration() - timeLeft;
-
-        SpellModifiers modifiers = new SpellModifiers();
-
-        if(!spell.isInstantCast() && canCast(stack, spell, player, player.getUsedItemHand(), castingTick, modifiers)){
-            PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick, modifiers);
-            spell.cast(ctx);
-        } else {
-            livingEntity.stopUsingItem();
-        }
-    }
-
-    @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
-        return 120;
-    }
-
-        @Override
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
-        Spell spell = SpellUtil.getSpell(stack);
-        if(spell.isInstantCast()) return super.finishUsingItem(stack, level, livingEntity);
-
-        SpellModifiers modifiers = new SpellModifiers();
-        // TODO livingEntity.getUseItemRemainingTicks() TEMP FIX MAYBE????
-        int castingTick = stack.getUseDuration() - livingEntity.getUseItemRemainingTicks();
-
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, livingEntity, modifiers, castingTick));
-        spell.endCast(new CastContext(livingEntity.level(), castingTick, modifiers) {
-            @Override
-            public LivingEntity caster() {
-                return livingEntity;
-            }
-        });
+        finishCast(stack, level, livingEntity, 0);
         return super.finishUsingItem(stack, level, livingEntity);
     }
+
+    @Override
+    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity, int timeCharged) {
+        finishCast(stack, level, livingEntity, timeCharged);
+    }
+
+    private void finishCast(ItemStack stack, Level world, LivingEntity entity, int timeCharged){
+        if(!(entity instanceof Player player)) return;
+        Spell spell = SpellUtil.getSpell(stack);
+        if(spell.isInstantCast()) return;
+
+        if(!player.isCreative()) stack.shrink(1);
+
+        SpellModifiers modifiers = new SpellModifiers();
+        int castingTick = stack.getUseDuration() - timeCharged;
+
+        WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, entity, modifiers, castingTick));
+        spell.endCast(new CastContext(entity.level(), castingTick, modifiers) {
+            @Override
+            public LivingEntity caster() {
+                return entity;
+            }
+        });
+    }
+
+    // =====================================
+    // Spell Casting item - misc
+    // =====================================
 
     @NotNull
     @Override
@@ -135,10 +136,75 @@ public class ScrollItem extends Item implements ISpellCastingItem {
         return false;
     }
 
+    // =====================================
+    // item util
+    // =====================================
+
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
+    public boolean isFoil(@NotNull ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public @NotNull String getDescriptionId() {
+        // TODO SCROLL NAME WITH SPELL
+        return super.getDescriptionId();
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> list, @NotNull TooltipFlag tooltipFlag) {
+        // TODO NEED BETTER SCROLL IFNO
+//        if(world != null){
+//
+//            Spell spell = Spell.byMetadata(itemstack.getItemDamage());
+//
+//            boolean discovered = Wizardry.proxy.shouldDisplayDiscovered(spell, itemstack);
+//
+//            // Advanced tooltips display more information, mainly for searching purposes in creative
+//            if(discovered && advanced.isAdvanced()){ // No cheating!
+//                tooltip.add(spell.getTier().getDisplayName());
+//                tooltip.add(spell.getElement().getDisplayName());
+//                tooltip.add(spell.getType().getDisplayName());
+//            }
+//            // Advanced tooltips displays the source mod's name if the spell is not from Wizardry
+//            if (advanced.isAdvanced() && this.getRegistryName().toString().equals(Wizardry.MODID + ":scroll") && !spell.getRegistryName().getNamespace().equals(Wizardry.MODID)) {
+//                String modId = spell.getRegistryName().getNamespace();
+//                String name = new Style().setColor(TextFormatting.BLUE).setItalic(true).getFormattingCode() +
+//                        Loader.instance().getIndexedModList().get(modId).getMetadata().name;
+//                tooltip.add(name);
+//            }
+//        }
         list.add(Component.translatable(SpellUtil.getSpellNameTranslationComponent(stack)));
         super.appendHoverText(stack, level, list, tooltipFlag);
+    }
+
+    @Override
+    public int getUseDuration(@NotNull ItemStack stack) {
+        return CASTING_TIME;
+    }
+
+
+    // =====================================
+    // Workbench Item Methods
+    // =====================================
+    @Override
+    public boolean showTooltip(ItemStack stack) {
+        return false;
+    }
+
+    @Override
+    public boolean onApplyButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks) {
+        return false;
+    }
+
+    @Override
+    public int getSpellSlotCount(ItemStack stack) {
+        return 1;
+    }
+
+    @Override
+    public boolean canPlace(ItemStack stack) {
+        return false;
     }
 }
