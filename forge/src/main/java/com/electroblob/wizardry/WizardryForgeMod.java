@@ -2,13 +2,19 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.LoaderEnvironment;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
+import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
+import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.network.EBForgeNetwork;
 import com.electroblob.wizardry.registry.ElementRegistryForge;
 import com.electroblob.wizardry.registry.SpellRegistryForge;
 import com.electroblob.wizardry.registry.TierRegistryForge;
 import com.electroblob.wizardry.setup.ClientSetup;
 import com.electroblob.wizardry.setup.CommonSetup;
+import com.electroblob.wizardry.setup.registries.EBBlockEntities;
+import com.electroblob.wizardry.setup.registries.EBMenus;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
+import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.Entity;
@@ -56,5 +62,7 @@ public final class WizardryForgeMod {
         EBRenderers.getRenderers().forEach((entity, renderer) ->
                 EntityRenderers.register(entity.get(), (EntityRendererProvider<Entity>) renderer)
         );
+        MenuScreens.register(EBMenus.ARCANE_WORKBENCH_MENU.get(), ArcaneWorkbenchScreen::new);
+        BlockEntityRenderers.register(EBBlockEntities.ARCANE_WORKBENCH.get(), ArcaneWorkbenchRender::new);
     }
 }

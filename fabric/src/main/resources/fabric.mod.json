@@ -1,6 +1,6 @@
 {
     "schemaVersion": 1,
-    "id": "mod_id",
+    "id": "ebwizardry",
     "version": "${version}",
     "name": "${mod_name}",
     "description": "${description}",
@@ -10,6 +10,7 @@
     "contact": {
         "homepage": "https://fabricmc.net/"
     },
+    "accessWidener" : "ebwizardry.accesswidener",
     "license": "${license}",
     "icon": "assets/ebwizardry/ebwizardry.png",
     "environment": "*",

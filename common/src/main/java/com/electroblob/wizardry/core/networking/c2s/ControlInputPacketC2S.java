@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.core.networking.c2s;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
+import com.electroblob.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.electroblob.wizardry.core.networking.abst.Message;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -54,6 +56,19 @@ public class ControlInputPacketC2S implements Message {
                     player.stopUsingItem();
                 }
                 break;
+            case APPLY_BUTTON:
+                if (!(player.containerMenu instanceof ArcaneWorkbenchMenu menu)) {
+                    EBLogger.warn("Received a ControlInputPacketC2S, but the player that sent it was not currently using an arcane workbench. This should not happen!");
+                } else {
+                    menu.onApplyButtonPressed(player);
+                }
+                break;
+            case CLEAR_BUTTON:
+                if (!(player.containerMenu instanceof ArcaneWorkbenchMenu menu)) {
+                    EBLogger.warn("Received a ControlInputPacketC2S, but the player that sent it was not currently using an arcane workbench. This should not happen!");
+                } else {
+                    menu.onClearButtonPressed(player);
+                }
         }
     }
 
@@ -100,17 +115,4 @@ public class ControlInputPacketC2S implements Message {
 //                    Wizardry.logger.warn("Received a possession projectile packet, " + "but the player that sent it is not currently possessing anything!");
 //                Possession.shootProjectile(player);
 //                break;
-//            case APPLY_BUTTON:
-//                if (!(player.containerMenu instanceof ContainerArcaneWorkbench)) {
-//                    Wizardry.logger.warn("Received a PacketControlInput, but the player that sent it was not " + "currently using an arcane workbench. This should not happen!");
-//                } else {
-//                    ((ContainerArcaneWorkbench) player.containerMenu).onApplyButtonPressed(player);
-//                }
-//                break;
-//            case CLEAR_BUTTON:
-//                if (!(player.containerMenu instanceof ContainerArcaneWorkbench)) {
-//                    Wizardry.logger.warn("Received a PacketControlInput, but the player that sent it was not " + "currently using an arcane workbench. This should not happen!");
-//                } else {
-//                    ((ContainerArcaneWorkbench) player.containerMenu).onClearButtonPressed(player);
-//                }
 //                break;

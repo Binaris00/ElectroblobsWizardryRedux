@@ -3,6 +3,7 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
+import com.electroblob.wizardry.content.block.ArcaneWorkbenchBlock;
 import com.electroblob.wizardry.content.block.PermafrostBlock;
 import com.electroblob.wizardry.content.block.VanishingCobwebBlock;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
@@ -13,12 +14,15 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.MapColor;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.function.ToIntFunction;
 
 // TODO: Not all the blocks needs an item... ; ;
 @SuppressWarnings("unused")
@@ -38,7 +42,7 @@ public final class EBBlocks {
 
     public static final DeferredObject<Block> PERMAFROST = block("permafrost", PermafrostBlock::new, false, false, false);
     public static final DeferredObject<Block> VANISHING_COBWEB = block("vanishing_cobweb", () -> new VanishingCobwebBlock(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, false, false);
-    public static final DeferredObject<Block> ARCANE_WORK_BENCH = block("arcane_workbench", false, true, true);
+    public static final DeferredObject<Block> ARCANE_WORK_BENCH = block("arcane_workbench", () -> new ArcaneWorkbenchBlock(BlockBehaviour.Properties.copy(Blocks.STONE)),false, true, true);
     public static final DeferredObject<Block> METEOR = block("meteor", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state) -> 1)), false, false, false);
 
 
@@ -81,5 +85,9 @@ public final class EBBlocks {
         if(defaultModel) DataGenProcessor.get().addDefaultBlockModel(name, ret);
         if(defaultDrop) DataGenProcessor.get().addDefaultBlockDrop(name, ret);
         return ret;
+    }
+
+    private static ToIntFunction<BlockState> litBlockEmission(int lightValue) {
+        return (p_50763_) -> p_50763_.getValue(BlockStateProperties.LIT) ? lightValue : 0;
     }
 }

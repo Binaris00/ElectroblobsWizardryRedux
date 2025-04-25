@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.content.block.entity;
+package com.electroblob.wizardry.content.blockentity;
 
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import net.minecraft.core.BlockPos;

@@ -8,6 +8,7 @@ import com.electroblob.wizardry.registry.TierRegistryFabric;
 import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 
 
 public final class WizardryFabricMod implements ModInitializer {
@@ -31,6 +32,7 @@ public final class WizardryFabricMod implements ModInitializer {
         EBMobEffects.register(Registry::register);
         EBSounds.register(Registry::register);
         EBEnchantments.register(Registry::register);
+        EBMenus.register(Registry::register);
 
         EBFabricNetwork.registerC2SMessages();
     }

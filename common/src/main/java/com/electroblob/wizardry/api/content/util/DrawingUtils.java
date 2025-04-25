@@ -12,6 +12,34 @@ import java.util.Random;
 
 public class DrawingUtils {
 
+    public static void drawTexturedRectF(PoseStack poseStack, float x, float y, float u, float v, float width, float height, float textureWidth, float textureHeight) {
+        DrawingUtils.drawTexturedFlippedRectF(poseStack, x, y, u, v, width, height, textureWidth, textureHeight, false, false);
+    }
+
+    public static void drawTexturedFlippedRectF(PoseStack poseStack, float x, float y, float u, float v, float width, float height, float textureWidth, float textureHeight, boolean flipX, boolean flipY) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+
+        float f = 1F / textureWidth;
+        float f1 = 1F / textureHeight;
+
+        float u1 = flipX ? u + width : u;
+        float u2 = flipX ? u : u + width;
+        float v1 = flipY ? v + height : v;
+        float v2 = flipY ? v : v + height;
+
+        Tesselator tessellator = Tesselator.getInstance();
+        BufferBuilder buffer = tessellator.getBuilder();
+
+        buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+
+        buffer.vertex(poseStack.last().pose(), x, y + height, 0).uv((u1 * f), (v2 * f1)).endVertex();
+        buffer.vertex(poseStack.last().pose(), x + width, y + height, 0).uv((u2 * f), (v2 * f1)).endVertex();
+        buffer.vertex(poseStack.last().pose(), x + width, y, 0).uv((u2 * f), (v1 * f1)).endVertex();
+        buffer.vertex(poseStack.last().pose(), x, y, 0).uv((u1 * f), (v1 * f1)).endVertex();
+
+        BufferUploader.drawWithShader(buffer.end());
+    }
+
     public static float smoothScaleFactor(int lifetime, int ticksExisted, float partialTicks, int startLength, int endLength) {
         float age = ticksExisted + partialTicks;
         float s = Mth.clamp(age < startLength || lifetime < 0 ? age / startLength : (lifetime - age) / endLength, 0, 1);

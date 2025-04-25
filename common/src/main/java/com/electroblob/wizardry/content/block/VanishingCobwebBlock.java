@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.content.block;
 
-import com.electroblob.wizardry.content.block.entity.VanishingCobwebBlockEntity;
+import com.electroblob.wizardry.content.blockentity.VanishingCobwebBlockEntity;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;

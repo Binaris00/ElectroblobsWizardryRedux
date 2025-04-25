@@ -44,12 +44,12 @@ public class Tier {
     }
 
     public Component getNameForTranslation(){
-        return Component.translatable("tier." + unlocalisedName);
+        return Component.translatable("tier." + unlocalisedName.getNamespace() + "." + unlocalisedName.getPath());
     }
 
 
     public Component getNameForTranslationFormatted(){
-        return Component.translatable("tier." + unlocalisedName).withStyle(this.colour);
+        return Component.translatable("tier." + unlocalisedName.getNamespace() + "." + unlocalisedName.getPath()).withStyle(this.colour);
     }
 
     public ResourceLocation getUnlocalisedName(){

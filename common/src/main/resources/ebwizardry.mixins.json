@@ -11,7 +11,8 @@
     "PersistentEntitySectionManagerMixin",
     "PlayerMixin",
     "ServerLevelMixin",
-    "ServerPlayerMixin"
+    "ServerPlayerMixin",
+    "accesor.SlotAccessor"
   ],
   "client": [
     "ClientLevelMixin",

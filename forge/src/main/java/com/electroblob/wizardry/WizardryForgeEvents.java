@@ -6,6 +6,7 @@ import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -33,6 +34,7 @@ public class WizardryForgeEvents {
             else if(event.getRegistryKey() == Registries.PARTICLE_TYPE) register(event, EBParticles::registerType);
             else if(event.getRegistryKey() == Registries.SOUND_EVENT) register(event, EBSounds::register);
             else if(event.getRegistryKey() == Registries.ENCHANTMENT) register(event, EBEnchantments::register);
+            else if(event.getRegistryKey() == Registries.MENU) register(event, EBMenus::register);
         }
 
 //        @SubscribeEvent

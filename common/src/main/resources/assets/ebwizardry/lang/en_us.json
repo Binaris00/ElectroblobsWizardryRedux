@@ -18,6 +18,16 @@
 
   "ebwizardry:none" : "[Empty Slot]",
 
+  "container.ebwizardry.arcane_workbench": "Arcane Workbench",
+  "container.ebwizardry.arcane_workbench.mana": "Mana: %s/%s",
+
+  "tier.ebwizardry.novice": "Novice",
+  "tier.ebwizardry.apprentice": "Apprentice",
+  "tier.ebwizardry.advanced":"Advanced",
+  "tier.ebwizardry.master":"Master",
+
+  "ebwizardry:pocket_furnace": "Pocket furnace",
+
   "spell.ebwizardry.none": "None",
   "spell.ebwizardry.example": "Example",
   "spell.ebwizardry.zap": "Zap",

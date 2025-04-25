@@ -513,6 +513,10 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     // =====================================
     // Utils
     // =====================================
+    @Override
+    public @NotNull Component getName(@NotNull ItemStack stack) {
+        return (this.element == null ? super.getName(stack) : Component.literal(super.getName(stack).getString()).withStyle(this.element.getColor()));
+    }
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level world, @NotNull Entity entity, int slot, boolean isHeldInMainhand) {

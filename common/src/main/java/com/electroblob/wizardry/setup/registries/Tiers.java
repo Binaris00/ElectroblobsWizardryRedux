@@ -35,4 +35,11 @@ public class Tiers {
             return tier;
         }
     }
+
+    public static Tier getNextByLevel(int level){
+        for(Tier tier : Register.TIERS.values()){
+            if(tier.level == level) return tier;
+        }
+        return null;
+    }
 }

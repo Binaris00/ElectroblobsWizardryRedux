@@ -1,0 +1,80 @@
+package com.electroblob.wizardry.client.gui.elements;
+
+import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.util.DrawingUtils;
+import com.electroblob.wizardry.api.content.util.WandHelper;
+import com.electroblob.wizardry.client.EBClientConstants;
+import com.electroblob.wizardry.content.item.WandItem;
+import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.setup.registries.Tiers;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
+import static com.electroblob.wizardry.client.EBClientConstants.TOOLTIP_BORDER;
+import static com.electroblob.wizardry.client.EBClientConstants.TOOLTIP_WIDTH;
+
+public class TooltipElementProgressionBar extends TooltipElement {
+    private final int height;
+
+    public TooltipElementProgressionBar(int height, int spaceAfter) {
+        super(spaceAfter);
+        this.height = height;
+    }
+
+    @Override
+    protected boolean isVisible(ItemStack stack) {
+        return stack.getItem() instanceof WandItem && !EBConfig.legacyWandLevelling;
+    }
+
+    @Override
+    protected int getHeight(ItemStack stack) {
+        return Minecraft.getInstance().font.lineHeight + EBClientConstants.LINE_SPACING_NARROW + EBClientConstants.PROGRESSION_BAR_HEIGHT;
+    }
+
+    @Override
+    protected void drawBackground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, float partialTicks, int mouseX, int mouseY) {
+        y += EBClientConstants.FONT.lineHeight + EBClientConstants.LINE_SPACING_NARROW;
+        float progressFraction = 1;
+
+        Tier nextTier = getNextTier(stack);
+        if (nextTier != null) {
+            progressFraction = (float) WandHelper.getProgression(stack) / nextTier.getProgression();
+        }
+
+        DrawingUtils.drawTexturedRect(x, y, EBClientConstants.MAIN_GUI_WIDTH, height + EBClientConstants.PROGRESSION_BAR_HEIGHT, EBClientConstants.PROGRESSION_BAR_WIDTH, EBClientConstants.PROGRESSION_BAR_HEIGHT, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
+        int width = (int) (EBClientConstants.PROGRESSION_BAR_WIDTH * progressFraction);
+        DrawingUtils.drawTexturedRect(x, y, EBClientConstants.MAIN_GUI_WIDTH, height, width, EBClientConstants.PROGRESSION_BAR_HEIGHT, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
+    }
+
+    @Override
+    protected void drawForeground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, int mouseX, int mouseY) {
+        Tier tier = ((WandItem) stack.getItem()).tier;
+        guiGraphics.drawString(Minecraft.getInstance().font, tier.getNameForTranslationFormatted().getString(), x, y,
+                tier.getNameForTranslationFormatted().getStyle().getColor().getValue(), true);
+
+        Tier nextTier = getNextTier(stack);
+
+        if (nextTier != null) {
+            Component s = nextTier.getNameForTranslationFormatted().copy().withStyle(ChatFormatting.DARK_GRAY);
+
+            if (WandHelper.getProgression(stack) >= nextTier.getProgression())
+                s = nextTier.getNameForTranslationFormatted();
+            guiGraphics.drawString(Minecraft.getInstance().font, s.getString(),
+                    x + TOOLTIP_WIDTH - TOOLTIP_BORDER * 2 - Minecraft.getInstance().font.width(s.getString()), y,
+                    s.getStyle().getColor().getValue(), true);
+        }
+    }
+
+    private @Nullable Tier getNextTier(ItemStack stack){
+        Tier tier = ((WandItem) stack.getItem()).tier;
+
+        if (tier != Tiers.MASTER) {
+            return Tiers.getNextByLevel(tier.level + 1);
+        }
+        return null;
+    }
+}
