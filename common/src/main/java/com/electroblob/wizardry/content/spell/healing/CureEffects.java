@@ -1,9 +1,15 @@
 package com.electroblob.wizardry.content.spell.healing;
 
 import com.electroblob.wizardry.api.content.effect.CurseMobEffect;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class CureEffects extends BuffSpell {
     public CureEffects() {
@@ -26,5 +32,12 @@ public class CureEffects extends BuffSpell {
         }
 
         return false;
+    }
+
+    @Override
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.APPRENTICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 25, 10, 40)
+                .build();
     }
 }

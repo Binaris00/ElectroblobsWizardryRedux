@@ -2,12 +2,17 @@ package com.electroblob.wizardry.content.spell.earth;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class Flight extends Spell {
     private static final double Y_NUDGE_ACCELERATION = 0.075;
@@ -66,8 +71,9 @@ public class Flight extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.MASTER, Elements.EARTH, SpellType.UTILITY, SpellAction.NONE, 10, 0, 0)
                 .add(DefaultProperties.ACCELERATION, 0.05F)
                 .add(DefaultProperties.SPEED, 0.5F)
                 .build();

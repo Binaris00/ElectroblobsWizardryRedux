@@ -3,6 +3,7 @@ package com.electroblob.wizardry.api.content.spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.setup.registries.Elements;
+import org.jetbrains.annotations.NotNull;
 
 /**
  * This is an empty spell used for whenever a non-null empty spell is needed; it's great for
@@ -21,7 +22,7 @@ public final class NoneSpell extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.empty();
     }
 }

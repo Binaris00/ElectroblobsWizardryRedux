@@ -1,11 +1,16 @@
 package com.electroblob.wizardry.content.spell.earth;
 
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class Leap extends Spell {
     public static final SpellProperty<Float> HORIZONTAL_SPEED = SpellProperty.floatProperty("horizontal_speed", 0.3F);
@@ -30,8 +35,9 @@ public class Leap extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.NOVICE, Elements.EARTH, SpellType.UTILITY, SpellAction.POINT, 10, 0, 20)
                 .add(HORIZONTAL_SPEED)
                 .add(VERTICAL_SPEED)
                 .build();

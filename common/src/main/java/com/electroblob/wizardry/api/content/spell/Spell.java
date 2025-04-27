@@ -8,13 +8,12 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.core.registry.SpellRegistry;
-import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -82,7 +81,7 @@ public abstract class Spell {
     // PROPERTIES
     // ===================================================
 
-    protected abstract SpellProperties properties();
+    protected abstract @NotNull SpellProperties properties();
 
     public final Spell assignLocation(ResourceLocation location) {
         if(this.location == null && SpellRegistry.isInAssignPeriod()) this.location = location;
@@ -114,30 +113,28 @@ public abstract class Spell {
         return location.equals(this.location.toString());
     }
 
-    // TODO: Need to do charge time
     public int getCharge(){
-        return 0;
+        return properties.getCharge();
     }
 
-    // TODO: BETTER SPELL ACTION
     public SpellAction getAction(){
-        return SpellAction.NONE;
+        return properties.getAction();
     }
 
     public Element getElement(){
-        return Elements.FIRE;
+        return properties.getElement();
     }
 
     public Tier getTier(){
-        return Tiers.NOVICE;
+        return properties.getTier();
     }
 
     public int getCost(){
-        return 10;
+        return properties.getCost();
     }
 
     public int getCooldown(){
-        return 15;
+        return properties.getCooldown();
     }
 
     // ===================================================

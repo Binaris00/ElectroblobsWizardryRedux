@@ -2,12 +2,16 @@ package com.electroblob.wizardry.content.spell.healing;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.AreaEffectSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class GroupHeal extends AreaEffectSpell {
@@ -39,8 +43,9 @@ public class GroupHeal extends AreaEffectSpell {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 35, 10, 150)
                 .add(DefaultProperties.EFFECT_RADIUS, 5)
                 .add(DefaultProperties.HEALTH, 6F)
                 .build();

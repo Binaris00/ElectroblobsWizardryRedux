@@ -1,10 +1,15 @@
 package com.electroblob.wizardry.content.spell.healing;
 
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class Evade extends Spell {
     @Override
@@ -28,7 +33,9 @@ public class Evade extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
-        return SpellProperties.builder().add(DefaultProperties.SPEED, 1F).build();
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.NOVICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.NONE, 5, 0, 5)
+                .add(DefaultProperties.SPEED, 1F).build();
     }
 }

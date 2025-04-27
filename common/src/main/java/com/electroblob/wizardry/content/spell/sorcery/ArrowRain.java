@@ -1,14 +1,19 @@
 package com.electroblob.wizardry.content.spell.sorcery;
 
 import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.entity.ArrowRainConstruct;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.ConstructRangedSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ArrowRain extends ConstructRangedSpell<ArrowRainConstruct> {
@@ -54,8 +59,9 @@ public class ArrowRain extends ConstructRangedSpell<ArrowRainConstruct> {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.MASTER, Elements.SORCERY, SpellType.ATTACK, SpellAction.POINT, 75, 20, 300)
                 .add(DefaultProperties.RANGE, 20F)
                 .add(DefaultProperties.DURATION, 120)
                 .add(DefaultProperties.EFFECT_RADIUS, 2)

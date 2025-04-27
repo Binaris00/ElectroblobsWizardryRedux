@@ -2,12 +2,17 @@ package com.electroblob.wizardry.content.spell.sorcery;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class Levitation extends Spell {
     public Levitation(){
@@ -52,8 +57,9 @@ public class Levitation extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.NONE, 10, 0, 0)
                 .add(DefaultProperties.SPEED, 0.5F)
                 .add(DefaultProperties.ACCELERATION, 0.1F)
                 .build();

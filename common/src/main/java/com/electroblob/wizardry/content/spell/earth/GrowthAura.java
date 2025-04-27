@@ -1,20 +1,25 @@
 package com.electroblob.wizardry.content.spell.earth;
 
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.BonemealableBlock;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 // TODO Bin:  grown aura need some particles tbh
-public class GrownAura extends Spell {
+public class GrowthAura extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if (ctx.caster().level().isClientSide) return false;
@@ -50,7 +55,9 @@ public class GrownAura extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
-        return SpellProperties.builder().add(DefaultProperties.EFFECT_RADIUS, 2).build();
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.APPRENTICE, Elements.EARTH, SpellType.UTILITY, SpellAction.POINT_UP, 20, 0, 50)
+                .add(DefaultProperties.EFFECT_RADIUS, 2).build();
     }
 }

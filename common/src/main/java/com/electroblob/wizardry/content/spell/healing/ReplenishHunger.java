@@ -1,10 +1,15 @@
 package com.electroblob.wizardry.content.spell.healing;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class ReplenishHunger extends BuffSpell {
     public static final SpellProperty<Integer> HUNGER_POINTS = SpellProperty.intProperty("hunger_points", 6);
@@ -38,8 +43,9 @@ public class ReplenishHunger extends BuffSpell {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.APPRENTICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 10, 0, 30)
                 .add(HUNGER_POINTS)
                 .add(SATURATION_MODIFIER)
                 .build();

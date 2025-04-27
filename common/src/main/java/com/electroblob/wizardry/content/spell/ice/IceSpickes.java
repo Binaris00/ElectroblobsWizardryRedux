@@ -1,5 +1,7 @@
 package com.electroblob.wizardry.content.spell.ice;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
@@ -7,12 +9,15 @@ import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.entity.construct.IceSpikeConstruct;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.ConstructRangedSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Spells;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
@@ -65,8 +70,9 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.ADVANCED, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 30,	0,	75)
                 .add(DefaultProperties.RANGE, 20F)
                 .add(DefaultProperties.EFFECT_RADIUS, 3)
                 .add(DefaultProperties.ENTITIES, 18)

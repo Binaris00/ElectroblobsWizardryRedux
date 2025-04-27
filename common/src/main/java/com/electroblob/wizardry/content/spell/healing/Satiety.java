@@ -1,9 +1,14 @@
 package com.electroblob.wizardry.content.spell.healing;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class Satiety extends BuffSpell {
     public Satiety() {
@@ -24,8 +29,9 @@ public class Satiety extends BuffSpell {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 40, 15, 50)
                 .add(ReplenishHunger.HUNGER_POINTS, 16)
                 .add(ReplenishHunger.SATURATION_MODIFIER, 0.1F)
                 .build();

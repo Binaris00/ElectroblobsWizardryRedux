@@ -7,6 +7,7 @@ import com.electroblob.wizardry.content.spell.DefaultProperties;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.SwordItem;
+import org.jetbrains.annotations.NotNull;
 
 public class ImbueWeapon extends Spell {
     @Override
@@ -73,7 +74,7 @@ public class ImbueWeapon extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder().add(DefaultProperties.EFFECT_DURATION, 900).build();
     }
 }

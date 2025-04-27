@@ -3,9 +3,13 @@ package com.electroblob.wizardry.content.spell;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 
 public final class DefaultProperties {
-    public static final SpellProperty<Integer> COOLDOWN = SpellProperty.intProperty("cooldown");
-    public static final SpellProperty<Integer> COST = SpellProperty.intProperty("cost");
-    public static final SpellProperty<Integer> CHARGEUP = SpellProperty.intProperty("chargeup");
+    public static final SpellProperty<Integer> COOLDOWN = SpellProperty.intProperty("cooldown", 5);
+    public static final SpellProperty<Integer> COST = SpellProperty.intProperty("cost", 5);
+    public static final SpellProperty<Integer> CHARGE = SpellProperty.intProperty("charge", 2);
+    public static final SpellProperty<String> TIER = SpellProperty.stringProperty("tier");
+    public static final SpellProperty<String> ELEMENT = SpellProperty.stringProperty("element");
+    public static final SpellProperty<String> SPELL_ACTION = SpellProperty.stringProperty("spell_action");
+    public static final SpellProperty<String> SPELL_TYPE = SpellProperty.stringProperty("spell_type");
 
     public static final SpellProperty<Integer> ENTITIES = SpellProperty.intProperty("entities");
     public static final SpellProperty<Float> DAMAGE = SpellProperty.floatProperty("damage");

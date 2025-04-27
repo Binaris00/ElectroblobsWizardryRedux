@@ -76,9 +76,6 @@ public class SpellProperty<T> {
         return createProperty("", id, value, STRING);
     }
 
-    // You might be wondering why no string property? Well that's because what logic would a spell use a string for?
-    // If you need a specific property then just inherit this class to add it
-
     protected static <T> SpellProperty<T> createProperty(T ignoredTypeIdentifier, String identifier, T defaultValue, PropertyType type) {
         SpellProperty<T> property = new SpellProperty<T>();
         property.identifier = identifier;
@@ -140,7 +137,7 @@ public class SpellProperty<T> {
     @Override
     public boolean equals(Object obj) {
         if(obj instanceof SpellProperty<?> property){
-            return property.identifier.equals(this.identifier) && property.type == this.type;
+            return property.identifier.equals(this.identifier) && property.type.equals(this.type);
         }
         return false;
     }

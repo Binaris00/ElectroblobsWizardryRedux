@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.item;
 
+import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -27,9 +28,13 @@ public class SpellBookItem extends Item {
 
 
     @Override
-    public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag tooltipFlag) {
-        list.add(Component.translatable(SpellUtil.getSpellNameTranslationComponent(stack)));
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> list, @NotNull TooltipFlag tooltipFlag) {
+        Spell spell = SpellUtil.getSpell(stack);
+        if(spell.getElement() == null) return;
+        // TODO FAST CHECK HERE
 
-        super.appendHoverText(stack, level, list, tooltipFlag);
+        list.add(Component.translatable(SpellUtil.getSpellNameTranslationComponent(stack)).withStyle(spell.getElement().getColor()));
+        list.add(spell.getTier().getNameForTranslationFormatted());
+
     }
 }

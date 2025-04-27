@@ -2,11 +2,17 @@ package com.electroblob.wizardry.content.spell.healing;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.effect.CurseMobEffect;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 public class RemoveCurse extends BuffSpell {
     public RemoveCurse() {
@@ -42,5 +48,12 @@ public class RemoveCurse extends BuffSpell {
                     .time(20 + world.random.nextInt(12)).spawn(world);
             ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(x, y, z).color(0x0f001b).spawn(world);
         }
+    }
+
+    @Override
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 50, 20, 80)
+                .build();
     }
 }

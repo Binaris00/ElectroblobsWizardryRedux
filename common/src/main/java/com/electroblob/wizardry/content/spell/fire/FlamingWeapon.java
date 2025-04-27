@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
@@ -14,9 +15,12 @@ import com.electroblob.wizardry.content.spell.sorcery.ImbueWeapon;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBEnchantments;
 import com.electroblob.wizardry.setup.registries.EBItems;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import org.jetbrains.annotations.NotNull;
 
 public class FlamingWeapon extends Spell {
     @Override
@@ -52,13 +56,10 @@ public class FlamingWeapon extends Spell {
     }
 
     @Override
-    public SpellAction getAction() {
-        return SpellAction.IMBUE;
-    }
-
-    // TODO 900
-    @Override
-    protected SpellProperties properties() {
-        return SpellProperties.builder().add(DefaultProperties.EFFECT_DURATION, 200).build();
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.ADVANCED, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 35, 0, 70)
+                .add(DefaultProperties.EFFECT_DURATION, 900)
+                .build();
     }
 }

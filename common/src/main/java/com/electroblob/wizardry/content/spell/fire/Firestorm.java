@@ -2,6 +2,7 @@ package com.electroblob.wizardry.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
@@ -13,6 +14,8 @@ import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -20,6 +23,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Firestorm extends AreaEffectSpell {
@@ -112,8 +116,10 @@ public class Firestorm extends AreaEffectSpell {
     }
 
     @Override
-    protected SpellProperties properties() {
-        return SpellProperties.builder().add(DefaultProperties.EFFECT_RADIUS, 6)
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT_DOWN, 80, 20, 250)
+                .add(DefaultProperties.EFFECT_RADIUS, 6)
                 .add(DefaultProperties.EFFECT_DURATION, 15)
                 .build();
     }

@@ -1,12 +1,17 @@
 package com.electroblob.wizardry.content.spell.sorcery;
 
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.SimpleMenuProvider;
 import net.minecraft.world.inventory.CraftingMenu;
+import org.jetbrains.annotations.NotNull;
 
 public class PocketWorkbench extends Spell {
     @Override
@@ -19,7 +24,9 @@ public class PocketWorkbench extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
-        return SpellProperties.empty();
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT_UP, 30, 0, 40)
+                .build();
     }
 }

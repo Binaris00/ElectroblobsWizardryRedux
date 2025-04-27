@@ -7,6 +7,7 @@ import com.electroblob.wizardry.core.networking.c2s.BlockUsePacketC2S;
 import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 public class BlockWithSurprise extends Spell {
     @Override
@@ -21,7 +22,7 @@ public class BlockWithSurprise extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
-        return null;
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.empty();
     }
 }

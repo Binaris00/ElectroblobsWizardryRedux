@@ -1,5 +1,7 @@
 package com.electroblob.wizardry.content.spell.necromancy;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
@@ -7,9 +9,12 @@ import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.entity.construct.DecayConstruct;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.ConstructRangedSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class Decay extends ConstructRangedSpell<DecayConstruct> {
@@ -41,8 +46,9 @@ public class Decay extends ConstructRangedSpell<DecayConstruct> {
     }
 
     @Override
-    protected SpellProperties properties() {
+    protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
+                .assignBaseProperties(Tiers.ADVANCED, Elements.NECROMANCY, SpellType.DEFENCE, SpellAction.POINT, 35, 0, 80)
                 .add(DefaultProperties.RANGE, 12F)
                 .add(DefaultProperties.DURATION, 400)
                 .add(DefaultProperties.EFFECT_DURATION, 400)

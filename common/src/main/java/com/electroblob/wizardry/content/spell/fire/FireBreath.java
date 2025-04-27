@@ -1,13 +1,18 @@
 package com.electroblob.wizardry.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
+import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
@@ -17,6 +22,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 
 public class FireBreath extends RaySpell {
     public FireBreath(){
@@ -43,10 +49,10 @@ public class FireBreath extends RaySpell {
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (entityHit.getEntity() instanceof LivingEntity target && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
             if (ctx.ticksInUse() % target.invulnerableDuration == 1) {
-                target.setSecondsOnFire(10);
+                target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
                 DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FIRE)
                         : target.damageSources().magic();
-                EntityUtil.attackEntityWithoutKnockback(target, source, 5);
+                EntityUtil.attackEntityWithoutKnockback(target, source, property(DefaultProperties.DAMAGE));
             }
         }
 
@@ -79,9 +85,13 @@ public class FireBreath extends RaySpell {
         ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).velocity(vx, vy, vz).scale(2 + ctx.world().random.nextFloat()).collide(true).spawn(ctx.world());
     }
 
-    // TODO PROPERTIES
     @Override
-    protected SpellProperties properties() {
-        return null;
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT, 15, 15, 70)
+                .add(DefaultProperties.RANGE, 10F)
+                .add(DefaultProperties.DAMAGE, 6F)
+                .add(DefaultProperties.EFFECT_DURATION, 10)
+                .build();
     }
 }

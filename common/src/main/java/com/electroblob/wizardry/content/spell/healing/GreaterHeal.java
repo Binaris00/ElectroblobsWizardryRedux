@@ -1,9 +1,14 @@
 package com.electroblob.wizardry.content.spell.healing;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 
 public class GreaterHeal extends BuffSpell {
     public GreaterHeal() {
@@ -22,7 +27,9 @@ public class GreaterHeal extends BuffSpell {
     }
 
     @Override
-    protected SpellProperties properties() {
-        return SpellProperties.builder().add(DefaultProperties.HEALTH, 8F).build();
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.builder()
+                .assignBaseProperties(Tiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 15, 10, 40)
+                .add(DefaultProperties.HEALTH, 8F).build();
     }
 }

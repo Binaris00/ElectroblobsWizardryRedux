@@ -3,6 +3,7 @@ package com.electroblob.wizardry.content.spell.sorcery;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import org.jetbrains.annotations.NotNull;
 
 // TODO BLINK EFFECT
 public class Blink extends Spell {
@@ -58,7 +59,7 @@ public class Blink extends Spell {
     }
 
     @Override
-    protected SpellProperties properties() {
-        return null;
+    protected @NotNull SpellProperties properties() {
+        return SpellProperties.empty();
     }
 }
