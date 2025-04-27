@@ -374,6 +374,13 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                     continue;
                 }
 
+
+                // Fix to ""sync"" the selected spell with the rest of the spells
+                int currentSelectedIndex = spells.indexOf(WandHelper.getCurrentSpell(centre.getItem()));
+                if(currentSelectedIndex == i) {
+                    WandHelper.setCurrentSpell(centre.getItem(), spell);
+                }
+
                 spells.set(i, spell);
                 changed = true;
 
