@@ -2,11 +2,13 @@ package com.electroblob.wizardry.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.client.util.GlyphClientHandler;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.DrawingUtils;
+import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.platform.Services;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -213,18 +215,16 @@ public final class SpellGUIDisplay {
             discovered = Services.WIZARD_DATA.getWizardData(player, player.level()).hasSpellBeenDiscovered(spell);
         }
 
-        // TODO change this to display spell name inside the spell gui
-        ChatFormatting format = ChatFormatting.GRAY;
+        Style format = cooldown > 0 ? Style.EMPTY.withColor(ChatFormatting.GRAY) : Style.EMPTY.withColor(spell.getElement().getColor());
         if (!discovered)
-            format = ChatFormatting.BLUE;
+            format = Style.EMPTY.withColor(ChatFormatting.BLUE).withFont(new ResourceLocation("minecraft", "alt"));
 
         //if (player.hasEffect(WizardryPotions.ARCANE_JAMMER.get())) format = Style.EMPTY.withObfuscated(true);
 
-        // SpellGlyphData.getGlyphName(spell, Wizardry.proxy.getGlyphData())
         // TODO spell translation name
-        Component name = discovered ? Component.literal(spell.getLocation().toString()) : Component.literal("none");
-        ((MutableComponent) name).withStyle(Style.EMPTY.withColor(format));
-
+        Component name = discovered ? Component.literal(spell.getLocation().toString()) :
+                Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData()));
+        ((MutableComponent) name).withStyle(format);
         return name;
     }
 

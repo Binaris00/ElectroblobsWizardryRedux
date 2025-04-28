@@ -7,6 +7,7 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -65,5 +66,9 @@ public final class SpellRegistry {
                 .map(entry -> entry.getKey().location().toString())
                 .sorted()
                 .collect(Collectors.toList());
+    }
+
+    public static Collection<Spell> getSpells() {
+        return entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
     }
 }

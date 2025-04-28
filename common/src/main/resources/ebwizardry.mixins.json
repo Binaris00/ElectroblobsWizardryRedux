@@ -12,7 +12,8 @@
     "PlayerMixin",
     "ServerLevelMixin",
     "ServerPlayerMixin",
-    "accesor.SlotAccessor"
+    "accessor.MerchantMenuAccessor",
+    "accessor.SlotAccessor"
   ],
   "client": [
     "ClientLevelMixin",

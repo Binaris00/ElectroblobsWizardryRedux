@@ -6,7 +6,7 @@ import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.content.blockentity.ISpellSortable;
 import com.electroblob.wizardry.content.item.SpellBookItem;
 import com.electroblob.wizardry.content.menu.slot.*;
-import com.electroblob.wizardry.core.mixin.accesor.SlotAccessor;
+import com.electroblob.wizardry.core.mixin.accessor.SlotAccessor;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBMenus;
 import net.minecraft.resources.ResourceLocation;

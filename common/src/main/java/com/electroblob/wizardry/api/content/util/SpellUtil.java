@@ -4,6 +4,7 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.content.item.WizardArmorType;
+import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -80,7 +81,6 @@ public final class SpellUtil {
      * @return The spell with the given id.
      * */
     private static Spell byId(String id) {
-        // TODO Bin: Temp
-        return Spells.Register.SPELLS.get(new ResourceLocation(id).getPath());
+        return SpellRegistry.get(ResourceLocation.tryParse(id));
     }
 }

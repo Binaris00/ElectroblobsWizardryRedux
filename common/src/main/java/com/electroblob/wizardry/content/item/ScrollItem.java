@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.item;
 
+import com.electroblob.wizardry.api.client.util.ClientUtils;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
@@ -147,36 +148,22 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     }
 
     @Override
-    public @NotNull String getDescriptionId() {
-        // TODO SCROLL NAME WITH SPELL
-        return super.getDescriptionId();
+    public @NotNull Component getName(@NotNull ItemStack stack) {
+        return ClientUtils.getScrollDisplayName(stack);
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> list, @NotNull TooltipFlag tooltipFlag) {
-        // TODO NEED BETTER SCROLL IFNO
-//        if(world != null){
-//
-//            Spell spell = Spell.byMetadata(itemstack.getItemDamage());
-//
-//            boolean discovered = Wizardry.proxy.shouldDisplayDiscovered(spell, itemstack);
-//
-//            // Advanced tooltips display more information, mainly for searching purposes in creative
-//            if(discovered && advanced.isAdvanced()){ // No cheating!
-//                tooltip.add(spell.getTier().getDisplayName());
-//                tooltip.add(spell.getElement().getDisplayName());
-//                tooltip.add(spell.getType().getDisplayName());
-//            }
-//            // Advanced tooltips displays the source mod's name if the spell is not from Wizardry
-//            if (advanced.isAdvanced() && this.getRegistryName().toString().equals(Wizardry.MODID + ":scroll") && !spell.getRegistryName().getNamespace().equals(Wizardry.MODID)) {
-//                String modId = spell.getRegistryName().getNamespace();
-//                String name = new Style().setColor(TextFormatting.BLUE).setItalic(true).getFormattingCode() +
-//                        Loader.instance().getIndexedModList().get(modId).getMetadata().name;
-//                tooltip.add(name);
-//            }
-//        }
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
+        if(level == null) return;
+        Spell spell = SpellUtil.getSpell(stack);
+        boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
+
+        if(discovered && tooltipFlag.isAdvanced()){
+            list.add(spell.getTier().getNameForTranslationFormatted());
+            list.add(spell.getElement().getDisplayName());
+            list.add(Component.translatable(spell.getType().getDisplayName()));
+        }
         list.add(Component.translatable(SpellUtil.getSpellNameTranslationComponent(stack)));
-        super.appendHoverText(stack, level, list, tooltipFlag);
     }
 
     @Override

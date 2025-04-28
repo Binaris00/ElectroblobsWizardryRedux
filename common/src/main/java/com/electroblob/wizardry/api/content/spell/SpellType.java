@@ -1,5 +1,7 @@
 package com.electroblob.wizardry.api.content.spell;
 
+import com.electroblob.wizardry.api.EBLogger;
+
 public enum SpellType {
     ATTACK("attack"),
     DEFENCE("defence"),
@@ -17,12 +19,12 @@ public enum SpellType {
     }
 
     public static SpellType fromName(String name){
-
         for(SpellType type : values()){
             if(type.unlocalisedName.equals(name) || type.unlocalisedName.equals(name.toLowerCase())) return type;
         }
 
-        throw new IllegalArgumentException("No such spell type with unlocalised name: " + name);
+        EBLogger.error("No such spell type with unlocalised name: " + name);
+        return SpellType.UTILITY; //default
     }
 
     public String getUnlocalisedName(){

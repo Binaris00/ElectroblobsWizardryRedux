@@ -55,7 +55,7 @@ public class Banish extends RaySpell {
         ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(x, y, z).color(0.2f, 0, 0.2f).spawn(ctx.world());
     }
 
-    protected void teleport(LivingEntity entity, Level world, double radius) {
+    public void teleport(LivingEntity entity, Level world, double radius) {
         float angle = world.random.nextFloat() * (float) Math.PI * 2;
 
         int x = Mth.floor(entity.getX() + Mth.sin(angle) * radius);

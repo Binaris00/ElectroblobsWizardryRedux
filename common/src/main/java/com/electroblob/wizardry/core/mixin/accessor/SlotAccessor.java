@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.core.mixin.accesor;
+package com.electroblob.wizardry.core.mixin.accessor;
 
 import net.minecraft.world.inventory.Slot;
 import org.spongepowered.asm.mixin.Mixin;

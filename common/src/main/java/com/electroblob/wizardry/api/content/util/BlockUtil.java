@@ -59,6 +59,13 @@ public final class BlockUtil {
     }
 
     @Nullable
+    public static BlockPos findNearbyFloorSpace(Entity entity, int horizontalRange, int verticalRange) {
+        Level world = entity.level();
+        BlockPos origin = entity.blockPosition();
+        return findNearbyFloorSpace(world, origin, horizontalRange, verticalRange, true);
+    }
+
+    @Nullable
     public static BlockPos findNearbyFloorSpace(Level world, BlockPos origin, int horizontalRange, int verticalRange, boolean lineOfSight) {
         List<BlockPos> possibleLocations = new ArrayList<>();
         final Vec3 centre = GeometryUtil.getCentre(origin);
@@ -151,6 +158,19 @@ public final class BlockUtil {
             return false;
         }
 
+        return true;
+    }
+
+    // todo
+    public static boolean canBreakBlock(Player p, Level w, BlockPos pos) {
+        return true;
+    }
+
+    // todo
+    public static boolean canDamageBlocks(Player p, Level w) {
+//        if (entity == null) return Wizardry.settings.dispenserBlockDamage;
+//        else if (entity instanceof Player) return ((Player) entity).mayBuild() && Wizardry.settings.playerBlockDamage;
+//        return ForgeEventFactory.getMobGriefingEvent(world, entity);
         return true;
     }
 

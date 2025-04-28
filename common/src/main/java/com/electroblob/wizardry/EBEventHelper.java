@@ -6,6 +6,8 @@ import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.*;
 import com.electroblob.wizardry.client.SpellGUIDisplay;
 import com.electroblob.wizardry.client.sound.SoundLoop;
+import com.electroblob.wizardry.content.ForfeitRegistry;
+import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
 import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
 import com.electroblob.wizardry.content.effect.WardMobEffect;
@@ -15,6 +17,8 @@ import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 
 /**
  * Simple class to save all the event helper methods
@@ -29,6 +33,8 @@ public final class EBEventHelper {
         onLivingTickEvent(bus);
         onClientTick(bus);
         onSpellPreCast(bus);
+        onSpellPostCast(bus);
+        onServerLevelLoad(bus);
         onSpellTickCast(bus);
         onPlayerJoin(bus);
         onLivingDeathEvent(bus);
@@ -51,7 +57,11 @@ public final class EBEventHelper {
     }
 
     private static void onPlayerJoin(WizardryEventBus bus){
+        bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
+    }
 
+    private static void onServerLevelLoad(WizardryEventBus bus){
+        bus.register(EBServerLevelLoadEvent.class, SpellGlyphData::onServerLevelLoad);
     }
 
     private static void onEntityJoinLevel(WizardryEventBus bus){
@@ -73,6 +83,11 @@ public final class EBEventHelper {
 
     private static void onSpellPreCast(WizardryEventBus bus){
         bus.register(SpellCastEvent.Pre.class, WizardArmorItem::onSpellPreCast);
+        bus.register(SpellCastEvent.Pre.class, ForfeitRegistry::onSpellCastPreEvent);
+    }
+
+    private static void onSpellPostCast(WizardryEventBus bus){
+        bus.register(SpellCastEvent.Post.class, ForfeitRegistry::onSpellCastPostEvent);
     }
 
     private static void onSpellTickCast(WizardryEventBus bus){

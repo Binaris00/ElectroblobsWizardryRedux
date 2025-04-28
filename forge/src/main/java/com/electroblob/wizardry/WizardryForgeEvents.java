@@ -1,24 +1,50 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
+import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
+import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
 
 import java.util.function.Consumer;
 
+/**
+ * This class contains
+ * - {@link ForgeBusEvents} : Events that are fired by Forge
+ * - {@link ModBusEvents} : Events that are fired by the mod
+ * - {@link ModBusEventsClient} : Events that are fired by the mod on the client
+ * */
 public class WizardryForgeEvents {
+
+    @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class ForgeBusEvents{
+        @SubscribeEvent
+        public static void onWorldLoadEvent(final LevelEvent.Load event) {
+            if(event.getLevel().isClientSide()) return;
+            WizardryEventBus.getInstance().fire(new EBServerLevelLoadEvent((ServerLevel) event.getLevel()));
+        }
+
+        @SubscribeEvent
+        public static void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
+            WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(event.getEntity(), event.getEntity().getServer()));
+        }
+    }
+
     @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
     public static class ModBusEvents {
 
@@ -45,13 +71,6 @@ public class WizardryForgeEvents {
         private static <T> void register(RegisterEvent event, Consumer<RegisterFunction<T>> consumer) {
             consumer.accept((registry, id, value) -> event.register(registry.key(), id, () -> value));
         }
-
-//        @SubscribeEvent
-//        public static void onEntityJoinWorld(EntityJoinLevelEvent event) {
-//            if(event.getEntity() instanceof Player player && !player.level().isClientSide) {
-//                WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(player, player.getServer()));
-//            }
-//        }
 
         @SubscribeEvent
         public static void register(RegisterCapabilitiesEvent event) {

@@ -4,6 +4,7 @@ import com.electroblob.wizardry.core.networking.abst.Message;
 import com.electroblob.wizardry.core.networking.c2s.BlockUsePacketC2S;
 import com.electroblob.wizardry.core.networking.c2s.ControlInputPacketC2S;
 import com.electroblob.wizardry.core.networking.c2s.SpellAccessPacketC2S;
+import com.electroblob.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
 import com.electroblob.wizardry.core.networking.s2c.TestParticlePacketS2C;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
@@ -21,6 +22,7 @@ public class EBFabricNetwork {
 
     public static void registerS2CMessages() {
         registerClientMessage(TestParticlePacketS2C.ID, TestParticlePacketS2C::new);
+        registerClientMessage(SpellGlyphPacketS2C.ID, SpellGlyphPacketS2C::new);
     }
 
     private static <T extends Message> void registerClientMessage(ResourceLocation id, Function<FriendlyByteBuf, T> decoder) {

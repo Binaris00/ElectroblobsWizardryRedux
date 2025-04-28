@@ -117,6 +117,10 @@ public abstract class Spell {
         return properties.getCharge();
     }
 
+    public SpellType getType(){
+        return properties.getType();
+    }
+
     public SpellAction getAction(){
         return properties.getAction();
     }
