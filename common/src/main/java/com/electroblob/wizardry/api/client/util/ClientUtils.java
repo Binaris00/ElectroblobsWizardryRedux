@@ -3,6 +3,7 @@ package com.electroblob.wizardry.api.client.util;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
+import com.electroblob.wizardry.client.gui.screens.SpellBookScreen;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.mixin.accessor.MerchantMenuAccessor;
@@ -74,5 +75,9 @@ public class ClientUtils {
     public static Component getScrollDisplayName(ItemStack scroll) {
         Spell spell = SpellUtil.getSpell(scroll);
         return Component.translatable(String.format("item." + WizardryMainMod.MOD_ID + ".scroll", String.format("spell." + spell.getDescriptionId())).trim());
+    }
+
+    public static void openSpellBook(ItemStack stack) {
+        Minecraft.getInstance().setScreen(new SpellBookScreen(stack));
     }
 }

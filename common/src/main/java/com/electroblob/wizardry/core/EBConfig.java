@@ -32,6 +32,7 @@ public final class EBConfig {
     public static float BLAST_RADIUS_INCREASE_PER_LEVEL = 0.25f;
     public static final int CONDENSER_TICK_INTERVAL = 50;
     public static final int UPGRADE_STACK_LIMIT = 3;
+    public static boolean booksPauseGame = true;
 
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);
 

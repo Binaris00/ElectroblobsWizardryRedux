@@ -33,6 +33,8 @@ public abstract class Spell {
     private String descriptionId;
     /**Location is where the spell is registered, e.g. "ebwizardry:fireball" */
     private ResourceLocation location;
+    private ResourceLocation icon;
+
     private SpellProperties properties = SpellProperties.empty();
     private boolean ended;
 
@@ -108,6 +110,18 @@ public abstract class Spell {
     /** Will return the location for the spell (e.g. "ebwizardry:fireball") */
     public ResourceLocation getLocation() {
         return this.getOrCreateLocation();
+    }
+
+    public Component getDesc(){
+        return Component.translatable(getOrCreateDescriptionId() + ".desc");
+    }
+
+    public ResourceLocation getIcon(){
+        if(icon == null) {
+            ResourceLocation location = getOrCreateLocation();
+            this.icon = new ResourceLocation(location.getNamespace(), "textures/spells/" + location.getPath() + ".png");
+        }
+        return icon;
     }
 
     /** Will return true if the spell is registered at the given location */
