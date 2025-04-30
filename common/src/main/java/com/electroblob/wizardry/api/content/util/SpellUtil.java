@@ -54,15 +54,7 @@ public final class SpellUtil {
      */
     private static Spell getSpellFromNbt(CompoundTag tag) {
         Spell byId = byId(tag.getString(SPELL_KEY));
-        if(byId == null) {
-            EBLogger.error("Unknown spell: " + tag.getString(SPELL_KEY));
-            return Spells.NONE;
-        }
-        else {
-            EBLogger.warn("Retrieved spell: " + byId);
-            return byId;
-        }
-        //return tag == null ? Spells.NONE : byId(tag.getString(SPELL_KEY));
+        return byId == null ? Spells.NONE : byId;
     }
 
     public static String getSpellNameTranslationComponent(@Nullable ItemStack stack) {

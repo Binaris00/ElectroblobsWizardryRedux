@@ -14,10 +14,10 @@ public class Tiers {
     public static Map<String, Tier> TIERS = new HashMap<>();
     private Tiers() {}
 
-    public static final Tier NOVICE = tier("novice", () -> new Tier(700, 3, 12, 0, ChatFormatting.WHITE));
-    public static final Tier APPRENTICE = tier("apprentice", () -> new Tier(1000, 5, 5, 1, ChatFormatting.AQUA));
-    public static final Tier ADVANCED = tier("advanced", () -> new Tier(1500, 7, 2, 2, ChatFormatting.DARK_BLUE));
-    public static final Tier MASTER = tier("master", () -> new Tier(2500, 9, 1, 3, ChatFormatting.DARK_PURPLE));
+    public static final Tier NOVICE = tier("novice", () -> new Tier("novice", 700, 3, 12, 0, ChatFormatting.WHITE));
+    public static final Tier APPRENTICE = tier("apprentice", () -> new Tier("apprentice", 1000, 5, 5, 1, ChatFormatting.AQUA));
+    public static final Tier ADVANCED = tier("advanced", () -> new Tier("advanced", 1500, 7, 2, 2, ChatFormatting.DARK_BLUE));
+    public static final Tier MASTER = tier("master", () -> new Tier("master",2500, 9, 1, 3, ChatFormatting.DARK_PURPLE));
 
     // ======= Registry =======
     public static void registerNull(RegisterFunction<Tier> function){

@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.api.content.spell;
 
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.ChatFormatting;
@@ -17,14 +18,20 @@ public class Tier {
     private final ChatFormatting color;
 
     private String descriptionId;
-    private ResourceLocation location;
+    private final ResourceLocation location;
 
-    public Tier(int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color){
+    public Tier(String name, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color){
+        this(WizardryMainMod.location(name), maxCharge, upgradeLimit, weight, level, color);
+    }
+
+    public Tier(ResourceLocation location, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color){
+        this.location = location;
         this.maxCharge = maxCharge;
         this.level = level;
         this.upgradeLimit = upgradeLimit;
         this.weight = weight;
         this.color = color;
+
     }
 
     /** Returns the tier above this one, or the same tier if this is the highest tier. */
@@ -60,14 +67,9 @@ public class Tier {
         return this.getOrCreateDescriptionId();
     }
 
-    protected ResourceLocation getOrCreateLocation() {
-        if (this.location == null) this.location = Services.REGISTRY_UTIL.getTier(this);
-        return this.location;
-    }
-
     /** Will return the location for the tier (e.g. "ebwizardry:novice") */
     public ResourceLocation getLocation() {
-        return this.getOrCreateLocation();
+        return this.location;
     }
 
     /** Will return true if the tier is registered at the given location */
@@ -82,6 +84,10 @@ public class Tier {
 
     // ===================================================
 
+
+    public ChatFormatting getColor() {
+        return color;
+    }
 
     // TODO EBCONFIG
     public int getProgression(){
