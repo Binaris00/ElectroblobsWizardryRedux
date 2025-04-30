@@ -24,7 +24,7 @@ public final class EBBlockEntities {
     );
 
     public static final DeferredObject<BlockEntityType<ArcaneWorkbenchBlockEntity>> ARCANE_WORKBENCH = blockEntity(
-            "arcane_workbench", () -> BlockEntityType.Builder.of(ArcaneWorkbenchBlockEntity::new, EBBlocks.ARCANE_WORK_BENCH.get()).build(null)
+            "arcane_workbench", () -> BlockEntityType.Builder.of(ArcaneWorkbenchBlockEntity::new, EBBlocks.ARCANE_WORKBENCH.get()).build(null)
     );
 
     // ======= Registry =======

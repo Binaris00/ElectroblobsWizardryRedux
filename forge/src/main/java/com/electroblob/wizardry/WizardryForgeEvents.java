@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.registry.EBRegistries;
 import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -50,7 +51,6 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void registerContent(RegisterEvent event) {
-            //Blocks need to be registered before items so the block items are getting added to item registry
             if(event.getRegistryKey() == Registries.MOB_EFFECT) register(event, EBMobEffects::register);
             else if (event.getRegistryKey() == Registries.BLOCK) register(event, EBBlocks::register);
             else if(event.getRegistryKey() == Registries.BLOCK_ENTITY_TYPE) register(event, EBBlockEntities::register);
@@ -61,12 +61,15 @@ public class WizardryForgeEvents {
             else if(event.getRegistryKey() == Registries.SOUND_EVENT) register(event, EBSounds::register);
             else if(event.getRegistryKey() == Registries.ENCHANTMENT) register(event, EBEnchantments::register);
             else if(event.getRegistryKey() == Registries.MENU) register(event, EBMenus::register);
+            else if(event.getRegistryKey() == EBRegistries.ELEMENT) registerForge(event, Elements::registerNull);
+            else if(event.getRegistryKey() == EBRegistries.TIER) registerForge(event, Tiers::registerNull);
+            else if(event.getRegistryKey() == EBRegistries.SPELL) registerForge(event, Spells::registerNull);
         }
 
-//        @SubscribeEvent
-//        public static void createEntityAttributes(EntityAttributeCreationEvent event) {
-//            WizardryYyYYyyyy.registerAttributes(event::put);
-//        }
+        /** Helps to register custom registries and keeping this system */
+        private static <T> void registerForge(RegisterEvent event, Consumer<RegisterFunction<T>> consumer) {
+            consumer.accept((registry, id, value) -> event.register(event.getForgeRegistry().getRegistryKey(), id, () -> value));
+        }
 
         private static <T> void register(RegisterEvent event, Consumer<RegisterFunction<T>> consumer) {
             consumer.accept((registry, id, value) -> event.register(registry.key(), id, () -> value));

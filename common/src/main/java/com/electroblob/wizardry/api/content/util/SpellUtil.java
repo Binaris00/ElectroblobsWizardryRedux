@@ -1,10 +1,11 @@
 package com.electroblob.wizardry.api.content.util;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.content.item.WizardArmorType;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -13,7 +14,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
 
 public final class SpellUtil {
     public static String SPELL_KEY = "Spell";
@@ -32,19 +36,14 @@ public final class SpellUtil {
         return stack;
     }
 
-    public static ItemStack setSpell(ItemStack stack, ResourceLocation location) {
-        stack.getOrCreateTag().putString(SPELL_KEY, location.toString());
-        return stack;
-    }
-
     /**
      * Retrieves the spell from the given ItemStack.
      *
      * @param stack The ItemStack from which the spell is to be retrieved.
      * @return The spell retrieved from the ItemStack.
      */
-    public static Spell getSpell(ItemStack stack) {
-        return getSpellFromNbt(stack.getTag());
+    public static @NotNull Spell getSpell(ItemStack stack) {
+        return getSpellFromNbt(stack.getOrCreateTag());
     }
 
     /**
@@ -53,8 +52,17 @@ public final class SpellUtil {
      * @param tag The NbtCompound from which the spell is to be retrieved.
      * @return The spell retrieved from the NbtCompound. If the tag is null, returns Spells.NONE.
      */
-    private static Spell getSpellFromNbt(@Nullable CompoundTag tag) {
-        return tag == null ? Spells.NONE : byId(tag.getString(SPELL_KEY));
+    private static Spell getSpellFromNbt(CompoundTag tag) {
+        Spell byId = byId(tag.getString(SPELL_KEY));
+        if(byId == null) {
+            EBLogger.error("Unknown spell: " + tag.getString(SPELL_KEY));
+            return Spells.NONE;
+        }
+        else {
+            EBLogger.warn("Retrieved spell: " + byId);
+            return byId;
+        }
+        //return tag == null ? Spells.NONE : byId(tag.getString(SPELL_KEY));
     }
 
     public static String getSpellNameTranslationComponent(@Nullable ItemStack stack) {
@@ -66,8 +74,12 @@ public final class SpellUtil {
             throw new IllegalArgumentException("Must be a valid armour slot");
         if (element == null) element = Elements.MAGIC;
         String registryName = wizardArmorType.getName() + "_" + wizardArmorType.getArmourPieceNames().get(slot);
-        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getDisplayName().getString();
+        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getDescriptionFormatted().getString();
         return BuiltInRegistries.ITEM.get(new ResourceLocation(WizardryMainMod.MOD_ID, registryName));
+    }
+
+    public static Collection<String> getSpellNames() {
+        return Services.REGISTRY_UTIL.getSpells().stream().map(Spell::getLocation).map(ResourceLocation::toString).toList();
     }
 
 
@@ -81,6 +93,6 @@ public final class SpellUtil {
      * @return The spell with the given id.
      * */
     private static Spell byId(String id) {
-        return SpellRegistry.get(ResourceLocation.tryParse(id));
+        return Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(id));
     }
 }

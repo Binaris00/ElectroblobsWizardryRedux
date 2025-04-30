@@ -151,7 +151,7 @@ public class ForfeitRegistry {
             if(data.discoverSpell(event.getSpell())) {
                 if(!event.getCaster().level().isClientSide && !player.isCreative() && EBConfig.discoveryMode) {
                     EntityUtil.playSoundAtPlayer(player, EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
-                    player.sendSystemMessage(Component.translatable("spell.discover", event.getSpell().getLocation()));
+                    player.sendSystemMessage(Component.translatable("spell.discover", event.getSpell().getDescriptionId()));
                 }
             }
         }

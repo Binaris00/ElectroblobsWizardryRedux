@@ -3,7 +3,7 @@ package com.electroblob.wizardry.api.content.util;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.content.item.WandItem;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +33,7 @@ public final class WandHelper {
             for(Tag element : list){
                 if(!(element instanceof StringTag stringTag)) continue;
                 ResourceLocation location = ResourceLocation.tryParse(stringTag.getAsString());
-                Spell spell = SpellRegistry.get(location);
+                Spell spell = Services.REGISTRY_UTIL.getSpell(location);
                 if(location != null) spells.add(spell);
             }
         }
@@ -57,7 +57,7 @@ public final class WandHelper {
 
     public static Spell getCurrentSpell(ItemStack wand) {
         String tag = wand.getOrCreateTag().getString(SELECTED_SPELL_KEY);
-        Spell spell = SpellRegistry.get(ResourceLocation.tryParse(tag));
+        Spell spell = Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag));
         return spell != null ? spell : Spells.NONE;
     }
 

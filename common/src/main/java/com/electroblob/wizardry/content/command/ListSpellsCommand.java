@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.content.command;
 
-import com.electroblob.wizardry.core.registry.SpellRegistry;
+import com.electroblob.wizardry.core.platform.Services;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
@@ -16,8 +16,8 @@ public final class ListSpellsCommand {
     }
 
     private static int listSpells(CommandSourceStack pSource) {
-        SpellRegistry.entrySet().forEach((k) -> {
-            pSource.sendSystemMessage(Component.translatable(k.getKey().location().toString()));
+        Services.REGISTRY_UTIL.getSpells().forEach((spell) -> {
+            pSource.sendSystemMessage(Component.literal("Spell: " + spell));
         });
         return 1;
     }

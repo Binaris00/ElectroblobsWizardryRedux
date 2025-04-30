@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.setup.registries;
 
-import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.Tier;
 
@@ -12,14 +11,10 @@ public final class EBRegister {
     private EBRegister() {}
 
     public static void registerSpells(Consumer<Set<Map.Entry<String, Spell>>> handler) {
-        Spells.handleRegistration(handler);
+        //Spells.handleRegistration(handler);
     }
 
     public static void registerTiers(Consumer<Set<Map.Entry<String, Tier>>> handler) {
-        Tiers.handleRegistration(handler);
-    }
-
-    public static void registerElements(Consumer<Set<Map.Entry<String, Element>>> handler) {
-        Elements.handleRegistration(handler);
+        //Tiers.handleRegistration(handler);
     }
 }

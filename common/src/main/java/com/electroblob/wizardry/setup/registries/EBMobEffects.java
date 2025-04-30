@@ -16,38 +16,20 @@ import java.util.function.Supplier;
 public class EBMobEffects {
     static Map<String, DeferredObject<MobEffect>> MOB_EFFECTS = new HashMap<>();
 
-    public static final DeferredObject<MobEffect> FROST;
-    public static final DeferredObject<MobEffect> STATIC_AURA;
-    public static final DeferredObject<MobEffect> WARD;
-    public static final DeferredObject<MobEffect> FIRE_SKIN;
-    public static final DeferredObject<MobEffect> OAKFLESH;
-    public static final DeferredObject<MobEffect> CURSE_OF_ENFEEBLEMENT;
-    public static final DeferredObject<MobEffect> CURSE_OF_UNDEATH;
-    public static final DeferredObject<MobEffect> DECAY;
-    public static final DeferredObject<MobEffect> CURSE_OF_SOULBINDING;
-
-
-    static {
-        STATIC_AURA = mobEffect("static_aura", StaticAuraMobEffect::new);
-        WARD = mobEffect("ward", WardMobEffect::new);
-        FIRE_SKIN = mobEffect("fire_skin", FireSkinMobEffect::new);
-        FROST = mobEffect("frost", FrostMobEffect::new);
-        OAKFLESH = mobEffect("oakflesh", OakFleshMobEffect::new);
-
-        CURSE_OF_ENFEEBLEMENT = mobEffect("curse_of_enfeeblement", EnfeeblementCurse::new);
-        CURSE_OF_UNDEATH = mobEffect("curse_of_undeath", UndeathCurse::new);
-
-        DECAY = mobEffect("decay", DecayMobEffect::new);
-
-        CURSE_OF_SOULBINDING = mobEffect("curse_of_soulbinding", () -> new CurseMobEffect(MobEffectCategory.HARMFUL, 0x0f000f));
-    }
-
+    public static final DeferredObject<MobEffect> FROST = mobEffect("frost", FrostMobEffect::new);
+    public static final DeferredObject<MobEffect> STATIC_AURA = mobEffect("static_aura", StaticAuraMobEffect::new);
+    public static final DeferredObject<MobEffect> WARD = mobEffect("ward", WardMobEffect::new);
+    public static final DeferredObject<MobEffect> FIRE_SKIN = mobEffect("fire_skin", FireSkinMobEffect::new);
+    public static final DeferredObject<MobEffect> OAKFLESH = mobEffect("oakflesh", OakFleshMobEffect::new);
+    public static final DeferredObject<MobEffect> CURSE_OF_ENFEEBLEMENT = mobEffect("curse_of_enfeeblement", EnfeeblementCurse::new);
+    public static final DeferredObject<MobEffect> CURSE_OF_UNDEATH = mobEffect("curse_of_undeath", UndeathCurse::new);
+    public static final DeferredObject<MobEffect> DECAY = mobEffect("decay", DecayMobEffect::new);
+    public static final DeferredObject<MobEffect> CURSE_OF_SOULBINDING = mobEffect("curse_of_soulbinding", () -> new CurseMobEffect(MobEffectCategory.HARMFUL, 0x0f000f));
 
     // ======= Registry =======
     public static void register(RegisterFunction<MobEffect> function){
-        MOB_EFFECTS.forEach(((id, mobEffect) -> {
-            function.register(BuiltInRegistries.MOB_EFFECT, WizardryMainMod.location(id), mobEffect.get());
-        }));
+        MOB_EFFECTS.forEach(((id, mobEffect) ->
+                function.register(BuiltInRegistries.MOB_EFFECT, WizardryMainMod.location(id), mobEffect.get())));
     }
 
     // ======= Helpers =======

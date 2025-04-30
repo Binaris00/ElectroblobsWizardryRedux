@@ -33,7 +33,7 @@ public class Whirlwind extends RaySpell {
 
         if (target instanceof Player && !EBConfig.playersMoveEachOther) {
             playerCtx.caster().displayClientMessage(Component.translatable("spell.resist", target.getName(),
-                    this.getLocation()), true);
+                    this.getDescriptionId()), true);
             return false;
         }
 

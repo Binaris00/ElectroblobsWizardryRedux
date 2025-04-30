@@ -222,7 +222,7 @@ public final class SpellGUIDisplay {
         //if (player.hasEffect(WizardryPotions.ARCANE_JAMMER.get())) format = Style.EMPTY.withObfuscated(true);
 
         // TODO spell translation name
-        Component name = discovered ? Component.literal(spell.getLocation().toString()) :
+        Component name = discovered ? Component.literal(spell.getDescriptionId().toString()) :
                 Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData()));
         ((MutableComponent) name).withStyle(format);
         return name;

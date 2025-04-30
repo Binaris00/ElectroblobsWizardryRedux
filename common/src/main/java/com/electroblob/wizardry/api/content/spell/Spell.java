@@ -7,7 +7,9 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.core.SpellSoundManager;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
+import com.electroblob.wizardry.core.platform.Services;
+import net.minecraft.Util;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
@@ -26,6 +28,10 @@ import java.util.List;
  * This makes the code more organized, easier to understand, and less prone to errors.
 */
 public abstract class Spell {
+    /**Description ID is how a spell is formatted, with the same format as items or blocks.
+     * e.g. "spell.ebwizardry.fireball" */
+    private String descriptionId;
+    /**Location is where the spell is registered, e.g. "ebwizardry:fireball" */
     private ResourceLocation location;
     private SpellProperties properties = SpellProperties.empty();
     private boolean ended;
@@ -35,9 +41,7 @@ public abstract class Spell {
     protected float pitchVariation = 0;
 
     public Spell() {
-        if(properties() != null) {
-            this.properties = properties();
-        }
+        this.properties = properties();
     }
 
     public abstract boolean cast(PlayerCastContext ctx);
@@ -78,23 +82,53 @@ public abstract class Spell {
     }
 
     // ===================================================
+    // NAME AND FORMATTING
+    // ==================================================
+    /** Will return the description for the spell (e.g. "Fireball") */
+    public Component getDescriptionFormatted() {
+        return Component.translatable(getOrCreateDescriptionId());
+    }
+
+    protected String getOrCreateDescriptionId() {
+        if (this.descriptionId == null) this.descriptionId = Util.makeDescriptionId("spell", Services.REGISTRY_UTIL.getSpell(this));
+        return this.descriptionId;
+    }
+
+    /** Will return the description ID for the spell (e.g. "spell.ebwizardry.fireball")
+     * if you want the location instead, use {@link #getLocation()} */
+    public String getDescriptionId() {
+        return this.getOrCreateDescriptionId();
+    }
+
+    protected ResourceLocation getOrCreateLocation() {
+        if (this.location == null) this.location = Services.REGISTRY_UTIL.getSpell(this);
+        return this.location;
+    }
+
+    /** Will return the location for the spell (e.g. "ebwizardry:fireball") */
+    public ResourceLocation getLocation() {
+        return this.getOrCreateLocation();
+    }
+
+    /** Will return true if the spell is registered at the given location */
+    public final boolean is(ResourceLocation location) {
+        return location.equals(getLocation());
+    }
+
+    /** Will return true if the spell is registered at the given location */
+    public final boolean is(String location) {
+        return location.equals(getLocation().toString());
+    }
+
+    // ===================================================
     // PROPERTIES
     // ===================================================
 
     protected abstract @NotNull SpellProperties properties();
 
-    public final Spell assignLocation(ResourceLocation location) {
-        if(this.location == null && SpellRegistry.isInAssignPeriod()) this.location = location;
-        return this;
-    }
-
     public final Spell assignProperties(SpellProperties properties) {
         this.properties = properties;
         return this;
-    }
-
-    public final ResourceLocation getLocation() {
-        return location;
     }
 
     public final <T> T property(SpellProperty<T> property) {
@@ -102,15 +136,7 @@ public abstract class Spell {
     }
 
     public final boolean is(Spell spell) {
-        return spell.getLocation().equals(this.location);
-    }
-
-    public final boolean is(ResourceLocation location) {
-        return location.equals(this.location);
-    }
-
-    public final boolean is(String location) {
-        return location.equals(this.location.toString());
+        return spell.getDescriptionId().equals(this.descriptionId);
     }
 
     public int getCharge(){

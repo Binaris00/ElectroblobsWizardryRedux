@@ -2,13 +2,9 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.LoaderEnvironment;
 import com.electroblob.wizardry.network.EBFabricNetwork;
-import com.electroblob.wizardry.registry.ElementRegistryFabric;
-import com.electroblob.wizardry.registry.SpellRegistryFabric;
-import com.electroblob.wizardry.registry.TierRegistryFabric;
 import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.core.Registry;
-import net.minecraft.core.registries.BuiltInRegistries;
 
 
 public final class WizardryFabricMod implements ModInitializer {
@@ -25,9 +21,11 @@ public final class WizardryFabricMod implements ModInitializer {
         EBBlockEntities.register(Registry::register);
         EBItems.register(Registry::register);
         EBEntities.register(Registry::register);
-        TierRegistryFabric.register();
-        ElementRegistryFabric.register();
-        SpellRegistryFabric.register();
+
+        Tiers.register(EBRegistriesFabric.TIERS, Registry::register);
+        Elements.register(EBRegistriesFabric.ELEMENTS, Registry::register);
+        Spells.register(EBRegistriesFabric.SPELLS, Registry::register);
+
         EBCreativeTabs.register(Registry::register);
         EBMobEffects.register(Registry::register);
         EBSounds.register(Registry::register);

@@ -94,7 +94,7 @@ public enum WizardArmorType implements ArmorMaterial {
     @Override
     public @NotNull String getName() {
         if (element != null) {
-            return name + "_" + element.getDisplayName();
+            return name + "_" + element.getDescriptionFormatted();
         } else {
             return name;
         }

@@ -223,7 +223,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                         //WizardryAdvancementTriggers.WAND_LEVELUP.triggerFor(caster);
                         if (!world.isClientSide)
                             caster.sendSystemMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".wand.levelup",
-                                    this.getName(stack), nextTier.getNameForTranslationFormatted()));
+                                    this.getName(stack), nextTier.getDescriptionFormatted()));
                     }
                 }
 

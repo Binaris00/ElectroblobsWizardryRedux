@@ -51,7 +51,7 @@ public final class EBItems {
 
     //General Items
     public static final DeferredObject<Item> ARCANE_TOME = item("arcane_tome");
-    //public static final DeferredObject<Item> BLANK_SCROLL = item("blank_scroll");
+    public static final DeferredObject<Item> BLANK_SCROLL = item("blank_scroll");
     public static final DeferredObject<Item> RUINED_SPELL_BOOK = item("ruined_spell_book");
     public static final DeferredObject<Item> SCROLL = item("scroll", () -> new ScrollItem(new Item.Properties().stacksTo(16)));
     public static final DeferredObject<Item> SPELL_BOOK = item("spell_book", () -> new SpellBookItem(new Item.Properties().stacksTo(16)));
@@ -396,13 +396,13 @@ public final class EBItems {
 
     //Spectral Weapons
     public static final DeferredObject<Item> SPECTRAL_SWORD = item("spectral_sword");
-    //public static final DeferredObject<Item> SPECTRAL_BOW = item("spectral_bow", false);
+    public static final DeferredObject<Item> SPECTRAL_BOW = item("spectral_bow", false);
 
     //Spectral Tools
     public static final DeferredObject<Item> SPECTRAL_PICKAXE = item("spectral_pickaxe");
 
     //Cast Items
-    //public static final DeferredObject<Item> FLAMECATCHER = item("flamecatcher", false);
+    public static final DeferredObject<Item> FLAMECATCHER = item("flamecatcher", false);
     public static final DeferredObject<Item> FLAMING_AXE = item("flaming_axe");
     public static final DeferredObject<Item> FROST_AXE = item("frost_axe");
     public static final DeferredObject<Item> LIGHTNING_HAMMER = item("lightning_hammer", false);
@@ -420,22 +420,17 @@ public final class EBItems {
     public static LinkedList<DeferredObject<? extends Item>> getArmors() {
         return ARMORS;
     }
-
     public static LinkedList<DeferredObject<? extends Item>> getLeggings() {
         return LEGGINGS;
     }
 
     // ======= Helpers =======
-    static DeferredObject<Item> magicCrystal(String elementName){
-        return crystal("magic_crystal_" + elementName);
-    }
-
     static DeferredObject<Item> crystal(String name){
         return item(name, CrystalItem::new);
     }
 
     static DeferredObject<Item> armorUpgrade(String name){
-        return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(1)));
+        return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(16)));
     }
 
     static DeferredObject<Item> armor(String name, WizardArmorType wizardArmorType, ArmorItem.Type type, Element element){
@@ -475,7 +470,7 @@ public final class EBItems {
     }
 
     static DeferredObject<Item> item(String name, boolean defaultModel) {
-        return item(name, () -> new Item(new Item.Properties()), false);
+        return item(name, () -> new Item(new Item.Properties()), defaultModel);
     }
 
     static <T extends Item> DeferredObject<T> item(String name, Supplier<T> itemSupplier) {

@@ -26,14 +26,14 @@ public final class EBMenus {
     }
 
     // ======= Helpers =======
-    public static <T extends AbstractContainerMenu> DeferredObject<MenuType<T>> menu(String name, MenuType<T> menuType) {
+    static <T extends AbstractContainerMenu> DeferredObject<MenuType<T>> menu(String name, MenuType<T> menuType) {
         DeferredObject<MenuType<T>> deferredMenu = new DeferredObject<>(() -> menuType);
         putMenu(name, deferredMenu);
         return deferredMenu;
     }
 
-    // Separate method avoids direct cast
-    private static void putMenu(String name, DeferredObject<? extends MenuType<?>> menu) {
+    @SuppressWarnings("unchecked")
+    static void putMenu(String name, DeferredObject<? extends MenuType<?>> menu) {
         MENUS.put(name, (DeferredObject<MenuType<?>>) menu);
     }
 

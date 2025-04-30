@@ -65,7 +65,7 @@ public class WandSelectCommand {
         }
 
         WandHelper.setCurrentSpell(wandStack, newSelected);
-        source.sendSystemMessage(Component.literal("Spell selected: " + newSelected.getLocation()));
+        source.sendSystemMessage(Component.literal("Spell selected: " + newSelected.getDescriptionId()));
         return 1;
     }
 
@@ -90,7 +90,7 @@ public class WandSelectCommand {
         List<Spell> spells = WandHelper.getSpells(wandStack);
         Spell newSelected = spells.get(slot);
         WandHelper.setCurrentSpell(wandStack, newSelected);
-        source.sendSystemMessage(Component.literal("Spell selected: " + newSelected.getLocation() + " at " + slot));
+        source.sendSystemMessage(Component.literal("Spell selected: " + newSelected.getDescriptionId() + " at " + slot));
         return 1;
     }
 }

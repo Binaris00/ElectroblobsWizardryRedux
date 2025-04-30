@@ -13,7 +13,6 @@ import com.electroblob.wizardry.api.content.util.ImbuementLoader;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -388,7 +387,7 @@ public class PlayerWizardData {
             for (Tag element : listTag) {
                 ResourceLocation location = ResourceLocation.tryParse(element.getAsString());
                 if(location != null) {
-                    wizardData.spellsDiscovered.add(SpellRegistry.get(location));
+                    wizardData.spellsDiscovered.add(Services.REGISTRY_UTIL.getSpell(location));
                 }
             }
         }
@@ -396,7 +395,7 @@ public class PlayerWizardData {
         if(tag.contains("castCommandSpell", Tag.TAG_STRING)) {
             ResourceLocation location = ResourceLocation.tryParse(tag.getString("castCommandSpell"));
             if(location != null) {
-                wizardData.castCommandSpell = SpellRegistry.get(location);
+                wizardData.castCommandSpell = Services.REGISTRY_UTIL.getSpell(location);
             }
         }
 

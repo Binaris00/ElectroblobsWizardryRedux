@@ -1,10 +1,12 @@
 package com.electroblob.wizardry.setup.registries;
 
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.entity.construct.*;
 import com.electroblob.wizardry.content.entity.projectile.*;
 import com.electroblob.wizardry.content.spell.BlockWithSurprise;
@@ -20,18 +22,17 @@ import com.electroblob.wizardry.content.spell.lightning.InvokeWeather;
 import com.electroblob.wizardry.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.content.spell.necromancy.*;
 import com.electroblob.wizardry.content.spell.sorcery.*;
+import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static com.electroblob.wizardry.setup.registries.Spells.Register.spell;
 
 public final class Spells {
+    public static Map<String, Spell> SPELLS = new HashMap<>();
+    private Spells() {}
 
     public static final Spell NONE;
     public static final Spell MAGIC_MISSILE;
@@ -125,8 +126,6 @@ public final class Spells {
     public static final Spell BLOCK_SURPRISE;
 
     static {
-        Register.init();
-
         NONE = spell("none", NoneSpell::new);
 
         MAGIC_MISSILE = spell("magic_missile", () -> new ArrowSpell<>(MagicMissileEntity::new).assignProperties(
@@ -543,24 +542,22 @@ public final class Spells {
         BLOCK_SURPRISE = spell("block_surprise", BlockWithSurprise::new);
     }
 
-    static void handleRegistration(Consumer<Set<Map.Entry<String, Spell>>> handler) {
-        handler.accept(Collections.unmodifiableSet(Register.SPELLS.entrySet()));
+    // ======= Registry =======
+    public static void registerNull(RegisterFunction<Spell> function){
+        register(null, function);
     }
 
-    public static class Register {
-        public static Map<String, Spell> SPELLS = new HashMap<>();
-        
-        static Spell spell(String name, Supplier<Spell> spell) {
-            var instantiatedSpell = spell.get();
-            SPELLS.put(name, instantiatedSpell);
-            return instantiatedSpell;
-        }
-        
-        private static void init() {}
+    @SuppressWarnings("unchecked")
+    public static void register(Registry<?> registry, RegisterFunction<Spell> function){
+        SPELLS.forEach(((id, spell) ->
+                function.register((Registry<Spell>) registry, WizardryMainMod.location(id), spell)));
     }
 
-    static void load() {}
 
-    private Spells() {}
-
+    // ====== helpers =======
+    static Spell spell(String name, Supplier<Spell> spell) {
+        var instantiatedSpell = spell.get();
+        SPELLS.put(name, instantiatedSpell);
+        return instantiatedSpell;
+    }
 }

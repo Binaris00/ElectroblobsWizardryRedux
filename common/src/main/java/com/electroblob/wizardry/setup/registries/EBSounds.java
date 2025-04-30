@@ -13,7 +13,6 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public final class EBSounds {
     static Map<String, DeferredObject<SoundEvent>> SOUNDS = new HashMap<>();
-
     private EBSounds(){}
 
     public static final DeferredObject<SoundEvent> BLOCK_ARCANE_WORKBENCH_SPELLBIND = sound("block.arcane_workbench.bind_spell");
@@ -157,7 +156,6 @@ public final class EBSounds {
 
     // ======= Registry =======
     public static void register(RegisterFunction<SoundEvent> function){
-        //SpellSoundManager.registerSpellSounds();
         SOUNDS.forEach(((id, sound) ->
                 function.register(BuiltInRegistries.SOUND_EVENT, WizardryMainMod.location(id), sound.get())));
     }

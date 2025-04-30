@@ -41,10 +41,10 @@ public class SpellBookItem extends Item {
 
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
 
-        list.add(discovered ? Component.literal(spell.getLocation().toString()) :
+        list.add(discovered ? Component.literal(spell.getDescriptionId().toString()) :
                 Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData())).withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)
                 .withFont(new ResourceLocation("minecraft", "alt"))));
-        list.add(spell.getTier().getNameForTranslationFormatted());
+        list.add(spell.getTier().getDescriptionFormatted());
 
         Player player = ClientUtils.getPlayer();
 
@@ -53,7 +53,7 @@ public class SpellBookItem extends Item {
         }
 
         if (discovered && tooltipFlag.isAdvanced()) {
-            list.add(spell.getElement().getDisplayName());
+            list.add(spell.getElement().getDescriptionFormatted());
             list.add(Component.translatable(spell.getType().getDisplayName()));
         }
     }

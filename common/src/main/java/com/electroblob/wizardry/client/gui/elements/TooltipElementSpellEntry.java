@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.client.gui.elements;
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.util.ClientUtils;
 import com.electroblob.wizardry.api.client.util.GlyphClientHandler;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
@@ -11,6 +12,7 @@ import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.content.item.ScrollItem;
 import com.electroblob.wizardry.content.item.SpellBookItem;
 import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -61,9 +63,12 @@ public class TooltipElementSpellEntry extends TooltipElementText {
     @Override
     protected Component getText(ItemStack stack) {
         Spell spell = getSpell(stack);
+        if(spell == null) {
+            return Component.empty();
+        }
         // TODO Better spell display name
         if(ClientUtils.shouldDisplayDiscovered(spell, null)) {
-            return Component.translatable(spell.getLocation().toString()).withStyle(spell.getElement().getColor());
+            return Component.translatable(spell.getDescriptionId().toString()).withStyle(spell.getElement().getColor());
         }
          else {
             return Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData())).withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE).withFont(new ResourceLocation("minecraft", "alt")));
@@ -75,7 +80,7 @@ public class TooltipElementSpellEntry extends TooltipElementText {
     @Override
     protected void drawBackground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, float partialTicks, int mouseX, int mouseY) {
         Spell spell = getSpell(stack);
-        RenderSystem._setShaderTexture(0, ClientUtils.shouldDisplayDiscovered(spell, null) ? spell.getElement().getIcon() : Elements.MAGIC.getIcon());
+        RenderSystem._setShaderTexture(0, ClientUtils.shouldDisplayDiscovered(spell, null) ? spell.getElement().getIconId() : Elements.MAGIC.getIconId());
 
         if (shouldFlash(stack)) RenderSystem.setShaderColor(1, 1, 1, getAlpha(partialTicks));
 
@@ -87,9 +92,12 @@ public class TooltipElementSpellEntry extends TooltipElementText {
         ItemStack spellBook = screen.getMenu().getSlot(index).getItem();
 
         if (!spellBook.isEmpty() && (spellBook.getItem() instanceof SpellBookItem || spellBook.getItem() instanceof ScrollItem)) {
+            EBLogger.warn("[Book]Retrieved spell: " + spellBook.getOrCreateTag().getString("Spell"));
             return SpellUtil.getSpell(spellBook);
         } else {
-            return ((ISpellCastingItem) stack.getItem()).getSpells(stack)[index];
+            Spell spell = ((ISpellCastingItem) stack.getItem()).getSpells(stack)[index];
+            EBLogger.warn("[Item]Retrieved spell: " + stack.getOrCreateTag().getString("Spell"));
+            return spell == null ? Spells.NONE : spell;
         }
     }
 

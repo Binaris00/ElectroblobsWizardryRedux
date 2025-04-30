@@ -5,9 +5,6 @@ import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.network.EBForgeNetwork;
-import com.electroblob.wizardry.registry.ElementRegistryForge;
-import com.electroblob.wizardry.registry.SpellRegistryForge;
-import com.electroblob.wizardry.registry.TierRegistryForge;
 import com.electroblob.wizardry.setup.ClientSetup;
 import com.electroblob.wizardry.setup.CommonSetup;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
@@ -34,13 +31,9 @@ public final class WizardryForgeMod {
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
 
-        TierRegistryForge.initialize(modBus);
-        ElementRegistryForge.initialize(modBus);
-        SpellRegistryForge.initialize(modBus);
-
-        TierRegistryForge.register();
-        ElementRegistryForge.register();
-        SpellRegistryForge.register();
+        EBRegistriesForge.tiers(modBus);
+        EBRegistriesForge.elements(modBus);
+        EBRegistriesForge.spells(modBus);
 
         modBus.addListener(WizardryForgeMod::commonSetup);
         if(FMLEnvironment.dist.isClient()) {

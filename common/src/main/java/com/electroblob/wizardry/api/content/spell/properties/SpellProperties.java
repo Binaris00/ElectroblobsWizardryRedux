@@ -7,16 +7,13 @@ import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.Tier;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
-import com.electroblob.wizardry.core.registry.ElementRegistry;
-import com.electroblob.wizardry.core.registry.TierRegistry;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Tiers;
-import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class SpellProperties {
     private final List<SpellProperty<?>> properties;
@@ -68,18 +65,18 @@ public class SpellProperties {
     }
 
     public Tier getTier(){
-        String tier = get(DefaultProperties.TIER);
-        for(Map.Entry<ResourceKey<Tier>, Tier> t : TierRegistry.entrySet()){
-            if(t.getValue().getUnlocalisedName().toString().equals(tier)) return t.getValue();
+        String s = get(DefaultProperties.TIER);
+        for(Tier tier : Services.REGISTRY_UTIL.getTiers()){
+            if(tier.getLocation().toString().equals(s)) return tier;
         }
         return Tiers.NOVICE; // Default
     }
 
     public Element getElement(){
-        String element = get(DefaultProperties.ELEMENT);
-        for(Map.Entry<ResourceKey<Element>, Element> e : ElementRegistry.entrySet()){
-            if(e.getValue().getLocation().toString().equals(element)) {
-                return e.getValue();
+        String s = get(DefaultProperties.ELEMENT);
+        for(Element element : Services.REGISTRY_UTIL.getElements()){
+            if(element.getLocation().toString().equals(s)) {
+                return element;
             }
         }
         return Elements.MAGIC; // Default
@@ -96,7 +93,7 @@ public class SpellProperties {
         private final List<SpellProperty<?>> builder = new ArrayList<>();
 
         public <T> Builder assignBaseProperties(Tier tier, Element element, SpellType type, SpellAction action, int cost, int charge, int cooldown) {
-            add(DefaultProperties.TIER, tier.getUnlocalisedName().toString());
+            add(DefaultProperties.TIER, tier.getLocation().toString());
             add(DefaultProperties.ELEMENT, element.getLocation().toString());
             add(DefaultProperties.SPELL_TYPE, type.getUnlocalisedName());
             add(DefaultProperties.SPELL_ACTION, action.location.toString());

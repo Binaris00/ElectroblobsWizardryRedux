@@ -136,7 +136,7 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
         if (element != null)
             tooltip.add(Component.translatable("item.%s.wizard_armour.element_cost_reduction".formatted(WizardryMainMod.MOD_ID),
                     (int) (this.wizardArmorType.elementalCostReduction * 100),
-                    element.getDisplayName().getString()).withStyle(ChatFormatting.DARK_GRAY));
+                    element.getDescriptionFormatted().getString()).withStyle(ChatFormatting.DARK_GRAY));
 
         if (this.wizardArmorType == WizardArmorType.SAGE) {
             tooltip.add(Component.translatable("item.%s.wizard_armour.enchantability".formatted(WizardryMainMod.MOD_ID))

@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.api.content.spell;
 
-import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Tiers;
 import net.minecraft.ChatFormatting;
+import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
@@ -13,20 +14,17 @@ public class Tier {
     public final int level;
     public final int upgradeLimit;
     public final int weight;
-    private final ChatFormatting colour;
-    private final ResourceLocation unlocalisedName;
+    private final ChatFormatting color;
 
-    public Tier(String name, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting colour){
-        this(WizardryMainMod.MOD_ID, name, maxCharge, upgradeLimit, weight, level, colour);
-    }
+    private String descriptionId;
+    private ResourceLocation location;
 
-    Tier(String modid, String name, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting colour){
+    public Tier(int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color){
         this.maxCharge = maxCharge;
         this.level = level;
         this.upgradeLimit = upgradeLimit;
         this.weight = weight;
-        this.colour = colour;
-        this.unlocalisedName = new ResourceLocation(modid, name);
+        this.color = color;
     }
 
     /** Returns the tier above this one, or the same tier if this is the highest tier. */
@@ -43,18 +41,46 @@ public class Tier {
         return Tiers.NOVICE;
     }
 
-    public Component getNameForTranslation(){
-        return Component.translatable("tier." + unlocalisedName.getNamespace() + "." + unlocalisedName.getPath());
+    // ===================================================
+    // NAME AND FORMATTING
+    // ==================================================
+    /** Returns the description/name translatable for this tier formatted with the color */
+    public Component getDescriptionFormatted(){
+        return Component.translatable(getOrCreateDescriptionId()).withStyle(this.color);
     }
 
-
-    public Component getNameForTranslationFormatted(){
-        return Component.translatable("tier." + unlocalisedName.getNamespace() + "." + unlocalisedName.getPath()).withStyle(this.colour);
+    protected String getOrCreateDescriptionId() {
+        if (this.descriptionId == null) this.descriptionId = Util.makeDescriptionId("tier", Services.REGISTRY_UTIL.getTier(this));
+        return this.descriptionId;
     }
 
-    public ResourceLocation getUnlocalisedName(){
-        return unlocalisedName;
+    /** Will return the description ID for the tier (e.g. "tier.ebwizardry.novice")
+     * if you want the location instead, use {@link #getLocation()} */
+    public String getDescriptionId() {
+        return this.getOrCreateDescriptionId();
     }
+
+    protected ResourceLocation getOrCreateLocation() {
+        if (this.location == null) this.location = Services.REGISTRY_UTIL.getTier(this);
+        return this.location;
+    }
+
+    /** Will return the location for the tier (e.g. "ebwizardry:novice") */
+    public ResourceLocation getLocation() {
+        return this.getOrCreateLocation();
+    }
+
+    /** Will return true if the tier is registered at the given location */
+    public final boolean is(ResourceLocation location) {
+        return location.equals(getLocation());
+    }
+
+    /** Will return true if the tier is registered at the given location */
+    public final boolean is(String location) {
+        return location.equals(getLocation().toString());
+    }
+
+    // ===================================================
 
 
     // TODO EBCONFIG

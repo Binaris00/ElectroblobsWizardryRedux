@@ -159,8 +159,8 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
 
         if(discovered && tooltipFlag.isAdvanced()){
-            list.add(spell.getTier().getNameForTranslationFormatted());
-            list.add(spell.getElement().getDisplayName());
+            list.add(spell.getTier().getDescriptionFormatted());
+            list.add(spell.getElement().getDescriptionFormatted());
             list.add(Component.translatable(spell.getType().getDisplayName()));
         }
         list.add(Component.translatable(SpellUtil.getSpellNameTranslationComponent(stack)));

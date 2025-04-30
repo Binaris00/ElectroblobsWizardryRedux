@@ -29,10 +29,10 @@ public class InvokeWeather extends Spell {
 
             // TODO Bin: Spell translation names
             if (ctx.world().isRaining()) {
-                ctx.caster().displayClientMessage(Component.translatable("spell." + this.getLocation() + ".sun"), true);
+                ctx.caster().displayClientMessage(Component.translatable("spell." + this.getDescriptionId() + ".sun"), true);
                 ((ServerLevel) ctx.world()).setWeatherParameters(standardWeatherTime, 0, false, false);
             } else {
-                ctx.caster().displayClientMessage(Component.translatable("spell." + this.getLocation() + ".rain"), true);
+                ctx.caster().displayClientMessage(Component.translatable("spell." + this.getDescriptionId() + ".rain"), true);
                 ((ServerLevel) ctx.world()).setWeatherParameters(0, standardWeatherTime, true,  ctx.world().random.nextFloat() < property(THUNDER_CHANCE));
             }
         } else {

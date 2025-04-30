@@ -7,4 +7,6 @@ public class CrystalOreBlock extends Block {
     public CrystalOreBlock() {
         super(Properties.copy(Blocks.IRON_ORE));
     }
+
+
 }

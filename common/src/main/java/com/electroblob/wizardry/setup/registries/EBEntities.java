@@ -19,7 +19,6 @@ import static com.electroblob.wizardry.WizardryMainMod.location;
 
 public final class EBEntities {
     static Map<String, DeferredObject<EntityType<? extends Entity>>> ENTITY_TYPES = new HashMap<>();
-
     private EBEntities() {}
 
     public static final DeferredObject<EntityType<DartEntity>> DART = entity(DartEntity::new, "dart", MobCategory.MISC, 0.5F, 0.5F, MagicType.PROJECTILE);
@@ -63,8 +62,8 @@ public final class EBEntities {
         PROJECTILE(64, 10),
         CONSTRUCT(160, 10);
 
-        int range;
-        int interval;
+        final int range;
+        final int interval;
 
         MagicType(int range, int interval) {
             this.range = range;
@@ -91,7 +90,7 @@ public final class EBEntities {
     @SuppressWarnings("unchecked")
     static <T extends Entity> DeferredObject<EntityType<T>> entity(String name, EntityType.Builder<T> builder) {
         DeferredObject<EntityType<T>> ret = new DeferredObject<>(() -> builder.build(location(name).toString()));
-        ENTITY_TYPES.put(name, (DeferredObject<EntityType<? extends Entity>>) (Object) ret); // Suppress unchecked warning
+        ENTITY_TYPES.put(name, (DeferredObject<EntityType<? extends Entity>>) (Object) ret);
         return ret;
     }
 }

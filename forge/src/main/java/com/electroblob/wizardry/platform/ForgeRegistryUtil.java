@@ -1,0 +1,58 @@
+package com.electroblob.wizardry.platform;
+
+import com.electroblob.wizardry.EBRegistriesForge;
+import com.electroblob.wizardry.api.content.spell.Element;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.core.platform.services.IRegistryUtil;
+import net.minecraft.resources.ResourceLocation;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.Collection;
+
+public class ForgeRegistryUtil implements IRegistryUtil {
+    @Override
+    public Collection<Element> getElements() {
+        return EBRegistriesForge.ELEMENT.get().getValues().stream().toList();
+    }
+
+    @Override
+    public Collection<Tier> getTiers() {
+        return EBRegistriesForge.TIER.get().getValues().stream().toList();
+    }
+
+    @Override
+    public Collection<Spell> getSpells() {
+        return EBRegistriesForge.SPELL.get().getValues().stream().toList();
+    }
+
+    @Override
+    public @Nullable Element getElement(ResourceLocation location) {
+        return EBRegistriesForge.ELEMENT.get().getValue(location);
+    }
+
+    @Override
+    public @Nullable Tier getTier(ResourceLocation location) {
+        return EBRegistriesForge.TIER.get().getValue(location);
+    }
+
+    @Override
+    public @Nullable Spell getSpell(ResourceLocation location) {
+        return EBRegistriesForge.SPELL.get().getValue(location);
+    }
+
+    @Override
+    public @Nullable ResourceLocation getSpell(Spell spell) {
+        return EBRegistriesForge.SPELL.get().getKey(spell);
+    }
+
+    @Override
+    public @Nullable ResourceLocation getElement(Element element) {
+        return EBRegistriesForge.ELEMENT.get().getKey(element);
+    }
+
+    @Override
+    public @Nullable ResourceLocation getTier(Tier tier) {
+        return EBRegistriesForge.TIER.get().getKey(tier);
+    }
+}

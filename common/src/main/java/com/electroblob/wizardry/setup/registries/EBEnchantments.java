@@ -13,7 +13,6 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public final class EBEnchantments {
     static Map<String, DeferredObject<Enchantment>> ENCHANTMENTS = new HashMap<>();
-
     private EBEnchantments(){}
 
     public static final DeferredObject<Enchantment> FLAMING_WEAPON = enchantment("flaming_weapon", new TimedEnchantment());
@@ -26,8 +25,8 @@ public final class EBEnchantments {
 
     // ======= Helpers =======
     static DeferredObject<Enchantment> enchantment(String name, Enchantment enchantment){
-        DeferredObject<Enchantment> deferredSound = new DeferredObject<>(() -> enchantment);
-        ENCHANTMENTS.put(name, deferredSound);
-        return deferredSound;
+        DeferredObject<Enchantment> deferredEnchant = new DeferredObject<>(() -> enchantment);
+        ENCHANTMENTS.put(name, deferredEnchant);
+        return deferredEnchant;
     }
 }

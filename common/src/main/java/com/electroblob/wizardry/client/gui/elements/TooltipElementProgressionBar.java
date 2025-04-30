@@ -53,16 +53,16 @@ public class TooltipElementProgressionBar extends TooltipElement {
     @Override
     protected void drawForeground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, int mouseX, int mouseY) {
         Tier tier = ((WandItem) stack.getItem()).tier;
-        guiGraphics.drawString(Minecraft.getInstance().font, tier.getNameForTranslationFormatted().getString(), x, y,
-                tier.getNameForTranslationFormatted().getStyle().getColor().getValue(), true);
+        guiGraphics.drawString(Minecraft.getInstance().font, tier.getDescriptionFormatted().getString(), x, y,
+                tier.getDescriptionFormatted().getStyle().getColor().getValue(), true);
 
         Tier nextTier = getNextTier(stack);
 
         if (nextTier != null) {
-            Component s = nextTier.getNameForTranslationFormatted().copy().withStyle(ChatFormatting.DARK_GRAY);
+            Component s = nextTier.getDescriptionFormatted().copy().withStyle(ChatFormatting.DARK_GRAY);
 
             if (WandHelper.getProgression(stack) >= nextTier.getProgression())
-                s = nextTier.getNameForTranslationFormatted();
+                s = nextTier.getDescriptionFormatted();
             guiGraphics.drawString(Minecraft.getInstance().font, s.getString(),
                     x + TOOLTIP_WIDTH - TOOLTIP_BORDER * 2 - Minecraft.getInstance().font.width(s.getString()), y,
                     s.getStyle().getColor().getValue(), true);

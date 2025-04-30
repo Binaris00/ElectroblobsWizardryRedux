@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.content.command.debug;
 
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.content.item.WandItem;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
+import com.electroblob.wizardry.core.platform.Services;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.IntegerArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -19,7 +20,7 @@ import net.minecraft.world.item.ItemStack;
 
 public final class WandSpellCommand {
     private static final SuggestionProvider<CommandSourceStack> SPELL_SUGGESTIONS = (context, builder) -> SharedSuggestionProvider.suggest(
-            SpellRegistry.getSpellNames(), builder,
+            SpellUtil.getSpellNames(), builder,
             value -> value,
             Component::literal
     );
@@ -46,7 +47,7 @@ public final class WandSpellCommand {
             return 0;
         }
 
-        Spell spell = SpellRegistry.get(location);
+        Spell spell = Services.REGISTRY_UTIL.getSpell(location);
         if (spell == null) {
             context.getSource().sendFailure(Component.literal("Spell not found: " + location));
             return 0;

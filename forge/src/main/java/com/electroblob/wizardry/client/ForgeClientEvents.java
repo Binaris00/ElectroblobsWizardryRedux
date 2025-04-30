@@ -3,7 +3,6 @@ package com.electroblob.wizardry.client;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
-import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;

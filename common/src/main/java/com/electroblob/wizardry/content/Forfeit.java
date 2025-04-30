@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.content;
 
 import com.electroblob.wizardry.WizardryMainMod;
-
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -9,7 +8,8 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
 
 public abstract class Forfeit {
 	// Originally BY_2D_DATA on Direction class

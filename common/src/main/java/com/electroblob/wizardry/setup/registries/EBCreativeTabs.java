@@ -3,7 +3,7 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
+import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -73,7 +73,7 @@ public final class EBCreativeTabs {
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBBlocks.EARTH_CRYSTAL_BLOCK.get().asItem()))
                     .title(Component.translatable("creativetab.ebwizardry_blocks"))
-                    .displayItems((parameters, output) -> EBBlocks.BLOCKS.forEach((name, block) -> output.accept(block.get())))
+                    .displayItems((parameters, output) -> EBBlocks.BLOCK_ITEMS.forEach((name, block) -> output.accept(block.get())))
                     .build()
     );
 
@@ -88,19 +88,17 @@ public final class EBCreativeTabs {
     // ======= Helpers =======
     private static List<ItemStack> createSpellBooks() {
         List<ItemStack> list = new ArrayList<>();
-        SpellRegistry.entrySet()
-                .forEach(entry -> list.add(
-                        SpellUtil.setSpell(new ItemStack(EBItems.SPELL_BOOK.get()), entry.getKey().location())
-                ));
+        Services.REGISTRY_UTIL.getSpells().forEach(
+                spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SPELL_BOOK.get()), spell))
+        );
         return list;
     }
 
     private static List<ItemStack> createScrolls() {
         List<ItemStack> list = new ArrayList<>();
-        SpellRegistry.entrySet()
-                .forEach(entry -> list.add(
-                        SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), entry.getKey().location())
-                ));
+        Services.REGISTRY_UTIL.getSpells().forEach(
+                spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), spell))
+        );
         return list;
     }
 

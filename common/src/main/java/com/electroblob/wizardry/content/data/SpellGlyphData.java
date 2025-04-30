@@ -7,7 +7,6 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.NBTExtras;
 import com.electroblob.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
@@ -38,13 +37,9 @@ public class SpellGlyphData extends SavedData {
     }
 
     public void generateGlyphNames(Level world) {
-        for (Spell spell : SpellRegistry.getSpells()) {
+        for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
             if (!randomNames.containsKey(spell)) randomNames.put(spell, generateRandomName(world.random));
-        }
-
-        for (Spell spell : SpellRegistry.getSpells()) {
-            if (!randomDescriptions.containsKey(spell))
-                randomDescriptions.put(spell, generateRandomDescription(world.random));
+            if(!randomDescriptions.containsKey(spell)) randomDescriptions.put(spell, generateRandomDescription(world.random));
         }
 
         this.setDirty();
@@ -76,7 +71,8 @@ public class SpellGlyphData extends SavedData {
             instance = new SpellGlyphData();
         }
 
-        if (instance.randomNames.size() < SpellRegistry.getSpells().size() || instance.randomDescriptions.size() < SpellRegistry.getSpells().size()) {
+        if (instance.randomNames.size() < Services.REGISTRY_UTIL.getSpells().size()
+                || instance.randomDescriptions.size() < Services.REGISTRY_UTIL.getSpells().size()) {
             instance.generateGlyphNames(world);
             world.getDataStorage().set(NAME, instance);
         }
@@ -87,7 +83,7 @@ public class SpellGlyphData extends SavedData {
         HashMap<ResourceLocation, String> names = new HashMap<>();
         HashMap<ResourceLocation, String> descriptions = new HashMap<>();
 
-        for(Spell spell : SpellRegistry.getSpells()) {
+        for(Spell spell : Services.REGISTRY_UTIL.getSpells()) {
             names.put(spell.getLocation(), this.randomNames.get(spell));
             descriptions.put(spell.getLocation(), this.randomDescriptions.get(spell));
         }
@@ -127,8 +123,8 @@ public class SpellGlyphData extends SavedData {
 
         for (int i = 0; i < tagList.size(); i++) {
             CompoundTag tag = tagList.getCompound(i);
-            data.randomNames.put(SpellRegistry.get(ResourceLocation.tryParse(tag.getString("spell"))), tag.getString("name"));
-            data.randomDescriptions.put(SpellRegistry.get(ResourceLocation.tryParse(tag.getString("spell"))), tag.getString("description"));
+            data.randomNames.put(Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getString("spell"))), tag.getString("name"));
+            data.randomDescriptions.put(Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getString("spell"))), tag.getString("description"));
         }
         return data;
     }
@@ -137,7 +133,7 @@ public class SpellGlyphData extends SavedData {
     public @NotNull CompoundTag save(@NotNull CompoundTag nbt) {
         ListTag tagList = new ListTag();
 
-        for (Spell spell : SpellRegistry.getSpells()) {
+        for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
             CompoundTag tag = new CompoundTag();
             tag.putString("spell", spell.getLocation().toString());
             if(this.randomNames.get(spell) != null) {

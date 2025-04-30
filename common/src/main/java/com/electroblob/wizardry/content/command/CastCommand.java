@@ -6,10 +6,9 @@ import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.core.registry.ElementRegistry;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
@@ -29,7 +28,7 @@ public final class CastCommand {
     public static final int MAX_CASTING_DURATION = 1000000;
 
     private static final SuggestionProvider<CommandSourceStack> SPELL_SUGGESTIONS = (context, builder) -> SharedSuggestionProvider.suggest(
-            SpellRegistry.getSpellNames(), builder,
+            SpellUtil.getSpellNames(), builder,
             value -> value,
             Component::literal
     );
@@ -52,7 +51,7 @@ public final class CastCommand {
             return 0;
         }
 
-        Spell spell = SpellRegistry.get(location);
+        Spell spell = Services.REGISTRY_UTIL.getSpell(location);
         if(spell == null){
             context.getSource().sendFailure(Component.literal("Spell not found!"));
             return 0;
@@ -75,7 +74,7 @@ public final class CastCommand {
             }else{
                 data.startCastingContinuousSpell(player, spell, modifiers, duration);
                 source.sendSystemMessage(Component.translatable("commands." + WizardryMainMod.MOD_ID + ":cast.success_continuous",
-                        spell.getLocation().toString()));
+                        spell.getDescriptionId().toString()));
             }
             return 1;
         }else{
@@ -100,13 +99,6 @@ public final class CastCommand {
     }
 
     private static void displayFailure(CommandSourceStack source, Spell spell) {
-        source.sendFailure(Component.literal("commands." + WizardryMainMod.MOD_ID + ":cast.failure" + spell.getLocation().toString()));
-    }
-
-    private static int listSpells(CommandSourceStack pSource) {
-        ElementRegistry.entrySet().forEach((k) -> {
-            pSource.sendSystemMessage(k.getValue().getDisplayName());
-        });
-        return 1;
+        source.sendFailure(Component.literal("commands." + WizardryMainMod.MOD_ID + ":cast.failure" + spell.getDescriptionId().toString()));
     }
 }

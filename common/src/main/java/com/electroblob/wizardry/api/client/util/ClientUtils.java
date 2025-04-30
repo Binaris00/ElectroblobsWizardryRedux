@@ -8,7 +8,6 @@ import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.mixin.accessor.MerchantMenuAccessor;
 import com.electroblob.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.core.registry.SpellRegistry;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
@@ -62,7 +61,7 @@ public class ClientUtils {
         data.randomNames = new HashMap<>();
         data.randomDescriptions = new HashMap<>();
 
-        for (Spell spell : SpellRegistry.getSpells()) {
+        for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
             ResourceLocation spellId = spell.getLocation();
             String name = message.getNames().get(spellId);
             String description = message.getDescriptions().get(spellId);
@@ -74,6 +73,6 @@ public class ClientUtils {
 
     public static Component getScrollDisplayName(ItemStack scroll) {
         Spell spell = SpellUtil.getSpell(scroll);
-        return Component.translatable(String.format("item." + WizardryMainMod.MOD_ID + ".scroll", String.format("spell." + spell.getLocation())).trim());
+        return Component.translatable(String.format("item." + WizardryMainMod.MOD_ID + ".scroll", String.format("spell." + spell.getDescriptionId())).trim());
     }
 }
