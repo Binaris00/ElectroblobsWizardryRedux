@@ -12,6 +12,8 @@ public final class EBConfig {
     public static final int MANA_PER_CRYSTAL = 100;
     public static final int GRAND_CRYSTAL_MANA = 400;
 
+    public static final int NON_ELEMENTAL_UPGRADE_BONUS = 3;
+
     public static boolean damageTypePerElement = false;
     public static boolean playersMoveEachOther = true;
     public static boolean replaceVanillaFallDamage = true;

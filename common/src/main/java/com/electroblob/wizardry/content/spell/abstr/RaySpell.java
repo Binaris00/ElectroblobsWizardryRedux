@@ -9,6 +9,7 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.RayTracer;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -132,7 +133,7 @@ public abstract class RaySpell extends Spell {
     protected abstract boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin);
 
     protected boolean shootSpell(CastContext ctx, Vec3 origin, Vec3 direction) {
-        double range = this.property(DefaultProperties.RANGE);
+        double range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
         Vec3 endpoint = origin.add(direction.scale(range));
 
         HitResult rayTrace = RayTracer.rayTrace(ctx.world(), ctx.caster(), origin, endpoint, aimAssist, hitLiquids, Entity.class, ignoreLivingEntities ? EntityUtil::isLiving : RayTracer.ignoreEntityFilter(ctx.caster()));

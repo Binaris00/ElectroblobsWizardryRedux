@@ -211,6 +211,17 @@ public final class WandHelper {
                 : 0;
     }
 
+    public static int getUpgradeLevel(ItemStack wand, Item upgrade){
+        String key = "";
+        for(DeferredObject<Item> item : WandUpgrades.getWandUpgrades().keySet()){
+            if(item.get().equals(upgrade)) {
+                key = WandUpgrades.getWandUpgrades().get(item);
+            }
+        }
+        return wand.getOrCreateTag().contains(UPGRADES_KEY) && !key.isEmpty() ? wand.getOrCreateTag().getCompound(UPGRADES_KEY).getInt(key)
+                : 0;
+    }
+
     public static int getTotalUpgrades(ItemStack wand) {
         int totalUpgrades = 0;
         for (DeferredObject<Item> item : WandUpgrades.getWandUpgrades().keySet())
@@ -229,9 +240,28 @@ public final class WandHelper {
         NBTExtras.storeTagSafely(wand.getOrCreateTag(), UPGRADES_KEY, upgrades);
     }
 
+    public static void applyUpgrade(ItemStack wand, Item upgrade){
+        if (!wand.getOrCreateTag().contains(UPGRADES_KEY)) NBTExtras.storeTagSafely(wand.getOrCreateTag(), UPGRADES_KEY, new CompoundTag());
+
+        CompoundTag upgrades = wand.getOrCreateTag().getCompound(UPGRADES_KEY);
+        String key = "";
+        for(Map.Entry<DeferredObject<Item>, String> entry : WandUpgrades.getWandUpgrades().entrySet()){
+            if(entry.getKey().get().equals(upgrade)) key = entry.getValue();
+        }
+
+        if (!key.isEmpty()) upgrades.putInt(key, upgrades.getInt(key) + 1);
+        NBTExtras.storeTagSafely(wand.getOrCreateTag(), UPGRADES_KEY, upgrades);
+    }
+
     public static boolean isWandUpgrade(DeferredObject<Item> upgrade) {
         return WandUpgrades.getWandUpgrades().containsKey(upgrade);
     }
+
+    public static boolean isWandUpgrade(Item upgrade){
+        return WandUpgrades.getWandUpgrades().keySet().stream().anyMatch(itemDeferred -> itemDeferred.get() == upgrade);
+    }
+
+
 
     public static Set<DeferredObject<Item>> getSpecialUpgrades() {
         return Collections.unmodifiableSet(WandUpgrades.getWandUpgrades().keySet());

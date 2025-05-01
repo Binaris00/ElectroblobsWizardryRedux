@@ -123,10 +123,8 @@ public class BuffSpell extends Spell {
         ParticleBuilder.create(EBParticles.BUFF).entity(caster).color(r, g, b).spawn(world);
     }
 
-    // TODO TEMP
-    @Override
-    public SpellAction getAction() {
-        return SpellAction.POINT_UP;
+    public static int getStandardBonusAmplifier(float potencyModifier) {
+        return (int) ((potencyModifier - 1) / 0.4);
     }
 
     public static SpellProperty<Integer> getEffectDurationProperty(MobEffect effect){

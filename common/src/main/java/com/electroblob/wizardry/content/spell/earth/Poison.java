@@ -4,11 +4,14 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Tiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -33,17 +36,17 @@ public class Poison extends RaySpell {
             DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.POISON)
                     : livingTarget.damageSources().magic();
 
-            livingTarget.hurt(source, property(DefaultProperties.DAMAGE));
+            livingTarget.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
             livingTarget.addEffect(new MobEffectInstance(MobEffects.POISON,
-                    property(DefaultProperties.EFFECT_DURATION),
-                    property(DefaultProperties.EFFECT_STRENGTH)));
+                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
+                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY))));
         }
         return true;
     }
 
     @Override
     protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
-        return false;
+        return true;
     }
 
     @Override

@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import static com.electroblob.wizardry.client.EBClientConstants.LINE_SPACING_WIDE;
+
 public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkbenchMenu> {
     private final Inventory playerInventory;
     private final ArcaneWorkbenchMenu menu;
@@ -107,12 +109,12 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         this.searchField.setFocused(true);
 
         this.tooltipElements.clear();
-        this.tooltipElements.add(new TooltipElementText.TooltipElementItemName(Style.EMPTY.withColor(ChatFormatting.WHITE), EBClientConstants.LINE_SPACING_WIDE));
-        this.tooltipElements.add(new TooltipElementText.TooltipElementManaReadout(EBClientConstants.LINE_SPACING_WIDE));
+        this.tooltipElements.add(new TooltipElementText.TooltipElementItemName(Style.EMPTY.withColor(ChatFormatting.WHITE), LINE_SPACING_WIDE));
+        this.tooltipElements.add(new TooltipElementText.TooltipElementManaReadout(LINE_SPACING_WIDE));
 
-        this.tooltipElements.add(new TooltipElementProgressionBar(imageHeight, EBClientConstants.LINE_SPACING_WIDE));
-        this.tooltipElements.add(new TooltipElementSpellList(EBClientConstants.LINE_SPACING_WIDE, generateSpellEntries(8)));
-        //this.tooltipElements.add(new TooltipElementUpgradeList(this, LINE_SPACING_WIDE));
+        this.tooltipElements.add(new TooltipElementProgressionBar(imageHeight, LINE_SPACING_WIDE));
+        this.tooltipElements.add(new TooltipElementSpellList(LINE_SPACING_WIDE, generateSpellEntries(8)));
+        this.tooltipElements.add(new TooltipElementUpgradeList(this, LINE_SPACING_WIDE));
     }
 
     @Override
@@ -398,5 +400,18 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
 
     public @NotNull ArcaneWorkbenchMenu getMenu() {
         return menu;
+    }
+
+    public int getLeftPos(){
+        return leftPos;
+    }
+
+    public int getTopPos(){
+        return topPos;
+    }
+
+    @Override
+    public boolean isHovering(int x, int y, int width, int height, double mouseX, double mouseY) {
+        return super.isHovering(x, y, width, height, mouseX, mouseY);
     }
 }

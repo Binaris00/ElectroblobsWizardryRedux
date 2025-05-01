@@ -92,11 +92,9 @@ public class TooltipElementSpellEntry extends TooltipElementText {
         ItemStack spellBook = screen.getMenu().getSlot(index).getItem();
 
         if (!spellBook.isEmpty() && (spellBook.getItem() instanceof SpellBookItem || spellBook.getItem() instanceof ScrollItem)) {
-            EBLogger.warn("[Book]Retrieved spell: " + spellBook.getOrCreateTag().getString("Spell"));
             return SpellUtil.getSpell(spellBook);
         } else {
             Spell spell = ((ISpellCastingItem) stack.getItem()).getSpells(stack)[index];
-            EBLogger.warn("[Item]Retrieved spell: " + stack.getOrCreateTag().getString("Spell"));
             return spell == null ? Spells.NONE : spell;
         }
     }

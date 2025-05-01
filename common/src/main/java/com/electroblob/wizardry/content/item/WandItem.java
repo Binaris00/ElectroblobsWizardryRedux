@@ -21,9 +21,7 @@ import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.EBItems;
-import com.electroblob.wizardry.setup.registries.EBSounds;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
@@ -447,6 +445,8 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public ItemStack applyUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
         if (upgrade.getItem() == EBItems.ARCANE_TOME.get()) {
+            // todo arcane tome
+//            Tier tier = Services.REGISTRY_UTIL;
 //            Tier tier = Tier.values()[upgrade.getTagElement("Tiers").getInt("Tier")];
 //
 //            if ((player == null || player.isCreative() || Wizardry.settings.legacyWandLevelling || WandHelper.getProgression(wand) >= tier.getProgression()) && tier == this.tier.next() && this.tier != Tier.MASTER) {
@@ -467,51 +467,51 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 //
 //                return newWand;
 //            }
+        } else if (WandHelper.isWandUpgrade(upgrade.getItem())) {
+            Item specialUpgrade = upgrade.getItem();
 
-        } else if (WandHelper.isWandUpgrade(new DeferredObject<>(upgrade::getItem))) {
-//            Item specialUpgrade = upgrade.getItem();
-//
-//            int maxUpgrades = this.tier.upgradeLimit;
-//            if (this.element == Element.MAGIC) maxUpgrades += Constants.NON_ELEMENTAL_UPGRADE_BONUS;
-//
-//            if (WandHelper.getTotalUpgrades(wand) < maxUpgrades && WandHelper.getUpgradeLevel(wand, specialUpgrade) < Constants.UPGRADE_STACK_LIMIT) {
-//                int prevMana = this.getMana(wand);
-//
-//                WandHelper.applyUpgrade(wand, specialUpgrade);
-//
-//                if (specialUpgrade == WizardryItems.STORAGE_UPGRADE.get()) {
-//                    this.setMana(wand, prevMana);
-//                } else if (specialUpgrade == WizardryItems.ATTUNEMENT_UPGRADE.get()) {
-//                    int newSlotCount = BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(wand, WizardryItems.ATTUNEMENT_UPGRADE.get());
-//
-//                    Spell[] spells = WandHelper.getSpells(wand);
-//                    Spell[] newSpells = new Spell[newSlotCount];
-//
-//                    for (int i = 0; i < newSpells.length; i++) {
-//                        newSpells[i] = i < spells.length && spells[i] != null ? spells[i] : Spells.NONE;
-//                    }
-//
-//                    WandHelper.setSpells(wand, newSpells);
-//
-//                    int[] cooldowns = WandHelper.getCooldowns(wand);
-//                    int[] newCooldowns = new int[newSlotCount];
-//
-//                    if (cooldowns.length > 0) {
-//                        System.arraycopy(cooldowns, 0, newCooldowns, 0, cooldowns.length);
-//                    }
-//
-//                    WandHelper.setCooldowns(wand, newCooldowns);
-//                }
-//
-//                upgrade.shrink(1);
-//
-//                if (player != null) {
-//                    WizardryAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
-//
-//                    if (WandHelper.getTotalUpgrades(wand) == Tier.MASTER.upgradeLimit) {
-//                        WizardryAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
-//                    }
-//                }
+            int maxUpgrades = this.tier.upgradeLimit;
+            if (this.element == Elements.MAGIC) maxUpgrades += EBConfig.NON_ELEMENTAL_UPGRADE_BONUS;
+
+            if (WandHelper.getTotalUpgrades(wand) < maxUpgrades && WandHelper.getUpgradeLevel(wand, specialUpgrade) < EBConfig.UPGRADE_STACK_LIMIT) {
+                int prevMana = this.getMana(wand);
+
+                WandHelper.applyUpgrade(wand, specialUpgrade);
+
+                if (specialUpgrade == EBItems.STORAGE_UPGRADE.get()) {
+                    this.setMana(wand, prevMana);
+                } else if (specialUpgrade == EBItems.ATTUNEMENT_UPGRADE.get()) {
+                    int newSlotCount = BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(wand, EBItems.ATTUNEMENT_UPGRADE.get());
+
+                    List<Spell> spells = WandHelper.getSpells(wand);
+                    Spell[] newSpells = new Spell[newSlotCount];
+
+                    for (int i = 0; i < newSpells.length; i++) {
+                        newSpells[i] = i < spells.size() && spells.get(i) != null ? spells.get(i) : Spells.NONE;
+                    }
+
+                    WandHelper.setSpells(wand, List.of(newSpells));
+
+                    int[] cooldowns = WandHelper.getCooldowns(wand);
+                    int[] newCooldowns = new int[newSlotCount];
+
+                    if (cooldowns.length > 0) {
+                        System.arraycopy(cooldowns, 0, newCooldowns, 0, cooldowns.length);
+                    }
+
+                    WandHelper.setCooldowns(wand, newCooldowns);
+                }
+
+                upgrade.shrink(1);
+
+                if (player != null) {
+                    //WizardryAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
+
+                    if (WandHelper.getTotalUpgrades(wand) == Tiers.MASTER.upgradeLimit) {
+                        //WizardryAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
+                    }
+                }
+            }
         }
 
         return wand;
