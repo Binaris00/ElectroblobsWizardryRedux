@@ -7,7 +7,7 @@ import com.electroblob.wizardry.content.entity.projectile.ForceArrow;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.ArrowSpell;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,7 +25,7 @@ public class ForceArrowSpell extends ArrowSpell<ForceArrow> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.SORCERY, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 20)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 20)
                 .add(DefaultProperties.RANGE, 20f)
                 .add(DefaultProperties.DAMAGE, 7f)
                 .build();

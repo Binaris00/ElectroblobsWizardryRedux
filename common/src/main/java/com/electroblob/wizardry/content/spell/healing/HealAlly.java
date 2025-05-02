@@ -4,11 +4,12 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
@@ -20,7 +21,7 @@ public class HealAlly extends RaySpell {
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (entityHit.getEntity() instanceof LivingEntity target) {
             if (target.getHealth() < target.getMaxHealth() && target.getHealth() > 0) {
-                target.heal(property(DefaultProperties.HEALTH));
+                target.heal(property(DefaultProperties.HEALTH) * ctx.modifiers().get(SpellModifiers.POTENCY));
                 if (ctx.world().isClientSide) ParticleBuilder.spawnHealParticles(ctx.world(), target);
                 playSound(ctx.world(), target, 0, -1);
             }
@@ -42,7 +43,7 @@ public class HealAlly extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT, 10, 0, 20)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT, 10, 0, 20)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.HEALTH, 5F)
                 .build();

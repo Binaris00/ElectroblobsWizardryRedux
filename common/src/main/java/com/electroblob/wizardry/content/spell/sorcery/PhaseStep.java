@@ -10,7 +10,7 @@ import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.api.content.util.RayTracer;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -100,7 +100,7 @@ public class PhaseStep extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT, 35, 0, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT, 35, 0, 40)
                 .build();
     }
 }

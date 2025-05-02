@@ -2,7 +2,7 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.core.registry.EBRegistries;
 import net.fabricmc.fabric.api.event.registry.FabricRegistryBuilder;
 import net.fabricmc.fabric.api.event.registry.RegistryAttribute;
@@ -13,7 +13,7 @@ public final class EBRegistriesFabric {
             .attribute(RegistryAttribute.SYNCED)
             .buildAndRegister();
 
-    public static final MappedRegistry<Tier> TIERS = FabricRegistryBuilder.createSimple(EBRegistries.TIER)
+    public static final MappedRegistry<SpellTier> TIERS = FabricRegistryBuilder.createSimple(EBRegistries.TIER)
                     .attribute(RegistryAttribute.SYNCED)
                     .buildAndRegister();
 

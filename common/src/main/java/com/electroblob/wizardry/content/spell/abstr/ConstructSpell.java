@@ -3,13 +3,11 @@ package com.electroblob.wizardry.content.spell.abstr;
 import com.electroblob.wizardry.api.content.entity.construct.MagicConstructEntity;
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.internal.CastContext;
-import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
-import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
-import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.*;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -98,10 +96,9 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
             construct.setPos(vec3);
             if(ctx.caster() != null) construct.setCaster(ctx.caster());
 
-            construct.lifetime = permanent ? -1 : property(DefaultProperties.DURATION);
-            construct.damageMultiplier = 1;
-            if (construct instanceof ScaledConstructEntity)
-                ((ScaledConstructEntity) construct).setSizeMultiplier(1);
+            construct.lifetime = permanent ? -1 : (int) (property(DefaultProperties.DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
+            construct.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            if (construct instanceof ScaledConstructEntity scaledConstruct) scaledConstruct.setSizeMultiplier(ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
             addConstructExtras(construct, side, ctx.caster());
 
             if (!allowOverlap && !ctx.world().getEntitiesOfClass(construct.getClass(), construct.getBoundingBox()).isEmpty())

@@ -3,11 +3,10 @@ package com.electroblob.wizardry.content.spell.abstr;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
-import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
-import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
-import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.*;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -60,7 +59,7 @@ public class BuffSpell extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if (!this.applyEffects(ctx.caster()) && !ctx.world().isClientSide) return false;
+        if (!this.applyEffects(ctx, ctx.caster()) && !ctx.world().isClientSide) return false;
         if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), ctx.caster());
         this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
         return true;
@@ -69,7 +68,7 @@ public class BuffSpell extends Spell {
     @Override
     public boolean cast(EntityCastContext ctx) {
         if (!potionSet.isEmpty() && ctx.caster().getActiveEffectsMap().keySet().containsAll(potionSet)) return false;
-        if (!this.applyEffects(ctx.caster()) && !ctx.world().isClientSide) return false;
+        if (!this.applyEffects(ctx, ctx.caster()) && !ctx.world().isClientSide) return false;
         if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), ctx.caster());
         this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
         return true;
@@ -92,7 +91,7 @@ public class BuffSpell extends Spell {
 
         if (nearestEntity == null) return false;
 
-        if (!this.applyEffects(nearestEntity) && !ctx.world().isClientSide) return false;
+        if (!this.applyEffects(ctx, nearestEntity) && !ctx.world().isClientSide) return false;
         if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), nearestEntity);
 
         this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
@@ -102,11 +101,14 @@ public class BuffSpell extends Spell {
         return true;
     }
 
-    protected boolean applyEffects(LivingEntity caster){
+    protected boolean applyEffects(CastContext ctx, LivingEntity caster){
+        int bonusAmplifier = getBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
+
         for (MobEffect effect : potionSet) {
+
             caster.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? 1 :
-                    this.property(getEffectDurationProperty(effect)),
-                    this.property(getEffectStrengthProperty(effect)),
+                    (int) (this.property(getEffectDurationProperty(effect)) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
+                    this.property(getEffectStrengthProperty(effect)) + bonusAmplifier,
                     false, true));
         }
 
@@ -121,6 +123,10 @@ public class BuffSpell extends Spell {
             ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(0, 0.1, 0).color(r, g, b).spawn(world);
         }
         ParticleBuilder.create(EBParticles.BUFF).entity(caster).color(r, g, b).spawn(world);
+    }
+
+    protected int getBonusAmplifier(float potencyModifier){
+        return getStandardBonusAmplifier(potencyModifier);
     }
 
     public static int getStandardBonusAmplifier(float potencyModifier) {

@@ -13,7 +13,7 @@ import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -63,7 +63,7 @@ public class Poison extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.EARTH, SpellType.ATTACK, SpellAction.POINT, 10, 0, 20)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.ATTACK, SpellAction.POINT, 10, 0, 20)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DAMAGE, 1F)
                 .add(DefaultProperties.EFFECT_DURATION, 200)

@@ -3,11 +3,15 @@ package com.electroblob.wizardry.content.spell.healing;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.AreaEffectSpell;
+import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -25,12 +29,14 @@ public class InvigoratingPresence extends AreaEffectSpell {
     }
 
     @Override
-    protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
-        target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,
-                property(DefaultProperties.EFFECT_DURATION),
-                property(DefaultProperties.EFFECT_STRENGTH)));
+    protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
+        int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
 
-        return true;
+        target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,
+                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
+                property(DefaultProperties.EFFECT_STRENGTH) + bonusAmplifier));
+
+        return false;
     }
 
     @Override
@@ -42,7 +48,7 @@ public class InvigoratingPresence extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 30, 0, 60)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 30, 0, 60)
                 .add(DefaultProperties.EFFECT_RADIUS, 5)
                 .add(DefaultProperties.EFFECT_DURATION, 900)
                 .add(DefaultProperties.EFFECT_STRENGTH, 1)

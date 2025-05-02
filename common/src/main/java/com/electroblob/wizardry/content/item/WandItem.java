@@ -2,7 +2,6 @@ package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.PlayerWizardData;
-import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
@@ -10,7 +9,7 @@ import com.electroblob.wizardry.api.content.item.IWizardryItem;
 import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
@@ -22,9 +21,11 @@ import com.electroblob.wizardry.core.SpellSoundManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -48,10 +49,10 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     private static final float DISCOVERY_PROGRESSION_MODIFIER = 5f;
     private static final float SECOND_TIME_PROGRESSION_MODIFIER = 1.5f;
     private static final float MAX_PROGRESSION_REDUCTION = 0.75f;
-    public Tier tier;
+    public SpellTier tier;
     public Element element;
 
-    public WandItem(Tier tier, Element element) {
+    public WandItem(SpellTier tier, Element element) {
         super(new Properties().stacksTo(1).durability(tier.maxCharge));
         this.tier = tier;
         this.element = element;
@@ -208,12 +209,13 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())));
             }
 
-            if (this.tier.level < Tiers.MASTER.level && castingTick % CONTINUOUS_TRACKING_INTERVAL == 0) {
+            if (this.tier.level < SpellTiers.MASTER.level && castingTick % CONTINUOUS_TRACKING_INTERVAL == 0) {
                 int progression = (int) (spell.getCost() * modifiers.get(SpellModifiers.PROGRESSION));
                 WandHelper.addProgression(stack, progression);
 
+                // TODO TELL YOU WHEN WAND READY TO LEVEL UP
                 if (!EBConfig.legacyWandLevelling) {
-                    Tier nextTier = tier.next();
+                    SpellTier nextTier = tier.next();
                     int excess = WandHelper.getProgression(stack) - nextTier.getProgression();
                     if (excess >= 0 && excess < progression) {
                         caster.playSound(EBSounds.ITEM_WAND_LEVELUP.get(), 1.25f, 1);
@@ -445,28 +447,27 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public ItemStack applyUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
         if (upgrade.getItem() == EBItems.ARCANE_TOME.get()) {
-            // todo arcane tome
-//            Tier tier = Services.REGISTRY_UTIL;
-//            Tier tier = Tier.values()[upgrade.getTagElement("Tiers").getInt("Tier")];
-//
-//            if ((player == null || player.isCreative() || Wizardry.settings.legacyWandLevelling || WandHelper.getProgression(wand) >= tier.getProgression()) && tier == this.tier.next() && this.tier != Tier.MASTER) {
-//                if (Wizardry.settings.legacyWandLevelling) {
-//                    WandHelper.setProgression(wand, 0);
-//                } else {
-//                    WandHelper.setProgression(wand, WandHelper.getProgression(wand) - tier.getProgression());
-//                }
-//
-//                if (player != null) WizardData.get(player).setTierReached(tier);
-//
-//                ItemStack newWand = new ItemStack(getWand(tier, this.element));
-//                newWand.setTag(wand.getTag());
-//
-//                ((IManaStoringItem) newWand.getItem()).setMana(newWand, this.getMana(wand));
-//
-//                upgrade.shrink(1);
-//
-//                return newWand;
-//            }
+            String tierKey = upgrade.getOrCreateTag().getString("Tier");
+            SpellTier nextTier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
+
+            // TODO tier == this.tier.next() &&
+            if(nextTier == null || this.tier == SpellTiers.MASTER) return wand;
+            if(this.tier == nextTier) return wand; // Don't do anything if the tome tier is equals with the wand tier
+
+
+            if(player == null || player.isCreative() || EBConfig.legacyWandLevelling || WandHelper.getProgression(wand) >= nextTier.getProgression()) {
+                int newProgression = EBConfig.legacyWandLevelling ? 0 : Math.max(0, WandHelper.getProgression(wand) - nextTier.getProgression());
+                WandHelper.setProgression(wand, newProgression);
+
+                if (player != null) Services.WIZARD_DATA.getWizardData(player, player.level()).setTierReached(tier);
+
+                ItemStack newWand = new ItemStack(getWand(nextTier, this.element));
+                newWand.setTag(wand.getTag());
+                ((IManaStoringItem) newWand.getItem()).setMana(newWand, this.getMana(wand));
+                upgrade.shrink(1);
+
+                return newWand;
+            }
         } else if (WandHelper.isWandUpgrade(upgrade.getItem())) {
             Item specialUpgrade = upgrade.getItem();
 
@@ -507,7 +508,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 if (player != null) {
                     //WizardryAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
 
-                    if (WandHelper.getTotalUpgrades(wand) == Tiers.MASTER.upgradeLimit) {
+                    if (WandHelper.getTotalUpgrades(wand) == SpellTiers.MASTER.upgradeLimit) {
                         //WizardryAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
                     }
                 }
@@ -520,6 +521,15 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     // =====================================
     // Utils
     // =====================================
+    public static Item getWand(SpellTier tier, Element element) {
+        if (tier == null) throw new NullPointerException("The given tier cannot be null.");
+        if (element == null) element = Elements.MAGIC;
+        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "magic" : tier.getLocation().getPath();
+        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
+        registryName = "wand_" + registryName;
+        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
+    }
+
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         return (this.element == null ? super.getName(stack) : Component.literal(super.getName(stack).getString()).withStyle(this.element.getColor()));

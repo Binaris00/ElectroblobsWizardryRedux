@@ -8,7 +8,7 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
@@ -51,7 +51,7 @@ public class InvokeWeather extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.LIGHTNING, SpellType.UTILITY, SpellAction.POINT_UP, 30, 15, 100)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellType.UTILITY, SpellAction.POINT_UP, 30, 15, 100)
                 .add(THUNDER_CHANCE)
                 .build();
     }

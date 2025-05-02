@@ -1,11 +1,13 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -48,33 +50,33 @@ public abstract class AreaEffectSpell extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        boolean result = findAndAffectEntities(ctx.world(), ctx.caster().position(), ctx.caster(), ctx.ticksInUse());
+        boolean result = findAndAffectEntities(ctx, ctx.caster().position());
         if(result) this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
         return result;
     }
 
     @Override
     public boolean cast(EntityCastContext ctx) {
-        boolean result = findAndAffectEntities(ctx.world(), ctx.caster().position(), ctx.caster(), ctx.ticksInUse());
+        boolean result = findAndAffectEntities(ctx, ctx.caster().position());
         if(result) this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
         return result;
     }
 
     @Override
     public boolean cast(LocationCastContext ctx) {
-        boolean result = findAndAffectEntities(ctx.world(), ctx.vec3(), null, ctx.ticksInUse());
+        boolean result = findAndAffectEntities(ctx, ctx.vec3());
         if(result) this.playSound(ctx.world(), ctx.vec3(), ctx.ticksInUse(), -1);
         return result;
     }
 
-    protected boolean findAndAffectEntities(Level world, Vec3 origin, @Nullable LivingEntity caster, int ticksInUse) {
-        double radius = this.property(DefaultProperties.EFFECT_RADIUS);
+    protected boolean findAndAffectEntities(CastContext ctx, Vec3 origin) {
+        double radius = this.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
 
-        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, origin.x, origin.y, origin.z, world);
+        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, origin.x, origin.y, origin.z, ctx.world());
 
         if (targetAllies) {
             // TODO Bin: Ally implementation !AllyDesignationSystem.isAllied(caster, target)
-            targets.removeIf(target -> target != caster);
+            targets.removeIf(target -> target != ctx.caster());
         } else {
             // TODO Bin: Ally implementation !AllyDesignationSystem.isAllied(caster, target)
             //targets.removeIf(target -> !AllyDesignationSystem.isValidTarget(caster, target));
@@ -86,23 +88,23 @@ public abstract class AreaEffectSpell extends Spell {
         int i = 0;
 
         for (LivingEntity target : targets) {
-            if (affectEntity(world, origin, caster, target, i++, ticksInUse)) result = true;
+            if (affectEntity(ctx, origin, target, i++)) result = true;
         }
 
-        if (world.isClientSide) spawnParticleEffect(world, origin, radius, caster);
+        if (ctx.world().isClientSide) spawnParticleEffect(ctx, origin, radius);
         return result;
     }
 
-    protected abstract boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse);
+    protected abstract boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount);
 
-    protected void spawnParticleEffect(Level world, Vec3 origin, double radius, @Nullable LivingEntity caster) {
+    protected void spawnParticleEffect(CastContext ctx, Vec3 origin, double radius) {
         int particleCount = (int) Math.round(particleDensity * Math.PI * radius * radius);
 
         for (int i = 0; i < particleCount; i++) {
-            double r = (1 + world.random.nextDouble() * (radius - 1));
-            float angle = world.random.nextFloat() * (float) Math.PI * 2f;
+            double r = (1 + ctx.world().random.nextDouble() * (radius - 1));
+            float angle = ctx.world().random.nextFloat() * (float) Math.PI * 2f;
 
-            spawnParticle(world, origin.x + r * Mth.cos(angle), origin.y, origin.z + r * Mth.sin(angle));
+            spawnParticle(ctx.world(), origin.x + r * Mth.cos(angle), origin.y, origin.z + r * Mth.sin(angle));
         }
     }
 

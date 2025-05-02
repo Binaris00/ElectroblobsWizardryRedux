@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
@@ -11,7 +12,7 @@ import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -30,7 +31,7 @@ public class LifeDrain extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if(!(entityHit.getEntity() instanceof LivingEntity target) || ctx.ticksInUse() % 12 != 0) return false;
-        float damage = property(DefaultProperties.DAMAGE);
+        float damage = property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY);
         DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SORCERY)
                 : target.damageSources().magic();
 
@@ -66,7 +67,7 @@ public class LifeDrain extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 10, 0, 0)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 10, 0, 0)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DAMAGE, 2F)
                 .add(DefaultProperties.HEALTH, 0.35F)

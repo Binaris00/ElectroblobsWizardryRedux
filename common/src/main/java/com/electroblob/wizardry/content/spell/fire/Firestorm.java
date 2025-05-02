@@ -3,6 +3,7 @@ package com.electroblob.wizardry.content.spell.fire;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
@@ -14,8 +15,9 @@ import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -34,19 +36,19 @@ public class Firestorm extends AreaEffectSpell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        burnNearbyBlocks(ctx.world(), ctx.caster().position(), ctx.caster());
+        burnNearbyBlocks(ctx, ctx.caster().position());
         return super.cast(ctx);
     }
 
     @Override
     public boolean cast(EntityCastContext ctx) {
-        burnNearbyBlocks(ctx.world(), ctx.caster().position(), ctx.caster());
+        burnNearbyBlocks(ctx, ctx.caster().position());
         return super.cast(ctx);
     }
 
     @Override
     public boolean cast(LocationCastContext ctx) {
-        burnNearbyBlocks(ctx.world(), ctx.vec3(), null);
+        burnNearbyBlocks(ctx, ctx.vec3());
         return super.cast(ctx);
     }
 
@@ -61,29 +63,29 @@ public class Firestorm extends AreaEffectSpell {
     }
 
     @Override
-    protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
+    protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
             target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
         return true;
     }
 
-    private void burnNearbyBlocks(Level world, Vec3 origin, @Nullable LivingEntity caster) {
-        if(world.isClientSide || !EntityUtil.canDamageBlocks(caster, world)) return;
+    private void burnNearbyBlocks(CastContext ctx, Vec3 origin) {
+        if(ctx.world().isClientSide || !EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return;
 
-        double radius = property(DefaultProperties.EFFECT_RADIUS);
+        double radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
 
         for (int i = -(int) radius; i <= (int) radius; i++) {
             for (int j = -(int) radius; j <= (int) radius; j++) {
                 BlockPos pos = new BlockPos((int) origin.x(), (int) origin.y(), (int) origin.z()).offset(i, 0, j);
-                Integer y = BlockUtil.getNearestSurface(world, new BlockPos(pos), Direction.UP, (int) radius, true, BlockUtil.SurfaceCriteria.NOT_AIR_TO_AIR);
+                Integer y = BlockUtil.getNearestSurface(ctx.world(), new BlockPos(pos), Direction.UP, (int) radius, true, BlockUtil.SurfaceCriteria.NOT_AIR_TO_AIR);
 
                 if (y != null) {
                     pos = new BlockPos(pos.getX(), y, pos.getZ());
 
                     double dist = origin.distanceTo(new Vec3(origin.x + i, y, origin.z + j));
 
-                    if (y != -1 && world.random.nextInt((int) (dist * 2) + 1) < radius && dist < radius && dist > 1.5 && BlockUtil.canPlaceBlock(caster, world, pos)) {
-                        world.setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+                    if (y != -1 && ctx.world().random.nextInt((int) (dist * 2) + 1) < radius && dist < radius && dist > 1.5 && BlockUtil.canPlaceBlock(ctx.caster(), ctx.world(), pos)) {
+                        ctx.world().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
                     }
                 }
             }
@@ -91,34 +93,34 @@ public class Firestorm extends AreaEffectSpell {
     }
 
     @Override
-    protected void spawnParticleEffect(Level world, Vec3 origin, double radius, @Nullable LivingEntity caster) {
+    protected void spawnParticleEffect(CastContext ctx, Vec3 origin, double radius) {
         for (int i = 0; i < 100; i++) {
-            float r = world.random.nextFloat();
-            double speed = 0.02 / r * (1 + world.random.nextDouble());
+            float r = ctx.world().random.nextFloat();
+            double speed = 0.02 / r * (1 + ctx.world().random.nextDouble());
             ParticleBuilder.create(EBParticles.MAGIC_FIRE)
-                    .pos(origin.x, origin.y + world.random.nextDouble() * 3, origin.z)
+                    .pos(origin.x, origin.y + ctx.world().random.nextDouble() * 3, origin.z)
                     .velocity(0, 0, 0)
                     .scale(2)
-                    .time(40 + world.random.nextInt(10))
-                    .spin(world.random.nextDouble() * (radius - 0.5) + 0.5, speed)
-                    .spawn(world);
+                    .time(40 + ctx.world().random.nextInt(10))
+                    .spin(ctx.world().random.nextDouble() * (radius - 0.5) + 0.5, speed)
+                    .spawn(ctx.world());
         }
 
         for (int i = 0; i < 60; i++) {
-            float r = world.random.nextFloat();
-            double speed = 0.02 / r * (1 + world.random.nextDouble());
+            float r = ctx.world().random.nextFloat();
+            double speed = 0.02 / r * (1 + ctx.world().random.nextDouble());
             ParticleBuilder.create(EBParticles.CLOUD)
-                    .pos(origin.x, origin.y + world.random.nextDouble() * 2.5, origin.z)
+                    .pos(origin.x, origin.y + ctx.world().random.nextDouble() * 2.5, origin.z)
                     .color(DrawingUtils.mix(DrawingUtils.mix(0xffbe00, 0xff3600, r / 0.6f), 0x222222, (r - 0.6f) / 0.4f))
                     .spin(r * (radius - 1) + 0.5, speed)
-                    .spawn(world);
+                    .spawn(ctx.world());
         }
     }
 
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT_DOWN, 80, 20, 250)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT_DOWN, 80, 20, 250)
                 .add(DefaultProperties.EFFECT_RADIUS, 6)
                 .add(DefaultProperties.EFFECT_DURATION, 15)
                 .build();

@@ -4,10 +4,11 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.effect.CurseMobEffect;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -20,7 +21,7 @@ public class RemoveCurse extends BuffSpell {
     }
 
     @Override
-    protected boolean applyEffects(LivingEntity caster) {
+    protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
         if(!caster.getActiveEffects().isEmpty()){
             boolean flag = false;
             for(MobEffectInstance effect : caster.getActiveEffects()){
@@ -53,7 +54,7 @@ public class RemoveCurse extends BuffSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 50, 20, 80)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 50, 20, 80)
                 .build();
     }
 }

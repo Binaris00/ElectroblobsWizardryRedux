@@ -9,8 +9,9 @@ import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.entity.construct.DecayConstruct;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.ConstructRangedSpell;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
@@ -32,9 +33,9 @@ public class Decay extends ConstructRangedSpell<DecayConstruct> {
         super.spawnConstruct(ctx,vec3, side);
 
         float decayCount = property(PATCHES_SPAWNED);
-        int quantity = (int) (decayCount * 1);
-        int horizontalRange = (int) (0.4 * decayCount * 1);
-        int verticalRange = 6;
+        int quantity = (int) (decayCount * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
+        int horizontalRange = (int) (0.4 * decayCount * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
+        int verticalRange = (int) (6 * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
 
         for (int i = 0; i < quantity; i++) {
             BlockPos pos = BlockUtil.findNearbyFloorSpace(ctx.world(), origin, horizontalRange, verticalRange, false);
@@ -48,7 +49,7 @@ public class Decay extends ConstructRangedSpell<DecayConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.NECROMANCY, SpellType.DEFENCE, SpellAction.POINT, 35, 0, 80)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.DEFENCE, SpellAction.POINT, 35, 0, 80)
                 .add(DefaultProperties.RANGE, 12F)
                 .add(DefaultProperties.DURATION, 400)
                 .add(DefaultProperties.EFFECT_DURATION, 400)

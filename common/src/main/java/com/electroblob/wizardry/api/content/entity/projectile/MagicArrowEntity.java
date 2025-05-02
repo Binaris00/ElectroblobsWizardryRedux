@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.client.renderer.entity.MagicArrowRenderer;
 import com.electroblob.wizardry.content.spell.abstr.ArrowSpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -41,6 +42,8 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     public static final double LAUNCH_Y_OFFSET = 0.1;
     protected int ticksInGround;
     protected int ticksInAir;
+    public float damageMultiplier = 1.0f;
+
     public MagicArrowEntity(EntityType<? extends AbstractArrow> entityType, Level world) {
         super(entityType, world);
     }
@@ -105,7 +108,7 @@ public abstract class MagicArrowEntity extends AbstractArrow {
         DamageSource damageSource = getOwner() == null ? EBMagicDamageSource.causeDirectMagicDamage(this, getDamageType())
                 : EBMagicDamageSource.causeIndirectMagicDamage(this, this.getOwner(), getDamageType());
 
-        target.hurt(damageSource, (float) getDamage());
+        target.hurt(damageSource, (float) getDamage() * this.damageMultiplier);
 
         // Knockback and post effects
         if (this.getKnockback() > 0) {
@@ -124,7 +127,23 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     }
 
 
+    // ======================= NBT =======================
 
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag compound) {
+        super.addAdditionalSaveData(compound);
+        compound.putInt("ticksInAir", ticksInAir);
+        compound.putInt("ticksInGround", ticksInGround);
+        compound.putFloat("damageMultiplier", damageMultiplier);
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag compound) {
+        super.readAdditionalSaveData(compound);
+        ticksInAir = compound.getInt("ticksInAir");
+        ticksInGround = compound.getInt("ticksInGround");
+        damageMultiplier = compound.getFloat("damageMultiplier");
+    }
 
     // ======================= Property getters (to be overridden by subclasses) =======================
 

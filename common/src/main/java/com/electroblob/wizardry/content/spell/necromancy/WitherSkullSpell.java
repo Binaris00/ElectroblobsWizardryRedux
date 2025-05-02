@@ -7,8 +7,9 @@ import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.entity.projectile.WitherSkull;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -19,7 +20,7 @@ public class WitherSkullSpell extends Spell {
         Vec3 look = ctx.caster().getLookAngle();
         WitherSkull witherSkull = new WitherSkull(ctx.world(), ctx.caster(), 1, 1, 1);
         witherSkull.setPos(ctx.caster().getX() + look.x, ctx.caster().getY() + look.y + 1.3, ctx.caster().getZ() + look.z);
-        double acceleration = property(DefaultProperties.SPEED);
+        double acceleration = property(DefaultProperties.SPEED) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
 
         witherSkull.xPower = look.x * acceleration;
         witherSkull.yPower = look.y * acceleration;
@@ -53,7 +54,7 @@ public class WitherSkullSpell extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 20, 5, 30)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 20, 5, 30)
                 .add(DefaultProperties.SPEED, 0.1F)
                 .build();
     }

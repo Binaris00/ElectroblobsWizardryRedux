@@ -815,5 +815,6 @@
   "item.ebwizardry.wizard_robe_ice": "Ice Mage Robes",
   "item.ebwizardry.wizard_robe_lightning": "Storm Mage Robes",
   "item.ebwizardry.wizard_robe_necromancy": "Necromancer Robes",
-  "item.ebwizardry.wizard_robe_sorcery": "Sorcerer Robes"
+  "item.ebwizardry.wizard_robe_sorcery": "Sorcerer Robes",
+  "item.ebwizardry.arcane_tome.desc": "Upgrades any %s wand with sufficient progression to %s tier"
 }

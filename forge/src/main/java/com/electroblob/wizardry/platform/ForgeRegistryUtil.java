@@ -3,12 +3,13 @@ package com.electroblob.wizardry.platform;
 import com.electroblob.wizardry.EBRegistriesForge;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.core.platform.services.IRegistryUtil;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.Comparator;
 
 public class ForgeRegistryUtil implements IRegistryUtil {
     @Override
@@ -17,8 +18,10 @@ public class ForgeRegistryUtil implements IRegistryUtil {
     }
 
     @Override
-    public Collection<Tier> getTiers() {
-        return EBRegistriesForge.TIER.get().getValues().stream().toList();
+    public Collection<SpellTier> getTiers() {
+        return EBRegistriesForge.TIER.get().getValues().stream()
+                .sorted(Comparator.comparingInt(t -> t.level))
+                .toList();
     }
 
     @Override
@@ -32,7 +35,7 @@ public class ForgeRegistryUtil implements IRegistryUtil {
     }
 
     @Override
-    public @Nullable Tier getTier(ResourceLocation location) {
+    public @Nullable SpellTier getTier(ResourceLocation location) {
         return EBRegistriesForge.TIER.get().getValue(location);
     }
 
@@ -52,7 +55,7 @@ public class ForgeRegistryUtil implements IRegistryUtil {
     }
 
     @Override
-    public @Nullable ResourceLocation getTier(Tier tier) {
+    public @Nullable ResourceLocation getTier(SpellTier tier) {
         return EBRegistriesForge.TIER.get().getKey(tier);
     }
 }

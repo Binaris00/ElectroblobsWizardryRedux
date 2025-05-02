@@ -7,7 +7,7 @@ import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Element;
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
@@ -56,14 +56,14 @@ import java.util.function.BiConsumer;
 import static com.electroblob.wizardry.content.Forfeit.HORIZONTALS;
 
 public class ForfeitRegistry {
-    private static final ListMultimap<Pair<Tier, Element>, Forfeit> forfeits = ArrayListMultimap.create();
+    private static final ListMultimap<Pair<SpellTier, Element>, Forfeit> forfeits = ArrayListMultimap.create();
     private static final float TIER_CHANGE_CHANCE = 0.2f;
 
-    public static void add(Tier tier, Element element, Forfeit forfeit){
+    public static void add(SpellTier tier, Element element, Forfeit forfeit){
         forfeits.put(Pair.of(tier, element), forfeit);
     }
 
-    public static Forfeit getRandomForfeit(RandomSource random, Tier tier, Element element){
+    public static Forfeit getRandomForfeit(RandomSource random, SpellTier tier, Element element){
         float f = random.nextFloat();
         if(f < TIER_CHANGE_CHANCE) tier = tier.previous();
         else if(f > 1 - TIER_CHANGE_CHANCE) tier = tier.next();
@@ -158,9 +158,9 @@ public class ForfeitRegistry {
     }
 
     public static void register(){
-        add(Tiers.NOVICE, Elements.FIRE, create("burn_self", (w, p) -> p.setSecondsOnFire(5)));
+        add(SpellTiers.NOVICE, Elements.FIRE, create("burn_self", (w, p) -> p.setSecondsOnFire(5)));
 
-        add(Tiers.APPRENTICE, Elements.FIRE, create("fireball", (w, p) -> {
+        add(SpellTiers.APPRENTICE, Elements.FIRE, create("fireball", (w, p) -> {
             if(!w.isClientSide){
                 MagicFireballEntity fireball = new MagicFireballEntity(w);
                 Vec3 vec = p.getEyePosition(1).add(p.getLookAngle().scale(6));
@@ -170,7 +170,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.APPRENTICE, Elements.FIRE, create("firebomb", (w, p) -> {
+        add(SpellTiers.APPRENTICE, Elements.FIRE, create("firebomb", (w, p) -> {
             if(!w.isClientSide){
                 FireBombEntity firebomb = new FireBombEntity(w);
                 firebomb.setPos(p.getX(), p.getY() + 5, p.getZ());
@@ -178,9 +178,9 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.ADVANCED, Elements.FIRE, create("explode", (w, p) -> w.explode(null, p.getX(), p.getY(), p.getZ(), 1, Level.ExplosionInteraction.NONE)));
+        add(SpellTiers.ADVANCED, Elements.FIRE, create("explode", (w, p) -> w.explode(null, p.getX(), p.getY(), p.getZ(), 1, Level.ExplosionInteraction.NONE)));
 
-        add(Tiers.ADVANCED, Elements.FIRE, create("blazes", (w, p) -> {
+        add(SpellTiers.ADVANCED, Elements.FIRE, create("blazes", (w, p) -> {
             if(!w.isClientSide){
                 for(int i = 0; i < 3; i++){
                     BlockPos pos = BlockUtil.findNearbyFloorSpace(p, 4, 2);
@@ -193,7 +193,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.MASTER, Elements.FIRE, create("burn_surroundings", (w, p) -> {
+        add(SpellTiers.MASTER, Elements.FIRE, create("burn_surroundings", (w, p) -> {
             if(!w.isClientSide && EntityUtil.canDamageBlocks(p, w)){
                 List<BlockPos> sphere = BlockUtil.getBlockSphere(p.blockPosition(), 6);
                 for(BlockPos pos : sphere){
@@ -203,17 +203,17 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.MASTER, Elements.FIRE, create("meteors", (w, p) -> {
+        add(SpellTiers.MASTER, Elements.FIRE, create("meteors", (w, p) -> {
             if(!w.isClientSide) for(int i=0; i<5; i++) w.addFreshEntity(new MeteorEntity(w, p.getX() + w.random.nextDouble() * 16 - 8,
                         p.getY() + 40 + w.random.nextDouble() * 30, p.getZ() + w.random.nextDouble() * 16 - 8,
                         1, EntityUtil.canDamageBlocks(p, w)));
         }));
 
-        add(Tiers.NOVICE, Elements.ICE, create("freeze_self", (w, p) -> p.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200))));
+        add(SpellTiers.NOVICE, Elements.ICE, create("freeze_self", (w, p) -> p.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200))));
 
-        add(Tiers.APPRENTICE, Elements.ICE, create("freeze_self_2", (w, p) -> p.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 300, 1))));
+        add(SpellTiers.APPRENTICE, Elements.ICE, create("freeze_self_2", (w, p) -> p.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 300, 1))));
 
-        add(Tiers.APPRENTICE, Elements.ICE, create("ice_spikes", (w, p) -> {
+        add(SpellTiers.APPRENTICE, Elements.ICE, create("ice_spikes", (w, p) -> {
             if(!w.isClientSide){
                 for(int i = 0; i < 5; i++){
                     IceSpikeConstruct iceSpike = new IceSpikeConstruct(w);
@@ -229,7 +229,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.ADVANCED, Elements.ICE, create("blizzard", (w, p) -> {
+        add(SpellTiers.ADVANCED, Elements.ICE, create("blizzard", (w, p) -> {
             if(!w.isClientSide){
                 BlizzardConstruct blizzard = new BlizzardConstruct(w);
                 blizzard.setPos(p.getX(), p.getY(), p.getZ());
@@ -237,7 +237,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.ADVANCED, Elements.ICE, create("ice_wraiths", (w, p) -> {
+        add(SpellTiers.ADVANCED, Elements.ICE, create("ice_wraiths", (w, p) -> {
             if(!w.isClientSide){
                 for(int i = 0; i < 3; i++){
                     BlockPos pos = BlockUtil.findNearbyFloorSpace(p, 4, 2);
@@ -250,7 +250,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.MASTER, Elements.ICE, create("hailstorm", (w, p) -> {
+        add(SpellTiers.MASTER, Elements.ICE, create("hailstorm", (w, p) -> {
             if(!w.isClientSide){
                 HailstormConstruct hailstorm = new HailstormConstruct(w);
                 hailstorm.setPos(p.getX(), p.getY() + 5, p.getZ() - 3);
@@ -267,12 +267,12 @@ public class ForfeitRegistry {
             }
         }));*/
 
-        add(Tiers.NOVICE, Elements.LIGHTNING, create("thunder", (w, p) -> {
+        add(SpellTiers.NOVICE, Elements.LIGHTNING, create("thunder", (w, p) -> {
             p.push(-p.getLookAngle().x, 0, -p.getLookAngle().z);
             if(w.isClientSide) w.addParticle(ParticleTypes.EXPLOSION_EMITTER, p.getX(), p.getY(), p.getZ(), 0, 0, 0);
         }));
 
-        add(Tiers.APPRENTICE, Elements.LIGHTNING, create("storm", (w, p) -> {
+        add(SpellTiers.APPRENTICE, Elements.LIGHTNING, create("storm", (w, p) -> {
             // TODO
             //if(!Spells.INVOKE_WEATHER.isEnabled(Context.WANDS)) return;
             int standardWeatherTime = (300 + (new Random()).nextInt(600)) * 20;
@@ -281,7 +281,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.APPRENTICE, Elements.LIGHTNING, create("lightning_sigils", (w, p) -> {
+        add(SpellTiers.APPRENTICE, Elements.LIGHTNING, create("lightning_sigils", (w, p) -> {
             if(!w.isClientSide){
                 for(Direction direction : HORIZONTALS){
                     BlockPos pos = p.blockPosition().relative(direction, 2);
@@ -294,7 +294,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.ADVANCED, Elements.LIGHTNING, create("lightning", (w, p) -> {
+        add(SpellTiers.ADVANCED, Elements.LIGHTNING, create("lightning", (w, p) -> {
             LightningBolt bolt = new LightningBolt(EntityType.LIGHTNING_BOLT, w);
             bolt.setPos(p.getX(), p.getY(), p.getZ());
             w.addFreshEntity(bolt);
@@ -316,7 +316,7 @@ public class ForfeitRegistry {
             }
         }));*/
 
-        add(Tiers.MASTER, Elements.LIGHTNING, create("storm_elemental", (w, p) -> {
+        add(SpellTiers.MASTER, Elements.LIGHTNING, create("storm_elemental", (w, p) -> {
             if(!w.isClientSide){
                 for(Direction direction : HORIZONTALS){
                     // TODO
@@ -328,9 +328,9 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.NOVICE, Elements.NECROMANCY, create("nausea", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 400))));
+        add(SpellTiers.NOVICE, Elements.NECROMANCY, create("nausea", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 400))));
 
-        add(Tiers.APPRENTICE, Elements.NECROMANCY, create("zombie_horde", (w, p) -> {
+        add(SpellTiers.APPRENTICE, Elements.NECROMANCY, create("zombie_horde", (w, p) -> {
             if(!w.isClientSide){
                 for(int i = 0; i < 3; i++){
                     BlockPos pos = BlockUtil.findNearbyFloorSpace(p, 4, 2);
@@ -342,9 +342,9 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.ADVANCED, Elements.NECROMANCY, create("wither_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.WITHER, 400))));
+        add(SpellTiers.ADVANCED, Elements.NECROMANCY, create("wither_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.WITHER, 400))));
 
-        add(Tiers.MASTER, Elements.NECROMANCY, create("cripple_self", (w, p) -> p.hurt(p.damageSources().magic(), p.getHealth() - 1)));
+        add(SpellTiers.MASTER, Elements.NECROMANCY, create("cripple_self", (w, p) -> p.hurt(p.damageSources().magic(), p.getHealth() - 1)));
 
         /*add(Tiers.MASTER, Elements.NECROMANCY, create("shadow_wraiths", (w, p) -> {
             if(!w.isClientSide){
@@ -357,7 +357,7 @@ public class ForfeitRegistry {
             }
         }));*/
 
-        add(Tiers.NOVICE, Elements.EARTH, create("snares", (w, p) -> {
+        add(SpellTiers.NOVICE, Elements.EARTH, create("snares", (w, p) -> {
             if(!w.isClientSide && EntityUtil.canDamageBlocks(p, w)){
                 for(Direction direction : HORIZONTALS){
                     BlockPos pos = p.blockPosition().relative(direction);
@@ -368,7 +368,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.NOVICE, Elements.EARTH, create("squid", (w, p) -> {
+        add(SpellTiers.NOVICE, Elements.EARTH, create("squid", (w, p) -> {
             if(!w.isClientSide){
                 Squid squid = new Squid(EntityType.SQUID, w);
                 squid.setPos(p.getX(), p.getY() + 3, p.getZ());
@@ -376,7 +376,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.APPRENTICE, Elements.EARTH, create("uproot_plants", (w, p) -> {
+        add(SpellTiers.APPRENTICE, Elements.EARTH, create("uproot_plants", (w, p) -> {
             if(!w.isClientSide && BlockUtil.canDamageBlocks(p, w)){
                 List<BlockPos> sphere = BlockUtil.getBlockSphere(p.blockPosition(), 5);
                 sphere.removeIf(pos -> !BlockUtil.canBreakBlock(p, w, pos));
@@ -384,9 +384,9 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.APPRENTICE, Elements.EARTH, create("poison_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.POISON, 400, 1))));
+        add(SpellTiers.APPRENTICE, Elements.EARTH, create("poison_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.POISON, 400, 1))));
 
-        add(Tiers.ADVANCED, Elements.EARTH, create("flood", (w, p) -> {
+        add(SpellTiers.ADVANCED, Elements.EARTH, create("flood", (w, p) -> {
             if(!w.isClientSide && BlockUtil.canDamageBlocks(p, w)){
                 List<BlockPos> sphere = BlockUtil.getBlockSphere(p.blockPosition().above(), 2);
                 sphere.removeIf(pos -> !BlockUtil.canBlockBeReplaced(w, pos, true) || !BlockUtil.canPlaceBlock(p, w, pos));
@@ -394,7 +394,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.MASTER, Elements.EARTH, create("bury_self", (w, p) -> {
+        add(SpellTiers.MASTER, Elements.EARTH, create("bury_self", (w, p) -> {
             if(!w.isClientSide){
                 List<BlockPos> sphere = BlockUtil.getBlockSphere(p.blockPosition(), 4);
                 sphere.removeIf(pos -> !w.getBlockState(pos).isCollisionShapeFullBlock(w, pos) || BlockUtil.isBlockUnbreakable(w, pos) || BlockUtil.canBreakBlock(p, w, pos));
@@ -412,7 +412,7 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.NOVICE, Elements.SORCERY, create("spill_inventory", (w, p) -> {
+        add(SpellTiers.NOVICE, Elements.SORCERY, create("spill_inventory", (w, p) -> {
             for(int i = 0; i < p.getInventory().items.size(); i++){
                 ItemStack stack = p.getInventory().items.get(i);
                 if(!stack.isEmpty()){
@@ -422,9 +422,9 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.APPRENTICE, Elements.SORCERY, create("teleport_self", (w, p) -> ((Banish)Spells.BANISH).teleport(p, w, 8 + w.random.nextDouble() * 8)));
+        add(SpellTiers.APPRENTICE, Elements.SORCERY, create("teleport_self", (w, p) -> ((Banish)Spells.BANISH).teleport(p, w, 8 + w.random.nextDouble() * 8)));
 
-        add(Tiers.ADVANCED, Elements.SORCERY, create("levitate_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 200))));
+        add(SpellTiers.ADVANCED, Elements.SORCERY, create("levitate_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 200))));
 
         //TODO
         /*add(Tiers.ADVANCED, Elements.SORCERY, create("vex_horde", (w, p) -> {
@@ -454,9 +454,9 @@ public class ForfeitRegistry {
             }
         }));*/
 
-        add(Tiers.NOVICE, Elements.HEALING, create("damage_self", (w, p) -> p.hurt(p.damageSources().magic(), 4)));
+        add(SpellTiers.NOVICE, Elements.HEALING, create("damage_self", (w, p) -> p.hurt(p.damageSources().magic(), 4)));
 
-        add(Tiers.NOVICE, Elements.HEALING, create("spill_armour", (w, p) -> {
+        add(SpellTiers.NOVICE, Elements.HEALING, create("spill_armour", (w, p) -> {
             for(int i = 0; i < p.getInventory().armor.size(); i++){
                 ItemStack stack = p.getInventory().armor.get(i);
                 if(!stack.isEmpty()){
@@ -466,16 +466,16 @@ public class ForfeitRegistry {
             }
         }));
 
-        add(Tiers.APPRENTICE, Elements.HEALING, create("hunger", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.HUNGER, 400, 4))));
+        add(SpellTiers.APPRENTICE, Elements.HEALING, create("hunger", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.HUNGER, 400, 4))));
 
-        add(Tiers.APPRENTICE, Elements.HEALING, create("blind_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200))));
+        add(SpellTiers.APPRENTICE, Elements.HEALING, create("blind_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200))));
 
-        add(Tiers.ADVANCED, Elements.HEALING, create("weaken_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 3))));
+        add(SpellTiers.ADVANCED, Elements.HEALING, create("weaken_self", (w, p) -> p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 3))));
 
         // todo
         //add(Tiers.ADVANCED, Elements.HEALING, create("jam_self", (w, p) -> p.addEffect(new MobEffectInstance(EBMobEffects.ARCANE_JAMMER.get(), 300))));
 
-        add(Tiers.MASTER, Elements.HEALING, create("curse_self", (w, p) -> p.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_UNDEATH.get(), Integer.MAX_VALUE))));
+        add(SpellTiers.MASTER, Elements.HEALING, create("curse_self", (w, p) -> p.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_UNDEATH.get(), Integer.MAX_VALUE))));
     }
 
     public static boolean isCollisionShapeFullBlock(BlockGetter blockGetter, BlockPos pos) {

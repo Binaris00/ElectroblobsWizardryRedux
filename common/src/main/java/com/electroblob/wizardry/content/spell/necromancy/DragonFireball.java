@@ -7,8 +7,9 @@ import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -24,7 +25,7 @@ public class DragonFireball extends Spell {
 
             fireball.setPos(ctx.caster().getX() + look.x, ctx.caster().getY() + look.y + 1.3, ctx.caster().getZ() + look.z);
 
-            double acceleration = property(DefaultProperties.ACCELERATION);
+            double acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
 
             fireball.xPower = look.x * acceleration;
             fireball.yPower = look.y * acceleration;
@@ -65,7 +66,7 @@ public class DragonFireball extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.NONE, 30, 0, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.NONE, 30, 0, 40)
                 .add(DefaultProperties.ACCELERATION, 0.1F).build();
     }
 }

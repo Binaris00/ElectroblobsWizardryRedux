@@ -7,8 +7,9 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.Level;
@@ -26,7 +27,7 @@ public class GrowthAura extends Spell {
 
         boolean flag = false;
         Level level = ctx.caster().level();
-        List<BlockPos> sphere = BlockUtil.getBlockSphere(ctx.caster().blockPosition(), property(DefaultProperties.EFFECT_RADIUS));
+        List<BlockPos> sphere = BlockUtil.getBlockSphere(ctx.caster().blockPosition(), property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
 
         for (BlockPos pos : sphere) {
             BlockState state = level.getBlockState(pos);
@@ -57,7 +58,7 @@ public class GrowthAura extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.EARTH, SpellType.UTILITY, SpellAction.POINT_UP, 20, 0, 50)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.UTILITY, SpellAction.POINT_UP, 20, 0, 50)
                 .add(DefaultProperties.EFFECT_RADIUS, 2).build();
     }
 }

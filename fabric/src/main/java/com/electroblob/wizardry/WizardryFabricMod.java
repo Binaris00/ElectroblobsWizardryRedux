@@ -22,7 +22,7 @@ public final class WizardryFabricMod implements ModInitializer {
         EBItems.register(Registry::register);
         EBEntities.register(Registry::register);
 
-        Tiers.register(EBRegistriesFabric.TIERS, Registry::register);
+        SpellTiers.register(EBRegistriesFabric.TIERS, Registry::register);
         Elements.register(EBRegistriesFabric.ELEMENTS, Registry::register);
         Spells.register(EBRegistriesFabric.SPELLS, Registry::register);
 

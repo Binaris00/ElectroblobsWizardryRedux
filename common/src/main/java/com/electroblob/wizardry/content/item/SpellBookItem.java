@@ -4,12 +4,12 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.util.ClientUtils;
 import com.electroblob.wizardry.api.client.util.GlyphClientHandler;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -29,11 +29,11 @@ import java.util.List;
 import java.util.Map;
 
 public class SpellBookItem extends Item {
-    private static final Map<Tier, ResourceLocation> GUI_TEXTURES = ImmutableMap.of(
-            Tiers.NOVICE, WizardryMainMod.location("textures/gui/spell_book_novice.png"),
-            Tiers.APPRENTICE, WizardryMainMod.location("textures/gui/spell_book_apprentice.png"),
-            Tiers.ADVANCED, WizardryMainMod.location("textures/gui/spell_book_advanced.png"),
-            Tiers.MASTER, WizardryMainMod.location("textures/gui/spell_book_master.png"));
+    private static final Map<SpellTier, ResourceLocation> GUI_TEXTURES = ImmutableMap.of(
+            SpellTiers.NOVICE, WizardryMainMod.location("textures/gui/spell_book_novice.png"),
+            SpellTiers.APPRENTICE, WizardryMainMod.location("textures/gui/spell_book_apprentice.png"),
+            SpellTiers.ADVANCED, WizardryMainMod.location("textures/gui/spell_book_advanced.png"),
+            SpellTiers.MASTER, WizardryMainMod.location("textures/gui/spell_book_master.png"));
 
     public SpellBookItem(Properties properties) {
         super(properties);

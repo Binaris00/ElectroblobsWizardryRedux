@@ -5,11 +5,12 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -37,9 +38,8 @@ public class Flight extends Spell {
 
         if(ctx.ticksInUse() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
 
-        // Speed
-        float speed = property(DefaultProperties.SPEED);
-        float acceleration = 0.05f;
+        float speed = property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY);
+        float acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(SpellModifiers.POTENCY);
 
         if((Math.abs(ctx.caster().getDeltaMovement().x) < speed || ctx.caster().getDeltaMovement().x / ctx.caster().getLookAngle().x < 0)
                 && (Math.abs(ctx.caster().getDeltaMovement().z) < speed || ctx.caster().getDeltaMovement().z / ctx.caster().getLookAngle().z < 0)){
@@ -73,7 +73,7 @@ public class Flight extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.MASTER, Elements.EARTH, SpellType.UTILITY, SpellAction.NONE, 10, 0, 0)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.UTILITY, SpellAction.NONE, 10, 0, 0)
                 .add(DefaultProperties.ACCELERATION, 0.05F)
                 .add(DefaultProperties.SPEED, 0.5F)
                 .build();

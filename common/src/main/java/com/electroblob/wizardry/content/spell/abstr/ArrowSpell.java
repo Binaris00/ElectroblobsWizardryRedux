@@ -3,12 +3,11 @@ package com.electroblob.wizardry.content.spell.abstr;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
-import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
-import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.*;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -51,7 +50,8 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
     public boolean cast(PlayerCastContext ctx) {
         if (!ctx.world().isClientSide) {
             T arrow = arrowFactory.apply(ctx.world());
-            arrow.aim(ctx.caster(), calculateVelocity(arrow, ctx.caster().getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
+            arrow.aim(ctx.caster(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
             addArrowExtras(arrow, ctx.caster());
             ctx.world().addFreshEntity(arrow);
         }
@@ -67,7 +67,8 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         if (!ctx.world().isClientSide) {
             T arrow = arrowFactory.apply(ctx.world());
             int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
-            arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(arrow, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET), aimingError);
+            arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET), aimingError);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
             addArrowExtras(arrow, ctx.caster());
             ctx.world().addFreshEntity(arrow);
         }
@@ -81,12 +82,13 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
     @Override
     public boolean cast(LocationCastContext ctx) {
         if (!ctx.world().isClientSide) {
-            T projectile = arrowFactory.apply(ctx.world());
-            projectile.setPos(ctx.vec3());
+            T arrow = arrowFactory.apply(ctx.world());
+            arrow.setPos(ctx.vec3());
             Vec3 vec = Vec3.atLowerCornerOf(ctx.direction().getNormal());
-            projectile.shoot(vec.x(), vec.y(), vec.z(), calculateVelocity(projectile, 0.375f), 1);
-            addArrowExtras(projectile, null);
-            ctx.world().addFreshEntity(projectile);
+            arrow.shoot(vec.x(), vec.y(), vec.z(), calculateVelocity(ctx, arrow, 0.375f), 1);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            addArrowExtras(arrow, null);
+            ctx.world().addFreshEntity(arrow);
         }
 
         this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
@@ -98,12 +100,13 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
     /**
      * Calculates the velocity of the projectile based on gravity and range.
      *
+     * @param ctx           Cast Context about how the spell is cast
      * @param projectile    The projectile entity.
      * @param launchHeight  The vertical height from which the projectile is launched.
      * @return The velocity value to be used when launching the projectile.
      */
-    public float calculateVelocity(MagicArrowEntity projectile, float launchHeight) {
-        float range = this.property(DefaultProperties.RANGE);
+    public float calculateVelocity(CastContext ctx, MagicArrowEntity projectile, float launchHeight) {
+        float range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
 
         if (projectile.isNoGravity()) {
             if (projectile.getLifetime() <= 0) return 2;

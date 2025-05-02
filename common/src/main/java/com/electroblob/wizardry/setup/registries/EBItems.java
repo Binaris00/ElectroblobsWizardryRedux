@@ -3,7 +3,7 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.spell.Element;
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.item.*;
 import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
@@ -50,7 +50,7 @@ public final class EBItems {
     public static final DeferredObject<Item> SPARK_BOMB = item("spark_bomb");
 
     //General Items
-    public static final DeferredObject<Item> ARCANE_TOME = item("arcane_tome");
+    public static final DeferredObject<Item> ARCANE_TOME = artifact("arcane_tome", ArcaneTomeItem::new);
     public static final DeferredObject<Item> BLANK_SCROLL = item("blank_scroll");
     public static final DeferredObject<Item> RUINED_SPELL_BOOK = item("ruined_spell_book");
     public static final DeferredObject<Item> SCROLL = item("scroll", () -> new ScrollItem(new Item.Properties().stacksTo(16)));
@@ -81,45 +81,45 @@ public final class EBItems {
     public static final DeferredObject<Item> SPECTRAL_DUST_SORCERY = item("spectral_dust_sorcery");
 
     //Wands
-    public static final DeferredObject<Item> NOVICE_WAND = wand("wand_novice", Tiers.NOVICE, null);
-    public static final DeferredObject<Item> APPRENTICE_WAND = wand("wand_apprentice", Tiers.APPRENTICE, null);
-    public static final DeferredObject<Item> ADVANCED_WAND = wand("wand_advanced", Tiers.ADVANCED,null);
-    public static final DeferredObject<Item> MASTER_WAND = wand("wand_master", Tiers.MASTER, null);
+    public static final DeferredObject<Item> NOVICE_WAND = wand("wand_novice", SpellTiers.NOVICE, null);
+    public static final DeferredObject<Item> APPRENTICE_WAND = wand("wand_apprentice", SpellTiers.APPRENTICE, null);
+    public static final DeferredObject<Item> ADVANCED_WAND = wand("wand_advanced", SpellTiers.ADVANCED,null);
+    public static final DeferredObject<Item> MASTER_WAND = wand("wand_master", SpellTiers.MASTER, null);
 
-    public static final DeferredObject<Item> NOVICE_EARTH_WAND = wand("wand_novice_earth", Tiers.NOVICE, Elements.EARTH); // Earth Wands
-    public static final DeferredObject<Item> APPRENTICE_EARTH_WAND = wand("wand_apprentice_earth", Tiers.APPRENTICE, Elements.EARTH);
-    public static final DeferredObject<Item> ADVANCED_EARTH_WAND = wand("wand_advanced_earth", Tiers.ADVANCED, Elements.EARTH);
-    public static final DeferredObject<Item> MASTER_EARTH_WAND = wand("wand_master_earth", Tiers.MASTER, Elements.EARTH);
+    public static final DeferredObject<Item> NOVICE_EARTH_WAND = wand("wand_novice_earth", SpellTiers.NOVICE, Elements.EARTH); // Earth Wands
+    public static final DeferredObject<Item> APPRENTICE_EARTH_WAND = wand("wand_apprentice_earth", SpellTiers.APPRENTICE, Elements.EARTH);
+    public static final DeferredObject<Item> ADVANCED_EARTH_WAND = wand("wand_advanced_earth", SpellTiers.ADVANCED, Elements.EARTH);
+    public static final DeferredObject<Item> MASTER_EARTH_WAND = wand("wand_master_earth", SpellTiers.MASTER, Elements.EARTH);
 
-    public static final DeferredObject<Item> NOVICE_FIRE_WAND = wand("wand_novice_fire", Tiers.NOVICE, Elements.FIRE); // Fire Wands
-    public static final DeferredObject<Item> APPRENTICE_FIRE_WAND = wand("wand_apprentice_fire", Tiers.APPRENTICE, Elements.FIRE);
-    public static final DeferredObject<Item> ADVANCED_FIRE_WAND = wand("wand_advanced_fire", Tiers.ADVANCED, Elements.FIRE);
-    public static final DeferredObject<Item> MASTER_FIRE_WAND = wand("wand_master_fire", Tiers.MASTER, Elements.FIRE);
+    public static final DeferredObject<Item> NOVICE_FIRE_WAND = wand("wand_novice_fire", SpellTiers.NOVICE, Elements.FIRE); // Fire Wands
+    public static final DeferredObject<Item> APPRENTICE_FIRE_WAND = wand("wand_apprentice_fire", SpellTiers.APPRENTICE, Elements.FIRE);
+    public static final DeferredObject<Item> ADVANCED_FIRE_WAND = wand("wand_advanced_fire", SpellTiers.ADVANCED, Elements.FIRE);
+    public static final DeferredObject<Item> MASTER_FIRE_WAND = wand("wand_master_fire", SpellTiers.MASTER, Elements.FIRE);
 
-    public static final DeferredObject<Item> NOVICE_HEALING_WAND = wand("wand_novice_healing", Tiers.NOVICE, Elements.HEALING); // Healing Wands
-    public static final DeferredObject<Item> APPRENTICE_HEALING_WAND = wand("wand_apprentice_healing", Tiers.APPRENTICE, Elements.HEALING);
-    public static final DeferredObject<Item> ADVANCED_HEALING_WAND = wand("wand_advanced_healing", Tiers.ADVANCED, Elements.HEALING);
-    public static final DeferredObject<Item> MASTER_HEALING_WAND = wand("wand_master_healing", Tiers.MASTER, Elements.HEALING);
+    public static final DeferredObject<Item> NOVICE_HEALING_WAND = wand("wand_novice_healing", SpellTiers.NOVICE, Elements.HEALING); // Healing Wands
+    public static final DeferredObject<Item> APPRENTICE_HEALING_WAND = wand("wand_apprentice_healing", SpellTiers.APPRENTICE, Elements.HEALING);
+    public static final DeferredObject<Item> ADVANCED_HEALING_WAND = wand("wand_advanced_healing", SpellTiers.ADVANCED, Elements.HEALING);
+    public static final DeferredObject<Item> MASTER_HEALING_WAND = wand("wand_master_healing", SpellTiers.MASTER, Elements.HEALING);
 
-    public static final DeferredObject<Item> NOVICE_ICE_WAND = wand("wand_novice_ice", Tiers.NOVICE , Elements.ICE); // Ice Wands
-    public static final DeferredObject<Item> APPRENTICE_ICE_WAND = wand("wand_apprentice_ice", Tiers.APPRENTICE, Elements.ICE);
-    public static final DeferredObject<Item> ADVANCED_ICE_WAND = wand("wand_advanced_ice", Tiers.ADVANCED, Elements.ICE);
-    public static final DeferredObject<Item> MASTER_ICE_WAND = wand("wand_master_ice", Tiers.MASTER, Elements.ICE);
+    public static final DeferredObject<Item> NOVICE_ICE_WAND = wand("wand_novice_ice", SpellTiers.NOVICE , Elements.ICE); // Ice Wands
+    public static final DeferredObject<Item> APPRENTICE_ICE_WAND = wand("wand_apprentice_ice", SpellTiers.APPRENTICE, Elements.ICE);
+    public static final DeferredObject<Item> ADVANCED_ICE_WAND = wand("wand_advanced_ice", SpellTiers.ADVANCED, Elements.ICE);
+    public static final DeferredObject<Item> MASTER_ICE_WAND = wand("wand_master_ice", SpellTiers.MASTER, Elements.ICE);
 
-    public static final DeferredObject<Item> NOVICE_LIGHTNING_WAND = wand("wand_novice_lightning", Tiers.NOVICE, Elements.LIGHTNING); // Lightning Wands
-    public static final DeferredObject<Item> APPRENTICE_LIGHTNING_WAND = wand("wand_apprentice_lightning", Tiers.APPRENTICE, Elements.LIGHTNING);
-    public static final DeferredObject<Item> ADVANCED_LIGHTNING_WAND = wand("wand_advanced_lightning", Tiers.ADVANCED, Elements.LIGHTNING);
-    public static final DeferredObject<Item> MASTER_LIGHTNING_WAND = wand("wand_master_lightning", Tiers.MASTER, Elements.LIGHTNING);
+    public static final DeferredObject<Item> NOVICE_LIGHTNING_WAND = wand("wand_novice_lightning", SpellTiers.NOVICE, Elements.LIGHTNING); // Lightning Wands
+    public static final DeferredObject<Item> APPRENTICE_LIGHTNING_WAND = wand("wand_apprentice_lightning", SpellTiers.APPRENTICE, Elements.LIGHTNING);
+    public static final DeferredObject<Item> ADVANCED_LIGHTNING_WAND = wand("wand_advanced_lightning", SpellTiers.ADVANCED, Elements.LIGHTNING);
+    public static final DeferredObject<Item> MASTER_LIGHTNING_WAND = wand("wand_master_lightning", SpellTiers.MASTER, Elements.LIGHTNING);
 
-    public static final DeferredObject<Item> NOVICE_NECROMANCY_WAND = wand("wand_novice_necromancy", Tiers.NOVICE, Elements.NECROMANCY); // Necromancy Wands
-    public static final DeferredObject<Item> APPRENTICE_NECROMANCY_WAND = wand("wand_apprentice_necromancy", Tiers.APPRENTICE, Elements.NECROMANCY);
-    public static final DeferredObject<Item> ADVANCED_NECROMANCY_WAND = wand("wand_advanced_necromancy", Tiers.ADVANCED, Elements.NECROMANCY);
-    public static final DeferredObject<Item> MASTER_NECROMANCY_WAND = wand("wand_master_necromancy", Tiers.MASTER, Elements.NECROMANCY);
+    public static final DeferredObject<Item> NOVICE_NECROMANCY_WAND = wand("wand_novice_necromancy", SpellTiers.NOVICE, Elements.NECROMANCY); // Necromancy Wands
+    public static final DeferredObject<Item> APPRENTICE_NECROMANCY_WAND = wand("wand_apprentice_necromancy", SpellTiers.APPRENTICE, Elements.NECROMANCY);
+    public static final DeferredObject<Item> ADVANCED_NECROMANCY_WAND = wand("wand_advanced_necromancy", SpellTiers.ADVANCED, Elements.NECROMANCY);
+    public static final DeferredObject<Item> MASTER_NECROMANCY_WAND = wand("wand_master_necromancy", SpellTiers.MASTER, Elements.NECROMANCY);
 
-    public static final DeferredObject<Item> NOVICE_SORCERY_WAND = wand("wand_novice_sorcery", Tiers.NOVICE, Elements.SORCERY); // Sorcery Wands
-    public static final DeferredObject<Item> APPRENTICE_SORCERY_WAND = wand("wand_apprentice_sorcery", Tiers.APPRENTICE, Elements.SORCERY);
-    public static final DeferredObject<Item> ADVANCED_SORCERY_WAND = wand("wand_advanced_sorcery", Tiers.ADVANCED, Elements.SORCERY);
-    public static final DeferredObject<Item> MASTER_SORCERY_WAND = wand("wand_master_sorcery", Tiers.MASTER, Elements.SORCERY);
+    public static final DeferredObject<Item> NOVICE_SORCERY_WAND = wand("wand_novice_sorcery", SpellTiers.NOVICE, Elements.SORCERY); // Sorcery Wands
+    public static final DeferredObject<Item> APPRENTICE_SORCERY_WAND = wand("wand_apprentice_sorcery", SpellTiers.APPRENTICE, Elements.SORCERY);
+    public static final DeferredObject<Item> ADVANCED_SORCERY_WAND = wand("wand_advanced_sorcery", SpellTiers.ADVANCED, Elements.SORCERY);
+    public static final DeferredObject<Item> MASTER_SORCERY_WAND = wand("wand_master_sorcery", SpellTiers.MASTER, Elements.SORCERY);
 
     //Crystals
     public static final DeferredObject<Item> MAGIC_CRYSTAL_SHARD = item("magic_crystal_shard");
@@ -444,7 +444,7 @@ public final class EBItems {
         return registeredArmor;
     }
 
-    static DeferredObject<Item> wand(String name, Tier tier, Element element){
+    static DeferredObject<Item> wand(String name, SpellTier tier, Element element){
         return wand(name, () -> new WandItem(tier, element), true);
     }
 

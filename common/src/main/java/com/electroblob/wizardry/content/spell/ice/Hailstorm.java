@@ -8,7 +8,7 @@ import com.electroblob.wizardry.content.entity.construct.HailstormConstruct;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.ConstructRangedSpell;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.Vec3;
@@ -52,7 +52,7 @@ public class Hailstorm extends ConstructRangedSpell<HailstormConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.MASTER, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 75, 20, 300)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 75, 20, 300)
                 .add(DefaultProperties.RANGE, 20F)
                 .add(DefaultProperties.DURATION, 120)
                 .add(DefaultProperties.EFFECT_RADIUS, 2)

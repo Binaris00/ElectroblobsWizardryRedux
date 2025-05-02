@@ -9,9 +9,10 @@ import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.entity.construct.IceSpikeConstruct;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.ConstructRangedSpell;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Spells;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.LivingEntity;
@@ -37,8 +38,9 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
         Vec3 pos = origin.add(new Vec3(side.getOpposite().step()));
         super.spawnConstruct(ctx, pos, side);
 
-        int quantity = Spells.ICE_SPICKES.property(DefaultProperties.ENTITIES);
-        float maxRadius = Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_RADIUS);
+        int quantity = (int) (Spells.ICE_SPICKES.property(DefaultProperties.ENTITIES) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1);
+        float maxRadius = Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+
         for (int i = 0; i < quantity; i++) {
             double radius = 0.5 + ctx.world().random.nextDouble() * (maxRadius - 0.5);
 
@@ -72,7 +74,7 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 30,	0,	75)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 30,	0,	75)
                 .add(DefaultProperties.RANGE, 20F)
                 .add(DefaultProperties.EFFECT_RADIUS, 3)
                 .add(DefaultProperties.ENTITIES, 18)

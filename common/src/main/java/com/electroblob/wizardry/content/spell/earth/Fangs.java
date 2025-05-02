@@ -12,8 +12,9 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
@@ -80,7 +81,8 @@ public class Fangs extends Spell {
 
         } else {
             Vec3 horizontal = GeometryUtil.horizontalise(ctx.caster().getLookAngle());
-            float count = this.property(DefaultProperties.RANGE);
+
+            int count = (int) (this.property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get()));
             float yaw = (float) Mth.atan2(horizontal.z, horizontal.x);
 
             for (int i = 0; i < count; i++) {
@@ -96,6 +98,7 @@ public class Fangs extends Spell {
 
         if (y != null) {
             EvokerFangs fangs = new EvokerFangs(world, vec.x, y, vec.z, yaw, delay, caster);
+            //fangs.getEntityData().set(SpellThrowable.DAMAGE_MODIFIER_NBT_KEY, modifiers.get(SpellModifiers.POTENCY));
             world.addFreshEntity(fangs);
             return true;
         }
@@ -116,7 +119,7 @@ public class Fangs extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.EARTH, SpellType.ATTACK, SpellAction.SUMMON, 40, 5, 60)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellType.ATTACK, SpellAction.SUMMON, 40, 5, 60)
                 .add(DefaultProperties.RANGE, 10F).build();
     }
 }

@@ -52,7 +52,15 @@ public final class EBCreativeTabs {
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBItems.AMULET_RESURRECTION.get()))
                     .title(Component.translatable("creativetab.ebwizardry_artifacts"))
-                    .displayItems((parameters, output) -> EBItems.ARTIFACTS.forEach(i -> output.accept(i.get())))
+                    .displayItems((parameters, output) -> {
+                        EBItems.ARTIFACTS.forEach(i -> {
+                            if(i.equals(EBItems.ARCANE_TOME)){
+                                createTomes().forEach(output::accept);
+                            } else {
+                                output.accept(i.get());
+                            }
+                        });
+                    })
                     .build()
             );
 
@@ -99,6 +107,18 @@ public final class EBCreativeTabs {
         Services.REGISTRY_UTIL.getSpells().forEach(
                 spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), spell))
         );
+        return list;
+    }
+
+    private static List<ItemStack> createTomes(){
+        List<ItemStack> list = new ArrayList<>();
+        Services.REGISTRY_UTIL.getTiers().forEach(spellTier -> {
+            if(spellTier != SpellTiers.NOVICE) {
+                ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get());
+                stack.getOrCreateTag().putString("Tier", spellTier.getLocation().toString());
+                list.add(stack);
+            }
+        });
         return list;
     }
 

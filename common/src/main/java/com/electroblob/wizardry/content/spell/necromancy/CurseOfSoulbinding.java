@@ -102,7 +102,7 @@ public class CurseOfSoulbinding extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.NECROMANCY, SpellType.ALTERATION, SpellAction.POINT, 35, 10, 100)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ALTERATION, SpellAction.POINT, 35, 10, 100)
                 .add(DefaultProperties.RANGE, 10F).build();
     }
 }

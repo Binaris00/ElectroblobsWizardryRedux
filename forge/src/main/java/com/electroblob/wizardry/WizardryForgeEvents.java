@@ -62,7 +62,7 @@ public class WizardryForgeEvents {
             else if(event.getRegistryKey() == Registries.ENCHANTMENT) register(event, EBEnchantments::register);
             else if(event.getRegistryKey() == Registries.MENU) register(event, EBMenus::register);
             else if(event.getRegistryKey() == EBRegistries.ELEMENT) registerForge(event, Elements::registerNull);
-            else if(event.getRegistryKey() == EBRegistries.TIER) registerForge(event, Tiers::registerNull);
+            else if(event.getRegistryKey() == EBRegistries.TIER) registerForge(event, SpellTiers::registerNull);
             else if(event.getRegistryKey() == EBRegistries.SPELL) registerForge(event, Spells::registerNull);
         }
 

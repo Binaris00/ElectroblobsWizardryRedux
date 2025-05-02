@@ -2,12 +2,14 @@ package com.electroblob.wizardry.content.spell.healing;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,15 +21,16 @@ public class ReplenishHunger extends BuffSpell {
         super(1, 0.7f, 0.4f);
     }
 
+
     @Override
-    protected boolean applyEffects(LivingEntity caster) {
+    protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
         return true;
     }
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if(ctx.caster().getFoodData().needsFood()){
-            ctx.caster().getFoodData().eat(property(HUNGER_POINTS), property(SATURATION_MODIFIER));
+            ctx.caster().getFoodData().eat((int) (property(HUNGER_POINTS) * ctx.modifiers().get(SpellModifiers.POTENCY)), property(SATURATION_MODIFIER));
         }
         return super.cast(ctx);
     }
@@ -45,7 +48,7 @@ public class ReplenishHunger extends BuffSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 10, 0, 30)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 10, 0, 30)
                 .add(HUNGER_POINTS)
                 .add(SATURATION_MODIFIER)
                 .build();

@@ -109,7 +109,7 @@ public class Charge extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT, 20, 0, 50)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT, 20, 0, 50)
                 .add(CHARGE_SPEED, 2.0F)
                 .add(DefaultProperties.DURATION, 10)
                 .add(DefaultProperties.DAMAGE, 8F)

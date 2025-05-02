@@ -2,7 +2,7 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.core.registry.EBRegistries;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
@@ -18,8 +18,8 @@ public final class EBRegistriesForge {
     private static final DeferredRegister<Spell> SPELLS = DeferredRegister.create(EBRegistries.SPELL, WizardryMainMod.MOD_ID);
     public static final Supplier<IForgeRegistry<Spell>> SPELL = SPELLS.makeRegistry(() -> new RegistryBuilder<Spell>().disableSaving().disableOverrides());
 
-    private static final DeferredRegister<Tier> TIERS = DeferredRegister.create(EBRegistries.TIER, WizardryMainMod.MOD_ID);
-    public static final Supplier<IForgeRegistry<Tier>> TIER = TIERS.makeRegistry(() -> new RegistryBuilder<Tier>().disableSaving().disableOverrides());
+    private static final DeferredRegister<SpellTier> TIERS = DeferredRegister.create(EBRegistries.TIER, WizardryMainMod.MOD_ID);
+    public static final Supplier<IForgeRegistry<SpellTier>> TIER = TIERS.makeRegistry(() -> new RegistryBuilder<SpellTier>().disableSaving().disableOverrides());
 
     private EBRegistriesForge() {}
 

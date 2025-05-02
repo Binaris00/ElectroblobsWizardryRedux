@@ -10,7 +10,7 @@ import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Spells;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.Font;
@@ -77,7 +77,7 @@ public abstract class SpellInfoScreen extends Screen {
         guiGraphics.drawString(font, spellName, left + 17, top + 15, 0, false);
         guiGraphics.drawString(font, getSpell().getType().getDisplayName(), left + 17, top + 26, 0x777777, false);
 
-        ChatFormatting tierColor = getSpell().getTier() == Tiers.NOVICE ? ChatFormatting.GRAY : getSpell().getTier().getColor();
+        ChatFormatting tierColor = getSpell().getTier() == SpellTiers.NOVICE ? ChatFormatting.GRAY : getSpell().getTier().getColor();
         MutableComponent tier = Component.translatable(TRANSLATION_KEY_PREFIX + ".tier", ((MutableComponent)getSpell().getTier().getDescriptionFormatted()).withStyle(tierColor));
         guiGraphics.drawString(this.font, tier, left + 17, top + 45, 0, false);
 

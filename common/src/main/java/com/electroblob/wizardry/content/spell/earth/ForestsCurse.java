@@ -3,13 +3,17 @@ package com.electroblob.wizardry.content.spell.earth;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.AreaEffectSpell;
+import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,14 +31,15 @@ public class ForestsCurse extends AreaEffectSpell {
     }
 
     @Override
-    protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
+    protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, target)){
-            DamageSource source = caster != null ? EBMagicDamageSource.causeDirectMagicDamage(caster, EBDamageSources.POISON)
+            DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.POISON)
                     : target.damageSources().magic();
-            target.hurt(source, property(DefaultProperties.DAMAGE));
+            target.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
 
-            int duration = property(DefaultProperties.EFFECT_DURATION);
-            int amplifier = property(DefaultProperties.EFFECT_STRENGTH);
+            int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
+            int duration = (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
+            int amplifier = property(DefaultProperties.EFFECT_STRENGTH) + bonusAmplifier;
 
             target.addEffect(new MobEffectInstance(MobEffects.POISON, duration, amplifier));
             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, duration, amplifier));
@@ -62,7 +67,7 @@ public class ForestsCurse extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.MASTER, Elements.EARTH, SpellType.ATTACK, SpellAction.POINT_UP, 75, 15, 200)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.ATTACK, SpellAction.POINT_UP, 75, 15, 200)
                 .add(DefaultProperties.EFFECT_RADIUS, 5)
                 .add(DefaultProperties.DAMAGE, 4F)
                 .add(DefaultProperties.EFFECT_DURATION, 140)

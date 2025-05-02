@@ -1,12 +1,12 @@
 package com.electroblob.wizardry.client.gui.elements;
 
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.DrawingUtils;
 import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.client.EBClientConstants;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.core.EBConfig;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -40,7 +40,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
         y += EBClientConstants.FONT.lineHeight + EBClientConstants.LINE_SPACING_NARROW;
         float progressFraction = 1;
 
-        Tier nextTier = getNextTier(stack);
+        SpellTier nextTier = getNextTier(stack);
         if (nextTier != null) {
             progressFraction = (float) WandHelper.getProgression(stack) / nextTier.getProgression();
         }
@@ -52,11 +52,11 @@ public class TooltipElementProgressionBar extends TooltipElement {
 
     @Override
     protected void drawForeground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, int mouseX, int mouseY) {
-        Tier tier = ((WandItem) stack.getItem()).tier;
+        SpellTier tier = ((WandItem) stack.getItem()).tier;
         guiGraphics.drawString(Minecraft.getInstance().font, tier.getDescriptionFormatted().getString(), x, y,
                 tier.getDescriptionFormatted().getStyle().getColor().getValue(), true);
 
-        Tier nextTier = getNextTier(stack);
+        SpellTier nextTier = getNextTier(stack);
 
         if (nextTier != null) {
             Component s = nextTier.getDescriptionFormatted().copy().withStyle(ChatFormatting.DARK_GRAY);
@@ -69,11 +69,11 @@ public class TooltipElementProgressionBar extends TooltipElement {
         }
     }
 
-    private @Nullable Tier getNextTier(ItemStack stack){
-        Tier tier = ((WandItem) stack.getItem()).tier;
+    private @Nullable SpellTier getNextTier(ItemStack stack){
+        SpellTier tier = ((WandItem) stack.getItem()).tier;
 
-        if (tier != Tiers.MASTER) {
-            return Tiers.getNextByLevel(tier.level + 1);
+        if (tier != SpellTiers.MASTER) {
+            return SpellTiers.getNextByLevel(tier.level + 1);
         }
         return null;
     }

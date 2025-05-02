@@ -8,9 +8,11 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -35,8 +37,9 @@ public class Permafrost extends RaySpell {
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         boolean flag = false;
         if (!ctx.world().isClientSide) {
-            float radius = 0.5f + 0.73f;
-            int duration = property(DefaultProperties.DURATION);
+            int blastUpgradeCount = (int)((ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1) / EBConfig.BLAST_RADIUS_INCREASE_PER_LEVEL + 0.5f);
+            float radius = 0.5f + 0.73f * blastUpgradeCount;
+            int duration = (int)(property(DefaultProperties.DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
             List<BlockPos> sphere = BlockUtil.getBlockSphere(blockHit.getBlockPos().above(), radius);
             for (BlockPos pos1 : sphere) {
                 flag |= tryToPlaceIce(ctx.world(), pos1, ctx.caster(), duration);
@@ -95,7 +98,7 @@ public class Permafrost extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.ICE, SpellType.ALTERATION, SpellAction.POINT, 10, 10, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.ALTERATION, SpellAction.POINT, 10, 10, 40)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DAMAGE, 3F)
                 .add(DefaultProperties.DURATION, 600)

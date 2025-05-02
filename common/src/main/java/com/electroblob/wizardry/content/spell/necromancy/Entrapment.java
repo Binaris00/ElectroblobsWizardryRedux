@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
@@ -11,8 +12,9 @@ import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.damagesource.DamageSource;
@@ -41,9 +43,9 @@ public class Entrapment extends RaySpell {
             BubbleConstruct bubble = new BubbleConstruct(ctx.world());
             bubble.setPos(target.getX(), target.getY(), target.getZ());
             bubble.setCaster(ctx.caster());
-            bubble.lifetime = property(DefaultProperties.EFFECT_DURATION);
+            bubble.lifetime = ((int)(property(DefaultProperties.EFFECT_DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
             bubble.isDarkOrb = true;
-            bubble.damageMultiplier = 1;
+            bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
 
             ctx.world().addFreshEntity(bubble);
             target.startRiding(bubble);
@@ -72,7 +74,7 @@ public class Entrapment extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 35, 10, 75)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 35, 10, 75)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.EFFECT_DURATION, 120)
                 .add(DAMAGE_INTERVAL)

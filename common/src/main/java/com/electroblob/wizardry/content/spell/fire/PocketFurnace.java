@@ -4,11 +4,12 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
@@ -26,7 +27,7 @@ public class PocketFurnace extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        int usesLeft = property(ITEMS_SMELTED);
+        int usesLeft = (int) (property(ITEMS_SMELTED) * ctx.modifiers().get(SpellModifiers.POTENCY));
         ItemStack stack, result;
 
         this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
@@ -78,7 +79,7 @@ public class PocketFurnace extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 30, 0, 40)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 30, 0, 40)
                 .add(ITEMS_SMELTED, 5)
                 .build();
     }

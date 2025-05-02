@@ -2,11 +2,13 @@ package com.electroblob.wizardry.content.spell.healing;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
@@ -17,9 +19,9 @@ public class Heal extends BuffSpell {
     }
 
     @Override
-    protected boolean applyEffects(LivingEntity caster) {
+    protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
         if(caster.getHealth() < caster.getMaxHealth() && caster.getHealth() > 0){
-            heal(caster, property(DefaultProperties.HEALTH));
+            heal(caster, property(DefaultProperties.HEALTH) * ctx.modifiers().get(SpellModifiers.POTENCY));
             return true;
         }
 
@@ -39,7 +41,7 @@ public class Heal extends BuffSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.NOVICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 5, 0, 20)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 5, 0, 20)
                 .add(DefaultProperties.HEALTH, 4F).build();
     }
 }

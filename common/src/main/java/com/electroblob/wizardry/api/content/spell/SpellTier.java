@@ -2,7 +2,7 @@ package com.electroblob.wizardry.api.content.spell;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
@@ -10,42 +10,43 @@ import net.minecraft.resources.ResourceLocation;
 
 import java.util.Random;
 
-public class Tier {
+public class SpellTier {
     public final int maxCharge;
     public final int level;
     public final int upgradeLimit;
     public final int weight;
+    private final int progression;
     private final ChatFormatting color;
 
     private String descriptionId;
     private final ResourceLocation location;
 
-    public Tier(String name, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color){
-        this(WizardryMainMod.location(name), maxCharge, upgradeLimit, weight, level, color);
+    public SpellTier(String name, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color, int progression){
+        this(WizardryMainMod.location(name), maxCharge, upgradeLimit, weight, level, color, progression);
     }
 
-    public Tier(ResourceLocation location, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color){
+    public SpellTier(ResourceLocation location, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color, int progression){
         this.location = location;
         this.maxCharge = maxCharge;
         this.level = level;
         this.upgradeLimit = upgradeLimit;
         this.weight = weight;
         this.color = color;
-
+        this.progression = progression;
     }
 
     /** Returns the tier above this one, or the same tier if this is the highest tier. */
-    public Tier next(){
+    public SpellTier next(){
         // TODO TIER NEXT()
         //return ordinal() + 1 < values().length ? values()[ordinal() + 1] : this;
-        return Tiers.NOVICE;
+        return SpellTiers.NOVICE;
     }
 
     /** Returns the tier below this one, or the same tier if this is the lowest tier. */
-    public Tier previous(){
+    public SpellTier previous(){
         // TODO TIER PREVIOUS()
         //return ordinal() > 0 ? values()[ordinal() - 1] : this;
-        return Tiers.NOVICE;
+        return SpellTiers.NOVICE;
     }
 
     // ===================================================
@@ -91,8 +92,7 @@ public class Tier {
 
     // TODO EBCONFIG
     public int getProgression(){
-        return 1;
-        //return Wizardry.settings.progressionRequirements[this.ordinal() - 1];
+        return progression;
     }
 
 
@@ -102,18 +102,18 @@ public class Tier {
      * same relative weights for each. For example, if the array contains APPRENTICE and MASTER, then the weighting will
      * become: Apprentice 83.3%, Master 16.7%.
      */
-    public static Tier getWeightedRandomTier(Random random, Tier... tiers){
+    public static SpellTier getWeightedRandomTier(Random random, SpellTier... tiers){
         // TODO
         //if(tiers.length == 0) tiers = values();
 
         int totalWeight = 0;
 
-        for(Tier tier : tiers) totalWeight += tier.weight;
+        for(SpellTier tier : tiers) totalWeight += tier.weight;
 
         int randomiser = random.nextInt(totalWeight);
         int cumulativeWeight = 0;
 
-        for(Tier tier : tiers){
+        for(SpellTier tier : tiers){
             cumulativeWeight += tier.weight;
             if(randomiser < cumulativeWeight) return tier;
         }

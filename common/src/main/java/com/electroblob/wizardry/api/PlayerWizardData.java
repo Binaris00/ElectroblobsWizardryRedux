@@ -7,12 +7,14 @@ import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.ImbuementLoader;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -41,6 +43,7 @@ public class PlayerWizardData {
     @SuppressWarnings("rawtypes") public final Map<ISpellVar, Object> spellData = new HashMap<>();
     @SuppressWarnings("rawtypes") public static final Set<IStoredSpellVar> storedVariables = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
+    private SpellTier maxTierReached = SpellTiers.NOVICE;
 
     public PlayerWizardData(){
         spellsDiscovered.add(Spells.MAGIC_MISSILE);
@@ -57,6 +60,14 @@ public class PlayerWizardData {
 
     public <T> void setVariable(ISpellVar<? super T> variable, T value) {
         this.spellData.put(variable, value);
+    }
+
+    public void setTierReached(SpellTier tier) {
+        if (!hasReachedTier(tier)) this.maxTierReached = tier;
+    }
+
+    public boolean hasReachedTier(SpellTier tier) {
+        return tier.level >= maxTierReached.level;
     }
 
     @SuppressWarnings("unchecked")
@@ -357,6 +368,7 @@ public class PlayerWizardData {
         tag.putInt("castCommandDuration", castCommandDuration);
         tag.putInt("castCommandTick", castCommandTick);
         tag.put("castCommandModifiers", castCommandModifiers.toNBT());
+        tag.putString("maxTier", maxTierReached.getLocation().toString());
 
         ListTag alliesTag = new ListTag();
         allies.forEach(uuid -> alliesTag.add(StringTag.valueOf(uuid.toString())));
@@ -401,6 +413,10 @@ public class PlayerWizardData {
 
         wizardData.castCommandDuration = tag.getInt("castCommandDuration");
         wizardData.castCommandTick = tag.getInt("castCommandTick");
+
+        String tierKey = tag.getString("maxTier");
+        SpellTier tier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
+        wizardData.maxTierReached = tier != null ? tier : SpellTiers.NOVICE;
 
         if(tag.contains("castCommandModifiers", Tag.TAG_COMPOUND)) wizardData.castCommandModifiers = SpellModifiers.fromNBT(tag.getCompound("castCommandModifiers"));
 

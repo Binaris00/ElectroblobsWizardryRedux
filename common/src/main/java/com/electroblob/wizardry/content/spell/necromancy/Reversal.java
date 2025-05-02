@@ -4,11 +4,13 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -37,8 +39,7 @@ public class Reversal extends RaySpell {
 
         if (negativePotions.isEmpty()) return false;
 
-        // TODO BIN, no bonus effects :c
-        int bonusEffects = 0;
+        int bonusEffects = (int) (ctx.modifiers().get(SpellModifiers.POTENCY) - 1 / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5F) - 1;
         int n = property(DefaultProperties.EFFECT_STRENGTH) + bonusEffects;
 
         Collections.shuffle(negativePotions);
@@ -74,7 +75,7 @@ public class Reversal extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.APPRENTICE, Elements.NECROMANCY, SpellType.ALTERATION, SpellAction.POINT, 40, 0, 80)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellType.ALTERATION, SpellAction.POINT, 40, 0, 80)
                 .add(DefaultProperties.RANGE, 8F)
                 .add(DefaultProperties.EFFECT_STRENGTH, 1)
                 .build();

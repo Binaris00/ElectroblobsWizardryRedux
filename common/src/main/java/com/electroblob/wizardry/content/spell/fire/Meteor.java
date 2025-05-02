@@ -9,8 +9,9 @@ import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.entity.MeteorEntity;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -47,7 +48,8 @@ public class Meteor extends RaySpell {
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         if(ctx.world().canSeeSky(blockHit.getBlockPos().above())){
             if(!ctx.world().isClientSide){
-                MeteorEntity meteor = new MeteorEntity(ctx.world(), blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY() + 50, blockHit.getBlockPos().getZ(), 1, EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                MeteorEntity meteor = new MeteorEntity(ctx.world(), blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY() + 50, blockHit.getBlockPos().getZ(),
+                        ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
                 ctx.world().addFreshEntity(meteor);
             }
             return true;
@@ -83,7 +85,7 @@ public class Meteor extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT, 100, 20, 200)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT, 100, 20, 200)
                 .add(DefaultProperties.RANGE, 40F)
                 .add(DefaultProperties.DAMAGE, 2F)
                 .build();

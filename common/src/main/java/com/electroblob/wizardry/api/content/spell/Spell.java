@@ -169,7 +169,7 @@ public abstract class Spell {
         return properties.getElement();
     }
 
-    public Tier getTier(){
+    public SpellTier getTier(){
         return properties.getTier();
     }
 

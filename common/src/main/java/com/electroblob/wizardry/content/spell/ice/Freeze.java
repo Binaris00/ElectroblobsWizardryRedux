@@ -4,15 +4,13 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.setup.registries.EBDamageSources;
-import com.electroblob.wizardry.setup.registries.EBMobEffects;
-import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -47,11 +45,11 @@ public class Freeze extends RaySpell {
 
         if (target instanceof Blaze || target instanceof MagmaCube) {
             DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST) : target.damageSources().magic();
-            target.hurt(source, property(DefaultProperties.DAMAGE));
+            target.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
         }
 
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
-                property(DefaultProperties.EFFECT_DURATION),
+                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
                 property(DefaultProperties.EFFECT_STRENGTH)));
         if (target.isOnFire()) target.clearFire();
         return true;
@@ -73,7 +71,7 @@ public class Freeze extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.NOVICE, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 5, 0, 10)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 5, 0, 10)
                 .add(DefaultProperties.RANGE, 10f)
                 .add(DefaultProperties.DAMAGE, 3f)
                 .add(DefaultProperties.EFFECT_DURATION, 200)

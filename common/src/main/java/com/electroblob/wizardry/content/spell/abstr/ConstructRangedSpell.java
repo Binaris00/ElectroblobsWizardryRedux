@@ -8,6 +8,7 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.RayTracer;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -47,7 +48,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        double range = property(DefaultProperties.RANGE).doubleValue();
+        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
         HitResult rayTrace = RayTracer.standardBlockRayTrace(ctx.world(), ctx.caster(), range, hitLiquids, ignoreUncollidables, false);
 
         if (rayTrace instanceof BlockHitResult blockTrace) {
@@ -73,7 +74,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
     @Override
     public boolean cast(EntityCastContext ctx) {
-        double range = property(DefaultProperties.RANGE);
+        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
         if (ctx.target() == null) return false;
         if (ctx.caster().distanceTo(ctx.target()) >= range || !ctx.world().isClientSide) return false;
 
@@ -104,7 +105,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
     @Override
     public boolean cast(LocationCastContext ctx) {
-        double range = property(DefaultProperties.RANGE);
+        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
         Vec3 endpoint = ctx.vec3().add(Vec3.atLowerCornerOf(ctx.direction().getNormal()).scale(range));
         HitResult rayTrace = ctx.world().clip(new ClipContext(ctx.vec3(), endpoint,
                 ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, null));

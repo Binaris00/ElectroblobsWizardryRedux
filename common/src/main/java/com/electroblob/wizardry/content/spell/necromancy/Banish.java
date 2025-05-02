@@ -9,8 +9,9 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -31,7 +32,7 @@ public class Banish extends RaySpell {
         if (entityHit.getEntity() instanceof LivingEntity target) {
             double minRadius = this.property(MINIMUM_TELEPORT);
             double maxRadius = this.property(MAX_TELEPORT);
-            double radius = (minRadius + ctx.world().random.nextDouble() * maxRadius - minRadius);
+            double radius = (minRadius + ctx.world().random.nextDouble() * maxRadius - minRadius) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
 
             teleport(target, ctx.world(), radius);
         }
@@ -87,7 +88,7 @@ public class Banish extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(Tiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 75, 0, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 75, 0, 40)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(MINIMUM_TELEPORT)
                 .add(MAX_TELEPORT)

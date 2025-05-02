@@ -5,11 +5,11 @@ import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
-import com.electroblob.wizardry.api.content.spell.Tier;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Tiers;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
@@ -64,12 +64,12 @@ public class SpellProperties {
         return SpellType.fromName(type);
     }
 
-    public Tier getTier(){
+    public SpellTier getTier(){
         String s = get(DefaultProperties.TIER);
-        for(Tier tier : Services.REGISTRY_UTIL.getTiers()){
+        for(SpellTier tier : Services.REGISTRY_UTIL.getTiers()){
             if(tier.getLocation().toString().equals(s)) return tier;
         }
-        return Tiers.NOVICE; // Default
+        return SpellTiers.NOVICE; // Default
     }
 
     public Element getElement(){
@@ -92,7 +92,7 @@ public class SpellProperties {
         private boolean isEmpty = true;
         private final List<SpellProperty<?>> builder = new ArrayList<>();
 
-        public <T> Builder assignBaseProperties(Tier tier, Element element, SpellType type, SpellAction action, int cost, int charge, int cooldown) {
+        public <T> Builder assignBaseProperties(SpellTier tier, Element element, SpellType type, SpellAction action, int cost, int charge, int cooldown) {
             add(DefaultProperties.TIER, tier.getLocation().toString());
             add(DefaultProperties.ELEMENT, element.getLocation().toString());
             add(DefaultProperties.SPELL_TYPE, type.getUnlocalisedName());
