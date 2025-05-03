@@ -6,7 +6,7 @@ import net.minecraft.world.item.Item;
 import java.util.HashMap;
 import java.util.Map;
 
-// TODO just a really quick wand upgrade imp
+// FIXME just a really quick wand upgrade imp
 public final class WandUpgrades {
     private static final HashMap<DeferredObject<Item>, String> UPGRADES = new HashMap<>();
 

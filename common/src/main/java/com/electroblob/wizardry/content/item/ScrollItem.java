@@ -11,6 +11,7 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -159,11 +160,11 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
 
         if(discovered && tooltipFlag.isAdvanced()){
-            list.add(spell.getTier().getDescriptionFormatted());
-            list.add(spell.getElement().getDescriptionFormatted());
-            list.add(Component.translatable(spell.getType().getDisplayName()));
+            list.add(Component.translatable(spell.getTier().getDescriptionId()).withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable(spell.getElement().getDescriptionId()).withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable(spell.getType().getUnlocalisedName()).withStyle(ChatFormatting.GRAY));
         }
-        list.add(Component.translatable(SpellUtil.getSpellNameTranslationComponent(stack)));
+
     }
 
     @Override

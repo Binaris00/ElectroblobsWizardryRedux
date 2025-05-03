@@ -25,7 +25,13 @@ public final class EBCreativeTabs {
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBItems.MAGIC_CRYSTAL.get()))
                     .title(Component.translatable("creativetab.ebwizardry"))
-                    .displayItems((parameters, output) -> EBItems.ITEMS.forEach((i, item) -> output.accept(item.get())))
+                    .displayItems((parameters, output) -> EBItems.GENERAL_ITEMS.forEach((item) -> {
+                        if(item.equals(EBItems.ARCANE_TOME)){
+                            createTomes().forEach(output::accept);
+                        } else {
+                            output.accept(item.get());
+                        }
+                    }))
                     .build()
             );
 
@@ -52,15 +58,7 @@ public final class EBCreativeTabs {
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBItems.AMULET_RESURRECTION.get()))
                     .title(Component.translatable("creativetab.ebwizardry_artifacts"))
-                    .displayItems((parameters, output) -> {
-                        EBItems.ARTIFACTS.forEach(i -> {
-                            if(i.equals(EBItems.ARCANE_TOME)){
-                                createTomes().forEach(output::accept);
-                            } else {
-                                output.accept(i.get());
-                            }
-                        });
-                    })
+                    .displayItems((parameters, output) -> EBItems.ARTIFACTS.forEach(i -> output.accept(i.get())))
                     .build()
             );
 
@@ -82,6 +80,14 @@ public final class EBCreativeTabs {
                     .icon(() -> new ItemStack(EBBlocks.EARTH_CRYSTAL_BLOCK.get().asItem()))
                     .title(Component.translatable("creativetab.ebwizardry_blocks"))
                     .displayItems((parameters, output) -> EBBlocks.BLOCK_ITEMS.forEach((name, block) -> output.accept(block.get())))
+                    .build()
+    );
+
+    public static final Supplier<CreativeModeTab> DEBUGS = creativeTab("ebwizardry_debugs",
+            () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
+                    .icon(() -> new ItemStack(EBItems.FLAMING_AXE.get()))
+                    .title(Component.translatable("creativetab.ebwizardry_debugs"))
+                    .displayItems((parameters, output) -> EBItems.DEBUG_ITEMS.forEach((item) -> output.accept(item.get())))
                     .build()
     );
 

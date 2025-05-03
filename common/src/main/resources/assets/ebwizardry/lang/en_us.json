@@ -525,6 +525,9 @@
   "item.ebwizardry.wand_advanced_necromancy": "Wand of the Necromancer",
   "item.ebwizardry.wand_advanced_sorcery": "Wand of the Sorcerer",
   "item.ebwizardry.wand_advanced": "Advanced Wand",
+
+  "item.ebwizardry.wand.damage_desc": "Mana: %s/%s",
+
   "item.ebwizardry.amulet_absorption": "Amulet of Vitality",
   "item.ebwizardry.amulet_anchoring": "Amulet of Anchoring",
   "item.ebwizardry.amulet_arcane_defence": "Amulet of Arcane Defense",

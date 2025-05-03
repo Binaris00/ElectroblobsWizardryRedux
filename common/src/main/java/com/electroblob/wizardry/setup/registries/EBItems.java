@@ -39,7 +39,9 @@ public final class EBItems {
     static final LinkedList<DeferredObject<? extends Item>> LEGGINGS = new LinkedList<>();
     static final LinkedList<DeferredObject<? extends Item>> WANDS = new LinkedList<>();
     static final LinkedList<DeferredObject<? extends Item>> ARTIFACTS = new LinkedList<>();
-    static Map<String, DeferredObject<? extends Item>> ITEMS = new HashMap<>();
+    static final LinkedList<DeferredObject<? extends Item>> DEBUG_ITEMS = new LinkedList<>();
+    static final LinkedList<DeferredObject<? extends Item>> GENERAL_ITEMS = new LinkedList<>(); // For main item tab
+    static final Map<String, DeferredObject<? extends Item>> ITEMS_REGISTER = new HashMap<>(); // For register function
 
     private EBItems() {}
 
@@ -50,7 +52,7 @@ public final class EBItems {
     public static final DeferredObject<Item> SPARK_BOMB = item("spark_bomb");
 
     //General Items
-    public static final DeferredObject<Item> ARCANE_TOME = artifact("arcane_tome", ArcaneTomeItem::new);
+    public static final DeferredObject<Item> ARCANE_TOME = item("arcane_tome", ArcaneTomeItem::new, true, true);
     public static final DeferredObject<Item> BLANK_SCROLL = item("blank_scroll");
     public static final DeferredObject<Item> RUINED_SPELL_BOOK = item("ruined_spell_book");
     public static final DeferredObject<Item> SCROLL = item("scroll", () -> new ScrollItem(new Item.Properties().stacksTo(16)));
@@ -122,16 +124,16 @@ public final class EBItems {
     public static final DeferredObject<Item> MASTER_SORCERY_WAND = wand("wand_master_sorcery", SpellTiers.MASTER, Elements.SORCERY);
 
     //Crystals
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_SHARD = item("magic_crystal_shard");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL = item("magic_crystal");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_EARTH = item("magic_crystal_earth");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_FIRE = item("magic_crystal_fire");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_HEALING = item("magic_crystal_healing");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_ICE = item("magic_crystal_ice");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_LIGHTNING = item("magic_crystal_lightning");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_NECROMANCY = item("magic_crystal_necromancy");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_SORCERY = item("magic_crystal_sorcery");
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_GRAND = item("magic_crystal_grand");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_SHARD = crystal("magic_crystal_shard");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL = crystal("magic_crystal");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_EARTH = crystal("magic_crystal_earth");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_FIRE = crystal("magic_crystal_fire");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_HEALING = crystal("magic_crystal_healing");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_ICE = crystal("magic_crystal_ice");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_LIGHTNING = crystal("magic_crystal_lightning");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_NECROMANCY = crystal("magic_crystal_necromancy");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_SORCERY = crystal("magic_crystal_sorcery");
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_GRAND = crystal("magic_crystal_grand");
 
     //Wand Upgrades
     public static final DeferredObject<Item> ATTUNEMENT_UPGRADE = item("upgrade_attunement");
@@ -389,30 +391,30 @@ public final class EBItems {
     public static final DeferredObject<Item> RING_STORMCLOUD = artifact("ring_stormcloud");
 
     //Spectral Armor
-    public static final DeferredObject<Item> SPECTRAL_HELMET = item("spectral_helmet");
-    public static final DeferredObject<Item> SPECTRAL_CHESTPLATE = item("spectral_chestplate");
-    public static final DeferredObject<Item> SPECTRAL_LEGGINGS = item("spectral_leggings");
-    public static final DeferredObject<Item> SPECTRAL_BOOTS = item("spectral_boots");
+    public static final DeferredObject<Item> SPECTRAL_HELMET = debug("spectral_helmet");
+    public static final DeferredObject<Item> SPECTRAL_CHESTPLATE = debug("spectral_chestplate");
+    public static final DeferredObject<Item> SPECTRAL_LEGGINGS = debug("spectral_leggings");
+    public static final DeferredObject<Item> SPECTRAL_BOOTS = debug("spectral_boots");
 
     //Spectral Weapons
-    public static final DeferredObject<Item> SPECTRAL_SWORD = item("spectral_sword");
-    public static final DeferredObject<Item> SPECTRAL_BOW = item("spectral_bow", false);
+    public static final DeferredObject<Item> SPECTRAL_SWORD = debug("spectral_sword");
+    public static final DeferredObject<Item> SPECTRAL_BOW = debug("spectral_bow");
 
     //Spectral Tools
-    public static final DeferredObject<Item> SPECTRAL_PICKAXE = item("spectral_pickaxe");
+    public static final DeferredObject<Item> SPECTRAL_PICKAXE = debug("spectral_pickaxe");
 
     //Cast Items
-    public static final DeferredObject<Item> FLAMECATCHER = item("flamecatcher", false);
-    public static final DeferredObject<Item> FLAMING_AXE = item("flaming_axe");
-    public static final DeferredObject<Item> FROST_AXE = item("frost_axe");
-    public static final DeferredObject<Item> LIGHTNING_HAMMER = item("lightning_hammer", false);
+    public static final DeferredObject<Item> FLAMECATCHER = debug("flamecatcher");
+    public static final DeferredObject<Item> FLAMING_AXE = debug("flaming_axe");
+    public static final DeferredObject<Item> FROST_AXE = debug("frost_axe");
+    public static final DeferredObject<Item> LIGHTNING_HAMMER = debug("lightning_hammer");
 
 
 
 
     // ======= Registry =======
     public static void register(RegisterFunction<Item> function){
-        ITEMS.forEach(((id, item) -> {
+        ITEMS_REGISTER.forEach(((id, item) -> {
             function.register(BuiltInRegistries.ITEM, WizardryMainMod.location(id), item.get());
         }));
     }
@@ -425,61 +427,79 @@ public final class EBItems {
     }
 
     // ======= Helpers =======
+    /** Add crystals with a default model and inside the item creative tab */
     static DeferredObject<Item> crystal(String name){
-        return item(name, CrystalItem::new);
+        return item(name, CrystalItem::new, true, true);
     }
 
+    /** Add armor upgrades with a default model and inside the item creative tab */
     static DeferredObject<Item> armorUpgrade(String name){
-        return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(16)));
+        return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(16)), true, true);
     }
 
+    /** Add armor with a default model and not inside the item creative tab */
     static DeferredObject<Item> armor(String name, WizardArmorType wizardArmorType, ArmorItem.Type type, Element element){
         return armor(name, () -> new WizardArmorItem(wizardArmorType, type, element), type);
     }
 
+    /** Add armor with a default model and not inside the item creative tab */
     static <T extends Item> DeferredObject<T> armor(String name, Supplier<T> sup, ArmorItem.Type type){
-        var registeredArmor = item(name, sup);
+        var registeredArmor = item(name, sup, true, false);
         if(type == ArmorItem.Type.LEGGINGS) LEGGINGS.add(registeredArmor);
         ARMORS.add(registeredArmor);
         return registeredArmor;
     }
 
+    /** Add wands with a default model and not inside the item creative tab */
     static DeferredObject<Item> wand(String name, SpellTier tier, Element element){
         return wand(name, () -> new WandItem(tier, element), true);
     }
 
+    /** Add wands with a default model and not inside the item creative tab */
     static <T extends Item> DeferredObject<T> wand(String name, Supplier<T> sup, boolean defaultModel){
-        var registeredWand = item(name, sup, false);
+        var registeredWand = item(name, sup, false, false);
         WANDS.add(registeredWand);
         if(defaultModel) DataGenProcessor.get().addWandItem(name, registeredWand);
         return registeredWand;
     }
 
+    /** Add artifacts with a default model and not inside the item creative tab */
     static DeferredObject<Item> artifact(String name){
         return artifact(name, () -> new Item(new Item.Properties()));
     }
 
+    /** Add artifacts with a default model and not inside the item creative tab */
     static <T extends Item> DeferredObject<T> artifact(String name, Supplier<T> sup){
-        var registeredArtifact = item(name, sup);
+        var registeredArtifact = item(name, sup, true, false);
         ARTIFACTS.add(registeredArtifact);
         return registeredArtifact;
     }
 
-    static DeferredObject<Item> item(String name) {
-        return item(name, () -> new Item(new Item.Properties()));
+    /** Add debug-items (items that are not meant to be public) with a default model and not inside the item creative tab */
+    static DeferredObject<Item> debug(String name){
+        return debug(name, () -> new Item(new Item.Properties()));
     }
 
-    static DeferredObject<Item> item(String name, boolean defaultModel) {
-        return item(name, () -> new Item(new Item.Properties()), defaultModel);
+    /** Add debug-items (items that are not meant to be public) with a default model and not inside the item creative tab */
+    static <T extends Item> DeferredObject<T> debug(String name, Supplier<T> sup){
+        var registeredDebug = item(name, sup, true, false);
+        DEBUG_ITEMS.add(registeredDebug);
+        return registeredDebug;
+    }
+
+    // Basically just a temp method to add items without any functional use
+    static DeferredObject<Item> item(String name) {
+        return item(name, () -> new Item(new Item.Properties()), true, true);
     }
 
     static <T extends Item> DeferredObject<T> item(String name, Supplier<T> itemSupplier) {
-        return item(name, itemSupplier, true);
+        return item(name, itemSupplier, true, false);
     }
 
-    static <T extends Item> DeferredObject<T> item(String name, Supplier<T> itemSupplier, boolean defaultModel) {
+    static <T extends Item> DeferredObject<T> item(String name, Supplier<T> itemSupplier, boolean defaultModel, boolean defaultTab) {
         var ret = new DeferredObject<>(itemSupplier);
-        ITEMS.put(name, ret);
+        ITEMS_REGISTER.put(name, ret);
+        if(defaultTab) GENERAL_ITEMS.add(ret);
         if(defaultModel) DataGenProcessor.get().addDefaultItem(name, ret);
         return ret;
     }

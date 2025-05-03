@@ -76,7 +76,7 @@ public final class EBBlocks {
     static DeferredObject<Block> block(String name, Supplier<Block> blockSupplier, boolean defaultModel, boolean defaultDrop, boolean item) {
         return block(name, blockSupplier,
                 item ? (registeredBlock) ->
-                        EBItems.item(name, () -> new BlockItem(registeredBlock.get(), new Item.Properties()), false)
+                        EBItems.item(name, () -> new BlockItem(registeredBlock.get(), new Item.Properties()), false, false)
                         : null,
                 defaultModel, defaultDrop);
     }

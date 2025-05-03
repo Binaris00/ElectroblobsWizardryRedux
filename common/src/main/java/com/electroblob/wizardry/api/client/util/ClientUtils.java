@@ -74,7 +74,10 @@ public class ClientUtils {
 
     public static Component getScrollDisplayName(ItemStack scroll) {
         Spell spell = SpellUtil.getSpell(scroll);
-        return Component.translatable(String.format("item." + WizardryMainMod.MOD_ID + ".scroll", String.format("spell." + spell.getDescriptionId())).trim());
+        boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, scroll);
+        Component name = discovered ? spell.getDescriptionFormatted() :
+                SpellGlyphData.getGlyphNameFormatted(spell, GlyphClientHandler.INSTANCE.getGlyphData());
+        return Component.translatable("item." + WizardryMainMod.MOD_ID + ".scroll", name);
     }
 
     public static void openSpellBook(ItemStack stack) {

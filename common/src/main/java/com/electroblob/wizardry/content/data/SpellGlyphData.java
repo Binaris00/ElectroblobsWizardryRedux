@@ -10,6 +10,8 @@ import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,7 +25,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SpellGlyphData extends SavedData {
-    public static final String NAME = WizardryMainMod.MOD_ID + "_glyphData";
+    private static final String NAME = WizardryMainMod.MOD_ID + "_glyphData";
 
     public Map<Spell, String> randomNames = new HashMap<>();
     public Map<Spell, String> randomDescriptions = new HashMap<>();
@@ -92,6 +94,10 @@ public class SpellGlyphData extends SavedData {
         Services.NETWORK_HELPER.sendTo(player, msg);
 
         EBLogger.info("Synchronising spell glyph data for " + player.getName().getString());
+    }
+
+    public static Component getGlyphNameFormatted(Spell spell, SpellGlyphData data){
+        return Component.literal(getGlyphName(spell, data)).withStyle(Style.EMPTY.withFont(new ResourceLocation("minecraft", "alt")));
     }
     
     public static String getGlyphName(Spell spell, SpellGlyphData data) {

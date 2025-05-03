@@ -38,7 +38,7 @@ public class SpellTiers {
         return tier;
     }
 
-    // TODO MAYBE CHECK ADDON COMPATIBILITY
+    // FIXME MAYBE CHECK ADDON COMPATIBILITY
     public static SpellTier getNextByLevel(int level){
         for(SpellTier tier : TIERS.values()){
             if(tier.level == level) return tier;

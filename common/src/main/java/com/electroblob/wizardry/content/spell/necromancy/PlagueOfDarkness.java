@@ -30,19 +30,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class PlagueOfDarkness extends AreaEffectSpell {
     @Override
-    protected boolean affectEntity(Level world, Vec3 origin, @Nullable LivingEntity caster, LivingEntity target, int targetCount, int ticksInUse) {
-        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
-
-            target.hurt(target.damageSources().wither(), property(DefaultProperties.DAMAGE));
-            target.addEffect(new MobEffectInstance(MobEffects.WITHER,
-                    property(DefaultProperties.EFFECT_DURATION),
-                    property(DefaultProperties.EFFECT_STRENGTH)));
-        }
-
-        return true;
-    }
-
-    @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
 
@@ -56,32 +43,31 @@ public class PlagueOfDarkness extends AreaEffectSpell {
     }
 
     @Override
-    protected void spawnParticleEffect(Level world, Vec3 origin, double radius, @Nullable LivingEntity caster) {
+    protected void spawnParticleEffect(CastContext ctx, Vec3 origin, double radius) {
         double particleX, particleZ;
 
         for(int i = 0; i < 40; i++){
-
-            particleX = origin.x - 1.0d + 2 * world.random.nextDouble();
-            particleZ = origin.z - 1.0d + 2 * world.random.nextDouble();
+            particleX = origin.x - 1.0d + 2 * ctx.world().random.nextDouble();
+            particleZ = origin.z - 1.0d + 2 * ctx.world().random.nextDouble();
             ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(particleX, origin.y, particleZ)
-                    .velocity(particleX - origin.x, 0, particleZ - origin.z).color(0.1f, 0, 0).spawn(world);
+                    .velocity(particleX - origin.x, 0, particleZ - origin.z).color(0.1f, 0, 0).spawn(ctx.world());
 
-            particleX = origin.x - 1.0d + 2 * world.random.nextDouble();
-            particleZ = origin.z - 1.0d + 2 * world.random.nextDouble();
+            particleX = origin.x - 1.0d + 2 * ctx.world().random.nextDouble();
+            particleZ = origin.z - 1.0d + 2 * ctx.world().random.nextDouble();
             ParticleBuilder.create(EBParticles.SPARKLE).pos(particleX, origin.y, particleZ)
-                    .velocity(particleX - origin.x, 0, particleZ - origin.z).time(30).color(0.1f, 0, 0.05f).spawn(world);
+                    .velocity(particleX - origin.x, 0, particleZ - origin.z).time(30).color(0.1f, 0, 0.05f).spawn(ctx.world());
 
-            particleX = origin.x - 1.0d + 2 * world.random.nextDouble();
-            particleZ = origin.z - 1.0d + 2 * world.random.nextDouble();
+            particleX = origin.x - 1.0d + 2 * ctx.world().random.nextDouble();
+            particleZ = origin.z - 1.0d + 2 * ctx.world().random.nextDouble();
 
-            BlockState state = world.getBlockState(new BlockPos((int) origin.x, (int) (origin.y - 0.5), (int) origin.z));
+            BlockState state = ctx.world().getBlockState(new BlockPos((int) origin.x, (int) (origin.y - 0.5), (int) origin.z));
 
             if(state.getRenderShape() != RenderShape.INVISIBLE) {
-                world.addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), particleX, origin.y, particleZ, particleX - origin.x, 0, particleZ - origin.z);
+                ctx.world().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), particleX, origin.y, particleZ, particleX - origin.x, 0, particleZ - origin.z);
             }
         }
 
-        ParticleBuilder.create(EBParticles.SPHERE).pos(origin.add(0, 0.1, 0)).scale((float)radius * 0.8f).color(0.8f, 0, 0.05f).spawn(world);
+        ParticleBuilder.create(EBParticles.SPHERE).pos(origin.add(0, 0.1, 0)).scale((float)radius * 0.8f).color(0.8f, 0, 0.05f).spawn(ctx.world());
     }
 
     @Override
