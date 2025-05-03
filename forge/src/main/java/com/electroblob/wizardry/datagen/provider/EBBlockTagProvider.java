@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.datagen;
+package com.electroblob.wizardry.datagen.provider;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
@@ -7,6 +7,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
 import net.minecraftforge.common.data.BlockTagsProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -17,7 +18,7 @@ public class EBBlockTagProvider extends BlockTagsProvider {
     }
 
     @Override
-    protected void addTags(HolderLookup.Provider provider) {
+    protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(EBBlocks.MAGIC_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.FIRE_CRYSTAL_BLOCK.get())

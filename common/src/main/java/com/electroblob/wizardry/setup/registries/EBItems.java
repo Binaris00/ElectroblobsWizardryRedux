@@ -6,7 +6,7 @@ import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.item.*;
-import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
+import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
@@ -459,7 +459,7 @@ public final class EBItems {
     static <T extends Item> DeferredObject<T> wand(String name, Supplier<T> sup, boolean defaultModel){
         var registeredWand = item(name, sup, false, false);
         WANDS.add(registeredWand);
-        if(defaultModel) DataGenProcessor.get().addWandItem(name, registeredWand);
+        if(defaultModel) EBDataGenProcessor.addWandItem(name, registeredWand);
         return registeredWand;
     }
 
@@ -482,7 +482,7 @@ public final class EBItems {
 
     /** Add debug-items (items that are not meant to be public) with a default model and not inside the item creative tab */
     static <T extends Item> DeferredObject<T> debug(String name, Supplier<T> sup){
-        var registeredDebug = item(name, sup, true, false);
+        var registeredDebug = item(name, sup, false, false);
         DEBUG_ITEMS.add(registeredDebug);
         return registeredDebug;
     }
@@ -500,7 +500,7 @@ public final class EBItems {
         var ret = new DeferredObject<>(itemSupplier);
         ITEMS_REGISTER.put(name, ret);
         if(defaultTab) GENERAL_ITEMS.add(ret);
-        if(defaultModel) DataGenProcessor.get().addDefaultItem(name, ret);
+        if(defaultModel) EBDataGenProcessor.addDefaultItem(name, ret);
         return ret;
     }
 }

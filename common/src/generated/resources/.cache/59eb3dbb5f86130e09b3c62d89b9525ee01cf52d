@@ -1,4 +1,4 @@
-// 1.20.1	2025-04-29T09:58:42.2842785	Loot Tables
+// 1.20.1	2025-05-03T13:12:39.9294518	Loot Tables
 bf581132b9cc6376faa77b60bdaade7f6a19df65 data/ebwizardry/loot_tables/blocks/arcane_workbench.json
 1014e3280c9935041324551d68a2abeacf08c89c data/ebwizardry/loot_tables/blocks/crystal_block_earth.json
 194bebb706e50572d741541e895a3dce9f09b021 data/ebwizardry/loot_tables/blocks/crystal_block_fire.json
@@ -8,3 +8,6 @@ bf581132b9cc6376faa77b60bdaade7f6a19df65 data/ebwizardry/loot_tables/blocks/arca
 8a2489f060b02d299ecfff08ca05e5c807d5d461 data/ebwizardry/loot_tables/blocks/crystal_block_magic.json
 54ed385a4ea79275d0c93fd73528c019c9f488e9 data/ebwizardry/loot_tables/blocks/crystal_block_necromancy.json
 20de84eab22061bd038fb61a5db1e94827c22183 data/ebwizardry/loot_tables/blocks/crystal_block_sorcery.json
+5b5d5f9bee03cfab9ad86e4d035834605587c38b data/ebwizardry/loot_tables/blocks/meteor.json
+700a23e2a313d92c5b8608ea2cce6e732064464c data/ebwizardry/loot_tables/blocks/permafrost.json
+2f0f82a58c90a1aa840bf8a97d8dceda3f05d502 data/ebwizardry/loot_tables/blocks/vanishing_cobweb.json

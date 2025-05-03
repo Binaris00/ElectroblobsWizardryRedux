@@ -24,7 +24,7 @@ public final class EBConfig {
     public static boolean legacyWandLevelling = false;
     public static boolean wandsMustBeHeldToDecrementCooldown = false;
     public static boolean discoveryMode = true;
-    public static double forfeitChance = 0.7; // 2
+    public static double forfeitChance = 0.2; // 2
 
     public static float COOLDOWN_REDUCTION_PER_LEVEL = 0.15f;
     public static final float STORAGE_INCREASE_PER_LEVEL = 0.15f;

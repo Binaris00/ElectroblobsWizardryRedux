@@ -6,7 +6,7 @@ import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.block.ArcaneWorkbenchBlock;
 import com.electroblob.wizardry.content.block.PermafrostBlock;
 import com.electroblob.wizardry.content.block.VanishingCobwebBlock;
-import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
+import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
@@ -26,8 +26,8 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public final class EBBlocks {
-    static final Map<String, DeferredObject<Block>> BLOCKS = new HashMap<>();
-    static final Map<String, DeferredObject<Block>> BLOCK_ITEMS = new HashMap<>(); // <name, <block, item>>
+    public static final Map<String, DeferredObject<Block>> BLOCKS = new HashMap<>();
+    public static final Map<String, DeferredObject<Block>> BLOCK_ITEMS = new HashMap<>(); // <name, <block, item>>
     private EBBlocks() {}
 
     public static final DeferredObject<Block> MAGIC_CRYSTAL_BLOCK = crystalBlock("magic", MapColor.COLOR_PINK);
@@ -90,8 +90,8 @@ public final class EBBlocks {
             BLOCK_ITEMS.put(name, ret);
         }
 
-        if(defaultModel) DataGenProcessor.get().addDefaultBlockModel(name, ret);
-        if(defaultDrop) DataGenProcessor.get().addDefaultBlockDrop(name, ret);
+        if(defaultModel) EBDataGenProcessor.addDefaultBlockModel(name, ret);
+        if(defaultDrop) EBDataGenProcessor.addDefaultBlockDrop(name, ret);
         return ret;
     }
 }

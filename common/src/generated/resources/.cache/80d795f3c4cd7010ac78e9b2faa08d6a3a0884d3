@@ -1,4 +1,4 @@
-// 1.20.1	2025-03-31T20:16:10.9715506	Item Models: ebwizardry
+// 1.20.1	2025-05-03T13:12:39.9321467	Item Models: ebwizardry
 89bb34411d51f6f233bba5222d0f678fb09f0db7 assets/ebwizardry/models/item/amulet_absorption.json
 5d768537586b85e2822265776cd201221e20ad88 assets/ebwizardry/models/item/amulet_anchoring.json
 0580922d9a4bededf0168a7c330267c6c36f48e8 assets/ebwizardry/models/item/amulet_arcane_defence.json
@@ -53,6 +53,7 @@ a50cb92787561ef662bdacca30e8834821b581c8 assets/ebwizardry/models/item/battlemag
 63dab5cfe9e401a9ff279785d475e1085f2ff68d assets/ebwizardry/models/item/battlemage_leggings_lightning.json
 667003a8483004ae5e0ea3093b884ad41aa4f5fa assets/ebwizardry/models/item/battlemage_leggings_necromancy.json
 be17a04fbf676b7674e82aac2a0a0a89e3ed82e7 assets/ebwizardry/models/item/battlemage_leggings_sorcery.json
+eb680d738552b9d913fbd9ce4707a09e3156db8a assets/ebwizardry/models/item/blank_scroll.json
 521d43098f0ab2815babd33b44d1f5d36b8fbbeb assets/ebwizardry/models/item/charm_abseiling.json
 34ae1358702730912dcbd5d49745f73a4fa2a0c5 assets/ebwizardry/models/item/charm_auto_smelt.json
 e8aaa59e8b55b58d5f872a82287ad131446704fb assets/ebwizardry/models/item/charm_black_hole.json
@@ -78,8 +79,6 @@ a182c23877cbf08bd564d74acb66afcaa39bb748 assets/ebwizardry/models/item/charm_und
 7bc9b845735fe70579466cc3aa887c9aa15f12e6 assets/ebwizardry/models/item/crystal_silver_plating.json
 0a0f51c3ba5109e34a47f5a848569a7e7d83ba96 assets/ebwizardry/models/item/ethereal_crystal_weave.json
 de60bf6bfadb52e009d724bd406e45c1d3440063 assets/ebwizardry/models/item/firebomb.json
-2152e2ea5bc0b32711580c9d78d5f0e9158367ee assets/ebwizardry/models/item/flaming_axe.json
-a6258b8ab18acae2b13f2d75cb5a64c937a00b68 assets/ebwizardry/models/item/frost_axe.json
 ea8e9017119e2136734d2f7c4cf1ec12df0db745 assets/ebwizardry/models/item/identification_scroll.json
 cd36b63baf6eb12d25548711fcd3339a10601a39 assets/ebwizardry/models/item/magic_crystal.json
 39358c16e514c7bcee08db0f95f6d0d2525dc974 assets/ebwizardry/models/item/magic_crystal_earth.json
@@ -167,8 +166,6 @@ fdf9a5fecd3e9f77b891b7c78c872092f94377ad assets/ebwizardry/models/item/sage_robe
 011e6d4fb414791b82d06142637cb5f62453ddc1 assets/ebwizardry/models/item/scroll.json
 ca1b92246364b4ce8ea1fadcbc5d09bbd52cd9dc assets/ebwizardry/models/item/smoke_bomb.json
 d514b404b2e80d493b8e75a794d8a7b911459a19 assets/ebwizardry/models/item/spark_bomb.json
-3ee6cdfb0b27303cc6e2022d85e7a684e4ef77a2 assets/ebwizardry/models/item/spectral_boots.json
-995e8f7c5a2618c9abfd5ca8ba416ad521473057 assets/ebwizardry/models/item/spectral_chestplate.json
 c8e2a0e0f909c818ae79168a11a55cbb9e1e55b2 assets/ebwizardry/models/item/spectral_dust.json
 fa044cace293e5a1d7074de4fd90eb22c8faefde assets/ebwizardry/models/item/spectral_dust_earth.json
 eb74e7f1e5b0d8997e9438a1cd68d4750ff80b9b assets/ebwizardry/models/item/spectral_dust_fire.json
@@ -177,10 +174,6 @@ fbc328a2514c1e7b9e7c6b9b87952c0877c848de assets/ebwizardry/models/item/spectral_
 7300faf8ddbb842c5630ae0c5f727d08f6df7bac assets/ebwizardry/models/item/spectral_dust_lightning.json
 2ea9b7f680e366d1519ecfdb6a1f2ed52b539567 assets/ebwizardry/models/item/spectral_dust_necromancy.json
 9ffe1f60d9eec6f457cba5412bbd521e6e8cf9e0 assets/ebwizardry/models/item/spectral_dust_sorcery.json
-713d8460f64e47a8360f8c4901224982c9b2d866 assets/ebwizardry/models/item/spectral_helmet.json
-8e463ca3e8515d7c2ec7dcbf326bd9e3baeab679 assets/ebwizardry/models/item/spectral_leggings.json
-40dc198dc6075073954b2c1c5279dc80814a5b2d assets/ebwizardry/models/item/spectral_pickaxe.json
-3d7046aa9d6b4b6f5369c8ccef93a9d53176f122 assets/ebwizardry/models/item/spectral_sword.json
 cfd3fa29c916453848a76476c63b459d2962dab3 assets/ebwizardry/models/item/spell_book.json
 aaedefc5cfdba5f83650fba96451a1131be91200 assets/ebwizardry/models/item/upgrade_attunement.json
 04863f7c082fc84c219e5bec00b6f978f31e6928 assets/ebwizardry/models/item/upgrade_blast.json

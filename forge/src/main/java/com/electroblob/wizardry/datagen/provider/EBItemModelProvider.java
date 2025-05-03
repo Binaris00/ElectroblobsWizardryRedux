@@ -1,7 +1,7 @@
-package com.electroblob.wizardry.datagen;
+package com.electroblob.wizardry.datagen.provider;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
+import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -17,9 +17,9 @@ public class EBItemModelProvider extends ItemModelProvider {
 
     @Override
     protected void registerModels() {
-        DataGenProcessor.get().items().forEach((name, item) -> simpleItem(name));
+        EBDataGenProcessor.items().forEach((name, item) -> simpleItem(name));
         generateWandPointModel();
-        DataGenProcessor.get().wandItems().forEach((name, item) -> simpleWand(name));
+        EBDataGenProcessor.wandItems().forEach((name, item) -> simpleWand(name));
     }
 
     private ItemModelBuilder simpleItem(String name) {

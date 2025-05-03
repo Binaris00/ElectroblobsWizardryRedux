@@ -1,8 +1,8 @@
-package com.electroblob.wizardry.datagen;
+package com.electroblob.wizardry.datagen.provider;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
-import com.electroblob.wizardry.setup.datagen.DataGenProcessor;
+import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
@@ -16,7 +16,8 @@ public class EBBlockStateProvider extends BlockStateProvider {
 
     @Override
     protected void registerStatesAndModels() {
-        DataGenProcessor.get().defaultBlockModels().forEach((name, block) -> blockWithItem(block));
+        EBDataGenProcessor.defaultBlockModels().forEach((name, block) -> blockWithItem(block)); // Default block models and states
+
     }
 
     private void blockWithItem(DeferredObject<Block> block) {
