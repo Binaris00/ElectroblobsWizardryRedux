@@ -6,6 +6,7 @@ import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
@@ -23,6 +24,7 @@ public final class WizardryFabricMod implements ModInitializer {
         EBBlockEntities.register(Registry::register);
         EBItems.register(Registry::register);
         EBEntities.register(Registry::register);
+        EBEntities.registerAttributes(FabricDefaultAttributeRegistry::register);
 
         SpellTiers.register(EBRegistriesFabric.TIERS, Registry::register);
         Elements.register(EBRegistriesFabric.ELEMENTS, Registry::register);

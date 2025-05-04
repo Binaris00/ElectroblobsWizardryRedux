@@ -7,10 +7,12 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleProvider;
+import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ParticleFlash extends ParticleWizardry {
@@ -19,6 +21,10 @@ public class ParticleFlash extends ParticleWizardry {
         this.setColor(1, 1, 1);
         this.quadSize = 0.6f;
         this.lifetime = 6;
+    }
+
+    public @NotNull ParticleRenderType getRenderType() {
+        return ParticleRenderType.PARTICLE_SHEET_TRANSLUCENT;
     }
 
     @Override

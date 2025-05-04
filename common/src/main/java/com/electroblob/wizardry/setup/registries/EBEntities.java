@@ -6,14 +6,18 @@ import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.entity.ArrowRainConstruct;
 import com.electroblob.wizardry.content.entity.MeteorEntity;
 import com.electroblob.wizardry.content.entity.construct.*;
+import com.electroblob.wizardry.content.entity.living.Remnant;
 import com.electroblob.wizardry.content.entity.projectile.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 
 import static com.electroblob.wizardry.WizardryMainMod.location;
 
@@ -57,6 +61,8 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<HailstormConstruct>> HAILSTORM = entity(HailstormConstruct::new, "hailstorm", MobCategory.MISC, 5, 5, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<DecayConstruct>> DECAY = entity(DecayConstruct::new, "decay", MobCategory.MISC, 2f, 0.2f, MagicType.CONSTRUCT);
 
+    public static final DeferredObject<EntityType<Remnant>> REMNANT = entity(Remnant::new, "remnant", MobCategory.CREATURE, 0.8f, 0.8f, MagicType.LIVING);
+
     enum MagicType {
         LIVING(80, 3),
         PROJECTILE(64, 10),
@@ -76,6 +82,10 @@ public final class EBEntities {
         ENTITY_TYPES.forEach(((id, entityType) -> {
             function.register(BuiltInRegistries.ENTITY_TYPE, WizardryMainMod.location(id), entityType.get());
         }));
+    }
+
+    public static void registerAttributes(BiConsumer<EntityType<? extends LivingEntity>, AttributeSupplier> consumer) {
+        consumer.accept(REMNANT.get(), Remnant.createMobAttributes().build());
     }
 
     // ======= Helpers =======

@@ -16,6 +16,7 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -78,6 +79,11 @@ public class WizardryForgeEvents {
         @SubscribeEvent
         public static void register(RegisterCapabilitiesEvent event) {
             event.register(ForgePlayerWizardData.class);
+        }
+
+        @SubscribeEvent
+        public static void createEntityAttributes(EntityAttributeCreationEvent event) {
+            EBEntities.registerAttributes(event::put);
         }
     }
 
