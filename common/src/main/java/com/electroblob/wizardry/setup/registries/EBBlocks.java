@@ -27,7 +27,7 @@ import java.util.function.Supplier;
 @SuppressWarnings("unused")
 public final class EBBlocks {
     public static final Map<String, DeferredObject<Block>> BLOCKS = new HashMap<>();
-    public static final Map<String, DeferredObject<Block>> BLOCK_ITEMS = new HashMap<>(); // <name, <block, item>>
+    public static final Map<String, DeferredObject<Block>> BLOCK_ITEMS = new HashMap<>();
     private EBBlocks() {}
 
     public static final DeferredObject<Block> MAGIC_CRYSTAL_BLOCK = crystalBlock("magic", MapColor.COLOR_PINK);
@@ -38,6 +38,9 @@ public final class EBBlocks {
     public static final DeferredObject<Block> EARTH_CRYSTAL_BLOCK = crystalBlock("earth", MapColor.COLOR_GREEN);
     public static final DeferredObject<Block> SORCERY_CRYSTAL_BLOCK = crystalBlock("sorcery", MapColor.COLOR_LIGHT_GREEN);
     public static final DeferredObject<Block> HEALING_CRYSTAL_BLOCK = crystalBlock("healing", MapColor.COLOR_YELLOW);
+
+    public static final DeferredObject<Block> CRYSTAL_ORE = block("crystal_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(2, 5).sound(SoundType.STONE), UniformInt.of(4, 8)), true, false, true);
+    public static final DeferredObject<Block> DEEPSLATE_CRYSTAL_ORE = block("deepslate_crystal_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(2, 5).sound(SoundType.STONE), UniformInt.of(4, 8)), true, false, true);
 
     public static final DeferredObject<Block> PERMAFROST = block("permafrost", PermafrostBlock::new, false, false, false);
     public static final DeferredObject<Block> VANISHING_COBWEB = block("vanishing_cobweb", () -> new VanishingCobwebBlock(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, false, false);

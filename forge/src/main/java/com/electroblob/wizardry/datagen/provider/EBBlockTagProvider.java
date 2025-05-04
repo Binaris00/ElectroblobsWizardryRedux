@@ -20,6 +20,8 @@ public class EBBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(BlockTags.NEEDS_IRON_TOOL)
+                .add(EBBlocks.CRYSTAL_ORE.get())
+                .add(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get())
                 .add(EBBlocks.MAGIC_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.FIRE_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.ICE_CRYSTAL_BLOCK.get())
@@ -31,6 +33,8 @@ public class EBBlockTagProvider extends BlockTagsProvider {
         ;
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(EBBlocks.CRYSTAL_ORE.get())
+                .add(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get())
                 .add(EBBlocks.MAGIC_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.FIRE_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.ICE_CRYSTAL_BLOCK.get())

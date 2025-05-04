@@ -3,6 +3,7 @@ package com.electroblob.wizardry.datagen.provider.loot;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.data.loot.BlockLootSubProvider;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.block.Block;
@@ -28,6 +29,8 @@ public class EBBlockLootTables extends BlockLootSubProvider {
         this.add(EBBlocks.PERMAFROST.get(), noDrop());
         this.add(EBBlocks.VANISHING_COBWEB.get(), noDrop());
         this.add(EBBlocks.METEOR.get(), noDrop());
+        this.add(EBBlocks.CRYSTAL_ORE.get(), createOreDrop(EBBlocks.CRYSTAL_ORE.get(), EBItems.MAGIC_CRYSTAL.get()));
+        this.add(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get(), createOreDrop(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get(), EBItems.MAGIC_CRYSTAL.get()));
     }
 
     @Override
