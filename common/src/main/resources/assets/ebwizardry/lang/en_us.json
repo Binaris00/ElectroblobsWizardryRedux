@@ -15,6 +15,8 @@
   "spelltype.projectile": "Projectile",
   "spelltype.alteration": "Alteration",
 
+  "spell.discover": "Discovered the spell %s!",
+
   "element.ebwizardry.magic": "None",
   "element.ebwizardry.fire": "Fire",
   "element.ebwizardry.ice": "Ice",

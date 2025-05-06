@@ -86,7 +86,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         Level world = caster.level();
         if(!spell.cast(new PlayerCastContext(world, caster, hand, castingTick, modifiers))) return false;
 
-        if(castingTick == 0) WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.SCROLL, spell, caster, modifiers));
+        if(castingTick == 0) WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.SCROLL, spell, caster, modifiers));
         if(spell.isInstantCast() && !caster.isCreative()) stack.shrink(1);
         if(spell.isInstantCast() && !caster.isCreative()) caster.getCooldowns().addCooldown(this, spell.getCooldown());
 

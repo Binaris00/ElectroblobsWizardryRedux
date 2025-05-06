@@ -47,10 +47,7 @@ import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Constructor;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.function.BiConsumer;
 
 import static com.electroblob.wizardry.content.Forfeit.HORIZONTALS;
@@ -94,47 +91,52 @@ public class ForfeitRegistry {
 
     public static void onSpellCastPreEvent(SpellCastEvent.Pre event){
         if(!EBConfig.discoveryMode) return;
-        if(!(event.getCaster() instanceof Player player && player.isCreative())) return;
-        if(!(event.getSource() != SpellCastEvent.Source.WAND || event.getSource() != SpellCastEvent.Source.SCROLL)) return;
+        if(!(event.getCaster() instanceof Player player)) return;
+        if(player.isCreative()) return;
 
         PlayerWizardData data = Services.WIZARD_DATA.getWizardData(player, player.level());
-        // TODO
-        //if(ArtefactItem.isArtefactActive(player, WizardryItems.AMULET_WISDOM.get())) chance *= 0.5;
-        if(!(player.getRandom().nextFloat() > (float)EBConfig.forfeitChance) || data.hasSpellBeenDiscovered(event.getSpell())) return;
 
-        event.setCanceled(true);
-        Forfeit forfeit = getRandomForfeit(player.getRandom(), event.getSpell().getTier(), event.getSpell().getElement());
-        if(forfeit == null){
-            if(!event.getLevel().isClientSide) player.sendSystemMessage(Component.translatable("forfeit.ebwizardry.do_nothing"));
-            return;
-        }
+        if(event.getSource() == SpellCastEvent.Source.WAND || event.getSource() == SpellCastEvent.Source.SCROLL){
+            // TODO ARTIFACT
+            //if(ArtefactItem.isArtefactActive(player, WizardryItems.AMULET_WISDOM.get())) chance *= 0.5;
 
-        forfeit.apply(event.getLevel(), player);
-        ItemStack stack = player.getMainHandItem();
+            float f = WizardryMainMod.getRandom(player).nextFloat();
 
-        if(!(stack.getItem() instanceof ISpellCastingItem)){
-            stack = player.getOffhandItem();
-            if(!(stack.getItem() instanceof ISpellCastingItem)) stack = ItemStack.EMPTY;
-        }
+            if(f > (float)EBConfig.forfeitChance || data.hasSpellBeenDiscovered(event.getSpell())) return;
 
-        if(!stack.isEmpty()){
-            if(event.getSource() == SpellCastEvent.Source.SCROLL){
-                if(!player.isCreative()) stack.shrink(1);
-            }else if(stack.getItem() instanceof IManaStoringItem){
-                int cost = (int)(event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST) + 0.1f);
-                ((IManaStoringItem)stack.getItem()).consumeMana(stack, cost, player);
+            event.setCanceled(true);
+            Forfeit forfeit = getRandomForfeit(player.getRandom(), event.getSpell().getTier(), event.getSpell().getElement());
+            if(forfeit == null){
+                if(!event.getLevel().isClientSide) player.sendSystemMessage(Component.translatable("forfeit.ebwizardry.do_nothing"));
+                return;
             }
+
+            forfeit.apply(event.getLevel(), player);
+            ItemStack stack = player.getMainHandItem();
+
+            if(!(stack.getItem() instanceof ISpellCastingItem)){
+                stack = player.getOffhandItem();
+                if(!(stack.getItem() instanceof ISpellCastingItem)) stack = ItemStack.EMPTY;
+            }
+
+            if(!stack.isEmpty()){
+                if(event.getSource() == SpellCastEvent.Source.SCROLL){
+                    if(!player.isCreative()) stack.shrink(1);
+                }else if(stack.getItem() instanceof IManaStoringItem){
+                    int cost = (int)(event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST) + 0.1f);
+                    ((IManaStoringItem)stack.getItem()).consumeMana(stack, cost, player);
+                }
+            }
+
+            // TODO
+            // WizardryAdvancementTriggers.SPELL_FAILURE.triggerFor(player);
+
+            //TODO
+            //EntityUtils.playSoundAtPlayer(player, forfeit.getSound(), SoundSource.PLAYERS, 1, 1);
+
+            if(!event.getLevel().isClientSide) player.displayClientMessage(
+                    event.getSource() == SpellCastEvent.Source.WAND ? forfeit.getMessageForWand() : forfeit.getMessageForScroll(), true);
         }
-
-        // TODO
-        // WizardryAdvancementTriggers.SPELL_FAILURE.triggerFor(player);
-
-        //TODO
-        //EntityUtils.playSoundAtPlayer(player, forfeit.getSound(), SoundSource.PLAYERS, 1, 1);
-
-        if(!event.getLevel().isClientSide) player.sendSystemMessage(
-                event.getSource() == SpellCastEvent.Source.WAND ? forfeit.getMessageForWand() : forfeit.getMessageForScroll());
-
     }
 
     public static void onSpellCastPostEvent(SpellCastEvent.Post event) {
@@ -151,7 +153,9 @@ public class ForfeitRegistry {
             if(data.discoverSpell(event.getSpell())) {
                 if(!event.getCaster().level().isClientSide && !player.isCreative() && EBConfig.discoveryMode) {
                     EntityUtil.playSoundAtPlayer(player, EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
-                    player.sendSystemMessage(Component.translatable("spell.discover", event.getSpell().getDescriptionId()));
+                    Component message = Component.translatable("spell.discover", event.getSpell().getDescriptionFormatted());
+                    player.sendSystemMessage(message);
+
                 }
             }
         }
