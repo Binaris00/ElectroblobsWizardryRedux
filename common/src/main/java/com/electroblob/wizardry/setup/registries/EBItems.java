@@ -10,6 +10,7 @@ import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.SpawnEggItem;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -409,7 +410,8 @@ public final class EBItems {
     public static final DeferredObject<Item> FROST_AXE = debug("frost_axe");
     public static final DeferredObject<Item> LIGHTNING_HAMMER = debug("lightning_hammer");
 
-
+    // Spawn egg
+    public static final DeferredObject<Item> WIZARD_SPAWN_EGG = debug("wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.WIZARD.get(), 0, 0, new Item.Properties()));
 
 
     // ======= Registry =======

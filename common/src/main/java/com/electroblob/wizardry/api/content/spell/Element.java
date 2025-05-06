@@ -67,7 +67,7 @@ public class Element {
     }
 
     public Component getWizardName(){
-        return Component.translatable("element_" + getLocation() + ".wizard");
+        return Component.translatable(getDescriptionId() + ".wizard");
     }
 
     public ResourceLocation getIconId(){

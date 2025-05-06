@@ -3,6 +3,7 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.effect.CurseMobEffect;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.effect.*;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -16,6 +17,7 @@ import java.util.function.Supplier;
 public class EBMobEffects {
     static Map<String, DeferredObject<MobEffect>> MOB_EFFECTS = new HashMap<>();
 
+    public static final DeferredObject<MobEffect> ARCANE_JAMMER = mobEffect("arcane_jammer", () -> new CurseMobEffect(MobEffectCategory.HARMFUL, 0)); // TODO
     public static final DeferredObject<MobEffect> FROST = mobEffect("frost", FrostMobEffect::new);
     public static final DeferredObject<MobEffect> STATIC_AURA = mobEffect("static_aura", StaticAuraMobEffect::new);
     public static final DeferredObject<MobEffect> WARD = mobEffect("ward", WardMobEffect::new);

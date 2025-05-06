@@ -3,6 +3,7 @@ package com.electroblob.wizardry.setup.registries.client;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.client.model.RemnantModel;
+import com.electroblob.wizardry.client.model.WizardModel;
 import com.electroblob.wizardry.client.model.armor.RobeArmorModel;
 import com.electroblob.wizardry.client.model.armor.WizardArmorModel;
 import com.electroblob.wizardry.client.renderer.entity.*;
@@ -33,6 +34,7 @@ public final class EBRenderers {
         consumer.accept(WizardArmorModel.LAYER_LOCATION, WizardArmorModel::createBodyLayer);
         consumer.accept(RobeArmorModel.LAYER_LOCATION, RobeArmorModel::createBodyLayer);
         consumer.accept(RemnantModel.LAYER_LOCATION, RemnantModel::createBodyLayer);
+        consumer.accept(WizardModel.LAYER_LOCATION, WizardModel::createBodyLayer);
     }
 
     public static void registerRenderers() {
@@ -105,6 +107,9 @@ public final class EBRenderers {
         registerEntityRender(EBEntities.DECAY, DecayRenderer::new);
 
         registerEntityRender(EBEntities.REMNANT, RemnantRenderer::new);
+
+        registerEntityRender(EBEntities.WIZARD, WizardRenderer::new);
+        registerEntityRender(EBEntities.EVIL_WIZARD, EvilWizardRenderer::new);
     }
 
     public static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> getRenderers() {

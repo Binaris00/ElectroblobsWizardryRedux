@@ -84,7 +84,7 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
         if (this.wizardArmorType == WizardArmorType.WIZARD) {
             for (WizardArmorType armourClass : WizardArmorType.values()) {
                 if (upgrade.getItem() == armourClass.upgradeItem.get()) {
-                    Item newArmour = SpellUtil.getArmour(armourClass, this.element, getEquipmentSlot());
+                    Item newArmour = SpellUtil.getArmor(armourClass, this.element, getEquipmentSlot());
                     ItemStack newStack = new ItemStack(newArmour);
                     ((WizardArmorItem) newArmour).setMana(newStack, this.getMana(stack));
                     newStack.setTag(stack.getTag());

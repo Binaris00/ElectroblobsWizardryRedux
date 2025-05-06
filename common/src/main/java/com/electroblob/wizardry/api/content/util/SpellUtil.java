@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.api.content.util;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.content.item.WizardArmorType;
@@ -11,6 +10,7 @@ import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,6 +18,9 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public final class SpellUtil {
     public static String SPELL_KEY = "Spell";
@@ -34,6 +37,14 @@ public final class SpellUtil {
     public static ItemStack setSpell(ItemStack stack, Spell spell) {
         stack.getOrCreateTag().putString(SPELL_KEY, spell.getLocation().toString());
         return stack;
+    }
+
+    public static List<Spell> getSpells(Predicate<Spell> filter) {
+        return Services.REGISTRY_UTIL.getSpells().stream().filter(filter.and(s -> s != Spells.NONE)).collect(Collectors.toList());
+    }
+
+    public static Element getRandomElement(RandomSource random) {
+        return Services.REGISTRY_UTIL.getElements().stream().toList().get(random.nextInt(Services.REGISTRY_UTIL.getElements().size()));
     }
 
     /**
@@ -61,12 +72,12 @@ public final class SpellUtil {
         return (stack == null || stack.getTag() == null) ? "spell.ebwizardry.none" : "spell." + stack.getTag().getString(SPELL_KEY).replace(":", ".");
     }
 
-    public static Item getArmour(WizardArmorType wizardArmorType, Element element, EquipmentSlot slot) {
+    public static Item getArmor(WizardArmorType wizardArmorType, Element element, EquipmentSlot slot) {
         if (slot == null || slot.getType() != EquipmentSlot.Type.ARMOR)
             throw new IllegalArgumentException("Must be a valid armour slot");
         if (element == null) element = Elements.MAGIC;
         String registryName = wizardArmorType.getName() + "_" + wizardArmorType.getArmourPieceNames().get(slot);
-        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getDescriptionFormatted().getString();
+        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
         return BuiltInRegistries.ITEM.get(new ResourceLocation(WizardryMainMod.MOD_ID, registryName));
     }
 

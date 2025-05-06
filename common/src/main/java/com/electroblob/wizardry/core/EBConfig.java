@@ -1,6 +1,11 @@
 package com.electroblob.wizardry.core;
 
 import com.electroblob.wizardry.api.content.ConfigValue;
+import net.minecraft.resources.ResourceLocation;
+import org.apache.commons.lang3.tuple.Pair;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public final class EBConfig {
     public static final double MIN_PRECISE_DOUBLE = -9_007_199_254_740_992.0;
@@ -35,6 +40,8 @@ public final class EBConfig {
     public static final int CONDENSER_TICK_INTERVAL = 50;
     public static final int UPGRADE_STACK_LIMIT = 3;
     public static boolean booksPauseGame = true;
+
+    public static Map<Pair<ResourceLocation, Short>, Integer> currencyItems = new HashMap<>();
 
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);
 
