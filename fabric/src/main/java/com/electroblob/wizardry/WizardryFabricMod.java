@@ -10,7 +10,6 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.GenerationStep;
 
-
 public final class WizardryFabricMod implements ModInitializer {
     @Override
     public void onInitialize() {
@@ -37,6 +36,8 @@ public final class WizardryFabricMod implements ModInitializer {
         EBMenus.register(Registry::register);
 
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.UNDERGROUND_ORES, EBWorldGen.CRYSTAL_ORE);
+        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.VEGETAL_DECORATION, EBWorldGen.CRYSTAL_FLOWER);
+
         EBFabricNetwork.registerC2SMessages();
     }
 }

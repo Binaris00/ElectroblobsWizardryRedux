@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-03T13:12:39.9321467	Item Models: ebwizardry
+// 1.20.1	2025-05-07T11:40:55.1601622	Item Models: ebwizardry
 89bb34411d51f6f233bba5222d0f678fb09f0db7 assets/ebwizardry/models/item/amulet_absorption.json
 5d768537586b85e2822265776cd201221e20ad88 assets/ebwizardry/models/item/amulet_anchoring.json
 0580922d9a4bededf0168a7c330267c6c36f48e8 assets/ebwizardry/models/item/amulet_arcane_defence.json
@@ -76,6 +76,7 @@ f5ad2f4b5efa392e65fd01bf795b6e5f76f28fef assets/ebwizardry/models/item/charm_spe
 2608e2c19a06aff2492cc85b537e33fbe91b66f5 assets/ebwizardry/models/item/charm_storm.json
 1f0be474cfe74e0beeeb4808b278be34f2e0afcd assets/ebwizardry/models/item/charm_transportation.json
 a182c23877cbf08bd564d74acb66afcaa39bb748 assets/ebwizardry/models/item/charm_undead_helmets.json
+4bb4cdf42856e97fa0e1efb14d47353b1c8b9651 assets/ebwizardry/models/item/crystal_flower.json
 7bc9b845735fe70579466cc3aa887c9aa15f12e6 assets/ebwizardry/models/item/crystal_silver_plating.json
 0a0f51c3ba5109e34a47f5a848569a7e7d83ba96 assets/ebwizardry/models/item/ethereal_crystal_weave.json
 de60bf6bfadb52e009d724bd406e45c1d3440063 assets/ebwizardry/models/item/firebomb.json

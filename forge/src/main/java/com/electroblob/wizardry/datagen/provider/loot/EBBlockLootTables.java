@@ -25,12 +25,15 @@ public class EBBlockLootTables extends BlockLootSubProvider {
         // Default block drops
         EBDataGenProcessor.defaultBlockDrops().forEach((name, block) -> this.dropSelf(block.get()));
 
+        this.add(EBBlocks.CRYSTAL_ORE.get(), createOreDrop(EBBlocks.CRYSTAL_ORE.get(), EBItems.MAGIC_CRYSTAL.get()));
+        this.add(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get(), createOreDrop(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get(), EBItems.MAGIC_CRYSTAL.get()));
+        this.dropSelf(EBBlocks.CRYSTAL_FLOWER.get());
+        this.add(EBBlocks.POTTED_CRYSTAL_FLOWER.get(), createPotFlowerItemTable(EBBlocks.CRYSTAL_FLOWER.get()));
+
         // No drop ones
         this.add(EBBlocks.PERMAFROST.get(), noDrop());
         this.add(EBBlocks.VANISHING_COBWEB.get(), noDrop());
         this.add(EBBlocks.METEOR.get(), noDrop());
-        this.add(EBBlocks.CRYSTAL_ORE.get(), createOreDrop(EBBlocks.CRYSTAL_ORE.get(), EBItems.MAGIC_CRYSTAL.get()));
-        this.add(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get(), createOreDrop(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get(), EBItems.MAGIC_CRYSTAL.get()));
     }
 
     @Override

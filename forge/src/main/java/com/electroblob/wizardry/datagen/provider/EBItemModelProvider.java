@@ -1,13 +1,18 @@
 package com.electroblob.wizardry.datagen.provider;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
+import com.electroblob.wizardry.setup.registries.EBBlocks;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemDisplayContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.registries.RegistryObject;
 
 public class EBItemModelProvider extends ItemModelProvider {
 
@@ -20,6 +25,16 @@ public class EBItemModelProvider extends ItemModelProvider {
         EBDataGenProcessor.items().forEach((name, item) -> simpleItem(name));
         generateWandPointModel();
         EBDataGenProcessor.wandItems().forEach((name, item) -> simpleWand(name));
+
+        simpleBlockItemBlockTexture(EBBlocks.CRYSTAL_FLOWER);
+    }
+
+    private ItemModelBuilder simpleBlockItemBlockTexture(DeferredObject<Block> item) {
+        ResourceLocation id = BuiltInRegistries.BLOCK.getKey(item.get());
+
+        return withExistingParent(id.getPath(),
+                new ResourceLocation("item/generated")).texture("layer0",
+                new ResourceLocation(WizardryMainMod.MOD_ID,"block/" + id.getPath()));
     }
 
     private ItemModelBuilder simpleItem(String name) {

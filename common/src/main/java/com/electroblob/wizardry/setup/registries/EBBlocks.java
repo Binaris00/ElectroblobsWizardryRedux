@@ -4,6 +4,7 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.block.ArcaneWorkbenchBlock;
+import com.electroblob.wizardry.content.block.CrystalFlowerBlock;
 import com.electroblob.wizardry.content.block.PermafrostBlock;
 import com.electroblob.wizardry.content.block.VanishingCobwebBlock;
 import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
@@ -11,12 +12,10 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -40,7 +39,10 @@ public final class EBBlocks {
     public static final DeferredObject<Block> HEALING_CRYSTAL_BLOCK = crystalBlock("healing", MapColor.COLOR_YELLOW);
 
     public static final DeferredObject<Block> CRYSTAL_ORE = block("crystal_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(2, 5).sound(SoundType.STONE), UniformInt.of(4, 8)), true, false, true);
-    public static final DeferredObject<Block> DEEPSLATE_CRYSTAL_ORE = block("deepslate_crystal_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(2, 5).sound(SoundType.STONE), UniformInt.of(4, 8)), true, false, true);
+    public static final DeferredObject<Block> DEEPSLATE_CRYSTAL_ORE = block("deepslate_crystal_ore", () -> new DropExperienceBlock(BlockBehaviour.Properties.copy(Blocks.STONE).strength(2, 5).sound(SoundType.STONE), UniformInt.of(4, 8)), true, true, true);
+
+    public static final DeferredObject<Block> CRYSTAL_FLOWER = block("crystal_flower", () -> new CrystalFlowerBlock(BlockBehaviour.Properties.copy(Blocks.SUNFLOWER).noCollission().lightLevel((state) -> 15)), false, false, true);
+    public static final DeferredObject<Block> POTTED_CRYSTAL_FLOWER = block("potted_crystal_flower", () -> new FlowerPotBlock(CRYSTAL_FLOWER.get(), BlockBehaviour.Properties.of().instabreak().noOcclusion().lightLevel((state) -> 15).pushReaction(PushReaction.DESTROY)), false, false, false);
 
     public static final DeferredObject<Block> PERMAFROST = block("permafrost", PermafrostBlock::new, false, false, false);
     public static final DeferredObject<Block> VANISHING_COBWEB = block("vanishing_cobweb", () -> new VanishingCobwebBlock(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, false, false);
