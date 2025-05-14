@@ -8,6 +8,7 @@ import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
+import java.util.List;
 import java.util.Random;
 
 public class SpellTier {
@@ -37,16 +38,22 @@ public class SpellTier {
 
     /** Returns the tier above this one, or the same tier if this is the highest tier. */
     public SpellTier next(){
-        // TODO TIER NEXT()
-        //return ordinal() + 1 < values().length ? values()[ordinal() + 1] : this;
-        return SpellTiers.NOVICE;
+        List<SpellTier> tiers = Services.REGISTRY_UTIL.getTiers().stream().toList();
+        int thisTierID = tiers.indexOf(this);
+
+        return thisTierID < Services.REGISTRY_UTIL.getTiers().size() - 1 ?
+                tiers.get(thisTierID + 1)
+                : tiers.get(tiers.size() - 1); // Last tier
     }
 
     /** Returns the tier below this one, or the same tier if this is the lowest tier. */
     public SpellTier previous(){
-        // TODO TIER PREVIOUS()
-        //return ordinal() > 0 ? values()[ordinal() - 1] : this;
-        return SpellTiers.NOVICE;
+        List<SpellTier> tiers = Services.REGISTRY_UTIL.getTiers().stream().toList();
+        int thisTierID = tiers.indexOf(this);
+
+        return thisTierID > 0 ?
+                tiers.get(thisTierID - 1)
+                : tiers.get(0); // First tier
     }
 
     // ===================================================

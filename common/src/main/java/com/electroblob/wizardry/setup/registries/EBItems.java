@@ -63,10 +63,10 @@ public final class EBItems {
     public static final DeferredObject<Item> ASTRAL_DIAMOND = item("astral_diamond");
     public static final DeferredObject<Item> CRYSTAL_SILVER_PLATING = armorUpgrade("crystal_silver_plating");
     public static final DeferredObject<Item> ETHEREAL_CRYSTAL_WEAVE = armorUpgrade("ethereal_crystal_weave");
+    public static final DeferredObject<Item> RESPLENDENT_THREAD = armorUpgrade("resplendent_thread");
     public static final DeferredObject<Item> IDENTIFICATION_SCROLL = item("identification_scroll");
     public static final DeferredObject<Item> MAGIC_SILK = item("magic_silk");
     public static final DeferredObject<Item> PURIFYING_ELIXIR = item("purifying_elixir");
-    public static final DeferredObject<Item> RESPLENDENT_THREAD = armorUpgrade("resplendent_thread");
 
     //Flasks
     public static final DeferredObject<Item> SMALL_MANA_FLASK = item("mana_flask_small");
@@ -137,15 +137,15 @@ public final class EBItems {
     public static final DeferredObject<Item> MAGIC_CRYSTAL_GRAND = crystal("magic_crystal_grand");
 
     //Wand Upgrades
-    public static final DeferredObject<Item> ATTUNEMENT_UPGRADE = item("upgrade_attunement");
-    public static final DeferredObject<Item> BLAST_UPGRADE = item("upgrade_blast");
-    public static final DeferredObject<Item> CONDENSER_UPGRADE = item("upgrade_condenser");
-    public static final DeferredObject<Item> COOLDOWN_UPGRADE = item("upgrade_cooldown");
-    public static final DeferredObject<Item> DURATION_UPGRADE = item("upgrade_duration");
-    public static final DeferredObject<Item> MELEE_UPGRADE = item("upgrade_melee");
-    public static final DeferredObject<Item> RANGE_UPGRADE = item("upgrade_range");
-    public static final DeferredObject<Item> SIPHON_UPGRADE = item("upgrade_siphon");
-    public static final DeferredObject<Item> STORAGE_UPGRADE = item("upgrade_storage");
+    public static final DeferredObject<Item> ATTUNEMENT_UPGRADE = wandUpgrade("attunement_upgrade");
+    public static final DeferredObject<Item> BLAST_UPGRADE = wandUpgrade("blast_upgrade");
+    public static final DeferredObject<Item> CONDENSER_UPGRADE = wandUpgrade("condenser_upgrade");
+    public static final DeferredObject<Item> COOLDOWN_UPGRADE = wandUpgrade("cooldown_upgrade");
+    public static final DeferredObject<Item> DURATION_UPGRADE = wandUpgrade("duration_upgrade");
+    public static final DeferredObject<Item> MELEE_UPGRADE = wandUpgrade("melee_upgrade");
+    public static final DeferredObject<Item> RANGE_UPGRADE = wandUpgrade("range_upgrade");
+    public static final DeferredObject<Item> SIPHON_UPGRADE = wandUpgrade("siphon_upgrade");
+    public static final DeferredObject<Item> STORAGE_UPGRADE = wandUpgrade("storage_upgrade");
 
     // Wizard Armors
     public static final DeferredObject<Item> WIZARD_HAT = armor("wizard_hat", WizardArmorType.WIZARD, ArmorItem.Type.HELMET, null);
@@ -437,6 +437,11 @@ public final class EBItems {
     /** Add armor upgrades with a default model and inside the item creative tab */
     static DeferredObject<Item> armorUpgrade(String name){
         return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(16)), true, true);
+    }
+
+    /** Add wand upgrades with a default model and inside the item creative tab */
+    static DeferredObject<Item> wandUpgrade(String name){
+        return item(name, () -> new WandUpgradeItem(new Item.Properties().stacksTo(16)), true, true);
     }
 
     /** Add armor with a default model and not inside the item creative tab */

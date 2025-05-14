@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ebwizardry:item/upgrade_cooldown"
+    "layer0": "ebwizardry:item/blast_upgrade"
   }
 }

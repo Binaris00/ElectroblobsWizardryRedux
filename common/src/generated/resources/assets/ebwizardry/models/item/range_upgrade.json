@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ebwizardry:item/upgrade_blast"
+    "layer0": "ebwizardry:item/range_upgrade"
   }
 }

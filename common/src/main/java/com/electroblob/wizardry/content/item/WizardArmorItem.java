@@ -134,22 +134,22 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
     @Override
     public void appendHoverText(@NotNull ItemStack stack, Level world, @NotNull List<Component> tooltip, @NotNull TooltipFlag advanced) {
         if (element != null)
-            tooltip.add(Component.translatable("item.%s.wizard_armour.element_cost_reduction".formatted(WizardryMainMod.MOD_ID),
+            tooltip.add(Component.translatable("item.%s.wizard_armor.element_cost_reduction".formatted(WizardryMainMod.MOD_ID),
                     (int) (this.wizardArmorType.elementalCostReduction * 100),
                     element.getDescriptionFormatted().getString()).withStyle(ChatFormatting.DARK_GRAY));
 
         if (this.wizardArmorType == WizardArmorType.SAGE) {
-            tooltip.add(Component.translatable("item.%s.wizard_armour.enchantability".formatted(WizardryMainMod.MOD_ID))
+            tooltip.add(Component.translatable("item.%s.wizard_armor.enchantability".formatted(WizardryMainMod.MOD_ID))
                     .withStyle(ChatFormatting.BLUE));
         }
 
         if (this.wizardArmorType.cooldownReduction > 0)
-            tooltip.add(Component.translatable("item.%s.wizard_armour.cooldown_reduction".formatted(WizardryMainMod.MOD_ID),
+            tooltip.add(Component.translatable("item.%s.wizard_armor.cooldown_reduction".formatted(WizardryMainMod.MOD_ID),
                     (int) (this.wizardArmorType.cooldownReduction * 100)).withStyle(ChatFormatting.DARK_GRAY));
 
 
         if (this.wizardArmorType != WizardArmorType.WIZARD) {
-            tooltip.add(Component.translatable("item.%s.wizard_armour.full_set".formatted(WizardryMainMod.MOD_ID))
+            tooltip.add(Component.translatable("item.%s.wizard_armor.full_set".formatted(WizardryMainMod.MOD_ID))
                     .withStyle(ChatFormatting.AQUA));
 
             Object args = new Object[0];
@@ -157,7 +157,7 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
             if (this.wizardArmorType == WizardArmorType.SAGE) args = (int) (SAGE_OTHER_COST_REDUCTION * 100);
             if (this.wizardArmorType == WizardArmorType.WARLOCK) args = (int) (WARLOCK_SPEED_BOOST * 100);
 
-            tooltip.add(Component.translatable("item.%s.%s_armour.full_set_bonus"
+            tooltip.add(Component.translatable("item.%s.%s_armor.full_set_bonus"
                     .formatted(WizardryMainMod.MOD_ID, wizardArmorType.name), args).withStyle(ChatFormatting.AQUA));
         }
     }

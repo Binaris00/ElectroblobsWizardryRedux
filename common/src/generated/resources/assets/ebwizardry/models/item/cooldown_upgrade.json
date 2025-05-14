@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ebwizardry:item/upgrade_range"
+    "layer0": "ebwizardry:item/cooldown_upgrade"
   }
 }

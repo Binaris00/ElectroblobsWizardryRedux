@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;
@@ -213,13 +214,13 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 int progression = (int) (spell.getCost() * modifiers.get(SpellModifiers.PROGRESSION));
                 WandHelper.addProgression(stack, progression);
 
-                // TODO TELL YOU WHEN WAND READY TO LEVEL UP
                 if (!EBConfig.legacyWandLevelling) {
                     SpellTier nextTier = tier.next();
                     int excess = WandHelper.getProgression(stack) - nextTier.getProgression();
+                    caster.sendSystemMessage(Component.literal("Progression: " + WandHelper.getProgression(stack) + "/" + nextTier.getProgression()));
+                    caster.sendSystemMessage(Component.literal("Excess: " + excess));
                     if (excess >= 0 && excess < progression) {
                         caster.playSound(EBSounds.ITEM_WAND_LEVELUP.get(), 1.25f, 1);
-                        // TODO ADVANCEMENTS
                         //WizardryAdvancementTriggers.WAND_LEVELUP.triggerFor(caster);
                         if (!world.isClientSide)
                             caster.sendSystemMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".wand.levelup",
@@ -554,7 +555,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     }
     @Override
     public void setDamage(ItemStack stack, int damage) {
-        // TODO: quick solution, crash on forge when only use stack.setDamageValue
         if (stack.getDamageValue() < damage) {
             stack.getOrCreateTag().putInt("Damage", Math.min(damage, stack.getMaxDamage()));
         }

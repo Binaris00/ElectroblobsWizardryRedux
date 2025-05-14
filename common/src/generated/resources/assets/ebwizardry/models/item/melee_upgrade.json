@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ebwizardry:item/upgrade_attunement"
+    "layer0": "ebwizardry:item/melee_upgrade"
   }
 }

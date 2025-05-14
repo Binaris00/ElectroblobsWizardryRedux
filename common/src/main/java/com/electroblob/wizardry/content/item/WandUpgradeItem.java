@@ -12,25 +12,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ArmorUpgradeItem extends Item {
-    public ArmorUpgradeItem(Properties properties) {
+public class WandUpgradeItem extends Item {
+    public WandUpgradeItem(Properties properties) {
         super(properties);
     }
 
     @Override
     public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
-        return Rarity.EPIC;
+        return Rarity.UNCOMMON;
     }
 
     @Override
-    public boolean isFoil(@NotNull ItemStack stack) {
-        return true;
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag tooltipFlag) {
-        String desc = tooltipFlag.isAdvanced() ? ".desc_extended" : ".desc";
-
-        tooltip.add(Component.translatable(getOrCreateDescriptionId() + desc).withStyle(ChatFormatting.GRAY));
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
+        tooltip.add(Component.translatable(getOrCreateDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
     }
 }

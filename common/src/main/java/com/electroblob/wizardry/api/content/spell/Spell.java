@@ -88,7 +88,7 @@ public abstract class Spell {
     // ==================================================
     /** Will return the description for the spell (e.g. "Fireball") */
     public Component getDescriptionFormatted() {
-        return Component.translatable(getOrCreateDescriptionId());
+        return Component.translatable(getOrCreateDescriptionId()).withStyle(this.getElement().getColor());
     }
 
     protected String getOrCreateDescriptionId() {

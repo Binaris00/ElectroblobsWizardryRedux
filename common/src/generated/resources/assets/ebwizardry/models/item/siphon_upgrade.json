@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "ebwizardry:item/upgrade_duration"
+    "layer0": "ebwizardry:item/siphon_upgrade"
   }
 }
