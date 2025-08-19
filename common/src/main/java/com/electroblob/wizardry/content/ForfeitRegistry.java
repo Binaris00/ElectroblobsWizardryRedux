@@ -55,6 +55,7 @@ import java.util.function.BiConsumer;
 
 import static com.electroblob.wizardry.content.Forfeit.HORIZONTALS;
 
+// TODO Old forfeit logic
 public class ForfeitRegistry {
     private static final ListMultimap<Pair<SpellTier, Element>, Forfeit> forfeits = ArrayListMultimap.create();
     private static final float TIER_CHANGE_CHANCE = 0.2f;

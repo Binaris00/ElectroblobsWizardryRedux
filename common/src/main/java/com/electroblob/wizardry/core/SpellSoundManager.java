@@ -14,7 +14,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-// TODO CHECK SOUND?
+// Todo check sound for better improvements, still using old logic with little changes
 // This is probably a temp class until I make something better
 public final class SpellSoundManager {
     public static void registerSpellSounds(){

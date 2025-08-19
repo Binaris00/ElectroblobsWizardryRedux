@@ -22,7 +22,7 @@ import net.minecraft.server.level.ServerPlayer;
 
 /**
  * Simple class to save all the event helper methods
- * This is internal use, you're not supposed to use this
+ * This is internal use, you're not supposed to use this for any reason
  * */
 public final class EBEventHelper {
     private EBEventHelper() {}
@@ -39,6 +39,7 @@ public final class EBEventHelper {
         onPlayerJoin(bus);
         onLivingDeathEvent(bus);
         onItemTossEvent(bus);
+        onEntityJoinLevel(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {

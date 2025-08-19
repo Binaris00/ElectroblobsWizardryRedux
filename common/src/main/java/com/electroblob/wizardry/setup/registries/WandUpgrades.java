@@ -6,7 +6,10 @@ import net.minecraft.world.item.Item;
 import java.util.HashMap;
 import java.util.Map;
 
-// FIXME just a really quick wand upgrade imp
+/**
+ * TODO: This is just a quick implementation for wand upgrades, needs to be improved
+ * This just saves all the wand upgrades for quick use.
+ * */
 public final class WandUpgrades {
     private static final HashMap<DeferredObject<Item>, String> UPGRADES = new HashMap<>();
 

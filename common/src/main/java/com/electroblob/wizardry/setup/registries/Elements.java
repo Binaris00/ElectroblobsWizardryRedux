@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class Elements {
+public final class Elements {
     static Map<String, Element> ELEMENTS = new HashMap<>();
     private Elements() {}
 

@@ -24,11 +24,7 @@ import java.util.function.Supplier;
 
 public final class EBRenderers {
     private static final Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> providers = Maps.newHashMap();
-
-    @SuppressWarnings("unchecked")
-    private static <T extends Entity> void registerEntityRender(DeferredObject<EntityType<T>> entityType, EntityRendererProvider provider) {
-        providers.put((DeferredObject<EntityType<? extends Entity>>) (Object)entityType, provider);
-    }
+    private EBRenderers() {}
 
     public static void createEntityLayers(BiConsumer<ModelLayerLocation, Supplier<LayerDefinition>> consumer) {
         consumer.accept(WizardArmorModel.LAYER_LOCATION, WizardArmorModel::createBodyLayer);
@@ -52,69 +48,47 @@ public final class EBRenderers {
         registerEntityRender(EBEntities.ICE_SHARD, MagicArrowRenderer<IceShardEntity>::new);
         registerEntityRender(EBEntities.SPARK, BlankRenderer::new);
         registerEntityRender(EBEntities.LIGHTNING_ARROW, MagicArrowRenderer<LightningArrow>::new);
-        registerEntityRender(EBEntities.ICE_CHARGE, (ctx -> new MagicProjectileRenderer<>(ctx,
-                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/ice_charge.png"))));
-        registerEntityRender(EBEntities.MAGIC_FIREBALL, (ctx -> new MagicProjectileRenderer<>(ctx,
-                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/magic_fireball.png"))));
-        registerEntityRender(EBEntities.ICE_BALL, (ctx -> new MagicProjectileRenderer<>(ctx,
-                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/iceball.png"))));
-        registerEntityRender(EBEntities.DARKNESS_ORB, (ctx -> new MagicProjectileRenderer<>(ctx,
-                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/darkness_orb.png")))
-        );
         registerEntityRender(EBEntities.ICE_LANCE, MagicArrowRenderer<IceLanceEntity>::new);
         registerEntityRender(EBEntities.FORCE_ARROW, ForceArrowRenderer::new);
         registerEntityRender(EBEntities.CONJURED_ARROW, ConjureArrowRenderer::new);
         registerEntityRender(EBEntities.FLAME_CATCHER_ARROW, MagicArrowRenderer<FlamecatcherArrow>::new);
-
-        registerEntityRender(EBEntities.FORCE_ORB, (ctx -> new MagicProjectileRenderer<>(ctx,
-                new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/force_orb.png")))
-        );
-
         registerEntityRender(EBEntities.BLIZZARD, BlankRenderer::new);
-
-        registerEntityRender(EBEntities.FIRE_SIGIL, (ctx ->
-                new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/fire_sigil.png"),
-                        0, true)));
-
-        registerEntityRender(EBEntities.FROST_SIGIL, (ctx ->
-                new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/frost_sigil.png"),
-                        0, true)));
-
-        registerEntityRender(EBEntities.LIGHTNING_SIGIL, (ctx ->
-                new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/lightning_sigil.png"),
-                        0, true)));
-
-        registerEntityRender(EBEntities.HEAL_AURA, (ctx ->
-                new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/healing_aura.png"),
-                        0.3F, true)));
-
-        registerEntityRender(EBEntities.RING_OF_FIRE, (ctx ->
-                new FireRingRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/ring_of_fire.png"))));
-
         registerEntityRender(EBEntities.ICE_SPICKES, IceSpikeRenderer::new);
-
         registerEntityRender(EBEntities.TORNADO, BlankRenderer::new);
-
-        registerEntityRender(EBEntities.COMBUSTION_RUNE, (ctx) ->
-        {
-            return new SigilRenderer(ctx, new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/combustion_rune.png"), 0, true);
-        });
-
         registerEntityRender(EBEntities.BUBBLE, BubbleRenderer::new);
-
         registerEntityRender(EBEntities.HAILSTORM, BlankRenderer::new);
-
         registerEntityRender(EBEntities.DECAY, DecayRenderer::new);
-
         registerEntityRender(EBEntities.REMNANT, RemnantRenderer::new);
-
         registerEntityRender(EBEntities.WIZARD, WizardRenderer::new);
         registerEntityRender(EBEntities.EVIL_WIZARD, EvilWizardRenderer::new);
+
+        registerEntityRender(EBEntities.ICE_CHARGE, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/ice_charge.png"))));
+        registerEntityRender(EBEntities.MAGIC_FIREBALL, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/magic_fireball.png"))));
+        registerEntityRender(EBEntities.ICE_BALL, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/iceball.png"))));
+        registerEntityRender(EBEntities.DARKNESS_ORB, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/darkness_orb.png"))));
+        registerEntityRender(EBEntities.FORCE_ORB, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/force_orb.png"))));
+        registerEntityRender(EBEntities.RING_OF_FIRE, (ctx -> new FireRingRenderer(ctx, WizardryMainMod.location("textures/entity/ring_of_fire.png"))));
+
+
+        registerEntityRender(EBEntities.FIRE_SIGIL, (ctx ->
+                new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/fire_sigil.png"), 0, true)));
+        registerEntityRender(EBEntities.FROST_SIGIL, (ctx ->
+                new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/frost_sigil.png"), 0, true)));
+        registerEntityRender(EBEntities.LIGHTNING_SIGIL, (ctx ->
+                new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/lightning_sigil.png"), 0, true)));
+        registerEntityRender(EBEntities.HEAL_AURA, (ctx ->
+                new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/healing_aura.png"), 0.3F, true)));
+        registerEntityRender(EBEntities.COMBUSTION_RUNE, (ctx) ->
+                new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/combustion_rune.png"), 0, true));
+
     }
 
     public static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> getRenderers() {
         return providers;
     }
 
-    private EBRenderers() {}
+    @SuppressWarnings("unchecked")
+    private static <T extends Entity> void registerEntityRender(DeferredObject<EntityType<T>> entityType, EntityRendererProvider provider) {
+        providers.put((DeferredObject<EntityType<? extends Entity>>) (Object)entityType, provider);
+    }
 }

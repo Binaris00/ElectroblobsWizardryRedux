@@ -1,10 +1,10 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.network.EBForgeNetwork;
-import com.electroblob.wizardry.setup.ClientSetup;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBMenus;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
@@ -49,7 +49,8 @@ public final class WizardryForgeMod {
 
     @SuppressWarnings("unchecked")
     public static void clientSetup(final FMLClientSetupEvent event) {
-        ClientSetup.setup();
+        SpellAction.register();
+        EBRenderers.registerRenderers();
         EBRenderers.getRenderers().forEach((entity, renderer) ->
                 EntityRenderers.register(entity.get(), (EntityRendererProvider<Entity>) renderer)
         );

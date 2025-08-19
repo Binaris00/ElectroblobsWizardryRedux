@@ -30,7 +30,7 @@ public final class EBDamageSources {
         return key;
     }
 
-    /** Could be used for addons, add a custom magic damage type to the mod list */
+    /** TODO (Check addon compatibility) Could be used for addons, add a custom magic damage type to the mod list */
     public static ResourceKey<DamageType> createType(ResourceLocation location){
         var key = ResourceKey.create(Registries.DAMAGE_TYPE, location);
         TYPES.add(key);

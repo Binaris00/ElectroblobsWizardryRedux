@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(HumanoidModel.class)
-public class HumanoidModelMixin<T> {
+public abstract class HumanoidModelMixin<T> {
     @Inject(method = "poseRightArm", at = @At("HEAD"), cancellable = true)
     public void EBWIZARDRYinjectPoseRightArm(LivingEntity livingEntity, CallbackInfo ci){
         HumanoidModel<?> model = ((HumanoidModel<?>) (Object) this);

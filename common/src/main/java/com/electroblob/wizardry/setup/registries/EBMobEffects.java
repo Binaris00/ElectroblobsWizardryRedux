@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class EBMobEffects {
+public final class EBMobEffects {
     static Map<String, DeferredObject<MobEffect>> MOB_EFFECTS = new HashMap<>();
 
     public static final DeferredObject<MobEffect> ARCANE_JAMMER = mobEffect("arcane_jammer", () -> new CurseMobEffect(MobEffectCategory.HARMFUL, 0)); // TODO

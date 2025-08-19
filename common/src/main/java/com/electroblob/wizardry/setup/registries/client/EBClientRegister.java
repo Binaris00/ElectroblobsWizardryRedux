@@ -9,15 +9,11 @@ import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
+// TODO Something about the old particle registry that I need to fix...
 public final class EBClientRegister {
-
-    public static void registerParticleTypes(Consumer<Map<String, DeferredObject<SimpleParticleType>>> handler) {
-        EBParticles.handleParticleTypeRegistration(handler);
-    }
+    private EBClientRegister() {}
 
     public static void registerParticleProviders(Consumer<Map<DeferredObject<SimpleParticleType>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>>> handler) {
         EBParticles.registerProvider(handler);
     }
-
-    private EBClientRegister() {}
 }

@@ -10,11 +10,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 
+/** Used just for testing the network api */
 public class TestParticlePacketS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("test_particle_packet");
-
-    private BlockPos pos;
-    private int color;
+    private final BlockPos pos;
+    private final int color;
 
     public TestParticlePacketS2C(BlockPos pos, int color) {
         this.pos = pos;

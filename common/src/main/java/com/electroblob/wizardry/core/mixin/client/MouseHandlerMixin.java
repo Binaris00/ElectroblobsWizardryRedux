@@ -11,6 +11,6 @@ public abstract class MouseHandlerMixin {
 
     @Inject(method = "onScroll", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;isSpectator()Z"))
     public void EBWIZARDRY$onScroll(long windowPointer, double xOffset, double yOffset, CallbackInfo ci){
-        // TODO :P IM LAZY AAAA
+        // TODO :P IM LAZY AAAA (Mouse handler for spells on client)
     }
 }

@@ -24,8 +24,8 @@ public final class EBKeyBinding {
     public static final KeyMapping PREVIOUS_SPELL = new KeyMapping("key." + WizardryMainMod.MOD_ID + ".previous_spell", InputConstants.Type.KEYSYM, InputConstants.KEY_B, CATEGORY);
     public static final KeyMapping[] SPELL_QUICK_ACCESS = new KeyMapping[WandItem.BASE_SPELL_SLOTS + EBConfig.UPGRADE_STACK_LIMIT];
 
-    static boolean NkeyPressed = false;
-    static boolean BkeyPressed = false;
+    static boolean nextSpellKeyPressed = false;
+    static boolean previousSpellKeyPressed = false;
     static boolean[] quickAccessKeyPressed = new boolean[SPELL_QUICK_ACCESS.length];
 
     static {
@@ -36,10 +36,6 @@ public final class EBKeyBinding {
 
     private EBKeyBinding() {}
 
-    public static void init() {
-
-    }
-
     public static void onClientTick(EBClientTickEvent event){
         Player player = event.getMinecraft().player;
         if(player == null) return;
@@ -48,21 +44,21 @@ public final class EBKeyBinding {
         if (wand == null) return;
 
         if (NEXT_SPELL.isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-            if (!NkeyPressed) {
-                NkeyPressed = true;
+            if (!nextSpellKeyPressed) {
+                nextSpellKeyPressed = true;
                 selectNextSpell(wand);
             }
         } else {
-            NkeyPressed = false;
+            nextSpellKeyPressed = false;
         }
 
         if (PREVIOUS_SPELL.isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
-            if (!BkeyPressed) {
-                BkeyPressed = true;
+            if (!previousSpellKeyPressed) {
+                previousSpellKeyPressed = true;
                 selectPreviousSpell(wand);
             }
         } else {
-            BkeyPressed = false;
+            previousSpellKeyPressed = false;
         }
 
         for (int i = 0; i < SPELL_QUICK_ACCESS.length; i++) {
@@ -117,7 +113,7 @@ public final class EBKeyBinding {
         }
     }
 
-    // TODO MOUSE SCROLL EVENT
+    // TODO MOUSE SCROLL EVENT (I was lazy and I didn't want to do it)
 //    @SuppressWarnings("resource")
 //    @SubscribeEvent
 //    public static void onMouseEvent(InputEvent.MouseScrollingEvent event) {

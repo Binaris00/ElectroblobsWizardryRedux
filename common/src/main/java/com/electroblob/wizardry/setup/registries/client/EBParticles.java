@@ -22,7 +22,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 @SuppressWarnings("unused")
-public class EBParticles {
+public final class EBParticles {
     static final Map<String, DeferredObject<SimpleParticleType>> PARTICLE_TYPES = new HashMap<>();
     static final Map<DeferredObject<SimpleParticleType>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>> PARTICLE_PROVIDERS = new HashMap<>();
 
@@ -76,9 +76,7 @@ public class EBParticles {
     public static Collection<String> getParticleNames() {
         Collection<String> ret = new ArrayList<>();
 
-        PARTICLE_TYPES.forEach((k, v) -> {
-            ret.add(WizardryMainMod.location(k).toString());
-        });
+        PARTICLE_TYPES.forEach((k, v) -> ret.add(WizardryMainMod.location(k).toString()));
         return ret;
     }
 }

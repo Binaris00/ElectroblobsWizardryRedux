@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.client;
 
+import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.network.EBFabricNetwork;
@@ -29,10 +30,9 @@ public final class WizardryFabricClient implements ClientModInitializer {
     public void onInitializeClient() {
         EBFabricNetwork.registerS2CMessages();
 
+        SpellAction.register();
         EBRenderers.registerRenderers();
-        EBRenderers.getRenderers().forEach((entity, renderer) -> {
-            EntityRendererRegistry.register(entity.get(), (EntityRendererProvider<Entity>) renderer);
-        });
+        EBRenderers.getRenderers().forEach((entity, renderer) -> EntityRendererRegistry.register(entity.get(), (EntityRendererProvider<Entity>) renderer));
         EBParticles.registerType(Registry::register);
 
         EBClientRegister.registerParticleProviders(collection ->

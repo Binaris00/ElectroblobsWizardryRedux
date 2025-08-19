@@ -27,6 +27,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/** Todo terrain of nobody, very old logic for making arcane workbench buttons and effects */
 public class ArcaneWorkbenchMenu extends AbstractContainerMenu implements ISpellSortable {
     public Container container;
 

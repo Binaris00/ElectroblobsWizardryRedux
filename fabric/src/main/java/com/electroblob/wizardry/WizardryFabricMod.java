@@ -1,10 +1,15 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
+import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
+import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.network.EBFabricNetwork;
 import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
+import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.world.level.levelgen.GenerationStep;
@@ -14,9 +19,11 @@ public final class WizardryFabricMod implements ModInitializer {
     public void onInitialize() {
         WizardryMainMod.init();
 
-        if(!WizardryMainMod.isClientSide()){
-            WizardryFabricEvents.onServer();
-        }
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
+            WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(handler.getPlayer(), server));
+        });
+
+        ServerWorldEvents.LOAD.register(((minecraftServer, serverLevel) -> WizardryEventBus.getInstance().fire(new EBServerLevelLoadEvent(serverLevel))));
 
         EBBlocks.register(Registry::register);
         EBBlockEntities.register(Registry::register);

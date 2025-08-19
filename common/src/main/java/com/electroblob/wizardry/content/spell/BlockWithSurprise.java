@@ -9,6 +9,7 @@ import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
 import org.jetbrains.annotations.NotNull;
 
+/** Todo test spell just for seeing the network usage, not really part of the official mod */
 public class BlockWithSurprise extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {

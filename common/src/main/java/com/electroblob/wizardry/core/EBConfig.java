@@ -7,6 +7,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import java.util.HashMap;
 import java.util.Map;
 
+// Todo EBConfig? Still no used, contains some fields that were in the Constant class, need to rewrite
 public final class EBConfig {
     public static final double MIN_PRECISE_DOUBLE = -9_007_199_254_740_992.0;
     public static final double MAX_PRECISE_DOUBLE = 9_007_199_254_740_991.0;

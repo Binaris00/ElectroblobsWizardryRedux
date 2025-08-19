@@ -10,11 +10,9 @@ import java.util.Map;
 /**
  * <b>Electroblob's Wizardry Internal Use Only</b>
  * <br><br>
- *
  * This is the main class that handles the basic data gen features for the mod
  * we use this to register all the just-one-file or small models with a generic behaviour.
  * <br><br>
- *
  * Some of the things that are made here are: <i>items with just a simple texture, block items with a simple model and block states</i>
  * and also register the mods features that are frequently used but have the same behaviour among them, like wand items
  * */
@@ -45,7 +43,6 @@ public final class EBDataGenProcessor {
     public static void addDefaultBlockDrop(String name, DeferredObject<Block> blockDrop) {
         DEFAULT_BLOCK_DROP.put(name, blockDrop);
     }
-
 
     public static Map<String, DeferredObject<? extends Item>> items() {
         return DEFAULT_ITEMS;
