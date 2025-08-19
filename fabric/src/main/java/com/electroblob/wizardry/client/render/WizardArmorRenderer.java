@@ -69,7 +69,7 @@ public class WizardArmorRenderer implements ArmorRenderer {
     public static String getArmorTexture(WizardArmorItem wizardArmorItem, EquipmentSlot slot) {
         String s = wizardArmorItem.getWizardArmorType().getName() + "_armor";
 
-        if (WizardryMainMod.tisTheSeason && wizardArmorItem.getWizardArmorType() == WizardArmorType.WIZARD) {
+        if (WizardryMainMod.IS_THE_SEASON && wizardArmorItem.getWizardArmorType() == WizardArmorType.WIZARD) {
             s = s + "_festive";
         } else {
             if (wizardArmorItem.getElement() != null) s = s + "_" + wizardArmorItem.getElement().getName();

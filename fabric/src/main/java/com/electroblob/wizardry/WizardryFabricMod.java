@@ -1,6 +1,5 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.LoaderEnvironment;
 import com.electroblob.wizardry.network.EBFabricNetwork;
 import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
@@ -13,7 +12,7 @@ import net.minecraft.world.level.levelgen.GenerationStep;
 public final class WizardryFabricMod implements ModInitializer {
     @Override
     public void onInitialize() {
-        WizardryMainMod.init(LoaderEnvironment.FABRIC);
+        WizardryMainMod.init();
 
         if(!WizardryMainMod.isClientSide()){
             WizardryFabricEvents.onServer();

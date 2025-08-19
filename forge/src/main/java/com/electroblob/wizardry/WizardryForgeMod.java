@@ -1,12 +1,10 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.LoaderEnvironment;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.network.EBForgeNetwork;
 import com.electroblob.wizardry.setup.ClientSetup;
-import com.electroblob.wizardry.setup.CommonSetup;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBMenus;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
@@ -26,7 +24,7 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 @Mod(WizardryMainMod.MOD_ID)
 public final class WizardryForgeMod {
     public WizardryForgeMod() {
-        WizardryMainMod.init(LoaderEnvironment.FORGE);
+        WizardryMainMod.init();
 
         IEventBus forgeBus = MinecraftForge.EVENT_BUS;
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -45,7 +43,7 @@ public final class WizardryForgeMod {
 
 
     public static void commonSetup(final FMLCommonSetupEvent event) {
-        CommonSetup.setup();
+        //CommonSetup.setup();
         EBForgeNetwork.registerMessages();
     }
 

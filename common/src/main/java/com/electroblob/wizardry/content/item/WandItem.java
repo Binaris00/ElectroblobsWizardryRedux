@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;

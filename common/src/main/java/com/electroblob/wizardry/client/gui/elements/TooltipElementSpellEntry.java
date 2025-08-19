@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.client.gui.elements;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.util.ClientUtils;
 import com.electroblob.wizardry.api.client.util.GlyphClientHandler;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;

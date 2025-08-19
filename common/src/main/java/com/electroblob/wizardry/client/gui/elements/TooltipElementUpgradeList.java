@@ -4,7 +4,6 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.client.EBClientConstants;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
-import com.electroblob.wizardry.content.menu.ArcaneWorkbenchMenu;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
 import net.minecraft.network.chat.Style;

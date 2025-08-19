@@ -47,7 +47,10 @@ import net.minecraft.world.phys.Vec3;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.lang.reflect.Constructor;
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Random;
 import java.util.function.BiConsumer;
 
 import static com.electroblob.wizardry.content.Forfeit.HORIZONTALS;

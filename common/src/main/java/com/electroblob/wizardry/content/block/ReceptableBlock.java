@@ -2,7 +2,6 @@ package com.electroblob.wizardry.content.block;
 
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.setup.registries.Elements;
-import com.google.common.collect.Maps;
 
 import java.util.HashMap;
 import java.util.Map;

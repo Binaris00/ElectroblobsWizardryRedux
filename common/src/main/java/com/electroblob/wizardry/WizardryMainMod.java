@@ -1,7 +1,5 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.LoaderEnvironment;
-import com.electroblob.wizardry.setup.ClientSetup;
 import com.electroblob.wizardry.setup.CommonSetup;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -11,16 +9,11 @@ import java.util.Random;
 public final class WizardryMainMod {
     public static final String MOD_ID = "ebwizardry";
     public static final String MOD_NAME = "Electroblob's Wizardry";
-    public static final String MOD_VERSION = null;
-    // TODO
-    public static boolean tisTheSeason = false;
-    private static LoaderEnvironment loader;
+    public static boolean IS_THE_SEASON = false; // TODO
     private static Random random;
 
-    public static void init(LoaderEnvironment environment) {
-        loader = environment;
+    public static void init() {
         CommonSetup.init();
-        if(isClientSide()) ClientSetup.init();
     }
 
     public static ResourceLocation location(String path) {
@@ -39,13 +32,5 @@ public final class WizardryMainMod {
 
     public static boolean isClientSide() {
         return false;
-    }
-
-    public static boolean isFabric() {
-        return loader == LoaderEnvironment.FABRIC;
-    }
-
-    public static boolean isForge(){
-        return loader == LoaderEnvironment.FORGE;
     }
 }

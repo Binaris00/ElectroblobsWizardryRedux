@@ -2,7 +2,6 @@ package com.electroblob.wizardry.api.content.spell;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;

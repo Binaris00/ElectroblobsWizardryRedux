@@ -2,7 +2,6 @@ package com.electroblob.wizardry.content.block;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
-import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;

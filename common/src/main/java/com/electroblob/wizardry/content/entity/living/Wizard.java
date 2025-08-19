@@ -77,7 +77,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     public void notifyTradeUpdated(@NotNull ItemStack stack) {
         if (!this.level().isClientSide && this.ambientSoundTime > -this.getAmbientSoundInterval() + 20) {
             this.ambientSoundTime = -this.getAmbientSoundInterval();
-            SoundEvent yes = WizardryMainMod.tisTheSeason ? EBSounds.ENTITY_WIZARD_HOHOHO.get() : EBSounds.ENTITY_WIZARD_YES.get();
+            SoundEvent yes = WizardryMainMod.IS_THE_SEASON ? EBSounds.ENTITY_WIZARD_HOHOHO.get() : EBSounds.ENTITY_WIZARD_YES.get();
             this.playSound(stack.isEmpty() ? EBSounds.ENTITY_WIZARD_NO.get() : yes, this.getSoundVolume(), this.getVoicePitch());
         }
     }
@@ -374,7 +374,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
 
     @Override
     protected SoundEvent getAmbientSound() {
-        if (WizardryMainMod.tisTheSeason) return EBSounds.ENTITY_WIZARD_HOHOHO.get();
+        if (WizardryMainMod.IS_THE_SEASON) return EBSounds.ENTITY_WIZARD_HOHOHO.get();
         return this.isTrading() ? EBSounds.ENTITY_WIZARD_TRADING.get() : EBSounds.ENTITY_WIZARD_AMBIENT.get();
     }
 

@@ -2,7 +2,6 @@ package com.electroblob.wizardry.client.renderer.entity;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.client.model.WizardModel;
-import com.electroblob.wizardry.content.entity.living.AbstractWizard;
 import com.electroblob.wizardry.content.entity.living.Wizard;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider.Context;

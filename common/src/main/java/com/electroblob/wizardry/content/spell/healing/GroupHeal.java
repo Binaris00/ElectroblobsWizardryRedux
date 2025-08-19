@@ -11,10 +11,8 @@ import com.electroblob.wizardry.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class GroupHeal extends AreaEffectSpell {
     public GroupHeal(){

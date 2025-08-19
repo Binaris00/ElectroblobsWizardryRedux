@@ -93,7 +93,7 @@ public abstract class WizardArmorItemMixin extends ArmorItem {
     public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         String s = wizardArmorItem.getWizardArmorType().getName() + "_armor";
 
-        if (WizardryMainMod.tisTheSeason && wizardArmorItem.getWizardArmorType() == WizardArmorType.WIZARD) {
+        if (WizardryMainMod.IS_THE_SEASON && wizardArmorItem.getWizardArmorType() == WizardArmorType.WIZARD) {
             s = s + "_festive";
         } else {
             if (this.element != null) s = s + "_" + this.element.getName();
