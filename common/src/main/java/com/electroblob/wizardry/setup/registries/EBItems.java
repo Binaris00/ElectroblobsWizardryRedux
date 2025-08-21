@@ -64,7 +64,7 @@ public final class EBItems {
     public static final DeferredObject<Item> CRYSTAL_SILVER_PLATING = armorUpgrade("crystal_silver_plating");
     public static final DeferredObject<Item> ETHEREAL_CRYSTAL_WEAVE = armorUpgrade("ethereal_crystal_weave");
     public static final DeferredObject<Item> RESPLENDENT_THREAD = armorUpgrade("resplendent_thread");
-    public static final DeferredObject<Item> IDENTIFICATION_SCROLL = item("identification_scroll");
+    public static final DeferredObject<Item> IDENTIFICATION_SCROLL = item("identification_scroll", () -> new IdentificationScrollItem(new Item.Properties().stacksTo(16)), true, true);
     public static final DeferredObject<Item> MAGIC_SILK = item("magic_silk");
     public static final DeferredObject<Item> PURIFYING_ELIXIR = item("purifying_elixir");
 
