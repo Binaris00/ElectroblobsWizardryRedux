@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "x": {
+      "item": "minecraft:glass_bottle"
+    },
+    "y": {
+      "item": "ebwizardry:magic_crystal_shard"
+    }
+  },
+  "pattern": [
+    "yyy",
+    "yxy",
+    "yyy"
+  ],
+  "result": {
+    "item": "ebwizardry:mana_flask_small"
+  },
+  "show_notification": true
+}

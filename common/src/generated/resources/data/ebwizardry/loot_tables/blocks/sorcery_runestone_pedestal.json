@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:sorcery_runestone_pedestal"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ebwizardry:blocks/sorcery_runestone_pedestal"
+}

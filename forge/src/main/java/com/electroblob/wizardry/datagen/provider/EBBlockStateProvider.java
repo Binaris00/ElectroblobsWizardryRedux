@@ -10,7 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class EBBlockStateProvider extends BlockStateProvider {
+public final class EBBlockStateProvider extends BlockStateProvider {
 
     public EBBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
         super(output, WizardryMainMod.MOD_ID, exFileHelper);

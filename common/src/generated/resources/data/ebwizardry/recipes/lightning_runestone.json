@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "y": {
+      "item": "ebwizardry:magic_crystal_lightning"
+    },
+    "z": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    "zzz",
+    "zyz",
+    "zzz"
+  ],
+  "result": {
+    "count": 8,
+    "item": "ebwizardry:lightning_runestone"
+  },
+  "show_notification": true
+}

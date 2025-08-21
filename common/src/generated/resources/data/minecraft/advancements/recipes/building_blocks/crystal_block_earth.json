@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_magic_crystal_earth": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:magic_crystal_earth"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:crystal_block_earth"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_magic_crystal_earth",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:crystal_block_earth"
+    ]
+  },
+  "sends_telemetry_event": false
+}

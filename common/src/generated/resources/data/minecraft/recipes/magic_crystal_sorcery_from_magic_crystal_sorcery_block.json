@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "group": "magic_crystal_sorcery",
+  "ingredients": [
+    {
+      "item": "ebwizardry:crystal_block_sorcery"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "ebwizardry:magic_crystal_sorcery"
+  }
+}

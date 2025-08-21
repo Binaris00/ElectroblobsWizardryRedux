@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "ebwizardry:gilded_birch_wood"
+    },
+    "i": {
+      "item": "ebwizardry:magic_crystal_grand"
+    },
+    "n": {
+      "item": "minecraft:book"
+    }
+  },
+  "pattern": [
+    "bnb",
+    "ibi",
+    "bbb"
+  ],
+  "result": {
+    "item": "ebwizardry:birch_lectern"
+  },
+  "show_notification": true
+}

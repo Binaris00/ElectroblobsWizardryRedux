@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "v": {
+      "item": "minecraft:gold_nugget"
+    },
+    "w": {
+      "tag": "minecraft:wool_carpets"
+    },
+    "x": {
+      "tag": "ebwizardry:magic_crystal"
+    },
+    "y": {
+      "item": "minecraft:lapis_block"
+    },
+    "z": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    "vwv",
+    "xyx",
+    "zzz"
+  ],
+  "result": {
+    "item": "ebwizardry:arcane_workbench"
+  },
+  "show_notification": true
+}

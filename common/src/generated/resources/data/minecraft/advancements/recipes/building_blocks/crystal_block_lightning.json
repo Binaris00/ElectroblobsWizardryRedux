@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_magic_crystal_lightning": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:magic_crystal_lightning"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:crystal_block_lightning"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_magic_crystal_lightning",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:crystal_block_lightning"
+    ]
+  },
+  "sends_telemetry_event": false
+}

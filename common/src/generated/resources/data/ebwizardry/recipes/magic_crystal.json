@@ -1,0 +1,13 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "ebwizardry:crystal_flower"
+    }
+  ],
+  "result": {
+    "count": 2,
+    "item": "ebwizardry:magic_crystal"
+  }
+}

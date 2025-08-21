@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_magic_crystal_necromancy": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:magic_crystal_necromancy"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:crystal_block_necromancy"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_magic_crystal_necromancy",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:crystal_block_necromancy"
+    ]
+  },
+  "sends_telemetry_event": false
+}

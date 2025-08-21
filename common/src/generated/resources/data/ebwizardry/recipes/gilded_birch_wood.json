@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "b": {
+      "item": "minecraft:birch_planks"
+    },
+    "i": {
+      "item": "minecraft:gold_nugget"
+    }
+  },
+  "pattern": [
+    "bbb",
+    "ibi",
+    "bbb"
+  ],
+  "result": {
+    "item": "ebwizardry:gilded_birch_wood"
+  },
+  "show_notification": true
+}

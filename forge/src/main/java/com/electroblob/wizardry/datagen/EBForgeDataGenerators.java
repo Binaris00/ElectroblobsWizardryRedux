@@ -4,6 +4,7 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.datagen.provider.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.data.DataProvider;
 import net.minecraft.data.PackOutput;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -37,6 +38,7 @@ public class EBForgeDataGenerators {
         EBBlockTagProvider blockTagProvider = generator.addProvider(event.includeServer(), new EBBlockTagProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new EBItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter(), existingFileHelper));
 
+        event.getGenerator().addProvider(event.includeServer(), (DataProvider.Factory<EBRecipeProvider>) EBRecipeProvider::new);
     }
 
 }

@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "x": {
+      "item": "minecraft:gold_nugget"
+    },
+    "y": {
+      "tag": "minecraft:planks"
+    },
+    "z": {
+      "item": "ebwizardry:magic_crystal_ice"
+    }
+  },
+  "pattern": [
+    "  z",
+    " y ",
+    "x  "
+  ],
+  "result": {
+    "item": "ebwizardry:wand_novice_ice"
+  },
+  "show_notification": true
+}

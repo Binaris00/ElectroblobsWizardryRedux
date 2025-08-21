@@ -13,7 +13,7 @@ import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-public class EBItemModelProvider extends ItemModelProvider {
+public final class EBItemModelProvider extends ItemModelProvider {
 
     public EBItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
         super(output, WizardryMainMod.MOD_ID, existingFileHelper);

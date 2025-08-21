@@ -2,6 +2,7 @@ package com.electroblob.wizardry.datagen.provider;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
+import com.electroblob.wizardry.setup.registries.EBTags;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
 import net.minecraft.tags.BlockTags;
@@ -11,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.concurrent.CompletableFuture;
 
-public class EBBlockTagProvider extends BlockTagsProvider {
+public final class EBBlockTagProvider extends BlockTagsProvider {
 
     public EBBlockTagProvider(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
         super(output, lookupProvider, WizardryMainMod.MOD_ID, existingFileHelper);
@@ -29,8 +30,7 @@ public class EBBlockTagProvider extends BlockTagsProvider {
                 .add(EBBlocks.NECROMANCY_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.EARTH_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.SORCERY_CRYSTAL_BLOCK.get())
-                .add(EBBlocks.HEALING_CRYSTAL_BLOCK.get())
-        ;
+                .add(EBBlocks.HEALING_CRYSTAL_BLOCK.get());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
                 .add(EBBlocks.CRYSTAL_ORE.get())
@@ -42,7 +42,14 @@ public class EBBlockTagProvider extends BlockTagsProvider {
                 .add(EBBlocks.NECROMANCY_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.EARTH_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.SORCERY_CRYSTAL_BLOCK.get())
-                .add(EBBlocks.HEALING_CRYSTAL_BLOCK.get())
-        ;
+                .add(EBBlocks.HEALING_CRYSTAL_BLOCK.get());
+
+        this.tag(EBTags.GILDED_WOOD_BLOCK)
+                .add(EBBlocks.GILDED_ACACIA_WOOD.get())
+                .add(EBBlocks.GILDED_BIRCH_WOOD.get())
+                .add(EBBlocks.GILDED_DARK_OAK_WOOD.get())
+                .add(EBBlocks.GILDED_OAK_WOOD.get())
+                .add(EBBlocks.GILDED_JUNGLE_WOOD.get())
+                .add(EBBlocks.GILDED_SPRUCE_WOOD.get());
     }
 }

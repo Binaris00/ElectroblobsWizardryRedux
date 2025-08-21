@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "y": {
+      "item": "ebwizardry:magic_crystal_ice"
+    },
+    "z": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    "zzz",
+    "yyy",
+    "zyz"
+  ],
+  "result": {
+    "count": 2,
+    "item": "ebwizardry:ice_runestone_pedestal"
+  },
+  "show_notification": true
+}

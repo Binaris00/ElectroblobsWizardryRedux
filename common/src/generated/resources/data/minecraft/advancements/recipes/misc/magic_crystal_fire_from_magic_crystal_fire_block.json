@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_crystal_block_fire": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:crystal_block_fire"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "minecraft:magic_crystal_fire_from_magic_crystal_fire_block"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_crystal_block_fire",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "minecraft:magic_crystal_fire_from_magic_crystal_fire_block"
+    ]
+  },
+  "sends_telemetry_event": false
+}

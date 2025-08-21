@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "equipment",
+  "key": {
+    "x": {
+      "tag": "ebwizardry:magic_crystal"
+    },
+    "y": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    " x ",
+    "xyx",
+    " x "
+  ],
+  "result": {
+    "item": "ebwizardry:transportation_stone"
+  },
+  "show_notification": true
+}

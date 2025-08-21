@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "y": {
+      "item": "ebwizardry:magic_crystal_healing"
+    },
+    "z": {
+      "item": "minecraft:stone"
+    }
+  },
+  "pattern": [
+    "zzz",
+    "zyz",
+    "zzz"
+  ],
+  "result": {
+    "count": 8,
+    "item": "ebwizardry:healing_runestone"
+  },
+  "show_notification": true
+}
