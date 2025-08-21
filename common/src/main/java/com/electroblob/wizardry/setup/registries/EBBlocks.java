@@ -49,6 +49,50 @@ public final class EBBlocks {
     public static final DeferredObject<Block> ARCANE_WORKBENCH = block("arcane_workbench", () -> new ArcaneWorkbenchBlock(BlockBehaviour.Properties.copy(Blocks.STONE)),false, true, true);
     public static final DeferredObject<Block> METEOR = block("meteor", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state) -> 1)), false, false, false);
 
+    // TODO Temp blocks because I will work on crafts, not on adding misc stuff
+    public static final DeferredObject<Block> GILDED_OAK_WOOD = block("gilded_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> GILDED_SPRUCE_WOOD = block("gilded_spruce_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> GILDED_BIRCH_WOOD = block("gilded_birch_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> GILDED_JUNGLE_WOOD = block("gilded_jungle_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> GILDED_ACACIA_WOOD = block("gilded_acacia_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> GILDED_DARK_OAK_WOOD = block("gilded_dark_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+
+    public static final DeferredObject<Block> OAK_BOOKSHELF = block("oak_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> SPRUCE_BOOKSHELF = block("spruce_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> BIRCH_BOOKSHELF = block("birch_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> JUNGLE_BOOKSHELF = block("jungle_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> ACACIA_BOOKSHELF = block("acacia_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> DARK_OAK_BOOKSHELF = block("dark_oak_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+
+    public static final DeferredObject<Block> OAK_LECTERN = block("oak_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> SPRUCE_LECTERN = block("spruce_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> BIRCH_LECTERN = block("birch_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> JUNGLE_LECTERN = block("jungle_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> ACACIA_LECTERN = block("acacia_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> DARK_OAK_LECTERN = block("dark_oak_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+
+    public static final DeferredObject<Block> FIRE_RUNESTONE = block("fire_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> ICE_RUNESTONE = block("ice_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> LIGHTNING_RUNESTONE = block("lightning_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> NECROMANCY_RUNESTONE = block("necromancy_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> EARTH_RUNESTONE = block("earth_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> SORCERY_RUNESTONE = block("sorcery_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> HEALING_RUNESTONE = block("healing_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+
+    public static final DeferredObject<Block> FIRE_RUNESTONE_PEDESTAL = block("fire_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> ICE_RUNESTONE_PEDESTAL = block("ice_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> LIGHTNING_RUNESTONE_PEDESTAL = block("lightning_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> NECROMANCY_RUNESTONE_PEDESTAL = block("necromancy_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> EARTH_RUNESTONE_PEDESTAL = block("earth_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> SORCERY_RUNESTONE_PEDESTAL = block("sorcery_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> HEALING_RUNESTONE_PEDESTAL = block("healing_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+
+
+    public static final DeferredObject<Block> TRANSPORTATION_STONE = block("transportation_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> RECEPTACLE = block("receptacle", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+
+
+
 
     // ======= Registry =======
     /** Registers all blocks for the mod, used inside each loader */
