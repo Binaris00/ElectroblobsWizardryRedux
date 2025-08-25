@@ -1,0 +1,45 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Tier:\"ebwizardry:apprentice\"}"
+            }
+          ],
+          "name": "ebwizardry:arcane_tome",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Tier:\"ebwizardry:advanced\"}"
+            }
+          ],
+          "name": "ebwizardry:arcane_tome",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Tier:\"ebwizardry:master\"}"
+            }
+          ],
+          "name": "ebwizardry:arcane_tome"
+        }
+      ],
+      "name": "master_tome",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ebwizardry:subsets/arcane_tomes"
+}

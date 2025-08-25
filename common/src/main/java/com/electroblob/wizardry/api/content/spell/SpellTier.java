@@ -6,9 +6,9 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.RandomSource;
 
 import java.util.List;
-import java.util.Random;
 
 public class SpellTier {
     public final int maxCharge;
@@ -108,7 +108,7 @@ public class SpellTier {
      * same relative weights for each. For example, if the array contains APPRENTICE and MASTER, then the weighting will
      * become: Apprentice 83.3%, Master 16.7%.
      */
-    public static SpellTier getWeightedRandomTier(Random random, SpellTier... tiers){
+    public static SpellTier getWeightedRandomTier(RandomSource random, SpellTier... tiers){
         // TODO
         //if(tiers.length == 0) tiers = values();
 

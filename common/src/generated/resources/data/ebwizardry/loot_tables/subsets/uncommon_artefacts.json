@@ -1,0 +1,109 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_siphoning"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_battlemage"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_fire_melee"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_fire_biome"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_ice_melee"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_ice_biome"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_lightning_melee"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_necromancy_melee"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_earth_melee"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_earth_biome"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_extraction"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_paladin"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_warding"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_fire_protection"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_ice_protection"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_channeling"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_lich"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_banishing"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_recovery"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_spell_discovery"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_minion_health"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_minion_variants"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_growth"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_feeding"
+        }
+      ],
+      "name": "uncommon_artefacts",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ebwizardry:subsets/uncommon_artefacts"
+}

@@ -1,0 +1,141 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_hat"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_hat_fire"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_hat_ice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_hat_lightning"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_hat_necromancy"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_hat_earth"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_hat_sorcery"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_hat_healing"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_robe"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_robe_fire"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_robe_ice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_robe_lightning"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_robe_necromancy"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_robe_earth"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_robe_sorcery"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_robe_healing"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_leggings"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_leggings_fire"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_leggings_ice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_leggings_lightning"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_leggings_necromancy"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_leggings_earth"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_leggings_sorcery"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_leggings_healing"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_boots"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_boots_fire"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_boots_ice"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_boots_lightning"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_boots_necromancy"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_boots_earth"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_boots_sorcery"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:wizard_boots_healing"
+        }
+      ],
+      "name": "armour",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ebwizardry:subsets/wizard_armor"
+}

@@ -1,0 +1,49 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:condenser_upgrade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:siphon_upgrade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:storage_upgrade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:range_upgrade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:duration_upgrade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:cooldown_upgrade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:blast_upgrade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:attunement_upgrade"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:melee_upgrade"
+        }
+      ],
+      "name": "upgrades",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ebwizardry:subsets/wand_upgrades"
+}

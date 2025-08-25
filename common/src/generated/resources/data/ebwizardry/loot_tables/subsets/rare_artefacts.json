@@ -1,0 +1,133 @@
+{
+  "type": "minecraft:empty",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_condensing"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_disintegration"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_shattering"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_storm"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_leeching"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_mind_control"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_poison"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_full_moon"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_evoker"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_blockwrangler"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_conjurer"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ring_defender"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_arcane_defence"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_wisdom"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_fire_cloaking"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_potential"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_anchoring"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_transience"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:amulet_auto_shield"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_haggler"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_move_speed"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_auto_smelt"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_storm"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_undead_helmets"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_hunger_casting"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_flight"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_abseiling"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_light"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_transportation"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_mount_teleporting"
+        }
+      ],
+      "name": "rare_artefacts",
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ebwizardry:subsets/rare_artefacts"
+}

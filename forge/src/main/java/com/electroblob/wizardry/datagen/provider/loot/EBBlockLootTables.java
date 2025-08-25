@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-public class EBBlockLootTables extends BlockLootSubProvider {
+public final class EBBlockLootTables extends BlockLootSubProvider {
 
     public EBBlockLootTables() {
         super(Set.of(), FeatureFlags.REGISTRY.allFlags());

@@ -4,7 +4,9 @@ import com.electroblob.wizardry.api.content.ConfigValue;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 // Todo EBConfig? Still no used, contains some fields that were in the Constant class, need to rewrite
@@ -42,12 +44,21 @@ public final class EBConfig {
     public static final int UPGRADE_STACK_LIMIT = 3;
     public static boolean booksPauseGame = true;
 
+    private static final String[] DEFAULT_LOOT_INJECTION_LOCATIONS = {"minecraft:chests/simple_dungeon",
+            "minecraft:chests/abandoned_mineshaft", "minecraft:chests/desert_pyramid", "minecraft:chests/jungle_temple",
+            "minecraft:chests/stronghold_corridor", "minecraft:chests/stronghold_crossing",
+            "minecraft:chests/stronghold_library", "minecraft:chests/igloo_chest", "minecraft:chests/woodland_mansion",
+            "minecraft:chests/end_city_treasure"};
+
+    public static ResourceLocation[] lootInjectionLocations = toResourceLocations(DEFAULT_LOOT_INJECTION_LOCATIONS);
+
     public static Map<Pair<ResourceLocation, Short>, Integer> currencyItems = new HashMap<>();
 
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);
 
-    static EBConfig instantiate() {
-        return new EBConfig();
+
+    private static ResourceLocation[] toResourceLocations(String... strings) {
+        return Arrays.stream(strings).map(s -> new ResourceLocation(s.toLowerCase(Locale.ROOT).trim())).toArray(ResourceLocation[]::new);
     }
     private EBConfig() {}
 }
