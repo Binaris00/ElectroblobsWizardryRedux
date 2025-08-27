@@ -51,6 +51,7 @@ public final class WizardryFabricMod implements ModInitializer {
         EBLootFunctions.register(Registry::register);
         EBMenus.register(Registry::register);
 
+        // TODO MISSING LOOT
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
             // Let's only modify built-in loot tables and leave data pack loot tables untouched by checking the source.
             // We also check that the loot table ID is equal to the ID we want.

@@ -29,7 +29,7 @@ public final class EBConfig {
     public static boolean showChargeMeter = true;
     public static boolean preventBindingSameSpellTwiceToWands = false;
     public static boolean singleUseSpellBooks = false;
-    public static boolean legacyWandLevelling = false;
+    public static boolean legacyWandLevelling = false; // I never played with the old wand levelling, so...
     public static boolean wandsMustBeHeldToDecrementCooldown = false;
     public static boolean discoveryMode = true;
     public static double forfeitChance = 0.2; // 2

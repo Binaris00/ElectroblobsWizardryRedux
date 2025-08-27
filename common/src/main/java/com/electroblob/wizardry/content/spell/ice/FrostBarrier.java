@@ -31,7 +31,7 @@ public class FrostBarrier extends Spell {
     public boolean cast(PlayerCastContext ctx) {
         if (ctx.caster().onGround()) {
             if (!createBarriers(ctx.world(), ctx.caster().position(), ctx.caster().getLookAngle(), ctx.caster())) return false;
-            this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+            this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
             return true;
         }
 
@@ -43,7 +43,7 @@ public class FrostBarrier extends Spell {
         if (ctx.caster().onGround()) {
             if (!createBarriers(ctx.world(), ctx.caster().position(), ctx.target().position().subtract(ctx.caster().position()), ctx.caster()))
                 return false;
-            this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+            this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
             return true;
         }
 
@@ -56,7 +56,7 @@ public class FrostBarrier extends Spell {
 
         this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
                 ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
-                ctx.ticksInUse(), ctx.duration());
+                ctx.castingTicks(), ctx.duration());
         return true;
     }
 

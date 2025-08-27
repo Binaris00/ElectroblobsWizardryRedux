@@ -65,7 +65,7 @@ public class PhaseStep extends Spell {
                 }
 
                 Vec3 vec = GeometryUtil.getFaceCentre(pos1, Direction.DOWN);
-                attemptTeleport(ctx.world(), toTeleport, vec, teleportMount, ctx.caster(), ctx.ticksInUse());
+                attemptTeleport(ctx.world(), toTeleport, vec, teleportMount, ctx.caster(), ctx.castingTicks());
             }
 
             // If no suitable position was found on the other side of the wall, works like blink instead

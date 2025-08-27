@@ -56,7 +56,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             ctx.world().addFreshEntity(arrow);
         }
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -74,7 +74,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         }
 
         ctx.caster().swing(ctx.hand());
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -93,7 +93,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
 
         this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
                 ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
-                ctx.ticksInUse(), ctx.duration());
+                ctx.castingTicks(), ctx.duration());
         return true;
     }
 

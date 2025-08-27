@@ -36,7 +36,7 @@ public class Flight extends Spell {
                     .color(1f, 1f, 1f).spawn(ctx.caster().level());
         }
 
-        if(ctx.ticksInUse() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        if(ctx.castingTicks() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
         float speed = property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY);
         float acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(SpellModifiers.POTENCY);

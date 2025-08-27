@@ -50,7 +50,7 @@ public class GrowthAura extends Spell {
             }
         }
 
-        if (flag) this.playSound(level, ctx.caster(), ctx.ticksInUse(), -1);
+        if (flag) this.playSound(level, ctx.caster(), ctx.castingTicks(), -1);
 
         return flag;
     }

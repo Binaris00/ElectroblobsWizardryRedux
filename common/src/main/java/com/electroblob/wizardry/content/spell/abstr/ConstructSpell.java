@@ -52,7 +52,7 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
     public boolean cast(PlayerCastContext ctx) {
         if (ctx.caster().onGround() || !requiresFloor) {
             if (!spawnConstruct(ctx, ctx.caster().position(), ctx.caster().onGround() ? Direction.UP : null)) return false;
-            this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+            this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
             return true;
         }
         return false;
@@ -62,7 +62,7 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
     public boolean cast(EntityCastContext ctx) {
         if (ctx.target() != null && (ctx.caster().onGround() || !requiresFloor)) {
             if (!spawnConstruct(ctx, ctx.caster().position(), ctx.caster().onGround() ? Direction.UP : null)) return false;
-            this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+            this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
             return true;
         }
 
@@ -82,7 +82,7 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
             if (!spawnConstruct(ctx, new Vec3(ctx.x(), floor, ctx.z()), ctx.direction())) return false;
             this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
                     ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
-                    ctx.ticksInUse(), ctx.duration());
+                    ctx.castingTicks(), ctx.duration());
             return true;
         }
 

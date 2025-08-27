@@ -31,7 +31,7 @@ public class Fangs extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if(spawnFangs(ctx, ctx.caster().position(), GeometryUtil.horizontalise(ctx.caster().getLookAngle()))) return false;
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -39,14 +39,14 @@ public class Fangs extends Spell {
     public boolean cast(EntityCastContext ctx) {
         if(ctx.target() == null) return false;
         if(spawnFangs(ctx, ctx.caster().position(), ctx.target().position().subtract(ctx.caster().position()).normalize())) return false;
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
     @Override
     public boolean cast(LocationCastContext ctx) {
         if(spawnFangs(ctx, ctx.vec3(), Vec3.atLowerCornerOf(ctx.direction().getNormal()))) return false;
-        this.playSound(ctx.world(), ctx.vec3(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.vec3(), ctx.castingTicks(), -1);
         return true;
     }
 

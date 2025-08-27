@@ -46,7 +46,7 @@ public class Charge extends Spell {
         if (ctx.world().isClientSide)
             ctx.world().addParticle(ParticleTypes.EXPLOSION_EMITTER, ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getBbHeight() / 2, ctx.caster().getZ(), 0, 0, 0);
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         Services.WIZARD_DATA.onUpdate(wizardData, ctx.caster());
         return true;
     }

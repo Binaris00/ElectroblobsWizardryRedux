@@ -85,7 +85,7 @@ public abstract class RaySpell extends Spell {
         if (this.isInstantCast() && ctx.world().isClientSide && ClientUtils.isFirstPerson(ctx.caster())) origin = origin.add(look.scale(1.2));
         if (!shootSpell(ctx, origin, look)) return false;
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -113,7 +113,7 @@ public abstract class RaySpell extends Spell {
         if (targetPos == null) return false;
 
         if (shootSpell(ctx, origin, targetPos.subtract(origin).normalize())) return false;
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -124,7 +124,7 @@ public abstract class RaySpell extends Spell {
         if (shootSpell(ctx, ctx.vec3(), vec)) return false;
         this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
                 ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
-                ctx.ticksInUse(), ctx.duration());
+                ctx.castingTicks(), ctx.duration());
         return true;
     }
 

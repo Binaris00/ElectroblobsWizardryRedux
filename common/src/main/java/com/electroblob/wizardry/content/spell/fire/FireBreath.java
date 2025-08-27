@@ -50,7 +50,7 @@ public class FireBreath extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (entityHit.getEntity() instanceof LivingEntity target && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
-            if (ctx.ticksInUse() % target.invulnerableDuration == 1) {
+            if (ctx.castingTicks() % target.invulnerableDuration == 1) {
                 target.setSecondsOnFire((int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
                 DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FIRE)
                         : target.damageSources().magic();

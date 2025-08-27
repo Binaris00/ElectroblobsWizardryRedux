@@ -37,7 +37,7 @@ public class Levitation extends Spell {
         }
 
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 

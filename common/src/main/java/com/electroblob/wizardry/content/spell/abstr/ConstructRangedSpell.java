@@ -68,7 +68,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
             return false;
         }
 
-        playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -99,7 +99,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
         if (!spawnConstruct(ctx, new Vec3(ctx.target().getX(), y, ctx.target().getZ()), side)) return false;
 
         ctx.caster().swing(ctx.hand());
-        playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -127,7 +127,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
         this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
                 ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
-                ctx.ticksInUse(), ctx.duration());
+                ctx.castingTicks(), ctx.duration());
         return true;
     }
 

@@ -8,8 +8,8 @@ public class PlayerCastContext extends CastContext {
     private final Player caster;
     private final InteractionHand hand;
 
-    public PlayerCastContext(Level world, Player caster, InteractionHand hand, int ticksInUse, SpellModifiers modifiers) {
-        super(world, ticksInUse, modifiers);
+    public PlayerCastContext(Level world, Player caster, InteractionHand hand, int castingTicks, SpellModifiers modifiers) {
+        super(world, castingTicks, modifiers);
         this.caster = caster;
         this.hand = hand;
     }

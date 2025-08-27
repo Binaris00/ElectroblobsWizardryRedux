@@ -29,7 +29,7 @@ public class WitherSkullSpell extends Spell {
         witherSkull.setOwner(ctx.caster());
         ctx.world().addFreshEntity(witherSkull);
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -47,7 +47,7 @@ public class WitherSkullSpell extends Spell {
         witherSkull.setOwner(ctx.caster());
         ctx.world().addFreshEntity(witherSkull);
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 

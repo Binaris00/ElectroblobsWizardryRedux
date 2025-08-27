@@ -30,7 +30,7 @@ public class LifeDrain extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if(!(entityHit.getEntity() instanceof LivingEntity target) || ctx.ticksInUse() % 12 != 0) return false;
+        if(!(entityHit.getEntity() instanceof LivingEntity target) || ctx.castingTicks() % 12 != 0) return false;
         float damage = property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY);
         DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SORCERY)
                 : target.damageSources().magic();

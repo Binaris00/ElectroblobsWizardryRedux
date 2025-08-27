@@ -5,12 +5,12 @@ import net.minecraft.world.level.Level;
 
 public abstract class CastContext {
     protected Level world;
-    protected int ticksInUse;
+    protected int castingTicks;
     protected SpellModifiers modifiers;
 
-    public CastContext(Level world, int ticksInUse, SpellModifiers modifiers) {
+    public CastContext(Level world, int castingTicks, SpellModifiers modifiers) {
         this.world = world;
-        this.ticksInUse = ticksInUse;
+        this.castingTicks = castingTicks;
         this.modifiers = modifiers;
     }
 
@@ -20,16 +20,16 @@ public abstract class CastContext {
         return world;
     }
 
-    public int ticksInUse() {
-        return ticksInUse;
+    public int castingTicks() {
+        return castingTicks;
     }
 
     public SpellModifiers modifiers() {
         return modifiers;
     }
 
-    public void ticksInUse(int tick){
-        this.ticksInUse = tick;
+    public void castingTicks(int tick) {
+        this.castingTicks = tick;
     }
 
     public void modifiers(SpellModifiers modifiers) {

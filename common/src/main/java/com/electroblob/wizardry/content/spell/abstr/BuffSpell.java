@@ -60,7 +60,7 @@ public class BuffSpell extends Spell {
     public boolean cast(PlayerCastContext ctx) {
         if (!this.applyEffects(ctx, ctx.caster()) && !ctx.world().isClientSide) return false;
         if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), ctx.caster());
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -69,7 +69,7 @@ public class BuffSpell extends Spell {
         if (!potionSet.isEmpty() && ctx.caster().getActiveEffectsMap().keySet().containsAll(potionSet)) return false;
         if (!this.applyEffects(ctx, ctx.caster()) && !ctx.world().isClientSide) return false;
         if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), ctx.caster());
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
@@ -95,7 +95,7 @@ public class BuffSpell extends Spell {
 
         this.playSound(ctx.world(), ctx.x() - ctx.direction().getStepX(),
                 ctx.y() - ctx.direction().getStepY(), ctx.z() - ctx.direction().getStepZ(),
-                ctx.ticksInUse(), ctx.duration());
+                ctx.castingTicks(), ctx.duration());
 
         return true;
     }

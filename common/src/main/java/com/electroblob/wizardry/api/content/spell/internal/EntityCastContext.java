@@ -11,8 +11,8 @@ public class EntityCastContext extends CastContext{
     // What if I'm a wizard that just want to chill out casting funny spells without damaging someone?
     protected @Nullable LivingEntity target;
 
-    public EntityCastContext(Level world, LivingEntity caster, InteractionHand hand, int ticksInUse, @Nullable LivingEntity target, SpellModifiers modifiers) {
-        super(world, ticksInUse, modifiers);
+    public EntityCastContext(Level world, LivingEntity caster, InteractionHand hand, int castingTicks, @Nullable LivingEntity target, SpellModifiers modifiers) {
+        super(world, castingTicks, modifiers);
         this.caster = caster;
         this.hand = hand;
         this.target = target;

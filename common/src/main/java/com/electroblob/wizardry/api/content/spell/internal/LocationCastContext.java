@@ -11,8 +11,8 @@ public class LocationCastContext extends CastContext{
     protected Direction direction;
     protected int duration;
 
-    public LocationCastContext(Level world, double x, double y, double z, Direction direction, int ticksInUse, int duration, SpellModifiers modifiers) {
-        super(world, ticksInUse, modifiers);
+    public LocationCastContext(Level world, double x, double y, double z, Direction direction, int castingTicks, int duration, SpellModifiers modifiers) {
+        super(world, castingTicks, modifiers);
         this.vec3 = new Vec3(x, y, z);
         this.direction = direction;
         this.duration = duration;

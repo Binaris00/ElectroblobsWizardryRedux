@@ -50,21 +50,21 @@ public abstract class AreaEffectSpell extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         boolean result = findAndAffectEntities(ctx, ctx.caster().position());
-        if(result) this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        if(result) this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return result;
     }
 
     @Override
     public boolean cast(EntityCastContext ctx) {
         boolean result = findAndAffectEntities(ctx, ctx.caster().position());
-        if(result) this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        if(result) this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return result;
     }
 
     @Override
     public boolean cast(LocationCastContext ctx) {
         boolean result = findAndAffectEntities(ctx, ctx.vec3());
-        if(result) this.playSound(ctx.world(), ctx.vec3(), ctx.ticksInUse(), -1);
+        if(result) this.playSound(ctx.world(), ctx.vec3(), ctx.castingTicks(), -1);
         return result;
     }
 

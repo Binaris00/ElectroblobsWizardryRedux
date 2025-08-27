@@ -34,7 +34,7 @@ public class DragonFireball extends Spell {
             ctx.world().addFreshEntity(fireball);
         }
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         ctx.caster().swing(InteractionHand.MAIN_HAND);
         return true;
     }
@@ -58,7 +58,7 @@ public class DragonFireball extends Spell {
             ctx.world().addFreshEntity(fireball);
         }
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         ctx.caster().swing(InteractionHand.MAIN_HAND);
         return true;
     }

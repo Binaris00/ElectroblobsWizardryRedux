@@ -30,7 +30,7 @@ public class PocketFurnace extends Spell {
         int usesLeft = (int) (property(ITEMS_SMELTED) * ctx.modifiers().get(SpellModifiers.POTENCY));
         ItemStack stack, result;
 
-        this.playSound(ctx.world(), ctx.caster(), ctx.ticksInUse(), -1);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
         if (ctx.world().isClientSide) {
             for (int i = 0; i < 10; i++) {
