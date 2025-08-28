@@ -1,4 +1,4 @@
-// 1.20.1	2025-05-08T12:20:03.0474839	Item Models: ebwizardry
+// 1.20.1	2025-08-28T12:12:57.8819351	Item Models: ebwizardry
 89bb34411d51f6f233bba5222d0f678fb09f0db7 assets/ebwizardry/models/item/amulet_absorption.json
 5d768537586b85e2822265776cd201221e20ad88 assets/ebwizardry/models/item/amulet_anchoring.json
 0580922d9a4bededf0168a7c330267c6c36f48e8 assets/ebwizardry/models/item/amulet_arcane_defence.json
@@ -84,6 +84,7 @@ ffcf0f356a068629b0626e61a6011f3044922211 assets/ebwizardry/models/item/cooldown_
 7bc9b845735fe70579466cc3aa887c9aa15f12e6 assets/ebwizardry/models/item/crystal_silver_plating.json
 8cdeb1aa0e67a07d12489e9c434576263e23b44f assets/ebwizardry/models/item/duration_upgrade.json
 0a0f51c3ba5109e34a47f5a848569a7e7d83ba96 assets/ebwizardry/models/item/ethereal_crystal_weave.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/ebwizardry/models/item/evil_wizard_spawn_egg.json
 de60bf6bfadb52e009d724bd406e45c1d3440063 assets/ebwizardry/models/item/firebomb.json
 ea8e9017119e2136734d2f7c4cf1ec12df0db745 assets/ebwizardry/models/item/identification_scroll.json
 cd36b63baf6eb12d25548711fcd3339a10601a39 assets/ebwizardry/models/item/magic_crystal.json
@@ -104,6 +105,7 @@ ae440d4d25b1b296433c8ee8ba5e51cfd00bc134 assets/ebwizardry/models/item/mana_flas
 4b15180f342e1709d9e34e7898759e7f7a2805a0 assets/ebwizardry/models/item/poison_bomb.json
 fb141580e999958da54fbc4ff681d1e934b89548 assets/ebwizardry/models/item/purifying_elixir.json
 0820a49efac754baad1bdfb3cc9e362488c2b23f assets/ebwizardry/models/item/range_upgrade.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/ebwizardry/models/item/remnant_spawn_egg.json
 f52c1439ceb029c55b0722eb60a5d01707a6f705 assets/ebwizardry/models/item/resplendent_thread.json
 77d3cc29d3ef332895b0af8aea775025aa6a81fb assets/ebwizardry/models/item/ring_arcane_frost.json
 f64b0607f3606a5c936398a5fbb827b3ded9a8c9 assets/ebwizardry/models/item/ring_battlemage.json
@@ -283,3 +285,4 @@ e964780a3ae5e2d84e5e3c6ca2125caeb3322542 assets/ebwizardry/models/item/wizard_ro
 07190d2b84ebf8ec1f928e0b5e801eeac04693d3 assets/ebwizardry/models/item/wizard_robe_lightning.json
 67a70f1bc2eed59819af2ddc10e8f95224227e91 assets/ebwizardry/models/item/wizard_robe_necromancy.json
 6fb6d3672eeedbf736d62090c57896584a36d7e4 assets/ebwizardry/models/item/wizard_robe_sorcery.json
+63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/ebwizardry/models/item/wizard_spawn_egg.json

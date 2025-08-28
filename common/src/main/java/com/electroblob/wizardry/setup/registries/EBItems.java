@@ -411,8 +411,9 @@ public final class EBItems {
     public static final DeferredObject<Item> LIGHTNING_HAMMER = debug("lightning_hammer");
 
     // Spawn egg
-    public static final DeferredObject<Item> WIZARD_SPAWN_EGG = debug("wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.WIZARD.get(), 0, 0, new Item.Properties()));
-
+    public static final DeferredObject<Item> WIZARD_SPAWN_EGG = item("wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.WIZARD.get(), 0x19295e, 0xee9312, new Item.Properties()), false, true);
+    public static final DeferredObject<Item> EVIL_WIZARD_SPAWN_EGG = item("evil_wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.EVIL_WIZARD.get(), 0x290404, 0xee9312, new Item.Properties()),false, true);
+    public static final DeferredObject<Item> REMNANT_SPAWN_EGG = item("remnant_spawn_egg", () -> new SpawnEggItem(EBEntities.REMNANT.get(), 0x414141, 0xe5daae, new Item.Properties()), false, true);
 
     // ======= Registry =======
     public static void register(RegisterFunction<Item> function){

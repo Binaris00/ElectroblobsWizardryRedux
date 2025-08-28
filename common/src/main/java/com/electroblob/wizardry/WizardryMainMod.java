@@ -3,6 +3,7 @@ package com.electroblob.wizardry;
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.content.ForfeitRegistry;
+import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;

@@ -19,7 +19,7 @@
         },
         {
           "type": "minecraft:loot_table",
-          "name": "ebwizardry:subsets/armour_upgrades",
+          "name": "ebwizardry:subsets/armor_upgrades",
           "weight": 1
         },
         {

@@ -4,9 +4,11 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
@@ -24,28 +26,36 @@ public final class EBItemModelProvider extends ItemModelProvider {
         EBDataGenProcessor.items().forEach((name, item) -> simpleItem(name));
         generateWandPointModel();
         EBDataGenProcessor.wandItems().forEach((name, item) -> simpleWand(name));
-
         simpleBlockItemBlockTexture(EBBlocks.CRYSTAL_FLOWER);
+
+        spawnEgg(EBItems.WIZARD_SPAWN_EGG);
+        spawnEgg(EBItems.EVIL_WIZARD_SPAWN_EGG);
+        spawnEgg(EBItems.REMNANT_SPAWN_EGG);
     }
 
-    private ItemModelBuilder simpleBlockItemBlockTexture(DeferredObject<Block> item) {
+    private void simpleBlockItemBlockTexture(DeferredObject<Block> item) {
         ResourceLocation id = BuiltInRegistries.BLOCK.getKey(item.get());
 
-        return withExistingParent(id.getPath(),
+        withExistingParent(id.getPath(),
                 new ResourceLocation("item/generated")).texture("layer0",
-                new ResourceLocation(WizardryMainMod.MOD_ID,"block/" + id.getPath()));
+                new ResourceLocation(WizardryMainMod.MOD_ID, "block/" + id.getPath()));
     }
 
-    private ItemModelBuilder simpleItem(String name) {
-        return withExistingParent(name,
+    private void spawnEgg(DeferredObject<Item> item){
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(item.get());
+        withExistingParent(id.getPath(), mcLoc("item/template_spawn_egg"));
+    }
+
+    private void simpleItem(String name) {
+        withExistingParent(name,
                 new ResourceLocation("item/generated")).texture(
                 "layer0",
                 new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + name)
         );
     }
 
-    private ItemModelBuilder simpleWand(String name) {
-        return withExistingParent(
+    private void simpleWand(String name) {
+        withExistingParent(
                 name,
                 new ResourceLocation("item/handheld"))
                 .texture("layer0", new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + name))

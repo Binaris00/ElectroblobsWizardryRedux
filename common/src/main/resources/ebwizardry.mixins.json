@@ -14,7 +14,8 @@
     "ServerLevelMixin",
     "ServerPlayerMixin",
     "accessor.MerchantMenuAccessor",
-    "accessor.SlotAccessor"
+    "accessor.SlotAccessor",
+    "invoker.SpawnPlacementsInvoker"
   ],
   "client": [
     "ClientLevelMixin",

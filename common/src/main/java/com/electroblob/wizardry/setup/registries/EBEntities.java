@@ -11,12 +11,11 @@ import com.electroblob.wizardry.content.entity.living.EvilWizard;
 import com.electroblob.wizardry.content.entity.living.Remnant;
 import com.electroblob.wizardry.content.entity.living.Wizard;
 import com.electroblob.wizardry.content.entity.projectile.*;
+import com.electroblob.wizardry.core.mixin.invoker.SpawnPlacementsInvoker;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.MobCategory;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -84,15 +83,19 @@ public final class EBEntities {
 
     // ======= Registry =======
     public static void register(RegisterFunction<EntityType<?>> function){
-        ENTITY_TYPES.forEach(((id, entityType) -> {
-            function.register(BuiltInRegistries.ENTITY_TYPE, WizardryMainMod.location(id), entityType.get());
-        }));
+        ENTITY_TYPES.forEach(((id, entityType) ->
+                function.register(BuiltInRegistries.ENTITY_TYPE, WizardryMainMod.location(id), entityType.get())));
+        EBEntities.registerSpawns();
     }
 
     public static void registerAttributes(BiConsumer<EntityType<? extends LivingEntity>, AttributeSupplier> consumer) {
         consumer.accept(REMNANT.get(), Remnant.createMobAttributes().build());
         consumer.accept(WIZARD.get(), AbstractWizard.createAttributes().build());
         consumer.accept(EVIL_WIZARD.get(), AbstractWizard.createAttributes().build());
+    }
+
+    public static void registerSpawns(){
+        SpawnPlacementsInvoker.callRegister(EBEntities.EVIL_WIZARD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EvilWizard::checkEvilWizardSpawnRules);
     }
 
     // ======= Helpers =======
