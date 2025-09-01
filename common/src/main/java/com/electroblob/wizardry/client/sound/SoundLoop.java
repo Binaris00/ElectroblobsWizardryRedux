@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.client.sound;
 
 import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
+import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.AbstractTickableSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -15,7 +16,7 @@ import java.util.Set;
  * Saves all the info for the three basic sounds (start, loop, end) and handle all the logic in the event
  * <br><br>
  * This class only works as a blueprint for situations that you need to play a sound loop, for example:
- * {@link com.electroblob.wizardry.core.SpellSoundManager SpellSoundManager}, all the logic here is just for simplify
+ * {@link ClientSpellSoundManager SpellSoundManager}, all the logic here is just for simplify
  * the process of doing a sound loop
  * */
 public abstract class SoundLoop extends AbstractTickableSoundInstance {

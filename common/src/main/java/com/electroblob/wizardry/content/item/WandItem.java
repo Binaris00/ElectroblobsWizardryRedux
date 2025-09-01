@@ -17,13 +17,11 @@ import com.electroblob.wizardry.api.content.util.DrawingUtils;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.core.EBConfig;
-import com.electroblob.wizardry.core.SpellSoundManager;
+import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
@@ -78,7 +76,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (!player.isUsingItem()) {
             player.startUsingItem(hand);
             Services.WIZARD_DATA.getWizardData(player, level).itemModifiers = ctx.modifiers();
-            if (charge > 0 && level.isClientSide) SpellSoundManager.playChargeSound(player);
+            if (charge > 0 && level.isClientSide) ClientSpellSoundManager.playChargeSound(player);
             return InteractionResultHolder.success(stack);
         }
 

@@ -78,8 +78,8 @@ public class Permafrost extends RaySpell {
     }
 
     @Override
-    protected void playSound(Level world, LivingEntity entity, int ticksInUse, int duration) {
-        this.playSoundLoop(world, entity, ticksInUse);
+    protected void playSound(Level world, LivingEntity entity, int castTicks, int duration) {
+        this.playSoundLoop(world, entity, castTicks);
     }
 
     @Override

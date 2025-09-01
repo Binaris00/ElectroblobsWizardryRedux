@@ -12,7 +12,7 @@ import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.content.entity.goal.AttackSpellGoal;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
-import com.electroblob.wizardry.core.SpellSoundManager;
+import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.BlockPos;
@@ -21,6 +21,8 @@ import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.damagesource.DamageSource;
@@ -180,8 +182,8 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
                 } else {
                     this.setHealCooldown(400);
                 }
-
-                SpellSoundManager.playSound(level(), Spells.HEAL, this.getX(), this.getY(), this.getZ(), 0, 0);
+                SoundEvent sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(Spells.HEAL.getLocation().getNamespace(), "spell." + Spells.HEAL.getLocation().getPath()));
+                level().playSound(null, this.getX(), this.getY(), this.getZ(), sound, SoundSource.PLAYERS, Spells.HEAL.getVolume(), Spells.HEAL.getPitch() + Spells.HEAL.getPitchVariation() * (level().random.nextFloat() - 0.5f));
             }
         }
 

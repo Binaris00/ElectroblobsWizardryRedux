@@ -14,23 +14,10 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-// Todo check sound for better improvements, still using old logic with little changes
-// This is probably a temp class until I make something better
-public final class SpellSoundManager {
-    public static void registerSpellSounds(){
-//        SpellRegistry.entrySet().forEach((map) ->{
-//            SoundEvent.createVariableRangeEvent(new ResourceLocation(map.getKey().location().getNamespace(), "spell." + map.getKey().location().getPath()));
-//
-//        });
-    }
-
-    public static void playSound(Level world, Spell spell, double x, double y, double z, int ticksInUse, int duration) {
-        SoundEvent sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(spell.getLocation().getNamespace(), "spell." + spell.getLocation().getPath()));
-        world.playSound(null, x, y, z, sound, SoundSource.PLAYERS, spell.getVolume(), spell.getPitch() + spell.getPitchVariation() * (world.random.nextFloat() - 0.5f));
-    }
-
+public final class ClientSpellSoundManager {
     public static void playSpellSoundLoop(LivingEntity entity, Spell spell, SoundEvent[] sounds, float volume, float pitch) {
-        if (sounds.length < 3) throw new IllegalArgumentException("Tried to play a continuous spell sound using an array " + "of sound events, but the given array contained less than 3 sound events!");
+        if (sounds.length < 3)
+            throw new IllegalArgumentException("Tried to play a continuous spell sound using an array of sound events, but the given array contained less than 3 sound events!");
         playSpellSoundLoop(entity, spell, sounds[0], sounds[1], sounds[2], volume, pitch);
     }
 
@@ -39,22 +26,37 @@ public final class SpellSoundManager {
     }
 
     public static void playSpellSoundLoop(Level world, double x, double y, double z, Spell spell, SoundEvent[] sounds, float volume, float pitch, int duration) {
-        if (sounds.length < 3) throw new IllegalArgumentException("Tried to play a continuous spell sound using an array " + "of sound events, but the given array contained less than 3 sound events!");
+        if (sounds.length < 3)
+            throw new IllegalArgumentException("Tried to play a continuous spell sound using an array of sound events, but the given array contained less than 3 sound events!");
         playSpellSoundLoop(world, x, y, z, spell, sounds[0], sounds[1], sounds[2], volume, pitch, duration);
     }
 
     public static void playSpellSoundLoop(Level world, double x, double y, double z, Spell spell, SoundEvent start, SoundEvent loop, SoundEvent end, float volume, float pitch, int duration) {
-        if (duration == -1) {
+        if (duration == -1)
             SoundLoop.addLoop(new SoundLoopSpell.SoundLoopSpellDispenser(start, loop, end, spell, world, x, y, z, volume, pitch));
-        } else {
+        else
             SoundLoop.addLoop(new SoundLoopSpell.SoundLoopSpellPosTimed(start, loop, end, spell, duration, x, y, z, volume, pitch));
-        }
     }
 
+    /**
+     * Used when you want to create a sound that's moving along with an entity (projectiles, or fast-entities need this).
+     *
+     * @param entity   entity that's going to be linked with the sound.
+     * @param sound    sound event
+     * @param category sound category
+     * @param volume   volume of the sound
+     * @param repeat   if the sound is going to be looping with the entity
+     */
     public static void playMovingSound(Entity entity, SoundEvent sound, SoundSource category, float volume, float pitch, boolean repeat) {
         Minecraft.getInstance().getSoundManager().play(new MovingSoundEntity<>(entity, sound, category, volume, pitch, repeat));
     }
 
+    /**
+     * Plays the spell charge sound, used inside a {@link com.electroblob.wizardry.api.content.item.ISpellCastingItem SpellCastingItem}
+     * when the item is on charge time.
+     *
+     * @param entity entity that's going to listen the sound (normally a player)
+     */
     public static void playChargeSound(LivingEntity entity) {
         Minecraft.getInstance().getSoundManager().play(new MovingSoundSpellCharge(entity, EBSounds.ITEM_WAND_CHARGEUP.get(), SoundSource.PLAYERS, 2.5f, 1.4f, false));
     }

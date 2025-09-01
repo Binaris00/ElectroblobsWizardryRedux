@@ -7,7 +7,7 @@ import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.client.particle.ParticleTornado;
-import com.electroblob.wizardry.core.SpellSoundManager;
+import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -62,7 +62,7 @@ public class TornadoConstruct extends ScaledConstructEntity {
         double radius = getBbWidth() / 2;
 
         if (this.tickCount % 120 == 1 && level().isClientSide) {
-            SpellSoundManager.playMovingSound(this, EBSounds.ENTITY_TORNADO_AMBIENT.get(), SoundSource.HOSTILE, 1.0f, 1.0f, false);
+            ClientSpellSoundManager.playMovingSound(this, EBSounds.ENTITY_TORNADO_AMBIENT.get(), SoundSource.HOSTILE, 1.0f, 1.0f, false);
         }
 
         this.move(MoverType.SELF, new Vec3(velX, this.getDeltaMovement().y, velZ));
