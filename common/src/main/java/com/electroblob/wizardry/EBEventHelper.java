@@ -57,6 +57,8 @@ public final class EBEventHelper {
         bus.register(EBLivingTick.class, SpellGUIDisplay::onLivingTickEvent);
     }
 
+    private static void onSpellDiscovery(WizardryEventBus bus){}
+
     private static void onPlayerJoin(WizardryEventBus bus){
         bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
     }
