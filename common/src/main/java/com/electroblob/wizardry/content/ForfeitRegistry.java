@@ -155,7 +155,7 @@ public class ForfeitRegistry {
             }
 
             PlayerWizardData data = Services.WIZARD_DATA.getWizardData(player, player.level());
-            if (WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, event.getSpell(), EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL))
+            if (!WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, event.getSpell(), EBDiscoverSpellEvent.Source.CASTING))
                     && data.discoverSpell(event.getSpell())) {
                 if (!event.getCaster().level().isClientSide && !player.isCreative() && EBConfig.discoveryMode) {
                     EntityUtil.playSoundAtPlayer(player, EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);

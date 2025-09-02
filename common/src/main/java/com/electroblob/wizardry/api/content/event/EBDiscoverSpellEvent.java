@@ -2,6 +2,7 @@ package com.electroblob.wizardry.api.content.event;
 
 import com.electroblob.wizardry.api.content.event.abstr.WizardryCancelableEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;

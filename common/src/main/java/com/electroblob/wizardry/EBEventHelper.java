@@ -16,6 +16,7 @@ import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
 import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,11 +24,12 @@ import net.minecraft.server.level.ServerPlayer;
 /**
  * Simple class to save all the event helper methods
  * This is internal use, you're not supposed to use this for any reason
- * */
+ */
 public final class EBEventHelper {
-    private EBEventHelper() {}
+    private EBEventHelper() {
+    }
 
-    public static void register(){
+    public static void register() {
         WizardryEventBus bus = WizardryEventBus.getInstance();
         onLivingHurtEvent(bus);
         onLivingTickEvent(bus);
@@ -40,6 +42,7 @@ public final class EBEventHelper {
         onLivingDeathEvent(bus);
         onItemTossEvent(bus);
         onEntityJoinLevel(bus);
+        onSpellDiscovery(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -57,43 +60,48 @@ public final class EBEventHelper {
         bus.register(EBLivingTick.class, SpellGUIDisplay::onLivingTickEvent);
     }
 
-    private static void onSpellDiscovery(WizardryEventBus bus){}
+    private static void onSpellDiscovery(WizardryEventBus bus) {
+        bus.register(EBDiscoverSpellEvent.class, (event -> {
+            if(!event.getPlayer().level().isClientSide)
+                EBAdvancementTriggers.DISCOVER_SPELL.trigger((ServerPlayer) event.getPlayer(), event.getSpell(), event.getSource());
+        }));
+    }
 
-    private static void onPlayerJoin(WizardryEventBus bus){
+    private static void onPlayerJoin(WizardryEventBus bus) {
         bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
     }
 
-    private static void onServerLevelLoad(WizardryEventBus bus){
+    private static void onServerLevelLoad(WizardryEventBus bus) {
         bus.register(EBServerLevelLoadEvent.class, SpellGlyphData::onServerLevelLoad);
     }
 
-    private static void onEntityJoinLevel(WizardryEventBus bus){
+    private static void onEntityJoinLevel(WizardryEventBus bus) {
         bus.register(EBEntityJoinLevelEvent.class, Imbuement::onEntityJoinLevel);
     }
 
-    private static void onItemTossEvent(WizardryEventBus bus){
+    private static void onItemTossEvent(WizardryEventBus bus) {
         bus.register(EBItemTossEvent.class, Imbuement::onItemTossEvent);
     }
 
-    private static void onLivingDeathEvent(WizardryEventBus bus){
+    private static void onLivingDeathEvent(WizardryEventBus bus) {
         bus.register(EBLivingDeathEvent.class, Imbuement::onLivingDeath);
     }
 
-    private static void onClientTick(WizardryEventBus bus){
+    private static void onClientTick(WizardryEventBus bus) {
         bus.register(EBClientTickEvent.class, SoundLoop::onClientTick);
         bus.register(EBClientTickEvent.class, EBKeyBinding::onClientTick);
     }
 
-    private static void onSpellPreCast(WizardryEventBus bus){
+    private static void onSpellPreCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Pre.class, WizardArmorItem::onSpellPreCast);
         bus.register(SpellCastEvent.Pre.class, ForfeitRegistry::onSpellCastPreEvent);
     }
 
-    private static void onSpellPostCast(WizardryEventBus bus){
+    private static void onSpellPostCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Post.class, ForfeitRegistry::onSpellCastPostEvent);
     }
 
-    private static void onSpellTickCast(WizardryEventBus bus){
+    private static void onSpellTickCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Tick.class, WizardArmorItem::onSpellTickCast);
     }
 }

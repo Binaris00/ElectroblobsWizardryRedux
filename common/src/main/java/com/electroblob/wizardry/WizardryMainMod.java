@@ -3,6 +3,7 @@ package com.electroblob.wizardry;
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.content.ForfeitRegistry;
+import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.resources.ResourceLocation;
@@ -22,6 +23,7 @@ public final class WizardryMainMod {
         EBEventHelper.register();
         WandUpgrades.initUpgrades();
         ForfeitRegistry.register();
+        EBAdvancementTriggers.register();
 
         EBLogger.info("Electroblob's Wizardry Started");
     }

@@ -1,0 +1,30 @@
+{
+  "display": {
+    "title": {
+      "translate": "advancement.ebwizardry.root"
+    },
+    "description": {
+      "translate": "advancement.ebwizardry.root.desc"
+    },
+    "show_toast": false,
+    "announce_to_chat": false,
+    "background": "ebwizardry:textures/gui/advancement_background.png",
+    "icon": {
+      "item": "ebwizardry:wizard_handbook"
+    }
+  },
+  "criteria": {
+    "criteria_0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:magic_crystal"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

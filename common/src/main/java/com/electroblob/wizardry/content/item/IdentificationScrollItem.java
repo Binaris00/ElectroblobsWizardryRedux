@@ -41,7 +41,7 @@ public class IdentificationScrollItem extends Item {
             if(stack1.getItem() instanceof IdentificationScrollItem || spell == Spells.NONE) continue;
 
             if((stack1.getItem() instanceof SpellBookItem || stack1.getItem() instanceof ScrollItem) && !wizardData.hasSpellBeenDiscovered(spell)){
-                if(WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL)))
+                if(!WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL)))
                     return InteractionResultHolder.fail(stack);
                 wizardData.discoverSpell(spell);
                 player.playSound(EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);

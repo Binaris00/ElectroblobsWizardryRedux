@@ -1,0 +1,28 @@
+{
+	"display": {
+		"icon": {
+			"item": "ebwizardry:wand_novice"
+		},
+		"title": {
+			"translate": "advancement.ebwizardry.arcane_initiate"
+		},
+		"description": {
+			"translate": "advancement.ebwizardry.arcane_initiate.desc"
+		}
+	},
+	"parent": "ebwizardry:crystal",
+	"criteria": {
+		"criteria_0": {
+			"trigger": "minecraft:inventory_changed",
+			"conditions": {
+				"items": [
+					{
+						"items": [
+							"ebwizardry:wand_novice"
+						]
+					}
+				]
+			}
+		}
+	}
+}
