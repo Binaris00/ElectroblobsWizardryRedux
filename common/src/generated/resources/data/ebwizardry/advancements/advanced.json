@@ -1,0 +1,143 @@
+{
+  "parent": "ebwizardry:apprentice",
+  "criteria": {
+    "earth": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_advanced_earth"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fire": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_advanced_fire"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "healing": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_advanced_healing"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "ice": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_advanced_ice"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "lightning": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_advanced_lightning"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "magic": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_advanced"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "necromancy": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_advanced_necromancy"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorcery": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_advanced_sorcery"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.advanced.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:wand_advanced"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.advanced"
+    }
+  },
+  "requirements": [
+    [
+      "magic"
+    ],
+    [
+      "fire"
+    ],
+    [
+      "ice"
+    ],
+    [
+      "lightning"
+    ],
+    [
+      "necromancy"
+    ],
+    [
+      "earth"
+    ],
+    [
+      "sorcery"
+    ],
+    [
+      "healing"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

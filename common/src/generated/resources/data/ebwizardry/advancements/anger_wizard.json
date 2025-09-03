@@ -1,0 +1,31 @@
+{
+  "parent": "ebwizardry:wizard_trade",
+  "criteria": {
+    "anger_wizard": {
+      "conditions": {},
+      "trigger": "ebwizardry:anger_wizard"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.anger_wizard.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:iron_sword",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.anger_wizard"
+    }
+  },
+  "requirements": [
+    [
+      "anger_wizard"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

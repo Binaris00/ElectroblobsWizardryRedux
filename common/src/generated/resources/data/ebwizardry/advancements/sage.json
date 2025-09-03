@@ -1,0 +1,440 @@
+{
+  "parent": "ebwizardry:armor_set",
+  "criteria": {
+    "sage_boots": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_boots"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_boots_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_boots_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_boots_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_boots_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_boots_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_boots_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_boots_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_boots_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_boots_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_boots_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_boots_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_boots_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_boots_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_boots_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_hat": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_hat"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_hat_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_hat_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_hat_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_hat_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_hat_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_hat_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_hat_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_hat_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_hat_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_hat_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_hat_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_hat_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_hat_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_hat_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_leggings": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_leggings"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_leggings_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_leggings_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_leggings_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_leggings_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_leggings_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_leggings_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_leggings_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_leggings_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_leggings_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_leggings_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_leggings_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_leggings_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_leggings_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_leggings_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_robe": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_robe"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_robe_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_robe_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_robe_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_robe_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_robe_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_robe_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_robe_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_robe_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_robe_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_robe_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_robe_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_robe_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "sage_robe_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:sage_robe_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.sage.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:sage_robe",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.sage"
+    }
+  },
+  "requirements": [
+    [
+      "sage_hat"
+    ],
+    [
+      "sage_robe"
+    ],
+    [
+      "sage_leggings"
+    ],
+    [
+      "sage_boots"
+    ],
+    [
+      "sage_hat_earth"
+    ],
+    [
+      "sage_robe_earth"
+    ],
+    [
+      "sage_leggings_earth"
+    ],
+    [
+      "sage_boots_earth"
+    ],
+    [
+      "sage_hat_fire"
+    ],
+    [
+      "sage_robe_fire"
+    ],
+    [
+      "sage_leggings_fire"
+    ],
+    [
+      "sage_boots_fire"
+    ],
+    [
+      "sage_hat_healing"
+    ],
+    [
+      "sage_robe_healing"
+    ],
+    [
+      "sage_leggings_healing"
+    ],
+    [
+      "sage_boots_healing"
+    ],
+    [
+      "sage_hat_ice"
+    ],
+    [
+      "sage_robe_ice"
+    ],
+    [
+      "sage_leggings_ice"
+    ],
+    [
+      "sage_boots_ice"
+    ],
+    [
+      "sage_hat_lightning"
+    ],
+    [
+      "sage_robe_lightning"
+    ],
+    [
+      "sage_leggings_lightning"
+    ],
+    [
+      "sage_boots_lightning"
+    ],
+    [
+      "sage_hat_necromancy"
+    ],
+    [
+      "sage_robe_necromancy"
+    ],
+    [
+      "sage_leggings_necromancy"
+    ],
+    [
+      "sage_boots_necromancy"
+    ],
+    [
+      "sage_hat_sorcery"
+    ],
+    [
+      "sage_robe_sorcery"
+    ],
+    [
+      "sage_leggings_sorcery"
+    ],
+    [
+      "sage_boots_sorcery"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

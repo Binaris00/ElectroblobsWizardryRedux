@@ -1,0 +1,32 @@
+{
+  "parent": "ebwizardry:discover_spell",
+  "criteria": {
+    "criterion": {
+      "conditions": {
+        "source": "identification_scroll"
+      },
+      "trigger": "ebwizardry:discover_spell"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.identify_spell.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:identification_scroll"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.identify_spell"
+    }
+  },
+  "requirements": [
+    [
+      "criterion"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

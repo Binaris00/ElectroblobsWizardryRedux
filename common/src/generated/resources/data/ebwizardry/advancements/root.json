@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:magic_crystal"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "ebwizardry:textures/gui/advancement_background.png",
+    "description": {
+      "translate": "advancement.ebwizardry.root.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:book"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "advancement.ebwizardry.root"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

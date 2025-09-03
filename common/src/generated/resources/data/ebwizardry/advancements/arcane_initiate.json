@@ -1,0 +1,38 @@
+{
+  "parent": "ebwizardry:crystal",
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wand_novice"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.arcane_initiate.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:wand_novice"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.arcane_initiate"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

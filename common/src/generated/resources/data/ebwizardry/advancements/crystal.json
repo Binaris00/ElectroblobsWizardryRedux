@@ -1,0 +1,38 @@
+{
+  "parent": "ebwizardry:root",
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:magic_crystal"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.crystal.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:magic_crystal"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.crystal"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

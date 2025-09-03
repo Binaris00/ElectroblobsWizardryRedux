@@ -1,0 +1,30 @@
+{
+  "parent": "ebwizardry:find_library_ruins",
+  "criteria": {
+    "criterion": {
+      "conditions": {},
+      "trigger": "ebwizardry:imbuement_altar"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.restore_imbuement_altar.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:necromancy_runestone"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.restore_imbuement_altar"
+    }
+  },
+  "requirements": [
+    [
+      "criterion"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

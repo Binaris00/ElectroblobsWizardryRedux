@@ -1,0 +1,30 @@
+{
+  "parent": "ebwizardry:wizard_tower",
+  "criteria": {
+    "criteria": {
+      "conditions": {},
+      "trigger": "ebwizardry:wizard_trade"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.wizard_trade.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:emerald"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.wizard_trade"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

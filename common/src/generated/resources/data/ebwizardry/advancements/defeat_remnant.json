@@ -1,0 +1,128 @@
+{
+  "parent": "ebwizardry:arcane_initiate",
+  "criteria": {
+    "earth": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spectral_dust_earth"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "fire": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spectral_dust_fire"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "healing": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spectral_dust_healing"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "ice": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spectral_dust_ice"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "lightning": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spectral_dust_lightning"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "necromancy": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spectral_dust_necromancy"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "sorcery": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spectral_dust_sorcery"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.defeat_remnant.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:spectral_dust_sorcery"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.defeat_remnant"
+    }
+  },
+  "requirements": [
+    [
+      "fire"
+    ],
+    [
+      "ice"
+    ],
+    [
+      "lightning"
+    ],
+    [
+      "necromancy"
+    ],
+    [
+      "earth"
+    ],
+    [
+      "sorcery"
+    ],
+    [
+      "healing"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,54 @@
+{
+  "parent": "ebwizardry:arcane_initiate",
+  "criteria": {
+    "wizard_set": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:wizard_hat"
+            ]
+          },
+          {
+            "items": [
+              "ebwizardry:wizard_robe"
+            ]
+          },
+          {
+            "items": [
+              "ebwizardry:wizard_leggings"
+            ]
+          },
+          {
+            "items": [
+              "ebwizardry:wizard_boots"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.armor_set.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:wizard_hat",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.armor_set"
+    }
+  },
+  "requirements": [
+    [
+      "wizard_set"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

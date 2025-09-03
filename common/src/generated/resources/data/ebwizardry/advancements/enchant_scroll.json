@@ -1,0 +1,36 @@
+{
+  "parent": "ebwizardry:arcane_initiate",
+  "criteria": {
+    "enchant_scroll": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:scroll"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.enchant_scroll.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:scroll"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.enchant_scroll"
+    }
+  },
+  "requirements": [
+    [
+      "enchant_scroll"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -1,0 +1,113 @@
+{
+  "parent": "ebwizardry:find_library_ruins",
+  "criteria": {
+    "acacia": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:acacia_lectern"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "birch": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:birch_lectern"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "dark_oak": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:dark_oak_lectern"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "jungle": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:jungle_lectern"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "oak": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:oak_lectern"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "spruce": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spruce_lectern"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.craft_lectern.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:spruce_lectern"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.craft_lectern"
+    }
+  },
+  "requirements": [
+    [
+      "oak"
+    ],
+    [
+      "spruce"
+    ],
+    [
+      "birch"
+    ],
+    [
+      "jungle"
+    ],
+    [
+      "acacia"
+    ],
+    [
+      "dark_oak"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

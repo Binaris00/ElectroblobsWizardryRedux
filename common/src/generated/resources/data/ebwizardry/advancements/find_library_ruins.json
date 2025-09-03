@@ -1,0 +1,61 @@
+{
+  "parent": "ebwizardry:defeat_remnant",
+  "criteria": {
+    "surface": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structure": "ebwizardry:library_ruins"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    },
+    "underground": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structure": "ebwizardry:underground_library_ruins"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.find_library_ruins.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:spruce_bookshelf"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.find_library_ruins"
+    }
+  },
+  "requirements": [
+    [
+      "surface"
+    ],
+    [
+      "underground"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

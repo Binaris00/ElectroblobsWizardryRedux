@@ -1,0 +1,440 @@
+{
+  "parent": "ebwizardry:restore_imbuement_altar",
+  "criteria": {
+    "wizard_boots": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_boots"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_boots_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_boots_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_boots_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_boots_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_boots_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_boots_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_boots_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_boots_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_boots_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_boots_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_boots_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_boots_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_boots_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_boots_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_hat": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_hat"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_hat_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_hat_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_hat_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_hat_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_hat_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_hat_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_hat_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_hat_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_hat_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_hat_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_hat_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_hat_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_hat_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_hat_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_leggings": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_leggings"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_leggings_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_leggings_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_leggings_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_leggings_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_leggings_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_leggings_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_leggings_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_leggings_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_leggings_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_leggings_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_leggings_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_leggings_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_leggings_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_leggings_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_robe": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_robe"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_robe_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_robe_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_robe_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_robe_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_robe_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_robe_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_robe_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_robe_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_robe_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_robe_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_robe_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_robe_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    },
+    "wizard_robe_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:wizard_robe_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:imbuement_altar"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.create_elemental_armor.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:wizard_hat_lightning",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.create_elemental_armor"
+    }
+  },
+  "requirements": [
+    [
+      "wizard_hat"
+    ],
+    [
+      "wizard_robe"
+    ],
+    [
+      "wizard_leggings"
+    ],
+    [
+      "wizard_boots"
+    ],
+    [
+      "wizard_hat_earth"
+    ],
+    [
+      "wizard_robe_earth"
+    ],
+    [
+      "wizard_leggings_earth"
+    ],
+    [
+      "wizard_boots_earth"
+    ],
+    [
+      "wizard_hat_fire"
+    ],
+    [
+      "wizard_robe_fire"
+    ],
+    [
+      "wizard_leggings_fire"
+    ],
+    [
+      "wizard_boots_fire"
+    ],
+    [
+      "wizard_hat_healing"
+    ],
+    [
+      "wizard_robe_healing"
+    ],
+    [
+      "wizard_leggings_healing"
+    ],
+    [
+      "wizard_boots_healing"
+    ],
+    [
+      "wizard_hat_ice"
+    ],
+    [
+      "wizard_robe_ice"
+    ],
+    [
+      "wizard_leggings_ice"
+    ],
+    [
+      "wizard_boots_ice"
+    ],
+    [
+      "wizard_hat_lightning"
+    ],
+    [
+      "wizard_robe_lightning"
+    ],
+    [
+      "wizard_leggings_lightning"
+    ],
+    [
+      "wizard_boots_lightning"
+    ],
+    [
+      "wizard_hat_necromancy"
+    ],
+    [
+      "wizard_robe_necromancy"
+    ],
+    [
+      "wizard_leggings_necromancy"
+    ],
+    [
+      "wizard_boots_necromancy"
+    ],
+    [
+      "wizard_hat_sorcery"
+    ],
+    [
+      "wizard_robe_sorcery"
+    ],
+    [
+      "wizard_leggings_sorcery"
+    ],
+    [
+      "wizard_boots_sorcery"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

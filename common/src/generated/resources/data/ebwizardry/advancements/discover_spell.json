@@ -1,0 +1,32 @@
+{
+  "parent": "ebwizardry:arcane_initiate",
+  "criteria": {
+    "criteria": {
+      "conditions": {
+        "source": "casting"
+      },
+      "trigger": "ebwizardry:discover_spell"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.discover_spell.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:paper"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.discover_spell"
+    }
+  },
+  "requirements": [
+    [
+      "criteria"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

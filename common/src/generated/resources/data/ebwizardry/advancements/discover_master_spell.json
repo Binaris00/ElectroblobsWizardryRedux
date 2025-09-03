@@ -1,0 +1,32 @@
+{
+  "parent": "ebwizardry:spell_failure",
+  "criteria": {
+    "criterion": {
+      "conditions": {
+        "source": "casting"
+      },
+      "trigger": "ebwizardry:discover_spell"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.discover_master_spell.desc"
+    },
+    "frame": "challenge",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:blaze_powder"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.discover_master_spell"
+    }
+  },
+  "requirements": [
+    [
+      "criterion"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

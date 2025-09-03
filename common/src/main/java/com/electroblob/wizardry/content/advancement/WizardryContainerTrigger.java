@@ -1,18 +1,16 @@
 package com.electroblob.wizardry.content.advancement;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.content.event.EBDiscoverSpellEvent;
-import com.electroblob.wizardry.api.content.spell.Spell;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonSyntaxException;
 import net.minecraft.advancements.CriterionTrigger;
 import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.GsonHelper;
+import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -20,15 +18,16 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-public class SpellDiscoveryTrigger implements CriterionTrigger<SpellDiscoveryTrigger.TriggerInstance> {
-    static final ResourceLocation ID = WizardryMainMod.location("discover_spell");
+public class WizardryContainerTrigger implements CriterionTrigger<WizardryContainerTrigger.TriggerInstance> {
+    private final ResourceLocation ID;
     private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
 
-    public SpellDiscoveryTrigger() {
+    public WizardryContainerTrigger(String name) {
+        this.ID = WizardryMainMod.location(name);
     }
 
     public @NotNull ResourceLocation getId() {
-        return ID;
+        return this.ID;
     }
 
     public void addPlayerListener(@NotNull PlayerAdvancements advancements, @NotNull Listener<TriggerInstance> listener) {
@@ -47,46 +46,36 @@ public class SpellDiscoveryTrigger implements CriterionTrigger<SpellDiscoveryTri
         this.listeners.remove(advancements);
     }
 
-    public @NotNull SpellDiscoveryTrigger.TriggerInstance createInstance(@NotNull JsonObject json, @NotNull DeserializationContext context) {
-        String s = GsonHelper.getAsString(json, "source");
-
-        EBDiscoverSpellEvent.Source source = EBDiscoverSpellEvent.Source.byName(s);
-        if (source == null) throw new JsonSyntaxException("No such spell discovery source: " + s);
-        return new TriggerInstance(SpellPredicate.deserialize(json.get("spell")), source, json, context);
+    public @NotNull WizardryContainerTrigger.TriggerInstance createInstance(@NotNull JsonObject json, @NotNull DeserializationContext context) {
+        return new TriggerInstance(this.ID, ItemPredicate.fromJson(json.get("item")), json, context);
     }
 
-    public void trigger(ServerPlayer player, Spell spell, EBDiscoverSpellEvent.Source source) {
-        Optional.ofNullable(this.listeners.get(player.getAdvancements())).ifPresent(listeners -> listeners.trigger(spell, source));
+    public void trigger(ServerPlayer player, ItemStack stack) {
+        Optional.ofNullable(this.listeners.get(player.getAdvancements())).ifPresent(li -> li.trigger(stack));
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
-        private final SpellPredicate spell;
-        private final EBDiscoverSpellEvent.Source source;
+        private final ItemPredicate item;
 
-        public TriggerInstance(SpellPredicate spell, EBDiscoverSpellEvent.Source source, JsonObject json, DeserializationContext context) {
-            super(ID, EntityPredicate.fromJson(json, "player", context));
-            this.spell = spell;
-            this.source = source;
+        public TriggerInstance(ResourceLocation criterionIn, ItemPredicate item, JsonObject json, DeserializationContext context) {
+            super(criterionIn, EntityPredicate.fromJson(json, "player", context));
+            this.item = item;
         }
 
-        public TriggerInstance(SpellPredicate spell, EBDiscoverSpellEvent.Source source){
-            super(ID, ContextAwarePredicate.ANY);
-            this.spell = spell;
-            this.source = source;
+        public TriggerInstance(ResourceLocation criterionIn, ItemPredicate item){
+            super(criterionIn, ContextAwarePredicate.ANY);
+            this.item = item;
         }
 
-        public static TriggerInstance discoverSpell(EBDiscoverSpellEvent.Source source){
-            return new TriggerInstance(SpellPredicate.any(), source);
-        }
-
-        public boolean test(Spell spell, EBDiscoverSpellEvent.Source source) {
-            return this.spell.test(spell) && source == this.source;
-        }
         @Override
         public @NotNull JsonObject serializeToJson(@NotNull SerializationContext conditions) {
             JsonObject jsonobject = super.serializeToJson(conditions);
-            jsonobject.addProperty("source", this.source.name().toLowerCase());
+            jsonobject.add("item", this.item.serializeToJson());
             return jsonobject;
+        }
+
+        public boolean test(ItemStack stack) {
+            return this.item.matches(stack);
         }
     }
 
@@ -110,9 +99,9 @@ public class SpellDiscoveryTrigger implements CriterionTrigger<SpellDiscoveryTri
             this.listeners.remove(listener);
         }
 
-        public void trigger(Spell spell, EBDiscoverSpellEvent.Source source) {
+        public void trigger(ItemStack stack) {
             List<Listener<TriggerInstance>> list = this.listeners.stream()
-                    .filter(li -> li.getTriggerInstance().test(spell, source)).toList();
+                    .filter(li -> li.getTriggerInstance().test(stack)).toList();
             list.forEach(li -> li.run(this.playerAdvancements));
         }
     }

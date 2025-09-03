@@ -21,7 +21,7 @@ public class SpellPredicate {
     private final Set<SpellTier> tiers;
     private final Set<Element> elements;
 
-    private SpellPredicate(@Nullable Spell spell, Set<SpellTier> tiers, Set<Element> elements) {
+    public SpellPredicate(@Nullable Spell spell, Set<SpellTier> tiers, Set<Element> elements) {
         this.spell = spell;
         this.tiers = tiers;
         this.elements = elements;

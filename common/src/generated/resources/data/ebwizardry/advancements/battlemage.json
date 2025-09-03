@@ -1,0 +1,440 @@
+{
+  "parent": "ebwizardry:armor_set",
+  "criteria": {
+    "battlemage_boots": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_boots"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_boots_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_boots_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_boots_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_boots_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_boots_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_boots_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_boots_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_boots_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_boots_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_boots_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_boots_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_boots_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_boots_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_boots_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_chestplate": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_chestplate"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_chestplate_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_chestplate_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_chestplate_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_chestplate_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_chestplate_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_chestplate_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_chestplate_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_chestplate_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_chestplate_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_chestplate_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_chestplate_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_chestplate_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_chestplate_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_chestplate_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_helmet": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_helmet"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_helmet_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_helmet_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_helmet_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_helmet_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_helmet_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_helmet_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_helmet_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_helmet_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_helmet_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_helmet_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_helmet_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_helmet_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_helmet_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_helmet_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_leggings": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_leggings"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_leggings_earth": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_leggings_earth"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_leggings_fire": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_leggings_fire"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_leggings_healing": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_leggings_healing"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_leggings_ice": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_leggings_ice"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_leggings_lightning": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_leggings_lightning"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_leggings_necromancy": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_leggings_necromancy"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    },
+    "battlemage_leggings_sorcery": {
+      "conditions": {
+        "item": {
+          "items": [
+            "ebwizardry:battlemage_leggings_sorcery"
+          ]
+        }
+      },
+      "trigger": "ebwizardry:arcane_workbench"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.battlemage.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:battlemage_boots",
+      "nbt": "{Damage:0}"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.battlemage"
+    }
+  },
+  "requirements": [
+    [
+      "battlemage_helmet"
+    ],
+    [
+      "battlemage_chestplate"
+    ],
+    [
+      "battlemage_leggings"
+    ],
+    [
+      "battlemage_boots"
+    ],
+    [
+      "battlemage_helmet_earth"
+    ],
+    [
+      "battlemage_chestplate_earth"
+    ],
+    [
+      "battlemage_leggings_earth"
+    ],
+    [
+      "battlemage_boots_earth"
+    ],
+    [
+      "battlemage_helmet_fire"
+    ],
+    [
+      "battlemage_chestplate_fire"
+    ],
+    [
+      "battlemage_leggings_fire"
+    ],
+    [
+      "battlemage_boots_fire"
+    ],
+    [
+      "battlemage_helmet_healing"
+    ],
+    [
+      "battlemage_chestplate_healing"
+    ],
+    [
+      "battlemage_leggings_healing"
+    ],
+    [
+      "battlemage_boots_healing"
+    ],
+    [
+      "battlemage_helmet_ice"
+    ],
+    [
+      "battlemage_chestplate_ice"
+    ],
+    [
+      "battlemage_leggings_ice"
+    ],
+    [
+      "battlemage_boots_ice"
+    ],
+    [
+      "battlemage_helmet_lightning"
+    ],
+    [
+      "battlemage_chestplate_lightning"
+    ],
+    [
+      "battlemage_leggings_lightning"
+    ],
+    [
+      "battlemage_boots_lightning"
+    ],
+    [
+      "battlemage_helmet_necromancy"
+    ],
+    [
+      "battlemage_chestplate_necromancy"
+    ],
+    [
+      "battlemage_leggings_necromancy"
+    ],
+    [
+      "battlemage_boots_necromancy"
+    ],
+    [
+      "battlemage_helmet_sorcery"
+    ],
+    [
+      "battlemage_chestplate_sorcery"
+    ],
+    [
+      "battlemage_leggings_sorcery"
+    ],
+    [
+      "battlemage_boots_sorcery"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

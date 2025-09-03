@@ -1,0 +1,30 @@
+{
+  "parent": "ebwizardry:wizard_trade",
+  "criteria": {
+    "buy_master_spell": {
+      "conditions": {},
+      "trigger": "ebwizardry:buy_master_spell"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.buy_master_spell.desc"
+    },
+    "frame": "goal",
+    "hidden": false,
+    "icon": {
+      "item": "ebwizardry:astral_diamond"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.buy_master_spell"
+    }
+  },
+  "requirements": [
+    [
+      "buy_master_spell"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

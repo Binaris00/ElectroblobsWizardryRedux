@@ -1,0 +1,42 @@
+{
+  "parent": "ebwizardry:arcane_initiate",
+  "criteria": {
+    "wizard_tower": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "location": {
+                "structure": "ebwizardry:wizard_tower"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:location"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.ebwizardry.wizard_tower.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "minecraft:bookshelf"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.ebwizardry.wizard_tower"
+    }
+  },
+  "requirements": [
+    [
+      "wizard_tower"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
