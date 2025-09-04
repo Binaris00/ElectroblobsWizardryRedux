@@ -32,6 +32,10 @@ public final class WizardryMainMod {
         return new ResourceLocation(MOD_ID, path);
     }
 
+    public static ResourceLocation location(String namespace, String path) {
+        return new ResourceLocation(namespace, path);
+    }
+
     /** Returns a random based on the entity's UUID and tick count.
      * Only used in forfeit.
      * <br><br>

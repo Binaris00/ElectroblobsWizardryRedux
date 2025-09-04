@@ -49,10 +49,21 @@ legacyForge {
 
 sourceSets.main.resources.srcDir 'src/generated/resources'
 
+repositories {
+    maven { url 'https://maven.wispforest.io/releases' }
+    maven { url 'https://maven.su5ed.dev/releases' }
+    maven { url = "https://maven.shedaniel.me/" }
+}
+
 dependencies {
     compileOnly project(":common")
     compileOnly 'org.jetbrains:annotations:23.0.0'
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+
+    modImplementation "io.wispforest:accessories-neoforge:${project.accessories_version}"
+    modImplementation ("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}"){
+        exclude group: 'net.fabricmc', module: 'fabric-loader'
+    }
 }
 
 sourceSets.main.resources {

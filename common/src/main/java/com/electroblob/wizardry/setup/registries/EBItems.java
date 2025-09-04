@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.setup.registries;
 
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.spell.Element;
@@ -10,6 +11,7 @@ import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.SpawnEggItem;
 
 import java.util.HashMap;
@@ -471,9 +473,13 @@ public final class EBItems {
         return registeredWand;
     }
 
-    /** Add artifacts with a default model and not inside the item creative tab */
+    /** Add artifacts with a default model and with a safe-dependency check */
+    static DeferredObject<Item> artifact(String name, Rarity rarity){
+        return artifact(name, () -> EBAccessoriesIntegration.artifact(rarity));
+    }
+
     static DeferredObject<Item> artifact(String name){
-        return artifact(name, () -> new Item(new Item.Properties()));
+        return artifact(name, () -> new ArtifactItem(Rarity.RARE));
     }
 
     /** Add artifacts with a default model and not inside the item creative tab */

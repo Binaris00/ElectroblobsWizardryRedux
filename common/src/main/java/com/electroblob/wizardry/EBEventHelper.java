@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.*;
+import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.client.SpellGUIDisplay;
 import com.electroblob.wizardry.client.sound.SoundLoop;
 import com.electroblob.wizardry.content.ForfeitRegistry;
@@ -15,11 +16,21 @@ import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
+import com.electroblob.wizardry.core.event.IWizardryEvent;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.Optional;
+import java.util.function.BiConsumer;
 
 /**
  * Simple class to save all the event helper methods
@@ -95,6 +106,7 @@ public final class EBEventHelper {
     private static void onSpellPreCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Pre.class, WizardArmorItem::onSpellPreCast);
         bus.register(SpellCastEvent.Pre.class, ForfeitRegistry::onSpellCastPreEvent);
+        bus.register(SpellCastEvent.Pre.class, (e) -> artifactLoad(EBItems.RING_BATTLEMAGE.get(), e.getCaster(), e, EBArtifactsEffects::battlemageRingPreCast));
     }
 
     private static void onSpellPostCast(WizardryEventBus bus) {
@@ -103,5 +115,21 @@ public final class EBEventHelper {
 
     private static void onSpellTickCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Tick.class, WizardArmorItem::onSpellTickCast);
+    }
+
+    private static <T extends IWizardryEvent> void artifactLoad(Item item, LivingEntity entity, T event, BiConsumer<T, ItemStack> consumer){
+        if(!(entity instanceof Player player)) return;
+
+        if(EBAccessoriesIntegration.isAccessoriesLoaded()) {
+            ItemStack stack = EBAccessoriesIntegration.getEquipped(player, item);
+            if(stack != null) consumer.accept(event, stack);
+            return;
+        }
+
+        // we use findAny() and not a list because we don't want to allow players
+        // to have more than just 1 artifact for type
+        Optional<ItemStack> optional = InventoryUtil.getPrioritisedHotBarAndOffhand(player).stream()
+                .filter(stack -> stack.getItem().equals(item)).findAny();
+        optional.ifPresent(stack -> consumer.accept(event, stack));
     }
 }

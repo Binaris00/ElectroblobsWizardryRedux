@@ -11,6 +11,8 @@ public final class EBTags {
 
     public static final TagKey<Item> MAGIC_CRYSTAL_ITEM = createItemTag("magic_crystal");
     public static final TagKey<Item> GILDED_WOOD_ITEM = createItemTag("gilded_wood");
+    public static final TagKey<Item> RING_ACCESSORIES = createItemTag("accessories","ring");
+
     public static final TagKey<Block> GILDED_WOOD_BLOCK = createBlockTag("gilded_wood");
 
     public static TagKey<Block> createBlockTag(String name){
@@ -19,5 +21,9 @@ public final class EBTags {
 
     public static TagKey<Item> createItemTag(String name){
         return TagKey.create(Registries.ITEM, WizardryMainMod.location(name));
+    }
+
+    public static TagKey<Item> createItemTag(String namespace, String name){
+        return TagKey.create(Registries.ITEM, WizardryMainMod.location(namespace, name));
     }
 }

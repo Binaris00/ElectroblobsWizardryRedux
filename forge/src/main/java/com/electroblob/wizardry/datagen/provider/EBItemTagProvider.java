@@ -26,7 +26,8 @@ public final class EBItemTagProvider extends ItemTagsProvider {
                 .add(EBBlocks.GILDED_DARK_OAK_WOOD.get().asItem())
                 .add(EBBlocks.GILDED_OAK_WOOD.get().asItem())
                 .add(EBBlocks.GILDED_JUNGLE_WOOD.get().asItem())
-                .add(EBBlocks.GILDED_SPRUCE_WOOD.get().asItem());
+                .add(EBBlocks.GILDED_SPRUCE_WOOD.get().asItem())
+                .replace(false);
 
         this.tag(EBTags.MAGIC_CRYSTAL_ITEM)
                 .add(EBItems.MAGIC_CRYSTAL.get())
@@ -37,6 +38,11 @@ public final class EBItemTagProvider extends ItemTagsProvider {
                 .add(EBItems.MAGIC_CRYSTAL_HEALING.get())
                 .add(EBItems.MAGIC_CRYSTAL_LIGHTNING.get())
                 .add(EBItems.MAGIC_CRYSTAL_SORCERY.get())
-                .add(EBItems.MAGIC_CRYSTAL_NECROMANCY.get());
+                .add(EBItems.MAGIC_CRYSTAL_NECROMANCY.get())
+                .replace(false);
+
+        this.tag(EBTags.RING_ACCESSORIES)
+                .add(EBItems.RING_CONDENSING.get())
+                .replace(false);
     }
 }

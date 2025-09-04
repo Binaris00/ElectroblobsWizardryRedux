@@ -40,8 +40,8 @@
         "minecraft": "${minecraft_version}",
         "java": ">=17"
     },
-    "suggests": {
-        "another-mod": "*"
+    "recommends": {
+        "accessories": "*"
     }
 }
   
