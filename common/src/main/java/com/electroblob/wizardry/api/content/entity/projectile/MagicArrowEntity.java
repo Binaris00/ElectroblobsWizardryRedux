@@ -39,6 +39,7 @@ import org.jetbrains.annotations.NotNull;
  * */
 public abstract class MagicArrowEntity extends AbstractArrow {
     // TODO: Replace setOwner and getOwner methods for getCaster and setCaster
+    // TODO: SEEKING STRENGTH (lazy to do it tbh)
     public static final double LAUNCH_Y_OFFSET = 0.1;
     protected int ticksInGround;
     protected int ticksInAir;

@@ -3,17 +3,19 @@ package com.electroblob.wizardry.content.entity.projectile;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
+import com.electroblob.wizardry.api.content.item.IManaStoringItem;
+import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
+import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
-import com.electroblob.wizardry.setup.registries.EBDamageSources;
-import com.electroblob.wizardry.setup.registries.EBEntities;
-import com.electroblob.wizardry.setup.registries.EBSounds;
-import com.electroblob.wizardry.setup.registries.Spells;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -22,7 +24,11 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+
 public class ForceArrow extends MagicArrowEntity {
+    private int mana = 0;
+
     public ForceArrow(EntityType<? extends AbstractArrow> entityType, Level world) {
         super(entityType, world);
     }
@@ -34,6 +40,10 @@ public class ForceArrow extends MagicArrowEntity {
     @Override
     protected @NotNull ItemStack getPickupItem() {
         return ItemStack.EMPTY;
+    }
+
+    public void setMana(int mana) {
+        this.mana = mana;
     }
 
     @Override
@@ -64,7 +74,24 @@ public class ForceArrow extends MagicArrowEntity {
                     .color(0.75f, 1.0f, 0.85f)
                     .spawn(level());
         }
+    }
 
+    @Override
+    public void tick() {
+        if (getLifetime() >= 0 && this.tickCount > getLifetime()) returnManaToCaster();
+
+        super.tick();
+    }
+
+    private void returnManaToCaster() {
+        if (mana <= 0 || !(getOwner() instanceof Player player)) return;
+
+        if (!player.isCreative() && EBAccessoriesIntegration.isEquipped(player, EBItems.RING_MANA_RETURN.get())) {
+            InventoryUtil.getPrioritisedHotBarAndOffhand(player)
+                    .stream().filter(st -> st.getItem() instanceof IManaStoringItem)
+                    .findAny()
+                    .ifPresent(st -> ((IManaStoringItem) st.getItem()).rechargeMana(st, mana));
+        }
     }
 
     @Override
@@ -74,6 +101,7 @@ public class ForceArrow extends MagicArrowEntity {
 
     @Override
     public void tickInGround() {
+        returnManaToCaster();
         this.discard();
     }
 

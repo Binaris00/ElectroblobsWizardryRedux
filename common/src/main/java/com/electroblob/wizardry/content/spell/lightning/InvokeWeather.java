@@ -7,6 +7,8 @@ import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -25,6 +27,7 @@ public class InvokeWeather extends Spell {
         if(!ctx.world().dimension().equals(Level.OVERWORLD)) return false;
 
         if (!ctx.world().isClientSide) {
+
             int standardWeatherTime = (300 + (new Random()).nextInt(600)) * 20;
 
             // TODO Bin: Spell translation names
@@ -33,7 +36,8 @@ public class InvokeWeather extends Spell {
                 ((ServerLevel) ctx.world()).setWeatherParameters(standardWeatherTime, 0, false, false);
             } else {
                 ctx.caster().displayClientMessage(Component.translatable("spell." + this.getDescriptionId() + ".rain"), true);
-                ((ServerLevel) ctx.world()).setWeatherParameters(0, standardWeatherTime, true,  ctx.world().random.nextFloat() < property(THUNDER_CHANCE));
+                ((ServerLevel) ctx.world()).setWeatherParameters(0, standardWeatherTime, true,
+                        EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.CHARM_STOP_TIME.get()) || ctx.world().random.nextFloat() < property(THUNDER_CHANCE));
             }
         } else {
             for (int i = 0; i < 10; i++) {

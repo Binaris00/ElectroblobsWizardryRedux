@@ -12,6 +12,7 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
@@ -51,8 +52,7 @@ public class Fangs extends Spell {
     }
 
     protected boolean spawnFangs(CastContext ctx, Vec3 origin, Vec3 direction){
-        // TODO ARTIFACTS
-        boolean defensiveCircle = ctx.caster() instanceof Player caster && caster.isCrouching();
+        boolean defensiveCircle = ctx.caster() instanceof Player caster && caster.isCrouching() && EBAccessoriesIntegration.isEquipped(caster, EBItems.RING_EVOKER.get());
         boolean flag = false;
 
         if (ctx.world().isClientSide) {

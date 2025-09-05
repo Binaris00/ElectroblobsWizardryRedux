@@ -7,6 +7,7 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
@@ -39,7 +40,7 @@ public class GrowthAura extends Spell {
                 flag = true;
             }
 
-            if (level.random.nextFloat() < 0.35f) {
+            if (level.random.nextFloat() < 0.35f && EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.CHARM_GROWTH.get())) {
                 for (int i = 0; i < 5 && plant.isValidBonemealTarget(level, pos, state, false); i++) {
                     plant.performBonemeal((ServerLevel) level, level.random, pos, state);
                     state = level.getBlockState(pos);

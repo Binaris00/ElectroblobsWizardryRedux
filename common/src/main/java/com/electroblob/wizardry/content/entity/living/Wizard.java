@@ -13,6 +13,7 @@ import com.electroblob.wizardry.content.item.SpellBookItem;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
 import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -168,15 +169,14 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
             }
         }
 
-        // TODO ARTIFACT
-//        if (this.random.nextInt(5) > 0 || ArtefactItem.isArtefactActive(customer, WizardryItems.CHARM_HAGGLER.get())) {
-//            this.timeUntilReset = 40;
-//            this.updateRecipes = true;
-//
-//            if (this.getTradingPlayer() != null) {
-//                this.getTradingPlayer().getName();
-//            }
-//        }
+        if (this.random.nextInt(5) > 0 || EBAccessoriesIntegration.isEquipped(customer, EBItems.CHARM_HAGGLER.get())) {
+            this.timeUntilReset = 40;
+            this.updateRecipes = true;
+
+            if (this.getTradingPlayer() != null) {
+                this.getTradingPlayer().getName();
+            }
+        }
     }
 
     @Override

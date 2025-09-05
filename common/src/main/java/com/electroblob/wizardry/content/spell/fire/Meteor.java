@@ -9,6 +9,7 @@ import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.entity.MeteorEntity;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
@@ -21,27 +22,20 @@ public class Meteor extends RaySpell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        // TODO ARTIFACT
-//        if(ArtefactItem.isArtefactActive(caster, WizardryItems.RING_METEOR.get())){
-//
-//            if(!world.isClientSide){
-//
-//                EntityMeteor meteor = new EntityMeteor(world, caster.getX(), caster.getY() + caster.getEyeHeight(), caster.getZ(),
-//                        modifiers.get(WizardryItems.BLAST_UPGRADE.get()), EntityUtils.canDamageBlocks(caster, world));
-//
-//                Vec3 direction = caster.getLookAngle().scale(2 * modifiers.get(WizardryItems.RANGE_UPGRADE.get()));
-//                meteor.setDeltaMovement(direction);
-//
-//                world.addFreshEntity(meteor);
-//            }
-//
-//            this.playSound(world, caster, ticksInUse, -1, modifiers);
-//            return true;
-//
-//        }else{
-//            super.perform(caster);
-//        }
-        return super.cast(ctx);
+        if(!(EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.RING_METEOR.get()))) return super.cast(ctx);
+
+        if(!ctx.world().isClientSide){
+            MeteorEntity meteor = new MeteorEntity(ctx.world(), ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight(), ctx.caster().getZ(),
+                    ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+
+            Vec3 direction = ctx.caster().getLookAngle().scale(2 * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get()));
+            meteor.setDeltaMovement(direction);
+
+            ctx.world().addFreshEntity(meteor);
+        }
+
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
+        return true;
     }
 
     @Override

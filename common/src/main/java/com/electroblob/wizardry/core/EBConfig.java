@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.core;
 
 import com.electroblob.wizardry.api.content.ConfigValue;
+import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
 
@@ -43,6 +44,13 @@ public final class EBConfig {
     public static final int CONDENSER_TICK_INTERVAL = 50;
     public static final int UPGRADE_STACK_LIMIT = 3;
     public static boolean booksPauseGame = true;
+
+    /**
+     * The amount of mana given for a kill for each level of siphon upgrade. A random amount from 0 to this number - 1
+     * is also added.
+     * @see com.electroblob.wizardry.content.item.WandUpgradeItem#onLivingDeath(EBLivingDeathEvent)
+     */
+    public static final int SIPHON_MANA_PER_LEVEL = 5;
 
     private static final String[] DEFAULT_LOOT_INJECTION_LOCATIONS = {"minecraft:chests/simple_dungeon",
             "minecraft:chests/abandoned_mineshaft", "minecraft:chests/desert_pyramid", "minecraft:chests/jungle_temple",

@@ -43,6 +43,13 @@ public final class EBItemTagProvider extends ItemTagsProvider {
 
         this.tag(EBTags.RING_ACCESSORIES)
                 .add(EBItems.RING_CONDENSING.get())
+                .add(EBItems.RING_SIPHONING.get())
+                .add(EBItems.RING_BATTLEMAGE.get())
+                .add(EBItems.RING_COMBUSTION.get())
+                .add(EBItems.RING_FIRE_MELEE.get())
+                .add(EBItems.RING_ICE_MELEE.get())
+                .add(EBItems.RING_NECROMANCY_MELEE.get())
+                .add(EBItems.RING_EARTH_MELEE.get())
                 .replace(false);
     }
 }

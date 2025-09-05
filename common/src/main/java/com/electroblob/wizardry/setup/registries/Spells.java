@@ -124,6 +124,7 @@ public final class Spells {
     public static final Spell CHARGE;
     public static final Spell CURSE_OF_SOULBINDING;
     public static final Spell BLOCK_SURPRISE;
+    public static final Spell GREATER_TELEKINESIS;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -540,6 +541,8 @@ public final class Spells {
         CURSE_OF_SOULBINDING = spell("curse_of_soulbinding", CurseOfSoulbinding::new);
 
         BLOCK_SURPRISE = spell("block_surprise", BlockWithSurprise::new);
+
+        GREATER_TELEKINESIS = spell("greater_telekinesis", BlockWithSurprise::new); // todo
     }
 
     // ======= Registry =======

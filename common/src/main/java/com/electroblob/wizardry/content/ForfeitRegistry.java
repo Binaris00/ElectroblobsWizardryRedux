@@ -22,6 +22,7 @@ import com.electroblob.wizardry.content.entity.projectile.MagicFireballEntity;
 import com.electroblob.wizardry.content.spell.necromancy.Banish;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import com.google.common.collect.ArrayListMultimap;
@@ -103,8 +104,8 @@ public class ForfeitRegistry {
         PlayerWizardData data = Services.WIZARD_DATA.getWizardData(player, player.level());
 
         if (event.getSource() == SpellCastEvent.Source.WAND || event.getSource() == SpellCastEvent.Source.SCROLL) {
-            // TODO ARTIFACT
-            //if(ArtefactItem.isArtefactActive(player, WizardryItems.AMULET_WISDOM.get())) chance *= 0.5;
+            float chance = (float) EBConfig.forfeitChance;
+            if(EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WISDOM.get())) chance *= 0.5F;
 
             float f = WizardryMainMod.getRandom(player).nextFloat();
 
