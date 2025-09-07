@@ -12,6 +12,8 @@ public final class EBTags {
     public static final TagKey<Item> MAGIC_CRYSTAL_ITEM = createItemTag("magic_crystal");
     public static final TagKey<Item> GILDED_WOOD_ITEM = createItemTag("gilded_wood");
     public static final TagKey<Item> RING_ACCESSORIES = createItemTag("accessories","ring");
+    public static final TagKey<Item> CHARM_ACCESSORIES = createItemTag("accessories","charm");
+    public static final TagKey<Item> NECKLACE_ACCESSORIES = createItemTag("accessories","necklace");
 
     public static final TagKey<Block> GILDED_WOOD_BLOCK = createBlockTag("gilded_wood");
 

@@ -4,7 +4,9 @@ import com.electroblob.wizardry.WizardryMainMod;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
+import net.minecraft.world.damagesource.DamageTypes;
 
 import java.util.ArrayList;
 
@@ -35,5 +37,9 @@ public final class EBDamageSources {
         var key = ResourceKey.create(Registries.DAMAGE_TYPE, location);
         TYPES.add(key);
         return key;
+    }
+
+    public static boolean isMagic(DamageSource source){
+        return TYPES.stream().anyMatch(source::is) || source.is(DamageTypes.MAGIC);
     }
 }
