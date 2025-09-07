@@ -95,6 +95,10 @@ public final class EBEventHelper {
         bus.register(EBLivingTick.class, SpellGUIDisplay::onLivingTickEvent);
         bus.register(EBLivingTick.class, (e) -> artifactLoad(EBItems.RING_CONDENSING.get(), e.getEntity(), e, EBArtifactsEffects::condensingRingTick));
         bus.register(EBLivingTick.class, (e) -> artifactLoad(EBItems.CHARM_FEEDING.get(), e.getEntity(), e, EBArtifactsEffects::feedingCharm));
+        bus.register(EBLivingTick.class, (e) -> artifactLoad(EBItems.AMULET_GLIDE.get(), e.getEntity(), e, EBArtifactsEffects::amuletGlide));
+        bus.register(EBLivingTick.class, (e) -> artifactLoad(EBItems.AMULET_FROST_WARDING.get(), e.getEntity(), e, EBArtifactsEffects::amuletFrostWarding));
+        bus.register(EBLivingTick.class, (e) -> artifactLoad(EBItems.AMULET_ARCANE_DEFENCE.get(), e.getEntity(), e, EBArtifactsEffects::arcaneDefense));
+        bus.register(EBLivingTick.class, (e) -> artifactLoad(EBItems.AMULET_FROST_WARDING.get(), e.getEntity(), e, EBArtifactsEffects::amuletFrostWarding));
     }
 
     private static void onSpellDiscovery(WizardryEventBus bus) {

@@ -313,20 +313,20 @@ public final class EBItems {
     public static final DeferredObject<Item> BATTLEMAGE_BOOTS_SORCERY = armor("battlemage_boots_sorcery", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, Elements.SORCERY);
 
     //Amulets
-    public static final DeferredObject<Item> AMULET_ABSORPTION = artifact("amulet_absorption");
-    public static final DeferredObject<Item> AMULET_ANCHORING = artifact("amulet_anchoring");
-    public static final DeferredObject<Item> AMULET_ARCANE_DEFENCE = artifact("amulet_arcane_defence");
-    public static final DeferredObject<Item> AMULET_AUTO_SHIELD = artifact("amulet_auto_shield");
-    public static final DeferredObject<Item> AMULET_BANISHING = artifact("amulet_banishing");
-    public static final DeferredObject<Item> AMULET_CHANNELING = artifact("amulet_channeling");
-    public static final DeferredObject<Item> AMULET_FIRE_CLOAKING = artifact("amulet_fire_cloaking");
-    public static final DeferredObject<Item> AMULET_FIRE_PROTECTION = artifact("amulet_fire_protection");
-    public static final DeferredObject<Item> AMULET_FROST_WARDING = artifact("amulet_frost_warding");
-    public static final DeferredObject<Item> AMULET_GLIDE = artifact("amulet_glide");
-    public static final DeferredObject<Item> AMULET_ICE_IMMUNITY = artifact("amulet_ice_immunity");
-    public static final DeferredObject<Item> AMULET_ICE_PROTECTION = artifact("amulet_ice_protection");
-    public static final DeferredObject<Item> AMULET_LICH = artifact("amulet_lich");
-    public static final DeferredObject<Item> AMULET_POTENTIAL = artifact("amulet_potential");
+    public static final DeferredObject<Item> AMULET_ABSORPTION = artifact("amulet_absorption", Rarity.EPIC);
+    public static final DeferredObject<Item> AMULET_ANCHORING = artifact("amulet_anchoring", Rarity.RARE);
+    public static final DeferredObject<Item> AMULET_ARCANE_DEFENCE = artifact("amulet_arcane_defence", Rarity.RARE);
+    public static final DeferredObject<Item> AMULET_AUTO_SHIELD = artifact("amulet_auto_shield", Rarity.RARE);
+    public static final DeferredObject<Item> AMULET_BANISHING = artifact("amulet_banishing", Rarity.UNCOMMON);
+    public static final DeferredObject<Item> AMULET_CHANNELING = artifact("amulet_channeling", Rarity.RARE);
+    public static final DeferredObject<Item> AMULET_FIRE_CLOAKING = artifact("amulet_fire_cloaking", Rarity.RARE);
+    public static final DeferredObject<Item> AMULET_FIRE_PROTECTION = artifact("amulet_fire_protection", Rarity.UNCOMMON);
+    public static final DeferredObject<Item> AMULET_FROST_WARDING = artifact("amulet_frost_warding", Rarity.RARE);
+    public static final DeferredObject<Item> AMULET_GLIDE = artifact("amulet_glide", Rarity.EPIC);
+    public static final DeferredObject<Item> AMULET_ICE_IMMUNITY = artifact("amulet_ice_immunity", Rarity.EPIC); // TODO PotionEvent.PotionApplicableEvent
+    public static final DeferredObject<Item> AMULET_ICE_PROTECTION = artifact("amulet_ice_protection", Rarity.UNCOMMON);
+    public static final DeferredObject<Item> AMULET_LICH = artifact("amulet_lich", Rarity.UNCOMMON);
+    public static final DeferredObject<Item> AMULET_POTENTIAL = artifact("amulet_potential", Rarity.RARE);
     public static final DeferredObject<Item> AMULET_RECOVERY = artifact("amulet_recovery", Rarity.UNCOMMON);
     public static final DeferredObject<Item> AMULET_RESURRECTION = artifact("amulet_resurrection", Rarity.EPIC); // TODO PlayerDropsEvent
     public static final DeferredObject<Item> AMULET_TRANSIENCE = artifact("amulet_transience", Rarity.EPIC);

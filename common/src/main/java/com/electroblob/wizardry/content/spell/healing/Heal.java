@@ -7,6 +7,8 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,7 +35,7 @@ public class Heal extends BuffSpell {
 
         entity.heal(health);
 
-        if(excessHealth > 0 && entity instanceof Player){
+        if(excessHealth > 0 && entity instanceof Player player && EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_ABSORPTION.get())){
             entity.setAbsorptionAmount(excessHealth);
         }
     }

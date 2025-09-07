@@ -11,8 +11,10 @@ import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
+import com.electroblob.wizardry.content.entity.construct.IceBarrierConstruct;
 import com.electroblob.wizardry.content.entity.projectile.IceShardEntity;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
@@ -23,10 +25,12 @@ import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.content.spell.sorcery.ImbueWeapon;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -64,14 +68,75 @@ public final class EBArtifactsEffects {
         }
     }
 
-    public static void feedingCharm(EBLivingTick event, ItemStack stack){
-        if(!(event.getEntity() instanceof Player player)) return;
-        if(player.tickCount % 100 != 0) return;
+    public static void arcaneDefense(EBLivingTick event, ItemStack stack){
+        if (!(event.getEntity() instanceof Player player)) return;
 
-        if(player.getFoodData().getFoodLevel() < 20 - Spells.SATIETY.property(ReplenishHunger.HUNGER_POINTS)){
-            if(findMatchingWandAndCast(player, Spells.SATIETY)) return;
+        if(player.tickCount % 300 == 0){
+            for (ItemStack armorSlot : player.getArmorSlots()) {
+                if(armorSlot.getItem() instanceof IManaStoringItem)
+                    ((IManaStoringItem)armorSlot.getItem()).rechargeMana(stack, 1);
+            }
         }
-        if(player.getFoodData().getFoodLevel() < 20 - Spells.REPLENISH_HUNGER.property(ReplenishHunger.HUNGER_POINTS)){
+    }
+
+    public static void amuletAutoShield(EBLivingTick event, ItemStack stack){
+        // todo shield spell
+//        findMatchingWandAndExecute(player, Spells.SH, wand -> {
+//            if(wand.getItem() instanceof ItemScroll) return;
+//
+//            List<Entity> projectiles = EntityUtils.getEntitiesWithinRadius(5, player.posX, player.posY, player.posZ, world, Entity.class);
+//            projectiles.removeIf(e -> !(e instanceof IProjectile));
+//            Vec3d look = player.getLookVec();
+//            Vec3d playerPos = player.getPositionVector().add(0, player.height/2, 0);
+//
+//            for(Entity projectile : projectiles){
+//                Vec3d vec = playerPos.subtract(projectile.getPositionVector()).normalize();
+//                double angle = Math.acos(vec.scale(-1).dotProduct(look));
+//                if(angle > Math.PI * 0.4f) continue; // (Roughly) the angle the shield will protect
+//                Vec3d velocity = new Vec3d(projectile.motionX, projectile.motionY, projectile.motionZ).normalize();
+//                double angle1 = Math.acos(vec.dotProduct(velocity));
+//                if(angle1 < Math.PI * 0.2f){
+//                    SpellModifiers modifiers = new SpellModifiers();
+//                    if(((ISpellCastingItem)wand.getItem()).canCast(wand, Spells.shield, player, EnumHand.MAIN_HAND, 0, modifiers)){
+//                        ((ISpellCastingItem)wand.getItem()).cast(wand, Spells.shield, player, EnumHand.MAIN_HAND, 0, modifiers);
+//                    }
+//                    break;
+//                }
+//            }
+//        });
+    }
+
+    public static void amuletGlide(EBLivingTick event, ItemStack stack){
+        // TODO SPELL GLIDE
+//        if(player.fallDistance > 3f && player.fallDistance < 3.5f && player.world.rand.nextFloat() < 0.5f){
+//            if(!WizardData.get(player).isCasting()) WizardData.get(player).startCastingContinuousSpell(Spells.GLIDE, new SpellModifiers(), 600);
+//        }
+//        else if(player.onGround){
+//            WizardData data = WizardData.get(player);
+//            if(data.currentlyCasting() == Spells.glide) data.stopCastingContinuousSpell();
+//        }
+    }
+
+    public static void amuletFrostWarding(EBLivingTick event, ItemStack stack){
+        if (!(event.getEntity() instanceof Player player)) return;
+        if(event.getLevel().isClientSide || event.getEntity().tickCount % 40 != 0) return;
+
+        List<IceBarrierConstruct> barriers = event.getLevel().getEntitiesOfClass(IceBarrierConstruct.class, player.getBoundingBox().inflate(1.5));
+
+        if(!barriers.isEmpty() && barriers.stream().anyMatch(b -> b.getLookAngle().dot(b.position().subtract(player.position())) > 0)){
+            player.addEffect(new MobEffectInstance(EBMobEffects.WARD.get(), 50, 1));
+        }
+
+    }
+
+    public static void feedingCharm(EBLivingTick event, ItemStack stack) {
+        if (!(event.getEntity() instanceof Player player)) return;
+        if (player.tickCount % 100 != 0) return;
+
+        if (player.getFoodData().getFoodLevel() < 20 - Spells.SATIETY.property(ReplenishHunger.HUNGER_POINTS)) {
+            if (findMatchingWandAndCast(player, Spells.SATIETY)) return;
+        }
+        if (player.getFoodData().getFoodLevel() < 20 - Spells.REPLENISH_HUNGER.property(ReplenishHunger.HUNGER_POINTS)) {
             findMatchingWandAndCast(player, Spells.REPLENISH_HUNGER);
         }
     }
@@ -159,9 +224,9 @@ public final class EBArtifactsEffects {
     }
 
     public static void iceProtectionAmulet(EBLivingHurtEvent event, ItemStack stack) {
-//        if (isElementalDamageOfType(event.getSource(), MagicDamage.DamageType.FROST)) {
-//            event.setAmount(event.getAmount() * 0.7f);
-//        }
+        if (!(event.getSource().getEntity() instanceof Player player)) return;
+        if (!(event.getSource().is(EBDamageSources.FROST))) return;
+        event.setAmount(event.getAmount() * 0.7f);
     }
 
     public static void channelingAmulet(EBLivingHurtEvent event, ItemStack stack) {
@@ -188,11 +253,11 @@ public final class EBArtifactsEffects {
     }
 
     public static void potentialAmulet(EBLivingHurtEvent event, ItemStack stack) {
-//        if (!(event.getSource().getEntity() instanceof Player player)) return;
-//
-//        if (player.level().random.nextFloat() < 0.2f && event.getSource().isMelee() && event.getSource().getDirectEntity() instanceof LivingEntity target) {
-//            handleLightningEffect(player, target, event);
-//        }
+        if (!(event.getSource().getEntity() instanceof Player player)) return;
+
+        if (player.level().random.nextFloat() < 0.2f && !event.getSource().isIndirect() && event.getSource().getDirectEntity() instanceof LivingEntity target) {
+            handleLightningEffect(player, target, event);
+        }
     }
 
     public static void lichAmulet(EBLivingHurtEvent event, ItemStack stack) {
@@ -291,10 +356,10 @@ public final class EBArtifactsEffects {
     // ==================================
     // POST CAST
     // ==================================
-    public static void paladinRing(SpellCastEvent.Post event, ItemStack stack){
-        if(!(event.getCaster() instanceof Player player)) return;
+    public static void paladinRing(SpellCastEvent.Post event, ItemStack stack) {
+        if (!(event.getCaster() instanceof Player player)) return;
 
-        if(event.getSpell() instanceof Heal || event.getSpell() instanceof HealAlly || event.getSpell() instanceof GreaterHeal){
+        if (event.getSpell() instanceof Heal || event.getSpell() instanceof HealAlly || event.getSpell() instanceof GreaterHeal) {
             float healthGained = event.getSpell().property(DefaultProperties.HEALTH) * event.getModifiers().get(SpellModifiers.POTENCY);
 
             EntityUtil.getLivingWithinRadius(4, player.xo, player.yo, player.zo, event.getLevel())
@@ -302,8 +367,9 @@ public final class EBArtifactsEffects {
                             && livingEntity.getHealth() > 0 &&
                             livingEntity.getHealth() < livingEntity.getMaxHealth())
                     .forEach(livingEntity -> {
-                            livingEntity.heal(healthGained * 0.2f);
-                            if(event.getLevel().isClientSide) ParticleBuilder.spawnHealParticles(event.getLevel(), livingEntity);
+                        livingEntity.heal(healthGained * 0.2f);
+                        if (event.getLevel().isClientSide)
+                            ParticleBuilder.spawnHealParticles(event.getLevel(), livingEntity);
                     });
         }
     }
@@ -311,40 +377,41 @@ public final class EBArtifactsEffects {
     // ==================================
     // PRE CAST
     // ==================================
-    public static void experienceTome(SpellCastEvent.Pre event, ItemStack stack){
+    public static void experienceTome(SpellCastEvent.Pre event, ItemStack stack) {
         event.getModifiers().set(SpellModifiers.PROGRESSION, event.getModifiers().get(SpellModifiers.PROGRESSION) * 1.5f, false);
     }
 
-    public static void hungerCasting(SpellCastEvent.Pre event, ItemStack stack){
-        if(!(event.getCaster() instanceof Player player)) return;
-        if(player.isCreative() || event.getSource() != SpellCastEvent.Source.WAND || !event.getSpell().isInstantCast()) return;
+    public static void hungerCasting(SpellCastEvent.Pre event, ItemStack stack) {
+        if (!(event.getCaster() instanceof Player player)) return;
+        if (player.isCreative() || event.getSource() != SpellCastEvent.Source.WAND || !event.getSpell().isInstantCast())
+            return;
 
         ItemStack wand = player.getMainHandItem();
 
-        if(!(wand.getItem() instanceof ISpellCastingItem && wand.getItem() instanceof IManaStoringItem)){
+        if (!(wand.getItem() instanceof ISpellCastingItem && wand.getItem() instanceof IManaStoringItem)) {
             wand = player.getOffhandItem();
-            if(!(wand.getItem() instanceof ISpellCastingItem && wand.getItem() instanceof IManaStoringItem)) return;
+            if (!(wand.getItem() instanceof ISpellCastingItem && wand.getItem() instanceof IManaStoringItem)) return;
         }
 
-        if(((IManaStoringItem)wand.getItem()).getMana(wand) < event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST)){
+        if (((IManaStoringItem) wand.getItem()).getMana(wand) < event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST)) {
             int hunger = event.getSpell().getCost() / 5;
 
-            if(player.getFoodData().getFoodLevel() >= hunger){
+            if (player.getFoodData().getFoodLevel() >= hunger) {
                 player.getFoodData().eat(-hunger, 0);
                 event.getModifiers().set(SpellModifiers.COST, 0, false);
             }
         }
     }
 
-    public static void flightCharm(SpellCastEvent.Pre event, ItemStack stack){
-        if(event.getSpell() == Spells.FLIGHT){ // TODO Spells.GLIDE
+    public static void flightCharm(SpellCastEvent.Pre event, ItemStack stack) {
+        if (event.getSpell() == Spells.FLIGHT) { // TODO Spells.GLIDE
             event.getModifiers().set(SpellModifiers.POTENCY, 1.5f * event.getModifiers().get(SpellModifiers.POTENCY), true);
         }
     }
 
 
-    public static void stormRing(SpellCastEvent.Pre event, ItemStack stack){
-        if(event.getSpell().getElement() == Elements.LIGHTNING && event.getLevel().isThundering()){
+    public static void stormRing(SpellCastEvent.Pre event, ItemStack stack) {
+        if (event.getSpell().getElement() == Elements.LIGHTNING && event.getLevel().isThundering()) {
             event.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), event.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false);
         }
     }
@@ -403,11 +470,11 @@ public final class EBArtifactsEffects {
      * Helper method that scans through all wands on the given player's hotbar and offhand and casts the given spell if
      * it is bound to any of them. This is a useful code pattern for artefact effects.
      */
-    public static boolean findMatchingWandAndCast(Player player, Spell spell){
+    public static boolean findMatchingWandAndCast(Player player, Spell spell) {
         return findMatchingWandAndExecute(player, spell, wand -> {
             SpellModifiers modifiers = new SpellModifiers();
-            if(((ISpellCastingItem)wand.getItem()).canCast(wand, spell, new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers))){
-                ((ISpellCastingItem)wand.getItem()).cast(wand, spell, new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers));
+            if (((ISpellCastingItem) wand.getItem()).canCast(wand, spell, new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers))) {
+                ((ISpellCastingItem) wand.getItem()).cast(wand, spell, new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers));
             }
         });
     }
@@ -416,13 +483,23 @@ public final class EBArtifactsEffects {
      * Helper method that scans through all wands on the given player's hotbar and offhand and executes the given action
      * if any of them have the given spell bound to them. This is a useful code pattern for artefact effects.
      */
-    public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action){
+    public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action) {
         List<ItemStack> hotbar = InventoryUtil.getPrioritisedHotBarAndOffhand(player);
 
         Optional<ItemStack> stack = hotbar.stream().filter(s -> s.getItem() instanceof ISpellCastingItem
-                && Arrays.asList(((ISpellCastingItem)s.getItem()).getSpells(s)).contains(spell)).findFirst();
+                && Arrays.asList(((ISpellCastingItem) s.getItem()).getSpells(s)).contains(spell)).findFirst();
 
         stack.ifPresent(action);
         return stack.isPresent();
+    }
+
+    private static void handleLightningEffect(Entity player, LivingEntity target, EBLivingHurtEvent event) {
+        if (player.level().isClientSide) {
+            ParticleBuilder.create(EBParticles.LIGHTNING).entity(event.getDamagedEntity()).pos(0, event.getDamagedEntity().getBbHeight() / 2, 0).target(target).spawn(player.level());
+            ParticleBuilder.spawnShockParticles(player.level(), target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ());
+        }
+
+        target.hurt(EBMagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), Spells.STATIC_AURA.property(DefaultProperties.DAMAGE));
+        target.playSound(EBSounds.SPELL_STATIC_AURA_RETALIATE.get(), 1.0F, player.level().random.nextFloat() * 0.4F + 1.5F);
     }
 }
