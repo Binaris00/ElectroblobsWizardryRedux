@@ -1,9 +1,7 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
-import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.network.EBFabricNetwork;
 import com.electroblob.wizardry.setup.registries.*;
@@ -52,20 +50,14 @@ public final class WizardryFabricMod implements ModInitializer {
         EBLootFunctions.register(Registry::register);
         EBMenus.register(Registry::register);
 
-        // TODO MISSING LOOT
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
-            // Let's only modify built-in loot tables and leave data pack loot tables untouched by checking the source.
-            // We also check that the loot table ID is equal to the ID we want.
             LootPool.Builder poolBuilder = new LootPool.Builder();
 
-            if (Arrays.asList(EBConfig.lootInjectionLocations).contains(id))
-                poolBuilder.with(getAdditiveEntry("%s:chests/dungeon_additions".formatted(WizardryMainMod.MOD_ID), 1).build());
-
-
-            if (id.toString().matches("minecraft:chests/jungle_temple_dispenser"))
-                poolBuilder.with(getAdditiveEntry(WizardryMainMod.MOD_ID + ":chests/jungle_dispenser_additions", 1).build());
-
-
+            EBLootTables.applyInjections((location, pool) -> {
+                if (id.equals(location)) {
+                    poolBuilder.with(pool.entries[0]).build();
+                }
+            });
             tableBuilder.withPool(poolBuilder);
         });
 

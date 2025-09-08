@@ -5,10 +5,7 @@ import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
 import net.minecraft.resources.ResourceLocation;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 // Todo EBConfig? Still no used, contains some fields that were in the Constant class, need to rewrite
 public final class EBConfig {
@@ -48,6 +45,7 @@ public final class EBConfig {
     /**
      * The amount of mana given for a kill for each level of siphon upgrade. A random amount from 0 to this number - 1
      * is also added.
+     *
      * @see com.electroblob.wizardry.content.item.WandUpgradeItem#onLivingDeath(EBLivingDeathEvent)
      */
     public static final int SIPHON_MANA_PER_LEVEL = 5;
@@ -61,6 +59,25 @@ public final class EBConfig {
     public static ResourceLocation[] lootInjectionLocations = toResourceLocations(DEFAULT_LOOT_INJECTION_LOCATIONS);
 
     public static Map<Pair<ResourceLocation, Short>, Integer> currencyItems = new HashMap<>();
+    public static boolean injectMobDrops = true;
+
+    /**
+     * Passive mobs that will have the normal additional loot added to their drops. Passive Mobs (not hostile ones)
+     * not on this list will be ignored. This is to prevent things like cows dropping spell books.
+     */
+    public static ResourceLocation[] modifiableMobs = new ResourceLocation[]{};
+
+    /**
+     * Hostile mobs that will not have the normal additional loot added to their drops. Hostile mobs (not passive
+     * ones) not on this list will be affected. This is to prevent things like the Ender Dragon dropping spell
+     * books.
+     */
+    public static ResourceLocation[] blacklistedHostileMobs = List.of(
+            new ResourceLocation("minecraft:ender_dragon"),
+            new ResourceLocation("minecraft:wither"),
+            new ResourceLocation("minecraft:giant"),
+            new ResourceLocation("minecraft:shulker")
+    ).toArray(new ResourceLocation[0]);
 
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);
 
@@ -68,5 +85,7 @@ public final class EBConfig {
     private static ResourceLocation[] toResourceLocations(String... strings) {
         return Arrays.stream(strings).map(s -> new ResourceLocation(s.toLowerCase(Locale.ROOT).trim())).toArray(ResourceLocation[]::new);
     }
-    private EBConfig() {}
+
+    private EBConfig() {
+    }
 }

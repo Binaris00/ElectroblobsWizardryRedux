@@ -1,27 +1,15 @@
 package com.electroblob.wizardry.datagen.provider.loot;
 
-import com.electroblob.wizardry.api.content.spell.SpellTier;
-import com.electroblob.wizardry.content.loot.RandomSpellFunction;
-import com.electroblob.wizardry.setup.registries.EBItems;
-import com.electroblob.wizardry.setup.registries.EBLootTables;
-import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.data.loot.LootTableSubProvider;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
-import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
-import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
-import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
-import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
 import java.util.function.BiConsumer;
 
+// TODO: Datagen for chest loot tables
+// this is quite a case, everything about doing the loot tables is okay, but when I'm trying to use the RandomSpellFunction
+// it gives me an error, I still didn't figure out why, but for now I'm just commenting it out and hope to fix it later
 public final class EBChestLootTables implements LootTableSubProvider {
     @Override
     public void generate(@NotNull BiConsumer<ResourceLocation, LootTable.Builder> biConsumer) {
