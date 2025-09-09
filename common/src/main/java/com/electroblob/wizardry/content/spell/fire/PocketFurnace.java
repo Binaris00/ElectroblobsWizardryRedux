@@ -8,6 +8,7 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.particles.ParticleTypes;
@@ -53,9 +54,8 @@ public class PocketFurnace extends Spell {
             optionalSmeltingRecipe.get().assemble(dummyInv, null);
             result = optionalSmeltingRecipe.get().getResultItem(null);
             if(result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem) continue;
+            if(!EBConfig.isOnList(EBConfig.meltItemsBlackList, stack)) continue;
 
-            // TODO Bin: implement setting
-            // && !Settings.containsMetaItem(Wizardry.settings.pocketFurnaceItemBlacklist, stack)) {
             if (stack.getCount() <= usesLeft) {
                 ItemStack stack2 = new ItemStack(result.getItem(), stack.getCount());
                 if (InventoryUtil.doesPlayerHaveItem(ctx.caster(), result.getItem())) {

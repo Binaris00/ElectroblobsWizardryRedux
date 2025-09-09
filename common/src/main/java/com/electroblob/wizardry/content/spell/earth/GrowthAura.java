@@ -20,7 +20,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-// TODO Bin:  grown aura need some particles tbh
 public class GrowthAura extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {

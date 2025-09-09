@@ -136,8 +136,7 @@ public class ForfeitRegistry {
                 }
             }
 
-            // TODO
-            // WizardryAdvancementTriggers.SPELL_FAILURE.triggerFor(player);
+            EBAdvancementTriggers.SPELL_FAILURE.triggerFor(player);
 
             //TODO
             //EntityUtils.playSoundAtPlayer(player, forfeit.getSound(), SoundSource.PLAYERS, 1, 1);

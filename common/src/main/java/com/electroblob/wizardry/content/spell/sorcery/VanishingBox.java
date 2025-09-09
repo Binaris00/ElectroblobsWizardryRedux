@@ -18,7 +18,6 @@ public class VanishingBox extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         PlayerEnderChestContainer enderChestInventory = ctx.caster().getEnderChestInventory();
-        // TODO Bin: Custom ender chest container component(?(
         ctx.caster().openMenu(new SimpleMenuProvider((dat, inventory, container) ->
                 ChestMenu.threeRows(dat, inventory, enderChestInventory), Component.translatable("container.enderchest")));
         ctx.caster().awardStat(Stats.OPEN_ENDERCHEST);

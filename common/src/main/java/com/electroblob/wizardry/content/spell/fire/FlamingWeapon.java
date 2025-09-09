@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.content.spell.fire;
 
-import com.electroblob.wizardry.api.Constants;
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Spell;
@@ -12,6 +11,7 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.sorcery.ImbueWeapon;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBEnchantments;
 import com.electroblob.wizardry.setup.registries.EBItems;
@@ -34,7 +34,7 @@ public class FlamingWeapon extends Spell {
                     EnchantmentHelper.getEnchantments(stack).containsKey(EBEnchantments.FLAMING_WEAPON.get())) continue;
 
             stack.enchant(EBEnchantments.FLAMING_WEAPON.get(), ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1
-                    : (int)((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / Constants.POTENCY_INCREASE_PER_TIER + 0.5f));
+                    : (int)((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5f));
 
             wizardData.setImbuementDuration(ctx.caster(), stack, EBEnchantments.FLAMING_WEAPON.get(), (int)(property(DefaultProperties.EFFECT_DURATION)
                     * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));

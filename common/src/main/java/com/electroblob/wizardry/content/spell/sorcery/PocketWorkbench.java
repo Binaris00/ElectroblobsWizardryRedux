@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 public class PocketWorkbench extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        // TODO Bin: Custom crafting table container component(?(
         ctx.caster().openMenu(new SimpleMenuProvider((dat, inventory, container) ->
                 new CraftingMenu(dat, inventory), Component.translatable("container.crafting")));
         ctx.caster().awardStat(Stats.OPEN_ENDERCHEST);

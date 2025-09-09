@@ -7,6 +7,7 @@ import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -21,8 +22,7 @@ public class Levitation extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        // TODO BIN CONFIG HERE
-        //if(!Wizardry.settings.replaceVanillaFallDamage) caster.fallDistance = 0;
+        if(!EBConfig.replaceVanillaFallDamage) ctx.caster().fallDistance = 0;
 
         ctx.caster().setDeltaMovement(ctx.caster().getDeltaMovement().x, ctx.caster().getDeltaMovement().y < property(DefaultProperties.SPEED) ?
                 ctx.caster().getDeltaMovement().y

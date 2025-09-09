@@ -1,6 +1,8 @@
 package com.electroblob.wizardry.api.content.entity.construct;
 
+import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
+import com.electroblob.wizardry.core.AllyDesignationSystem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -36,14 +38,12 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
     }
 
     @Override
-    public @NotNull InteractionResult interactAt(Player player, Vec3 vec3, InteractionHand interactionHand) {
-        // TODO: player.getItemInHand(interactionHand).getItem() instanceof SpellCastingItem
-        if(lifetime == -1 && getCaster() == player && player.isShiftKeyDown()){
+    public @NotNull InteractionResult interactAt(@NotNull Player player, @NotNull Vec3 vec3, @NotNull InteractionHand hand) {
+        if(lifetime == -1 && getCaster() == player && player.isShiftKeyDown() && player.getMainHandItem().getItem() instanceof ISpellCastingItem){
             this.despawn();
             return InteractionResult.SUCCESS;
         }
-
-        return super.interactAt(player, vec3, interactionHand);
+        return super.interactAt(player, vec3, hand);
     }
 
     /**
@@ -113,10 +113,7 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
     }
 
     public boolean isValidTarget(Entity target) {
-        return target != getCaster();
-
-        // TODO: AllyDesignationSystem
-        //return AllyDesignationSystem.isValidTarget(this.getCaster(), target);
+        return AllyDesignationSystem.isValidTarget(this.getCaster(), target);
     }
 
     @Override

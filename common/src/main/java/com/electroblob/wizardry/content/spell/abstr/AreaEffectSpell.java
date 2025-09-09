@@ -7,6 +7,7 @@ import com.electroblob.wizardry.api.content.spell.internal.LocationCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.core.AllyDesignationSystem;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
@@ -73,13 +74,8 @@ public abstract class AreaEffectSpell extends Spell {
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, origin.x, origin.y, origin.z, ctx.world());
 
-        if (targetAllies) {
-            // TODO Bin: Ally implementation !AllyDesignationSystem.isAllied(caster, target)
-            targets.removeIf(target -> target != ctx.caster());
-        } else {
-            // TODO Bin: Ally implementation !AllyDesignationSystem.isAllied(caster, target)
-            //targets.removeIf(target -> !AllyDesignationSystem.isValidTarget(caster, target));
-        }
+        if (targetAllies) targets.removeIf(target -> target != ctx.caster() && !AllyDesignationSystem.isAllied(ctx.caster(), target));
+         else targets.removeIf(target -> !AllyDesignationSystem.isValidTarget(ctx.caster(), target));
 
         targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(origin.x, origin.y, origin.z)));
 

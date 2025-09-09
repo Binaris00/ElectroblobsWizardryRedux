@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.content.spell.earth;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
@@ -12,6 +13,7 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.core.AllyDesignationSystem;
 import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
@@ -106,15 +108,13 @@ public class Fangs extends Spell {
         return false;
     }
 
-    // TODO ALLY SYSTEM AND EVENT
-//    @SubscribeEvent(priority = EventPriority.HIGH)
-//    public static void onLivingAttackEvent(LivingAttackEvent event) {
-//        if (event.getSource().getDirectEntity() instanceof EvokerFangs) {
-//            if (!AllyDesignationSystem.isValidTarget(event.getSource().getEntity(), event.getEntity())) {
-//                event.setCanceled(true);
-//            }
-//        }
-//    }
+    public static void onHurt(EBLivingHurtEvent event){
+        if(event.getSource().getDirectEntity() instanceof EvokerFangs){
+            if(!AllyDesignationSystem.isValidTarget(event.getSource().getEntity(), event.getDamagedEntity())){
+                event.setCanceled(true);
+            }
+        }
+    }
 
     @Override
     protected @NotNull SpellProperties properties() {

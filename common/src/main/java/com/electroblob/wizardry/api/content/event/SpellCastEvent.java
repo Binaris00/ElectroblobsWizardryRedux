@@ -160,7 +160,6 @@ public abstract class SpellCastEvent implements IWizardryEvent {
         }
     }
 
-    // TODO SPELLEMITER.JAVA
     public static class Finish extends SpellCastEvent {
         private final int ticksCasting;
 

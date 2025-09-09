@@ -2,12 +2,15 @@ package com.electroblob.wizardry.core;
 
 import com.electroblob.wizardry.api.content.ConfigValue;
 import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.*;
 
-// Todo EBConfig? Still no used, contains some fields that were in the Constant class, need to rewrite
+// Todo EBConfig? Still no used, contains some fields that were in the Constant class, need to rewrite (like a lot)
+// I'm just trowing everything that could be part of the config here for now
 public final class EBConfig {
     public static final double MIN_PRECISE_DOUBLE = -9_007_199_254_740_992.0;
     public static final double MAX_PRECISE_DOUBLE = 9_007_199_254_740_991.0;
@@ -41,6 +44,11 @@ public final class EBConfig {
     public static final int CONDENSER_TICK_INTERVAL = 50;
     public static final int UPGRADE_STACK_LIMIT = 3;
     public static boolean booksPauseGame = true;
+
+    /**
+     * Items that cannot be melted by the Pocket Furnace spell.
+     */
+    public static final ResourceLocation[] meltItemsBlackList = {new ResourceLocation("minecraft:potato")};
 
     /**
      * The amount of mana given for a kill for each level of siphon upgrade. A random amount from 0 to this number - 1
@@ -79,11 +87,16 @@ public final class EBConfig {
             new ResourceLocation("minecraft:shulker")
     ).toArray(new ResourceLocation[0]);
 
+
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);
 
 
     private static ResourceLocation[] toResourceLocations(String... strings) {
         return Arrays.stream(strings).map(s -> new ResourceLocation(s.toLowerCase(Locale.ROOT).trim())).toArray(ResourceLocation[]::new);
+    }
+
+    public static boolean isOnList(ResourceLocation[] list, ItemStack stack){
+        return Arrays.stream(list).anyMatch(rl -> rl.equals(BuiltInRegistries.ITEM.getKey(stack.getItem())));
     }
 
     private EBConfig() {

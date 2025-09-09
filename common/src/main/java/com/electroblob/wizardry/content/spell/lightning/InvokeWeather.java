@@ -30,12 +30,11 @@ public class InvokeWeather extends Spell {
 
             int standardWeatherTime = (300 + (new Random()).nextInt(600)) * 20;
 
-            // TODO Bin: Spell translation names
             if (ctx.world().isRaining()) {
-                ctx.caster().displayClientMessage(Component.translatable("spell." + this.getDescriptionId() + ".sun"), true);
+                ctx.caster().displayClientMessage(Component.translatable(this.getDescriptionId() + ".sun"), true);
                 ((ServerLevel) ctx.world()).setWeatherParameters(standardWeatherTime, 0, false, false);
             } else {
-                ctx.caster().displayClientMessage(Component.translatable("spell." + this.getDescriptionId() + ".rain"), true);
+                ctx.caster().displayClientMessage(Component.translatable(this.getDescriptionId() + ".rain"), true);
                 ((ServerLevel) ctx.world()).setWeatherParameters(0, standardWeatherTime, true,
                         EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.CHARM_STOP_TIME.get()) || ctx.world().random.nextFloat() < property(THUNDER_CHANCE));
             }

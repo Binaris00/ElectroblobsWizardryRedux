@@ -9,6 +9,8 @@ import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.api.content.util.RayTracer;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
@@ -26,10 +28,8 @@ import org.jetbrains.annotations.NotNull;
 public class PhaseStep extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        // TODO ItemArtefact.isArtefactActive(player, WizardryItems.charm_mount_teleporting)
-        boolean teleportMount = ctx.caster().getVehicle() != null;
+        boolean teleportMount = ctx.caster().getVehicle() != null && EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.CHARM_MOUNT_TELEPORTING.get());
         boolean hitLiquids = teleportMount && ctx.caster().getVehicle() instanceof Boat;
-
         double range = 8;
 
         HitResult rayTrace = RayTracer.standardBlockRayTrace(ctx.world(), ctx.caster(),
@@ -59,7 +59,6 @@ public class PhaseStep extends Spell {
             for(int i = 0; i <= maxThickness; i++) {
                 BlockPos pos1 = BlockPos.of(BlockPos.offset(i, blockHitResult.getDirection().getOpposite()));
 
-                // TODO  && !Wizardry.settings.teleportThroughUnbreakableBlocks
                 if ((BlockUtil.isBlockUnbreakable(ctx.world(), pos1) || BlockUtil.isBlockUnbreakable(ctx.world(), pos1.relative(Direction.UP)))){
                     break;
                 }
@@ -96,7 +95,6 @@ public class PhaseStep extends Spell {
     }
 
     // TODO PROPERTIES
-
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()

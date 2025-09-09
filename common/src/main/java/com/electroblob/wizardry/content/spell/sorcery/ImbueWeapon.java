@@ -64,7 +64,6 @@ public class ImbueWeapon extends Spell {
     }
 
 
-    // TODO Settings.containsMetaItem(Wizardry.settings.swordItemWhitelist, stack)
     public static boolean isSword(ItemStack stack){
         return stack.getItem() instanceof SwordItem;
     }

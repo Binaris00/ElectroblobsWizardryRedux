@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.api.content.util;
 
+import com.electroblob.wizardry.api.content.entity.living.ISpellCaster;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.google.common.collect.Streams;
@@ -194,7 +195,7 @@ public final class EntityUtil {
         if(spell.isInstantCast()) return false;
 
         if (caster instanceof Player) {
-            // TODO WIZARD DATA
+            // TODO WIZARD DATA CURRENT SPELL
 //            WizardData data = WizardData.get((Player) caster);
 //            if (data != null && data.currentlyCasting() == spell) return true;
 
@@ -205,12 +206,9 @@ public final class EntityUtil {
                 ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
                 return stack.getItem() instanceof ISpellCastingItem && ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack) == spell;
             }
+        } else if (caster instanceof ISpellCaster spellCaster){
+            return spellCaster.getContinuousSpell() == spell;
         }
-
-        // TODO SPELL CASTER
-//        else if (caster instanceof ISpellCaster) {
-//            if (((ISpellCaster) caster).getContinuousSpell() == spell) return true;
-//        }
 
         return false;
     }
