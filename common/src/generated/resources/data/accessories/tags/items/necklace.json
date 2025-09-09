@@ -1,0 +1,24 @@
+{
+  "values": [
+    "ebwizardry:amulet_absorption",
+    "ebwizardry:amulet_anchoring",
+    "ebwizardry:amulet_arcane_defence",
+    "ebwizardry:amulet_auto_shield",
+    "ebwizardry:amulet_banishing",
+    "ebwizardry:amulet_channeling",
+    "ebwizardry:amulet_fire_cloaking",
+    "ebwizardry:amulet_fire_protection",
+    "ebwizardry:amulet_frost_warding",
+    "ebwizardry:amulet_glide",
+    "ebwizardry:amulet_ice_immunity",
+    "ebwizardry:amulet_ice_protection",
+    "ebwizardry:amulet_lich",
+    "ebwizardry:amulet_potential",
+    "ebwizardry:amulet_recovery",
+    "ebwizardry:amulet_resurrection",
+    "ebwizardry:amulet_transience",
+    "ebwizardry:amulet_warding",
+    "ebwizardry:amulet_wisdom",
+    "ebwizardry:amulet_wither_immunity"
+  ]
+}

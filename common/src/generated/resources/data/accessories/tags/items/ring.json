@@ -1,5 +1,36 @@
 {
   "values": [
-    "ebwizardry:ring_condensing"
+    "ebwizardry:ring_arcane_frost",
+    "ebwizardry:ring_battlemage",
+    "ebwizardry:ring_blockwrangler",
+    "ebwizardry:ring_combustion",
+    "ebwizardry:ring_condensing",
+    "ebwizardry:ring_conjurer",
+    "ebwizardry:ring_defender",
+    "ebwizardry:ring_disintegration",
+    "ebwizardry:ring_earth_biome",
+    "ebwizardry:ring_evoker",
+    "ebwizardry:ring_extraction",
+    "ebwizardry:ring_fire_melee",
+    "ebwizardry:ring_full_moon",
+    "ebwizardry:ring_hammer",
+    "ebwizardry:ring_ice_biome",
+    "ebwizardry:ring_ice_melee",
+    "ebwizardry:ring_interdiction",
+    "ebwizardry:ring_leeching",
+    "ebwizardry:ring_hammer",
+    "ebwizardry:ring_lightning_melee",
+    "ebwizardry:ring_mana_return",
+    "ebwizardry:ring_meteor",
+    "ebwizardry:ring_mind_control",
+    "ebwizardry:ring_necromancy_melee",
+    "ebwizardry:ring_paladin",
+    "ebwizardry:ring_poison",
+    "ebwizardry:ring_seeking",
+    "ebwizardry:ring_shattering",
+    "ebwizardry:ring_siphoning",
+    "ebwizardry:ring_soulbinding",
+    "ebwizardry:ring_storm",
+    "ebwizardry:ring_stormcloud"
   ]
 }

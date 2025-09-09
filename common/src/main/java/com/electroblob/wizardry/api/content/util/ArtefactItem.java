@@ -14,6 +14,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+@SuppressWarnings("ConstantConditions")
 public class ArtefactItem extends Item {
     private final @Nullable IArtefactEffect effect;
 
@@ -35,34 +36,34 @@ public class ArtefactItem extends Item {
         if (!(event.getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((IArtefactEffect) stack.getItem()).onTick(event.getEntity(), event.getLevel(), stack));
+                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onTick(event.getEntity(), event.getLevel(), stack));
     }
 
     public static void onArtifactHurt(EBLivingHurtEvent event) {
         if (!(event.getSource().getDirectEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((IArtefactEffect) stack.getItem()).onHurtEntity(event, stack));
+                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onHurtEntity(event, stack));
     }
 
     public static void onArtifactDeath(EBLivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((IArtefactEffect) stack.getItem()).onDeath(event, stack));
+                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onDeath(event, stack));
     }
 
     public static void onArtifactPreCast(SpellCastEvent.Pre event) {
         if (!(event.getCaster() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((IArtefactEffect) stack.getItem()).onSpellPreCast(event, stack));
+                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onSpellPreCast(event, stack));
     }
 
     public static void onArtifactPostCast(SpellCastEvent.Post event) {
         if (!(event.getCaster() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((IArtefactEffect) stack.getItem()).onSpellPostCast(event, stack));
+                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onSpellPostCast(event, stack));
     }
 }
