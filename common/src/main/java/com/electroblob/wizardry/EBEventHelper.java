@@ -16,6 +16,7 @@ import com.electroblob.wizardry.api.content.util.ArtefactItem;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
+import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
 import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
@@ -54,6 +55,7 @@ public final class EBEventHelper {
         bus.register(EBLivingHurtEvent.class, WardMobEffect::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, BubbleConstruct::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, ArtefactItem::onArtifactHurt);
+        bus.register(EBLivingHurtEvent.class, AllyDesignation::onLivingHurt);
     }
 
     private static void onLivingTickEvent(WizardryEventBus bus) {

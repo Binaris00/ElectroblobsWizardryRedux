@@ -8,7 +8,7 @@ import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.healing.GreaterHeal;
 import com.electroblob.wizardry.content.spell.healing.Heal;
 import com.electroblob.wizardry.content.spell.healing.HealAlly;
-import com.electroblob.wizardry.core.AllyDesignationSystem;
+import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.IArtefactEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -22,7 +22,7 @@ public class PaladinRingEffect implements IArtefactEffect {
         if (event.getSpell() instanceof Heal || event.getSpell() instanceof HealAlly || event.getSpell() instanceof GreaterHeal) {
             float healthGained = event.getSpell().property(DefaultProperties.HEALTH) * event.getModifiers().get(SpellModifiers.POTENCY);
 
-            EntityUtil.getLivingWithinRadius(4, player.xo, player.yo, player.zo, event.getLevel()).stream().filter(livingEntity -> AllyDesignationSystem.isAllied(player, livingEntity) && livingEntity.getHealth() > 0 && livingEntity.getHealth() < livingEntity.getMaxHealth()).forEach(livingEntity -> {
+            EntityUtil.getLivingWithinRadius(4, player.xo, player.yo, player.zo, event.getLevel()).stream().filter(livingEntity -> AllyDesignation.isAllied(player, livingEntity) && livingEntity.getHealth() > 0 && livingEntity.getHealth() < livingEntity.getMaxHealth()).forEach(livingEntity -> {
                 livingEntity.heal(healthGained * 0.2f);
                 if (event.getLevel().isClientSide) ParticleBuilder.spawnHealParticles(event.getLevel(), livingEntity);
             });

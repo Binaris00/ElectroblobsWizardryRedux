@@ -44,6 +44,8 @@ public final class EBConfig {
     public static final int CONDENSER_TICK_INTERVAL = 50;
     public static final int UPGRADE_STACK_LIMIT = 3;
     public static boolean booksPauseGame = true;
+    public static boolean blockPlayersAlliesDamage = true;
+    public static boolean blockOwnedAlliesDamage = true;
 
     /**
      * Items that cannot be melted by the Pocket Furnace spell.
@@ -86,6 +88,7 @@ public final class EBConfig {
             new ResourceLocation("minecraft:giant"),
             new ResourceLocation("minecraft:shulker")
     ).toArray(new ResourceLocation[0]);
+    public static boolean passiveMobsAreAllies = true;
 
 
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);

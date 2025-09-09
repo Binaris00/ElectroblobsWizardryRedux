@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.api.content.entity.projectile;
 
 import com.electroblob.wizardry.api.content.util.RayTracer;
-import com.electroblob.wizardry.core.AllyDesignationSystem;
+import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.nbt.CompoundTag;
@@ -42,7 +42,7 @@ public abstract class MagicProjectileEntity extends ThrowableItemProjectile {
         HitResult hit = RayTracer.rayTrace(level(), this, this.position(), this.position().add(this.getDeltaMovement().scale(SEEKING_TIME)), getSeekingStrength(), false, LivingEntity.class, RayTracer.ignoreEntityFilter(null));
 
         if (hit instanceof EntityHitResult entityHit && getOwner() instanceof LivingEntity owner && entityHit.getEntity() instanceof LivingEntity entity) {
-            if (AllyDesignationSystem.isValidTarget(owner, entity)) {
+            if (AllyDesignation.isValidTarget(owner, entity)) {
                 Vec3 direction = new Vec3(entity.xo, entity.yo + entity.getDimensions(entity.getPose()).height / 2, entity.zo).subtract(this.position()).normalize().scale(this.getDeltaMovement().length());
                 this.setDeltaMovement(this.getDeltaMovement().add(direction.subtract(this.getDeltaMovement()).scale(2.0 / SEEKING_TIME)));
             }

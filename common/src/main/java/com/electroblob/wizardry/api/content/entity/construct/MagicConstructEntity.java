@@ -2,7 +2,7 @@ package com.electroblob.wizardry.api.content.entity.construct;
 
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
-import com.electroblob.wizardry.core.AllyDesignationSystem;
+import com.electroblob.wizardry.core.AllyDesignation;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -113,7 +113,7 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
     }
 
     public boolean isValidTarget(Entity target) {
-        return AllyDesignationSystem.isValidTarget(this.getCaster(), target);
+        return AllyDesignation.isValidTarget(this.getCaster(), target);
     }
 
     @Override
