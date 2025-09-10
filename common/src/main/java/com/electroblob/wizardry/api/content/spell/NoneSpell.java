@@ -3,6 +3,7 @@ package com.electroblob.wizardry.api.content.spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -23,6 +24,7 @@ public final class NoneSpell extends Spell {
 
     @Override
     protected @NotNull SpellProperties properties() {
-        return SpellProperties.empty();
+        return SpellProperties.builder().assignBaseProperties(SpellTiers.NOVICE, Elements.MAGIC, SpellType.UTILITY, SpellAction.NONE, 0, 0, 0)
+                .build();
     }
 }

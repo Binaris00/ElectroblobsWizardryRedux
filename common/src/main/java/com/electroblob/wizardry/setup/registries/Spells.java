@@ -226,6 +226,7 @@ public final class Spells {
 
         ICE_SHARD = spell("ice_shard", () -> new ArrowSpell<>(IceShardEntity::new).assignProperties(
                 SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 10)
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 6f)
                         .add(DefaultProperties.EFFECT_DURATION, 200)

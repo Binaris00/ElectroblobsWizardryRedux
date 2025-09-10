@@ -23,7 +23,7 @@ public enum SpellType {
             if(type.unlocalisedName.equals(name) || type.unlocalisedName.equals(name.toLowerCase())) return type;
         }
 
-        EBLogger.error("No such spell type with unlocalised name: " + name);
+        EBLogger.error("No such spell type with unlocalized name: '%s', maybe some spell is bad registered?!".formatted(name));
         return SpellType.UTILITY; //default
     }
 
