@@ -1,0 +1,16 @@
+{
+  "base_properties": {
+    "damage": 4.0,
+    "effect_duration": 100,
+    "effect_strength": 1,
+    "ice_shards": 10,
+    "range": 20.0
+  },
+  "charge": 0,
+  "cooldown": 10,
+  "cost": 10,
+  "element": "ebwizardry:ice",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "projectile",
+  "tier": "ebwizardry:apprentice"
+}

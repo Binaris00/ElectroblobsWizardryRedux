@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect_duration": 15,
+    "effect_radius": 6
+  },
+  "charge": 20,
+  "cooldown": 250,
+  "cost": 80,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:point_down",
+  "spell_type": "attack",
+  "tier": "ebwizardry:master"
+}

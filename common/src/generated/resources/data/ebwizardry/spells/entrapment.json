@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "damage_interval": 30,
+    "effect_duration": 120,
+    "range": 10.0
+  },
+  "charge": 10,
+  "cooldown": 75,
+  "cost": 35,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "attack",
+  "tier": "ebwizardry:advanced"
+}

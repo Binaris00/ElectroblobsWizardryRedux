@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect.minecraft.water_breathing_duration": 1200,
+    "effect.minecraft.water_breathing_strength": 0
+  },
+  "charge": 15,
+  "cooldown": 250,
+  "cost": 30,
+  "element": "ebwizardry:earth",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "buff",
+  "tier": "ebwizardry:advanced"
+}

@@ -1,0 +1,15 @@
+{
+  "base_properties": {
+    "damage": 1.0,
+    "duration": 600,
+    "effect_duration": 10,
+    "effect_radius": 3
+  },
+  "charge": 10,
+  "cooldown": 100,
+  "cost": 30,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "construct",
+  "tier": "ebwizardry:advanced"
+}

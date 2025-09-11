@@ -1,0 +1,9 @@
+{
+  "charge": 0,
+  "cooldown": 40,
+  "cost": 35,
+  "element": "ebwizardry:sorcery",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "utility",
+  "tier": "ebwizardry:advanced"
+}

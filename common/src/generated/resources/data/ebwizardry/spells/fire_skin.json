@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "effect.ebwizardry.fire_skin_duration": 600,
+    "effect.ebwizardry.fire_skin_strength": 0,
+    "effect_duration": 5
+  },
+  "charge": 0,
+  "cooldown": 250,
+  "cost": 40,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "defence",
+  "tier": "ebwizardry:advanced"
+}

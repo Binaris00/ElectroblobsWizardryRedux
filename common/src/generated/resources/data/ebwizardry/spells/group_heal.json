@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect_radius": 5,
+    "health": 6.0
+  },
+  "charge": 10,
+  "cooldown": 150,
+  "cost": 35,
+  "element": "ebwizardry:healing",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "defence",
+  "tier": "ebwizardry:advanced"
+}

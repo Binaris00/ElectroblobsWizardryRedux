@@ -1,0 +1,15 @@
+{
+  "base_properties": {
+    "decay_patches_spawned": 5,
+    "duration": 400,
+    "effect_duration": 400,
+    "range": 12.0
+  },
+  "charge": 0,
+  "cooldown": 80,
+  "cost": 35,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "defence",
+  "tier": "ebwizardry:advanced"
+}

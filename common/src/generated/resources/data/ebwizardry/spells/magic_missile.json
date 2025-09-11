@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "damage": 3.0,
+    "range": 18.0
+  },
+  "charge": 0,
+  "cooldown": 5,
+  "cost": 5,
+  "element": "ebwizardry:magic",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "projectile",
+  "tier": "ebwizardry:novice"
+}

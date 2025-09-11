@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect.minecraft.fire_resistance_duration": 600,
+    "effect.minecraft.fire_resistance_strength": 0
+  },
+  "charge": 15,
+  "cooldown": 80,
+  "cost": 20,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "defence",
+  "tier": "ebwizardry:advanced"
+}

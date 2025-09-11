@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "effect_duration": 900
+  },
+  "charge": 0,
+  "cooldown": 70,
+  "cost": 35,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:imbue",
+  "spell_type": "utility",
+  "tier": "ebwizardry:advanced"
+}

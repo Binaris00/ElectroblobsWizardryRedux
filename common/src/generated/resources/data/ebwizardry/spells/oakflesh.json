@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect.ebwizardry.oakflesh_duration": 600,
+    "effect.ebwizardry.oakflesh_strength": 0
+  },
+  "charge": 0,
+  "cooldown": 50,
+  "cost": 20,
+  "element": "ebwizardry:healing",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "defence",
+  "tier": "ebwizardry:advanced"
+}

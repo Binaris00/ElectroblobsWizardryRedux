@@ -1,0 +1,16 @@
+{
+  "base_properties": {
+    "damage": 3.0,
+    "duration": 600,
+    "effect_duration": 100,
+    "effect_strength": 0,
+    "range": 10.0
+  },
+  "charge": 10,
+  "cooldown": 40,
+  "cost": 10,
+  "element": "ebwizardry:ice",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "alteration",
+  "tier": "ebwizardry:advanced"
+}

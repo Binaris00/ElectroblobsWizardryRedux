@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "damage": 7.0,
+    "range": 20.0
+  },
+  "charge": 0,
+  "cooldown": 20,
+  "cost": 15,
+  "element": "ebwizardry:sorcery",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "projectile",
+  "tier": "ebwizardry:apprentice"
+}

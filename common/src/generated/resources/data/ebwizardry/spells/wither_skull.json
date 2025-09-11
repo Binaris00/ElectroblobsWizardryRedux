@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "speed": 0.1
+  },
+  "charge": 5,
+  "cooldown": 30,
+  "cost": 20,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "attack",
+  "tier": "ebwizardry:advanced"
+}

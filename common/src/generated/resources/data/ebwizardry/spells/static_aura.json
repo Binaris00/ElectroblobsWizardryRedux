@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "damage": 4.0,
+    "effect.ebwizardry.static_aura_duration": 600,
+    "effect.ebwizardry.static_aura_strength": 0
+  },
+  "charge": 0,
+  "cooldown": 250,
+  "cost": 40,
+  "element": "ebwizardry:lightning",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "defence",
+  "tier": "ebwizardry:advanced"
+}

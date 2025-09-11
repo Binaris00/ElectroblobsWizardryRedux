@@ -1,0 +1,15 @@
+{
+  "base_properties": {
+    "damage": 4.0,
+    "effect_duration": 140,
+    "effect_radius": 5,
+    "effect_strength": 2
+  },
+  "charge": 15,
+  "cooldown": 200,
+  "cost": 75,
+  "element": "ebwizardry:earth",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "attack",
+  "tier": "ebwizardry:master"
+}

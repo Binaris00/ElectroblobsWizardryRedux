@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "damage": 5.0,
+    "effect_duration": 5,
+    "range": 20.0
+  },
+  "charge": 0,
+  "cooldown": 15,
+  "cost": 10,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "projectile",
+  "tier": "ebwizardry:apprentice"
+}

@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "horizontal_speed": 0.3,
+    "vertical_speed": 0.65
+  },
+  "charge": 0,
+  "cooldown": 20,
+  "cost": 10,
+  "element": "ebwizardry:earth",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "utility",
+  "tier": "ebwizardry:novice"
+}

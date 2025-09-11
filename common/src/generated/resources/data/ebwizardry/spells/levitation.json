@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "acceleration": 0.1,
+    "speed": 0.5
+  },
+  "charge": 0,
+  "cooldown": 0,
+  "cost": 10,
+  "element": "ebwizardry:sorcery",
+  "spell_action": "ebwizardry:none",
+  "spell_type": "utility",
+  "tier": "ebwizardry:advanced"
+}

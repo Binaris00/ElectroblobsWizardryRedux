@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect_strength": 0,
+    "range": 10.0
+  },
+  "charge": 10,
+  "cooldown": 100,
+  "cost": 40,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "alteration",
+  "tier": "ebwizardry:advanced"
+}

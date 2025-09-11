@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect.ebwizardry.ward_duration": 600,
+    "effect.ebwizardry.ward_strength": 1
+  },
+  "charge": 10,
+  "cooldown": 65,
+  "cost": 20,
+  "element": "ebwizardry:healing",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "buff",
+  "tier": "ebwizardry:advanced"
+}

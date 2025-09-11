@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect.minecraft.night_vision_duration": 900,
+    "effect.minecraft.night_vision_strength": 1
+  },
+  "charge": 0,
+  "cooldown": 40,
+  "cost": 20,
+  "element": "ebwizardry:earth",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "buff",
+  "tier": "ebwizardry:apprentice"
+}

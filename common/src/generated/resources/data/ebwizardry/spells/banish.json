@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "maximum_teleport_distance": 16,
+    "minimum_teleport_distance": 8,
+    "range": 10.0
+  },
+  "charge": 0,
+  "cooldown": 40,
+  "cost": 75,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "attack",
+  "tier": "ebwizardry:advanced"
+}

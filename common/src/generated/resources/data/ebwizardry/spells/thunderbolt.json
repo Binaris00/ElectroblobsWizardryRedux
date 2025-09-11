@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "damage": 3.0,
+    "knockback": 0.2,
+    "range": 12.0
+  },
+  "charge": 0,
+  "cooldown": 15,
+  "cost": 10,
+  "element": "ebwizardry:lightning",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "projectile",
+  "tier": "ebwizardry:novice"
+}

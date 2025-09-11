@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "damage": 2.0,
+    "range": 40.0
+  },
+  "charge": 20,
+  "cooldown": 200,
+  "cost": 100,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "attack",
+  "tier": "ebwizardry:master"
+}

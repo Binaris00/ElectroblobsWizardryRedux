@@ -1,0 +1,9 @@
+{
+  "charge": 10,
+  "cooldown": 40,
+  "cost": 25,
+  "element": "ebwizardry:healing",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "defence",
+  "tier": "ebwizardry:apprentice"
+}

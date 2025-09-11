@@ -1,0 +1,15 @@
+{
+  "base_properties": {
+    "effect.minecraft.absorption_duration": 1200,
+    "effect.minecraft.absorption_strength": 1,
+    "effect.minecraft.regeneration_duration": 300,
+    "effect.minecraft.regeneration_strength": 1
+  },
+  "charge": 20,
+  "cooldown": 300,
+  "cost": 75,
+  "element": "ebwizardry:healing",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "defence",
+  "tier": "ebwizardry:master"
+}

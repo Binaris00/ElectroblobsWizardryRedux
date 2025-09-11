@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "effect_duration": 900,
+    "effect_radius": 5,
+    "effect_strength": 1
+  },
+  "charge": 0,
+  "cooldown": 60,
+  "cost": 30,
+  "element": "ebwizardry:healing",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "buff",
+  "tier": "ebwizardry:apprentice"
+}

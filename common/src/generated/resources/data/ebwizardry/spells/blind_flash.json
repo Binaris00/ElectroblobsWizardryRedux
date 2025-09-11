@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect_duration": 300,
+    "effect_radius": 5
+  },
+  "charge": 0,
+  "cooldown": 60,
+  "cost": 20,
+  "element": "ebwizardry:lightning",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "attack",
+  "tier": "ebwizardry:apprentice"
+}

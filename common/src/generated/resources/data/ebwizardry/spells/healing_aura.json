@@ -1,0 +1,15 @@
+{
+  "base_properties": {
+    "damage": 1.0,
+    "duration": 600,
+    "effect_radius": 3,
+    "health": 1.0
+  },
+  "charge": 15,
+  "cooldown": 150,
+  "cost": 35,
+  "element": "ebwizardry:healing",
+  "spell_action": "ebwizardry:point_down",
+  "spell_type": "construct",
+  "tier": "ebwizardry:advanced"
+}

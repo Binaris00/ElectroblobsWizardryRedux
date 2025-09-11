@@ -1,0 +1,9 @@
+{
+  "charge": 0,
+  "cooldown": 0,
+  "cost": 0,
+  "element": "ebwizardry:magic",
+  "spell_action": "ebwizardry:none",
+  "spell_type": "utility",
+  "tier": "ebwizardry:novice"
+}

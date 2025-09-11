@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "effect_radius": 2
+  },
+  "charge": 0,
+  "cooldown": 50,
+  "cost": 20,
+  "element": "ebwizardry:earth",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "utility",
+  "tier": "ebwizardry:apprentice"
+}

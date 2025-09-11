@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "blast_radius": 2.0,
+    "range": 10.0
+  },
+  "charge": 0,
+  "cooldown": 50,
+  "cost": 30,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "construct",
+  "tier": "ebwizardry:advanced"
+}

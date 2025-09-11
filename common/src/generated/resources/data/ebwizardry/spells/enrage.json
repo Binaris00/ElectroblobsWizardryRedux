@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "effect_radius": 8
+  },
+  "charge": 0,
+  "cooldown": 100,
+  "cost": 20,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:summon",
+  "spell_type": "attack",
+  "tier": "ebwizardry:apprentice"
+}

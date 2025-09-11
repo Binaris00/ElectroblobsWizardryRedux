@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "thunderstorm_chance": 0.2
+  },
+  "charge": 15,
+  "cooldown": 100,
+  "cost": 30,
+  "element": "ebwizardry:lightning",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "utility",
+  "tier": "ebwizardry:advanced"
+}

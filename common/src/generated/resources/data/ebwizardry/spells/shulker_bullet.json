@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "range": 10.0
+  },
+  "charge": 0,
+  "cooldown": 40,
+  "cost": 25,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:point_down",
+  "spell_type": "projectile",
+  "tier": "ebwizardry:advanced"
+}

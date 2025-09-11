@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "items_smelted": 5
+  },
+  "charge": 0,
+  "cooldown": 40,
+  "cost": 30,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:imbue",
+  "spell_type": "utility",
+  "tier": "ebwizardry:apprentice"
+}

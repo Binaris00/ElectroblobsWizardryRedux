@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "damage": 2.0,
+    "health": 0.35,
+    "range": 10.0
+  },
+  "charge": 0,
+  "cooldown": 0,
+  "cost": 10,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "attack",
+  "tier": "ebwizardry:apprentice"
+}

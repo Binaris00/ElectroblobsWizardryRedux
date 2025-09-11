@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect.minecraft.invisibility_duration": 600,
+    "effect.minecraft.invisibility_strength": 0
+  },
+  "charge": 15,
+  "cooldown": 200,
+  "cost": 35,
+  "element": "ebwizardry:sorcery",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "buff",
+  "tier": "ebwizardry:advanced"
+}

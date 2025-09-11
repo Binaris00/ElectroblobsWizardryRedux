@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "health": 4.0
+  },
+  "charge": 0,
+  "cooldown": 20,
+  "cost": 5,
+  "element": "ebwizardry:healing",
+  "spell_action": "ebwizardry:point_up",
+  "spell_type": "defence",
+  "tier": "ebwizardry:novice"
+}

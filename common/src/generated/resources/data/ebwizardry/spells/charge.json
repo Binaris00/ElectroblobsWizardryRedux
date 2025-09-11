@@ -1,0 +1,15 @@
+{
+  "base_properties": {
+    "charge_speed": 2.0,
+    "damage": 8.0,
+    "duration": 10,
+    "knockback": 1.0
+  },
+  "charge": 0,
+  "cooldown": 50,
+  "cost": 20,
+  "element": "ebwizardry:lightning",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "attack",
+  "tier": "ebwizardry:apprentice"
+}

@@ -156,6 +156,9 @@ public abstract class Spell {
     // ===================================================
     // PROPERTIES
     // ===================================================
+    public final SpellProperties getProperties() {
+        return properties;
+    }
 
     protected abstract @NotNull SpellProperties properties();
 
