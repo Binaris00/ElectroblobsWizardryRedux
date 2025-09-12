@@ -1,12 +1,16 @@
 package com.electroblob.wizardry.api.content.spell.properties;
 
 import com.electroblob.wizardry.api.content.util.Util;
+import com.google.gson.JsonElement;
 import net.minecraft.nbt.CompoundTag;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
 
 public class SpellProperty<T> {
+    private static final Set<SpellProperty<?>> PROPERTIES = new HashSet<>();
     protected String identifier = null;
     protected T value = null;
     protected T defaultValue = null;
@@ -40,7 +44,7 @@ public class SpellProperty<T> {
         return booleanProperty(id, false);
     }
 
-    public static SpellProperty<String> stringProperty(String id){
+    public static SpellProperty<String> stringProperty(String id) {
         return stringProperty(id, "");
     }
 
@@ -72,8 +76,12 @@ public class SpellProperty<T> {
         return createProperty(false, id, value, BOOLEAN);
     }
 
-    public static SpellProperty<String> stringProperty(String id, String value){
+    public static SpellProperty<String> stringProperty(String id, String value) {
         return createProperty("", id, value, STRING);
+    }
+
+    public static @Nullable SpellProperty<?> getPropertyFromIdentifier(String identifier) {
+        return PROPERTIES.stream().filter(p -> p.identifier.equals(identifier)).findFirst().orElse(null);
     }
 
     protected static <T> SpellProperty<T> createProperty(T ignoredTypeIdentifier, String identifier, T defaultValue, PropertyType type) {
@@ -82,6 +90,7 @@ public class SpellProperty<T> {
         property.type = type;
         property.defaultValue = defaultValue;
         property.value = defaultValue;
+        PROPERTIES.add(property);
         return property;
     }
 
@@ -95,33 +104,29 @@ public class SpellProperty<T> {
 
     public CompoundTag serializeOn(CompoundTag tag) {
         var wrapper = Util.wrapperTag(tag);
-        if(type == BYTE)    return wrapper.put(BYTE.id(),    Util.compoundTagFrom(tag, BYTE.id(), t -> t.putByte(this.identifier, (Byte) this.value)));
-        if(type == SHORT)   return wrapper.put(SHORT.id(),   Util.compoundTagFrom(tag, SHORT.id(), t -> t.putShort(this.identifier, (Short) this.value)));
-        if(type == INT)     return wrapper.put(INT.id(),     Util.compoundTagFrom(tag, INT.id(), t -> t.putInt(this.identifier, (Integer) this.value)));
-        if(type == LONG)    return wrapper.put(LONG.id(),    Util.compoundTagFrom(tag, LONG.id(), t -> t.putLong(this.identifier, (Long) this.value)));
-        if(type == FLOAT)   return wrapper.put(FLOAT.id(),   Util.compoundTagFrom(tag, FLOAT.id(), t -> t.putFloat(this.identifier, (Float) this.value)));
-        if(type == DOUBLE)  return wrapper.put(DOUBLE.id(),  Util.compoundTagFrom(tag, DOUBLE.id(), t -> t.putDouble(this.identifier, (Double) this.value)));
-        if(type == BOOLEAN) return wrapper.put(BOOLEAN.id(), Util.compoundTagFrom(tag, BOOLEAN.id(), t -> t.putBoolean(this.identifier, (Boolean) this.value)));
+        if (type == BYTE)
+            return wrapper.put(BYTE.id(), Util.compoundTagFrom(tag, BYTE.id(), t -> t.putByte(this.identifier, (Byte) this.value)));
+        if (type == SHORT)
+            return wrapper.put(SHORT.id(), Util.compoundTagFrom(tag, SHORT.id(), t -> t.putShort(this.identifier, (Short) this.value)));
+        if (type == INT)
+            return wrapper.put(INT.id(), Util.compoundTagFrom(tag, INT.id(), t -> t.putInt(this.identifier, (Integer) this.value)));
+        if (type == LONG)
+            return wrapper.put(LONG.id(), Util.compoundTagFrom(tag, LONG.id(), t -> t.putLong(this.identifier, (Long) this.value)));
+        if (type == FLOAT)
+            return wrapper.put(FLOAT.id(), Util.compoundTagFrom(tag, FLOAT.id(), t -> t.putFloat(this.identifier, (Float) this.value)));
+        if (type == DOUBLE)
+            return wrapper.put(DOUBLE.id(), Util.compoundTagFrom(tag, DOUBLE.id(), t -> t.putDouble(this.identifier, (Double) this.value)));
+        if (type == BOOLEAN)
+            return wrapper.put(BOOLEAN.id(), Util.compoundTagFrom(tag, BOOLEAN.id(), t -> t.putBoolean(this.identifier, (Boolean) this.value)));
         return tag;
-    }
-
-    public static List<SpellProperty<?>> deserialize(CompoundTag tag) {
-        List<SpellProperty<?>> properties = new ArrayList<>();
-
-        PropertyType.getTypes().forEachRemaining(type -> {
-            if (tag.contains(type.id())) {
-                CompoundTag foundTag = (CompoundTag) tag.get(type.id());
-                var key = foundTag.getAllKeys();
-                key.forEach(s -> {
-                    properties.add(type.deserialize(foundTag, s));
-                });
-            }
-        });
-        return properties;
     }
 
     public T get() {
         return this.value;
+    }
+
+    public String getIdentifier() {
+        return identifier;
     }
 
     public void set(T value) {
@@ -136,7 +141,7 @@ public class SpellProperty<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if(obj instanceof SpellProperty<?> property){
+        if (obj instanceof SpellProperty<?> property) {
             return property.identifier.equals(this.identifier) && property.type.equals(this.type);
         }
         return false;
@@ -146,7 +151,7 @@ public class SpellProperty<T> {
         return this.defaultValue;
     }
 
-    public SpellProperty<T> copyOf(){
+    public SpellProperty<T> copyOf() {
         SpellProperty<T> cloned = new SpellProperty<>();
         cloned.identifier = this.identifier;
         cloned.type = this.type;
@@ -155,72 +160,33 @@ public class SpellProperty<T> {
         return cloned;
     }
 
-    public static final PropertyType BYTE = PropertyType.addType("byte_", SpellProperty::deserializeByte);
-    public static final PropertyType SHORT = PropertyType.addType("short_", SpellProperty::deserializeShort);
-    public static final PropertyType INT = PropertyType.addType("int_", SpellProperty::deserializeInt);
-    public static final PropertyType LONG = PropertyType.addType("long_", SpellProperty::deserializeLong);
-    public static final PropertyType FLOAT = PropertyType.addType("float_", SpellProperty::deserializeFloat);
-    public static final PropertyType DOUBLE = PropertyType.addType("double_", SpellProperty::deserializeDouble);
-    public static final PropertyType BOOLEAN = PropertyType.addType("boolean_", SpellProperty::deserializeBoolean);
-    public static final PropertyType STRING = PropertyType.addType("string_", SpellProperty::deserializeString);
+    public static final PropertyType BYTE = PropertyType.addType("byte_", (t, s) -> deserializeNbt(s, t::getByte), (j, s) -> deserializeJson(j, s, t -> j.getAsByte()));
+    public static final PropertyType SHORT = PropertyType.addType("short_", (t, s) -> deserializeNbt(s, t::getShort), (j, s) -> deserializeJson(j, s, t -> j.getAsShort()));
+    public static final PropertyType INT = PropertyType.addType("int_", (t, s) -> deserializeNbt(s, t::getInt), (j, s) -> deserializeJson(j, s, t -> j.getAsInt()));
+    public static final PropertyType LONG = PropertyType.addType("long_", (t, s) -> deserializeNbt(s, t::getLong), (j, s) -> deserializeJson(j, s, t -> j.getAsLong()));
+    public static final PropertyType FLOAT = PropertyType.addType("float_", (t, s) -> deserializeNbt(s, t::getFloat), (j, s) -> deserializeJson(j, s, t -> j.getAsFloat()));
+    public static final PropertyType DOUBLE = PropertyType.addType("double_", (t, s) -> deserializeNbt(s, t::getDouble), (j, s) -> deserializeJson(j, s, t -> j.getAsDouble()));
+    public static final PropertyType BOOLEAN = PropertyType.addType("boolean_", (t, s) -> deserializeNbt(s, t::getBoolean), (j, s) -> deserializeJson(j, s, t -> j.getAsBoolean()));
+    public static final PropertyType STRING = PropertyType.addType("string_", (t, s) -> deserializeNbt(s, t::getString), (j, s) -> deserializeJson(j, s, t -> j.getAsString()));
 
-    private static SpellProperty<Byte> deserializeByte(CompoundTag tag, String location) {
-        SpellProperty<Byte> property = new SpellProperty<>();
+
+    private static <T> SpellProperty<T> deserializeNbt(String location, Function<String, T> getter) {
+        SpellProperty<T> property = new SpellProperty<>();
         property.identifier = location;
-        property.value = tag.getByte(location);
+        property.value = getter.apply(location);
         return property;
     }
 
-    private static SpellProperty<Short> deserializeShort(CompoundTag tag, String location) {
-        SpellProperty<Short> property = new SpellProperty<>();
+    private static <T> SpellProperty<T> deserializeJson(JsonElement json, String location, Function<String, T> getter) {
+        SpellProperty<T> property = new SpellProperty<>();
         property.identifier = location;
-        property.value = tag.getShort(location);
+        property.value = getter.apply(location);
         return property;
     }
 
-    private static SpellProperty<Integer> deserializeInt(CompoundTag tag, String location) {
-        SpellProperty<Integer> property = new SpellProperty<>();
-        property.identifier = location;
-        property.value = tag.getInt(location);
-        return property;
+    public static void load() {
     }
 
-    private static SpellProperty<Long> deserializeLong(CompoundTag tag, String location) {
-        SpellProperty<Long> property = new SpellProperty<>();
-        property.identifier = location;
-        property.value = tag.getLong(location);
-        return property;
+    protected SpellProperty() {
     }
-
-    private static SpellProperty<Float> deserializeFloat(CompoundTag tag, String location) {
-        SpellProperty<Float> property = new SpellProperty<>();
-        property.identifier = location;
-        property.value = tag.getFloat(location);
-        return property;
-    }
-
-    private static SpellProperty<Double> deserializeDouble(CompoundTag tag, String location) {
-        SpellProperty<Double> property = new SpellProperty<>();
-        property.identifier = location;
-        property.value = tag.getDouble(location);
-        return property;
-    }
-
-    private static SpellProperty<Boolean> deserializeBoolean(CompoundTag tag, String location) {
-        SpellProperty<Boolean> property = new SpellProperty<>();
-        property.identifier = location;
-        property.value = tag.getBoolean(location);
-        return property;
-    }
-
-    private static SpellProperty<String> deserializeString(CompoundTag tag, String location) {
-        SpellProperty<String> property = new SpellProperty<>();
-        property.identifier = location;
-        property.value = tag.getString(location);
-        return property;
-    }
-
-    public static void load(){}
-
-    protected SpellProperty(){}
 }

@@ -10,6 +10,7 @@ import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
@@ -46,6 +47,10 @@ public class SpellProperties {
             }
         }
         return property.getDefaultValue();
+    }
+
+    public List<SpellProperty<?>> getProperties() {
+        return properties;
     }
 
     // Spell Base properties helpers
@@ -134,8 +139,52 @@ public class SpellProperties {
     }
 
     /**
-     * Helper method to add a property to a JsonObject, handling different types appropriately.
-     * Logs an error if the property is not found in the current properties list.
+     * Creates a SpellProperties object from a JsonObject.
+     */
+    public static SpellProperties fromJson(JsonObject jsonObject) {
+        Builder builder = SpellProperties.builder();
+        jsonObject.entrySet().forEach(entry -> {
+            String identifier = entry.getKey();
+            JsonElement element = entry.getValue();
+
+            // Skip "base_properties" as it's a nested object
+            if (identifier.equals("base_properties")) return;
+            SpellProperty<?> temp = SpellProperty.getPropertyFromIdentifier(identifier);
+            if(temp == null) {
+                EBLogger.warn("Found unknown spell property in JSON: %s. Skipping...", identifier);
+                return;
+            }
+
+            SpellProperty prop = temp.type.deserialize(element, identifier);
+            builder.add(prop, prop.value);
+        });
+
+        // Deserialize properties from the "base_properties" object
+        if (jsonObject.has("base_properties") && jsonObject.get("base_properties").isJsonObject()) {
+            JsonObject basePropertiesJson = jsonObject.getAsJsonObject("base_properties");
+            basePropertiesJson.entrySet().forEach(entry -> {
+                String identifier = entry.getKey();
+                JsonElement element = entry.getValue();
+
+                SpellProperty<?> temp = SpellProperty.getPropertyFromIdentifier(identifier);
+                if(temp == null) {
+                    EBLogger.warn("Found unknown spell property in JSON: %s. Skipping...", identifier);
+                    return;
+                }
+
+                SpellProperty prop = temp.type.deserialize(element, identifier);
+                builder.add(prop, prop.value);
+            });
+        }
+
+        return builder.build();
+    }
+
+    /**
+     * Helper method to add a property to a JsonObject, handling different types appropriately (this only handles when
+     * the property value is a boolean or number, if none of these are correct then the value is converted into a string,
+     * this is why you should always keep a valid {@code toString()} return and a {@code deserializeJson}. Logs an error
+     * if the property is not found in the current properties list.
      *
      * @see SpellProperties#serializeToJson()
      */
