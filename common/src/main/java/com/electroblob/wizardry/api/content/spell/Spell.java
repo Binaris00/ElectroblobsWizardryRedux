@@ -160,6 +160,10 @@ public abstract class Spell {
         return properties;
     }
 
+    public void setProperties(SpellProperties properties) {
+        this.properties = properties;
+    }
+
     protected abstract @NotNull SpellProperties properties();
 
     public final Spell assignProperties(SpellProperties properties) {

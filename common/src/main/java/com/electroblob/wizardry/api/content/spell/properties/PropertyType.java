@@ -1,44 +1,54 @@
 package com.electroblob.wizardry.api.content.spell.properties;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
+import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-public class PropertyType {
-    private static final Set<PropertyType> PROPERTY_TYPES = new HashSet<>();
-    private String serializedIdentifier;
-    private BiFunction<CompoundTag, String, SpellProperty<?>> deserializerNbt;
-    private BiFunction<JsonElement, String, SpellProperty<?>> jsonDeserializer;
+/**
+ * Generic implementation of the {@link IPropertyType} interface using functional interfaces for serialization and
+ * deserialization. This class allows for flexible handling of different property types by providing custom functions
+ * for converting between JSON, NBT, and the property value type. We use this because the main <b>Electroblob's Wizardry</b>
+ * mod codebase only needs a few primitive types, but addons might want to implement more complex types, in those cases
+ * you need to implement your own {@link IPropertyType} and register it on {@link PropertyTypes}.
+ */
+public class PropertyType<T> implements IPropertyType<T> {
+    private final BiFunction<JsonElement, String, SpellProperty<T>> jsonDeserializer;
+    private final BiFunction<CompoundTag, String, SpellProperty<T>> tagDeserializer;
+    private final BiConsumer<JsonObject, SpellProperty<T>> jsonSerializer;
+    private final BiConsumer<CompoundTag, SpellProperty<T>> tagSerializer;
 
-    public static PropertyType addType(String serializedIdentifier, BiFunction<CompoundTag, String, SpellProperty<?>> deserializer, BiFunction<JsonElement, String, SpellProperty<?>> jsonDeserializer) {
-        PropertyType type = new PropertyType();
-        type.serializedIdentifier = serializedIdentifier;
-        type.deserializerNbt = deserializer;
-        type.jsonDeserializer = jsonDeserializer;
-        PROPERTY_TYPES.add(type);
-        return type;
+    public PropertyType(
+            BiFunction<JsonElement, String, SpellProperty<T>> jsonDeserializer,
+            BiFunction<CompoundTag, String, SpellProperty<T>> tagDeserializer,
+            BiConsumer<JsonObject, SpellProperty<T>> jsonSerializer,
+            BiConsumer<CompoundTag, SpellProperty<T>> tagSerializer
+    ) {
+        this.jsonDeserializer = jsonDeserializer;
+        this.tagDeserializer = tagDeserializer;
+        this.jsonSerializer = jsonSerializer;
+        this.tagSerializer = tagSerializer;
     }
 
-    public SpellProperty<?> deserialize(CompoundTag tag, String location) {
-        return this.deserializerNbt.apply(tag, location);
+    @Override
+    public SpellProperty<T> deserialize(JsonElement json, String loc) {
+        return jsonDeserializer.apply(json, loc);
     }
 
-    public SpellProperty<?> deserialize(JsonElement tag, String location) {
-        return this.jsonDeserializer.apply(tag, location);
+    @Override
+    public SpellProperty<T> deserialize(CompoundTag tag, String loc) {
+        return tagDeserializer.apply(tag, loc);
     }
 
-    public static Iterator<PropertyType> getTypes() {
-        return PROPERTY_TYPES.iterator();
+    @Override
+    public void serialize(JsonObject json, SpellProperty<T> prop) {
+        jsonSerializer.accept(json, prop);
     }
 
-    public String id() {
-        return serializedIdentifier;
-    }
-
-    private PropertyType() {
+    @Override
+    public void serialize(CompoundTag tag, SpellProperty<T> prop) {
+        tagSerializer.accept(tag, prop);
     }
 }

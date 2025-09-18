@@ -2,6 +2,7 @@ package com.electroblob.wizardry.core;
 
 import com.electroblob.wizardry.api.content.ConfigValue;
 import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
+import com.google.gson.Gson;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
@@ -12,6 +13,8 @@ import java.util.*;
 // Todo EBConfig? Still no used, contains some fields that were in the Constant class, need to rewrite (like a lot)
 // I'm just trowing everything that could be part of the config here for now
 public final class EBConfig {
+    public static final Gson GSON = new Gson();
+
     public static final double MIN_PRECISE_DOUBLE = -9_007_199_254_740_992.0;
     public static final double MAX_PRECISE_DOUBLE = 9_007_199_254_740_991.0;
     public static final float MIN_PRECISE_FLOAT = -16_777_216;

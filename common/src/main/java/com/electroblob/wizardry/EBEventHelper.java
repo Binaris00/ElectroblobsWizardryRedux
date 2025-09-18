@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.*;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.client.SpellGUIDisplay;
 import com.electroblob.wizardry.client.sound.SoundLoop;
 import com.electroblob.wizardry.content.ForfeitRegistry;
@@ -61,7 +62,8 @@ public final class EBEventHelper {
     private static void onLivingTickEvent(WizardryEventBus bus) {
         bus.register(EBLivingTick.class, PlayerWizardData::onUpdate);
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
-        bus.register(EBLivingTick.class, SpellGUIDisplay::onLivingTickEvent);
+        // TODO ERROR ON SEVER :)
+        //bus.register(EBLivingTick.class, SpellGUIDisplay::onLivingTickEvent);
         bus.register(EBLivingTick.class, ArtefactItem::onArtifactTick);
     }
 
@@ -74,10 +76,12 @@ public final class EBEventHelper {
 
     private static void onPlayerJoin(WizardryEventBus bus) {
         bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
+        bus.register(EBPlayerJoinServerEvent.class, (SpellProperties::onPlayerJoin));
     }
 
     private static void onServerLevelLoad(WizardryEventBus bus) {
         bus.register(EBServerLevelLoadEvent.class, SpellGlyphData::onServerLevelLoad);
+        bus.register(EBServerLevelLoadEvent.class, SpellProperties::onServerLevelLoad);
     }
 
     private static void onEntityJoinLevel(WizardryEventBus bus) {
@@ -94,8 +98,9 @@ public final class EBEventHelper {
     }
 
     private static void onClientTick(WizardryEventBus bus) {
-        bus.register(EBClientTickEvent.class, SoundLoop::onClientTick);
-        bus.register(EBClientTickEvent.class, EBKeyBinding::onClientTick);
+        // TODO ERROR ON SEVER :)
+        // bus.register(EBClientTickEvent.class, SoundLoop::onClientTick);
+        //bus.register(EBClientTickEvent.class, EBKeyBinding::onClientTick);
     }
 
     private static void onSpellPreCast(WizardryEventBus bus) {

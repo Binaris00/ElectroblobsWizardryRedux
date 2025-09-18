@@ -42,7 +42,7 @@ public abstract class SpellDataProvider implements DataProvider {
         this.buildSpells(spell -> {
             if (!duplicates.add(spell.getLocation()))
                 throw new IllegalStateException("Duplicate spell " + spell.getLocation());
-            JsonObject jsonObject = spell.getProperties().serializeToJson();
+            JsonObject jsonObject = spell.getProperties().toJson();
             futures.add(DataProvider.saveStable(output, jsonObject, this.pathProvider.json(spell.getLocation())));
         });
 

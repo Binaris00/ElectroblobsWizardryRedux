@@ -1,20 +1,34 @@
 package com.electroblob.wizardry.api.content.spell.properties;
 
-import com.electroblob.wizardry.api.content.util.Util;
-import com.google.gson.JsonElement;
-import net.minecraft.nbt.CompoundTag;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.function.Function;
 
+/**
+ * A class representing a property of a spell, such as its cost or cooldown. Each property has a type (e.g. Integer,
+ * Float, Boolean), a default value, and a current value, these properties are identified by a unique string.
+ * <p>
+ * Properties can be created using the static factory methods provided, such as {@link #intProperty(String)} or
+ * {@link #booleanProperty(String, boolean)}. Once created, the property's value can be accessed and modified using
+ * the {@link #get()} and {@link #set(Object)} methods respectively.
+ * (Check {@link com.electroblob.wizardry.content.spell.DefaultProperties} for examples of predefined properties.)
+ * <p>
+ *
+ * @param <T> The type of the property's value.
+ * @see com.electroblob.wizardry.content.spell.DefaultProperties
+ * @see SpellProperties#builder()
+ */
+@SuppressWarnings("unused")
 public class SpellProperty<T> {
     private static final Set<SpellProperty<?>> PROPERTIES = new HashSet<>();
     protected String identifier = null;
     protected T value = null;
     protected T defaultValue = null;
-    protected PropertyType type = null;
+    protected IPropertyType<T> type = null;
+
+    private SpellProperty() {
+    }
 
     public static SpellProperty<Byte> byteProperty(String id) {
         return byteProperty(id, (byte) 0);
@@ -49,76 +63,45 @@ public class SpellProperty<T> {
     }
 
     public static SpellProperty<Byte> byteProperty(String id, byte value) {
-        return createProperty((byte) 0, id, value, BYTE);
+        return createProperty(id, value, PropertyTypes.BYTE);
     }
 
     public static SpellProperty<Short> shortProperty(String id, short value) {
-        return createProperty((short) 0, id, value, SHORT);
+        return createProperty(id, value, PropertyTypes.SHORT);
     }
 
     public static SpellProperty<Integer> intProperty(String id, int value) {
-        return createProperty(0, id, value, INT);
+        return createProperty(id, value, PropertyTypes.INT);
     }
 
     public static SpellProperty<Long> longProperty(String id, long value) {
-        return createProperty(0L, id, value, LONG);
+        return createProperty(id, value, PropertyTypes.LONG);
     }
 
     public static SpellProperty<Float> floatProperty(String id, float value) {
-        return createProperty(0F, id, value, FLOAT);
+        return createProperty(id, value, PropertyTypes.FLOAT);
     }
 
     public static SpellProperty<Double> doubleProperty(String id, double value) {
-        return createProperty(0D, id, value, DOUBLE);
+        return createProperty(id, value, PropertyTypes.DOUBLE);
     }
 
     public static SpellProperty<Boolean> booleanProperty(String id, boolean value) {
-        return createProperty(false, id, value, BOOLEAN);
+        return createProperty(id, value, PropertyTypes.BOOLEAN);
     }
 
     public static SpellProperty<String> stringProperty(String id, String value) {
-        return createProperty("", id, value, STRING);
+        return createProperty(id, value, PropertyTypes.STRING);
     }
 
-    public static @Nullable SpellProperty<?> getPropertyFromIdentifier(String identifier) {
-        return PROPERTIES.stream().filter(p -> p.identifier.equals(identifier)).findFirst().orElse(null);
-    }
-
-    protected static <T> SpellProperty<T> createProperty(T ignoredTypeIdentifier, String identifier, T defaultValue, PropertyType type) {
-        SpellProperty<T> property = new SpellProperty<T>();
+    protected static <T> SpellProperty<T> createProperty(String identifier, T defaultValue, IPropertyType<T> type) {
+        SpellProperty<T> property = new SpellProperty<>();
         property.identifier = identifier;
         property.type = type;
         property.defaultValue = defaultValue;
         property.value = defaultValue;
         PROPERTIES.add(property);
         return property;
-    }
-
-    protected SpellProperty<T> initProperty(T ignoredTypeIdentifier, String identifier, T defaultValue, PropertyType type) {
-        this.identifier = identifier;
-        this.type = type;
-        this.defaultValue = defaultValue;
-        this.value = defaultValue;
-        return this;
-    }
-
-    public CompoundTag serializeOn(CompoundTag tag) {
-        var wrapper = Util.wrapperTag(tag);
-        if (type == BYTE)
-            return wrapper.put(BYTE.id(), Util.compoundTagFrom(tag, BYTE.id(), t -> t.putByte(this.identifier, (Byte) this.value)));
-        if (type == SHORT)
-            return wrapper.put(SHORT.id(), Util.compoundTagFrom(tag, SHORT.id(), t -> t.putShort(this.identifier, (Short) this.value)));
-        if (type == INT)
-            return wrapper.put(INT.id(), Util.compoundTagFrom(tag, INT.id(), t -> t.putInt(this.identifier, (Integer) this.value)));
-        if (type == LONG)
-            return wrapper.put(LONG.id(), Util.compoundTagFrom(tag, LONG.id(), t -> t.putLong(this.identifier, (Long) this.value)));
-        if (type == FLOAT)
-            return wrapper.put(FLOAT.id(), Util.compoundTagFrom(tag, FLOAT.id(), t -> t.putFloat(this.identifier, (Float) this.value)));
-        if (type == DOUBLE)
-            return wrapper.put(DOUBLE.id(), Util.compoundTagFrom(tag, DOUBLE.id(), t -> t.putDouble(this.identifier, (Double) this.value)));
-        if (type == BOOLEAN)
-            return wrapper.put(BOOLEAN.id(), Util.compoundTagFrom(tag, BOOLEAN.id(), t -> t.putBoolean(this.identifier, (Boolean) this.value)));
-        return tag;
     }
 
     public T get() {
@@ -160,33 +143,8 @@ public class SpellProperty<T> {
         return cloned;
     }
 
-    public static final PropertyType BYTE = PropertyType.addType("byte_", (t, s) -> deserializeNbt(s, t::getByte), (j, s) -> deserializeJson(j, s, t -> j.getAsByte()));
-    public static final PropertyType SHORT = PropertyType.addType("short_", (t, s) -> deserializeNbt(s, t::getShort), (j, s) -> deserializeJson(j, s, t -> j.getAsShort()));
-    public static final PropertyType INT = PropertyType.addType("int_", (t, s) -> deserializeNbt(s, t::getInt), (j, s) -> deserializeJson(j, s, t -> j.getAsInt()));
-    public static final PropertyType LONG = PropertyType.addType("long_", (t, s) -> deserializeNbt(s, t::getLong), (j, s) -> deserializeJson(j, s, t -> j.getAsLong()));
-    public static final PropertyType FLOAT = PropertyType.addType("float_", (t, s) -> deserializeNbt(s, t::getFloat), (j, s) -> deserializeJson(j, s, t -> j.getAsFloat()));
-    public static final PropertyType DOUBLE = PropertyType.addType("double_", (t, s) -> deserializeNbt(s, t::getDouble), (j, s) -> deserializeJson(j, s, t -> j.getAsDouble()));
-    public static final PropertyType BOOLEAN = PropertyType.addType("boolean_", (t, s) -> deserializeNbt(s, t::getBoolean), (j, s) -> deserializeJson(j, s, t -> j.getAsBoolean()));
-    public static final PropertyType STRING = PropertyType.addType("string_", (t, s) -> deserializeNbt(s, t::getString), (j, s) -> deserializeJson(j, s, t -> j.getAsString()));
 
-
-    private static <T> SpellProperty<T> deserializeNbt(String location, Function<String, T> getter) {
-        SpellProperty<T> property = new SpellProperty<>();
-        property.identifier = location;
-        property.value = getter.apply(location);
-        return property;
-    }
-
-    private static <T> SpellProperty<T> deserializeJson(JsonElement json, String location, Function<String, T> getter) {
-        SpellProperty<T> property = new SpellProperty<>();
-        property.identifier = location;
-        property.value = getter.apply(location);
-        return property;
-    }
-
-    public static void load() {
-    }
-
-    protected SpellProperty() {
+    public static @Nullable SpellProperty<?> fromID(String identifier) {
+        return PROPERTIES.stream().filter(p -> p.identifier.equals(identifier)).findFirst().orElse(null);
     }
 }

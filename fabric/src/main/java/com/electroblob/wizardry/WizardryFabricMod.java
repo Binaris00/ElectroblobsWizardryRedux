@@ -65,14 +65,7 @@ public final class WizardryFabricMod implements ModInitializer {
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.VEGETAL_DECORATION, EBWorldGen.CRYSTAL_FLOWER);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
 
-        EBFabricNetwork.registerC2SMessages();
-    }
-
-//    private static LootPoolEntryContainer getAdditive(String entryName, String poolName) {
-//        return LootPool.lootPool().add(getAdditiveEntry(entryName, 1)).setRolls(ConstantValue.exactly(1)).setBonusRolls(UniformGenerator.between(0, 1));
-//    }
-
-    private static LootPoolEntryContainer.Builder<?> getAdditiveEntry(String name, int weight) {
-        return LootTableReference.lootTableReference(new ResourceLocation(name)).setWeight(weight).setQuality(0);
+        // TODO SERVER
+        //EBFabricNetwork.registerC2SMessages();
     }
 }

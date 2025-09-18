@@ -1,9 +1,1 @@
-{
-  "charge": 10,
-  "cooldown": 1,
-  "cost": 20,
-  "element": "ebwizardry:fire",
-  "spell_action": "ebwizardry:point",
-  "spell_type": "construct",
-  "tier": "ebwizardry:apprentice"
-}
+{}
