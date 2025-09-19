@@ -1,31 +1,18 @@
 package com.electroblob.wizardry.api.content.spell.properties;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
-import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.api.content.spell.*;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
-import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.networking.s2c.SpellPropertiesSyncS2C;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.gson.JsonObject;
-import com.google.gson.JsonParseException;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.util.GsonHelper;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -45,6 +32,59 @@ public class SpellProperties {
         return new Builder();
     }
 
+    public static SpellProperties fromNbt(CompoundTag tag) {
+        Builder builder = builder();
+        for (String key : tag.getAllKeys()) {
+            if (key.equals("base_properties")) continue;
+            SpellProperty<?> temp = SpellProperty.fromID(key);
+            if (temp == null || temp.type == null) continue;
+            builder.add(temp.type.deserialize(tag, key));
+        }
+
+        if (tag.contains("base_properties")) {
+            CompoundTag basePropsTag = tag.getCompound("base_properties");
+            for (String key : basePropsTag.getAllKeys()) {
+                SpellProperty<?> temp = SpellProperty.fromID(key);
+                if (temp == null || temp.type == null) continue;
+                builder.add(temp.type.deserialize(basePropsTag, key));
+            }
+        }
+        return builder.build();
+    }
+
+    public static SpellProperties fromJson(JsonObject jsonObject) {
+        Builder builder = builder();
+        jsonObject.entrySet().forEach(entry -> {
+            String id = entry.getKey();
+            if (id.equals("base_properties")) return;
+            SpellProperty<?> temp = SpellProperty.fromID(id);
+            if (temp == null || temp.type == null) return;
+            builder.add(temp.type.deserialize(entry.getValue(), id));
+        });
+
+        if (jsonObject.has("base_properties")) {
+            JsonObject basePropsJson = jsonObject.getAsJsonObject("base_properties");
+            basePropsJson.entrySet().forEach(entry -> {
+                String id = entry.getKey();
+                SpellProperty<?> temp = SpellProperty.fromID(id);
+                if (temp == null || temp.type == null) return;
+                builder.add(temp.type.deserialize(entry.getValue(), id));
+            });
+        }
+        return builder.build();
+    }
+
+    // Spell Base properties helpers
+
+    public static void onPlayerJoin(EBPlayerJoinServerEvent event) {
+        if (event.getPlayer().level().isClientSide) return;
+
+        Map<ResourceLocation, SpellProperties> map = Services.REGISTRY_UTIL.getSpells().stream()
+                .collect(java.util.stream.Collectors.toMap(Spell::getLocation, Spell::getProperties));
+
+        Services.NETWORK_HELPER.sendTo((ServerPlayer) event.getPlayer(), new SpellPropertiesSyncS2C(map));
+    }
+
     @SuppressWarnings("unchecked")
     public <T> T get(SpellProperty<T> property) {
         for (SpellProperty<?> prop : properties) {
@@ -58,8 +98,6 @@ public class SpellProperties {
     public List<SpellProperty<?>> getProperties() {
         return properties;
     }
-
-    // Spell Base properties helpers
 
     public int getCooldown() {
         return get(DefaultProperties.COOLDOWN);
@@ -132,48 +170,6 @@ public class SpellProperties {
         return tag;
     }
 
-    public static SpellProperties fromNbt(CompoundTag tag) {
-        Builder builder = builder();
-        for (String key : tag.getAllKeys()) {
-            if (key.equals("base_properties")) continue;
-            SpellProperty<?> temp = SpellProperty.fromID(key);
-            if (temp == null || temp.type == null) continue;
-            builder.add(temp.type.deserialize(tag, key));
-        }
-
-        if (tag.contains("base_properties")) {
-            CompoundTag basePropsTag = tag.getCompound("base_properties");
-            for (String key : basePropsTag.getAllKeys()) {
-                SpellProperty<?> temp = SpellProperty.fromID(key);
-                if (temp == null || temp.type == null) continue;
-                builder.add(temp.type.deserialize(basePropsTag, key));
-            }
-        }
-        return builder.build();
-    }
-
-    public static SpellProperties fromJson(JsonObject jsonObject) {
-        Builder builder = builder();
-        jsonObject.entrySet().forEach(entry -> {
-            String id = entry.getKey();
-            if (id.equals("base_properties")) return;
-            SpellProperty<?> temp = SpellProperty.fromID(id);
-            if (temp == null || temp.type == null) return;
-            builder.add(temp.type.deserialize(entry.getValue(), id));
-        });
-
-        if (jsonObject.has("base_properties")) {
-            JsonObject basePropsJson = jsonObject.getAsJsonObject("base_properties");
-            basePropsJson.entrySet().forEach(entry -> {
-                String id = entry.getKey();
-                SpellProperty<?> temp = SpellProperty.fromID(id);
-                if (temp == null || temp.type == null) return;
-                builder.add(temp.type.deserialize(entry.getValue(), id));
-            });
-        }
-        return builder.build();
-    }
-
     private <T> void addProperty(CompoundTag parent, SpellProperty<T> referenceProperty) {
         SpellProperty<T> property = getProperties().stream().filter(p -> p.equals(referenceProperty))
                 .map(p -> (SpellProperty<T>) p).findFirst().orElse(null);
@@ -186,55 +182,6 @@ public class SpellProperties {
                 .map(p -> (SpellProperty<T>) p).findFirst().orElse(null);
         if (property == null) return;
         property.type.serialize(parent, property);
-    }
-
-    public static void onServerLevelLoad(EBServerLevelLoadEvent event){
-        File dir = Paths.get("config", "ebwizardry", "spells").toFile();
-        if (dir.mkdirs()) return;
-
-        for (File file : FileUtils.listFiles(dir, new String[]{"json"}, true)) {
-            String relative = dir.toPath().relativize(file.toPath()).toString();
-            String nameAndModID = FilenameUtils.removeExtension(relative).replaceAll("\\\\", "/");
-            String modID = nameAndModID.split("/")[0];
-            String name = nameAndModID.substring(nameAndModID.indexOf('/') + 1);
-
-            ResourceLocation key = new ResourceLocation("ebwizardry", name);
-            Spell spell = Services.REGISTRY_UTIL.getSpell(key);
-
-            if (spell == null) {
-                EBLogger.info("Spell properties file %s .json does not match any registered spells; ensure the filename is spelled correctly., Relative: %s, modid: %s, name: %s"
-                        .formatted(nameAndModID, relative, modID, name));
-                continue;
-            }
-
-            BufferedReader reader = null;
-
-            try {
-                reader = Files.newBufferedReader(file.toPath());
-                JsonObject json = GsonHelper.fromJson(EBConfig.GSON, reader, JsonObject.class);
-                SpellProperties newProperties = SpellProperties.fromJson(json);
-                spell.setProperties(newProperties);
-                EBLogger.warn("loaded spell properties for {} with {} element" +
-                        " and {} base properties from file {}.json", key, spell.getProperties().getElement().getName(),
-                        spell.getProperties().getProperties().size(), nameAndModID);
-
-            } catch (JsonParseException jsonparseexception) {
-                EBLogger.error("Parsing error loading spell property file for " + key, jsonparseexception);
-            } catch (IOException ioexception) {
-                EBLogger.error("Couldn't read spell property file for " + key, ioexception);
-            } finally {
-                IOUtils.closeQuietly(reader);
-            }
-        }
-    }
-
-    public static void onPlayerJoin(EBPlayerJoinServerEvent event){
-        if(event.getPlayer().level().isClientSide) return;
-
-        Map<ResourceLocation, SpellProperties> map = Services.REGISTRY_UTIL.getSpells().stream()
-                .collect(java.util.stream.Collectors.toMap(Spell::getLocation, Spell::getProperties));
-
-        Services.NETWORK_HELPER.sendTo((ServerPlayer) event.getPlayer(), new SpellPropertiesSyncS2C(map));
     }
 
     // I'm not proud of this method

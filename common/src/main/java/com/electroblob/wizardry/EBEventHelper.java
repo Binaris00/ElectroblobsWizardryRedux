@@ -5,13 +5,13 @@ import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.*;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.util.ArtefactItem;
 import com.electroblob.wizardry.content.ForfeitRegistry;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
 import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
 import com.electroblob.wizardry.content.effect.WardMobEffect;
 import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
-import com.electroblob.wizardry.api.content.util.ArtefactItem;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
@@ -63,7 +63,7 @@ public final class EBEventHelper {
 
     private static void onSpellDiscovery(WizardryEventBus bus) {
         bus.register(EBDiscoverSpellEvent.class, (event -> {
-            if(!event.getPlayer().level().isClientSide)
+            if (!event.getPlayer().level().isClientSide)
                 EBAdvancementTriggers.DISCOVER_SPELL.trigger((ServerPlayer) event.getPlayer(), event.getSpell(), event.getSource());
         }));
     }
@@ -75,7 +75,6 @@ public final class EBEventHelper {
 
     private static void onServerLevelLoad(WizardryEventBus bus) {
         bus.register(EBServerLevelLoadEvent.class, SpellGlyphData::onServerLevelLoad);
-        bus.register(EBServerLevelLoadEvent.class, SpellProperties::onServerLevelLoad);
     }
 
     private static void onEntityJoinLevel(WizardryEventBus bus) {

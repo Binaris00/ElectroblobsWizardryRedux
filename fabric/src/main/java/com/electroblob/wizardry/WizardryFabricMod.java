@@ -2,6 +2,7 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
+import com.electroblob.wizardry.core.PropertiesFabricDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.network.EBFabricServerNetwork;
 import com.electroblob.wizardry.setup.registries.*;
@@ -12,7 +13,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.Registry;
+import net.minecraft.server.packs.PackType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -59,5 +62,6 @@ public final class WizardryFabricMod implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
 
         EBFabricServerNetwork.registerC2SMessages();
+        ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new PropertiesFabricDataManager());
     }
 }
