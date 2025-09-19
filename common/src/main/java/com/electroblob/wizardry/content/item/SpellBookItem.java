@@ -7,8 +7,6 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
-import com.electroblob.wizardry.core.EBConfig;
-import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.ImmutableMap;
 import net.minecraft.ChatFormatting;
@@ -51,26 +49,18 @@ public class SpellBookItem extends Item {
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
-        // TODO SERVER
-        //        Spell spell = SpellUtil.getSpell(stack);
-//
-//        boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
-//
-//        list.add(discovered ? spell.getDescriptionFormatted() :
-//                Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData())).withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)
-//                .withFont(new ResourceLocation("minecraft", "alt"))));
-//        list.add(spell.getTier().getDescriptionFormatted());
-//
-//        Player player = ClientUtils.getPlayer();
-//
-//        if (EBConfig.discoveryMode && !player.isCreative() && discovered && !Services.WIZARD_DATA.getWizardData(player, player.level()).hasSpellBeenDiscovered(spell)) {
-//            list.add(Component.translatable(this.getOrCreateDescriptionId() + ".new", Style.EMPTY.withColor(ChatFormatting.LIGHT_PURPLE)));
-//        }
-//
-//        if (discovered && tooltipFlag.isAdvanced()) {
-//            list.add(Component.translatable(spell.getElement().getDescriptionId()).withStyle(ChatFormatting.GRAY));
-//            list.add(Component.translatable(spell.getType().getDisplayName()).withStyle(ChatFormatting.GRAY));
-//        }
+        if(level == null) return;
+        Spell spell = SpellUtil.getSpell(stack);
+        boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
+
+        list.add(discovered ? spell.getDescriptionFormatted() : Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData())).withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)
+                .withFont(new ResourceLocation("minecraft", "alt"))));
+        list.add(spell.getTier().getDescriptionFormatted());
+
+        if (discovered && tooltipFlag.isAdvanced()) {
+            list.add(Component.translatable(spell.getElement().getDescriptionId()).withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable(spell.getType().getDisplayName()).withStyle(ChatFormatting.GRAY));
+        }
     }
 
     public ResourceLocation getGuiTexture(Spell spell) {

@@ -5,8 +5,6 @@ import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.*;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.client.SpellGUIDisplay;
-import com.electroblob.wizardry.client.sound.SoundLoop;
 import com.electroblob.wizardry.content.ForfeitRegistry;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
@@ -20,7 +18,6 @@ import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
-import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -36,7 +33,6 @@ public final class EBEventHelper {
         WizardryEventBus bus = WizardryEventBus.getInstance();
         onLivingHurtEvent(bus);
         onLivingTickEvent(bus);
-        onClientTick(bus);
         onSpellPreCast(bus);
         onSpellPostCast(bus);
         onServerLevelLoad(bus);
@@ -62,8 +58,6 @@ public final class EBEventHelper {
     private static void onLivingTickEvent(WizardryEventBus bus) {
         bus.register(EBLivingTick.class, PlayerWizardData::onUpdate);
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
-        // TODO ERROR ON SEVER :)
-        //bus.register(EBLivingTick.class, SpellGUIDisplay::onLivingTickEvent);
         bus.register(EBLivingTick.class, ArtefactItem::onArtifactTick);
     }
 
@@ -95,12 +89,6 @@ public final class EBEventHelper {
     private static void onLivingDeathEvent(WizardryEventBus bus) {
         bus.register(EBLivingDeathEvent.class, Imbuement::onLivingDeath);
         bus.register(EBLivingDeathEvent.class, ArtefactItem::onArtifactDeath);
-    }
-
-    private static void onClientTick(WizardryEventBus bus) {
-        // TODO ERROR ON SEVER :)
-        // bus.register(EBClientTickEvent.class, SoundLoop::onClientTick);
-        //bus.register(EBClientTickEvent.class, EBKeyBinding::onClientTick);
     }
 
     private static void onSpellPreCast(WizardryEventBus bus) {

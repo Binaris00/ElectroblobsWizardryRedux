@@ -138,7 +138,7 @@ public class SpellProperties {
             if (key.equals("base_properties")) continue;
             SpellProperty<?> temp = SpellProperty.fromID(key);
             if (temp == null || temp.type == null) continue;
-            builder.add(temp.type.deserialize(tag.getCompound(key), key));
+            builder.add(temp.type.deserialize(tag, key));
         }
 
         if (tag.contains("base_properties")) {
@@ -146,7 +146,7 @@ public class SpellProperties {
             for (String key : basePropsTag.getAllKeys()) {
                 SpellProperty<?> temp = SpellProperty.fromID(key);
                 if (temp == null || temp.type == null) continue;
-                builder.add(temp.type.deserialize(basePropsTag.getCompound(key), key));
+                builder.add(temp.type.deserialize(basePropsTag, key));
             }
         }
         return builder.build();

@@ -6,7 +6,6 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.core.networking.abst.Message;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
@@ -30,8 +29,7 @@ public class SpellPropertiesSyncS2C implements Message {
         this.propertiesMap = new HashMap<>();
         for (int i = 0; i < size; i++) {
             ResourceLocation spellId = buf.readResourceLocation();
-            CompoundTag nbt = buf.readNbt();
-            SpellProperties props = SpellProperties.fromNbt(nbt);
+            SpellProperties props = SpellProperties.fromNbt(buf.readNbt());
             propertiesMap.put(spellId, props);
         }
     }
@@ -48,18 +46,11 @@ public class SpellPropertiesSyncS2C implements Message {
 
     @Override
     public void handleClient(Minecraft minecraft, Player player) {
-        EBLogger.warn("Received spell properties for {} spells from server", propertiesMap.size());
         for(Map.Entry<ResourceLocation, SpellProperties> entry : propertiesMap.entrySet()) {
             Optional<Spell> spell = Optional.ofNullable(Services.REGISTRY_UTIL.getSpell(entry.getKey()));
             if (spell.isEmpty()) {
                 EBLogger.warn("Received spell properties for unknown spell: {}", entry.getKey());
                 continue;
-            }
-            if(spell.get().equals(Spells.AGILITY)){
-                EBLogger.warn("Getting spell properties for {} with {} element" +
-                                " and {} base properties from file {}.json", spell.get().getLocation().toString(),
-                        entry.getValue().getElement(), entry.getValue().getProperties().size(),
-                        entry.getKey().getPath());
             }
             spell.get().setProperties(entry.getValue());
         }

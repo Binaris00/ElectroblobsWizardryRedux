@@ -3,7 +3,7 @@ package com.electroblob.wizardry.client;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
-import com.electroblob.wizardry.network.EBFabricNetwork;
+import com.electroblob.wizardry.network.EBFabricClientNetwork;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import com.electroblob.wizardry.setup.registries.EBMenus;
@@ -28,7 +28,8 @@ import net.minecraft.world.entity.Entity;
 public final class WizardryFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        EBFabricNetwork.registerS2CMessages();
+        EBFabricClientNetwork.registerS2CMessages();
+        EBClientEventHelper.register();
 
         SpellAction.register();
         EBRenderers.registerRenderers();

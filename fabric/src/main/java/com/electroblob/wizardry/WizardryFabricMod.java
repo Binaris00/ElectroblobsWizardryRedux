@@ -3,7 +3,7 @@ package com.electroblob.wizardry;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
-import com.electroblob.wizardry.network.EBFabricNetwork;
+import com.electroblob.wizardry.network.EBFabricServerNetwork;
 import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -13,23 +13,16 @@ import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.storage.loot.LootPool;
-import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
-import net.minecraft.world.level.storage.loot.entries.LootTableReference;
-
-import java.util.Arrays;
 
 public final class WizardryFabricMod implements ModInitializer {
     @Override
     public void onInitialize() {
         WizardryMainMod.init();
 
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> {
-            WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(handler.getPlayer(), server));
-        });
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(handler.getPlayer(), server)));
 
         ServerWorldEvents.LOAD.register(((minecraftServer, serverLevel) -> WizardryEventBus.getInstance().fire(new EBServerLevelLoadEvent(serverLevel))));
 
@@ -65,7 +58,6 @@ public final class WizardryFabricMod implements ModInitializer {
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.VEGETAL_DECORATION, EBWorldGen.CRYSTAL_FLOWER);
         BiomeModifications.addSpawn(BiomeSelectors.foundInOverworld(), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
 
-        // TODO SERVER
-        //EBFabricNetwork.registerC2SMessages();
+        EBFabricServerNetwork.registerC2SMessages();
     }
 }
