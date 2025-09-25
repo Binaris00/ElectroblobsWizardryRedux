@@ -1,8 +1,10 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
+import com.electroblob.wizardry.capabilities.ForgeMinionData;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.core.PropertiesForgeDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
@@ -21,6 +23,7 @@ import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -62,6 +65,11 @@ public class WizardryForgeEvents {
         public static void registerReloadListeners(AddReloadListenerEvent event) {
             event.addListener(new PropertiesForgeDataManager());
         }
+
+        @SubscribeEvent
+        public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
+            if(WizardryEventBus.getInstance().fire(new EBPlayerInteractEntityEvent(event.getEntity(), event.getTarget()))) event.setCanceled(true);
+        }
     }
 
     @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -100,6 +108,7 @@ public class WizardryForgeEvents {
         @SubscribeEvent
         public static void register(RegisterCapabilitiesEvent event) {
             event.register(ForgePlayerWizardData.class);
+            event.register(ForgeMinionData.class);
         }
 
         @SubscribeEvent

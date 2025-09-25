@@ -45,7 +45,7 @@ public interface Imbuement {
                     iterator.remove();
                     PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
                     wizardData.removeImbuement(stack, enchantment);
-                    Services.WIZARD_DATA.onUpdate(wizardData, player);
+                    Services.WIZARD_DATA.onWizardDataUpdate(wizardData, player);
                 }
             }
             EnchantmentHelper.setEnchantments(enchants, stack);

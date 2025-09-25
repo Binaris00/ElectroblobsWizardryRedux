@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.core.mixin;
 
+import com.electroblob.wizardry.api.MinionData;
 import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
@@ -43,9 +44,20 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "die", at = @At("HEAD"))
     public void EBWIZARDRY$LivingEntityDie(DamageSource damageSource, CallbackInfo ci){
-//        if(WizardryEventBus.getInstance().fire(new EBLivingHurtEvent(livingEntity, DamageSource.GENERIC, 0))){
-//            ci.cancel();
-//        }
         WizardryEventBus.getInstance().fire(new EBLivingDeathEvent(livingEntity, damageSource));
+    }
+
+    @Inject(method = "shouldDropLoot", at = @At(value = "RETURN"), cancellable = true)
+    public void EBWIZARDRY$dropLoot(CallbackInfoReturnable<Boolean> cir){
+        if(MinionData.isMinion(livingEntity)){
+            cir.setReturnValue(false);
+        }
+    }
+
+    @Inject(method = "shouldDropExperience", at = @At(value = "RETURN"), cancellable = true)
+    public void EBWIZARDRY$dropExperience(CallbackInfoReturnable<Boolean> cir){
+        if(MinionData.isMinion(livingEntity)){
+            cir.setReturnValue(false);
+        }
     }
 }

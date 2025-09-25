@@ -6,6 +6,7 @@ import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
+import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 
 /** Cardinal Components Entry Point */
@@ -13,8 +14,14 @@ public class EBFabricComponents implements EntityComponentInitializer {
     public static final ComponentKey<FabricPlayerWizardDataHolder> WIZARD_DATA =
             ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("wizard_data"), FabricPlayerWizardDataHolder.class);
 
+    public static final ComponentKey<FabricMinionDataHolder> MINION_DATA =
+            ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("minion_data"), FabricMinionDataHolder.class);
+
+
     @Override
     public void registerEntityComponentFactories(@NotNull EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(WIZARD_DATA, FabricPlayerWizardDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerFor(Mob.class, MINION_DATA, FabricMinionDataHolder::new);
+
     }
 }

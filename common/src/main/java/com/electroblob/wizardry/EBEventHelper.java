@@ -1,5 +1,6 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.MinionData;
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
@@ -42,6 +43,7 @@ public final class EBEventHelper {
         onItemTossEvent(bus);
         onEntityJoinLevel(bus);
         onSpellDiscovery(bus);
+        onPlayerInteractEntity(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -59,6 +61,8 @@ public final class EBEventHelper {
         bus.register(EBLivingTick.class, PlayerWizardData::onUpdate);
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
         bus.register(EBLivingTick.class, ArtefactItem::onArtifactTick);
+        bus.register(EBLivingTick.class, MinionData::onLivingTick);
+
     }
 
     private static void onSpellDiscovery(WizardryEventBus bus) {
@@ -79,6 +83,7 @@ public final class EBEventHelper {
 
     private static void onEntityJoinLevel(WizardryEventBus bus) {
         bus.register(EBEntityJoinLevelEvent.class, Imbuement::onEntityJoinLevel);
+        bus.register(EBEntityJoinLevelEvent.class, MinionData::onEntityJoinLevel);
     }
 
     private static void onItemTossEvent(WizardryEventBus bus) {
@@ -103,5 +108,9 @@ public final class EBEventHelper {
 
     private static void onSpellTickCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Tick.class, WizardArmorItem::onSpellTickCast);
+    }
+
+    private static void onPlayerInteractEntity(WizardryEventBus bus) {
+        bus.register(EBPlayerInteractEntityEvent.class, MinionData::onPlayerInteractEntity);
     }
 }

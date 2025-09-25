@@ -55,7 +55,7 @@ public class PlayerWizardData {
     // ===========================================
 
     private void update(Player player){
-        Services.WIZARD_DATA.onUpdate(this, player);
+        Services.WIZARD_DATA.onWizardDataUpdate(this, player);
     }
 
     public <T> void setVariable(ISpellVar<? super T> variable, T value) {
@@ -111,7 +111,7 @@ public class PlayerWizardData {
 //            WizardryPacketHandler.net.sendToDimension(message, this.player.world.provider.getDimension());
         }
 
-        Services.WIZARD_DATA.onUpdate(this, player);
+        Services.WIZARD_DATA.onWizardDataUpdate(this, player);
     }
 
     /** Stops casting the current spell. */
@@ -155,7 +155,7 @@ public class PlayerWizardData {
         castCommandTick++;
 
 
-        Services.WIZARD_DATA.onUpdate(this, player);
+        Services.WIZARD_DATA.onWizardDataUpdate(this, player);
     }
 
     public boolean toggleAlly(Player original, Player friend){
@@ -463,6 +463,6 @@ public class PlayerWizardData {
         wizardData.getSpellData().forEach((k, v) -> wizardData.getSpellData().put(k, k.update(player, v)));
         wizardData.getSpellData().keySet().removeIf(k -> k.canPurge(player, wizardData.getSpellData().get(k)));
 
-        Services.WIZARD_DATA.onUpdate(wizardData, player);
+        Services.WIZARD_DATA.onWizardDataUpdate(wizardData, player);
     }
 }

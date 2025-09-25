@@ -31,7 +31,9 @@
     ],
     "custom": {
         "cardinal-components": [
-            "ebwizardry:wizard_data"
+            "ebwizardry:wizard_data",
+            "ebwizardry:summoned_entity_data",
+            "ebwizardry:minion_data"
         ]
     },
     "depends": {

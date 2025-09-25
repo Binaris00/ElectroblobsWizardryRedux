@@ -21,6 +21,9 @@ public final class DefaultProperties {
     public static final SpellProperty<Integer> EFFECT_RADIUS = SpellProperty.intProperty("effect_radius");
     public static final SpellProperty<Integer> EFFECT_DURATION = SpellProperty.intProperty("effect_duration");
     public static final SpellProperty<Integer> EFFECT_STRENGTH = SpellProperty.intProperty("effect_strength");
+    public static final SpellProperty<Integer> MINION_COUNT = SpellProperty.intProperty("minion_count");
+    public static final SpellProperty<Integer> MINION_LIFETIME = SpellProperty.intProperty("minion_lifetime");
+    public static final SpellProperty<Integer> SUMMON_RADIUS = SpellProperty.intProperty("summon_radius");
     public static final SpellProperty<Float> KNOCKBACK = SpellProperty.floatProperty("knockback");
     public static final SpellProperty<Float> SPEED = SpellProperty.floatProperty("speed");
     public static final SpellProperty<Integer> SEEKING_STRENGTH = SpellProperty.intProperty("seeking_strength");

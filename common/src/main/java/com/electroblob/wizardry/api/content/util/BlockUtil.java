@@ -62,7 +62,33 @@ public final class BlockUtil {
     public static BlockPos findNearbyFloorSpace(Entity entity, int horizontalRange, int verticalRange) {
         Level world = entity.level();
         BlockPos origin = entity.blockPosition();
-        return findNearbyFloorSpace(world, origin, horizontalRange, verticalRange, true);
+        return findNearbyFloorSpace(world, origin, horizontalRange, verticalRange, true, entity);
+    }
+
+    @Nullable
+    public static BlockPos findNearbyFloorSpace(Level world, BlockPos origin, int horizontalRange, int verticalRange, boolean lineOfSight, Entity entity) {
+        List<BlockPos> possibleLocations = new ArrayList<>();
+        final Vec3 centre = GeometryUtil.getCentre(origin);
+
+        for (int x = -horizontalRange; x <= horizontalRange; x++) {
+            for (int z = -horizontalRange; z <= horizontalRange; z++) {
+                Integer y = getNearestFloor(world, origin.offset(x, 0, z), verticalRange);
+                if (y != null) {
+                    BlockPos location = new BlockPos(origin.getX() + x, y, origin.getZ() + z);
+                    if (lineOfSight) {
+                        HitResult rayTrace = world.clip(new ClipContext(centre, GeometryUtil.getCentre(location), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, entity));
+                        if (rayTrace.getType() == HitResult.Type.BLOCK) continue;
+                    }
+                    possibleLocations.add(location);
+                }
+            }
+        }
+
+        if (possibleLocations.isEmpty()) {
+            return null;
+        } else {
+            return possibleLocations.get(world.random.nextInt(possibleLocations.size()));
+        }
     }
 
     @Nullable

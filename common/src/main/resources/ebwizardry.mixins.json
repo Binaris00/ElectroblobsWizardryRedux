@@ -15,6 +15,7 @@
     "ServerPlayerMixin",
     "accessor.CriteriaAccessor",
     "accessor.MerchantMenuAccessor",
+    "accessor.MobGoalsAccessor",
     "accessor.SlotAccessor",
     "invoker.SpawnPlacementsInvoker"
   ],

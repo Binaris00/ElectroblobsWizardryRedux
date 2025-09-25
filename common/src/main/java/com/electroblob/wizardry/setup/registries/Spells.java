@@ -24,6 +24,8 @@ import com.electroblob.wizardry.content.spell.necromancy.*;
 import com.electroblob.wizardry.content.spell.sorcery.*;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.monster.WitherSkeleton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -125,6 +127,7 @@ public final class Spells {
     public static final Spell CURSE_OF_SOULBINDING;
     public static final Spell BLOCK_SURPRISE;
     public static final Spell GREATER_TELEKINESIS;
+    public static final Spell SUMMON_RICH;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -544,6 +547,15 @@ public final class Spells {
         BLOCK_SURPRISE = spell("block_surprise", BlockWithSurprise::new);
 
         GREATER_TELEKINESIS = spell("greater_telekinesis", BlockWithSurprise::new); // todo
+
+        SUMMON_RICH = spell("summon_rich", () -> new MinionSpell<>((l) -> new WitherSkeleton(EntityType.WITHER_SKELETON, l)).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellType.MINION, SpellAction.POINT, 100, 50, 600)
+                        .add(DefaultProperties.MINION_COUNT, 1)
+                        .add(DefaultProperties.MINION_LIFETIME, 1200)
+                        .add(DefaultProperties.SUMMON_RADIUS, 5)
+                        .build()
+        ));
     }
 
     // ======= Registry =======

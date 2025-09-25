@@ -160,7 +160,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
                 PlayerWizardData data = Services.WIZARD_DATA.getWizardData(this.getTradingPlayer(), this.level());
                 // TODO
                 // if (!MinecraftForge.EVENT_BUS.post(new DiscoverSpellEvent(this.getTradingPlayer(), spell, DiscoverSpellEvent.Source.PURCHASE)) && data.discoverSpell(spell)) {
-                Services.WIZARD_DATA.onUpdate(data, this.getTradingPlayer());
+                Services.WIZARD_DATA.onWizardDataUpdate(data, this.getTradingPlayer());
 
                 if (!level().isClientSide && !this.getTradingPlayer().isCreative() && EBConfig.discoveryMode) {
                     EntityUtil.playSoundAtPlayer(this.getTradingPlayer(), EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);

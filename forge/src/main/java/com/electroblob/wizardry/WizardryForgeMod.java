@@ -1,6 +1,7 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.capabilities.ForgeMinionData;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
@@ -38,6 +39,7 @@ public final class WizardryForgeMod {
             modBus.addListener(WizardryForgeMod::clientSetup);
         }
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ForgePlayerWizardData::attachCapability);
+        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ForgeMinionData::attachCapability);
     }
 
 
