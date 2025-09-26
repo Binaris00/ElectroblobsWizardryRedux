@@ -80,7 +80,7 @@ public abstract class ParticleTargeted extends ParticleWizardry {
         float z = (float) (this.zo + (this.z - this.zo) * (double) tickDelta);
 
         if (this.entity != null && this.shouldApplyOriginOffset()) {
-            if (this.entity != viewer || Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON) {
+            if (this.entity != viewer || Minecraft.getInstance().options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
                 Vec3 look = entity.getViewVector(tickDelta).scale(THIRD_PERSON_AXIAL_OFFSET);
                 x += (float) look.x;
                 y += (float) look.y;
@@ -125,7 +125,7 @@ public abstract class ParticleTargeted extends ParticleWizardry {
         float pitch = (float) (180f / (float) Math.PI * Math.atan(-dy / Math.sqrt(dz * dz + dx * dx)));
 
         stack.mulPose(Axis.YP.rotationDegrees(yaw));
-        stack.mulPose(Axis.XN.rotationDegrees(pitch));
+        stack.mulPose(Axis.XP.rotationDegrees(pitch));
 
         Tesselator tessellator = Tesselator.getInstance();
 

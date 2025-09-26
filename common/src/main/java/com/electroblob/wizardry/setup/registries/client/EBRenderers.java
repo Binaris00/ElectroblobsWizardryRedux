@@ -46,7 +46,6 @@ public final class EBRenderers {
         registerEntityRender(EBEntities.DART, MagicArrowRenderer<DartEntity>::new);
         registerEntityRender(EBEntities.FIRE_BOLT, BlankRenderer::new);
         registerEntityRender(EBEntities.ICE_SHARD, MagicArrowRenderer<IceShardEntity>::new);
-        registerEntityRender(EBEntities.SPARK, BlankRenderer::new);
         registerEntityRender(EBEntities.LIGHTNING_ARROW, MagicArrowRenderer<LightningArrow>::new);
         registerEntityRender(EBEntities.ICE_LANCE, MagicArrowRenderer<IceLanceEntity>::new);
         registerEntityRender(EBEntities.FORCE_ARROW, ForceArrowRenderer::new);
@@ -62,6 +61,7 @@ public final class EBRenderers {
         registerEntityRender(EBEntities.WIZARD, WizardRenderer::new);
         registerEntityRender(EBEntities.EVIL_WIZARD, EvilWizardRenderer::new);
 
+        registerEntityRender(EBEntities.SPARK, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/spark.png"))));
         registerEntityRender(EBEntities.ICE_CHARGE, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/ice_charge.png"))));
         registerEntityRender(EBEntities.MAGIC_FIREBALL, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/magic_fireball.png"))));
         registerEntityRender(EBEntities.ICE_BALL, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/iceball.png"))));

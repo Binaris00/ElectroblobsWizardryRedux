@@ -5,6 +5,8 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.phys.Vec3;
 
 public final class GeometryUtil {
+    public static final double ANTI_Z_FIGHTING_OFFSET = 0.005;
+
     private GeometryUtil() {
     }
 

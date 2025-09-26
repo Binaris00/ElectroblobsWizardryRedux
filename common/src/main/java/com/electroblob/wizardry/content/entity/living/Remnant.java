@@ -80,12 +80,6 @@ public class Remnant extends Monster {
         if(element == null) return;
         int[] colours = ReceptableBlock.PARTICLE_COLOURS.get(element);
 
-        if(random.nextInt(10) == 0){
-            // TODO FLASH PARTICLE BUG
-//            ParticleBuilder.create(EBParticles.FLASH).entity(this).pos(0, getBbHeight()/2, 0).scale(getBbWidth())
-//                    .time(48).color(colours[0]).spawn(level());
-        }
-
         double r = getBbHeight()/3;
 
         double x = r * (random.nextDouble() * 2 - 1);

@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 public class ParticleLightningPulse extends ParticleWizardry {
     public ParticleLightningPulse(ClientLevel world, double x, double y, double z, SpriteSet spriteProvider) {
         super(world, x, y, z, spriteProvider, true);
-        this.quadSize = 32f;
+        this.quadSize = 6f;
         this.setColor(1, 1, 1);
         this.shaded = false;
         this.hasPhysics = false;

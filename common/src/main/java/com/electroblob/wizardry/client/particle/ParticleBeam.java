@@ -24,7 +24,7 @@ public class ParticleBeam extends ParticleTargeted {
         super(world, x, y, z, spriteProvider, false);
         this.setColor(1, 1, 1);
         this.setLifetime(0);
-        this.quadSize = 1;
+        this.quadSize = 3;
     }
 
     @Override

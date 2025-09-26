@@ -51,13 +51,15 @@ public class ParticleSphere extends ParticleWizardry {
         float latStep = (float) Math.PI / 20;
         float longStep = (float) Math.PI / 20;
 
-        float sphereRadius = this.quadSize * (this.age + tickDelta - 1) / this.lifetime;
+        float size = this.quadSize * 10.0f;
+
+        float sphereRadius = size * (this.age + tickDelta - 1) / this.lifetime;
         float alpha = this.alpha * (1 - (this.age + tickDelta - 1) / this.lifetime);
 
         Tesselator tess = Tesselator.getInstance();
         BufferBuilder buffer = tess.getBuilder();
-        drawSphere(stack, tess, buffer, sphereRadius, latStep, longStep, true, rCol, gCol, bCol, alpha);
-        drawSphere(stack, tess, buffer, sphereRadius, latStep, longStep, false, rCol, gCol, bCol, alpha);
+        drawSphere(stack, buffer, sphereRadius, latStep, longStep, true, rCol, gCol, bCol, alpha);
+        drawSphere(stack, buffer, sphereRadius, latStep, longStep, false, rCol, gCol, bCol, alpha);
 
         RenderSystem.disableCull();
         RenderSystem.disableBlend();
@@ -65,7 +67,7 @@ public class ParticleSphere extends ParticleWizardry {
         stack.pushPose();
     }
 
-    private static void drawSphere(PoseStack stack, Tesselator tesselator, BufferBuilder buffer, float radius, float latStep, float longStep, boolean inside, float r, float g, float b, float a) {
+    private static void drawSphere(PoseStack stack, BufferBuilder buffer, float radius, float latStep, float longStep, boolean inside, float r, float g, float b, float a) {
         buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
 
         boolean goingUp = inside;
@@ -106,7 +108,7 @@ public class ParticleSphere extends ParticleWizardry {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        public Particle createParticle(@NotNull SimpleParticleType parameters, @NotNull ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleSphere(world, x, y, z, spriteSet);
         }
 

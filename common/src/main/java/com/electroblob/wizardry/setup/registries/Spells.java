@@ -19,6 +19,7 @@ import com.electroblob.wizardry.content.spell.ice.*;
 import com.electroblob.wizardry.content.spell.lightning.BlindingFlash;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.lightning.InvokeWeather;
+import com.electroblob.wizardry.content.spell.lightning.LightningPulse;
 import com.electroblob.wizardry.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.content.spell.necromancy.*;
 import com.electroblob.wizardry.content.spell.sorcery.*;
@@ -128,6 +129,7 @@ public final class Spells {
     public static final Spell BLOCK_SURPRISE;
     public static final Spell GREATER_TELEKINESIS;
     public static final Spell SUMMON_RICH;
+    public static final Spell LIGHTNING_PULSE;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -151,7 +153,7 @@ public final class Spells {
 
         POISON_BOMB = spell("poison_bomb", () -> new ProjectileSpell<>(PoisonBombEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.PROJECTILE,SpellAction.POINT, 15, 0, 25)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 25)
                         .add(DefaultProperties.RANGE, 10f)
                         .add(DefaultProperties.DAMAGE, 5f)
                         .add(DefaultProperties.EFFECT_RADIUS, 3)
@@ -490,12 +492,12 @@ public final class Spells {
                         .build()));
 
         LIGHTNING_SIGIL = spell("lightning_sigil", () -> new ConstructRangedSpell<>(LightningSigilConstruct::new, true).floor(true).assignProperties(SpellProperties.builder()
-                        .add(DefaultProperties.RANGE, 10F)
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.CONSTRUCT, SpellAction.POINT, 20, 0, 40)
-                        .add(DefaultProperties.EFFECT_RADIUS, 1)
-                        .add(DefaultProperties.DAMAGE, 6F)
-                        .add(LightningSigilConstruct.SECOND_RANGE, 1)
-                        .add(DefaultProperties.MAX_TARGETS, 3)
+                .add(DefaultProperties.RANGE, 10F)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.CONSTRUCT, SpellAction.POINT, 20, 0, 40)
+                .add(DefaultProperties.EFFECT_RADIUS, 1)
+                .add(DefaultProperties.DAMAGE, 6F)
+                .add(LightningSigilConstruct.SECOND_RANGE, 1)
+                .add(DefaultProperties.MAX_TARGETS, 3)
                 .build()));
 
         ICE_SPICKES = spell("ice_spikes", IceSpickes::new);
@@ -556,6 +558,8 @@ public final class Spells {
                         .add(DefaultProperties.SUMMON_RADIUS, 5)
                         .build()
         ));
+
+        LIGHTNING_PULSE = spell("lightning_pulse", LightningPulse::new);
     }
 
     // ======= Registry =======
