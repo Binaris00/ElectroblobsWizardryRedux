@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "facing=east,on_wall=false": {
+      "model": "ebwizardry:block/receptacle"
+    },
+    "facing=south,on_wall=false": {
+      "model": "ebwizardry:block/receptacle"
+    },
+    "facing=west,on_wall=false": {
+      "model": "ebwizardry:block/receptacle"
+    },
+    "facing=north,on_wall=false": {
+      "model": "ebwizardry:block/receptacle"
+    },
+    "facing=east,on_wall=true": {
+      "model": "ebwizardry:block/wall_receptacle",
+      "y": 270
+    },
+    "facing=south,on_wall=true": {
+      "model": "ebwizardry:block/wall_receptacle"
+    },
+    "facing=west,on_wall=true": {
+      "model": "ebwizardry:block/wall_receptacle",
+      "y": 90
+    },
+    "facing=north,on_wall=true": {
+      "model": "ebwizardry:block/wall_receptacle",
+      "y": 180
+    }
+  }
+}

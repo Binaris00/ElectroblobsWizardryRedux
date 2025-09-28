@@ -1,0 +1,46 @@
+package com.electroblob.wizardry.content.blockentity;
+
+import com.electroblob.wizardry.api.content.spell.Element;
+import com.electroblob.wizardry.content.item.ReceptacleItemValue;
+import com.electroblob.wizardry.setup.registries.EBBlockEntities;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+
+public class ReceptacleBlockEntity extends BlockEntity {
+    private ItemStack stack;
+
+    public ReceptacleBlockEntity(BlockPos pos, BlockState blockState) {
+        super(EBBlockEntities.RECEPTACLE.get(), pos, blockState);
+    }
+
+    public ItemStack getStack() {
+        return stack;
+    }
+
+    public Element getElement(){
+    	return stack != null && stack.getItem() instanceof ReceptacleItemValue receptacleItem ?
+                receptacleItem.getElement() : null;
+    }
+
+    public void setStack(ItemStack stack) {
+        this.stack = stack;
+        level.blockUpdated(worldPosition, getBlockState().getBlock());
+        level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+    }
+
+    @Override
+    protected void saveAdditional(@NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
+        if(stack != null) tag.put("Stack", stack.save(new CompoundTag()));
+    }
+
+    @Override
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
+        this.stack = ItemStack.of(tag.getCompound("Stack"));
+    }
+}

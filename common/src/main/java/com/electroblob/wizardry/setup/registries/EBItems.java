@@ -94,14 +94,14 @@ public final class EBItems {
     public static final DeferredObject<Item> LARGE_MANA_FLASK = item("mana_flask_large");
 
     //Spectral Dust
-    public static final DeferredObject<Item> SPECTRAL_DUST = item("spectral_dust");
-    public static final DeferredObject<Item> SPECTRAL_DUST_EARTH = item("spectral_dust_earth");
-    public static final DeferredObject<Item> SPECTRAL_DUST_FIRE = item("spectral_dust_fire");
-    public static final DeferredObject<Item> SPECTRAL_DUST_HEALING = item("spectral_dust_healing");
-    public static final DeferredObject<Item> SPECTRAL_DUST_ICE = item("spectral_dust_ice");
-    public static final DeferredObject<Item> SPECTRAL_DUST_LIGHTNING = item("spectral_dust_lightning");
-    public static final DeferredObject<Item> SPECTRAL_DUST_NECROMANCY = item("spectral_dust_necromancy");
-    public static final DeferredObject<Item> SPECTRAL_DUST_SORCERY = item("spectral_dust_sorcery");
+    public static final DeferredObject<Item> SPECTRAL_DUST = item("spectral_dust", () -> new SpectralDustItem(Elements.MAGIC));
+    public static final DeferredObject<Item> SPECTRAL_DUST_EARTH = item("spectral_dust_earth", () -> new SpectralDustItem(Elements.EARTH));
+    public static final DeferredObject<Item> SPECTRAL_DUST_FIRE = item("spectral_dust_fire", () -> new SpectralDustItem(Elements.FIRE));
+    public static final DeferredObject<Item> SPECTRAL_DUST_HEALING = item("spectral_dust_healing", () -> new SpectralDustItem(Elements.HEALING));
+    public static final DeferredObject<Item> SPECTRAL_DUST_ICE = item("spectral_dust_ice", () -> new SpectralDustItem(Elements.ICE));
+    public static final DeferredObject<Item> SPECTRAL_DUST_LIGHTNING = item("spectral_dust_lightning", () -> new SpectralDustItem(Elements.LIGHTNING));
+    public static final DeferredObject<Item> SPECTRAL_DUST_NECROMANCY = item("spectral_dust_necromancy", () -> new SpectralDustItem(Elements.NECROMANCY));
+    public static final DeferredObject<Item> SPECTRAL_DUST_SORCERY = item("spectral_dust_sorcery", () -> new SpectralDustItem(Elements.SORCERY));
 
     //Wands
     public static final DeferredObject<Item> NOVICE_WAND = wand("wand_novice", SpellTiers.NOVICE, null);

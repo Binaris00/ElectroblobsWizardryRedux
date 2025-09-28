@@ -3,10 +3,7 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
-import com.electroblob.wizardry.content.block.ArcaneWorkbenchBlock;
-import com.electroblob.wizardry.content.block.CrystalFlowerBlock;
-import com.electroblob.wizardry.content.block.PermafrostBlock;
-import com.electroblob.wizardry.content.block.VanishingCobwebBlock;
+import com.electroblob.wizardry.content.block.*;
 import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -89,7 +86,7 @@ public final class EBBlocks {
 
 
     public static final DeferredObject<Block> TRANSPORTATION_STONE = block("transportation_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> RECEPTACLE = block("receptacle", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> RECEPTACLE = block("receptacle", ReceptacleBlock::new, false, true, true);
 
 
 

@@ -1,4 +1,4 @@
-// 1.20.1	2025-09-18T11:48:34.5087583	Spell Data Provider: ebwizardry
+// 1.20.1	2025-09-27T12:28:47.4680696	Spell Data Provider: ebwizardry
 dcd8a3fd94e0f44a7717557d77d08533f6e520b2 data/ebwizardry/spells/agility.json
 4f6f8f6bb13ecb046e1f6c2c568124130c14dd58 data/ebwizardry/spells/arrow_rain.json
 5a678c88cf1fddc05d238ec605a22564d086878b data/ebwizardry/spells/banish.json
@@ -61,6 +61,7 @@ f3c70b30f995c2ec9d3e76c67038a8c62600d7c8 data/ebwizardry/spells/ignite.json
 53d0476a206581f17bcff0e2389703af6050840d data/ebwizardry/spells/levitation.json
 29e42eeb6e75ce2351a12ce72b9bba5d9675fbc3 data/ebwizardry/spells/life_drain.json
 96a6d7a8e6e8c4af67d60f32303a3ecf2b79ece5 data/ebwizardry/spells/lightning_arrow.json
+241ce7c834eda7c6ac252ee7626d7d19b83ffd7a data/ebwizardry/spells/lightning_pulse.json
 295f33fbdefa297b9fd5f86724817968fe1695c3 data/ebwizardry/spells/lightning_sigil.json
 13bda0c1ef9cd5f4d305f2e9984170c41cffd61e data/ebwizardry/spells/magic_fireball.json
 190458a2f9adf4a83807e56c946f1179f1459661 data/ebwizardry/spells/magic_missile.json
@@ -83,6 +84,7 @@ f0bb17625ff0486a80ee86d8c7628d1aca380419 data/ebwizardry/spells/satiety.json
 25a4455f1b62422d7ee5390b198d420977e53b35 data/ebwizardry/spells/shulker_bullet.json
 c1844359b75d6f60045a4636caade9fa43d5e4d6 data/ebwizardry/spells/smoke_bomb.json
 fa41accfe41aa7dca341d9f6b00cd886848c5081 data/ebwizardry/spells/static_aura.json
+8a1839c35f75b70710910c3a5d52943d9e5d9271 data/ebwizardry/spells/summon_rich.json
 1fdd5d22a5fcfe810f1c2961f6ea998761d55c2b data/ebwizardry/spells/thunderbolt.json
 d0f37cd9b554aeca5aa5e36dc43cbe33a5a542f3 data/ebwizardry/spells/vanishing_box.json
 a5b2e26f8c7d6e39ede5c570a4f1a2ee95574987 data/ebwizardry/spells/water_breathing.json

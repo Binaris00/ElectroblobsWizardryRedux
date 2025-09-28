@@ -3,7 +3,6 @@ package com.electroblob.wizardry.content.entity.living;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Element;
-import com.electroblob.wizardry.content.block.ReceptableBlock;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.Elements;
@@ -78,7 +77,7 @@ public class Remnant extends Monster {
 
         Element element = Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(this.getElement()));
         if(element == null) return;
-        int[] colours = ReceptableBlock.PARTICLE_COLOURS.get(element);
+        int[] colours = element.getColors();
 
         double r = getBbHeight()/3;
 

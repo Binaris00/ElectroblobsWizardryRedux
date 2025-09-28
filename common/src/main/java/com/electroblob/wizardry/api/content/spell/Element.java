@@ -13,9 +13,15 @@ public class Element {
     private String descriptionId;
     private ResourceLocation location;
     private ResourceLocation icon;
+    private final int[] colors;
 
-    public Element(ChatFormatting colour){
+    public Element(ChatFormatting colour, int... colors){
         this.color = colour;
+        this.colors = colors;
+    }
+
+    public int[] getColors() {
+        return colors;
     }
 
     // ===================================================
