@@ -5,6 +5,7 @@ import com.electroblob.wizardry.capabilities.ForgeMinionData;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
+import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRender;
 import com.electroblob.wizardry.network.EBForgeNetwork;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBMenus;
@@ -58,5 +59,6 @@ public final class WizardryForgeMod {
         );
         MenuScreens.register(EBMenus.ARCANE_WORKBENCH_MENU.get(), ArcaneWorkbenchScreen::new);
         BlockEntityRenderers.register(EBBlockEntities.ARCANE_WORKBENCH.get(), ArcaneWorkbenchRender::new);
+        BlockEntityRenderers.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRender::new);
     }
 }

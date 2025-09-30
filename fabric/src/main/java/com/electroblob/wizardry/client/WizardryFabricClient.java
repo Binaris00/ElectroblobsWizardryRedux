@@ -3,6 +3,7 @@ package com.electroblob.wizardry.client;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
+import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRender;
 import com.electroblob.wizardry.network.EBFabricClientNetwork;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
@@ -56,6 +57,7 @@ public final class WizardryFabricClient implements ClientModInitializer {
         MenuScreens.register(EBMenus.ARCANE_WORKBENCH_MENU.get(), ArcaneWorkbenchScreen::new);
         // TODO
         BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.ARCANE_WORKBENCH.get(), ArcaneWorkbenchRender::new);
+        BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRender::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.CRYSTAL_FLOWER.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.POTTED_CRYSTAL_FLOWER.get(), RenderType.cutout());

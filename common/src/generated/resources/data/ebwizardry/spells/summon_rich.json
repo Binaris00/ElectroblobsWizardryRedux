@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "minion_count": 1,
+    "minion_lifetime": 1200,
+    "summon_radius": 5
+  },
+  "charge": 50,
+  "cooldown": 600,
+  "cost": 100,
+  "element": "ebwizardry:necromancy",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "minion",
+  "tier": "ebwizardry:master"
+}

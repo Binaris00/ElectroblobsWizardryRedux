@@ -1,0 +1,14 @@
+{
+  "base_properties": {
+    "damage": 8.0,
+    "effect_radius": 3,
+    "repulsion_velocity": 0.8
+  },
+  "charge": 0,
+  "cooldown": 75,
+  "cost": 25,
+  "element": "ebwizardry:lightning",
+  "spell_action": "ebwizardry:point_down",
+  "spell_type": "attack",
+  "tier": "ebwizardry:advanced"
+}

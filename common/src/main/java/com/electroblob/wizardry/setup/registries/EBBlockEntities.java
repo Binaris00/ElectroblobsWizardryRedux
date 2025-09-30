@@ -5,6 +5,7 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.blockentity.ArcaneWorkbenchBlockEntity;
+import com.electroblob.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.electroblob.wizardry.content.blockentity.ReceptacleBlockEntity;
 import com.electroblob.wizardry.content.blockentity.VanishingCobwebBlockEntity;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -30,6 +31,10 @@ public final class EBBlockEntities {
 
     public static final DeferredObject<BlockEntityType<ReceptacleBlockEntity>> RECEPTACLE = blockEntity(
             "receptacle", () -> BlockEntityType.Builder.of(ReceptacleBlockEntity::new, EBBlocks.RECEPTACLE.get()).build(null)
+    );
+
+    public static final DeferredObject<BlockEntityType<ImbuementAltarBlockEntity>> IMBUEMENT_ALTAR = blockEntity(
+            "imbuement_altar", () -> BlockEntityType.Builder.of(ImbuementAltarBlockEntity::new, EBBlocks.IMBUEMENT_ALTAR.get()).build(null)
     );
 
     // ======= Registry =======
