@@ -21,6 +21,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -29,6 +30,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.CollisionContext;
@@ -36,6 +39,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
@@ -52,7 +56,7 @@ public class ReceptacleBlock extends Block implements EntityBlock{
             Direction.EAST, Block.box(0.0D, 3.0D, 5.5D, 5.0D, 13.0D, 10.5D)));
 
     public ReceptacleBlock() {
-        super(BlockBehaviour.Properties.copy(Blocks.TORCH).noCollission().randomTicks().strength(0).lightLevel((b) -> 1).sound(SoundType.STONE));
+        super(BlockBehaviour.Properties.copy(Blocks.STONE).randomTicks().strength(0).lightLevel((b) -> 1).sound(SoundType.STONE));
         this.registerDefaultState(this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(ON_WALL, false));
     }
 
@@ -91,13 +95,20 @@ public class ReceptacleBlock extends Block implements EntityBlock{
 
     @Override
     public boolean canSurvive(BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
-        if (state.getValue(ON_WALL)) {
-            Direction direction = state.getValue(FACING);
-            BlockPos blockpos = pos.relative(direction.getOpposite());
-            return level.getBlockState(blockpos).isFaceSturdy(level, blockpos, direction);
-        } else {
-            return canSupportCenter(level, pos.below(), Direction.UP);
+        if(!state.getValue(ON_WALL)) return canSupportCenter(level, pos.below(), Direction.UP);
+
+        Direction direction = state.getValue(FACING);
+        BlockPos blockPos = pos.relative(direction.getOpposite());
+        BlockState blockState = level.getBlockState(blockPos);
+        if(blockState.getBlock() instanceof ImbuementAltar) return direction.getAxis().isHorizontal();
+        return direction.getAxis().isHorizontal() && blockState.isFaceSturdy(level, blockPos, direction);
+    }
+
+    public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+        if(state.getValue(ON_WALL)){
+            return direction.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : state;
         }
+        return direction == Direction.DOWN && !this.canSurvive(state, level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 
     @Override
@@ -120,6 +131,17 @@ public class ReceptacleBlock extends Block implements EntityBlock{
         return InteractionResult.SUCCESS;
     }
 
+    @Override
+    public @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LootParams.Builder params) {
+        BlockEntity entity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
+        if (entity instanceof ReceptacleBlockEntity blockEntity) {
+            ItemStack stack = blockEntity.getStack();
+            if (stack != null) {
+                return List.of(stack);
+            }
+        }
+        return List.of();
+    }
 
     @Override
     public void animateTick(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
