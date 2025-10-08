@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.block;
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
@@ -54,18 +55,18 @@ public class ImbuementAltar extends BaseEntityBlock {
         if(currentStack.isEmpty()){
             ItemStack stack = toInsert.copy();
             stack.setCount(1);
-            entity.setStack(stack);
+            entity.setStack(stack, true);
             entity.setLastUser(player);
             if(!player.isCreative()) toInsert.shrink(1);
 
         }else{
             if(toInsert.isEmpty()){
-                player.setItemInHand(hand, currentStack);
+                player.addItem(currentStack);
             }else if(!player.addItem(currentStack)){
                 player.drop(currentStack, false);
             }
 
-            entity.setStack(ItemStack.EMPTY);
+            entity.setStack(ItemStack.EMPTY, false);
             entity.setLastUser(null);
         }
         return InteractionResult.SUCCESS;
@@ -88,14 +89,15 @@ public class ImbuementAltar extends BaseEntityBlock {
             level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(ACTIVE, shouldBeActive));
 
             te = level.getBlockEntity(pos);
-            if(te instanceof ImbuementAltarBlockEntity e) e.setStack(stack);
+            if(te instanceof ImbuementAltarBlockEntity e) e.setStack(stack, true);
 
             level.getChunkSource().getLightEngine().checkBlock(pos);
         }
 
         BlockEntity tileEntity = level.getBlockEntity(pos);
         if(tileEntity instanceof ImbuementAltarBlockEntity e){
-            //e.checkRecipe();
+            EBLogger.info("Imbuement altar found on neighbor change, start checking recipe inside block entity");
+            e.checkRecipe();
         }
 
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);

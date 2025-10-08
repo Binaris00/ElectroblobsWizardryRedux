@@ -49,6 +49,9 @@ public final class WizardryFabricMod implements ModInitializer {
         EBLootFunctions.register(Registry::register);
         EBMenus.register(Registry::register);
 
+        EBRecipeTypes.register(Registry::register);
+        EBRecipeTypes.registerSerializers(Registry::register);
+
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
             LootPool.Builder poolBuilder = new LootPool.Builder();
 

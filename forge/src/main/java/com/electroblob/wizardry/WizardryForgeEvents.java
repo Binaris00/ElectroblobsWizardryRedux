@@ -85,10 +85,11 @@ public class WizardryForgeEvents {
             else if (event.getRegistryKey() == Registries.ITEM) register(event, EBItems::register);
             else if (event.getRegistryKey() == Registries.PARTICLE_TYPE) register(event, EBParticles::registerType);
             else if (event.getRegistryKey() == Registries.SOUND_EVENT) register(event, EBSounds::register);
-            else if (event.getRegistryKey() == Registries.LOOT_FUNCTION_TYPE)
-                register(event, EBLootFunctions::register);
+            else if (event.getRegistryKey() == Registries.LOOT_FUNCTION_TYPE) register(event, EBLootFunctions::register);
             else if (event.getRegistryKey() == Registries.ENCHANTMENT) register(event, EBEnchantments::register);
             else if (event.getRegistryKey() == Registries.MENU) register(event, EBMenus::register);
+            else if (event.getRegistryKey() == Registries.RECIPE_TYPE) register(event, EBRecipeTypes::register);
+            else if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER) register(event, EBRecipeTypes::registerSerializers);
             else if (event.getRegistryKey() == EBRegistries.ELEMENT) registerForge(event, Elements::registerNull);
             else if (event.getRegistryKey() == EBRegistries.TIER) registerForge(event, SpellTiers::registerNull);
             else if (event.getRegistryKey() == EBRegistries.SPELL) registerForge(event, Spells::registerNull);
