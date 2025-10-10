@@ -2,6 +2,7 @@ package com.electroblob.wizardry.client.renderer.entity;
 
 import com.electroblob.wizardry.api.content.entity.construct.MagicConstructEntity;
 import com.electroblob.wizardry.api.content.util.DrawingUtils;
+import com.electroblob.wizardry.core.AllyDesignation;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -31,9 +32,8 @@ public class SigilRenderer extends EntityRenderer<MagicConstructEntity> {
     @Override
     public void render(@NotNull MagicConstructEntity entity, float p_114486_, float partialTicks, @NotNull PoseStack poseStack, MultiBufferSource p_114489_, int p_114490_) {
         if (this.invisibleToEnemies) {
-            // TODO !AllyDesignationSystem.isPlayerAlly((Player) entity.getCaster(), Minecraft.getInstance().player)
-            if (entity.getCaster() != Minecraft.getInstance().player && entity.getCaster()
-                    instanceof Player) {
+            if (entity.getCaster() != Minecraft.getInstance().player && entity.getCaster() instanceof Player player
+                    && !AllyDesignation.isPlayerAlly((Player) entity.getCaster(), player)) {
                 return;
             }
         }

@@ -18,6 +18,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.util.Mth;
+import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -38,6 +40,11 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     public float timer = 0;
     private boolean doNotSync;
 
+    public float rot;
+    public float oRot;
+    public float tRot;
+
+
     public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(EBBlockEntities.ARCANE_WORKBENCH.get(), blockPos, blockState);
         inventory = NonNullList.withSize(ArcaneWorkbenchMenu.UPGRADE_SLOT + 1, ItemStack.EMPTY);
@@ -50,8 +57,7 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
 
     public void sync() {
         this.level.setBlocksDirty(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition));
-        //if (!doNotSync)
-            //this.level.setBlocksDirty(this.worldPosition, this.level.getChunkAt(worldPosition), level.getBlockState(worldPosition), level.getBlockState(worldPosition), 3, 512);
+        this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
@@ -68,8 +74,52 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     public static void clientTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
         if (level.isClientSide) {
             entity.timer++;
+
+            // Book rotation animation
+            entity.oRot = entity.rot;
+            Player player = level.getNearestPlayer(
+                    (double)pos.getX() + 0.5D,
+                    (double)pos.getY() + 0.5D,
+                    (double)pos.getZ() + 0.5D,
+                    3.0D,
+                    false
+            );
+
+            if (player != null) {
+                double dx = player.getX() - ((double)pos.getX() + 0.5D);
+                double dz = player.getZ() - ((double)pos.getZ() + 0.5D);
+                entity.tRot = (float) Math.atan2(dz, dx);
+            } else {
+                entity.tRot += 0.02F;
+            }
+
+            // Normalize angles
+            while(entity.rot >= (float)Math.PI) {
+                entity.rot -= ((float)Math.PI * 2F);
+            }
+            while(entity.rot < -(float)Math.PI) {
+                entity.rot += ((float)Math.PI * 2F);
+            }
+            while(entity.tRot >= (float)Math.PI) {
+                entity.tRot -= ((float)Math.PI * 2F);
+            }
+            while(entity.tRot < -(float)Math.PI) {
+                entity.tRot += ((float)Math.PI * 2F);
+            }
+
+            // Smooth rotation
+            float rotDiff = entity.tRot - entity.rot;
+            while(rotDiff >= (float)Math.PI) {
+                rotDiff -= ((float)Math.PI * 2F);
+            }
+            while(rotDiff < -(float)Math.PI) {
+                rotDiff += ((float)Math.PI * 2F);
+            }
+
+            entity.rot += rotDiff * 0.4F;
         }
     }
+
 
     // ===============================
     // Inventory stuff
@@ -87,25 +137,36 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
 
     @Override
     public @NotNull ItemStack removeItem(int slot, int amount) {
-        return ContainerHelper.removeItem(this.inventory, slot, amount);
+        ItemStack stack = ContainerHelper.removeItem(this.inventory, slot, amount);
+        setChanged();
+        sync();
+        return stack;
     }
 
     @Override
     public @NotNull ItemStack removeItemNoUpdate(int slot) {
-        return ContainerHelper.takeItem(this.inventory, slot);
+        ItemStack stack = ContainerHelper.takeItem(this.inventory, slot);
+        setChanged();
+        sync();
+        return stack;
     }
 
     @Override
     public void setItem(int slot, @NotNull ItemStack stack) {
         ItemStack previous = inventory.set(slot, stack);
 
-        if (slot == ArcaneWorkbenchMenu.CENTRE_SLOT && previous.isEmpty() != stack.isEmpty()) this.sync();
+        // Sincroniza si el slot central cambió de contenido
+        if (slot == ArcaneWorkbenchMenu.CENTRE_SLOT && !ItemStack.isSameItemSameTags(previous, stack)) {
+            this.sync();
+        }
 
         if (!stack.isEmpty() && stack.getCount() > getMaxStackSize()) {
             stack.setCount(getMaxStackSize());
         }
+        this.sync();
         this.setChanged();
     }
+
 
     @Override
     public boolean hasCustomName() {
@@ -115,6 +176,13 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     @Override
     public boolean stillValid(@NotNull Player player) {
         return level.getBlockEntity(worldPosition) == this && player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) < 64;
+    }
+
+    @Override
+    public @NotNull CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag);
+        return tag;
     }
 
     @Override
@@ -156,7 +224,7 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-        this.inventory = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
+        if(inventory == null) this.inventory = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, this.inventory);
     }
 

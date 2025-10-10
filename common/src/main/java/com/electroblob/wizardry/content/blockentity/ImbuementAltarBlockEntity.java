@@ -93,7 +93,7 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
 
 
         ItemStack[] receptacleItems = getReceptacleItems(level, worldPosition);
-        if(Arrays.stream(receptacleItems).anyMatch(Objects::isNull)){
+        if (Arrays.stream(receptacleItems).anyMatch(Objects::isNull)) {
             imbuementTimer = 0;
             return;
         }
@@ -116,15 +116,15 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         }
     }
 
-    private static ItemStack[] getReceptacleItems(Level level, BlockPos pos){
+    private static ItemStack[] getReceptacleItems(Level level, BlockPos pos) {
         ItemStack[] items = new ItemStack[4];
         BlockEntity te;
 
-        for(int i = 0; i < 4; i++){
+        for (int i = 0; i < 4; i++) {
             te = level.getBlockEntity(pos.relative(BlockUtil.getHorizontals()[i]));
-            if(te instanceof ReceptacleBlockEntity e && e.getStack() != null){
+            if (te instanceof ReceptacleBlockEntity e && e.getStack() != null) {
                 items[i] = e.getStack();
-            }else{
+            } else {
                 items[i] = null;
             }
         }
@@ -136,7 +136,7 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         if (level == null) return;
 
         ItemStack[] receptacleItems = getReceptacleItems(level, worldPosition);
-        if(Arrays.stream(receptacleItems).anyMatch(Objects::isNull)){
+        if (Arrays.stream(receptacleItems).anyMatch(Objects::isNull)) {
             imbuementTimer = 0;
             return;
         }
@@ -158,9 +158,9 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
                 receptacleItems[i].shrink(1);
             }
 
-            for(int i = 0; i < 4; i++){
+            for (int i = 0; i < 4; i++) {
                 BlockEntity entity = level.getBlockEntity(worldPosition.relative(BlockUtil.getHorizontals()[i]));
-                if(entity instanceof ReceptacleBlockEntity e){
+                if (entity instanceof ReceptacleBlockEntity e) {
                     e.setStack(ItemStack.EMPTY);
                     level.sendBlockUpdated(e.getBlockPos(), e.getBlockState(), e.getBlockState(), 3);
                 }
@@ -233,7 +233,7 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
 
     public void setStack(ItemStack stack, boolean shouldCheckRecipe) {
         this.stack = stack;
-        if(shouldCheckRecipe) checkRecipe();
+        if (shouldCheckRecipe) checkRecipe();
         setChanged();
         if (level != null && !level.isClientSide) {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);

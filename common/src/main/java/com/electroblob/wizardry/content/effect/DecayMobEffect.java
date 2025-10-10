@@ -16,7 +16,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-// TODO maybe I miss to put the particles...
 public class DecayMobEffect extends MagicMobEffect {
     public DecayMobEffect() {
         super(MobEffectCategory.HARMFUL, 0x3c006c);

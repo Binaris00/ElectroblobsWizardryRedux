@@ -23,6 +23,7 @@ import com.electroblob.wizardry.content.spell.lightning.LightningPulse;
 import com.electroblob.wizardry.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.content.spell.necromancy.*;
 import com.electroblob.wizardry.content.spell.sorcery.*;
+import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
@@ -546,9 +547,12 @@ public final class Spells {
 
         CURSE_OF_SOULBINDING = spell("curse_of_soulbinding", CurseOfSoulbinding::new);
 
-        BLOCK_SURPRISE = spell("block_surprise", BlockWithSurprise::new);
-
         GREATER_TELEKINESIS = spell("greater_telekinesis", BlockWithSurprise::new); // todo
+
+        LIGHTNING_PULSE = spell("lightning_pulse", LightningPulse::new);
+
+
+        BLOCK_SURPRISE = spell("block_surprise", BlockWithSurprise::new);
 
         SUMMON_RICH = spell("summon_rich", () -> new MinionSpell<>((l) -> new WitherSkeleton(EntityType.WITHER_SKELETON, l)).assignProperties(
                 SpellProperties.builder()
@@ -556,10 +560,9 @@ public final class Spells {
                         .add(DefaultProperties.MINION_COUNT, 1)
                         .add(DefaultProperties.MINION_LIFETIME, 1200)
                         .add(DefaultProperties.SUMMON_RADIUS, 5)
+                        .add(DefaultProperties.SENSIBLE, true)
                         .build()
         ));
-
-        LIGHTNING_PULSE = spell("lightning_pulse", LightningPulse::new);
     }
 
     // ======= Registry =======
@@ -569,6 +572,11 @@ public final class Spells {
 
     @SuppressWarnings("unchecked")
     public static void register(Registry<?> registry, RegisterFunction<Spell> function){
+        // remove all the spells with the sensible property
+        if(!Services.PLATFORM.isDevelopmentEnvironment()) {
+            SPELLS.values().removeIf(spell -> spell.property(DefaultProperties.SENSIBLE));
+        }
+
         SPELLS.forEach(((id, spell) ->
                 function.register((Registry<Spell>) registry, WizardryMainMod.location(id), spell)));
     }

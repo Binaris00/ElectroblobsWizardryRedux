@@ -30,12 +30,12 @@ public class MagicMissileEntity extends MagicArrowEntity {
 
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
+        super.onHitEntity(hitResult);
         this.playSound(EBSounds.ENTITY_MAGIC_MISSILE_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
 
         if (this.level().isClientSide()) {
             ParticleBuilder.create(EBParticles.FLASH).pos(this.xo, this.yo, this.zo).color(1, 1, 0.65f).spawn(this.level());
         }
-        super.onHitEntity(hitResult);
     }
 
     @Override
@@ -46,20 +46,29 @@ public class MagicMissileEntity extends MagicArrowEntity {
     }
 
     @Override
-    public void tick() {
-        if((this.inGround && !this.level().isClientSide) || tickCount > 1) return;
+    public void ticksInAir() {
+        if(!this.level().isClientSide) return;
 
-        ParticleBuilder.create(EBParticles.SPARKLE, level().getRandom(), this.xo, this.yo, this.zo, 0.03, true)
-                .color(1, 1, 0.65f).time(20 + random.nextInt(10)).fade(0.7f, 0, 1).spawn(this.level());
+        double x = getX() - getDeltaMovement().x / 2;
+        double y = getY() - getDeltaMovement().y / 2;
+        double z = getZ() - getDeltaMovement().z / 2;
 
-        double x = this.xo - this.getDeltaMovement().x / 2;
-        double y = this.yo - this.getDeltaMovement().y / 2;
-        double z = this.zo - this.getDeltaMovement().z / 2;
-//
-        ParticleBuilder.create(EBParticles.SPARKLE, level().getRandom(), x, y, z, 0.03, true)
-                .color(1, 1, 0.65f).time(20 + random.nextInt(10)).fade(0.7f, 0, 1).spawn(this.level());
+        if (WizardryMainMod.IS_THE_SEASON) {
+            ParticleBuilder.create(EBParticles.SPARKLE, random, getX(), getY(), getZ(), 0.03, true).color(0.8f, 0.15f, 0.15f).time(20 + random.nextInt(10)).spawn(this.level());
 
-        super.tick();
+            ParticleBuilder.create(EBParticles.SNOW).pos(getX(), getY(), getZ()).spawn(this.level());
+
+            if (this.tickCount > 1) {
+                ParticleBuilder.create(EBParticles.SPARKLE, random, x, y, z, 0.03, true).color(0.15f, 0.7f, 0.15f).time(20 + random.nextInt(10)).spawn(this.level());
+            }
+        } else {
+            ParticleBuilder.create(EBParticles.SPARKLE, random, getX(), getY(), getZ(), 0.03, true).color(1, 1, 0.65f).fade(0.7f, 0, 1).time(20 + random.nextInt(10)).spawn(this.level());
+
+            if (this.tickCount > 1) {
+                ParticleBuilder.create(EBParticles.SPARKLE, level().getRandom(), x, y, z, 0.03, true)
+                        .color(1, 1, 0.65f).time(20 + random.nextInt(10)).fade(0.7f, 0, 1).spawn(this.level());
+            }
+        }
     }
 
     @Override

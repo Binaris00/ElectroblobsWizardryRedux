@@ -31,5 +31,9 @@ public final class DefaultProperties {
     public static final SpellProperty<Integer> MAX_TARGETS = SpellProperty.intProperty("max_targets");
     public static final SpellProperty<Float> HEALTH = SpellProperty.floatProperty("health");
 
+    // This is used by some spells to determine if they should be only for dev environment, only for ebw register logic
+    // if you want this you should make the condition inside your register method
+    public static final SpellProperty<Boolean> SENSIBLE = SpellProperty.booleanProperty("sensible", false);
+
     private DefaultProperties() {}
 }

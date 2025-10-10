@@ -56,9 +56,6 @@ public class WizardArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
 
     @Override
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        //TODO ARMOR STUFF
-        //if(entity.isInvisible() && !entity.getEntityData().getBoolean(BlockStatue.PETRIFIED_NBT_KEY) && !entity.getEntityData().getBoolean(BlockStatue.FROZEN_NBT_KEY)) return;
-    	
         if (this.crouching) {
             this.robe.z = 4;
         } else {

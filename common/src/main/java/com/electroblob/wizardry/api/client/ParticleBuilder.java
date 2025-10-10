@@ -67,7 +67,10 @@ public final class ParticleBuilder {
      * @return The ParticleBuilder instance
      * */
     private ParticleBuilder particle(DeferredObject<SimpleParticleType> particle){
-        if(instance.building) throw new IllegalStateException("Already building! Particle being built: " + this.getCurrentParticleString());
+        if(instance.building) {
+            EBLogger.warn("Attempted to build an already built particle: " + this.getCurrentParticleString());
+            return instance;
+        }
         this.particle = particle;
         this.building = true;
         return this;

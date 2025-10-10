@@ -20,11 +20,22 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
 public final class BlockUtil {
+    /**
+     * Used because {@code Direction#BY_2D_DATA} is private, thx mojang
+     */
+    public static Direction[] getHorizontals() {
+        return Arrays.stream(Direction.values()).filter((direction)
+                        -> direction.getAxis().isHorizontal()).sorted(Comparator.comparingInt(Direction::get2DDataValue))
+                .toArray(Direction[]::new);
+    }
+
     public static boolean canBlockBeReplaced(Level world, BlockPos pos) {
         return canBlockBeReplaced(world, pos, false);
     }
@@ -117,7 +128,7 @@ public final class BlockUtil {
         }
     }
 
-    public static boolean isBlockUnbreakable(Level world, BlockPos pos){
+    public static boolean isBlockUnbreakable(Level world, BlockPos pos) {
         return !world.isEmptyBlock(new BlockPos(pos)) && world.getBlockState(pos).isSolid();
     }
 
@@ -142,8 +153,9 @@ public final class BlockUtil {
     /**
      * Returns true if the block at the given position is a tree block (or other 'solid' vegetation, such as cacti).
      * Used for structure generation.
+     *
      * @param world The world the block is in
-     * @param pos The position of the block to be tested
+     * @param pos   The position of the block to be tested
      * @return True if the given block is a tree block, false if not.
      */
     public static boolean isTreeBlock(Level world, BlockPos pos) {
