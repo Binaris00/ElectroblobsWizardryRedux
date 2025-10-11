@@ -6,24 +6,29 @@ import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * Arcane Workbench slot that only accepts items implementing {@link IWorkbenchItem}.
+ * Notifies the menu when its contents change.
+ */
 public class SlotWorkbenchItem extends Slot {
-    private final ArcaneWorkbenchMenu container;
+    private final ArcaneWorkbenchMenu menu;
 
-    public SlotWorkbenchItem(Container p_40223_, int p_40224_, int p_40225_, int p_40226_, ArcaneWorkbenchMenu container) {
-        super(p_40223_, p_40224_, p_40225_, p_40226_);
-        this.container = container;
+    public SlotWorkbenchItem(Container container, int slot, int x, int y, ArcaneWorkbenchMenu menu) {
+        super(container, slot, x, y);
+        this.menu = menu;
     }
 
     @Override
-    public void set(ItemStack stack) {
+    public void set(@NotNull ItemStack stack) {
         super.set(stack);
-        this.container.onSlotChanged(index, stack, null);
+        this.menu.onSlotChanged(index, stack, null);
     }
 
     @Override
-    public void onTake(Player player, ItemStack stack) {
-        this.container.onSlotChanged(index, ItemStack.EMPTY, player);
+    public void onTake(@NotNull Player player, @NotNull ItemStack stack) {
+        this.menu.onSlotChanged(index, ItemStack.EMPTY, player);
     }
 
     @Override

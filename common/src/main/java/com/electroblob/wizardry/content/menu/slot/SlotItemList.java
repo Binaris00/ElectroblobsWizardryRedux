@@ -12,8 +12,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
-
-/** Slot to save a list of available items to add with it and a custom no-item-texture */
+/**
+ * Arcane Workbench Slot that only allows specific items and has a configurable stack limit and icon.
+ */
 public class SlotItemList extends Slot {
     private final Item[] items;
     private final int stackLimit;

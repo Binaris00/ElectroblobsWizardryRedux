@@ -4,14 +4,19 @@ import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 
+/**
+ * Arcane Workbench Slot that only allows items whose class matches one of the specified allowed item classes.
+ * The slot also enforces a configurable stack size limit.
+ */
 public class SlotItemClassList extends Slot {
     private final Class<? extends Item>[] itemClasses;
-    private int stackLimit;
+    private final int stackLimit;
 
     @SuppressWarnings("unchecked")
-    public SlotItemClassList(Container p_40223_, int p_40224_, int p_40225_, int p_40226_, int stackLimit, Class<? extends Item>... allowedItemClasses) {
-        super(p_40223_, p_40224_, p_40225_, p_40226_);
+    public SlotItemClassList(Container container, int slot, int x, int y, int stackLimit, Class<? extends Item>... allowedItemClasses) {
+        super(container, slot, x, y);
         this.itemClasses = allowedItemClasses;
         this.stackLimit = stackLimit;
     }
@@ -22,7 +27,7 @@ public class SlotItemClassList extends Slot {
     }
 
     @Override
-    public boolean mayPlace(ItemStack stack) {
+    public boolean mayPlace(@NotNull ItemStack stack) {
         for (Class<? extends Item> itemClass : itemClasses) {
             if (itemClass.isAssignableFrom(stack.getItem().getClass())) {
                 return true;

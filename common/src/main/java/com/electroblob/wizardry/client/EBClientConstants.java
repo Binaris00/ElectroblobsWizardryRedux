@@ -12,12 +12,15 @@ public class EBClientConstants {
     public static final int PROGRESSION_BAR_WIDTH = 131;
     public static final int PROGRESSION_BAR_HEIGHT = 3;
     public static final Font FONT = Minecraft.getInstance().font;
-    public static final ResourceLocation TEXTURE = WizardryMainMod.location("textures/gui/container/arcane_workbench.png");
+
+    public static final ResourceLocation ARCANE_WORKBENCH_CONTAINER_TEXTURE = WizardryMainMod.location("textures/gui/container/arcane_workbench.png");
+    public static final ResourceLocation ARCANE_WORKBENCH_EMPTY_SLOT_CRYSTAL = new ResourceLocation("item/empty_slot_crystal");
+    public static final ResourceLocation ARCANE_WORKBENCH_EMPTY_SLOT_UPGRADE = new ResourceLocation("item/empty_slot_upgrade");
+
     public static final int TOOLTIP_WIDTH = 144;
     public static final int TOOLTIP_BORDER = 6;
     public static final int LINE_SPACING_WIDE = 5;
     public static final int LINE_SPACING_NARROW = 1;
-    public static final int BOOKSHELF_UI_WIDTH = ArcaneWorkbenchMenu.BOOKSHELF_UI_WIDTH;
     public static final int MAIN_GUI_WIDTH = 176;
     public static final int RUNE_LEFT = 38;
     public static final int RUNE_TOP = 22;
