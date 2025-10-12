@@ -1,32 +1,24 @@
 package com.electroblob.wizardry.client.renderer.blockentity;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.content.blockentity.ArcaneWorkbenchBlockEntity;
 import com.electroblob.wizardry.content.menu.ArcaneWorkbenchMenu;
-import com.electroblob.wizardry.setup.registries.EBItems;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Axis;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.texture.OverlayTexture;
-import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.joml.Matrix4f;
 
-import java.util.logging.Level;
 
 // This render checks the player view angle to rotate the wand inside of it accordingly (of course it needs to have one
 // in it first) - this is done in a similar way to the enchanting table book, specially the way that the block rotates

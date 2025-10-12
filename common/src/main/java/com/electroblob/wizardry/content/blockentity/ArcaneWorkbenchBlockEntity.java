@@ -36,17 +36,14 @@ import java.util.Set;
 public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     private NonNullList<ItemStack> inventory;
     public float timer = 0;
-    private boolean doNotSync;
 
     public float rot;
     public float oRot;
     public float tRot;
 
-
     public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(EBBlockEntities.ARCANE_WORKBENCH.get(), blockPos, blockState);
         inventory = NonNullList.withSize(ArcaneWorkbenchMenu.UPGRADE_SLOT + 1, ItemStack.EMPTY);
-        this.doNotSync = true;
     }
 
     // ===============================
@@ -54,68 +51,61 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     // ===============================
 
     public void sync() {
-        this.level.setBlocksDirty(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition));
-        this.level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+        setChanged();
+        level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
     }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
-        entity.doNotSync = false;
-
         ItemStack stack = entity.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
-
-        setChanged(level, pos, state);
         if (stack.getItem() instanceof IManaStoringItem manaItem && !level.isClientSide && !manaItem.isManaFull(stack) && level.getGameTime() % EBConfig.CONDENSER_TICK_INTERVAL == 0) {
             manaItem.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
         }
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
-        if (level.isClientSide) {
-            entity.timer++;
+        if (!level.isClientSide) return;
 
-            // Book rotation animation
-            entity.oRot = entity.rot;
-            Player player = level.getNearestPlayer(
-                    (double)pos.getX() + 0.5D,
-                    (double)pos.getY() + 0.5D,
-                    (double)pos.getZ() + 0.5D,
-                    3.0D,
-                    false
-            );
+        entity.timer++;
 
-            if (player != null) {
-                double dx = player.getX() - ((double)pos.getX() + 0.5D);
-                double dz = player.getZ() - ((double)pos.getZ() + 0.5D);
-                entity.tRot = (float) Math.atan2(dz, dx);
-            } else {
-                entity.tRot += 0.02F;
-            }
+        entity.oRot = entity.rot;
+        Player player = level.getNearestPlayer((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
+                3.0D,
+                false
+        );
 
-            // Normalize angles
-            while(entity.rot >= (float)Math.PI) {
-                entity.rot -= ((float)Math.PI * 2F);
-            }
-            while(entity.rot < -(float)Math.PI) {
-                entity.rot += ((float)Math.PI * 2F);
-            }
-            while(entity.tRot >= (float)Math.PI) {
-                entity.tRot -= ((float)Math.PI * 2F);
-            }
-            while(entity.tRot < -(float)Math.PI) {
-                entity.tRot += ((float)Math.PI * 2F);
-            }
-
-            // Smooth rotation
-            float rotDiff = entity.tRot - entity.rot;
-            while(rotDiff >= (float)Math.PI) {
-                rotDiff -= ((float)Math.PI * 2F);
-            }
-            while(rotDiff < -(float)Math.PI) {
-                rotDiff += ((float)Math.PI * 2F);
-            }
-
-            entity.rot += rotDiff * 0.4F;
+        if (player != null) {
+            double dx = player.getX() - ((double) pos.getX() + 0.5D);
+            double dz = player.getZ() - ((double) pos.getZ() + 0.5D);
+            entity.tRot = (float) Math.atan2(dz, dx);
+        } else {
+            entity.tRot += 0.02F;
         }
+
+        // Normalize angles
+        while (entity.rot >= (float) Math.PI) {
+            entity.rot -= ((float) Math.PI * 2F);
+        }
+        while (entity.rot < -(float) Math.PI) {
+            entity.rot += ((float) Math.PI * 2F);
+        }
+        while (entity.tRot >= (float) Math.PI) {
+            entity.tRot -= ((float) Math.PI * 2F);
+        }
+        while (entity.tRot < -(float) Math.PI) {
+            entity.tRot += ((float) Math.PI * 2F);
+        }
+
+        // Smooth rotation
+        float rotDiff = entity.tRot - entity.rot;
+        while (rotDiff >= (float) Math.PI) {
+            rotDiff -= ((float) Math.PI * 2F);
+        }
+        while (rotDiff < -(float) Math.PI) {
+            rotDiff += ((float) Math.PI * 2F);
+        }
+
+        entity.rot += rotDiff * 0.4F;
+
     }
 
 
@@ -134,36 +124,28 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     }
 
     @Override
+    public void setItem(int slot, @NotNull ItemStack stack) {
+        inventory.set(slot, stack);
+        if (!stack.isEmpty() && stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
+        }
+
+        this.sync(); // temp
+    }
+
+    @Override
     public @NotNull ItemStack removeItem(int slot, int amount) {
         ItemStack stack = ContainerHelper.removeItem(this.inventory, slot, amount);
-        setChanged();
-        sync();
+        this.sync();
         return stack;
     }
 
     @Override
     public @NotNull ItemStack removeItemNoUpdate(int slot) {
         ItemStack stack = ContainerHelper.takeItem(this.inventory, slot);
-        setChanged();
         sync();
         return stack;
     }
-
-    @Override
-    public void setItem(int slot, @NotNull ItemStack stack) {
-        ItemStack previous = inventory.set(slot, stack);
-
-        if (slot == ArcaneWorkbenchMenu.CENTRE_SLOT && !ItemStack.isSameItemSameTags(previous, stack)) {
-            this.sync();
-        }
-
-        if (!stack.isEmpty() && stack.getCount() > getMaxStackSize()) {
-            stack.setCount(getMaxStackSize());
-        }
-        this.sync();
-        this.setChanged();
-    }
-
 
     @Override
     public boolean hasCustomName() {
@@ -221,7 +203,7 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-        if(inventory == null) this.inventory = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
+        if (inventory == null) this.inventory = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
         ContainerHelper.loadAllItems(tag, this.inventory);
     }
 
@@ -265,10 +247,5 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     @Override
     public Packet<ClientGamePacketListener> getUpdatePacket() {
         return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    @Override
-    public void setChanged() {
-        super.setChanged();
     }
 }
