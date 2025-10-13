@@ -68,24 +68,24 @@ public final class EBBlocks {
     public static final DeferredObject<Block> ACACIA_LECTERN = block("acacia_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
     public static final DeferredObject<Block> DARK_OAK_LECTERN = block("dark_oak_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
 
-    public static final DeferredObject<Block> FIRE_RUNESTONE = block("fire_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> ICE_RUNESTONE = block("ice_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> LIGHTNING_RUNESTONE = block("lightning_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> NECROMANCY_RUNESTONE = block("necromancy_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> EARTH_RUNESTONE = block("earth_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> SORCERY_RUNESTONE = block("sorcery_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> HEALING_RUNESTONE = block("healing_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> FIRE_RUNESTONE = block("fire_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> ICE_RUNESTONE = block("ice_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> LIGHTNING_RUNESTONE = block("lightning_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> NECROMANCY_RUNESTONE = block("necromancy_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> EARTH_RUNESTONE = block("earth_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> SORCERY_RUNESTONE = block("sorcery_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> HEALING_RUNESTONE = block("healing_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
 
-    public static final DeferredObject<Block> FIRE_RUNESTONE_PEDESTAL = block("fire_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> ICE_RUNESTONE_PEDESTAL = block("ice_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> LIGHTNING_RUNESTONE_PEDESTAL = block("lightning_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> NECROMANCY_RUNESTONE_PEDESTAL = block("necromancy_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> EARTH_RUNESTONE_PEDESTAL = block("earth_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> SORCERY_RUNESTONE_PEDESTAL = block("sorcery_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> HEALING_RUNESTONE_PEDESTAL = block("healing_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> FIRE_RUNESTONE_PEDESTAL = block("fire_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> ICE_RUNESTONE_PEDESTAL = block("ice_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> LIGHTNING_RUNESTONE_PEDESTAL = block("lightning_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> NECROMANCY_RUNESTONE_PEDESTAL = block("necromancy_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> EARTH_RUNESTONE_PEDESTAL = block("earth_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> SORCERY_RUNESTONE_PEDESTAL = block("sorcery_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
+    public static final DeferredObject<Block> HEALING_RUNESTONE_PEDESTAL = block("healing_runestone_pedestal", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
 
 
-    public static final DeferredObject<Block> TRANSPORTATION_STONE = block("transportation_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> TRANSPORTATION_STONE = block("transportation_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).noCollission().strength(4)), false, true, true);
     public static final DeferredObject<Block> RECEPTACLE = block("receptacle", ReceptacleBlock::new, false, true, true);
     public static final DeferredObject<Block> IMBUEMENT_ALTAR = block("imbuement_altar", ImbuementAltar::new, false, true, true);
 

@@ -2,6 +2,7 @@
   "base_properties": {
     "minion_count": 1,
     "minion_lifetime": 1200,
+    "sensible": true,
     "summon_radius": 5
   },
   "charge": 50,
