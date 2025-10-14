@@ -37,11 +37,41 @@ public final class EBBlockStateProvider extends BlockStateProvider {
         runestone(EBBlocks.NECROMANCY_RUNESTONE.get(), "necromancy_runestone", "runestone_necromancy");
         runestone(EBBlocks.SORCERY_RUNESTONE.get(), "sorcery_runestone", "runestone_sorcery");
 
+        runestonePedestal(EBBlocks.FIRE_RUNESTONE_PEDESTAL.get(), "fire_runestone_pedestal", "runestone_pedestal_fire", "runestone_fire");
+        runestonePedestal(EBBlocks.EARTH_RUNESTONE_PEDESTAL.get(), "earth_runestone_pedestal", "runestone_pedestal_earth", "runestone_earth");
+        runestonePedestal(EBBlocks.HEALING_RUNESTONE_PEDESTAL.get(), "healing_runestone_pedestal", "runestone_pedestal_healing", "runestone_healing");
+        runestonePedestal(EBBlocks.ICE_RUNESTONE_PEDESTAL.get(), "ice_runestone_pedestal", "runestone_pedestal_ice", "runestone_ice");
+        runestonePedestal(EBBlocks.LIGHTNING_RUNESTONE_PEDESTAL.get(), "lightning_runestone_pedestal", "runestone_pedestal_lightning", "runestone_lightning");
+        runestonePedestal(EBBlocks.NECROMANCY_RUNESTONE_PEDESTAL.get(), "necromancy_runestone_pedestal", "runestone_pedestal_necromancy", "runestone_necromancy");
+        runestonePedestal(EBBlocks.SORCERY_RUNESTONE_PEDESTAL.get(), "sorcery_runestone_pedestal", "runestone_pedestal_sorcery", "runestone_sorcery");
+
 
     }
 
     private void blockWithItem(DeferredObject<Block> block) {
         simpleBlockWithItem(block.get(), cubeAll(block.get()));
+    }
+
+    private void runestonePedestal(Block block, String name, String textureName, String topBottomTexture){
+        //this.simpleBlock(block);
+
+        models().withExistingParent(name, "ebwizardry:block/runestone_pedestal")
+                .texture("side", "ebwizardry:block/%s".formatted(textureName))
+                .texture("top", "ebwizardry:block/%s_0".formatted(topBottomTexture))
+                .texture("bottom", "ebwizardry:block/%s_0".formatted(topBottomTexture))
+                .texture("overlay", "ebwizardry:block/%s_overlay".formatted(textureName));
+
+        itemModels().getBuilder(name).parent(this.itemModels().getExistingFile(new ResourceLocation(WizardryMainMod.MOD_ID, "item/runestone_pedestal_item")))
+                .texture("side", "ebwizardry:block/%s".formatted(textureName))
+                .texture("top", "ebwizardry:block/%s_0".formatted(topBottomTexture))
+                .texture("bottom", "ebwizardry:block/%s_0".formatted(topBottomTexture))
+                .texture("overlay", "ebwizardry:block/%s_overlay".formatted(textureName));
+
+        getVariantBuilder(block)
+                .partialState()
+                .addModels(ConfiguredModel.builder()
+                        .modelFile(models().getExistingFile(modLoc(name)))
+                        .build());
     }
 
     /**

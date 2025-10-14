@@ -47,12 +47,12 @@ public final class EBBlocks {
     public static final DeferredObject<Block> METEOR = block("meteor", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state) -> 1)), false, false, false);
 
     // TODO Temp blocks because I will work on crafts, not on adding misc stuff
-    public static final DeferredObject<Block> GILDED_OAK_WOOD = block("gilded_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> GILDED_SPRUCE_WOOD = block("gilded_spruce_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> GILDED_BIRCH_WOOD = block("gilded_birch_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> GILDED_JUNGLE_WOOD = block("gilded_jungle_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> GILDED_ACACIA_WOOD = block("gilded_acacia_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> GILDED_DARK_OAK_WOOD = block("gilded_dark_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> GILDED_OAK_WOOD = block("gilded_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
+    public static final DeferredObject<Block> GILDED_SPRUCE_WOOD = block("gilded_spruce_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
+    public static final DeferredObject<Block> GILDED_BIRCH_WOOD = block("gilded_birch_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
+    public static final DeferredObject<Block> GILDED_JUNGLE_WOOD = block("gilded_jungle_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
+    public static final DeferredObject<Block> GILDED_ACACIA_WOOD = block("gilded_acacia_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
+    public static final DeferredObject<Block> GILDED_DARK_OAK_WOOD = block("gilded_dark_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
 
     public static final DeferredObject<Block> OAK_BOOKSHELF = block("oak_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
     public static final DeferredObject<Block> SPRUCE_BOOKSHELF = block("spruce_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
