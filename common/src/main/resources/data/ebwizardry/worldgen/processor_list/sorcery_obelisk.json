@@ -1,0 +1,53 @@
+{
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "minecraft:random_block_match",
+            "block": "ebwizardry:fire_runestone",
+            "probability": 1.0
+          },
+          "output_state": {
+            "Name": "ebwizardry:sorcery_runestone"
+          }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "minecraft:random_block_match",
+            "block": "minecraft:bee_nest",
+            "probability": 1.0
+          },
+          "output_state": {
+            "Name": "minecraft:spawner"
+          },
+          "block_entity_modifier": {
+            "type": "minecraft:append_static",
+            "data": {
+              "SpawnData": {
+                "entity": {
+                  "id": "ebwizardry:remnant",
+                  "Element": "ebwizardry:sorcery"
+                }
+              },
+              "SpawnRange": 8,
+              "RequiredPlayerRange": 32,
+              "MaxNearbyEntities": 8,
+              "Delay": 100,
+              "MinSpawnDelay": 100,
+              "MaxSpawnDelay": 400,
+              "SpawnCount": 3
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

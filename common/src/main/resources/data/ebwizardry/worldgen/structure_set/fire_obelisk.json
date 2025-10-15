@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "ebwizardry:fire_obelisk",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 1234567,
+    "separation": 8,
+    "spacing": 34,
+    "type": "minecraft:random_spread"
+  }
+}

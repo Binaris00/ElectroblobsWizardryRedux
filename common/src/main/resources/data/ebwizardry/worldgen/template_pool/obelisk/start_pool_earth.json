@@ -1,0 +1,43 @@
+{
+  "name": "ebwizardry:obelisk/start_pool_earth",
+
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:obelisk_0",
+        "processors": "ebwizardry:earth_obelisk",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:obelisk_1",
+        "processors": "ebwizardry:earth_obelisk",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "obelisk_2",
+        "processors": "ebwizardry:earth_obelisk",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "obelisk_3",
+        "processors": "ebwizardry:earth_obelisk",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

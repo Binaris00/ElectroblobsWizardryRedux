@@ -1,0 +1,15 @@
+{
+  "structures": [
+    {
+      "structure": "ebwizardry:healing_obelisk",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 5272519,
+    "separation": 8,
+    "spacing": 34,
+
+    "type": "minecraft:random_spread"
+  }
+}

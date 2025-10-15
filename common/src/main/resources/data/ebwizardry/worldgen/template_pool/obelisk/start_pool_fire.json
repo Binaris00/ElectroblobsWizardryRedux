@@ -1,0 +1,43 @@
+{
+  "name": "ebwizardry:obelisk/start_pool_fire",
+
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:obelisk_0",
+        "processors": "ebwizardry:fire_obelisk",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:obelisk_1",
+        "processors": "ebwizardry:fire_obelisk",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:obelisk_2",
+        "processors": "ebwizardry:fire_obelisk",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:obelisk_3",
+        "processors": "ebwizardry:fire_obelisk",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}
