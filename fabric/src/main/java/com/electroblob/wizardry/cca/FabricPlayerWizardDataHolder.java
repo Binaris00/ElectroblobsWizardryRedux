@@ -18,7 +18,7 @@ public class FabricPlayerWizardDataHolder implements FPWizardDataComponent, Auto
     // Quick example to show how to sync
     public void onSync(PlayerWizardData newWizardData){
         this.wizardData = newWizardData;
-        EBFabricComponents.WIZARD_DATA.sync(this.provider);
+        EBEntityComponents.WIZARD_DATA.sync(this.provider);
     }
 
 //    @Override

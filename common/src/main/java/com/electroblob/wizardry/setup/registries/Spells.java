@@ -131,6 +131,7 @@ public final class Spells {
     public static final Spell GREATER_TELEKINESIS;
     public static final Spell SUMMON_RICH;
     public static final Spell LIGHTNING_PULSE;
+    public static final Spell FLAME_FLAME;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -560,6 +561,14 @@ public final class Spells {
                         .add(DefaultProperties.MINION_COUNT, 1)
                         .add(DefaultProperties.MINION_LIFETIME, 1200)
                         .add(DefaultProperties.SUMMON_RADIUS, 5)
+                        .add(DefaultProperties.SENSIBLE, true)
+                        .build()
+        ));
+
+        FLAME_FLAME = spell("flame_flame", () -> new ConjureItemSpell(EBItems.ASTRAL_DIAMOND.get()).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.NOVICE, Elements.FIRE, SpellType.CONSTRUCT, SpellAction.POINT, 5, 0, 5)
+                        .add(DefaultProperties.ITEM_LIFETIME, 200)
                         .add(DefaultProperties.SENSIBLE, true)
                         .build()
         ));

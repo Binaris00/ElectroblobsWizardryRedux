@@ -1,6 +1,7 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.capabilities.ForgeConjureItemData;
 import com.electroblob.wizardry.capabilities.ForgeMinionData;
 import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
@@ -15,6 +16,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -41,6 +43,7 @@ public final class WizardryForgeMod {
         }
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ForgePlayerWizardData::attachCapability);
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ForgeMinionData::attachCapability);
+        MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, ForgeConjureItemData::attachCapability);
     }
 
 

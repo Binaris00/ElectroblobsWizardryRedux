@@ -1,5 +1,6 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.ConjureItemData;
 import com.electroblob.wizardry.api.MinionData;
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
@@ -62,6 +63,7 @@ public final class EBEventHelper {
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
         bus.register(EBLivingTick.class, ArtefactItem::onArtifactTick);
         bus.register(EBLivingTick.class, MinionData::onLivingTick);
+        bus.register(EBLivingTick.class, ConjureItemData::onPlayerTickEvent);
 
     }
 

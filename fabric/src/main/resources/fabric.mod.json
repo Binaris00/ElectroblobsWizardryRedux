@@ -22,7 +22,7 @@
             "com.electroblob.wizardry.client.WizardryFabricClient"
         ],
         "cardinal-components": [
-            "com.electroblob.wizardry.cca.EBFabricComponents"
+          "com.electroblob.wizardry.cca.EBEntityComponents"
         ]
     },
     "mixins": [
@@ -33,7 +33,8 @@
         "cardinal-components": [
             "ebwizardry:wizard_data",
             "ebwizardry:summoned_entity_data",
-            "ebwizardry:minion_data"
+            "ebwizardry:minion_data",
+            "ebwizardry:conjure_item"
         ]
     },
     "depends": {
