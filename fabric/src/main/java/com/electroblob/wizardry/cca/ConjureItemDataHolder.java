@@ -6,16 +6,15 @@ import com.electroblob.wizardry.api.ConjureItemData;
 import dev.onyxstudios.cca.api.v3.item.ItemComponent;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import org.jetbrains.annotations.NotNull;
 
-public class FabricConjureItemDataHolder extends ItemComponent implements FPConjureItemComponent {
+public class ConjureItemDataHolder extends ItemComponent implements ConjureItemComponent {
 
     private static final String KEY = "conjure_item_data";
 
     private ConjureItemData conjureItemData;
     private final ItemStack provider;
 
-    public FabricConjureItemDataHolder(ItemStack stack) {
+    public ConjureItemDataHolder(ItemStack stack) {
         super(stack);
         this.provider = stack;
         // lazy init only

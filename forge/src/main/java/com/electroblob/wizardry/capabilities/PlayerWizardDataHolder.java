@@ -23,17 +23,17 @@ import org.jetbrains.annotations.NotNull;
 
 /** Check {@link PlayerWizardData}, this class is just the implementation to load-save the player's wizard data */
 @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
-    private static final Capability<ForgePlayerWizardData> WIZARD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
+public class PlayerWizardDataHolder implements INBTSerializable<CompoundTag> {
+    private static final Capability<PlayerWizardDataHolder> WIZARD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     PlayerWizardData wizardData;
 
-    public ForgePlayerWizardData(){
+    public PlayerWizardDataHolder(){
         this.wizardData = new PlayerWizardData();
     }
 
     public static void attachCapability(AttachCapabilitiesEvent<Entity> e) {
         if (e.getObject() instanceof Player player) {
-            e.addCapability(new ResourceLocation(WizardryMainMod.MOD_ID, "wizard_data"), new ForgePlayerWizardData.Provider(player));
+            e.addCapability(new ResourceLocation(WizardryMainMod.MOD_ID, "wizard_data"), new PlayerWizardDataHolder.Provider(player));
         }
     }
 
@@ -41,8 +41,8 @@ public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
         return wizardData;
     }
 
-    public static ForgePlayerWizardData get(Player player) {
-        return player.getCapability(WIZARD_DATA_CAPABILITY).orElse(new ForgePlayerWizardData());
+    public static PlayerWizardDataHolder get(Player player) {
+        return player.getCapability(WIZARD_DATA_CAPABILITY).orElse(new PlayerWizardDataHolder());
     }
 
 //    public void update(Player player){
@@ -63,8 +63,8 @@ public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
     // TODO: Forge events to handle capabilities
     @SubscribeEvent
     public static void onPlayerCloneEvent(PlayerEvent.Clone event) {
-        ForgePlayerWizardData newData = ForgePlayerWizardData.get(event.getEntity());
-        ForgePlayerWizardData oldData = ForgePlayerWizardData.get(event.getOriginal());
+        PlayerWizardDataHolder newData = PlayerWizardDataHolder.get(event.getEntity());
+        PlayerWizardDataHolder oldData = PlayerWizardDataHolder.get(event.getOriginal());
 
 //        newData.copyFrom(oldData, event.isWasDeath());
 //        newData.sync();
@@ -89,11 +89,11 @@ public class ForgePlayerWizardData implements INBTSerializable<CompoundTag> {
 //    }
 
     public static class Provider implements ICapabilitySerializable<CompoundTag> {
-        private final LazyOptional<ForgePlayerWizardData> data;
+        private final LazyOptional<PlayerWizardDataHolder> data;
 
         // TODO
         public Provider(Player player) {
-            data = LazyOptional.of(ForgePlayerWizardData::new);
+            data = LazyOptional.of(PlayerWizardDataHolder::new);
         }
 
 

@@ -7,18 +7,18 @@ import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
 /** Check {@link PlayerWizardData}, this class is just the implementation to load-save the player's wizard data */
-public class FabricPlayerWizardDataHolder implements FPWizardDataComponent, AutoSyncedComponent {
+public class PlayerWizardDataHolder implements WizardDataComponent, AutoSyncedComponent {
     PlayerWizardData wizardData = new PlayerWizardData();
     private final Player provider;
 
-    public FabricPlayerWizardDataHolder(Player provider) {
+    public PlayerWizardDataHolder(Player provider) {
         this.provider = provider;
     }
 
     // Quick example to show how to sync
     public void onSync(PlayerWizardData newWizardData){
         this.wizardData = newWizardData;
-        EBEntityComponents.WIZARD_DATA.sync(this.provider);
+        EBComponents.WIZARD_DATA.sync(this.provider);
     }
 
 //    @Override

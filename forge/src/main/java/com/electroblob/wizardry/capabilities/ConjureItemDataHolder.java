@@ -1,11 +1,10 @@
 package com.electroblob.wizardry.capabilities;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.MinionData;
+import com.electroblob.wizardry.api.ConjureItemData;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -16,54 +15,56 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ForgeMinionData implements INBTSerializable<CompoundTag> {
-    public static final Capability<ForgeMinionData> MINION_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
+public class ConjureItemDataHolder implements INBTSerializable<CompoundTag> {
+    public static final Capability<ConjureItemDataHolder> CONJURE_ITEM_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {
     });
-    MinionData minionData;
-    Mob provider;
+    ConjureItemData conjureItemData;
+    ItemStack provider;
 
-    public ForgeMinionData(Mob mob) {
-        this.provider = mob;
-        this.minionData = new MinionData(provider);
+    public ConjureItemDataHolder(ItemStack stack) {
+        this.provider = stack;
+        this.conjureItemData = new ConjureItemData(provider);
     }
 
     @Override
     public CompoundTag serializeNBT() {
-        return minionData.serializeNBT(new CompoundTag());
+        CompoundTag tag = new CompoundTag();
+        conjureItemData.serializeNBT(tag);
+        return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        this.minionData = minionData.deserializeNBT(tag);
+        this.conjureItemData = conjureItemData.deserializeNBT(tag);
     }
 
-    public MinionData getMinionData() {
-        return minionData;
+    public ConjureItemData getConjureItemData() {
+        return conjureItemData;
     }
 
     // ====================================================
     // Capability stuff
     // ====================================================
-    public static void attachCapability(AttachCapabilitiesEvent<Entity> e) {
-        if(e.getObject() instanceof Mob mob) {
-            e.addCapability(WizardryMainMod.location("minion_data"), new ForgeMinionData.Provider(mob));
+    public static void attachCapability(AttachCapabilitiesEvent<ItemStack> e) {
+        if(ConjureItemData.applyItem(e.getObject().getItem())){
+            e.addCapability(WizardryMainMod.location("conjure_item"), new ConjureItemDataHolder.Provider(e.getObject()));
         }
     }
 
-    public static ForgeMinionData get(Mob mob) {
-        return mob.getCapability(MINION_DATA_CAPABILITY).orElse(new ForgeMinionData(mob));
+    public static ConjureItemDataHolder get(ItemStack stack) {
+        return stack.getCapability(CONJURE_ITEM_CAPABILITY).orElse(null);
     }
 
     public static class Provider implements ICapabilitySerializable<CompoundTag> {
-        private final LazyOptional<ForgeMinionData> data;
+        private final LazyOptional<ConjureItemDataHolder> data;
 
-        public Provider(Mob mob) {
-            this.data = LazyOptional.of(() -> new ForgeMinionData(mob));
+        public Provider(ItemStack stack) {
+            this.data = LazyOptional.of(() -> new ConjureItemDataHolder(stack));
         }
 
         @Override
         public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction direction) {
-            return MINION_DATA_CAPABILITY.orEmpty(capability, data.cast());
+            return CONJURE_ITEM_CAPABILITY.orEmpty(capability, data.cast());
         }
 
         @Override

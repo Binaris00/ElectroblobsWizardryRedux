@@ -1,9 +1,9 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
-import com.electroblob.wizardry.capabilities.ForgeConjureItemData;
-import com.electroblob.wizardry.capabilities.ForgeMinionData;
-import com.electroblob.wizardry.capabilities.ForgePlayerWizardData;
+import com.electroblob.wizardry.capabilities.ConjureItemDataHolder;
+import com.electroblob.wizardry.capabilities.MinionDataHolder;
+import com.electroblob.wizardry.capabilities.PlayerWizardDataHolder;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRender;
@@ -41,9 +41,9 @@ public final class WizardryForgeMod {
         if(FMLEnvironment.dist.isClient()) {
             modBus.addListener(WizardryForgeMod::clientSetup);
         }
-        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ForgePlayerWizardData::attachCapability);
-        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, ForgeMinionData::attachCapability);
-        MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, ForgeConjureItemData::attachCapability);
+        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, PlayerWizardDataHolder::attachCapability);
+        MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MinionDataHolder::attachCapability);
+        MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, ConjureItemDataHolder::attachCapability);
     }
 
 

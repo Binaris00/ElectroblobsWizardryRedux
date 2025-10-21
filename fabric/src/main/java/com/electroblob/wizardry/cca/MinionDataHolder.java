@@ -6,11 +6,11 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 
-public class FabricMinionDataHolder implements FPMinionDataComponent, AutoSyncedComponent {
+public class MinionDataHolder implements MinionDataComponent, AutoSyncedComponent {
     MinionData minionData;
     Mob provider;
 
-    public FabricMinionDataHolder(Mob mob) {
+    public MinionDataHolder(Mob mob) {
         this.provider = mob;
         this.minionData = new MinionData(provider);
     }

@@ -22,7 +22,7 @@
             "com.electroblob.wizardry.client.WizardryFabricClient"
         ],
         "cardinal-components": [
-          "com.electroblob.wizardry.cca.EBEntityComponents"
+          "com.electroblob.wizardry.cca.EBComponents"
         ]
     },
     "mixins": [

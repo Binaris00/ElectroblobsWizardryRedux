@@ -12,9 +12,9 @@ import java.util.HashSet;
 
 public class ConjureItemData {
     private static final HashSet<Item> APPLY_ITEMS = new HashSet<>();
-
     private ItemStack stack;
     private int lifetime = -1;
+    private int maxLifetime = -1;
     private boolean summoned = false;
 
     public ConjureItemData(ItemStack stack) {
@@ -33,6 +33,7 @@ public class ConjureItemData {
             return;
         }
 
+        stack.setDamageValue(stack.getDamageValue() + 1);
         this.setLifetime(getLifetime() -1);
     }
 
@@ -46,6 +47,14 @@ public class ConjureItemData {
 
     public void setLifetime(int lifetime) {
         this.lifetime = lifetime;
+    }
+
+    public int getMaxLifetime() {
+        return maxLifetime;
+    }
+
+    public void setMaxLifetime(int maxLifetime) {
+        this.maxLifetime = maxLifetime;
     }
 
     public boolean isSummoned() {
@@ -67,11 +76,13 @@ public class ConjureItemData {
     public void serializeNBT(@NotNull CompoundTag tag) {
         tag.putInt("lifetime", this.lifetime);
         tag.putBoolean("summoned", this.summoned);
+        tag.putInt("maxLifetime", this.maxLifetime);
     }
 
     public ConjureItemData deserializeNBT(@NotNull CompoundTag tag) {
         this.lifetime = tag.getInt("lifetime");
         this.summoned = tag.getBoolean("summoned");
+        this.maxLifetime = tag.getInt("maxLifetime");
         return this;
     }
 

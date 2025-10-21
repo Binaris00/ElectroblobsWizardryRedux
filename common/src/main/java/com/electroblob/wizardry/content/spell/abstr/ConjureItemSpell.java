@@ -55,15 +55,12 @@ public class ConjureItemSpell extends Spell {
             return false;
         }
         data.setLifetime(property(DefaultProperties.ITEM_LIFETIME));
+        data.setMaxLifetime(property(DefaultProperties.ITEM_LIFETIME));
         data.summoned(true);
         setConjuredName(stack);
         Services.WIZARD_DATA.onConjureItemDataUpdate(data, stack);
 
-        if(ctx.caster().getMainHandItem().isEmpty()){
-            ctx.caster().setItemInHand(InteractionHand.MAIN_HAND, stack);
-        } else if(ctx.caster().getOffhandItem().isEmpty()){
-            ctx.caster().setItemInHand(InteractionHand.OFF_HAND, stack);
-        } else {
+        if(!ctx.caster().addItem(stack)){
             if (!ctx.world().isClientSide) {
                 ctx.caster().sendSystemMessage(Component.translatable("spell.wizardry:conjure_item.no_space"));
             }
