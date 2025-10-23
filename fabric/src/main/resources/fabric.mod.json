@@ -34,7 +34,8 @@
             "ebwizardry:wizard_data",
             "ebwizardry:summoned_entity_data",
             "ebwizardry:minion_data",
-            "ebwizardry:conjure_item"
+            "ebwizardry:conjure_item",
+            "ebwizardry:conjure"
         ]
     },
     "depends": {

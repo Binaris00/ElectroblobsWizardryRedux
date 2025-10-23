@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
+import com.electroblob.wizardry.capabilities.ConjureDataHolder;
 import com.electroblob.wizardry.capabilities.MinionDataHolder;
 import com.electroblob.wizardry.capabilities.PlayerWizardDataHolder;
 import com.electroblob.wizardry.core.PropertiesForgeDataManager;
@@ -110,6 +111,7 @@ public class WizardryForgeEvents {
         public static void register(RegisterCapabilitiesEvent event) {
             event.register(PlayerWizardDataHolder.class);
             event.register(MinionDataHolder.class);
+            event.register(ConjureDataHolder.class);
         }
 
         @SubscribeEvent

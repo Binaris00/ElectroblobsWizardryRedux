@@ -1,7 +1,6 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
-import com.electroblob.wizardry.capabilities.ConjureItemDataHolder;
 import com.electroblob.wizardry.capabilities.MinionDataHolder;
 import com.electroblob.wizardry.capabilities.PlayerWizardDataHolder;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
@@ -43,7 +42,6 @@ public final class WizardryForgeMod {
         }
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, PlayerWizardDataHolder::attachCapability);
         MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, MinionDataHolder::attachCapability);
-        MinecraftForge.EVENT_BUS.addGenericListener(ItemStack.class, ConjureItemDataHolder::attachCapability);
     }
 
 

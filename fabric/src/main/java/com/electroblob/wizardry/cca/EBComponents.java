@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.cca;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.ConjureItemData;
+import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.entity.EntityComponentFactoryRegistry;
@@ -12,15 +12,14 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import net.minecraft.world.entity.Mob;
 import org.jetbrains.annotations.NotNull;
 
-/** Cardinal Components Entry Point */
+/**
+ * Cardinal Components Entry Point, we use this for entity data and item data
+ */
 public class EBComponents implements EntityComponentInitializer, ItemComponentInitializer {
-    public static final ComponentKey<PlayerWizardDataHolder> WIZARD_DATA =
-            ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("wizard_data"), PlayerWizardDataHolder.class);
+    public static final ComponentKey<PlayerWizardDataHolder> WIZARD_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("wizard_data"), PlayerWizardDataHolder.class);
+    public static final ComponentKey<MinionDataHolder> MINION_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("minion_data"), MinionDataHolder.class);
 
-    public static final ComponentKey<MinionDataHolder> MINION_DATA =
-            ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("minion_data"), MinionDataHolder.class);
-    public static final ComponentKey<ConjureItemDataHolder> CONJURE_ITEM =
-            ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("conjure_item"), ConjureItemDataHolder.class);
+    public static final ComponentKey<ConjureDataHolder> CONJURE = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("conjure"), ConjureDataHolder.class);
 
 
     @Override
@@ -31,6 +30,6 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
 
     @Override
     public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-        registry.register(ConjureItemData::applyItem, CONJURE_ITEM, ConjureItemDataHolder::new);
+        registry.register(ConjureItemSpell::isSupportedItem, CONJURE, ConjureDataHolder::new);
     }
 }

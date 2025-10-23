@@ -7,6 +7,7 @@
   "mixins": [
     "ClipContextMixin",
     "CommandsMixin",
+    "ConjureMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
     "PersistentEntitySectionManagerMixin",

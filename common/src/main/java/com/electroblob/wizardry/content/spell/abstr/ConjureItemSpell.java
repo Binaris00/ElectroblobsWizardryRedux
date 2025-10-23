@@ -1,8 +1,7 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
-import com.electroblob.wizardry.api.ConjureItemData;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.content.data.ConjureData;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
@@ -11,17 +10,33 @@ import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class ConjureItemSpell extends Spell {
+    public static Set<Item> SUPPORTED_ITEMS = new HashSet<>();
     private final Item item;
 
     public ConjureItemSpell(Item item) {
         this.item = item;
-        ConjureItemData.addApplyItem(item);
+        //ConjureItemData.addApplyItem(item);
+        registerSupportedItem(item);
+    }
+
+    public static boolean isSupportedItem(Item item){
+        return SUPPORTED_ITEMS.contains(item);
+    }
+
+    public static boolean isSupportedItem(ItemStack stack){
+        return isSupportedItem(stack.getItem());
+    }
+
+    public static void registerSupportedItem(Item item){
+        SUPPORTED_ITEMS.add(item);
     }
 
     @Override
@@ -49,25 +64,39 @@ public class ConjureItemSpell extends Spell {
         ItemStack stack = new ItemStack(item);
         stack = addItemExtras(ctx, stack);
 
-        ConjureItemData data = Services.WIZARD_DATA.getConjureItemData(stack);
-        if(data == null){
-            EBLogger.error("ConjureItemData is null for item: " + item.getDescriptionId());
-            return false;
-        }
+        ConjureData data = Services.WIZARD_DATA.getConjureData(stack);
         data.setLifetime(property(DefaultProperties.ITEM_LIFETIME));
         data.setMaxLifetime(property(DefaultProperties.ITEM_LIFETIME));
-        data.summoned(true);
+        data.setSummoned(true);
         setConjuredName(stack);
-        Services.WIZARD_DATA.onConjureItemDataUpdate(data, stack);
-
         if(!ctx.caster().addItem(stack)){
             if (!ctx.world().isClientSide) {
                 ctx.caster().sendSystemMessage(Component.translatable("spell.wizardry:conjure_item.no_space"));
             }
             return false;
         }
-
         return true;
+
+
+//        ConjureItemData data = Services.WIZARD_DATA.getConjureItemData(stack);
+//        if(data == null){
+//            EBLogger.error("ConjureItemData is null for item: " + item.getDescriptionId());
+//            return false;
+//        }
+//        data.setLifetime(property(DefaultProperties.ITEM_LIFETIME));
+//        data.setMaxLifetime(property(DefaultProperties.ITEM_LIFETIME));
+//        data.summoned(true);
+//        setConjuredName(stack);
+//        Services.WIZARD_DATA.onConjureItemDataUpdate(data, stack);
+//
+//        if(!ctx.caster().addItem(stack)){
+//            if (!ctx.world().isClientSide) {
+//                ctx.caster().sendSystemMessage(Component.translatable("spell.wizardry:conjure_item.no_space"));
+//            }
+//            return false;
+//        }
+//
+//        return true;
     }
 
 

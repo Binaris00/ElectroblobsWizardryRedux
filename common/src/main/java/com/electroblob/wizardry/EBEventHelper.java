@@ -1,6 +1,5 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.ConjureItemData;
 import com.electroblob.wizardry.api.MinionData;
 import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
@@ -15,13 +14,16 @@ import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
 import com.electroblob.wizardry.content.effect.WardMobEffect;
 import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
+import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 
 /**
  * Simple class to save all the event helper methods
@@ -63,7 +65,17 @@ public final class EBEventHelper {
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
         bus.register(EBLivingTick.class, ArtefactItem::onArtifactTick);
         bus.register(EBLivingTick.class, MinionData::onLivingTick);
-        bus.register(EBLivingTick.class, ConjureItemData::onPlayerTickEvent);
+        bus.register(EBLivingTick.class, (e) -> {
+            if (e.getLevel().isClientSide) return;
+            if (!(e.getEntity() instanceof Player player)) return;
+
+            player.getInventory().offhand.stream().filter(ConjureItemSpell::isSupportedItem)
+                    .forEach((s) -> Services.WIZARD_DATA.getConjureData(s).tick());
+            player.getInventory().items.stream().filter(ConjureItemSpell::isSupportedItem)
+                    .forEach((s) -> Services.WIZARD_DATA.getConjureData(s).tick());
+            player.getInventory().armor.stream().filter(ConjureItemSpell::isSupportedItem)
+                    .forEach((s) -> Services.WIZARD_DATA.getConjureData(s).tick());
+        });
 
     }
 

@@ -1,16 +1,18 @@
 package com.electroblob.wizardry.platform;
 
-import com.electroblob.wizardry.api.ConjureItemData;
 import com.electroblob.wizardry.api.MinionData;
 import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.ConjureData;
 import com.electroblob.wizardry.cca.EBComponents;
-import com.electroblob.wizardry.cca.ConjureItemDataHolder;
 import com.electroblob.wizardry.cca.PlayerWizardDataHolder;
+import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.core.platform.services.IWizardData;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+
+import javax.annotation.Nullable;
 
 public class FabricWizardData implements IWizardData {
 
@@ -35,31 +37,14 @@ public class FabricWizardData implements IWizardData {
     }
 
     @Override
-    public ConjureItemData getConjureItemData(ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return null;
-        if(!ConjureItemData.applyItem(stack.getItem())) return null;
-        ConjureItemDataHolder holder = EBComponents.CONJURE_ITEM.get(stack);
-        if (holder == null) return null;
-        return holder.getConjureItemData();
-    }
-
-    @Override
-    public void onConjureItemDataUpdate(ConjureItemData data, ItemStack stack) {
-        if (stack == null || stack.isEmpty()) return;
-        ConjureItemDataHolder holder = EBComponents.CONJURE_ITEM.get(stack);
-        if (holder == null) return;
-
-        // Copy primitive fields back into the component instance and persist into the stack NBT.
-        ConjureItemData target = holder.getConjureItemData();
-        target.setLifetime(data.getLifetime());
-        target.summoned(data.isSummoned());
-        target.setMaxLifetime(data.getMaxLifetime());
-        holder.saveConjureItemData();
-    }
-
-    @Override
     public void onMinionDataUpdate(MinionData data, Mob entity) {
         entity.getComponent(EBComponents.MINION_DATA).getMinionData().copyFrom(data);
         EBComponents.MINION_DATA.sync(entity);
+    }
+
+    @Override
+    public @Nullable ConjureData getConjureData(ItemStack stack) {
+        if(!ConjureItemSpell.isSupportedItem(stack.getItem())) return null;
+        return EBComponents.CONJURE.get(stack);
     }
 }
