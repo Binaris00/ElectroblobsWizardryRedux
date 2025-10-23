@@ -21,8 +21,6 @@ import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 
 
-/** Check {@link PlayerWizardData}, this class is just the implementation to load-save the player's wizard data */
-@Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class PlayerWizardDataHolder implements INBTSerializable<CompoundTag> {
     private static final Capability<PlayerWizardDataHolder> WIZARD_DATA_CAPABILITY = CapabilityManager.get(new CapabilityToken<>() {});
     PlayerWizardData wizardData;

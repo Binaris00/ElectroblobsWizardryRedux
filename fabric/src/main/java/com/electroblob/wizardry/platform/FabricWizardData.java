@@ -2,6 +2,7 @@ package com.electroblob.wizardry.platform;
 
 import com.electroblob.wizardry.api.MinionData;
 import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.CastCommandData;
 import com.electroblob.wizardry.api.content.data.ConjureData;
 import com.electroblob.wizardry.cca.EBComponents;
 import com.electroblob.wizardry.cca.PlayerWizardDataHolder;
@@ -46,5 +47,10 @@ public class FabricWizardData implements IWizardData {
     public @Nullable ConjureData getConjureData(ItemStack stack) {
         if(!ConjureItemSpell.isSupportedItem(stack.getItem())) return null;
         return EBComponents.CONJURE.get(stack);
+    }
+
+    @Override
+    public CastCommandData getCastCommandData(Player player) {
+        return EBComponents.CAST_COMMAND_DATA.get(player);
     }
 }

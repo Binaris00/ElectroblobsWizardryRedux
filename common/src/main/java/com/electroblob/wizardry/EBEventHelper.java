@@ -18,6 +18,7 @@ import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.core.AllyDesignation;
+import com.electroblob.wizardry.core.DataEvents;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
@@ -65,18 +66,7 @@ public final class EBEventHelper {
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
         bus.register(EBLivingTick.class, ArtefactItem::onArtifactTick);
         bus.register(EBLivingTick.class, MinionData::onLivingTick);
-        bus.register(EBLivingTick.class, (e) -> {
-            if (e.getLevel().isClientSide) return;
-            if (!(e.getEntity() instanceof Player player)) return;
-
-            player.getInventory().offhand.stream().filter(ConjureItemSpell::isSupportedItem)
-                    .forEach((s) -> Services.WIZARD_DATA.getConjureData(s).tick());
-            player.getInventory().items.stream().filter(ConjureItemSpell::isSupportedItem)
-                    .forEach((s) -> Services.WIZARD_DATA.getConjureData(s).tick());
-            player.getInventory().armor.stream().filter(ConjureItemSpell::isSupportedItem)
-                    .forEach((s) -> Services.WIZARD_DATA.getConjureData(s).tick());
-        });
-
+        bus.register(EBLivingTick.class, DataEvents::onPlayerTick);
     }
 
     private static void onSpellDiscovery(WizardryEventBus bus) {

@@ -23,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
  * Loading the conjure data with Forge, nothing too crazy over here, just using the capabilities to load-change the data
  * */
 public class ConjureDataHolder implements INBTSerializable<CompoundTag>, ConjureData {
-    private static final ResourceLocation LOCATION = WizardryMainMod.location("counter");
+    private static final ResourceLocation LOCATION = WizardryMainMod.location("conjure");
     public static final Capability<ConjureDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     private int lifetime = -1;

@@ -17,14 +17,15 @@ import org.jetbrains.annotations.NotNull;
  */
 public class EBComponents implements EntityComponentInitializer, ItemComponentInitializer {
     public static final ComponentKey<PlayerWizardDataHolder> WIZARD_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("wizard_data"), PlayerWizardDataHolder.class);
+    public static final ComponentKey<CastCommandDataHolder> CAST_COMMAND_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("cast_command_data"), CastCommandDataHolder.class);
     public static final ComponentKey<MinionDataHolder> MINION_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("minion_data"), MinionDataHolder.class);
-
     public static final ComponentKey<ConjureDataHolder> CONJURE = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("conjure"), ConjureDataHolder.class);
 
 
     @Override
     public void registerEntityComponentFactories(@NotNull EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(WIZARD_DATA, PlayerWizardDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(CAST_COMMAND_DATA, CastCommandDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerFor(Mob.class, MINION_DATA, MinionDataHolder::new);
     }
 
