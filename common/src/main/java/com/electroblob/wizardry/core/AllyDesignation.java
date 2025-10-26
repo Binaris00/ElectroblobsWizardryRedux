@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.core;
 
-import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -59,7 +59,7 @@ public final class AllyDesignation {
 
         if (attacker instanceof Player attackerPlayer) {
             if (target instanceof Player playerTarget)
-                return !Services.WIZARD_DATA.getWizardData(attackerPlayer, attacker.level()).isPlayerAlly(attackerPlayer, playerTarget);
+                return !Services.OBJECT_DATA.getWizardData(attackerPlayer).isPlayerAlly(playerTarget);
             else
                 return !(target instanceof OwnableEntity ownable) || !isOwnerAlly(attackerPlayer, ownable);
         }
@@ -89,8 +89,8 @@ public final class AllyDesignation {
      * Helper method for testing if two players are allies of each other according to the given player's data.
      */
     public static boolean isPlayerAlly(Player allyOf, Player possibleAlly) {
-        PlayerWizardData data = Services.WIZARD_DATA.getWizardData(allyOf, allyOf.level());
-        return data != null && data.isPlayerAlly(allyOf, possibleAlly);
+        WizardData data = Services.OBJECT_DATA.getWizardData(allyOf);
+        return data.isPlayerAlly(possibleAlly);
     }
 
     /**
@@ -98,9 +98,8 @@ public final class AllyDesignation {
      * given player. This works even when the owner is not logged in.
      */
     public static boolean isOwnerAlly(Player allyOf, OwnableEntity ownable) {
-        PlayerWizardData data = Services.WIZARD_DATA.getWizardData(allyOf, allyOf.level());
-        if (data == null) return false;
+        WizardData data = Services.OBJECT_DATA.getWizardData(allyOf);
         Entity owner = ownable.getOwner();
-        return owner instanceof Player target ? data.isPlayerAlly(allyOf, target) : data.isPlayerAlly(allyOf, ownable.getOwnerUUID());
+        return owner instanceof Player target ? data.isPlayerAlly(target) : data.isPlayerAlly(ownable.getOwnerUUID());
     }
 }

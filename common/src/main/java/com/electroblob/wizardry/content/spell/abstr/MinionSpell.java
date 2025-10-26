@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.content.spell.abstr;
 
-import com.electroblob.wizardry.api.MinionData;
+import com.electroblob.wizardry.api.content.data.MinionData;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.*;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
@@ -148,9 +148,9 @@ public class MinionSpell<T extends Mob> extends Spell {
 
 
             T minion = createMinion(ctx.world(), ctx.caster(), ctx.modifiers());
-            MinionData minionData = Services.WIZARD_DATA.getMinionData(minion);
+            MinionData data = Services.OBJECT_DATA.getMinionData(minion);
             minion.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
-            minionData.summoned(true);
+            data.setSummoned(true);
             //minionData.setSummoner(ctx.caster());
             setLifetime(minion, (int) (property(DefaultProperties.MINION_LIFETIME) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
             //minionData.setShouldFollow(shouldFollowOwner);
@@ -169,8 +169,8 @@ public class MinionSpell<T extends Mob> extends Spell {
     }
 
     private void setLifetime(T minion, int lifetime) {
-        MinionData minionData = Services.WIZARD_DATA.getMinionData(minion);
-        minionData.setLifetime(lifetime);
+        MinionData data = Services.OBJECT_DATA.getMinionData(minion);
+        data.setLifetime(lifetime);
     }
 
 

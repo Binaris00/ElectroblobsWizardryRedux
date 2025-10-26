@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.capabilities;
+package com.electroblob.wizardry.capabilities.player;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.data.CastCommandData;

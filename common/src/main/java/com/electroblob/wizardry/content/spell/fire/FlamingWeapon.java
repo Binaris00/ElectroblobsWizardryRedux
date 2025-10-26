@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.spell.fire;
 
-import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
@@ -25,8 +25,9 @@ import org.jetbrains.annotations.NotNull;
 public class FlamingWeapon extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(ctx.caster(), ctx.world());
-        if(wizardData.getGeneralImbuementDuration(EBEnchantments.FLAMING_WEAPON.get()) > 0) return false;
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
+
+        if(data.getGeneralImbuementDuration(EBEnchantments.FLAMING_WEAPON.get()) > 0) return false;
 
         for(ItemStack stack : InventoryUtil.getPrioritisedHotBarAndOffhand(ctx.caster())){
             // If the item isn't a sword or a bow, or if it already has the enchantment, skip
@@ -36,7 +37,7 @@ public class FlamingWeapon extends Spell {
             stack.enchant(EBEnchantments.FLAMING_WEAPON.get(), ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1
                     : (int)((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5f));
 
-            wizardData.setImbuementDuration(ctx.caster(), stack, EBEnchantments.FLAMING_WEAPON.get(), (int)(property(DefaultProperties.EFFECT_DURATION)
+            data.setImbuementDuration(stack, EBEnchantments.FLAMING_WEAPON.get(), (int)(property(DefaultProperties.EFFECT_DURATION)
                     * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
 
             if(ctx.world().isClientSide){

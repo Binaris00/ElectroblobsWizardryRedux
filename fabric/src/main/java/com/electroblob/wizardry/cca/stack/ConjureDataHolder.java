@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.cca;
+package com.electroblob.wizardry.cca.stack;
 
 import com.electroblob.wizardry.api.content.data.ConjureData;
 import dev.onyxstudios.cca.api.v3.item.ItemComponent;

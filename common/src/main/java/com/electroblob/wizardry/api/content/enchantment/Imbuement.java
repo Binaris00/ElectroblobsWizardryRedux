@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.api.content.enchantment;
 
-import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBEntityJoinLevelEvent;
 import com.electroblob.wizardry.api.content.event.EBItemTossEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
@@ -43,9 +43,8 @@ public interface Imbuement {
                 if(enchantment instanceof Imbuement imbuement){
                     imbuement.onImbuementRemoval(stack);
                     iterator.remove();
-                    PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
-                    wizardData.removeImbuement(stack, enchantment);
-                    Services.WIZARD_DATA.onWizardDataUpdate(wizardData, player);
+                    SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
+                    data.removeImbuement(stack, enchantment);
                 }
             }
             EnchantmentHelper.setEnchantments(enchants, stack);
@@ -64,7 +63,7 @@ public interface Imbuement {
             if (!ImbueWeapon.isBow(bow)) return;
         }
 
-        // TODO: Make this work again
+        // TODO: Imbuement Make this work again
 //        int level = EnchantmentHelper.getItemEnchantmentLevel(EBEnchantments.MAGIC_BOW.get(), bow);
 //
 //        if (level > 0) {

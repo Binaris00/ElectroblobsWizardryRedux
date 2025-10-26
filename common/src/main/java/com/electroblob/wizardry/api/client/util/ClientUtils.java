@@ -50,7 +50,7 @@ public class ClientUtils {
 
         if (!EBConfig.discoveryMode) return true;
         if (player.isCreative()) return true;
-        return Services.WIZARD_DATA.getWizardData(player, player.clientLevel).hasSpellBeenDiscovered(spell);
+        return Services.OBJECT_DATA.getSpellManagerData(player).hasSpellBeenDiscovered(spell);
     }
 
     public static LocalPlayer getPlayer(){

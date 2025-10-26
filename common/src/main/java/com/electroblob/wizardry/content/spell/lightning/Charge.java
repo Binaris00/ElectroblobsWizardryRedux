@@ -1,9 +1,9 @@
 package com.electroblob.wizardry.content.spell.lightning;
 
-import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.data.ISpellVar;
 import com.electroblob.wizardry.api.content.data.Persistence;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
@@ -39,15 +39,14 @@ public class Charge extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(ctx.caster(), ctx.world());
-        wizardData.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
-        wizardData.setVariable(CHARGE_MODIFIERS, ctx.modifiers());
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
+        data.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+        data.setVariable(CHARGE_MODIFIERS, ctx.modifiers());
 
         if (ctx.world().isClientSide)
             ctx.world().addParticle(ParticleTypes.EXPLOSION_EMITTER, ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getBbHeight() / 2, ctx.caster().getZ(), 0, 0, 0);
 
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
-        Services.WIZARD_DATA.onWizardDataUpdate(wizardData, ctx.caster());
         return true;
     }
 
@@ -55,7 +54,7 @@ public class Charge extends Spell {
         if (chargeTime == null) chargeTime = 0;
 
         if (chargeTime > 0 && !player.level().isClientSide) {
-            SpellModifiers modifiers = Services.WIZARD_DATA.getWizardData(player, player.level()).getVariable(CHARGE_MODIFIERS);
+            SpellModifiers modifiers = Services.OBJECT_DATA.getSpellManagerData(player).getVariable(CHARGE_MODIFIERS);
             if (modifiers == null) modifiers = new SpellModifiers();
 
             Vec3 look = player.getLookAngle();
@@ -96,8 +95,8 @@ public class Charge extends Spell {
         if(event.isCanceled()) return;
 
         if (event.getDamagedEntity() instanceof Player player && event.getSource().getEntity() instanceof LivingEntity attacker) {
-            PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
-            Integer chargeTime = wizardData.getVariable(CHARGE_TIME);
+            SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
+            Integer chargeTime = data.getVariable(CHARGE_TIME);
 
             if (chargeTime != null && chargeTime > 0 && player.getBoundingBox().inflate(1).intersects(attacker.getBoundingBox())) {
                 event.setCanceled(true);

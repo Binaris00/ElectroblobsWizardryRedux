@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.loot;
 
 import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
@@ -98,7 +98,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
             if (EBAccessoriesIntegration.isEquipped(player, EBItems.CHARM_SPELL_DISCOVERY.get()))
                 bias = Math.min(bias + 0.4f, 0.9f);
             if (bias > 0) {
-                PlayerWizardData data = Services.WIZARD_DATA.getWizardData(player, player.level());
+                SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
                 int discoveredCount = (int) possibleSpells.stream().filter(data::hasSpellBeenDiscovered).count();
                 if (discoveredCount > 0 && discoveredCount < possibleSpells.size()) {
                     boolean keepDiscovered = random.nextFloat() > 0.5f + 0.5f * undiscoveredBias;

@@ -2,15 +2,15 @@ package com.electroblob.wizardry.core.platform;
 
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.core.platform.services.INetworkHelper;
+import com.electroblob.wizardry.core.platform.services.IObjectData;
 import com.electroblob.wizardry.core.platform.services.IPlatformHelper;
 import com.electroblob.wizardry.core.platform.services.IRegistryUtil;
-import com.electroblob.wizardry.core.platform.services.IWizardData;
 
 import java.util.ServiceLoader;
 
 public class Services {
     public static final IPlatformHelper PLATFORM = load(IPlatformHelper.class);
-    public static final IWizardData WIZARD_DATA = load(IWizardData.class);
+    public static final IObjectData OBJECT_DATA = load(IObjectData.class);
     public static final INetworkHelper NETWORK_HELPER = load(INetworkHelper.class);
     public static final IRegistryUtil REGISTRY_UTIL = load(IRegistryUtil.class);
 

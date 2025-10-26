@@ -36,7 +36,8 @@
             "ebwizardry:minion_data",
             "ebwizardry:conjure_item",
             "ebwizardry:conjure",
-            "ebwizardry:cast_command_data"
+            "ebwizardry:cast_command_data",
+            "ebwizardry:spell_manager_data"
         ]
     },
     "depends": {

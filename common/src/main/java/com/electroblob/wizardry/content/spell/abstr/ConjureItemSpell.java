@@ -64,7 +64,7 @@ public class ConjureItemSpell extends Spell {
         ItemStack stack = new ItemStack(item);
         stack = addItemExtras(ctx, stack);
 
-        ConjureData data = Services.WIZARD_DATA.getConjureData(stack);
+        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         data.setLifetime(property(DefaultProperties.ITEM_LIFETIME));
         data.setMaxLifetime(property(DefaultProperties.ITEM_LIFETIME));
         data.setSummoned(true);

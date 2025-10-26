@@ -1,6 +1,11 @@
 package com.electroblob.wizardry.cca;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.cca.entity.MinionDataHolder;
+import com.electroblob.wizardry.cca.player.CastCommandDataHolder;
+import com.electroblob.wizardry.cca.player.SpellManagerDataHolder;
+import com.electroblob.wizardry.cca.player.WizardDataHolder;
+import com.electroblob.wizardry.cca.stack.ConjureDataHolder;
 import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
@@ -16,16 +21,19 @@ import org.jetbrains.annotations.NotNull;
  * Cardinal Components Entry Point, we use this for entity data and item data
  */
 public class EBComponents implements EntityComponentInitializer, ItemComponentInitializer {
-    public static final ComponentKey<PlayerWizardDataHolder> WIZARD_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("wizard_data"), PlayerWizardDataHolder.class);
+    public static final ComponentKey<WizardDataHolder> WIZARD_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("wizard_data"), WizardDataHolder.class);
     public static final ComponentKey<CastCommandDataHolder> CAST_COMMAND_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("cast_command_data"), CastCommandDataHolder.class);
+    public static final ComponentKey<SpellManagerDataHolder> SPELL_MANAGER_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("spell_manager_data"), SpellManagerDataHolder.class);
+
     public static final ComponentKey<MinionDataHolder> MINION_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("minion_data"), MinionDataHolder.class);
     public static final ComponentKey<ConjureDataHolder> CONJURE = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("conjure"), ConjureDataHolder.class);
 
 
     @Override
     public void registerEntityComponentFactories(@NotNull EntityComponentFactoryRegistry registry) {
-        registry.registerForPlayers(WIZARD_DATA, PlayerWizardDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(WIZARD_DATA, WizardDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerForPlayers(CAST_COMMAND_DATA, CastCommandDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
+        registry.registerForPlayers(SPELL_MANAGER_DATA, SpellManagerDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerFor(Mob.class, MINION_DATA, MinionDataHolder::new);
     }
 

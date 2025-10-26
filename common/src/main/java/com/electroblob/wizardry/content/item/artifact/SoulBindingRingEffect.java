@@ -13,6 +13,6 @@ public class SoulBindingRingEffect implements IArtefactEffect {
     @Override
     public void onHurtEntity(EBLivingHurtEvent e, ItemStack s) {
         e.getDamagedEntity().addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_SOULBINDING.get(), 400));
-        CurseOfSoulbinding.getSoulboundCreatures(Services.WIZARD_DATA.getWizardData((Player) e.getSource().getEntity(), e.getSource().getEntity().level())).add(e.getDamagedEntity().getUUID());
+        CurseOfSoulbinding.getSoulboundCreatures(Services.OBJECT_DATA.getSpellManagerData((Player) e.getSource().getEntity())).add(e.getDamagedEntity().getUUID());
     }
 }

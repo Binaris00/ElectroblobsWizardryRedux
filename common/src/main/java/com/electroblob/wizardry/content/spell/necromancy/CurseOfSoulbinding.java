@@ -1,9 +1,9 @@
 package com.electroblob.wizardry.content.spell.necromancy;
 
-import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.data.IStoredSpellVar;
 import com.electroblob.wizardry.api.content.data.Persistence;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
@@ -39,13 +39,14 @@ public class CurseOfSoulbinding extends RaySpell {
 
     public CurseOfSoulbinding() {
         this.soundValues(1, 1.1f, 0.2f);
-        PlayerWizardData.registerStoredVariables(TARGETS_KEY);
+        Services.OBJECT_DATA.spellStoredVariables(TARGETS_KEY);
     }
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (entityHit.getEntity() instanceof LivingEntity livingTarget && ctx.caster() instanceof Player caster) {
-            PlayerWizardData data = Services.WIZARD_DATA.getWizardData(caster, caster.level());
+            SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(caster);
+
             if (getSoulboundCreatures(data).add(livingTarget.getUUID())) {
                 livingTarget.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_SOULBINDING.get(), Integer.MAX_VALUE));
             } else {
@@ -72,7 +73,7 @@ public class CurseOfSoulbinding extends RaySpell {
         ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).time(12 + ctx.world().random.nextInt(8)).color(1, 0.8f, 1).spawn(ctx.world());
     }
 
-    public static Set<UUID> getSoulboundCreatures(PlayerWizardData data) {
+    public static Set<UUID> getSoulboundCreatures(SpellManagerData data) {
         if (data.getVariable(TARGETS_KEY) == null) {
             Set<UUID> result = new HashSet<>();
             data.setVariable(TARGETS_KEY, result);
@@ -83,7 +84,7 @@ public class CurseOfSoulbinding extends RaySpell {
 
     public static void onLivingHurt(EBLivingHurtEvent event) {
         if (!event.getDamagedEntity().level().isClientSide && event.getDamagedEntity() instanceof Player playerDamaged) {
-            PlayerWizardData data = Services.WIZARD_DATA.getWizardData(playerDamaged, playerDamaged.level());
+            SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(playerDamaged);
 
             for (Iterator<UUID> iterator = getSoulboundCreatures(data).iterator(); iterator.hasNext(); ) {
                 Entity entity = EntityUtil.getEntityByUUID(playerDamaged.level(), iterator.next());

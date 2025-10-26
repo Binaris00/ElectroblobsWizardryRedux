@@ -1,7 +1,5 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.MinionData;
-import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.*;
@@ -14,17 +12,14 @@ import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
 import com.electroblob.wizardry.content.effect.WardMobEffect;
 import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
-import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.DataEvents;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
-import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.player.Player;
 
 /**
  * Simple class to save all the event helper methods
@@ -62,10 +57,9 @@ public final class EBEventHelper {
     }
 
     private static void onLivingTickEvent(WizardryEventBus bus) {
-        bus.register(EBLivingTick.class, PlayerWizardData::onUpdate);
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
         bus.register(EBLivingTick.class, ArtefactItem::onArtifactTick);
-        bus.register(EBLivingTick.class, MinionData::onLivingTick);
+        bus.register(EBLivingTick.class, DataEvents::onMinionTick);
         bus.register(EBLivingTick.class, DataEvents::onPlayerTick);
     }
 
@@ -87,7 +81,7 @@ public final class EBEventHelper {
 
     private static void onEntityJoinLevel(WizardryEventBus bus) {
         bus.register(EBEntityJoinLevelEvent.class, Imbuement::onEntityJoinLevel);
-        bus.register(EBEntityJoinLevelEvent.class, MinionData::onEntityJoinLevel);
+        bus.register(EBEntityJoinLevelEvent.class, DataEvents::onMinionJoinLevel);
     }
 
     private static void onItemTossEvent(WizardryEventBus bus) {
@@ -115,6 +109,6 @@ public final class EBEventHelper {
     }
 
     private static void onPlayerInteractEntity(WizardryEventBus bus) {
-        bus.register(EBPlayerInteractEntityEvent.class, MinionData::onPlayerInteractEntity);
+        bus.register(EBPlayerInteractEntityEvent.class, DataEvents::onPlayerInteractMinion);
     }
 }

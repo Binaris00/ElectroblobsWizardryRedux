@@ -153,7 +153,7 @@ public final class SpellGUIDisplay {
             boolean discovered = true;
 
             if (!player.isCreative()) {
-                discovered = Services.WIZARD_DATA.getWizardData(player, player.level()).hasSpellBeenDiscovered(spell);
+                discovered = Services.OBJECT_DATA.getSpellManagerData(player).hasSpellBeenDiscovered(spell);
             }
 
             ResourceLocation icon = discovered ? WizardryMainMod.location("textures/spells/%s.png".formatted(spell.getLocation().getPath())) : WizardryMainMod.location("textures/spells/none.png");
@@ -187,7 +187,7 @@ public final class SpellGUIDisplay {
 
         int chargeup = spell.getCharge();
 
-        chargeup = (int) (chargeup * Services.WIZARD_DATA.getWizardData(player, player.level()).itemModifiers.get(SpellModifiers.CHARGEUP));
+        chargeup = (int) (chargeup * Services.OBJECT_DATA.getWizardData(player).getSpellModifiers().get(SpellModifiers.CHARGEUP));
 
         if (chargeup <= 0) return;
 
@@ -212,7 +212,7 @@ public final class SpellGUIDisplay {
         boolean discovered = true;
 
         if (!player.isCreative()) {
-            discovered = Services.WIZARD_DATA.getWizardData(player, player.level()).hasSpellBeenDiscovered(spell);
+            discovered = Services.OBJECT_DATA.getSpellManagerData(player).hasSpellBeenDiscovered(spell);
         }
 
         Style format = cooldown > 0 ? Style.EMPTY.withColor(ChatFormatting.GRAY) : Style.EMPTY.withColor(spell.getElement().getColor());

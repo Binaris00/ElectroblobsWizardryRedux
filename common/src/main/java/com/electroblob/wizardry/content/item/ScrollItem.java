@@ -57,7 +57,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
                 return InteractionResultHolder.success(player.getItemInHand(hand));
         } else {
             if (!player.isUsingItem()) player.startUsingItem(hand);
-            Services.WIZARD_DATA.getWizardData(player, level).itemModifiers = modifiers;
+            Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
             return InteractionResultHolder.pass(player.getItemInHand(hand));
         }
 

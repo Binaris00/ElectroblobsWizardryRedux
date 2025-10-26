@@ -1,9 +1,8 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBDiscoverSpellEvent;
-import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
@@ -33,17 +32,17 @@ public class IdentificationScrollItem extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
 
-        PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, level);
         for(ItemStack stack1 : InventoryUtil.getPrioritisedHotBarAndOffhand(player)){
             if(stack1.isEmpty()) continue;
             Spell spell = SpellUtil.getSpell(stack1);
             if(stack1.getItem() instanceof IdentificationScrollItem || spell == Spells.NONE) continue;
 
-            if((stack1.getItem() instanceof SpellBookItem || stack1.getItem() instanceof ScrollItem) && !wizardData.hasSpellBeenDiscovered(spell)){
+            if((stack1.getItem() instanceof SpellBookItem || stack1.getItem() instanceof ScrollItem) && !data.hasSpellBeenDiscovered(spell)){
                 if(!WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL)))
                     return InteractionResultHolder.fail(stack);
-                wizardData.discoverSpell(spell);
+                data.discoverSpell(spell);
                 player.playSound(EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
                 if(!player.isCreative()) stack.shrink(1);
                 if (!level.isClientSide) player.sendSystemMessage(Component.translatable("spell.discover", spell.getDescriptionFormatted()));

@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.cca;
+package com.electroblob.wizardry.cca.player;
 
 import com.electroblob.wizardry.api.content.data.CastCommandData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
@@ -6,6 +6,7 @@ import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.cca.EBComponents;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Spells;

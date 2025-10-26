@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.command;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.core.platform.Services;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -44,8 +44,8 @@ public final class AllyCommand {
     }
 
     private static int processAllyChange(CommandSourceStack source, Player origin, Player ally, boolean addOperation, String opKey) {
-        PlayerWizardData data = Services.WIZARD_DATA.getWizardData(origin, origin.level());
-        boolean result = data.toggleAlly(origin, ally);
+        WizardData data = Services.OBJECT_DATA.getWizardData(origin);
+        boolean result = data.toggleAlly(ally);
         // If the result is the same as the operation, the change was successful
         boolean success = (addOperation == result);
         String key = "commands." + WizardryMainMod.MOD_ID + ":ally." + opKey + (success ? ".success" : ".failure");

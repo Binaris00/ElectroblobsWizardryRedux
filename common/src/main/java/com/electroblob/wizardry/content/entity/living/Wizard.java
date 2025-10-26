@@ -1,8 +1,9 @@
 package com.electroblob.wizardry.content.entity.living;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.PlayerWizardData;
 import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
+import com.electroblob.wizardry.api.content.event.EBDiscoverSpellEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
@@ -13,6 +14,7 @@ import com.electroblob.wizardry.content.item.SpellBookItem;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
 import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
@@ -157,10 +159,10 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
 //                if (spell.getTier() == Tier.MASTER)
 //                    WizardryAdvancementTriggers.BUY_MASTER_SPELL.triggerFor(this.getTradingPlayer());
 
-                PlayerWizardData data = Services.WIZARD_DATA.getWizardData(this.getTradingPlayer(), this.level());
-                // TODO
-                // if (!MinecraftForge.EVENT_BUS.post(new DiscoverSpellEvent(this.getTradingPlayer(), spell, DiscoverSpellEvent.Source.PURCHASE)) && data.discoverSpell(spell)) {
-                Services.WIZARD_DATA.onWizardDataUpdate(data, this.getTradingPlayer());
+                SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(this.getTradingPlayer());
+                // Todo if canceled discovery event
+                WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(this.getTradingPlayer(), spell, EBDiscoverSpellEvent.Source.PURCHASE));
+                data.discoverSpell(spell);
 
                 if (!level().isClientSide && !this.getTradingPlayer().isCreative() && EBConfig.discoveryMode) {
                     EntityUtil.playSoundAtPlayer(this.getTradingPlayer(), EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);

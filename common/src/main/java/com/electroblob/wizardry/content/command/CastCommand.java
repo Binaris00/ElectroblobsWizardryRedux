@@ -65,7 +65,7 @@ public final class CastCommand {
     }
 
     private static int handleContinuousSpell(CommandSourceStack source, Spell spell, ServerPlayer player, SpellModifiers modifiers) {
-        CastCommandData data = Services.WIZARD_DATA.getCastCommandData(player);
+        CastCommandData data = Services.OBJECT_DATA.getCastCommandData(player);
         if (data.isCommandCasting()) {
             data.stopCastingContinuousSpell();
         } else {

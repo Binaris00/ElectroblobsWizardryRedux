@@ -1,7 +1,8 @@
 package com.electroblob.wizardry.content.item;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
+import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
@@ -75,7 +76,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
         if (!player.isUsingItem()) {
             player.startUsingItem(hand);
-            Services.WIZARD_DATA.getWizardData(player, level).itemModifiers = ctx.modifiers();
+            Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
             if (charge > 0 && level.isClientSide) ClientSpellSoundManager.playChargeSound(player);
             return InteractionResultHolder.success(stack);
         }
@@ -88,8 +89,8 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (!(livingEntity instanceof Player user)) return;
         Spell spell = WandHelper.getCurrentSpell(stack);
         SpellModifiers modifiers;
-        PlayerWizardData data = Services.WIZARD_DATA.getWizardData(user, user.level());
-        modifiers = data.itemModifiers;
+        WizardData data = Services.OBJECT_DATA.getWizardData(user);
+        modifiers = data.getSpellModifiers();
 
         int useTick = stack.getUseDuration() - timeLeft;
         int charge = (int) (spell.getCharge() * modifiers.get(SpellModifiers.CHARGEUP));
@@ -170,9 +171,8 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity interactionTarget, @NotNull InteractionHand usedHand) {
         if (player.isCrouching() && interactionTarget instanceof Player playerTarget) {
-            PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
-
-            String string = wizardData.toggleAlly(player, playerTarget) ?
+            WizardData data = Services.OBJECT_DATA.getWizardData(player);
+            String string = data.toggleAlly(playerTarget) ?
                     "item." + WizardryMainMod.MOD_ID + ":wand.addally"
                     : "item." + WizardryMainMod.MOD_ID + ":wand.removeally";
             if (!player.level().isClientSide)
@@ -193,8 +193,8 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (!(livingEntity instanceof Player player)) return;
         Spell spell = WandHelper.getCurrentSpell(stack);
         SpellModifiers modifiers;
-        PlayerWizardData wizardData = Services.WIZARD_DATA.getWizardData(player, player.level());
-        modifiers = wizardData.itemModifiers;
+        WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
+        modifiers = wizardData.getSpellModifiers();
 
         int castingTick = stack.getUseDuration() - timeCharged;
         int cost = getDistributedCost((int) (spell.getCost() * modifiers.get(SpellModifiers.COST) + 0.1f), castingTick);
@@ -405,7 +405,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 int newProgression = EBConfig.legacyWandLevelling ? 0 : Math.max(0, WandHelper.getProgression(wand) - nextTier.getProgression());
                 WandHelper.setProgression(wand, newProgression);
 
-                if (player != null) Services.WIZARD_DATA.getWizardData(player, player.level()).setTierReached(tier);
+                if (player != null) Services.OBJECT_DATA.getWizardData(player).setTierReached(tier);
 
                 ItemStack newWand = new ItemStack(getWand(nextTier, this.element));
                 newWand.setTag(wand.getTag());
@@ -548,7 +548,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         // TODO
         //float progressionModifier = 1.0f - ((float) WizardData.get(player).countRecentCasts(spell) / WizardData.MAX_RECENT_SPELLS) * MAX_PROGRESSION_REDUCTION;
         float progressionModifier = 1.0f;
-        PlayerWizardData data = Services.WIZARD_DATA.getWizardData(player, player.level());
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
 
         if (this.element == spell.getElement()) {
             modifiers.set(SpellModifiers.POTENCY, 1.0f + (this.tier.level + 1) * EBConfig.POTENCY_INCREASE_PER_TIER, true);

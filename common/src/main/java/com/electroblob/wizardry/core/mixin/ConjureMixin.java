@@ -22,28 +22,28 @@ public class ConjureMixin {
 
     @Inject(method = "getMaxDamage", at = @At("RETURN"), cancellable = true)
     public void EBWIZARDRY$wandGetMaxDamage(CallbackInfoReturnable<Integer> cir){
-        ConjureData data = Services.WIZARD_DATA.getConjureData(stack);
+        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if(data == null || !data.isSummoned()) return;
         cir.setReturnValue(data.getMaxLifetime());
     }
 
     @Inject(method = "getBarWidth", at = @At("RETURN"), cancellable = true)
     public void EBWIZARDRY$getBarWidth(CallbackInfoReturnable<Integer> cir) {
-        ConjureData data = Services.WIZARD_DATA.getConjureData(stack);
+        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if(data == null || !data.isSummoned()) return;
         cir.setReturnValue(Math.round(13.0f - (float)(data.getMaxLifetime() - data.getLifetime()) * 13.0f / data.getMaxLifetime()));
     }
 
     @Inject(method = "isBarVisible", at = @At("RETURN"), cancellable = true)
     public void EBWIZARDRY$isBarVisible(CallbackInfoReturnable<Boolean> cir) {
-        ConjureData data = Services.WIZARD_DATA.getConjureData(stack);
+        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if(data == null || !data.isSummoned()) return;
         cir.setReturnValue(true);
     }
 
     @Inject(method = "getBarColor", at = @At("RETURN"), cancellable = true)
     public void getBarColor(CallbackInfoReturnable<Integer> cir) {
-        ConjureData data = Services.WIZARD_DATA.getConjureData(stack);
+        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if(data == null || !data.isSummoned()) return;
         cir.setReturnValue(DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getBarWidth()));
     }

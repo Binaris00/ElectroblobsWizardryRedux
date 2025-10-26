@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.PlayerWizardData;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBDiscoverSpellEvent;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;
@@ -101,7 +101,7 @@ public class ForfeitRegistry {
         if (!(event.getCaster() instanceof Player player)) return;
         if (player.isCreative()) return;
 
-        PlayerWizardData data = Services.WIZARD_DATA.getWizardData(player, player.level());
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
 
         if (event.getSource() == SpellCastEvent.Source.WAND || event.getSource() == SpellCastEvent.Source.SCROLL) {
             float chance = (float) EBConfig.forfeitChance;
@@ -154,7 +154,7 @@ public class ForfeitRegistry {
                 //WizardryAdvancementTriggers.CAST_SPELL.trigger((ServerPlayer) player, event.getSpell(), player.getItemInHand(player.getUsedItemHand()));
             }
 
-            PlayerWizardData data = Services.WIZARD_DATA.getWizardData(player, player.level());
+            SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
             if (!WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, event.getSpell(), EBDiscoverSpellEvent.Source.CASTING))
                     && data.discoverSpell(event.getSpell())) {
                 if (!event.getCaster().level().isClientSide && !player.isCreative() && EBConfig.discoveryMode) {
