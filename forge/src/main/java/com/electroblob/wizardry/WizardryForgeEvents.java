@@ -4,7 +4,7 @@ import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
-import com.electroblob.wizardry.capabilities.stack.ConjureDataHolder;
+import com.electroblob.wizardry.capabilities.ConjureDataHolder;
 import com.electroblob.wizardry.core.PropertiesForgeDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.registry.EBRegistries;
@@ -103,11 +103,6 @@ public class WizardryForgeEvents {
 
         private static <T> void register(RegisterEvent event, Consumer<RegisterFunction<T>> consumer) {
             consumer.accept((registry, id, value) -> event.register(registry.key(), id, () -> value));
-        }
-
-        @SubscribeEvent
-        public static void register(RegisterCapabilitiesEvent event) {
-            event.register(ConjureDataHolder.class);
         }
 
         @SubscribeEvent

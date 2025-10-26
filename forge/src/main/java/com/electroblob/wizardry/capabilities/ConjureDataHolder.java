@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.capabilities.stack;
+package com.electroblob.wizardry.capabilities;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.data.ConjureData;

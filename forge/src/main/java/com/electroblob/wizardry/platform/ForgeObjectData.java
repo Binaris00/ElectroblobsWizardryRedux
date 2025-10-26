@@ -1,12 +1,11 @@
 package com.electroblob.wizardry.platform;
 
 import com.electroblob.wizardry.api.content.data.*;
-import com.electroblob.wizardry.capabilities.*;
-import com.electroblob.wizardry.capabilities.entity.MinionDataHolder;
-import com.electroblob.wizardry.capabilities.player.CastCommandDataHolder;
-import com.electroblob.wizardry.capabilities.player.SpellManagerDataHolder;
-import com.electroblob.wizardry.capabilities.player.WizardDataHolder;
-import com.electroblob.wizardry.capabilities.stack.ConjureDataHolder;
+import com.electroblob.wizardry.capabilities.MinionDataHolder;
+import com.electroblob.wizardry.capabilities.CastCommandDataHolder;
+import com.electroblob.wizardry.capabilities.SpellManagerDataHolder;
+import com.electroblob.wizardry.capabilities.WizardDataHolder;
+import com.electroblob.wizardry.capabilities.ConjureDataHolder;
 import com.electroblob.wizardry.core.platform.services.IObjectData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
