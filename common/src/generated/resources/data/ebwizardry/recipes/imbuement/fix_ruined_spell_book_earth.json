@@ -1,0 +1,25 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:ruined_spell_book"
+  },
+  "receptacles": [
+    {
+      "item": "ebwizardry:spectral_dust_earth"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_earth"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_earth"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_earth"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "ebwizardry:random_spell_book",
+    "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_sorcery\"}"
+  }
+}

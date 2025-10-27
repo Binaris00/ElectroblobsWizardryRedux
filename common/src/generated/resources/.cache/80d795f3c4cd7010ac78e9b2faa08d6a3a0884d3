@@ -1,4 +1,4 @@
-// 1.20.1	2025-08-28T12:12:57.8819351	Item Models: ebwizardry
+// 1.20.1	2025-10-26T18:13:08.43298081	Item Models: ebwizardry
 89bb34411d51f6f233bba5222d0f678fb09f0db7 assets/ebwizardry/models/item/amulet_absorption.json
 5d768537586b85e2822265776cd201221e20ad88 assets/ebwizardry/models/item/amulet_anchoring.json
 0580922d9a4bededf0168a7c330267c6c36f48e8 assets/ebwizardry/models/item/amulet_arcane_defence.json
@@ -104,6 +104,7 @@ ae440d4d25b1b296433c8ee8ba5e51cfd00bc134 assets/ebwizardry/models/item/mana_flas
 7fed11d8b42d2d5247c660c2ed6f960aecc41d52 assets/ebwizardry/models/item/melee_upgrade.json
 4b15180f342e1709d9e34e7898759e7f7a2805a0 assets/ebwizardry/models/item/poison_bomb.json
 fb141580e999958da54fbc4ff681d1e934b89548 assets/ebwizardry/models/item/purifying_elixir.json
+796eb2f579cac673da717879a36ad5b81251d899 assets/ebwizardry/models/item/random_spell_book.json
 0820a49efac754baad1bdfb3cc9e362488c2b23f assets/ebwizardry/models/item/range_upgrade.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/ebwizardry/models/item/remnant_spawn_egg.json
 f52c1439ceb029c55b0722eb60a5d01707a6f705 assets/ebwizardry/models/item/resplendent_thread.json

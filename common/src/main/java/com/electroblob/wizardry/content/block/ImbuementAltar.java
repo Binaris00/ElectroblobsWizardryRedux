@@ -2,6 +2,7 @@ package com.electroblob.wizardry.content.block;
 
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.content.blockentity.ImbuementAltarBlockEntity;
+import com.electroblob.wizardry.content.item.RandomSpellBookItem;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import net.minecraft.core.BlockPos;
@@ -60,10 +61,14 @@ public class ImbuementAltar extends BaseEntityBlock {
             if(!player.isCreative()) toInsert.shrink(1);
 
         }else{
-            if(toInsert.isEmpty()){
-                player.addItem(currentStack);
-            }else if(!player.addItem(currentStack)){
-                player.drop(currentStack, false);
+            if(currentStack.getItem() instanceof RandomSpellBookItem){
+                RandomSpellBookItem.create(level, player, currentStack);
+            } else {
+                if(toInsert.isEmpty()){
+                    player.addItem(currentStack);
+                }else if(!player.addItem(currentStack)){
+                    player.drop(currentStack, false);
+                }
             }
 
             entity.setStack(ItemStack.EMPTY, false);

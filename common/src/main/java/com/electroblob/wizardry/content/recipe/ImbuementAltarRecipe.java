@@ -2,15 +2,16 @@ package com.electroblob.wizardry.content.recipe;
 
 import com.electroblob.wizardry.setup.registries.EBRecipeTypes;
 import com.google.gson.JsonParseException;
+import com.google.gson.JsonSyntaxException;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.RegistryAccess;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
-import net.minecraft.world.item.crafting.Recipe;
-import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,8 +21,8 @@ import net.minecraft.util.GsonHelper;
 
 public class ImbuementAltarRecipe implements Recipe<Container> {
     private final ResourceLocation id;
-    private final NonNullList<Ingredient> receptacleIngredients; // 4 ingredients for the receptacles
-    private final Ingredient centerIngredient; // The item on the altar
+    private final NonNullList<Ingredient> receptacleIngredients;
+    private final Ingredient centerIngredient;
     private final ItemStack output;
 
     public ImbuementAltarRecipe(ResourceLocation id, NonNullList<Ingredient> receptacleIngredients,
@@ -32,11 +33,33 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
         this.output = output;
     }
 
+    private static ItemStack itemStackFromJson(JsonObject stackObject) {
+        Item item = ShapedRecipe.itemFromJson(stackObject);
+        int count = GsonHelper.getAsInt(stackObject, "count", 1);
+
+        if (count < 1) {
+            throw new JsonSyntaxException("Invalid output count: " + count);
+        }
+
+        ItemStack stack = new ItemStack(item, count);
+
+        // Soporte para NBT data
+        if (stackObject.has("nbt")) {
+            try {
+                CompoundTag nbt = TagParser.parseTag(GsonHelper.getAsString(stackObject, "nbt"));
+                stack.setTag(nbt);
+            } catch (Exception e) {
+                throw new JsonParseException("Invalid NBT data: " + e.getMessage());
+            }
+        }
+
+        return stack;
+    }
+
     public boolean matches(ItemStack centerStack, ItemStack[] receptacleStacks) {
         if (receptacleStacks.length != 4) return false;
         if (!centerIngredient.test(centerStack)) return false;
 
-        // Check if all 4 receptacle ingredients match
         boolean[] matched = new boolean[4];
         for (int i = 0; i < 4; i++) {
             if (receptacleStacks[i].isEmpty()) return false;
@@ -49,7 +72,6 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
             }
         }
 
-        // Ensure all ingredients were matched
         for (boolean m : matched) {
             if (!m) return false;
         }
@@ -120,7 +142,7 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
             }
 
             Ingredient centerIngredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "center"));
-            ItemStack output = net.minecraft.world.item.crafting.ShapedRecipe.itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
+            ItemStack output = itemStackFromJson(GsonHelper.getAsJsonObject(json, "result"));
 
             return new ImbuementAltarRecipe(id, receptacleIngredients, centerIngredient, output);
         }
@@ -148,4 +170,3 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
         }
     }
 }
-

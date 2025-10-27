@@ -1,13 +1,21 @@
 package com.electroblob.wizardry.datagen.provider;
 
+import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.core.ImbuementAltarRecipeBuilder;
+import com.electroblob.wizardry.datagen.help.ArmorData;
+import com.electroblob.wizardry.datagen.help.ElementData;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBTags;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -199,15 +207,111 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .requires(Items.GUNPOWDER)
                 .unlockedBy("has_gunpowder", has(Items.GUNPOWDER))
                 .save(consumer);
+
+        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_EARTH.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_sorcery"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_earth"), consumer);
+        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_FIRE.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_fire"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_fire"), consumer);
+        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_HEALING.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_healing"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_healing"), consumer);
+        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_ICE.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_ice"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_ice"), consumer);
+        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_LIGHTNING.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_lightning"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_lightning"), consumer);
+        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_NECROMANCY.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_necromancy"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_necromancy"), consumer);
+        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_SORCERY.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_sorcery"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_sorcery"), consumer);
+
+        imbuementDustToCrystal(EBItems.SPECTRAL_DUST_EARTH.get(), EBItems.MAGIC_CRYSTAL_EARTH.get(), WizardryMainMod.location("imbuement/magic_crystal_earth"), consumer);
+        imbuementDustToCrystal(EBItems.SPECTRAL_DUST_FIRE.get(), EBItems.MAGIC_CRYSTAL_FIRE.get(), WizardryMainMod.location("imbuement/magic_crystal_fire"), consumer);
+        imbuementDustToCrystal(EBItems.SPECTRAL_DUST_HEALING.get(), EBItems.MAGIC_CRYSTAL_HEALING.get(), WizardryMainMod.location("imbuement/magic_crystal_healing"), consumer);
+        imbuementDustToCrystal(EBItems.SPECTRAL_DUST_ICE.get(), EBItems.MAGIC_CRYSTAL_ICE.get(), WizardryMainMod.location("imbuement/magic_crystal_ice"), consumer);
+        imbuementDustToCrystal(EBItems.SPECTRAL_DUST_LIGHTNING.get(), EBItems.MAGIC_CRYSTAL_LIGHTNING.get(), WizardryMainMod.location("imbuement/magic_crystal_lightning"), consumer);
+        imbuementDustToCrystal(EBItems.SPECTRAL_DUST_NECROMANCY.get(), EBItems.MAGIC_CRYSTAL_NECROMANCY.get(), WizardryMainMod.location("imbuement/magic_crystal_necromancy"), consumer);
+        imbuementDustToCrystal(EBItems.SPECTRAL_DUST_SORCERY.get(), EBItems.MAGIC_CRYSTAL_SORCERY.get(), WizardryMainMod.location("imbuement/magic_crystal_sorcery"), consumer);
+
+        ElementData[] data = new ElementData[]{
+                new ElementData(
+                        EBItems.SPECTRAL_DUST_SORCERY.get(),
+                        new ArmorData(EBItems.WIZARD_HAT_SORCERY.get(), EBItems.WIZARD_ROBE_SORCERY.get(), EBItems.WIZARD_LEGGINGS_SORCERY.get(), EBItems.WIZARD_BOOTS_SORCERY.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
+                        new ArmorData(EBItems.SAGE_HAT_SORCERY.get(), EBItems.SAGE_ROBE_SORCERY.get(), EBItems.SAGE_LEGGINGS_SORCERY.get(), EBItems.SAGE_BOOTS_SORCERY.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
+                        new ArmorData(EBItems.WARLOCK_HOOD_SORCERY.get(), EBItems.WARLOCK_ROBE_SORCERY.get(), EBItems.WARLOCK_LEGGINGS_SORCERY.get(), EBItems.WARLOCK_BOOTS_SORCERY.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
+                        new ArmorData(EBItems.BATTLEMAGE_HELMET_SORCERY.get(), EBItems.BATTLEMAGE_CHESTPLATE_SORCERY.get(), EBItems.BATTLEMAGE_LEGGINGS_SORCERY.get(), EBItems.BATTLEMAGE_BOOTS_SORCERY.get(), EBItems.BATTLEMAGE_HELMET.get(), EBItems.BATTLEMAGE_CHESTPLATE.get(), EBItems.BATTLEMAGE_LEGGINGS.get(), EBItems.BATTLEMAGE_BOOTS.get())
+                ),
+
+                new ElementData(
+                        EBItems.SPECTRAL_DUST_FIRE.get(),
+                        new ArmorData(EBItems.WIZARD_HAT_FIRE.get(), EBItems.WIZARD_ROBE_FIRE.get(), EBItems.WIZARD_LEGGINGS_FIRE.get(), EBItems.WIZARD_BOOTS_FIRE.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
+                        new ArmorData(EBItems.SAGE_HAT_FIRE.get(), EBItems.SAGE_ROBE_FIRE.get(), EBItems.SAGE_LEGGINGS_FIRE.get(), EBItems.SAGE_BOOTS_FIRE.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
+                        new ArmorData(EBItems.WARLOCK_HOOD_FIRE.get(), EBItems.WARLOCK_ROBE_FIRE.get(), EBItems.WARLOCK_LEGGINGS_FIRE.get(), EBItems.WARLOCK_BOOTS_FIRE.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
+                        new ArmorData(EBItems.BATTLEMAGE_HELMET_FIRE.get(), EBItems.BATTLEMAGE_CHESTPLATE_FIRE.get(), EBItems.BATTLEMAGE_LEGGINGS_FIRE.get(), EBItems.BATTLEMAGE_BOOTS_FIRE.get(), EBItems.BATTLEMAGE_HELMET.get(), EBItems.BATTLEMAGE_CHESTPLATE.get(), EBItems.BATTLEMAGE_LEGGINGS.get(), EBItems.BATTLEMAGE_BOOTS.get())
+                ),
+
+                new ElementData(
+                        EBItems.SPECTRAL_DUST_EARTH.get(),
+                        new ArmorData(EBItems.WIZARD_HAT_EARTH.get(), EBItems.WIZARD_ROBE_EARTH.get(), EBItems.WIZARD_LEGGINGS_EARTH.get(), EBItems.WIZARD_BOOTS_EARTH.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
+                        new ArmorData(EBItems.SAGE_HAT_EARTH.get(), EBItems.SAGE_ROBE_EARTH.get(), EBItems.SAGE_LEGGINGS_EARTH.get(), EBItems.SAGE_BOOTS_EARTH.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
+                        new ArmorData(EBItems.WARLOCK_HOOD_EARTH.get(), EBItems.WARLOCK_ROBE_EARTH.get(), EBItems.WARLOCK_LEGGINGS_EARTH.get(), EBItems.WARLOCK_BOOTS_EARTH.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
+                        new ArmorData(EBItems.BATTLEMAGE_HELMET_EARTH.get(), EBItems.BATTLEMAGE_CHESTPLATE_EARTH.get(), EBItems.BATTLEMAGE_LEGGINGS_EARTH.get(), EBItems.BATTLEMAGE_BOOTS_EARTH.get(), EBItems.BATTLEMAGE_HELMET.get(), EBItems.BATTLEMAGE_CHESTPLATE.get(), EBItems.BATTLEMAGE_LEGGINGS.get(), EBItems.BATTLEMAGE_BOOTS.get())
+                ),
+
+                new ElementData(
+                        EBItems.SPECTRAL_DUST_HEALING.get(),
+                        new ArmorData(EBItems.WIZARD_HAT_HEALING.get(), EBItems.WIZARD_ROBE_HEALING.get(), EBItems.WIZARD_LEGGINGS_HEALING.get(), EBItems.WIZARD_BOOTS_HEALING.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
+                        new ArmorData(EBItems.SAGE_HAT_HEALING.get(), EBItems.SAGE_ROBE_HEALING.get(), EBItems.SAGE_LEGGINGS_HEALING.get(), EBItems.SAGE_BOOTS_HEALING.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
+                        new ArmorData(EBItems.WARLOCK_HOOD_HEALING.get(), EBItems.WARLOCK_ROBE_HEALING.get(), EBItems.WARLOCK_LEGGINGS_HEALING.get(), EBItems.WARLOCK_BOOTS_HEALING.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
+                        new ArmorData(EBItems.BATTLEMAGE_HELMET_HEALING.get(), EBItems.BATTLEMAGE_CHESTPLATE_HEALING.get(), EBItems.BATTLEMAGE_LEGGINGS_HEALING.get(), EBItems.BATTLEMAGE_BOOTS_HEALING.get(), EBItems.BATTLEMAGE_HELMET.get(), EBItems.BATTLEMAGE_CHESTPLATE.get(), EBItems.BATTLEMAGE_LEGGINGS.get(), EBItems.BATTLEMAGE_BOOTS.get())
+                ),
+
+                new ElementData(
+                        EBItems.SPECTRAL_DUST_ICE.get(),
+                        new ArmorData(EBItems.WIZARD_HAT_ICE.get(), EBItems.WIZARD_ROBE_ICE.get(), EBItems.WIZARD_LEGGINGS_ICE.get(), EBItems.WIZARD_BOOTS_ICE.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
+                        new ArmorData(EBItems.SAGE_HAT_ICE.get(), EBItems.SAGE_ROBE_ICE.get(), EBItems.SAGE_LEGGINGS_ICE.get(), EBItems.SAGE_BOOTS_ICE.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
+                        new ArmorData(EBItems.WARLOCK_HOOD_ICE.get(), EBItems.WARLOCK_ROBE_ICE.get(), EBItems.WARLOCK_LEGGINGS_ICE.get(), EBItems.WARLOCK_BOOTS_ICE.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
+                        new ArmorData(EBItems.BATTLEMAGE_HELMET_ICE.get(), EBItems.BATTLEMAGE_CHESTPLATE_ICE.get(), EBItems.BATTLEMAGE_LEGGINGS_ICE.get(), EBItems.BATTLEMAGE_BOOTS_ICE.get(), EBItems.BATTLEMAGE_HELMET.get(), EBItems.BATTLEMAGE_CHESTPLATE.get(), EBItems.BATTLEMAGE_LEGGINGS.get(), EBItems.BATTLEMAGE_BOOTS.get())
+                ),
+
+                new ElementData(
+                        EBItems.SPECTRAL_DUST_LIGHTNING.get(),
+                        new ArmorData(EBItems.WIZARD_HAT_LIGHTNING.get(), EBItems.WIZARD_ROBE_LIGHTNING.get(), EBItems.WIZARD_LEGGINGS_LIGHTNING.get(), EBItems.WIZARD_BOOTS_LIGHTNING.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
+                        new ArmorData(EBItems.SAGE_HAT_LIGHTNING.get(), EBItems.SAGE_ROBE_LIGHTNING.get(), EBItems.SAGE_LEGGINGS_LIGHTNING.get(), EBItems.SAGE_BOOTS_LIGHTNING.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
+                        new ArmorData(EBItems.WARLOCK_HOOD_LIGHTNING.get(), EBItems.WARLOCK_ROBE_LIGHTNING.get(), EBItems.WARLOCK_LEGGINGS_LIGHTNING.get(), EBItems.WARLOCK_BOOTS_LIGHTNING.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
+                        new ArmorData(EBItems.BATTLEMAGE_HELMET_LIGHTNING.get(), EBItems.BATTLEMAGE_CHESTPLATE_LIGHTNING.get(), EBItems.BATTLEMAGE_LEGGINGS_LIGHTNING.get(), EBItems.BATTLEMAGE_BOOTS_LIGHTNING.get(), EBItems.BATTLEMAGE_HELMET.get(), EBItems.BATTLEMAGE_CHESTPLATE.get(), EBItems.BATTLEMAGE_LEGGINGS.get(), EBItems.BATTLEMAGE_BOOTS.get())
+                ),
+
+                new ElementData(
+                        EBItems.SPECTRAL_DUST_NECROMANCY.get(),
+                        new ArmorData(EBItems.WIZARD_HAT_NECROMANCY.get(), EBItems.WIZARD_ROBE_NECROMANCY.get(), EBItems.WIZARD_LEGGINGS_NECROMANCY.get(), EBItems.WIZARD_BOOTS_NECROMANCY.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
+                        new ArmorData(EBItems.SAGE_HAT_NECROMANCY.get(), EBItems.SAGE_ROBE_NECROMANCY.get(), EBItems.SAGE_LEGGINGS_NECROMANCY.get(), EBItems.SAGE_BOOTS_NECROMANCY.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
+                        new ArmorData(EBItems.WARLOCK_HOOD_NECROMANCY.get(), EBItems.WARLOCK_ROBE_NECROMANCY.get(), EBItems.WARLOCK_LEGGINGS_NECROMANCY.get(), EBItems.WARLOCK_BOOTS_NECROMANCY.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
+                        new ArmorData(EBItems.BATTLEMAGE_HELMET_NECROMANCY.get(), EBItems.BATTLEMAGE_CHESTPLATE_NECROMANCY.get(), EBItems.BATTLEMAGE_LEGGINGS_NECROMANCY.get(), EBItems.BATTLEMAGE_BOOTS_NECROMANCY.get(), EBItems.BATTLEMAGE_HELMET.get(), EBItems.BATTLEMAGE_CHESTPLATE.get(), EBItems.BATTLEMAGE_LEGGINGS.get(), EBItems.BATTLEMAGE_BOOTS.get())
+                )
+        };
+
+        for (ElementData datum : data) {
+            ArmorData[] armors = new ArmorData[]{datum.normal(), datum.sage(), datum.warlock(), datum.battleMage()};
+
+            for (ArmorData armorData : armors) {
+                imbuementArmor(armorData.defaultHat(), datum.dust(), armorData.hat(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.hat()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.hat()).getPath()), consumer);
+                imbuementArmor(armorData.defaultChest(), datum.dust(), armorData.chest(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.chest()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.chest()).getPath()), consumer);
+                imbuementArmor(armorData.defaultLegs(), datum.dust(), armorData.legs(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.legs()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.legs()).getPath()), consumer);
+                imbuementArmor(armorData.defaultBoots(), datum.dust(), armorData.boots(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.boots()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.boots()).getPath()), consumer);
+            }
+        }
     }
 
-//    private ItemStack spellBook() {
-//        ItemStack stack = EBItems.SPELL_BOOK.get().getDefaultInstance();
-//        SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
-//        return stack;
-//    }
 
-    private void wand(Item wand, Item crystal, @NotNull Consumer<FinishedRecipe> consumer){
+    private void imbuementArmor(Item baseArmor, Item spectralDust, Item result, ResourceLocation location, @NotNull Consumer<FinishedRecipe> consumer) {
+        ImbuementAltarRecipeBuilder.imbuement(Ingredient.of(baseArmor), Ingredient.of(spectralDust), result)
+                .save(consumer, location);
+    }
+
+    private void imbuementFixRuinedBook(Item spectralDust, ResourceLocation loot, ResourceLocation location, @NotNull Consumer<FinishedRecipe> consumer) {
+        ImbuementAltarRecipeBuilder.imbuement(Ingredient.of(EBItems.RUINED_SPELL_BOOK.get()), Ingredient.of(spectralDust), EBItems.RANDOM_SPELL_BOOK.get())
+                .withNbt(nbtForRandomSpellBook(loot.toString())).unlockedBy("has_ruined_spell_book", has(EBItems.RUINED_SPELL_BOOK.get()))
+                .save(consumer, location);
+    }
+
+    private void imbuementDustToCrystal(Item spectralDust, Item crystal, ResourceLocation location, @NotNull Consumer<FinishedRecipe> consumer) {
+        ImbuementAltarRecipeBuilder.imbuement(Ingredient.of(EBItems.MAGIC_CRYSTAL.get()), Ingredient.of(spectralDust),
+                crystal).unlockedBy("has_magic_crystal", has(EBItems.MAGIC_CRYSTAL.get())).save(consumer, location);
+    }
+
+    private void wand(Item wand, Item crystal, @NotNull Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, wand)
                 .define('x', Items.GOLD_NUGGET)
                 .define('y', ItemTags.PLANKS)
@@ -219,7 +323,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private void gildedWood(Block gildenWood, Block planks, @NotNull Consumer<FinishedRecipe> consumer){
+    private void gildedWood(Block gildenWood, Block planks, @NotNull Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, gildenWood)
                 .define('b', planks)
                 .define('i', Items.GOLD_NUGGET)
@@ -228,7 +332,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private void runestone(Block runestone, Item crystal, @NotNull Consumer<FinishedRecipe> consumer){
+    private void runestone(Block runestone, Item crystal, @NotNull Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, runestone, 8)
                 .pattern("zzz")
                 .pattern("zyz")
@@ -239,7 +343,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private void runestonePedestal(Block runestone, Item crystal, @NotNull Consumer<FinishedRecipe> consumer){
+    private void runestonePedestal(Block runestone, Item crystal, @NotNull Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, runestone, 2)
                 .pattern("zzz")
                 .pattern("yyy")
@@ -250,7 +354,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .save(consumer);
     }
 
-    private void bookshelf(Block bookshelf, Block wood, @NotNull Consumer<FinishedRecipe> consumer){
+    private void bookshelf(Block bookshelf, Block wood, @NotNull Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, bookshelf)
                 .define('b', wood)
                 .define('i', EBItems.MAGIC_CRYSTAL_GRAND.get())
@@ -258,12 +362,18 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_gilded_wood", has(EBTags.GILDED_WOOD_ITEM)).save(consumer);
     }
 
-    private void lectern(Block lectern, Block wood, @NotNull Consumer<FinishedRecipe> consumer){
+    private void lectern(Block lectern, Block wood, @NotNull Consumer<FinishedRecipe> consumer) {
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, lectern)
                 .define('b', wood)
                 .define('i', EBItems.MAGIC_CRYSTAL_GRAND.get())
                 .define('n', Items.BOOK)
                 .pattern("bnb").pattern("ibi").pattern("bbb")
                 .unlockedBy("has_gilded_wood", has(EBTags.GILDED_WOOD_ITEM)).save(consumer);
+    }
+
+    private CompoundTag nbtForRandomSpellBook(String loot) {
+        CompoundTag nbt = new CompoundTag();
+        nbt.putString("LootTable", loot);
+        return nbt;
     }
 }

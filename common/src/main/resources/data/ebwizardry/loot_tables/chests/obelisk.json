@@ -30,9 +30,9 @@
             {
               "function": "ebwizardry:random_spell",
               "tiers": [
-                "novice",
-                "apprentice",
-                "advanced"
+                "ebwizardry:novice",
+                "ebwizardry:apprentice",
+                "ebwizardry:advanced"
               ],
               "undiscovered_bias": 0.3
             }
@@ -46,9 +46,9 @@
             {
               "function": "ebwizardry:random_spell",
               "tiers": [
-                "novice",
-                "apprentice",
-                "advanced"
+                "ebwizardry:novice",
+                "ebwizardry:apprentice",
+                "ebwizardry:advanced"
               ],
               "undiscovered_bias": 0.3
             },

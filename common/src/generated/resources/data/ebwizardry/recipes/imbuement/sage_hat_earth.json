@@ -1,0 +1,24 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:sage_hat"
+  },
+  "receptacles": [
+    {
+      "item": "ebwizardry:spectral_dust_earth"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_earth"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_earth"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_earth"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "ebwizardry:sage_hat_earth"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:wizard_leggings"
+  },
+  "receptacles": [
+    {
+      "item": "ebwizardry:spectral_dust_lightning"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_lightning"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_lightning"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_lightning"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "ebwizardry:wizard_leggings_lightning"
+  }
+}

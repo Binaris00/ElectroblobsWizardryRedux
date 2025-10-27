@@ -1,0 +1,24 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:warlock_hood"
+  },
+  "receptacles": [
+    {
+      "item": "ebwizardry:spectral_dust_lightning"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_lightning"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_lightning"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_lightning"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "ebwizardry:warlock_hood_lightning"
+  }
+}

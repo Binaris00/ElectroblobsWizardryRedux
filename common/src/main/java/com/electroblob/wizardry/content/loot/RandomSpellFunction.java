@@ -27,19 +27,21 @@ import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class RandomSpellFunction extends LootItemConditionalFunction {
-    private final List<Spell> spells;
+    private final @Nullable List<Spell> spells;
+    private final @Nullable List<Element> elements;
+    private final @Nullable List<SpellTier> tiers;
     private final boolean ignoreWeighting;
     private final float undiscoveredBias;
-    private final List<SpellTier> tiers;
-    private final List<Element> elements;
 
-    protected RandomSpellFunction(LootItemCondition[] conditions, List<Spell> spells, boolean ignoreWeighting, float undiscoveredBias, List<SpellTier> tiers, List<Element> elements) {
+    protected RandomSpellFunction(LootItemCondition[] conditions, @Nullable List<Spell> spells, boolean ignoreWeighting, float undiscoveredBias, @Nullable List<SpellTier> tiers, @Nullable List<Element> elements) {
         super(conditions);
         this.spells = spells;
         this.ignoreWeighting = ignoreWeighting;
@@ -61,42 +63,49 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         Player player = context.getParamOrNull(LootContextParams.LAST_DAMAGE_PLAYER);
         Spell spell = pickRandomSpell(stack, context.getRandom(), player);
 
-        if (spell == Spells.NONE)
-            EBLogger.warn("Tried to apply the random_spell loot function to an item, but not enabled spells matched the criteria specified. Substituting placeholder (metadata 0) item.");
+        if (spell == Spells.NONE) {
+            EBLogger.warn("Tried to apply the random_spell loot function to an item, but no enabled spells matched the criteria specified. Using Magic Missile as a fallback.");
+            return SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
+        }
+
         return SpellUtil.setSpell(stack, spell);
     }
 
     private Spell pickRandomSpell(ItemStack stack, RandomSource random, Player player) {
-        // TODO MISSING SPELL CONTEXT (you don't want all the spells be obtained from loot right?)
-        // TODO s.applicableForItem(stack.getItem()) (applicable spells for x item)
-        List<Spell> possibleSpells = SpellUtil.getSpells(s -> (tiers == null || tiers.contains(s.getTier())) && (elements == null || elements.contains(s.getElement())));
+        ArrayList<Spell> possibleSpells = new ArrayList<>(Services.REGISTRY_UTIL.getSpells());
+
+        EBLogger.info("Picking random spell for loot with {} possible spells before filtering.", possibleSpells.size());
+
+        // Checking spells, if the spells list is specified
         if (spells != null && !spells.isEmpty()) possibleSpells.retainAll(spells);
 
-        List<SpellTier> possibleTiers = new ArrayList<>();
-        if (tiers == null || tiers.isEmpty()) possibleTiers.addAll(Services.REGISTRY_UTIL.getTiers());
-        else possibleTiers.addAll(tiers);
-        possibleTiers.removeIf(t -> possibleSpells.stream().noneMatch(s -> s.getTier() == t));
-        if (possibleTiers.isEmpty()) return Spells.NONE;
+        EBLogger.info("{} possible spells after spell filtering.", possibleSpells.size());
 
-        SpellTier tier = ignoreWeighting ? possibleTiers.get(random.nextInt(possibleTiers.size())) : SpellTier.getWeightedRandomTier(random, possibleTiers.toArray(new SpellTier[0]));
-        possibleSpells.removeIf(s -> s.getTier() != tier);
-        if (possibleSpells.isEmpty()) return Spells.NONE;
+        // Checking tiers, if the tiers list is specified
+        if (tiers != null && !tiers.isEmpty()) {
+            EBLogger.info("Filtering by tiers: {}", tiers);
+            EBLogger.info("Sample spell tiers before filtering: {}",
+                    possibleSpells.stream().limit(5).map(s -> s.getLocation() + "=" + s.getTier()).collect(Collectors.toList()));
+            possibleSpells.removeIf(possibleSpell -> !tiers.contains(possibleSpell.getTier()));
+        }
 
-        List<Element> possibleElements = new ArrayList<>();
-        if (elements == null || elements.isEmpty()) possibleElements.addAll(Services.REGISTRY_UTIL.getElements());
-        else possibleElements.addAll(elements);
+        EBLogger.info("{} possible spells after tier filtering.", possibleSpells.size());
 
-        possibleElements.removeIf(e -> possibleSpells.stream().noneMatch(s -> s.getElement() == e));
-        if (possibleElements.isEmpty()) return Spells.NONE;
-        Element element = possibleElements.get(random.nextInt(possibleElements.size()));
+        // Checking elements, if the elements list is specified
+        if (elements != null && !elements.isEmpty()) {
+            EBLogger.info("Filtering by elements: {}", elements);
+            if (!possibleSpells.isEmpty()) {
+                EBLogger.info("Sample spell elements before filtering: {}",
+                        possibleSpells.stream().limit(5).map(s -> s.getLocation() + "=" + s.getElement()).collect(Collectors.toList()));
+            }
+            possibleSpells.removeIf(possibleSpell -> !elements.contains(possibleSpell.getElement()));
+        }
 
-        possibleSpells.removeIf(s -> s.getElement() != element);
-        if (possibleSpells.isEmpty()) return Spells.NONE;
+        EBLogger.info("{} possible spells after element filtering.", possibleSpells.size());
 
         if (player != null && undiscoveredBias > 0) {
             float bias = undiscoveredBias;
-            if (EBAccessoriesIntegration.isEquipped(player, EBItems.CHARM_SPELL_DISCOVERY.get()))
-                bias = Math.min(bias + 0.4f, 0.9f);
+            if (EBAccessoriesIntegration.isEquipped(player, EBItems.CHARM_SPELL_DISCOVERY.get())) bias = Math.min(bias + 0.4f, 0.9f);
             if (bias > 0) {
                 SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
                 int discoveredCount = (int) possibleSpells.stream().filter(data::hasSpellBeenDiscovered).count();
@@ -107,8 +116,15 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
             }
         }
 
+        if (possibleSpells.isEmpty()) {
+            EBLogger.error("No spells matched the loot criteria after filtering.");
+            return Spells.NONE;
+        }
+
         return possibleSpells.get(random.nextInt(possibleSpells.size()));
     }
+
+
 
     public static LootItemConditionalFunction.Builder<?> setRandomSpell(List<Spell> spells, boolean ignoreWeighting, float undiscoveredBias, List<SpellTier> tiers, List<Element> elements) {
         return simpleBuilder((conditions) ->
@@ -157,14 +173,24 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
 
             if (object.has("tiers")) {
                 DataResult<List<ResourceLocation>> result = ResourceLocation.CODEC.listOf().parse(JsonOps.INSTANCE, object.get("tiers"));
-                if (result.result().isPresent())
+                if (result.result().isPresent()) {
                     tiers = result.result().get().stream().map(Services.REGISTRY_UTIL::getTier).collect(Collectors.toList());
+                    if(tiers.contains(null)) {
+                        EBLogger.warn("One or more invalid spell tiers found when deserializing random_spell loot function.");
+                        tiers.removeIf(Objects::isNull);
+                    }
+                }
             }
 
             if (object.has("elements")) {
                 DataResult<List<ResourceLocation>> result = ResourceLocation.CODEC.listOf().parse(JsonOps.INSTANCE, object.get("elements"));
-                if (result.result().isPresent())
+                if (result.result().isPresent()) {
                     elements = result.result().get().stream().map(Services.REGISTRY_UTIL::getElement).collect(Collectors.toList());
+                    if(elements.contains(null)) {
+                        EBLogger.warn("One or more invalid elements found when deserializing random_spell loot function.");
+                        elements.removeIf(Objects::isNull);
+                    }
+                }
             }
 
             return new RandomSpellFunction(conditions, spells, ignoreWeighting, undiscoveredBias, tiers, elements);

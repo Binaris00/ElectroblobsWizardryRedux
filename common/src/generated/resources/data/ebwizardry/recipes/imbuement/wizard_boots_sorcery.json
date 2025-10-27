@@ -1,0 +1,24 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:wizard_boots"
+  },
+  "receptacles": [
+    {
+      "item": "ebwizardry:spectral_dust_sorcery"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_sorcery"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_sorcery"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_sorcery"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "ebwizardry:wizard_boots_sorcery"
+  }
+}

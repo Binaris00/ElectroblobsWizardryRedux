@@ -8,7 +8,7 @@
         },
         {
           "condition": "random_chance_with_looting",
-          "chance": 0.02,
+          "chance": 0.90,
           "looting_multiplier": 0.01
         }
       ],
@@ -22,9 +22,9 @@
             {
               "function": "ebwizardry:random_spell",
               "tiers": [
-                "novice",
-                "apprentice",
-                "advanced"
+                "ebwizardry:novice",
+                "ebwizardry:apprentice",
+                "ebwizardry:advanced"
               ]
             }
           ]

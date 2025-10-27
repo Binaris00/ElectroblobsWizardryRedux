@@ -1,0 +1,24 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:warlock_leggings"
+  },
+  "receptacles": [
+    {
+      "item": "ebwizardry:spectral_dust_necromancy"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_necromancy"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_necromancy"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_necromancy"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "ebwizardry:warlock_leggings_necromancy"
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:magic_crystal"
+  },
+  "receptacles": [
+    {
+      "item": "ebwizardry:spectral_dust_necromancy"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_necromancy"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_necromancy"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_necromancy"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "ebwizardry:magic_crystal_necromancy"
+  }
+}

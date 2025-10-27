@@ -8,6 +8,7 @@
     "ClipContextMixin",
     "CommandsMixin",
     "ConjureMixin",
+    "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
     "PersistentEntitySectionManagerMixin",

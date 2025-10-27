@@ -18,16 +18,16 @@
             {
               "function": "ebwizardry:random_spell",
               "spells": [
-                "magic_missile",
-                "arc",
-                "thunderbolt",
-                "summon_zombie",
-                "dart",
-                "ice_shard",
-                "firebolt",
-                "poison",
-                "flame_ray",
-                "frost_ray"
+                "ebwizardry:magic_missile",
+                "ebwizardry:arc",
+                "ebwizardry:thunderbolt",
+                "ebwizardry:summon_zombie",
+                "ebwizardry:dart",
+                "ebwizardry:ice_shard",
+                "ebwizardry:firebolt",
+                "ebwizardry:poison",
+                "ebwizardry:flame_ray",
+                "ebwizardry:frost_ray"
               ]
             },
             {

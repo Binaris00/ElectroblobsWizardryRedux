@@ -1,0 +1,24 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:sage_robe"
+  },
+  "receptacles": [
+    {
+      "item": "ebwizardry:spectral_dust_fire"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_fire"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_fire"
+    },
+    {
+      "item": "ebwizardry:spectral_dust_fire"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "item": "ebwizardry:sage_robe_fire"
+  }
+}

@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-12T20:25:26.114818945	Spell Data Provider: ebwizardry
+// 1.20.1	2025-10-26T18:13:08.431029545	Spell Data Provider: ebwizardry
 dcd8a3fd94e0f44a7717557d77d08533f6e520b2 data/ebwizardry/spells/agility.json
 4f6f8f6bb13ecb046e1f6c2c568124130c14dd58 data/ebwizardry/spells/arrow_rain.json
 5a678c88cf1fddc05d238ec605a22564d086878b data/ebwizardry/spells/banish.json
@@ -28,6 +28,7 @@ be569832b53eb0e204745e589c36a14466acde9b data/ebwizardry/spells/fire_resistance.
 b60545d737e9dbd1d417ec370d994ab16c3a5126 data/ebwizardry/spells/fire_skin.json
 c3e01768419936d01ff84b36add6a2df957754df data/ebwizardry/spells/firebolt.json
 3fb74e2c9351f054e76b41e9d7337cf2edcc457a data/ebwizardry/spells/firestorm.json
+8c0430547ab3fa7c518e1461f7f9d03a4100ce18 data/ebwizardry/spells/flame_flame.json
 5b70d3db6fa82f8d9c2947a1fe5acd34d7144147 data/ebwizardry/spells/flame_ray.json
 9b4c435907e35c7d3563a8bf199013f408669d04 data/ebwizardry/spells/flaming_weapon.json
 0d603a26a4fa546bf3ebef04baef5e98c95c9cc5 data/ebwizardry/spells/flight.json
