@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.core;
 
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.CastCommandData;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBEntityJoinLevelEvent;
@@ -37,8 +38,9 @@ public final class DataEvents {
     }
 
     public static void onMinionJoinLevel(EBEntityJoinLevelEvent event) {
-        if (event.getEntity() instanceof Mob mob && Services.OBJECT_DATA.isMinion(mob))
-            Services.OBJECT_DATA.getMinionData(mob).updateGoals();
+        if (event.getEntity() instanceof Mob mob && Services.OBJECT_DATA.isMinion(mob)) {
+            Services.OBJECT_DATA.getMinionData(mob).markGoalRestart(true);
+        }
     }
 
     public static void onPlayerInteractMinion(EBPlayerInteractEntityEvent event) {

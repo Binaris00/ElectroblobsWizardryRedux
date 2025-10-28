@@ -55,5 +55,11 @@ public interface IObjectData {
      */
     MinionData getMinionData(Mob mob);
 
+    /**
+     * Checks if the given entity is a minion.
+     *
+     * @param mob The entity to check.
+     * @return true if the entity is a minion, false otherwise.
+     */
     boolean isMinion(Entity mob);
 }

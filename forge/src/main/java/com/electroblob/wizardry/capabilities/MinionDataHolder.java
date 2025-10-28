@@ -7,28 +7,31 @@ import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 
 public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionData {
-    private static final ResourceLocation LOCATION = WizardryMainMod.location("minion_data");
+    public static final ResourceLocation LOCATION = WizardryMainMod.location("minion_data");
     public static final Capability<MinionDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     private final Mob provider;
     private int lifetime = -1;
     private boolean summoned = false;
+    private boolean shouldDeleteGoals = false;
+    private boolean shouldFollowOwner = false;
+    private @Nullable UUID ownerUUID = null;
+    private boolean shouldRestartGoals;
 
     public MinionDataHolder(Mob mob) {
         this.provider = mob;
@@ -46,6 +49,12 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void tick() {
         if (!summoned) return;
+
+        if(goalRestart()){
+            updateGoals();
+            markGoalRestart(false);
+        }
+
 
         if (provider.tickCount > this.getLifetime() && this.getLifetime() > 0) {
             this.provider.discard();
@@ -81,12 +90,63 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
         sync();
     }
 
+    @Override
+    public boolean shouldDeleteGoals() {
+        return shouldDeleteGoals;
+    }
+
+    @Override
+    public void setShouldDeleteGoals(boolean shouldDeleteGoals) {
+        this.shouldDeleteGoals = shouldDeleteGoals;
+    }
+
+    @Override
+    public boolean shouldFollowOwner() {
+        return shouldFollowOwner;
+    }
+
+    @Override
+    public void setShouldFollowOwner(boolean shouldFollowOwner) {
+        this.shouldFollowOwner = shouldFollowOwner;
+    }
+
+    @Override
+    public @Nullable UUID getOwnerUUID() {
+        return ownerUUID;
+    }
+
+    @Override
+    public void setOwnerUUID(@Nullable UUID ownerUUID) {
+        this.ownerUUID = ownerUUID;
+        sync();
+    }
+
+    @Override
+    public Player getOwner() {
+        return ownerUUID == null ? null : provider.level().getPlayerByUUID(ownerUUID);
+    }
+
+    @Override
+    public void markGoalRestart(boolean shouldRestartGoals) {
+        this.shouldRestartGoals = shouldRestartGoals;
+    }
+
+    @Override
+    public boolean goalRestart() {
+        return this.shouldRestartGoals;
+    }
+
 
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         tag.putInt("lifetime", lifetime);
         tag.putBoolean("summoned", summoned);
+        tag.putBoolean("shouldDeleteGoals", shouldDeleteGoals);
+        tag.putBoolean("shouldFollowOwner", shouldFollowOwner);
+        if(ownerUUID != null) {
+            tag.putUUID("ownerUUID", ownerUUID);
+        }
         return tag;
     }
 
@@ -94,10 +154,13 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     public void deserializeNBT(CompoundTag tag) {
         this.lifetime = tag.getInt("lifetime");
         this.summoned = tag.getBoolean("summoned");
+        this.shouldDeleteGoals = tag.getBoolean("shouldDeleteGoals");
+        this.shouldFollowOwner = tag.getBoolean("shouldFollowOwner");
+        if(tag.contains("ownerUUID")) {
+            this.ownerUUID = tag.getUUID("ownerUUID");
+        }
     }
 
-
-    @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<MinionDataHolder> dataHolder;
 
@@ -117,13 +180,6 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
         @Override
         public void deserializeNBT(CompoundTag arg) {
             dataHolder.orElseThrow(NullPointerException::new).deserializeNBT(arg);
-        }
-
-        @SubscribeEvent
-        public static void attachCapability(final AttachCapabilitiesEvent<Entity> event) {
-            if(event.getObject() instanceof Mob mob){
-                event.addCapability(LOCATION, new MinionDataHolder.Provider(mob));
-            }
         }
     }
 }

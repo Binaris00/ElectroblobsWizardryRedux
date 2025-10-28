@@ -10,6 +10,7 @@ import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -34,27 +35,37 @@ import java.util.function.Function;
  * @param <T> The type of mob that is summoned by this spell.
  */
 public class MinionSpell<T extends Mob> extends Spell {
-    /** Attribute Modifier id */
+    /**
+     * Attribute Modifier id
+     */
     public static final String HEALTH_MODIFIER = "minion_health";
 
-    /** Attribute Modifier id */
+    /**
+     * Attribute Modifier id
+     */
     public static final String POTENCY_ATTRIBUTE_MODIFIER = "potency";
 
-    /** A factory that creates the minions. */
+    /**
+     * A factory that creates the minions.
+     */
     protected final Function<Level, T> minionFactory;
 
-    /** Whether the minions are spawned in midair. Defaults to false. */
+    /**
+     * Whether the minions are spawned in midair. Defaults to false.
+     */
     protected boolean flying = false;
 
-    /** When the created minion should follow the owner */
-    protected boolean shouldFollowOwner = false;
+    /**
+     * When the created minion should follow the owner
+     */
+    protected boolean shouldFollowOwner = true;
 
     public MinionSpell(Function<Level, T> minionFactory) {
         this.minionFactory = minionFactory;
     }
 
-    public MinionSpell<T> setShouldFollowOwner() {
-        this.shouldFollowOwner = true;
+    public MinionSpell<T> setShouldFollowOwner(boolean shouldFollowOwner) {
+        this.shouldFollowOwner = shouldFollowOwner;
         return this;
     }
 
@@ -148,18 +159,20 @@ public class MinionSpell<T extends Mob> extends Spell {
 
 
             T minion = createMinion(ctx.world(), ctx.caster(), ctx.modifiers());
+            minion.setCustomName(Component.translatable("entity.ebwizardry.minion_name", ctx.caster().getDisplayName(), minion.getDisplayName()));
+
+
             MinionData data = Services.OBJECT_DATA.getMinionData(minion);
             minion.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             data.setSummoned(true);
-            //minionData.setSummoner(ctx.caster());
+            data.setOwnerUUID(ctx.caster().getUUID());
             setLifetime(minion, (int) (property(DefaultProperties.MINION_LIFETIME) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
-            //minionData.setShouldFollow(shouldFollowOwner);
+            data.setShouldFollowOwner(shouldFollowOwner);
 
-            minion.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(
-                    new AttributeModifier(POTENCY_ATTRIBUTE_MODIFIER, ctx.modifiers().get(SpellModifiers.POTENCY) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
-
-            minion.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(
-                    new AttributeModifier(HEALTH_MODIFIER, ctx.modifiers().get(HEALTH_MODIFIER) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            if (minion.getAttribute(Attributes.ATTACK_DAMAGE) != null)
+                minion.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(POTENCY_ATTRIBUTE_MODIFIER, ctx.modifiers().get(SpellModifiers.POTENCY) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+            if (minion.getAttribute(Attributes.MAX_HEALTH) != null)
+                minion.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(HEALTH_MODIFIER, ctx.modifiers().get(HEALTH_MODIFIER) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
             minion.setHealth(minion.getMaxHealth());
             this.addMinionExtras(minion, ctx, i);

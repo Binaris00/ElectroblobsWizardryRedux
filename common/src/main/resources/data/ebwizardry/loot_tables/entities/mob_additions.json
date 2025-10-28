@@ -8,7 +8,7 @@
         },
         {
           "condition": "random_chance_with_looting",
-          "chance": 0.90,
+          "chance": 0.03,
           "looting_multiplier": 0.01
         }
       ],

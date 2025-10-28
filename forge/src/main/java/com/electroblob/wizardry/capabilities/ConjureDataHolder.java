@@ -13,9 +13,6 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,7 +20,7 @@ import org.jetbrains.annotations.Nullable;
  * Loading the conjure data with Forge, nothing too crazy over here, just using the capabilities to load-change the data
  * */
 public class ConjureDataHolder implements INBTSerializable<CompoundTag>, ConjureData {
-    private static final ResourceLocation LOCATION = WizardryMainMod.location("conjure");
+    public static final ResourceLocation LOCATION = WizardryMainMod.location("conjure");
     public static final Capability<ConjureDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     private int lifetime = -1;
@@ -100,7 +97,6 @@ public class ConjureDataHolder implements INBTSerializable<CompoundTag>, Conjure
         this.summoned = summoned;
     }
 
-    @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<ConjureDataHolder> dataHolder;
 
@@ -120,14 +116,6 @@ public class ConjureDataHolder implements INBTSerializable<CompoundTag>, Conjure
         @Override
         public void deserializeNBT(CompoundTag arg) {
             dataHolder.orElseThrow(NullPointerException::new).deserializeNBT(arg);
-        }
-
-        @SubscribeEvent
-        public static void attach(final AttachCapabilitiesEvent<ItemStack> event) {
-            if(ConjureItemSpell.isSupportedItem(event.getObject().getItem())){
-                final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(event.getObject());
-                event.addCapability(ConjureDataHolder.LOCATION, provider);
-            }
         }
     }
 }

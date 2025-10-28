@@ -25,8 +25,8 @@ public class FabricObjectData implements IObjectData {
     }
 
     @Override
-    public boolean isMinion(Entity mob) {
-        return EBComponents.MINION_DATA.isProvidedBy(mob);
+    public boolean isMinion(Entity entity) {
+        return entity instanceof Mob mob && EBComponents.MINION_DATA.get(mob).isSummoned();
     }
 
     @Override

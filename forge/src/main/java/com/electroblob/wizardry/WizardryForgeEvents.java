@@ -1,10 +1,12 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
-import com.electroblob.wizardry.capabilities.ConjureDataHolder;
+import com.electroblob.wizardry.capabilities.*;
+import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.core.PropertiesForgeDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.registry.EBRegistries;
@@ -14,11 +16,16 @@ import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
 import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -68,6 +75,27 @@ public class WizardryForgeEvents {
         @SubscribeEvent
         public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
             if(WizardryEventBus.getInstance().fire(new EBPlayerInteractEntityEvent(event.getEntity(), event.getTarget()))) event.setCanceled(true);
+        }
+
+        @SubscribeEvent
+        public static void attachCapability(final AttachCapabilitiesEvent<Entity> event) {
+            if(event.getObject() instanceof Player player){
+                event.addCapability(CastCommandDataHolder.LOCATION, new CastCommandDataHolder.Provider(player));
+                event.addCapability(SpellManagerDataHolder.LOCATION, new SpellManagerDataHolder.Provider(player));
+                event.addCapability(WizardDataHolder.LOCATION, new WizardDataHolder.Provider(player));
+            }
+
+            if(event.getObject() instanceof Mob mob){
+                event.addCapability(MinionDataHolder.LOCATION, new MinionDataHolder.Provider(mob));
+            }
+        }
+
+        @SubscribeEvent
+        public static void attachCapabilityItem(final AttachCapabilitiesEvent<ItemStack> event) {
+            if(ConjureItemSpell.isSupportedItem(event.getObject().getItem())){
+                final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(event.getObject());
+                event.addCapability(ConjureDataHolder.LOCATION, provider);
+            }
         }
     }
 

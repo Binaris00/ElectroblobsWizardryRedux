@@ -27,6 +27,7 @@ import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.monster.WitherSkeleton;
 
 import java.util.HashMap;
@@ -132,6 +133,8 @@ public final class Spells {
     public static final Spell SUMMON_RICH;
     public static final Spell LIGHTNING_PULSE;
     public static final Spell FLAME_FLAME;
+    public static final Spell SUMMON_ZOMBIE;
+    public static final Spell SUMMON_SNOW_GOLEM;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -570,6 +573,17 @@ public final class Spells {
                         .assignBaseProperties(SpellTiers.NOVICE, Elements.FIRE, SpellType.CONSTRUCT, SpellAction.POINT, 5, 0, 5)
                         .add(DefaultProperties.ITEM_LIFETIME, 200)
                         .add(DefaultProperties.SENSIBLE, true)
+                        .build()
+        ));
+
+        SUMMON_ZOMBIE = spell("summon_zombie", SummonZombie::new);
+
+        SUMMON_SNOW_GOLEM = spell("summon_snow_golem", () -> new MinionSpell<>((l) -> new SnowGolem(EntityType.SNOW_GOLEM, l)).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.MINION, SpellAction.POINT, 30, 10, 200)
+                        .add(DefaultProperties.MINION_COUNT, 1)
+                        .add(DefaultProperties.MINION_LIFETIME, -1)
+                        .add(DefaultProperties.SUMMON_RADIUS, 2)
                         .build()
         ));
     }

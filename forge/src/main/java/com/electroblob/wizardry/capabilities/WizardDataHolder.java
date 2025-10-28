@@ -32,7 +32,7 @@ import java.util.UUID;
 
 
 public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardData {
-    private static final ResourceLocation LOCATION = WizardryMainMod.location("wizard_data");
+    public static final ResourceLocation LOCATION = WizardryMainMod.location("wizard_data");
     public static final Capability<WizardDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     public final Set<UUID> allies = new HashSet<>();
@@ -153,7 +153,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         }
     }
 
-    @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<WizardDataHolder> dataHolder;
 
@@ -173,13 +172,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         @Override
         public void deserializeNBT(CompoundTag arg) {
             dataHolder.orElseThrow(NullPointerException::new).deserializeNBT(arg);
-        }
-
-        @SubscribeEvent
-        public static void attachCapability(final AttachCapabilitiesEvent<Entity> event) {
-            if(event.getObject() instanceof Player player){
-                event.addCapability(LOCATION, new WizardDataHolder.Provider(player));
-            }
         }
     }
 }

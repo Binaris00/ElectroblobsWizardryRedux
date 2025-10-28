@@ -37,7 +37,7 @@ import java.util.*;
 
 
 public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, SpellManagerData {
-    private static final ResourceLocation LOCATION = WizardryMainMod.location("spell_manager_data");
+    public static final ResourceLocation LOCATION = WizardryMainMod.location("spell_manager_data");
     public static final Capability<SpellManagerDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     public Set<Spell> spellsDiscovered = new HashSet<>();
@@ -223,7 +223,6 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
         }
     }
 
-    @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<SpellManagerDataHolder> dataHolder;
 
@@ -243,13 +242,6 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
         @Override
         public void deserializeNBT(CompoundTag arg) {
             dataHolder.orElseThrow(NullPointerException::new).deserializeNBT(arg);
-        }
-
-        @SubscribeEvent
-        public static void attachCapability(final AttachCapabilitiesEvent<Entity> event) {
-            if(event.getObject() instanceof Player player){
-                event.addCapability(LOCATION, new SpellManagerDataHolder.Provider(player));
-            }
         }
     }
 }

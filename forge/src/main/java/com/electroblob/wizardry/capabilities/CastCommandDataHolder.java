@@ -32,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 
 
 public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, CastCommandData {
-    private static final ResourceLocation LOCATION = WizardryMainMod.location("cast_command_data");
+    public static final ResourceLocation LOCATION = WizardryMainMod.location("cast_command_data");
     public static final Capability<CastCommandDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     private Spell castCommandSpell = Spells.NONE;
@@ -128,8 +128,6 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
         }
     }
 
-
-    @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<CastCommandDataHolder> dataHolder;
 
@@ -149,13 +147,6 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
         @Override
         public void deserializeNBT(CompoundTag arg) {
             dataHolder.orElseThrow(NullPointerException::new).deserializeNBT(arg);
-        }
-
-        @SubscribeEvent
-        public static void attachCapability(final AttachCapabilitiesEvent<Entity> event) {
-            if(event.getObject() instanceof Player player){
-                event.addCapability(LOCATION, new CastCommandDataHolder.Provider(player));
-            }
         }
     }
 }

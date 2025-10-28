@@ -474,6 +474,10 @@
   "spell.ebwizardry.resurrection.button_wait": "Resurrect (%ss)",
   "spell.ebwizardry.resurrection.button_ready": "Resurrect",
 
+
+  "entity.ebwizardry.minion_name": "%s's %s Minion",
+
+
   "ebwizardry.raw_line_12": "========================================================",
   "ebwizardry.forfeit.desc": "EBWIZARDRY FORFEIT",
   "ebwizardry.raw_line_13": "========================================================",
