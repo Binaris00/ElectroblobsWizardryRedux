@@ -28,6 +28,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.SnowGolem;
+import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.WitherSkeleton;
 
 import java.util.HashMap;
@@ -135,6 +136,7 @@ public final class Spells {
     public static final Spell FLAME_FLAME;
     public static final Spell SUMMON_ZOMBIE;
     public static final Spell SUMMON_SNOW_GOLEM;
+    public static final Spell OJOSPOCOS;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -584,6 +586,16 @@ public final class Spells {
                         .add(DefaultProperties.MINION_COUNT, 1)
                         .add(DefaultProperties.MINION_LIFETIME, -1)
                         .add(DefaultProperties.SUMMON_RADIUS, 2)
+                        .build()
+        ));
+
+        OJOSPOCOS = spell("ojospocos", () -> new MinionSpell<>((l) -> new EnderMan(EntityType.ENDERMAN, l)).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellType.MINION, SpellAction.POINT, 80, 30, 400)
+                        .add(DefaultProperties.MINION_COUNT, 1)
+                        .add(DefaultProperties.MINION_LIFETIME, -1)
+                        .add(DefaultProperties.SUMMON_RADIUS, 4)
+                        .add(DefaultProperties.SENSIBLE, true)
                         .build()
         ));
     }

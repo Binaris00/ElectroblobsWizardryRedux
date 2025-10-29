@@ -30,7 +30,7 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
 
 
     @Override
-    public void registerEntityComponentFactories(@NotNull EntityComponentFactoryRegistry registry) {
+    public void registerEntityComponentFactories(EntityComponentFactoryRegistry registry) {
         registry.registerForPlayers(WIZARD_DATA, WizardDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerForPlayers(CAST_COMMAND_DATA, CastCommandDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerForPlayers(SPELL_MANAGER_DATA, SpellManagerDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);

@@ -473,6 +473,8 @@
   "spell.ebwizardry.resurrection.resurrect_self": "%s came back to life",
   "spell.ebwizardry.resurrection.button_wait": "Resurrect (%ss)",
   "spell.ebwizardry.resurrection.button_ready": "Resurrect",
+  "spell.ebwizardry.ojospocos": "Ojospocos",
+  "spell.ebwizardry.ojospocos.desc": "Endermans are now yours",
 
 
   "entity.ebwizardry.minion_name": "%s's %s Minion",

@@ -9,14 +9,15 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -24,9 +25,6 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -47,7 +45,12 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
     }
 
     private void sync(){
-        // TODO THX FORGE FOR MAKING THE CAPABILITY SYSTEM SO HARD FOR ME
+        if (!this.provider.level().isClientSide()) {
+            CompoundTag tag = this.serializeNBT();
+
+            PlayerCapabilitySyncPacketS2C packet = new PlayerCapabilitySyncPacketS2C(PlayerCapabilitySyncPacketS2C.CapabilityType.CAST_COMMAND, tag);
+            Services.NETWORK_HELPER.sendTo((ServerPlayer) this.provider, packet);
+        }
     }
 
     @Override
@@ -56,7 +59,6 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
         this.castCommandModifiers = modifiers;
         this.castCommandDuration = duration;
         sync();
-        // TODO PACKET SENDING FOR CONTINUOUS SPELL SYNC TO CLIENT
     }
 
     @Override
@@ -65,7 +67,6 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
         this.castCommandTick = 0;
         this.castCommandModifiers.reset();
         sync();
-        // TODO PACKET SENDING FOR CONTINUOUS SPELL SYNC TO CLIENT
     }
 
     @Override

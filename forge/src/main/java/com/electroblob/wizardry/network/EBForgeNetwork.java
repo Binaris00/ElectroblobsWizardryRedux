@@ -31,6 +31,9 @@ public class EBForgeNetwork {
         register(SpellAccessPacketC2S.class, SpellAccessPacketC2S::new, NetworkDirection.PLAY_TO_SERVER);
         register(SpellGlyphPacketS2C.class, SpellGlyphPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(SpellPropertiesSyncS2C.class, SpellPropertiesSyncS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+
+        register(MinionSyncPacketS2C.class, MinionSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+        register(PlayerCapabilitySyncPacketS2C.class, PlayerCapabilitySyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     private static <T extends Message> void register(Class<T> clazz, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {

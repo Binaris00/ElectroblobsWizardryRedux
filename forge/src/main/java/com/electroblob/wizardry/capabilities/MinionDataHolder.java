@@ -3,6 +3,8 @@ package com.electroblob.wizardry.capabilities;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.data.MinionData;
+import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.network.MinionSyncPacketS2C;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -38,7 +40,12 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     }
 
     private void sync(){
-        // TODO THX FORGE FOR MAKING THE CAPABILITY SYSTEM SO HARD FOR ME
+        if (!this.provider.level().isClientSide()) {
+            CompoundTag tag = this.serializeNBT();
+
+            MinionSyncPacketS2C packet = new MinionSyncPacketS2C(this.provider.getId(), tag);
+            Services.NETWORK_HELPER.sendToTracking(this.provider, packet);
+        }
     }
 
     @Override
@@ -76,7 +83,6 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setLifetime(int lifetime) {
         this.lifetime = lifetime;
-        sync();
     }
 
     @Override

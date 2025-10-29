@@ -23,14 +23,11 @@ public class ConjureDataHolder implements INBTSerializable<CompoundTag>, Conjure
     public static final ResourceLocation LOCATION = WizardryMainMod.location("conjure");
     public static final Capability<ConjureDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
-    private int lifetime = -1;
-    private int maxLifetime = -1;
-    private boolean summoned = false;
-
     private final ItemStack stack;
 
     public ConjureDataHolder(ItemStack stack) {
         this.stack = stack;
+        init();
     }
 
     @Override
@@ -46,55 +43,56 @@ public class ConjureDataHolder implements INBTSerializable<CompoundTag>, Conjure
         lifetimeDecrement();
     }
 
+    private void init() {
+        if (!this.stack.getOrCreateTag().contains("lifetime")) this.stack.getOrCreateTag().putInt("lifetime", -1);
+        if (!this.stack.getOrCreateTag().contains("max_lifetime")) this.stack.getOrCreateTag().putInt("max_lifetime", -1);
+        if (!this.stack.getOrCreateTag().contains("is_summoned")) this.stack.getOrCreateTag().putBoolean("is_summoned", false);
+    }
+
     @Override
     public CompoundTag serializeNBT() {
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("lifetime", this.lifetime);
-        tag.putInt("max_lifetime", this.maxLifetime);
-        tag.putBoolean("is_summoned", this.summoned);
-        return tag;
+        return stack.getOrCreateTag();
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        this.lifetime = tag.getInt("lifetime");
-        this.maxLifetime = tag.getInt("max_lifetime");
-        this.summoned = tag.getBoolean("is_summoned");
+        stack.setTag(tag);
     }
 
     @Override
     public void lifetimeDecrement() {
-        if(this.lifetime > 0) this.lifetime--;
+        int lifetime = getLifetime();
+        if (lifetime > 0) this.stack.getOrCreateTag().putInt("lifetime", lifetime - 1);
     }
 
     @Override
     public int getLifetime() {
-        return this.lifetime;
+        return stack.getOrCreateTag().getInt("lifetime");
     }
 
     @Override
     public void setLifetime(int lifetime) {
-        this.lifetime = lifetime;
+        stack.getOrCreateTag().putInt("lifetime", lifetime);
     }
 
     @Override
     public int getMaxLifetime() {
-        return this.maxLifetime;
+        return stack.getOrCreateTag().getInt("max_lifetime");
     }
 
     @Override
     public void setMaxLifetime(int maxLifetime) {
-        this.maxLifetime = maxLifetime;
+        stack.getOrCreateTag().putInt("max_lifetime", maxLifetime);
     }
 
     @Override
     public boolean isSummoned() {
-        return this.summoned;
+        return stack.getOrCreateTag().getBoolean("is_summoned");
     }
 
     @Override
     public void setSummoned(boolean summoned) {
-        this.summoned = summoned;
+        stack.getOrCreateTag().putBoolean("is_summoned", summoned);
     }
 
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {

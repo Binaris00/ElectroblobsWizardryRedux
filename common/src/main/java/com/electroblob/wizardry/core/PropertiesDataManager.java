@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Map;
 
 /**
- * This class loads spell properties from JSON files located in the "data/<modid>/spells" directory of data packs.
+ * This class loads spell properties from JSON files located in the "data/modid/spells" directory of data packs.
  * Each JSON file should define properties for a specific spell, identified by its {@code ResourceLocation}.
  * The properties are then applied to the corresponding Spell instance in the registry.
  *

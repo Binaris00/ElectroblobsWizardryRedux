@@ -11,12 +11,14 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.ImbuementLoader;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -53,7 +55,12 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
 
     @Override
     public void sync(){
-        // TODO THX FORGE FOR MAKING THE CAPABILITY SYSTEM SO HARD FOR ME
+        if (!this.provider.level().isClientSide()) {
+            CompoundTag tag = this.serializeNBT();
+
+            PlayerCapabilitySyncPacketS2C packet = new PlayerCapabilitySyncPacketS2C(PlayerCapabilitySyncPacketS2C.CapabilityType.SPELL_MANAGER, tag);
+            Services.NETWORK_HELPER.sendTo((ServerPlayer) this.provider, packet);
+        }
     }
 
     @Override

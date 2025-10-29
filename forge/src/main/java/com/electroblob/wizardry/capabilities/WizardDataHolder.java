@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
@@ -12,6 +13,7 @@ import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
@@ -47,7 +49,12 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     }
 
     private void sync(){
-        // TODO THX FORGE FOR MAKING THE CAPABILITY SYSTEM SO HARD FOR ME
+        if (!this.provider.level().isClientSide()) {
+            CompoundTag tag = this.serializeNBT();
+
+            PlayerCapabilitySyncPacketS2C packet = new PlayerCapabilitySyncPacketS2C(PlayerCapabilitySyncPacketS2C.CapabilityType.WIZARD_DATA, tag);
+            Services.NETWORK_HELPER.sendTo((ServerPlayer) this.provider, packet);
+        }
     }
 
     @Override
