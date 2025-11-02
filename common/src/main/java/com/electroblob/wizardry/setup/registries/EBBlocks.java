@@ -54,12 +54,12 @@ public final class EBBlocks {
     public static final DeferredObject<Block> GILDED_ACACIA_WOOD = block("gilded_acacia_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
     public static final DeferredObject<Block> GILDED_DARK_OAK_WOOD = block("gilded_dark_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
 
-    public static final DeferredObject<Block> OAK_BOOKSHELF = block("oak_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> SPRUCE_BOOKSHELF = block("spruce_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> BIRCH_BOOKSHELF = block("birch_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> JUNGLE_BOOKSHELF = block("jungle_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> ACACIA_BOOKSHELF = block("acacia_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> DARK_OAK_BOOKSHELF = block("dark_oak_bookshelf", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> OAK_BOOKSHELF = block("oak_bookshelf", BookShelfBlock::new, false, true, true);
+    public static final DeferredObject<Block> SPRUCE_BOOKSHELF = block("spruce_bookshelf", BookShelfBlock::new, false, true, true);
+    public static final DeferredObject<Block> BIRCH_BOOKSHELF = block("birch_bookshelf", BookShelfBlock::new, false, true, true);
+    public static final DeferredObject<Block> JUNGLE_BOOKSHELF = block("jungle_bookshelf", BookShelfBlock::new, false, true, true);
+    public static final DeferredObject<Block> ACACIA_BOOKSHELF = block("acacia_bookshelf", BookShelfBlock::new, false, true, true);
+    public static final DeferredObject<Block> DARK_OAK_BOOKSHELF = block("dark_oak_bookshelf", BookShelfBlock::new, false, true, true);
 
     public static final DeferredObject<Block> OAK_LECTERN = block("oak_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
     public static final DeferredObject<Block> SPRUCE_LECTERN = block("spruce_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);

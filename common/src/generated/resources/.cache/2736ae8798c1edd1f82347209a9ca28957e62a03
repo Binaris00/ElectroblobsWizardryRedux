@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-26T18:13:08.431029545	Spell Data Provider: ebwizardry
+// 1.20.1	2025-10-30T13:58:40.983070897	Spell Data Provider: ebwizardry
 dcd8a3fd94e0f44a7717557d77d08533f6e520b2 data/ebwizardry/spells/agility.json
 4f6f8f6bb13ecb046e1f6c2c568124130c14dd58 data/ebwizardry/spells/arrow_rain.json
 5a678c88cf1fddc05d238ec605a22564d086878b data/ebwizardry/spells/banish.json
@@ -70,6 +70,7 @@ f3c70b30f995c2ec9d3e76c67038a8c62600d7c8 data/ebwizardry/spells/ignite.json
 f40990580587c7234626fc293d429a374b9f3d42 data/ebwizardry/spells/night_vision.json
 921fdbe6ee932376ed47f9965ad15d0e37c996f8 data/ebwizardry/spells/none.json
 6e8c405038356826faba9b658ea64c88011afa3a data/ebwizardry/spells/oakflesh.json
+6c826575d95fab824a8cdf950e128f7f219e0ca0 data/ebwizardry/spells/ojospocos.json
 c17624c3fbaabd714c16bab0cdc113dde4fda4ae data/ebwizardry/spells/permafrost.json
 4e1d3d5a8a5706f37f807c680f3a8fc62696c5eb data/ebwizardry/spells/phase_step.json
 eedaaa54caf416c351c508161cfdd8c32dac4576 data/ebwizardry/spells/plague_of_darkness.json
@@ -86,6 +87,8 @@ f0bb17625ff0486a80ee86d8c7628d1aca380419 data/ebwizardry/spells/satiety.json
 c1844359b75d6f60045a4636caade9fa43d5e4d6 data/ebwizardry/spells/smoke_bomb.json
 fa41accfe41aa7dca341d9f6b00cd886848c5081 data/ebwizardry/spells/static_aura.json
 6f36fe207e485bf75d8977dca81620e1b879a50d data/ebwizardry/spells/summon_rich.json
+fa3148e7a7107c8f9232c618d86fa4751efbdeee data/ebwizardry/spells/summon_snow_golem.json
+fa07563926f12f5ce0252dccb84546b2c1e63f46 data/ebwizardry/spells/summon_zombie.json
 1fdd5d22a5fcfe810f1c2961f6ea998761d55c2b data/ebwizardry/spells/thunderbolt.json
 d0f37cd9b554aeca5aa5e36dc43cbe33a5a542f3 data/ebwizardry/spells/vanishing_box.json
 a5b2e26f8c7d6e39ede5c570a4f1a2ee95574987 data/ebwizardry/spells/water_breathing.json

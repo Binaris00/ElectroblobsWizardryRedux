@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ebwizardry:block/spruce_bookshelf",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "ebwizardry:block/spruce_bookshelf",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "ebwizardry:block/spruce_bookshelf"
+    },
+    "facing=west": {
+      "model": "ebwizardry:block/spruce_bookshelf",
+      "y": 90
+    }
+  }
+}

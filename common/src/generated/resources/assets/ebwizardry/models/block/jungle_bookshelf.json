@@ -1,0 +1,9 @@
+{
+  "parent": "ebwizardry:block/bookshelf",
+  "textures": {
+    "inside": "ebwizardry:block/jungle_bookshelf_inside",
+    "particle": "ebwizardry:block/jungle_bookshelf_side",
+    "side": "ebwizardry:block/jungle_bookshelf_side",
+    "top": "ebwizardry:block/jungle_bookshelf_top"
+  }
+}

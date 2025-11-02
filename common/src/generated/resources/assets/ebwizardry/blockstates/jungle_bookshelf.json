@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ebwizardry:block/jungle_bookshelf",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "ebwizardry:block/jungle_bookshelf",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "ebwizardry:block/jungle_bookshelf"
+    },
+    "facing=west": {
+      "model": "ebwizardry:block/jungle_bookshelf",
+      "y": 90
+    }
+  }
+}

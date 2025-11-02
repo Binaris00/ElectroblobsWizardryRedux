@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ebwizardry:block/birch_bookshelf",
+      "y": 270
+    },
+    "facing=north": {
+      "model": "ebwizardry:block/birch_bookshelf",
+      "y": 180
+    },
+    "facing=south": {
+      "model": "ebwizardry:block/birch_bookshelf"
+    },
+    "facing=west": {
+      "model": "ebwizardry:block/birch_bookshelf",
+      "y": 90
+    }
+  }
+}

@@ -12,6 +12,8 @@ import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
+
 public final class EBBlockStateProvider extends BlockStateProvider {
 
     public EBBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
@@ -45,6 +47,12 @@ public final class EBBlockStateProvider extends BlockStateProvider {
         runestonePedestal(EBBlocks.NECROMANCY_RUNESTONE_PEDESTAL.get(), "necromancy_runestone_pedestal", "runestone_pedestal_necromancy", "runestone_necromancy");
         runestonePedestal(EBBlocks.SORCERY_RUNESTONE_PEDESTAL.get(), "sorcery_runestone_pedestal", "runestone_pedestal_sorcery", "runestone_sorcery");
 
+        bookShelf(EBBlocks.BIRCH_BOOKSHELF.get(), "birch_bookshelf");
+        bookShelf(EBBlocks.SPRUCE_BOOKSHELF.get(), "spruce_bookshelf");
+        bookShelf(EBBlocks.JUNGLE_BOOKSHELF.get(), "jungle_bookshelf");
+        bookShelf(EBBlocks.ACACIA_BOOKSHELF.get(), "acacia_bookshelf");
+        bookShelf(EBBlocks.DARK_OAK_BOOKSHELF.get(), "dark_oak_bookshelf");
+        bookShelf(EBBlocks.OAK_BOOKSHELF.get(), "oak_bookshelf");
 
     }
 
@@ -52,9 +60,29 @@ public final class EBBlockStateProvider extends BlockStateProvider {
         simpleBlockWithItem(block.get(), cubeAll(block.get()));
     }
 
-    private void runestonePedestal(Block block, String name, String textureName, String topBottomTexture){
-        //this.simpleBlock(block);
+    private void bookShelf(Block block, String name){
 
+        // model file
+        var model = models().withExistingParent(name, "ebwizardry:block/bookshelf")
+                .texture("particle", "ebwizardry:block/%s_side".formatted(name))
+                .texture("side", "ebwizardry:block/%s_side".formatted(name))
+                .texture("inside", "ebwizardry:block/%s_inside".formatted(name))
+                .texture("top", "ebwizardry:block/%s_top".formatted(name));
+
+        // block state file
+        this.getVariantBuilder(block)
+                .forAllStates(state ->
+                        ConfiguredModel.builder()
+                                .modelFile(model)
+                                .rotationY((int) state.getValue(HORIZONTAL_FACING).toYRot())
+                                .build()
+                );
+
+        // simple item with parent
+        this.itemModels().getBuilder(name).parent(model);
+    }
+
+    private void runestonePedestal(Block block, String name, String textureName, String topBottomTexture){
         models().withExistingParent(name, "ebwizardry:block/runestone_pedestal")
                 .texture("side", "ebwizardry:block/%s".formatted(textureName))
                 .texture("top", "ebwizardry:block/%s_0".formatted(topBottomTexture))
