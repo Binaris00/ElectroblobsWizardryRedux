@@ -2,6 +2,7 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.content.ForfeitRegistry;
+import com.electroblob.wizardry.content.menu.BookshelfMenu;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
 import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.resources.ResourceLocation;

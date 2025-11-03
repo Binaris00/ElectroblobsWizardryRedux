@@ -4,10 +4,7 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
-import com.electroblob.wizardry.content.blockentity.ArcaneWorkbenchBlockEntity;
-import com.electroblob.wizardry.content.blockentity.ImbuementAltarBlockEntity;
-import com.electroblob.wizardry.content.blockentity.ReceptacleBlockEntity;
-import com.electroblob.wizardry.content.blockentity.VanishingCobwebBlockEntity;
+import com.electroblob.wizardry.content.blockentity.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -18,7 +15,9 @@ import java.util.function.Supplier;
 
 public final class EBBlockEntities {
     static Map<String, DeferredObject<BlockEntityType<BlockEntity>>> BLOCK_ENTITIES = new HashMap<>();
-    private EBBlockEntities() {}
+
+    private EBBlockEntities() {
+    }
 
 
     public static final DeferredObject<BlockEntityType<VanishingCobwebBlockEntity>> VANISHING_COBWEB = blockEntity(
@@ -37,8 +36,14 @@ public final class EBBlockEntities {
             "imbuement_altar", () -> BlockEntityType.Builder.of(ImbuementAltarBlockEntity::new, EBBlocks.IMBUEMENT_ALTAR.get()).build(null)
     );
 
+    public static final DeferredObject<BlockEntityType<BookshelfBlockEntity>> BOOKSHELF = blockEntity(
+            "bookshelf", () -> BlockEntityType.Builder.of(BookshelfBlockEntity::new,
+                            EBBlocks.OAK_BOOKSHELF.get(), EBBlocks.SPRUCE_BOOKSHELF.get(), EBBlocks.BIRCH_BOOKSHELF.get(),
+                            EBBlocks.JUNGLE_BOOKSHELF.get(), EBBlocks.ACACIA_BOOKSHELF.get(), EBBlocks.DARK_OAK_BOOKSHELF.get())
+                    .build(null));
+
     // ======= Registry =======
-    public static void register(RegisterFunction<BlockEntityType<?>> function){
+    public static void register(RegisterFunction<BlockEntityType<?>> function) {
         BLOCK_ENTITIES.forEach((name, blockEntityType) ->
                 function.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, WizardryMainMod.location(name), blockEntityType.get()));
     }

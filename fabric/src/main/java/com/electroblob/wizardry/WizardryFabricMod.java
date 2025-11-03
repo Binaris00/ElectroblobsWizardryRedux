@@ -3,6 +3,7 @@ package com.electroblob.wizardry;
 import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
+import com.electroblob.wizardry.content.menu.BookshelfMenu;
 import com.electroblob.wizardry.core.PropertiesFabricDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.network.EBFabricServerNetwork;
@@ -37,6 +38,7 @@ public final class WizardryFabricMod implements ModInitializer {
         EBItems.register(Registry::register);
         EBEntities.register(Registry::register);
         EBEntities.registerAttributes(FabricDefaultAttributeRegistry::register);
+        BookshelfMenu.initBookItems();
 
         SpellTiers.register(EBRegistriesFabric.TIERS, Registry::register);
         Elements.register(EBRegistriesFabric.ELEMENTS, Registry::register);

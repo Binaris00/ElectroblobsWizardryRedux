@@ -2,6 +2,7 @@ package com.electroblob.wizardry.client;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
+import com.electroblob.wizardry.client.gui.screens.BookshelfScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRender;
 import com.electroblob.wizardry.network.EBFabricClientNetwork;
@@ -55,6 +56,8 @@ public final class WizardryFabricClient implements ClientModInitializer {
         }
 
         MenuScreens.register(EBMenus.ARCANE_WORKBENCH_MENU.get(), ArcaneWorkbenchScreen::new);
+        MenuScreens.register(EBMenus.BOOKSHELF_MENU.get(), BookshelfScreen::new);
+
         // TODO
         BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.ARCANE_WORKBENCH.get(), ArcaneWorkbenchRender::new);
         BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRender::new);
