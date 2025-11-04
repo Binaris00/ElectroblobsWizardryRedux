@@ -25,10 +25,19 @@ public final class DataEvents {
     public static void onPlayerTick(EBLivingTick event){
         if(!(event.getEntity() instanceof Player player)) return;
 
+        spellDataTick(player);
         castCommandTick(player);
         conjureItemTick(player);
         imbuementTick(player);
         recentSpells(player);
+    }
+
+    private static void spellDataTick(Player player) {
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
+        var spellData = data.getSpellData();
+
+        spellData.replaceAll((k, v) -> k.update(player, v));
+        spellData.entrySet().removeIf(entry -> entry.getKey().canPurge(player, entry.getValue()));
     }
 
     public static void onMinionTick(EBLivingTick event){

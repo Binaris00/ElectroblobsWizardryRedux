@@ -5,6 +5,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.function.BiFunction;
 
+// TODO ✨✨✨LEGACY CODE :sparkles:✨✨✨
 public interface ISpellVar<T> {
     T update(Player player, T value);
 

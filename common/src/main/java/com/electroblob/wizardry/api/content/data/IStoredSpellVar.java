@@ -10,6 +10,7 @@ import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
+// TODO ✨✨✨LEGACY CODE :sparkles:✨✨✨
 public interface IStoredSpellVar<T> extends ISpellVar<T> {
     void write(CompoundTag nbt, T value);
 
