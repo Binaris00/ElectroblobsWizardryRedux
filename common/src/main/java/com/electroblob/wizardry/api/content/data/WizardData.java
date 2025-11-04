@@ -1,10 +1,13 @@
 package com.electroblob.wizardry.api.content.data;
 
+import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.AbstractMap;
 import java.util.UUID;
+import java.util.function.Predicate;
 
 public interface WizardData {
     /**
@@ -56,4 +59,29 @@ public interface WizardData {
     SpellModifiers getSpellModifiers();
 
     void setSpellModifiers(SpellModifiers modifiers);
+
+    /**
+     * Records a spell cast for tracking recent spells by the player, used especially to avoid spell spam for quick
+     * wand level progression and similar things.
+     *
+     * @param spell     The Spell that was just cast.
+     * @param timestamp The time at which the spell was cast, in game ticks.
+     */
+    void trackRecentSpell(Spell spell, long timestamp);
+
+    /**
+     * Counts how many times a spell has been cast recently by the player. It could be 0 if it hasn't been cast recently.
+     *
+     * @param spell The Spell to count recent casts of.
+     * @return The number of times the spell has been cast recently.
+     */
+    int countRecentCasts(Spell spell);
+
+    /**
+     * Removes recent spell casts that match the given predicate, allowing for custom filtering of which entries to remove.
+     *
+     * @param predicate A Predicate that tests AbstractMap.SimpleEntry&lt;Spell, Long&gt; objects representing
+     *                  recent spell casts. If the predicate returns true for an entry, that entry will be removed.
+     */
+    void removeRecentCasts(Predicate<AbstractMap.SimpleEntry<Spell, Long>> predicate);
 }

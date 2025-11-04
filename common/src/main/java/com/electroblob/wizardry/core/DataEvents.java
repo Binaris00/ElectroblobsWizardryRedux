@@ -1,9 +1,8 @@
 package com.electroblob.wizardry.core;
 
-
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.CastCommandData;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
+import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.EBEntityJoinLevelEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
@@ -29,6 +28,7 @@ public final class DataEvents {
         castCommandTick(player);
         conjureItemTick(player);
         imbuementTick(player);
+        recentSpells(player);
     }
 
     public static void onMinionTick(EBLivingTick event){
@@ -76,5 +76,13 @@ public final class DataEvents {
             }
         }
         data.sync();
+    }
+
+    private static void recentSpells(Player player){
+        WizardData data = Services.OBJECT_DATA.getWizardData(player);
+        if (player.tickCount % 60 == 0) {
+            long currentTime = player.level().getGameTime();
+            data.removeRecentCasts((entry) -> currentTime - entry.getValue() >= EBConfig.RECENT_SPELL_EXPIRY_TICKS);
+        }
     }
 }

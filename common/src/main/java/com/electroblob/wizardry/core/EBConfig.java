@@ -25,6 +25,7 @@ public final class EBConfig {
     public static final int GRAND_CRYSTAL_MANA = 400;
 
     public static final int NON_ELEMENTAL_UPGRADE_BONUS = 3;
+    public static final float MAX_PROGRESSION_REDUCTION = 0.75F;
 
     public static boolean damageTypePerElement = false;
     public static boolean playersMoveEachOther = true;
@@ -92,6 +93,9 @@ public final class EBConfig {
             new ResourceLocation("minecraft:shulker")
     ).toArray(new ResourceLocation[0]);
     public static boolean passiveMobsAreAllies = true;
+
+    public static final int MAX_RECENT_SPELLS = 5;
+    public static final int RECENT_SPELL_EXPIRY_TICKS = 1200; // 60 seconds
 
 
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);

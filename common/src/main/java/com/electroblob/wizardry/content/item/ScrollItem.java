@@ -100,6 +100,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         if (spell.isInstantCast() && !ctx.caster().isCreative())
             ctx.caster().getCooldowns().addCooldown(this, spell.getCooldown());
 
+        Services.OBJECT_DATA.getWizardData(ctx.caster()).trackRecentSpell(spell, ctx.caster().level().getGameTime());
         return true;
     }
 

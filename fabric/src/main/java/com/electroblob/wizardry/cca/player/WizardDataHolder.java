@@ -1,11 +1,14 @@
 package com.electroblob.wizardry.cca.player;
 
 import com.electroblob.wizardry.api.content.data.WizardData;
+import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.cca.EBComponents;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
+import com.google.common.collect.EvictingQueue;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
@@ -16,9 +19,8 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Predicate;
 
 public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComponent {
     private final Player provider;
@@ -27,6 +29,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     public Set<String> allyNames = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
+    private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
 
     public WizardDataHolder(Player provider) {
         this.provider = provider;
@@ -88,6 +91,26 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     }
 
     @Override
+    public void trackRecentSpell(Spell spell, long timestamp) {
+        recentSpells.add(new AbstractMap.SimpleEntry<>(spell, timestamp));
+        sync();
+    }
+
+    @Override
+    public int countRecentCasts(Spell spell) {
+        return (int) recentSpells.stream()
+                .filter(entry -> entry.getKey().equals(spell))
+                .count();
+    }
+
+    @Override
+    public void removeRecentCasts(Predicate<AbstractMap.SimpleEntry<Spell, Long>> predicate) {
+        recentSpells.removeIf(predicate);
+        sync();
+    }
+
+
+    @Override
     public void readFromNbt(@NotNull CompoundTag tag) {
         ResourceLocation tierLocation = ResourceLocation.tryParse(tag.getString("maxTier"));
         if (tierLocation != null) {
@@ -119,6 +142,21 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         if (tag.contains("itemModifiers")) {
             this.itemModifiers = SpellModifiers.fromNBT(tag.getCompound("itemModifiers"));
         }
+
+
+        ListTag recentSpellsTag = tag.getList("recentSpells", Tag.TAG_COMPOUND);
+        this.recentSpells.clear();
+        for (int i = 0; i < recentSpellsTag.size(); i++) {
+            CompoundTag spellEntryTag = recentSpellsTag.getCompound(i);
+            ResourceLocation spellLocation = ResourceLocation.tryParse(spellEntryTag.getString("spell"));
+            long timestamp = spellEntryTag.getLong("timestamp");
+            if (spellLocation != null) {
+                Spell spell = Services.REGISTRY_UTIL.getSpell(spellLocation);
+                if (spell != null) {
+                    this.recentSpells.add(new AbstractMap.SimpleEntry<>(spell, timestamp));
+                }
+            }
+        }
     }
 
     @Override
@@ -134,5 +172,14 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         tag.put("allyNames", allyNamesTag);
 
         tag.put("itemModifiers", itemModifiers.toNBT());
+
+        ListTag recentSpellsTag = new ListTag();
+        for (AbstractMap.SimpleEntry<Spell, Long> entry : recentSpells) {
+            CompoundTag spellEntryTag = new CompoundTag();
+            spellEntryTag.putString("spell", entry.getKey().getLocation().toString());
+            spellEntryTag.putLong("timestamp", entry.getValue());
+            recentSpellsTag.add(spellEntryTag);
+        }
+        tag.put("recentSpells", recentSpellsTag);
     }
 }

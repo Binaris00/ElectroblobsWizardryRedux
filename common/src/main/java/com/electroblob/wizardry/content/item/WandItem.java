@@ -163,8 +163,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 ctx.caster().sendSystemMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".wand.levelup", this.getName(stack), nextTier.getDescriptionFormatted()));
         }
 
-        // TODO WIZARD DATA
-        //WizardData.get(caster).trackRecentSpell(spell);
+        Services.OBJECT_DATA.getWizardData(ctx.caster()).trackRecentSpell(spell, ctx.caster().level().getGameTime());
         return true;
     }
 
@@ -545,9 +544,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (level > 0)
             modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), 1.0f - level * EBConfig.COOLDOWN_REDUCTION_PER_LEVEL, true);
 
-        // TODO
-        //float progressionModifier = 1.0f - ((float) WizardData.get(player).countRecentCasts(spell) / WizardData.MAX_RECENT_SPELLS) * MAX_PROGRESSION_REDUCTION;
-        float progressionModifier = 1.0f;
+        float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConfig.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION;
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
 
         if (this.element == spell.getElement()) {

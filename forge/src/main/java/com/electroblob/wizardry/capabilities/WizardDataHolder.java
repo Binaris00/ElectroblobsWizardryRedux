@@ -2,11 +2,14 @@ package com.electroblob.wizardry.capabilities;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.data.WizardData;
+import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
+import com.google.common.collect.EvictingQueue;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -14,7 +17,6 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -22,15 +24,11 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Predicate;
 
 
 public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardData {
@@ -41,6 +39,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     public Set<String> allyNames = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
+    private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
 
     private final Player provider;
 
@@ -108,6 +107,25 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         sync();
     }
 
+    @Override
+    public void trackRecentSpell(Spell spell, long timestamp) {
+        recentSpells.add(new AbstractMap.SimpleEntry<>(spell, timestamp));
+        sync();
+    }
+
+    @Override
+    public int countRecentCasts(Spell spell) {
+        return (int) recentSpells.stream()
+                .filter(entry -> entry.getKey().equals(spell))
+                .count();
+    }
+
+    @Override
+    public void removeRecentCasts(Predicate<AbstractMap.SimpleEntry<Spell, Long>> predicate) {
+        recentSpells.removeIf(predicate);
+        sync();
+    }
+
 
     @Override
     public CompoundTag serializeNBT() {
@@ -123,6 +141,15 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         tag.put("allyNames", allyNamesTag);
 
         tag.put("itemModifiers", itemModifiers.toNBT());
+
+        ListTag recentSpellsTag = new ListTag();
+        for (AbstractMap.SimpleEntry<Spell, Long> entry : recentSpells) {
+            CompoundTag spellEntryTag = new CompoundTag();
+            spellEntryTag.putString("spell", entry.getKey().getLocation().toString());
+            spellEntryTag.putLong("timestamp", entry.getValue());
+            recentSpellsTag.add(spellEntryTag);
+        }
+        tag.put("recentSpells", recentSpellsTag);
         return tag;
     }
 
@@ -157,6 +184,20 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
 
         if (tag.contains("itemModifiers")) {
             this.itemModifiers = SpellModifiers.fromNBT(tag.getCompound("itemModifiers"));
+        }
+
+        ListTag recentSpellsTag = tag.getList("recentSpells", Tag.TAG_COMPOUND);
+        this.recentSpells.clear();
+        for (int i = 0; i < recentSpellsTag.size(); i++) {
+            CompoundTag spellEntryTag = recentSpellsTag.getCompound(i);
+            ResourceLocation spellLocation = ResourceLocation.tryParse(spellEntryTag.getString("spell"));
+            long timestamp = spellEntryTag.getLong("timestamp");
+            if (spellLocation != null) {
+                Spell spell = Services.REGISTRY_UTIL.getSpell(spellLocation);
+                if (spell != null) {
+                    this.recentSpells.add(new AbstractMap.SimpleEntry<>(spell, timestamp));
+                }
+            }
         }
     }
 
