@@ -1,0 +1,11 @@
+{
+  "parent": "ebwizardry:block/lectern",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "base": "ebwizardry:block/spruce_lectern_base",
+    "particle": "ebwizardry:block/spruce_lectern_top",
+    "side": "ebwizardry:block/spruce_lectern_side",
+    "top": "ebwizardry:block/spruce_lectern_top",
+    "underside": "ebwizardry:block/spruce_lectern_underside"
+  }
+}

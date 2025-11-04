@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=east": {
+      "model": "ebwizardry:block/acacia_lectern",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "ebwizardry:block/acacia_lectern"
+    },
+    "facing=south": {
+      "model": "ebwizardry:block/acacia_lectern",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "ebwizardry:block/acacia_lectern",
+      "y": 270
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "parent": "ebwizardry:block/lectern",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "base": "ebwizardry:block/birch_lectern_base",
+    "particle": "ebwizardry:block/birch_lectern_top",
+    "side": "ebwizardry:block/birch_lectern_side",
+    "top": "ebwizardry:block/birch_lectern_top",
+    "underside": "ebwizardry:block/birch_lectern_underside"
+  }
+}

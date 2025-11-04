@@ -54,14 +54,42 @@ public final class EBBlockStateProvider extends BlockStateProvider {
         bookShelf(EBBlocks.DARK_OAK_BOOKSHELF.get(), "dark_oak_bookshelf");
         bookShelf(EBBlocks.OAK_BOOKSHELF.get(), "oak_bookshelf");
 
+        lectern(EBBlocks.OAK_LECTERN.get(), "oak_lectern");
+        lectern(EBBlocks.SPRUCE_LECTERN.get(), "spruce_lectern");
+        lectern(EBBlocks.BIRCH_LECTERN.get(), "birch_lectern");
+        lectern(EBBlocks.JUNGLE_LECTERN.get(), "jungle_lectern");
+        lectern(EBBlocks.ACACIA_LECTERN.get(), "acacia_lectern");
+        lectern(EBBlocks.DARK_OAK_LECTERN.get(), "dark_oak_lectern");
     }
 
     private void blockWithItem(DeferredObject<Block> block) {
         simpleBlockWithItem(block.get(), cubeAll(block.get()));
     }
 
-    private void bookShelf(Block block, String name){
+    private void lectern(Block block, String name){
+        // model file
+        var model = models().withExistingParent(name, "ebwizardry:block/lectern").renderType("cutout")
+                .texture("particle", "ebwizardry:block/%s_top".formatted(name))
+                .texture("base", "ebwizardry:block/%s_base".formatted(name))
+                .texture("side", "ebwizardry:block/%s_side".formatted(name))
+                .texture("top", "ebwizardry:block/%s_top".formatted(name))
+                .texture("underside", "ebwizardry:block/%s_underside".formatted(name));
 
+        // block state file
+        this.getVariantBuilder(block)
+                .forAllStates(state ->
+                        ConfiguredModel.builder()
+                                .modelFile(model)
+                                .rotationY(((int) state.getValue(HORIZONTAL_FACING).toYRot() + 180) % 360)
+                                .build()
+                );
+
+        // simple item with parent
+        this.itemModels().getBuilder(name).parent(model);
+    }
+
+
+    private void bookShelf(Block block, String name){
         // model file
         var model = models().withExistingParent(name, "ebwizardry:block/bookshelf")
                 .texture("particle", "ebwizardry:block/%s_side".formatted(name))

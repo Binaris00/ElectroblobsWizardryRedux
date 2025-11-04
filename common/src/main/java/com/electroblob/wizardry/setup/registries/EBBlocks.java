@@ -46,7 +46,6 @@ public final class EBBlocks {
     public static final DeferredObject<Block> ARCANE_WORKBENCH = block("arcane_workbench", () -> new ArcaneWorkbenchBlock(BlockBehaviour.Properties.copy(Blocks.STONE)),false, true, true);
     public static final DeferredObject<Block> METEOR = block("meteor", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state) -> 1)), false, false, false);
 
-    // TODO Temp blocks because I will work on crafts, not on adding misc stuff
     public static final DeferredObject<Block> GILDED_OAK_WOOD = block("gilded_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
     public static final DeferredObject<Block> GILDED_SPRUCE_WOOD = block("gilded_spruce_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
     public static final DeferredObject<Block> GILDED_BIRCH_WOOD = block("gilded_birch_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
@@ -61,12 +60,12 @@ public final class EBBlocks {
     public static final DeferredObject<Block> ACACIA_BOOKSHELF = block("acacia_bookshelf", BookShelfBlock::new, false, true, true);
     public static final DeferredObject<Block> DARK_OAK_BOOKSHELF = block("dark_oak_bookshelf", BookShelfBlock::new, false, true, true);
 
-    public static final DeferredObject<Block> OAK_LECTERN = block("oak_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> SPRUCE_LECTERN = block("spruce_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> BIRCH_LECTERN = block("birch_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> JUNGLE_LECTERN = block("jungle_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> ACACIA_LECTERN = block("acacia_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
-    public static final DeferredObject<Block> DARK_OAK_LECTERN = block("dark_oak_lectern", () -> new Block(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, true, true);
+    public static final DeferredObject<Block> OAK_LECTERN = block("oak_lectern", MagicLecternBlock::new, false, true, true);
+    public static final DeferredObject<Block> SPRUCE_LECTERN = block("spruce_lectern", MagicLecternBlock::new, false, true, true);
+    public static final DeferredObject<Block> BIRCH_LECTERN = block("birch_lectern", MagicLecternBlock::new, false, true, true);
+    public static final DeferredObject<Block> JUNGLE_LECTERN = block("jungle_lectern", MagicLecternBlock::new, false, true, true);
+    public static final DeferredObject<Block> ACACIA_LECTERN = block("acacia_lectern", MagicLecternBlock::new, false, true, true);
+    public static final DeferredObject<Block> DARK_OAK_LECTERN = block("dark_oak_lectern", MagicLecternBlock::new, false, true, true);
 
     public static final DeferredObject<Block> FIRE_RUNESTONE = block("fire_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);
     public static final DeferredObject<Block> ICE_RUNESTONE = block("ice_runestone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).strength(4)), false, true, true);

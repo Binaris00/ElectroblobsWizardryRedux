@@ -1,0 +1,11 @@
+{
+  "parent": "ebwizardry:block/lectern",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "base": "ebwizardry:block/acacia_lectern_base",
+    "particle": "ebwizardry:block/acacia_lectern_top",
+    "side": "ebwizardry:block/acacia_lectern_side",
+    "top": "ebwizardry:block/acacia_lectern_top",
+    "underside": "ebwizardry:block/acacia_lectern_underside"
+  }
+}

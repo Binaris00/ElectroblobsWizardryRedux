@@ -575,6 +575,12 @@
   "block.ebwizardry.jungle_bookshelf": "Jungle Bookshelf",
   "block.ebwizardry.acacia_bookshelf": "Acacia Bookshelf",
   "block.ebwizardry.dark_oak_bookshelf": "Dark Oak Bookshelf",
+  "block.ebwizardry.oak_lectern": "Oak Lectern",
+  "block.ebwizardry.spruce_lectern": "Spruce Lectern",
+  "block.ebwizardry.birch_lectern": "Birch Lectern",
+  "block.ebwizardry.jungle_lectern": "Jungle Lectern",
+  "block.ebwizardry.acacia_lectern": "Acacia Lectern",
+  "block.ebwizardry.dark_oak_lectern": "Dark Oak Lectern",
 
 
   "ebwizardry.raw_line_18": "========================================================",

@@ -1,0 +1,11 @@
+{
+  "parent": "ebwizardry:block/lectern",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "base": "ebwizardry:block/jungle_lectern_base",
+    "particle": "ebwizardry:block/jungle_lectern_top",
+    "side": "ebwizardry:block/jungle_lectern_side",
+    "top": "ebwizardry:block/jungle_lectern_top",
+    "underside": "ebwizardry:block/jungle_lectern_underside"
+  }
+}
