@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/bow",
+  "textures": {
+    "layer0": "ebwizardry:item/flamecatcher_conjuring_0"
+  }
+}

@@ -21,7 +21,7 @@ public abstract class WizardItemImpMixin {
     }
 
     @Inject(method = "setDamageValue", at = @At("TAIL"), cancellable = true)
-    public void EBWIZARDRY$wandGetMaxDamage(int damage, CallbackInfo ci){
+    public void EBWIZARDRY$wandGetDamage(int damage, CallbackInfo ci){
         if(!(stack.getItem() instanceof IWizardryItem wizardryItem)) return;
         wizardryItem.setDamage(stack, damage);
         ci.cancel();

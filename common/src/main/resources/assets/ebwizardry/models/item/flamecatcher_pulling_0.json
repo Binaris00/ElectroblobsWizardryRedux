@@ -1,0 +1,6 @@
+{
+  "parent": "item/bow",
+  "textures": {
+    "layer0": "ebwizardry:item/flamecatcher_pulling_0"
+  }
+}

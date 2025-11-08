@@ -30,6 +30,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.monster.EnderMan;
 import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -137,6 +138,7 @@ public final class Spells {
     public static final Spell SUMMON_ZOMBIE;
     public static final Spell SUMMON_SNOW_GOLEM;
     public static final Spell OJOSPOCOS;
+    public static final Spell FLAMECATCHER;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -570,7 +572,7 @@ public final class Spells {
                         .build()
         ));
 
-        FLAME_FLAME = spell("flame_flame", () -> new ConjureItemSpell(EBItems.ASTRAL_DIAMOND.get()).assignProperties(
+        FLAME_FLAME = spell("flame_flame", () -> new ConjureItemSpell(Items.DIAMOND).assignProperties(
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.NOVICE, Elements.FIRE, SpellType.CONSTRUCT, SpellAction.POINT, 5, 0, 5)
                         .add(DefaultProperties.ITEM_LIFETIME, 200)
@@ -598,6 +600,18 @@ public final class Spells {
                         .add(DefaultProperties.SENSIBLE, true)
                         .build()
         ));
+
+        FLAMECATCHER = spell("flamecatcher", () -> new Flamecatcher().assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 100, 20, 150)
+                        .add(DefaultProperties.ITEM_LIFETIME, 900)
+                        .add(Flamecatcher.SHOT_COUNT)
+                        .add(DefaultProperties.RANGE, 20F)
+                        .add(DefaultProperties.DAMAGE, 16F)
+                        .add(DefaultProperties.EFFECT_DURATION, 15)
+                        .build()
+        ));
+
     }
 
     // ======= Registry =======

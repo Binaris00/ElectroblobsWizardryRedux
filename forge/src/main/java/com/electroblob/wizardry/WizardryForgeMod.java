@@ -10,6 +10,7 @@ import com.electroblob.wizardry.content.menu.BookshelfMenu;
 import com.electroblob.wizardry.network.EBForgeNetwork;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBMenus;
+import com.electroblob.wizardry.setup.registries.client.EBItemProperties;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -56,6 +57,8 @@ public final class WizardryForgeMod {
         EBRenderers.getRenderers().forEach((entity, renderer) ->
                 EntityRenderers.register(entity.get(), (EntityRendererProvider<Entity>) renderer)
         );
+        EBItemProperties.register();
+
         MenuScreens.register(EBMenus.ARCANE_WORKBENCH_MENU.get(), ArcaneWorkbenchScreen::new);
         MenuScreens.register(EBMenus.BOOKSHELF_MENU.get(), BookshelfScreen::new);
 

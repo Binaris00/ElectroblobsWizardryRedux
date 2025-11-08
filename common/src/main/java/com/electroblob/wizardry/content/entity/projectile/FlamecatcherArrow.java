@@ -5,9 +5,11 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
@@ -38,17 +40,22 @@ public class FlamecatcherArrow extends MagicArrowEntity {
 
     @Override
     public double getDamage() {
-        return 16;
+        return Spells.FLAMECATCHER.property(DefaultProperties.DAMAGE);
     }
 
     @Override
     public int getLifetime() {
-        return (int) (10 / SPEED);
+        return (int) (Spells.FLAMECATCHER.property(DefaultProperties.RANGE) * SPEED);
     }
 
     @Override
     public boolean doDeceleration() {
         return false;
+    }
+
+    @Override
+    public boolean isNoGravity() {
+        return true;
     }
 
     @Override

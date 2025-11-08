@@ -13,6 +13,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +42,7 @@ public class MeteorEntity extends FallingBlockEntity {
 	}
 
 	public MeteorEntity(Level world, double x, double y, double z, float blastMultiplier, boolean damageBlocks){
-		this(world, x, y, z, EBBlocks.METEOR.get().defaultBlockState());
+		this(world, x, y, z, Blocks.MAGMA_BLOCK.defaultBlockState());
 		this.setDeltaMovement(this.getDeltaMovement().x, this.getDeltaMovement().y - 0.1D, this.getDeltaMovement().z);
 		this.setSecondsOnFire(200);
 		this.blastMultiplier = blastMultiplier;
@@ -99,7 +100,7 @@ public class MeteorEntity extends FallingBlockEntity {
 
 	@Override
 	public @NotNull BlockState getBlockState() {
-		return EBBlocks.METEOR.get().defaultBlockState();
+		return Blocks.MAGMA_BLOCK.defaultBlockState();
 	}
 
 	@Override

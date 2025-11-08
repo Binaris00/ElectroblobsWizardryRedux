@@ -2,6 +2,7 @@ package com.electroblob.wizardry.cca.stack;
 
 import com.electroblob.wizardry.api.content.data.ConjureData;
 import dev.onyxstudios.cca.api.v3.item.ItemComponent;
+import net.fabricmc.fabric.api.util.NbtType;
 import net.minecraft.world.item.ItemStack;
 
 /**
@@ -11,7 +12,6 @@ import net.minecraft.world.item.ItemStack;
 public class ConjureDataHolder extends ItemComponent implements ConjureData {
     public ConjureDataHolder(ItemStack stack) {
         super(stack);
-        init();
     }
 
     @Override
@@ -27,12 +27,6 @@ public class ConjureDataHolder extends ItemComponent implements ConjureData {
         lifetimeDecrement();
     }
 
-    private void init() {
-        if (!this.hasTag("lifetime")) this.putInt("lifetime", -1);
-        if (!this.hasTag("max_lifetime")) this.putInt("max_lifetime", -1);
-        if (!this.hasTag("is_summoned")) this.putBoolean("is_summoned", false);
-    }
-
     @Override
     public void lifetimeDecrement() {
         int lifetime = getLifetime();
@@ -41,6 +35,7 @@ public class ConjureDataHolder extends ItemComponent implements ConjureData {
 
     @Override
     public int getLifetime() {
+        if(!this.hasTag("lifetime", NbtType.INT)) this.putInt("lifetime", 0);
         return this.getInt("lifetime");
     }
 
@@ -51,6 +46,7 @@ public class ConjureDataHolder extends ItemComponent implements ConjureData {
 
     @Override
     public int getMaxLifetime() {
+        if (!this.hasTag("max_lifetime", NbtType.INT)) this.putInt("max_lifetime", -1);
         return this.getInt("max_lifetime");
     }
 
@@ -61,6 +57,7 @@ public class ConjureDataHolder extends ItemComponent implements ConjureData {
 
     @Override
     public boolean isSummoned() {
+        if (!this.hasTag("is_summoned", NbtType.BYTE)) this.putBoolean("is_summoned", false);
         return this.getBoolean("is_summoned");
     }
 

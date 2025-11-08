@@ -9,11 +9,9 @@ import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRender
 import com.electroblob.wizardry.network.EBFabricClientNetwork;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBMenus;
-import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
-import com.electroblob.wizardry.setup.registries.client.EBKeyBinding;
-import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import com.electroblob.wizardry.setup.registries.client.EBRenderers;
+import com.electroblob.wizardry.setup.registries.client.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -25,8 +23,11 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Registry;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.item.Items;
 
 public final class WizardryFabricClient implements ClientModInitializer {
     @Override
@@ -39,17 +40,16 @@ public final class WizardryFabricClient implements ClientModInitializer {
         EBRenderers.getRenderers().forEach((entity, renderer) -> EntityRendererRegistry.register(entity.get(), (EntityRendererProvider<Entity>) renderer));
         EBParticles.registerType(Registry::register);
 
-        EBClientRegister.registerParticleProviders(collection ->
-                collection.forEach((type, provider) -> {
-                    var reg = ParticleFactoryRegistry.getInstance();
-                    reg.register(type.get(), provider::apply);
-                })
-        );
+        EBClientRegister.registerParticleProviders(collection -> collection.forEach((type, provider) -> {
+            var reg = ParticleFactoryRegistry.getInstance();
+            reg.register(type.get(), provider::apply);
+        }));
         HudRenderCallback.EVENT.register(((guiGraphics, delta) -> SpellGUIDisplay.draw(guiGraphics, guiGraphics.pose(), delta)));
 
         EBRenderers.createEntityLayers((layer, supplier) -> EntityModelLayerRegistry.registerModelLayer(layer, supplier::get));
         EBArmorRenderFabric.load();
 
+        EBItemProperties.register();
         KeyBindingHelper.registerKeyBinding(EBKeyBinding.NEXT_SPELL);
         KeyBindingHelper.registerKeyBinding(EBKeyBinding.PREVIOUS_SPELL);
         for (int i = 0; i < EBKeyBinding.SPELL_QUICK_ACCESS.length; i++) {

@@ -427,7 +427,7 @@ public final class EBItems {
     public static final DeferredObject<Item> SPECTRAL_PICKAXE = debug("spectral_pickaxe");
 
     //Cast Items
-    public static final DeferredObject<Item> FLAMECATCHER = debug("flamecatcher");
+    public static final DeferredObject<Item> FLAMECATCHER = debug("flamecatcher", FlameCatcherItem::new);
     public static final DeferredObject<Item> FLAMING_AXE = debug("flaming_axe");
     public static final DeferredObject<Item> FROST_AXE = debug("frost_axe");
     public static final DeferredObject<Item> LIGHTNING_HAMMER = debug("lightning_hammer");

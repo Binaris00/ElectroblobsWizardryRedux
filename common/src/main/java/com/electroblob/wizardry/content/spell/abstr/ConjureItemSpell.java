@@ -23,19 +23,18 @@ public class ConjureItemSpell extends Spell {
 
     public ConjureItemSpell(Item item) {
         this.item = item;
-        //ConjureItemData.addApplyItem(item);
         registerSupportedItem(item);
     }
 
-    public static boolean isSupportedItem(Item item){
+    public static boolean isSupportedItem(Item item) {
         return SUPPORTED_ITEMS.contains(item);
     }
 
-    public static boolean isSupportedItem(ItemStack stack){
+    public static boolean isSupportedItem(ItemStack stack) {
         return isSupportedItem(stack.getItem());
     }
 
-    public static void registerSupportedItem(Item item){
+    public static void registerSupportedItem(Item item) {
         SUPPORTED_ITEMS.add(item);
     }
 
@@ -68,46 +67,17 @@ public class ConjureItemSpell extends Spell {
         data.setLifetime(property(DefaultProperties.ITEM_LIFETIME));
         data.setMaxLifetime(property(DefaultProperties.ITEM_LIFETIME));
         data.setSummoned(true);
-        setConjuredName(stack);
-        if(!ctx.caster().addItem(stack)){
-            if (!ctx.world().isClientSide) {
-                ctx.caster().sendSystemMessage(Component.translatable("spell.wizardry:conjure_item.no_space"));
-            }
+
+        if (!ctx.caster().addItem(stack)) {
+            ctx.caster().sendSystemMessage(Component.translatable("spell.wizardry:conjure_item.no_space"));
             return false;
         }
         return true;
-
-
-//        ConjureItemData data = Services.WIZARD_DATA.getConjureItemData(stack);
-//        if(data == null){
-//            EBLogger.error("ConjureItemData is null for item: " + item.getDescriptionId());
-//            return false;
-//        }
-//        data.setLifetime(property(DefaultProperties.ITEM_LIFETIME));
-//        data.setMaxLifetime(property(DefaultProperties.ITEM_LIFETIME));
-//        data.summoned(true);
-//        setConjuredName(stack);
-//        Services.WIZARD_DATA.onConjureItemDataUpdate(data, stack);
-//
-//        if(!ctx.caster().addItem(stack)){
-//            if (!ctx.world().isClientSide) {
-//                ctx.caster().sendSystemMessage(Component.translatable("spell.wizardry:conjure_item.no_space"));
-//            }
-//            return false;
-//        }
-//
-//        return true;
     }
 
 
     protected ItemStack addItemExtras(PlayerCastContext ctx, ItemStack stack) {
         return stack;
-    }
-
-    public void setConjuredName(ItemStack stack) {
-        CompoundTag tag = stack.getOrCreateTagElement("display");
-        tag.putString("Name", "Bound " + stack.getDisplayName().getString());
-        stack.getOrCreateTag().put("display", tag);
     }
 
     @Override

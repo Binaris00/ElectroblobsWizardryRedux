@@ -44,7 +44,6 @@ public final class EBBlocks {
     public static final DeferredObject<Block> PERMAFROST = block("permafrost", PermafrostBlock::new, false, false, false);
     public static final DeferredObject<Block> VANISHING_COBWEB = block("vanishing_cobweb", () -> new VanishingCobwebBlock(BlockBehaviour.Properties.copy(Blocks.COBWEB).noCollission().strength(4)), false, false, false);
     public static final DeferredObject<Block> ARCANE_WORKBENCH = block("arcane_workbench", () -> new ArcaneWorkbenchBlock(BlockBehaviour.Properties.copy(Blocks.STONE)),false, true, true);
-    public static final DeferredObject<Block> METEOR = block("meteor", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).lightLevel((state) -> 1)), false, false, false);
 
     public static final DeferredObject<Block> GILDED_OAK_WOOD = block("gilded_oak_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
     public static final DeferredObject<Block> GILDED_SPRUCE_WOOD = block("gilded_spruce_wood", () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)), true, true, true);
