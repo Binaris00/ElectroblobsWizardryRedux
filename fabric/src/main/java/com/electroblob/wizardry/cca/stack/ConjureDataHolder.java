@@ -15,44 +15,25 @@ public class ConjureDataHolder extends ItemComponent implements ConjureData {
     }
 
     @Override
-    public void tick() {
-        if (!isSummoned()) return;
-
-        if (this.getLifetime() <= 0) {
-            this.stack.shrink(1);
-            this.setSummoned(false);
-            return;
-        }
-
-        lifetimeDecrement();
+    public long getExpireTime() {
+        if (!this.hasTag("expire_time", NbtType.LONG)) this.putLong("expire_time", -1L);
+        return this.getLong("expire_time");
     }
 
     @Override
-    public void lifetimeDecrement() {
-        int lifetime = getLifetime();
-        if (lifetime > 0) this.putInt("lifetime", lifetime - 1);
+    public void setExpireTime(long expireTime) {
+        this.putLong("expire_time", expireTime);
     }
 
     @Override
-    public int getLifetime() {
-        if(!this.hasTag("lifetime", NbtType.INT)) this.putInt("lifetime", 0);
-        return this.getInt("lifetime");
+    public int getDuration() {
+        if (!this.hasTag("duration", NbtType.INT)) this.putInt("duration", 0);
+        return this.getInt("duration");
     }
 
     @Override
-    public void setLifetime(int lifetime) {
-        this.putInt("lifetime", lifetime);
-    }
-
-    @Override
-    public int getMaxLifetime() {
-        if (!this.hasTag("max_lifetime", NbtType.INT)) this.putInt("max_lifetime", -1);
-        return this.getInt("max_lifetime");
-    }
-
-    @Override
-    public void setMaxLifetime(int maxLifetime) {
-        this.putInt("max_lifetime", maxLifetime);
+    public void setDuration(int duration) {
+        this.putInt("duration", duration);
     }
 
     @Override

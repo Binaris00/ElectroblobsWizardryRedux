@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.core;
 
 import com.electroblob.wizardry.api.content.data.CastCommandData;
+import com.electroblob.wizardry.api.content.data.ConjureData;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.EBEntityJoinLevelEvent;
@@ -11,6 +12,7 @@ import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
 
 import java.util.Iterator;
 
@@ -19,6 +21,8 @@ import java.util.Iterator;
  * tick and spell cast events.
  */
 public final class DataEvents {
+    private static final int CONJURE_CHECK_INTERVAL = 20;
+
     private DataEvents() {
     }
 
@@ -64,12 +68,27 @@ public final class DataEvents {
     }
 
     private static void conjureItemTick(Player player){
-        player.getInventory().offhand.stream().filter(ConjureItemSpell::isSupportedItem)
-                .forEach((s) -> Services.OBJECT_DATA.getConjureData(s).tick());
-        player.getInventory().items.stream().filter(ConjureItemSpell::isSupportedItem)
-                .forEach((s) -> Services.OBJECT_DATA.getConjureData(s).tick());
-        player.getInventory().armor.stream().filter(ConjureItemSpell::isSupportedItem)
-                .forEach((s) -> Services.OBJECT_DATA.getConjureData(s).tick());
+        if (player.tickCount % CONJURE_CHECK_INTERVAL != 0) return;
+
+        long currentGameTime = player.level().getGameTime();
+
+        player.getInventory().offhand.stream()
+                .filter(ConjureItemSpell::isSupportedItem)
+                .forEach(stack -> checkAndExpireItem(stack, currentGameTime));
+        player.getInventory().items.stream()
+                .filter(ConjureItemSpell::isSupportedItem)
+                .forEach(stack -> checkAndExpireItem(stack, currentGameTime));
+        player.getInventory().armor.stream()
+                .filter(ConjureItemSpell::isSupportedItem)
+                .forEach(stack -> checkAndExpireItem(stack, currentGameTime));
+    }
+
+    private static void checkAndExpireItem(ItemStack stack, long currentGameTime) {
+        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
+        if (data != null && data.hasExpired(currentGameTime)) {
+            stack.shrink(1);
+            data.setSummoned(false);
+        }
     }
 
     private static void imbuementTick(Player player){

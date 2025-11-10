@@ -27,7 +27,8 @@
     "ClientPlayerMixin",
     "HumanoidModelMixin",
     "MinecraftMixin",
-    "client.MouseHandlerMixin"
+    "client.MouseHandlerMixin",
+    "client.ConjureBarMixin"
   ],
   "server": [
   ],

@@ -8,7 +8,6 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -64,8 +63,11 @@ public class ConjureItemSpell extends Spell {
         stack = addItemExtras(ctx, stack);
 
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-        data.setLifetime(property(DefaultProperties.ITEM_LIFETIME));
-        data.setMaxLifetime(property(DefaultProperties.ITEM_LIFETIME));
+        int duration = property(DefaultProperties.ITEM_LIFETIME);
+        long currentGameTime = ctx.world().getGameTime();
+
+        data.setExpireTime(currentGameTime + duration);
+        data.setDuration(duration);
         data.setSummoned(true);
 
         if (!ctx.caster().addItem(stack)) {

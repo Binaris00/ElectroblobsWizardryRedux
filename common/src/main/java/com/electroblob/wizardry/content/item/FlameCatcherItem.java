@@ -1,8 +1,6 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.api.content.data.ConjureData;
 import com.electroblob.wizardry.content.entity.projectile.FlamecatcherArrow;
-import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionHand;
@@ -16,8 +14,6 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class FlameCatcherItem extends BowItem {
-    public static final String SHOTS_REMAINING_NBT_KEY = "shotsRemaining";
-
     public FlameCatcherItem() {
         super(new Properties().durability(1200).rarity(Rarity.EPIC));
     }
@@ -31,27 +27,13 @@ public class FlameCatcherItem extends BowItem {
     }
 
     @Override
-    public void releaseUsing(@NotNull ItemStack stack, Level level, @NotNull LivingEntity entity, int timeLeft) {
+    public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity entity, int timeLeft) {
         if (!(entity instanceof Player player)) return;
 
         int charge = this.getUseDuration(stack) - timeLeft;
         if (charge < 0) return;
-        int shotsLeft;
 
-        // there could be a future use for the flamecatcher without conjure data, so we made it to be able to shot arrows infinitely
-        if (!stack.getOrCreateTag().contains(SHOTS_REMAINING_NBT_KEY)) {
-            shotsLeft = -1;
-        } else {
-            shotsLeft = stack.getTag().getInt(SHOTS_REMAINING_NBT_KEY);
-        }
-
-        if (shotsLeft == 0) return;
         if (!level.isClientSide) stack.setDamageValue(stack.getDamageValue() + (this.getUseDuration(stack) - timeLeft));
-
-        if (shotsLeft != -1) {
-            shotsLeft--;
-            stack.getOrCreateTag().putInt(SHOTS_REMAINING_NBT_KEY, shotsLeft);
-        }
 
         float velocity = getPowerForTime(charge);
         if (!((double) velocity < 0.1D)) {

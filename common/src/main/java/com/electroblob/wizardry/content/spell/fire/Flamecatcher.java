@@ -2,27 +2,17 @@ package com.electroblob.wizardry.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
-import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
-import com.electroblob.wizardry.content.item.FlameCatcherItem;
 import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.item.ItemStack;
-
 
 public class Flamecatcher extends ConjureItemSpell {
     public static final SpellProperty<Integer> SHOT_COUNT = SpellProperty.intProperty("shot_count", 5);
 
     public Flamecatcher() {
         super(EBItems.FLAMECATCHER.get());
-    }
-
-    @Override
-    protected ItemStack addItemExtras(PlayerCastContext ctx, ItemStack stack) {
-        stack.getOrCreateTag().putInt(FlameCatcherItem.SHOTS_REMAINING_NBT_KEY, (int) (property(SHOT_COUNT) * ctx.modifiers().get(SpellModifiers.POTENCY)));
-        return stack;
     }
 
     @Override
