@@ -1,0 +1,6 @@
+{
+  "parent": "item/handheld",
+  "textures": {
+    "layer0": "ebwizardry:item/flaming_axe_conjuring_0"
+  }
+}

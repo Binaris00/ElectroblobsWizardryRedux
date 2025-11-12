@@ -139,6 +139,12 @@ public final class Spells {
     public static final Spell SUMMON_SNOW_GOLEM;
     public static final Spell OJOSPOCOS;
     public static final Spell FLAMECATCHER;
+    public static final Spell FLAMING_AXE;
+    public static final Spell FROST_AXE;
+    public static final Spell CONJURE_SWORD;
+    public static final Spell CONJURE_PICKAXE;
+    public static final Spell CONJURE_BOW;
+    public static final Spell CONJURE_ARMOR;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -603,7 +609,7 @@ public final class Spells {
 
         FLAMECATCHER = spell("flamecatcher", () -> new Flamecatcher().assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 100, 20, 150)
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.UTILITY, SpellAction.SUMMON, 100, 20, 150)
                         .add(DefaultProperties.ITEM_LIFETIME, 900)
                         .add(Flamecatcher.SHOT_COUNT)
                         .add(DefaultProperties.RANGE, 20F)
@@ -612,6 +618,50 @@ public final class Spells {
                         .build()
         ));
 
+        FLAMING_AXE = spell("flaming_axe", () -> new FlamingAxe().assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.UTILITY, SpellAction.SUMMON, 45, 10, 50)
+                        .add(DefaultProperties.ITEM_LIFETIME, 1200)
+                        .add(DefaultProperties.EFFECT_DURATION, 8)
+                        .build()
+        ));
+
+        FROST_AXE = spell("frost_axe", () -> new FrostAxe().assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.UTILITY, SpellAction.SUMMON, 45, 10, 50)
+                        .add(DefaultProperties.ITEM_LIFETIME, 1200)
+                        .add(DefaultProperties.EFFECT_DURATION, 160)
+                        .add(DefaultProperties.EFFECT_STRENGTH, 1)
+                        .build()
+        ));
+
+        CONJURE_SWORD = spell("conjure_sword", () -> new ConjureItemSpell(EBItems.SPECTRAL_SWORD.get()).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.MAGIC, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .add(DefaultProperties.ITEM_LIFETIME, 1200)
+                        .build()
+        ));
+
+        CONJURE_PICKAXE = spell("conjure_pickaxe", () -> new ConjureItemSpell(EBItems.SPECTRAL_PICKAXE.get()).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.MAGIC, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .add(DefaultProperties.ITEM_LIFETIME, 1200)
+                        .build()
+        ));
+
+        CONJURE_BOW = spell("conjure_bow", () -> new ConjureItemSpell(EBItems.SPECTRAL_BOW.get()).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.MAGIC, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .add(DefaultProperties.ITEM_LIFETIME, 1200)
+                        .build()
+        ));
+
+        CONJURE_ARMOR = spell("conjure_armor", () -> new ConjureArmor().assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.DEFENCE, SpellAction.SUMMON, 45, 10, 50)
+                        .add(DefaultProperties.ITEM_LIFETIME, 1800)
+                        .build()
+        ));
     }
 
     // ======= Registry =======

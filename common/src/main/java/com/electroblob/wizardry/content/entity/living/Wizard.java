@@ -313,7 +313,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
                 stack.addTagElement("Tiers", tag);
                 return stack;
             } else if (randomizer < 10) {
-                EquipmentSlot slot = InventoryUtil.ARMOUR_SLOTS[random.nextInt(InventoryUtil.ARMOUR_SLOTS.length)];
+                EquipmentSlot slot = InventoryUtil.ARMOR_SLOTS[random.nextInt(InventoryUtil.ARMOR_SLOTS.length)];
                 if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0) {
                     return new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, this.getElement(), slot));
                 } else {

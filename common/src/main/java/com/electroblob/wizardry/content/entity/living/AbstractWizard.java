@@ -12,7 +12,6 @@ import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.content.entity.goal.AttackSpellGoal;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
-import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.BlockPos;
@@ -240,7 +239,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
 
         Element element = this.getElement();
 
-        for (EquipmentSlot slot : InventoryUtil.ARMOUR_SLOTS) this.setItemSlot(slot, new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, element, slot)));
+        for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) this.setItemSlot(slot, new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, element, slot)));
         for (EquipmentSlot slot : EquipmentSlot.values()) this.setDropChance(slot, 0.0f);
 
         spells.add(Spells.MAGIC_MISSILE);

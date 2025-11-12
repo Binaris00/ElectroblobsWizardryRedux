@@ -181,7 +181,7 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
 
         SpellModifiers armourModifiers = new SpellModifiers();
 
-        Arrays.stream(InventoryUtil.ARMOUR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
+        Arrays.stream(InventoryUtil.ARMOR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
                 .filter(i -> i instanceof WizardArmorItem)
                 .forEach(i -> ((WizardArmorItem)i).applySpellModifiers(event.getCaster(), event.getSpell(), armourModifiers));
 
@@ -193,7 +193,7 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
 
         SpellModifiers armourModifiers = new SpellModifiers();
 
-        Arrays.stream(InventoryUtil.ARMOUR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
+        Arrays.stream(InventoryUtil.ARMOR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
                 .filter(i -> i instanceof WizardArmorItem)
                 .forEach(i -> ((WizardArmorItem)i).applySpellModifiers(event.getCaster(), event.getSpell(), armourModifiers));
 

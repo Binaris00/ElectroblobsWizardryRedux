@@ -17,12 +17,12 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public final class InventoryUtil {
-    public static final EquipmentSlot[] ARMOUR_SLOTS;
+    public static final EquipmentSlot[] ARMOR_SLOTS;
 
     static {
         List<EquipmentSlot> slots = new ArrayList<>(Arrays.asList(EquipmentSlot.values()));
         slots.removeIf(slot -> slot.getType() != EquipmentSlot.Type.ARMOR);
-        ARMOUR_SLOTS = slots.toArray(new EquipmentSlot[0]);
+        ARMOR_SLOTS = slots.toArray(new EquipmentSlot[0]);
     }
 
     public static Collection<ItemStack> getAllItems(Player player) {
@@ -75,14 +75,14 @@ public final class InventoryUtil {
 
         Element e = element == null ? wizardArmor.getElement() : element;
         WizardArmorType ac = armor == null ? wizardArmor.getWizardArmorType() : armor;
-        return Arrays.stream(ARMOUR_SLOTS)
+        return Arrays.stream(ARMOR_SLOTS)
                 .allMatch(slot -> entity.getItemBySlot(slot).getItem() instanceof WizardArmorItem armor2
                         && armor2.getElement() == e
                         && armor2.getWizardArmorType() == ac);
     }
 
     public static boolean doAllArmourPiecesHaveMana(LivingEntity entity){
-        return Arrays.stream(ARMOUR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaStoringItem manaStoringItem
+        return Arrays.stream(ARMOR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaStoringItem manaStoringItem
                 && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
     }
 

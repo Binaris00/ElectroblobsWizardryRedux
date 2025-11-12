@@ -22,11 +22,10 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ArmorItem;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.SpawnEggItem;
+import net.minecraft.world.item.*;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -65,6 +64,38 @@ public final class EBItems {
 
     private EBItems() {
     }
+
+    public static final Tier MAGICAL = new Tier() {
+        @Override
+        public int getUses() {
+            return 100;
+        }
+
+        @Override
+        public float getSpeed() {
+            return 8.0F;
+        }
+
+        @Override
+        public @NotNull Ingredient getRepairIngredient() {
+            return Ingredient.EMPTY;
+        }
+
+        @Override
+        public int getLevel() {
+            return 3;
+        }
+
+        @Override
+        public int getEnchantmentValue() {
+            return 0;
+        }
+
+        @Override
+        public float getAttackDamageBonus() {
+            return 4.0F;
+        }
+    };
 
     //Bombs
     public static final DeferredObject<Item> FIREBOMB = item("firebomb");
@@ -414,22 +445,20 @@ public final class EBItems {
 
 
     //Spectral Armor
-    public static final DeferredObject<Item> SPECTRAL_HELMET = debug("spectral_helmet");
-    public static final DeferredObject<Item> SPECTRAL_CHESTPLATE = debug("spectral_chestplate");
-    public static final DeferredObject<Item> SPECTRAL_LEGGINGS = debug("spectral_leggings");
-    public static final DeferredObject<Item> SPECTRAL_BOOTS = debug("spectral_boots");
+    public static final DeferredObject<Item> SPECTRAL_HELMET = debug("spectral_helmet", () -> new SpectralArmorItem(ArmorItem.Type.HELMET));
+    public static final DeferredObject<Item> SPECTRAL_CHESTPLATE = debug("spectral_chestplate", () -> new SpectralArmorItem(ArmorItem.Type.CHESTPLATE));
+    public static final DeferredObject<Item> SPECTRAL_LEGGINGS = debug("spectral_leggings", () -> new SpectralArmorItem(ArmorItem.Type.LEGGINGS));
+    public static final DeferredObject<Item> SPECTRAL_BOOTS = debug("spectral_boots", () -> new SpectralArmorItem(ArmorItem.Type.BOOTS));
 
-    //Spectral Weapons
-    public static final DeferredObject<Item> SPECTRAL_SWORD = debug("spectral_sword");
-    public static final DeferredObject<Item> SPECTRAL_BOW = debug("spectral_bow");
-
-    //Spectral Tools
-    public static final DeferredObject<Item> SPECTRAL_PICKAXE = debug("spectral_pickaxe");
+    //Spectral
+    public static final DeferredObject<Item> SPECTRAL_SWORD = debug("spectral_sword", SpectralSwordItem::new);
+    public static final DeferredObject<Item> SPECTRAL_BOW = debug("spectral_bow", SpectralBowItem::new);
+    public static final DeferredObject<Item> SPECTRAL_PICKAXE = debug("spectral_pickaxe", SpectralPickaxeItem::new);
 
     //Cast Items
     public static final DeferredObject<Item> FLAMECATCHER = debug("flamecatcher", FlameCatcherItem::new);
-    public static final DeferredObject<Item> FLAMING_AXE = debug("flaming_axe");
-    public static final DeferredObject<Item> FROST_AXE = debug("frost_axe");
+    public static final DeferredObject<Item> FLAMING_AXE = debug("flaming_axe", FlamingAxeItem::new);
+    public static final DeferredObject<Item> FROST_AXE = debug("frost_axe", FrostAxeItem::new);
     public static final DeferredObject<Item> LIGHTNING_HAMMER = debug("lightning_hammer");
 
     // Spawn egg

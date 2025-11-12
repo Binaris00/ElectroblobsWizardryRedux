@@ -71,7 +71,7 @@ public class ConjureItemSpell extends Spell {
         data.setSummoned(true);
 
         if (!ctx.caster().addItem(stack)) {
-            ctx.caster().sendSystemMessage(Component.translatable("spell.wizardry:conjure_item.no_space"));
+            ctx.caster().sendSystemMessage(Component.translatable("spell.ebwizardry:conjure_item.no_space"));
             return false;
         }
         return true;
