@@ -28,8 +28,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.SnowGolem;
-import net.minecraft.world.entity.monster.EnderMan;
-import net.minecraft.world.entity.monster.WitherSkeleton;
+import net.minecraft.world.entity.monster.*;
 import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
@@ -130,14 +129,10 @@ public final class Spells {
     public static final Spell FLAME_WEAPON;
     public static final Spell CHARGE;
     public static final Spell CURSE_OF_SOULBINDING;
-    public static final Spell BLOCK_SURPRISE;
     public static final Spell GREATER_TELEKINESIS;
-    public static final Spell SUMMON_RICH;
     public static final Spell LIGHTNING_PULSE;
-    public static final Spell FLAME_FLAME;
     public static final Spell SUMMON_ZOMBIE;
     public static final Spell SUMMON_SNOW_GOLEM;
-    public static final Spell OJOSPOCOS;
     public static final Spell FLAMECATCHER;
     public static final Spell FLAMING_AXE;
     public static final Spell FROST_AXE;
@@ -145,6 +140,17 @@ public final class Spells {
     public static final Spell CONJURE_PICKAXE;
     public static final Spell CONJURE_BOW;
     public static final Spell CONJURE_ARMOR;
+    public static final Spell SUMMON_BLAZE;
+    public static final Spell SPIDER_SWARM;
+    public static final Spell SILVERFISH_SWARM;
+    public static final Spell VEX_SWARM;
+    public static final Spell SUMMON_WITHER_SKELETON;
+    public static final Spell SUMMON_SKELETON;
+
+    public static final Spell OJOSPOCOS;
+    public static final Spell FLAME_FLAME;
+    public static final Spell SUMMON_RICH;
+    public static final Spell BLOCK_SURPRISE;
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -660,6 +666,73 @@ public final class Spells {
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.DEFENCE, SpellAction.SUMMON, 45, 10, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1800)
+                        .build()
+        ));
+
+        SUMMON_BLAZE = spell("summon_blaze", () -> new MinionSpell<>((l) -> new Blaze(EntityType.BLAZE, l))
+                .soundValues(1, 1.1f, 0.2f)
+                .assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
+                        .add(DefaultProperties.MINION_COUNT, 1)
+                        .add(DefaultProperties.MINION_LIFETIME, 600)
+                        .add(DefaultProperties.SUMMON_RADIUS, 2)
+                        .build()
+        ));
+
+        SPIDER_SWARM = spell("spider_swarm", () -> new MinionSpell<>((l) -> new Spider(EntityType.SPIDER, l)))
+                .soundValues(1, 1.1f, 0.1f)
+                .assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
+                        .add(DefaultProperties.MINION_COUNT, 5)
+                        .add(DefaultProperties.MINION_LIFETIME, 600)
+                        .add(DefaultProperties.SUMMON_RADIUS, 3)
+                        .build()
+        );
+
+        SILVERFISH_SWARM = spell("silverfish_swarm", () -> new MinionSpell<>((l) -> new Silverfish(EntityType.SILVERFISH, l)))
+                .soundValues(1, 1.1f, 0.1f)
+                .assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.MINION, SpellAction.SUMMON, 80, 20, 300)
+                        .add(DefaultProperties.MINION_COUNT, 20)
+                        .add(DefaultProperties.MINION_LIFETIME, 600)
+                        .add(DefaultProperties.SUMMON_RADIUS, 3)
+                        .add(DefaultProperties.SENSIBLE, true)
+                        .build()
+        );
+
+        VEX_SWARM = spell("vex_swarm", () -> new MinionSpell<>((l) -> new Vex(EntityType.VEX, l)))
+                .soundValues(1, 1.1f, 0.1f)
+                .assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY, SpellType.MINION, SpellAction.SUMMON, 50, 10, 200)
+                        .add(DefaultProperties.MINION_COUNT, 5)
+                        .add(DefaultProperties.MINION_LIFETIME, 600)
+                        .add(DefaultProperties.SUMMON_RADIUS, 3)
+                        .build()
+        );
+
+        SUMMON_WITHER_SKELETON = spell("summon_wither_skeleton", () -> new SummonWitherSkeleton()
+                .soundValues(1, 1.1f, 0.2f)
+                .assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 35, 10, 150)
+                        .add(DefaultProperties.MINION_COUNT, 1)
+                        .add(DefaultProperties.MINION_LIFETIME, 600)
+                        .add(DefaultProperties.SUMMON_RADIUS, 2)
+                        .build()
+        ));
+
+        SUMMON_SKELETON = spell("summon_skeleton", () -> new SummonSkeleton()
+                .soundValues(1, 1.1f, 0.2f)
+                .assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 15, 0, 50)
+                        .add(DefaultProperties.MINION_COUNT, 1)
+                        .add(DefaultProperties.MINION_LIFETIME, 600)
+                        .add(DefaultProperties.SUMMON_RADIUS, 2)
                         .build()
         ));
     }
