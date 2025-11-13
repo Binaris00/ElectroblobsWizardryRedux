@@ -5,6 +5,7 @@
   "refmap": "${mod_id}.refmap.json",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
+    "BlazeAccessor",
     "ClipContextMixin",
     "CommandsMixin",
     "ConjureMixin",
@@ -27,8 +28,8 @@
     "ClientPlayerMixin",
     "HumanoidModelMixin",
     "MinecraftMixin",
-    "client.MouseHandlerMixin",
-    "client.ConjureBarMixin"
+    "client.ConjureBarMixin",
+    "client.MouseHandlerMixin"
   ],
   "server": [
   ],

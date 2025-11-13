@@ -12,6 +12,11 @@
   "creativetab.ebwizardry_spells": "Wizardry Spells",
   "creativetab.ebwizardry_blocks" : "Wizardry Blocks",
 
+  "ebwizardry.raw_line_0": "========================================================",
+  "ebwizardry.entities.desc": "EBWIZARDRY ENTITIES",
+  "ebwizardry.raw_line_01": "========================================================",
+  "entity.ebwizardry.lightning_wraith": "Lightning Wraith",
+
   "ebwizardry.raw_line_2": "========================================================",
   "ebwizardry.spelltype.desc": "EBWIZARDRY SPELLTYPES ENUM",
   "ebwizardry.raw_line_3": "========================================================",
@@ -839,7 +844,6 @@
   "item.ebwizardry.small_mana_flask": "Small Mana Flask",
   "item.ebwizardry.smoke_bomb": "Smoke Bomb",
   "item.ebwizardry.spark_bomb": "Spark Bomb",
-  "item.ebwizardry.spawn_evil_wizard": "Spawn Evil Wizard",
   "item.ebwizardry.spawn_wizard": "Spawn Wizard",
   "item.ebwizardry.spectral_boots": "Spectral Boots",
   "item.ebwizardry.spectral_bow": "Spectral Bow",

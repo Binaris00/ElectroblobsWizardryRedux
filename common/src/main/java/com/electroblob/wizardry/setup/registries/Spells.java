@@ -8,6 +8,7 @@ import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.entity.construct.*;
+import com.electroblob.wizardry.content.entity.living.LightningWraith;
 import com.electroblob.wizardry.content.entity.projectile.*;
 import com.electroblob.wizardry.content.spell.BlockWithSurprise;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
@@ -17,10 +18,7 @@ import com.electroblob.wizardry.content.spell.earth.TrapSlime;
 import com.electroblob.wizardry.content.spell.fire.*;
 import com.electroblob.wizardry.content.spell.healing.*;
 import com.electroblob.wizardry.content.spell.ice.*;
-import com.electroblob.wizardry.content.spell.lightning.BlindingFlash;
-import com.electroblob.wizardry.content.spell.lightning.Charge;
-import com.electroblob.wizardry.content.spell.lightning.InvokeWeather;
-import com.electroblob.wizardry.content.spell.lightning.LightningPulse;
+import com.electroblob.wizardry.content.spell.lightning.*;
 import com.electroblob.wizardry.content.spell.magic.ForceArrowSpell;
 import com.electroblob.wizardry.content.spell.necromancy.*;
 import com.electroblob.wizardry.content.spell.sorcery.*;
@@ -148,6 +146,8 @@ public final class Spells {
     public static final Spell SUMMON_WITHER_SKELETON;
     public static final Spell SUMMON_SKELETON;
     public static final Spell SLIME;
+    public static final Spell ARC;
+    public static final Spell SUMMON_LIGHTNING_WRAITH;
 
     public static final Spell OJOSPOCOS;
     public static final Spell FLAME_FLAME;
@@ -739,6 +739,19 @@ public final class Spells {
         ));
 
         SLIME = spell("slime", TrapSlime::new);
+
+        ARC = spell("arc", Arc::new);
+
+        SUMMON_LIGHTNING_WRAITH = spell("summon_lightning_wraith", () -> new MinionSpell<>((l) -> new LightningWraith(EBEntities.LIGHTNING_WRAITH.get(), l)))
+                .soundValues(1, 1.1f, 0.2f)
+                .assignProperties(
+                        SpellProperties.builder()
+                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
+                                .add(DefaultProperties.MINION_COUNT, 1)
+                                .add(DefaultProperties.MINION_LIFETIME, 600)
+                                .add(DefaultProperties.SUMMON_RADIUS, 2)
+                                .build()
+                );
     }
 
     // ======= Registry =======
