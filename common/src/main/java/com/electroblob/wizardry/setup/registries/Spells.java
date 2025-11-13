@@ -13,6 +13,7 @@ import com.electroblob.wizardry.content.spell.BlockWithSurprise;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.*;
 import com.electroblob.wizardry.content.spell.earth.*;
+import com.electroblob.wizardry.content.spell.earth.TrapSlime;
 import com.electroblob.wizardry.content.spell.fire.*;
 import com.electroblob.wizardry.content.spell.healing.*;
 import com.electroblob.wizardry.content.spell.ice.*;
@@ -146,6 +147,7 @@ public final class Spells {
     public static final Spell VEX_SWARM;
     public static final Spell SUMMON_WITHER_SKELETON;
     public static final Spell SUMMON_SKELETON;
+    public static final Spell SLIME;
 
     public static final Spell OJOSPOCOS;
     public static final Spell FLAME_FLAME;
@@ -735,6 +737,8 @@ public final class Spells {
                         .add(DefaultProperties.SUMMON_RADIUS, 2)
                         .build()
         ));
+
+        SLIME = spell("slime", TrapSlime::new);
     }
 
     // ======= Registry =======

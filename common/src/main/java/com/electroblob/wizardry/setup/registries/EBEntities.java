@@ -6,15 +6,13 @@ import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.entity.ArrowRainConstruct;
 import com.electroblob.wizardry.content.entity.MeteorEntity;
 import com.electroblob.wizardry.content.entity.construct.*;
-import com.electroblob.wizardry.content.entity.living.AbstractWizard;
-import com.electroblob.wizardry.content.entity.living.EvilWizard;
-import com.electroblob.wizardry.content.entity.living.Remnant;
-import com.electroblob.wizardry.content.entity.living.Wizard;
+import com.electroblob.wizardry.content.entity.living.*;
 import com.electroblob.wizardry.content.entity.projectile.*;
 import com.electroblob.wizardry.core.mixin.invoker.SpawnPlacementsInvoker;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.level.levelgen.Heightmap;
 
 import java.util.HashMap;
@@ -63,6 +61,7 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<HailstormConstruct>> HAILSTORM = entity(HailstormConstruct::new, "hailstorm", MobCategory.MISC, 5, 5, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<DecayConstruct>> DECAY = entity(DecayConstruct::new, "decay", MobCategory.MISC, 2f, 0.2f, MagicType.CONSTRUCT);
 
+    public static final DeferredObject<EntityType<MagicSlime>> MAGIC_SLIME = entity(MagicSlime::new, "magic_slime", MobCategory.CREATURE, 2.04F, 2.04F, MagicType.LIVING);
     public static final DeferredObject<EntityType<Remnant>> REMNANT = entity(Remnant::new, "remnant", MobCategory.CREATURE, 0.8f, 0.8f, MagicType.LIVING);
     public static final DeferredObject<EntityType<Wizard>> WIZARD = entity(Wizard::new, "wizard", MobCategory.CREATURE, 0.6f, 1.8f, MagicType.LIVING);
     public static final DeferredObject<EntityType<EvilWizard>> EVIL_WIZARD = entity(EvilWizard::new, "evil_wizard", MobCategory.CREATURE, 0.6f, 1.8f, MagicType.LIVING);
@@ -92,6 +91,7 @@ public final class EBEntities {
         consumer.accept(REMNANT.get(), Remnant.createMobAttributes().build());
         consumer.accept(WIZARD.get(), AbstractWizard.createAttributes().build());
         consumer.accept(EVIL_WIZARD.get(), AbstractWizard.createAttributes().build());
+        consumer.accept(MAGIC_SLIME.get(), Monster.createMonsterAttributes().build());
     }
 
     public static void registerSpawns(){

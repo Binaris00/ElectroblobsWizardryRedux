@@ -13,6 +13,7 @@ import com.google.common.collect.Maps;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.SlimeRenderer;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -80,7 +81,7 @@ public final class EBRenderers {
                 new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/healing_aura.png"), 0.3F, true)));
         registerEntityRender(EBEntities.COMBUSTION_RUNE, (ctx) ->
                 new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/combustion_rune.png"), 0, true));
-
+        registerEntityRender(EBEntities.MAGIC_SLIME, SlimeRenderer::new);
     }
 
     public static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> getRenderers() {

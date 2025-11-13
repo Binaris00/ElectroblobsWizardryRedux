@@ -1,5 +1,6 @@
 {
   "spell.discover": "Discovered the spell %s!",
+  "spell.resist": "%s resisted %s",
 
   "ebwizardry.raw_line": "========================================================",
   "ebwizardry.creativetabs.desc": "EBWIZARDRY TABS",
