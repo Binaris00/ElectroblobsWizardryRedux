@@ -35,6 +35,8 @@ import java.util.function.Supplier;
 
 
 public final class Spells {
+    public static Map<String, Spell> SPELLS = new HashMap<>();
+
     public static final Spell NONE;
     public static final Spell MAGIC_MISSILE;
     public static final Spell SMOKE_BOMB;
@@ -145,11 +147,12 @@ public final class Spells {
     public static final Spell ARC;
     public static final Spell SUMMON_LIGHTNING_WRAITH;
     public static final Spell SUMMON_ICE_GIANT;
+    public static final Spell RAY_OF_PURIFICATION;
+
     public static final Spell OJOSPOCOS;
     public static final Spell FLAME_FLAME;
     public static final Spell SUMMON_RICH;
     public static final Spell BLOCK_SURPRISE;
-    public static Map<String, Spell> SPELLS = new HashMap<>();
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -751,6 +754,8 @@ public final class Spells {
                 );
 
         SUMMON_ICE_GIANT = spell("summon_ice_giant", SummonIceGiant::new);
+
+        RAY_OF_PURIFICATION = spell("ray_of_purification", RayOfPurification::new);
     }
 
     private Spells() {

@@ -7,6 +7,7 @@ import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.targeting.TargetingConditions;
@@ -46,13 +47,14 @@ public class SparkBombEntity extends BombEntity {
     }
 
     @Override
-    protected void onHitEntity(EntityHitResult entityHitResult) {
+    protected void onHitEntity(EntityHitResult result) {
         float damage = 6;
-        EBMagicDamageSource.causeMagicDamage(this, entityHitResult.getEntity(), damage, EBDamageSources.SHOCK, false);
+        EBMagicDamageSource.causeMagicDamage(this, result.getEntity(), damage, EBDamageSources.SHOCK, false);
         this.playSound(EBSounds.ENTITY_SPARK_BOMB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
 
+        ParticleBuilder.create(EBParticles.LIGHTNING).pos(this.position()).target(result.getEntity()).spawn(level());
         ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ());
-        super.onHitEntity(entityHitResult);
+        super.onHitEntity(result);
     }
 
     @Override

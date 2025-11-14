@@ -133,6 +133,7 @@ public class BuffSpell extends Spell {
             double z = caster.zo + world.random.nextDouble() * 2 - 1;
             ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(0, 0.1, 0).color(r, g, b).spawn(world);
         }
+
         ParticleBuilder.create(EBParticles.BUFF).entity(caster).color(r, g, b).spawn(world);
     }
 

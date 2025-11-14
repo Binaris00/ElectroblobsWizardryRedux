@@ -18,17 +18,11 @@ import org.jetbrains.annotations.Nullable;
 
 public class ParticleLightning extends ParticleTargeted {
     private static final float THICKNESS = 0.04f;
-
     private static final float MAX_SEGMENT_LENGTH = 0.6f;
-
     private static final float MIN_SEGMENT_LENGTH = 0.2f;
-
     private static final float VERTEX_JITTER = 0.15f;
-
     private static final int MAX_FORK_SEGMENTS = 3;
-
     private static final float FORK_CHANCE = 0.3f;
-
     private static final int UPDATE_PERIOD = 1;
 
     public ParticleLightning(ClientLevel world, double x, double y, double z, SpriteSet spriteProvider) {
@@ -45,7 +39,12 @@ public class ParticleLightning extends ParticleTargeted {
     }
 
     @Override
-    protected void draw(PoseStack stack, Tesselator tessellator, float length, float tickDelta) {
+    protected boolean shouldApplyOriginOffset() {
+        return false;
+    }
+
+    @Override
+    protected void draw(PoseStack stack, Tesselator tesselator, float length, float tickDelta) {
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
@@ -63,7 +62,7 @@ public class ParticleLightning extends ParticleTargeted {
                 float py2 = (random.nextFloat() * 2 - 1) * VERTEX_JITTER * quadSize;
                 float pz2 = pz + length / numberOfSegments;
 
-                drawSegment(stack, tessellator, layer, px, py, pz, px2, py2, pz2, THICKNESS * quadSize);
+                drawSegment(stack, tesselator, layer, px, py, pz, px2, py2, pz2, THICKNESS * quadSize);
 
                 if (random.nextFloat() < FORK_CHANCE) {
                     float px3 = px, py3 = py, pz3 = pz;
@@ -73,14 +72,14 @@ public class ParticleLightning extends ParticleTargeted {
                         float py4 = py3 + (random.nextFloat() * 2 - 1) * VERTEX_JITTER * quadSize;
                         float pz4 = pz3 + MIN_SEGMENT_LENGTH + random.nextFloat() * (MAX_SEGMENT_LENGTH - MIN_SEGMENT_LENGTH);
 
-                        drawSegment(stack, tessellator, layer, px3, py3, pz3, px4, py4, pz4, THICKNESS * 0.8f * quadSize);
+                        drawSegment(stack, tesselator, layer, px3, py3, pz3, px4, py4, pz4, THICKNESS * 0.8f * quadSize);
 
                         if (random.nextFloat() < FORK_CHANCE) {
                             float px5 = px3 + (random.nextFloat() * 2 - 1) * VERTEX_JITTER * quadSize;
                             float py5 = py3 + (random.nextFloat() * 2 - 1) * VERTEX_JITTER * quadSize;
                             float pz5 = pz3 + MIN_SEGMENT_LENGTH + random.nextFloat() * (MAX_SEGMENT_LENGTH - MIN_SEGMENT_LENGTH);
 
-                            drawSegment(stack, tessellator, layer, px3, py3, pz3, px5, py5, pz5, THICKNESS * 0.6f * quadSize);
+                            drawSegment(stack, tesselator, layer, px3, py3, pz3, px5, py5, pz5, THICKNESS * 0.6f * quadSize);
                         }
 
                         px3 = px4;
@@ -96,15 +95,15 @@ public class ParticleLightning extends ParticleTargeted {
 
             float px2 = freeEnd ? (random.nextFloat() * 2 - 1) * VERTEX_JITTER * quadSize : 0;
             float py2 = freeEnd ? (random.nextFloat() * 2 - 1) * VERTEX_JITTER * quadSize : 0;
-            drawSegment(stack, tessellator, layer, px, py, pz, px2, py2, length, THICKNESS * quadSize);
+            drawSegment(stack, tesselator, layer, px, py, pz, px2, py2, length, THICKNESS * quadSize);
 
         }
 
         RenderSystem.disableBlend();
     }
 
-    private void drawSegment(PoseStack stack, Tesselator tessellator, int layer, float x1, float y1, float z1, float x2, float y2, float z2, float thickness) {
-        BufferBuilder buffer = tessellator.getBuilder();
+    private void drawSegment(PoseStack stack, Tesselator tesselator, int layer, float x1, float y1, float z1, float x2, float y2, float z2, float thickness) {
+        BufferBuilder buffer = tesselator.getBuilder();
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
 
@@ -151,7 +150,7 @@ public class ParticleLightning extends ParticleTargeted {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        public Particle createParticle(@NotNull SimpleParticleType parameters, @NotNull ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleLightning(world, x, y, z, spriteProvider);
         }
     }

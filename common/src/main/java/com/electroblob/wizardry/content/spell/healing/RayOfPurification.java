@@ -26,7 +26,6 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-@Deprecated()
 public class RayOfPurification extends RaySpell {
     private static final SpellProperty<Float> UNDEAD_DAMAGE_MULTIPLIER = SpellProperty.floatProperty("undead_damage_multiplier", 2);
 
@@ -75,6 +74,11 @@ public class RayOfPurification extends RaySpell {
                     .color(1, 0.6f + 0.3f * ctx.world().random.nextFloat(), 0.2f)
                     .scale((float) (Math.sin(ClientUtils.getPlayer().tickCount * 0.2f) * 0.1f + 1.4f)).spawn(ctx.world());
         }
+    }
+
+    @Override
+    public boolean isInstantCast() {
+        return false;
     }
 
     @Override

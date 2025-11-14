@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.client.particle;
 
-import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.particle.ParticleWizardry;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -18,19 +17,25 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.opengl.GL11;
+
+import static com.electroblob.wizardry.WizardryMainMod.MOD_ID;
 
 public class ParticleBuff extends ParticleWizardry {
-    private static final ResourceLocation TEXTURE = new ResourceLocation(WizardryMainMod.MOD_ID, "textures/particle/buff.png");
-    private final boolean mirror;
 
+    private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/particle/buff.png");
+    private final boolean mirror;
 
     public ParticleBuff(ClientLevel world, double x, double y, double z, SpriteSet spriteProvider) {
         super(world, x, y, z, spriteProvider, false);
-        this.setParticleSpeed(0, 0.162, 0);
+        this.xd = 0;
+        this.yd = 0.162;
+        this.zd = 0;
         this.mirror = random.nextBoolean();
         this.setLifetime(15);
         this.setGravity(false);
         this.hasPhysics = false;
+        this.setColor(1, 1, 1);
     }
 
     @Override
@@ -39,55 +44,78 @@ public class ParticleBuff extends ParticleWizardry {
     }
 
     @Override
-    public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-        PoseStack stack = RenderSystem.getModelViewStack();
-        updateEntityLinking(camera.getEntity(), tickDelta);
+    public void tick() {
+        super.tick();
+        if (this.age > this.lifetime / 2) {
+            this.alpha = 2f - 2f * (float) this.age / (float) this.lifetime;
+        }
+    }
 
-        stack.pushPose();
+    @Override
+    public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
+        updateEntityLinking(partialTicks);
 
         RenderSystem.enableBlend();
+        RenderSystem.disableDepthTest();
         RenderSystem.disableCull();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
+        RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_S, GL11.GL_REPEAT);
+        RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_WRAP_T, GL11.GL_REPEAT);
 
-        stack.translate((this.age + tickDelta) / (float) this.lifetime * -2, 0, 0);
-
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder buffer = tessellator.getBuilder();
-
-        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.setShaderTexture(0, TEXTURE);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 
-        buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+        Vec3 cameraPos = camera.getPosition();
+        float x = (float) (Mth.lerp(partialTicks, this.xo, this.x) - cameraPos.x);
+        float y = (float) (Mth.lerp(partialTicks, this.yo, this.y) - cameraPos.y);
+        float z = (float) (Mth.lerp(partialTicks, this.zo, this.z) - cameraPos.z);
 
-        float x = (float) (this.xo + (this.x - this.xo) * (double) tickDelta);
-        float y = (float) (this.yo + (this.y - this.zo) * (double) tickDelta);
-        float z = (float) (this.zo + (this.z - this.yo) * (double) tickDelta);
-
-        float f = 0.875f - 0.125f * Mth.floor((float) this.age / (float) this.lifetime * 8 - 0.000001f);
+        float ageProgress = (float) this.age / (float) this.lifetime;
+        float f = 0.875f - 0.125f * Mth.floor(ageProgress * 8 - 0.000001f);
         float g = f + 0.125f;
-        float hrepeat = 1;
+
+        float textureOffset = (this.age + partialTicks) / (float) this.lifetime * -2;
+
         float scale = 0.6f;
         float yScale = 0.7f * scale;
         float dx = mirror ? -scale : scale;
+        float dz = scale;
 
-        buffer.vertex(stack.last().pose(), x - dx, y - yScale, z - scale).uv(0, g).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x - dx, y + yScale, z - scale).uv(0, f).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x + dx, y - yScale, z - scale).uv(0.25F * hrepeat, g).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x + dx, y + yScale, z - scale).uv(0.25F * hrepeat, f).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x + dx, y - yScale, z + scale).uv(0.5F * hrepeat, g).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x + dx, y + yScale, z + scale).uv(0.5F * hrepeat, f).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x - dx, y - yScale, z + scale).uv(0.75F * hrepeat, g).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x - dx, y + yScale, z + scale).uv(0.75F * hrepeat, f).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x - dx, y - yScale, z - scale).uv(hrepeat, g).color(rCol, gCol, bCol, alpha).endVertex();
-        buffer.vertex(stack.last().pose(), x - dx, y + yScale, z - scale).uv(hrepeat, f).color(rCol, gCol, bCol, alpha).endVertex();
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder buffer = tesselator.getBuilder();
 
-        BufferUploader.drawWithShader(buffer.end());
+        buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-        RenderSystem.disableBlend();
+        vertex(buffer, x - dx, y - yScale, z - dz, 0 + textureOffset, g);
+        vertex(buffer, x - dx, y + yScale, z - dz, 0 + textureOffset, f);
+        vertex(buffer, x + dx, y - yScale, z - dz, 0.25f + textureOffset, g);
+        vertex(buffer, x + dx, y + yScale, z - dz, 0.25f + textureOffset, f);
+        vertex(buffer, x + dx, y - yScale, z + dz, 0.5f + textureOffset, g);
+        vertex(buffer, x + dx, y + yScale, z + dz, 0.5f + textureOffset, f);
+        vertex(buffer, x - dx, y - yScale, z + dz, 0.75f + textureOffset, g);
+        vertex(buffer, x - dx, y + yScale, z + dz, 0.75f + textureOffset, f);
+        vertex(buffer, x - dx, y - yScale, z - dz, 1.0f + textureOffset, g);
+        vertex(buffer, x - dx, y + yScale, z - dz, 1.0f + textureOffset, f);
+
+        tesselator.end();
+
+        RenderSystem.enableDepthTest();
         RenderSystem.enableCull();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.disableBlend();
+    }
 
-        stack.popPose();
+    private void vertex(BufferBuilder buffer, float x, float y, float z, float u, float v) {
+        buffer.vertex(x, y, z)
+                .uv(u, v)
+                .color(rCol, gCol, bCol, alpha)
+                .endVertex();
+    }
+
+    @Override
+    protected int getLightColor(float partialTick) {
+        return 15728880; // Full brightness
     }
 
     public static class BuffProvider implements ParticleProvider<SimpleParticleType> {
@@ -103,7 +131,7 @@ public class ParticleBuff extends ParticleWizardry {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        public Particle createParticle(@NotNull SimpleParticleType parameters, @NotNull ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleBuff(world, x, y, z, spriteProvider);
         }
     }

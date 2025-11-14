@@ -7,6 +7,7 @@ import net.minecraft.client.particle.ParticleProvider;
 import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public class ParticleSparkle extends ParticleWizardry {
@@ -15,7 +16,7 @@ public class ParticleSparkle extends ParticleWizardry {
 
         this.setColor(1, 1, 1);
         this.lifetime = 48 + this.random.nextInt(12);
-        this.scale(1.2f);
+        this.scale(0.75f);
         this.gravity = 0;
         this.hasPhysics = false;
         this.shaded = false;
@@ -43,7 +44,7 @@ public class ParticleSparkle extends ParticleWizardry {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        public Particle createParticle(@NotNull SimpleParticleType parameters, @NotNull ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleSparkle(world, x, y, z, spriteSet);
         }
     }

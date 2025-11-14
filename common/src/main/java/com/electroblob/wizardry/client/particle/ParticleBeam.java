@@ -23,7 +23,7 @@ public class ParticleBeam extends ParticleTargeted {
         super(world, x, y, z, spriteProvider, false);
         this.setColor(1, 1, 1);
         this.setLifetime(0);
-        this.quadSize = 3;
+        this.quadSize = 1;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ParticleBeam extends ParticleTargeted {
     }
 
     @Override
-    protected void draw(PoseStack stack, Tesselator tessellator, float length, float tickDelta) {
+    protected void draw(PoseStack stack, Tesselator tesselator, float length, float tickDelta) {
         float scale = this.quadSize;
 
         if (this.lifetime > 0) {
@@ -42,50 +42,54 @@ public class ParticleBeam extends ParticleTargeted {
 
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
+        RenderSystem.setShaderColor(240f / 255f, 240f / 255f, 240f / 255f, 1f);
 
         for (int layer = 0; layer < 3; layer++) {
-            drawSegment(stack, tessellator, layer, 0, 0, 0, 0, 0, length, THICKNESS * scale);
+            drawSegment(stack, tesselator, layer, length, THICKNESS * scale);
         }
 
         RenderSystem.disableBlend();
     }
 
-    private void drawSegment(PoseStack stack, Tesselator tessellator, int layer, float x1, float y1, float z1, float x2, float y2, float z2, float thickness) {
+    private void drawSegment(PoseStack stack, Tesselator tesselator, int layer, float v, float thickness) {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
-        BufferBuilder buffer = tessellator.getBuilder();
+        BufferBuilder buffer = tesselator.getBuilder();
+        RenderSystem.disableCull();
+        RenderSystem.enableDepthTest();
         buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
 
         switch (layer) {
             case 0:
-                drawShearedBox(stack, buffer, x1, y1, z1, x2, y2, z2, 0.25f * thickness, 1, 1, 1, 1);
+                drawShearedBox(stack, buffer, v, 0.25f * thickness, 1, 1, 1, 1);
                 break;
 
             case 1:
-                drawShearedBox(stack, buffer, x1, y1, z1, x2, y2, z2, 0.6f * thickness, (rCol + 1) / 2, (gCol + 1) / 2, (bCol + 1) / 2, 0.65f);
+                drawShearedBox(stack, buffer, v, 0.6f * thickness, (rCol + 1) / 2, (gCol + 1) / 2, (bCol + 1) / 2, 0.65f);
                 break;
 
             case 2:
-                drawShearedBox(stack, buffer, x1, y1, z1, x2, y2, z2, thickness, rCol, gCol, bCol, 0.3f);
+                drawShearedBox(stack, buffer, v, thickness, rCol, gCol, bCol, 0.3f);
                 break;
         }
 
         BufferUploader.drawWithShader(buffer.end());
+        RenderSystem.enableCull();
+        RenderSystem.disableDepthTest();
     }
 
-    private void drawShearedBox(PoseStack stack, BufferBuilder buffer, float x1, float y1, float z1, float x2, float y2, float z2, float width, float r, float g, float b, float a) {
-        buffer.vertex(stack.last().pose(), x1 - width, y1 - width, z1).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x2 - width, y2 - width, z2).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x1 - width, y1 + width, z1).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x2 - width, y2 + width, z2).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x1 + width, y1 + width, z1).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x2 + width, y2 + width, z2).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x1 + width, y1 - width, z1).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x2 + width, y2 - width, z2).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x1 - width, y1 - width, z1).color(r, g, b, a).endVertex();
-        buffer.vertex(stack.last().pose(), x2 - width, y2 - width, z2).color(r, g, b, a).endVertex();
+    private void drawShearedBox(PoseStack stack, BufferBuilder buffer, float length, float width, float r, float g, float b, float a) {
+        buffer.vertex(stack.last().pose(), (float) 0.0 - width, (float) 0.0 - width, (float) 0.0).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 - width, (float) 0.0 - width, length).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 - width, (float) 0.0 + width, (float) 0.0).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 - width, (float) 0.0 + width, length).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 + width, (float) 0.0 + width, (float) 0.0).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 + width, (float) 0.0 + width, length).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 + width, (float) 0.0 - width, (float) 0.0).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 + width, (float) 0.0 - width, length).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 - width, (float) 0.0 - width, (float) 0.0).color(r, g, b, a).endVertex();
+        buffer.vertex(stack.last().pose(), (float) 0.0 - width, (float) 0.0 - width, length).color(r, g, b, a).endVertex();
     }
 
-    @Deprecated
     public static class BeamProvider implements ParticleProvider<SimpleParticleType> {
         static SpriteSet spriteProvider;
 
@@ -99,7 +103,7 @@ public class ParticleBeam extends ParticleTargeted {
 
         @Nullable
         @Override
-        public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+        public Particle createParticle(@NotNull SimpleParticleType parameters, @NotNull ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleBeam(world, x, y, z, spriteProvider);
         }
     }

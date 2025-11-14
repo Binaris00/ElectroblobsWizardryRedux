@@ -301,10 +301,10 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
     }
 
     @Override
-    public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+    public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
         Entity viewer = camera.getEntity();
 
-        updateEntityLinking(viewer, tickDelta);
+        updateEntityLinking(tickDelta);
 
         if (Float.isNaN(this.yaw) || Float.isNaN(this.pitch)) {
             super.render(vertexConsumer, camera, tickDelta);
@@ -365,7 +365,7 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
     }
 
 
-    protected void updateEntityLinking(Entity viewer, float partialTicks) {
+    protected void updateEntityLinking(float partialTicks) {
         if (this.entity != null) {
             x = x + entity.xo - entity.getX() - relativeMotionX * (1 - partialTicks);
             y = y + entity.yo - entity.getY() - relativeMotionY * (1 - partialTicks);
@@ -458,7 +458,6 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
         }
     }
 
-    // Overridden and copied to fix the collision behavior
     @Override
     public void move(double dx, double dy, double dz) {
         double d0 = dx;

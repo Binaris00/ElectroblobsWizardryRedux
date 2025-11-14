@@ -63,11 +63,11 @@ public class ParticleSphere extends ParticleWizardry {
     }
 
     @Override
-    public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+    public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         PoseStack stack = new PoseStack();
 
-        updateEntityLinking(camera.getEntity(), tickDelta);
+        updateEntityLinking(tickDelta);
 
         float x = (float) (this.xo + (this.x - this.xo) * (double) tickDelta);
         float y = (float) (this.yo + (this.y - this.yo) * (double) tickDelta);

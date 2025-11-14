@@ -13,6 +13,7 @@ import net.minecraft.client.particle.SpriteSet;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 public abstract class ParticleTargeted extends ParticleWizardry {
@@ -69,67 +70,93 @@ public abstract class ParticleTargeted extends ParticleWizardry {
         }
     }
 
+    private Vec3 getPosition(Entity entity, double yOffset, float partialTick) {
+        double d0 = Mth.lerp(partialTick, entity.xOld, entity.getX());
+        double d1 = Mth.lerp(partialTick, entity.yOld, entity.getY()) + yOffset;
+        double d2 = Mth.lerp(partialTick, entity.zOld, entity.getZ());
+        return new Vec3(d0, d1, d2);
+    }
+
     @Override
-    public void render(VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+    protected void updateEntityLinking(float partialTicks) {
+        // No need to do anything here since we handle entity linking in render()
+    }
+
+    @Override
+    public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
         Entity viewer = camera.getEntity();
         PoseStack stack = new PoseStack();
-        updateEntityLinking(camera.getEntity(), tickDelta);
+        double originX, originY, originZ;
 
-        float x = (float) (this.xo + (this.x - this.xo) * (double) tickDelta);
-        float y = (float) (this.yo + (this.y - this.yo) * (double) tickDelta);
-        float z = (float) (this.zo + (this.z - this.zo) * (double) tickDelta);
+        if (this.entity != null) {
+            Vec3 entityPos = this.getPosition(entity, 0, tickDelta);
+            originX = entityPos.x + relativeX;
+            originY = entityPos.y + relativeY;
+            originZ = entityPos.z + relativeZ;
+        } else {
+            originX = Mth.lerp(tickDelta, this.xo, this.x);
+            originY = Mth.lerp(tickDelta, this.yo, this.y);
+            originZ = Mth.lerp(tickDelta, this.zo, this.z);
+        }
 
         if (this.entity != null && this.shouldApplyOriginOffset()) {
-            if (this.entity != viewer || Minecraft.getInstance().options.getCameraType() == CameraType.THIRD_PERSON_FRONT) {
+            boolean isFirstPerson = (this.entity == viewer && Minecraft.getInstance().options.getCameraType() != CameraType.THIRD_PERSON_FRONT);
+
+            if (!isFirstPerson || this.shouldApplyOriginOffsetInFirstPerson()) {
                 Vec3 look = entity.getViewVector(tickDelta).scale(THIRD_PERSON_AXIAL_OFFSET);
-                x += (float) look.x;
-                y += (float) look.y;
-                z += (float) look.z;
+                originX += look.x;
+                originY += look.y;
+                originZ += look.z;
             }
         }
 
+        double finalTargetX, finalTargetY, finalTargetZ;
+
         if (this.target != null) {
-            this.targetX = this.target.xo + (this.target.getX() - this.target.xo) * tickDelta;
-            double correction = this.target.getY() - this.target.yo;
-            this.targetY = this.target.yo + (this.target.getY() - this.target.yo) * tickDelta + target.getBbHeight() / 2 + correction;
-            this.targetZ = this.target.zo + (this.target.getZ() - this.target.zo) * tickDelta;
+            Vec3 targetPos = this.getPosition(target, (double)target.getBbHeight() * 0.5D, tickDelta);
+            finalTargetX = targetPos.x;
+            finalTargetY = targetPos.y;
+            finalTargetZ = targetPos.z;
         } else if (this.entity != null && this.length > 0) {
             Vec3 look = entity.getViewVector(tickDelta).scale(length);
-            this.targetX = x + look.x;
-            this.targetY = y + look.y;
-            this.targetZ = z + look.z;
+            finalTargetX = originX + look.x;
+            finalTargetY = originY + look.y;
+            finalTargetZ = originZ + look.z;
+        } else {
+            finalTargetX = this.targetX;
+            finalTargetY = this.targetY;
+            finalTargetZ = this.targetZ;
+
+            if (!Double.isNaN(targetVelX) && !Double.isNaN(targetVelY) && !Double.isNaN(targetVelZ)) {
+                finalTargetX += tickDelta * this.targetVelX;
+                finalTargetY += tickDelta * this.targetVelY;
+                finalTargetZ += tickDelta * this.targetVelZ;
+            }
         }
 
-        if (Double.isNaN(targetX) || Double.isNaN(targetY) || Double.isNaN(targetZ)) {
-            EBLogger.error("Attempted to render a targeted particle, but neither its target entity nor target position was set, and it either had no length assigned or was not linked to an entity!");
+        if (Double.isNaN(finalTargetX) || Double.isNaN(finalTargetY) || Double.isNaN(finalTargetZ)) {
+            EBLogger.error("Attempted to render a targeted particle, but neither its target entity nor target position was set, and it either had no length assigned or was not linked to an entity.");
             return;
         }
 
         stack.pushPose();
+        stack.translate(originX - camera.getPosition().x, originY - camera.getPosition().y, originZ - camera.getPosition().z);
 
-        stack.translate(x - camera.getPosition().x, y - camera.getPosition().y, z - camera.getPosition().z);
+        double dx = finalTargetX - originX;
+        double dy = finalTargetY - originY;
+        double dz = finalTargetZ - originZ;
 
-        double dx = this.targetX - x;
-        double dy = this.targetY - y;
-        double dz = this.targetZ - z;
+        float beamLength = Mth.sqrt((float) (dx * dx + dy * dy + dz * dz));
+        Vec3 direction = new Vec3(dx, dy, dz).normalize();
 
-        if (!Double.isNaN(targetVelX) && !Double.isNaN(targetVelY) && !Double.isNaN(targetVelZ)) {
-            dx += tickDelta * this.targetVelX;
-            dy += tickDelta * this.targetVelY;
-            dz += tickDelta * this.targetVelZ;
-        }
-
-        float length = Mth.sqrt((float) (dx * dx + dy * dy + dz * dz));
-
-        float yaw = (float) (180d / Math.PI * Math.atan2(dx, dz));
-        float pitch = (float) (180f / (float) Math.PI * Math.atan(-dy / Math.sqrt(dz * dz + dx * dx)));
+        float yaw = (float) (Math.atan2(direction.x, direction.z) * 180.0D / Math.PI);
+        float pitch = (float) (Math.asin(-direction.y) * 180.0D / Math.PI);
 
         stack.mulPose(Axis.YP.rotationDegrees(yaw));
         stack.mulPose(Axis.XP.rotationDegrees(pitch));
 
-        Tesselator tessellator = Tesselator.getInstance();
-
-        this.draw(stack, tessellator, length, tickDelta);
+        Tesselator tesselator = Tesselator.getInstance();
+        this.draw(stack, tesselator, beamLength, tickDelta);
 
         stack.popPose();
     }
@@ -138,5 +165,10 @@ public abstract class ParticleTargeted extends ParticleWizardry {
         return true;
     }
 
-    protected abstract void draw(PoseStack stack, Tesselator tessellator, float length, float tickDelta);
+
+    protected boolean shouldApplyOriginOffsetInFirstPerson() {
+        return false;
+    }
+
+    protected abstract void draw(PoseStack stack, Tesselator tesselator, float length, float tickDelta);
 }
