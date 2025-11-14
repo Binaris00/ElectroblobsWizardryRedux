@@ -8,7 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * This applies to loaders with the Mixin
  * {@link com.electroblob.wizardry.core.mixin.LivingEntityMixin#EBWIZARDRY$tick(CallbackInfo) LivingEntityMixin#EBWIZARDRY$tick}
- * */
+ *
+ */
 public final class EBLivingTick extends WizardryEvent {
     LivingEntity entity;
     Level level;

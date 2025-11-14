@@ -44,17 +44,18 @@ public class PocketFurnace extends Spell {
 
         for (int i = 0; i < ctx.caster().getInventory().getContainerSize() && usesLeft > 0; i++) {
             stack = ctx.caster().getInventory().getItem(i);
-            if(stack.isEmpty() || ctx.world().isClientSide) continue;
+            if (stack.isEmpty() || ctx.world().isClientSide) continue;
 
             Container dummyInv = new SimpleContainer(1);
             dummyInv.setItem(0, stack);
             Optional<SmeltingRecipe> optionalSmeltingRecipe = ctx.world().getRecipeManager().getRecipeFor(RecipeType.SMELTING, dummyInv, ctx.caster().level());
-            if(optionalSmeltingRecipe.isEmpty()) continue;
+            if (optionalSmeltingRecipe.isEmpty()) continue;
 
             optionalSmeltingRecipe.get().assemble(dummyInv, null);
             result = optionalSmeltingRecipe.get().getResultItem(null);
-            if(result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem) continue;
-            if(!EBConfig.isOnList(EBConfig.meltItemsBlackList, stack)) continue;
+            if (result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem)
+                continue;
+            if (!EBConfig.isOnList(EBConfig.meltItemsBlackList, stack)) continue;
 
             if (stack.getCount() <= usesLeft) {
                 ItemStack stack2 = new ItemStack(result.getItem(), stack.getCount());

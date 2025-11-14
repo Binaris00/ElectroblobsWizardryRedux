@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.core.mixin;
+package com.electroblob.wizardry.core.mixin.accessor;
 
 import net.minecraft.client.renderer.item.ClampedItemPropertyFunction;
 import net.minecraft.client.renderer.item.ItemProperties;

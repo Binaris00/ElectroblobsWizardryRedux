@@ -37,37 +37,38 @@ public class MagicFireballEntity extends MagicProjectileEntity {
         super(EBEntities.MAGIC_FIREBALL.get(), world);
     }
 
-    public void setDamage(float damage) {
-        this.damage = damage;
-    }
-
-    public void setBurnDuration(int burnDuration) {
-        this.burnDuration = burnDuration;
-    }
-
     public double getDamage() {
         return damage == -1 ? Spells.MAGIC_FIREBALL.property(DefaultProperties.DAMAGE) : damage;
+    }
+
+    public void setDamage(float damage) {
+        this.damage = damage;
     }
 
     public int getBurnDuration() {
         return burnDuration == -1 ? Spells.MAGIC_FIREBALL.property(DefaultProperties.DAMAGE).intValue() : burnDuration;
     }
 
+    public void setBurnDuration(int burnDuration) {
+        this.burnDuration = burnDuration;
+    }
+
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
-        if(level().isClientSide) return;
+        if (level().isClientSide) return;
 
         Entity entity = result.getEntity();
         EBMagicDamageSource.causeMagicDamage(this, entity, (float) getDamage(), EBDamageSources.FIRE, false);
-        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) entity.setSecondsOnFire(getBurnDuration());
+        if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
+            entity.setSecondsOnFire(getBurnDuration());
         this.discard();
     }
 
     @Override
     protected void onHitBlock(@NotNull BlockHitResult result) {
         super.onHitBlock(result);
-        if(level().isClientSide) return;
+        if (level().isClientSide) return;
 
         BlockPos pos = result.getBlockPos().relative(result.getDirection());
         this.level().setBlock(pos, Blocks.FIRE.defaultBlockState(), 3);
@@ -105,7 +106,7 @@ public class MagicFireballEntity extends MagicProjectileEntity {
             }
         }
 
-        if(this.lifetime >= 140){
+        if (this.lifetime >= 140) {
             this.discard();
         }
     }

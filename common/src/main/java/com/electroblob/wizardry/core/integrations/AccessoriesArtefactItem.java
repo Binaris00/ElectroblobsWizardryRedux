@@ -10,7 +10,7 @@ public class AccessoriesArtefactItem extends ArtefactItem implements io.wispfore
         io.wispforest.accessories.api.AccessoriesAPI.registerAccessory(this, this);
     }
 
-    public AccessoriesArtefactItem(Rarity rarity, IArtefactEffect effect){
+    public AccessoriesArtefactItem(Rarity rarity, IArtefactEffect effect) {
         super(rarity, effect);
         io.wispforest.accessories.api.AccessoriesAPI.registerAccessory(this, this);
     }

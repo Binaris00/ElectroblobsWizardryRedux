@@ -12,7 +12,9 @@ public interface Message {
 
     void encode(FriendlyByteBuf pBuf);
 
-    default void handleClient(Minecraft minecraft, Player player) {}
+    default void handleClient(Minecraft minecraft, Player player) {
+    }
 
-    default void handleServer(MinecraftServer server, ServerPlayer player) {}
+    default void handleServer(MinecraftServer server, ServerPlayer player) {
+    }
 }

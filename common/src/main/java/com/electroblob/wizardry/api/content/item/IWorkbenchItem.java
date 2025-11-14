@@ -15,7 +15,8 @@ public interface IWorkbenchItem {
 
     boolean onApplyButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks);
 
-    default void onClearButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks) {}
+    default void onClearButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks) {
+    }
 
     default boolean isClearable() {
         return false;

@@ -1,22 +1,20 @@
 {
   "spell.discover": "Discovered the spell %s!",
   "spell.resist": "%s resisted %s",
-
   "ebwizardry.raw_line": "========================================================",
   "ebwizardry.creativetabs.desc": "EBWIZARDRY TABS",
   "ebwizardry.raw_line_1": "========================================================",
-  "creativetab.ebwizardry" : "Wizardry Items",
-  "creativetab.ebwizardry_armors" : "Wizardry Armors",
-  "creativetab.ebwizardry_artifacts" : "Wizardry Artifacts",
-  "creativetab.ebwizardry_wands" : "Wizardry Wands",
+  "creativetab.ebwizardry": "Wizardry Items",
+  "creativetab.ebwizardry_armors": "Wizardry Armors",
+  "creativetab.ebwizardry_artifacts": "Wizardry Artifacts",
+  "creativetab.ebwizardry_wands": "Wizardry Wands",
   "creativetab.ebwizardry_spells": "Wizardry Spells",
-  "creativetab.ebwizardry_blocks" : "Wizardry Blocks",
-
+  "creativetab.ebwizardry_blocks": "Wizardry Blocks",
   "ebwizardry.raw_line_0": "========================================================",
   "ebwizardry.entities.desc": "EBWIZARDRY ENTITIES",
   "ebwizardry.raw_line_01": "========================================================",
   "entity.ebwizardry.lightning_wraith": "Lightning Wraith",
-
+  "entities.ebwizardry.ice_giant": "Ice Giant",
   "ebwizardry.raw_line_2": "========================================================",
   "ebwizardry.spelltype.desc": "EBWIZARDRY SPELLTYPES ENUM",
   "ebwizardry.raw_line_3": "========================================================",
@@ -28,7 +26,6 @@
   "spelltype.construct": "Construct",
   "spelltype.projectile": "Projectile",
   "spelltype.alteration": "Alteration",
-
   "ebwizardry.raw_line_4": "========================================================",
   "ebwizardry.elements.desc": "EBWIZARDRY ELEMENTS (With wizard names)",
   "ebwizardry.raw_line_5": "========================================================",
@@ -48,7 +45,6 @@
   "element.ebwizardry.earth.wizard": "Earth Mage",
   "element.ebwizardry.sorcery.wizard": "Sorcerer",
   "element.ebwizardry.healing.wizard": "Healer",
-
   "ebwizardry.raw_line_6": "========================================================",
   "ebwizardry.gui.desc": "EBWIZARDRY GUIS AND CONTAINERS",
   "ebwizardry.raw_line_7": "========================================================",
@@ -61,15 +57,13 @@
   "gui.ebwizardry.spell_book.mana_cost": "Mana Cost: %s",
   "gui.ebwizardry.spell_book.mana_cost_continuous": "Mana Cost: %s/second",
   "gui.ebwizardry.spell_book.mana_cost_undiscovered": "Mana Cost: ?",
-
   "ebwizardry.raw_line_8": "========================================================",
   "ebwizardry.tiers.desc": "EBWIZARDRY TIERS",
   "ebwizardry.raw_line_9": "========================================================",
   "tier.ebwizardry.novice": "Novice",
   "tier.ebwizardry.apprentice": "Apprentice",
-  "tier.ebwizardry.advanced":"Advanced",
-  "tier.ebwizardry.master":"Master",
-
+  "tier.ebwizardry.advanced": "Advanced",
+  "tier.ebwizardry.master": "Master",
   "ebwizardry.raw_line_10": "========================================================",
   "ebwizardry.spells.desc": "EBWIZARDRY SPELLS (With spell descriptions)",
   "ebwizardry.raw_line_11": "========================================================",
@@ -481,11 +475,7 @@
   "spell.ebwizardry.resurrection.button_ready": "Resurrect",
   "spell.ebwizardry.ojospocos": "Ojospocos",
   "spell.ebwizardry.ojospocos.desc": "Endermans are now yours",
-
-
   "entity.ebwizardry.minion_name": "%s's %s Minion",
-
-
   "ebwizardry.raw_line_12": "========================================================",
   "ebwizardry.forfeit.desc": "EBWIZARDRY FORFEIT",
   "ebwizardry.raw_line_13": "========================================================",
@@ -536,7 +526,6 @@
   "forfeit.ebwizardry.weaken_self": "You are severely weakened!",
   "forfeit.ebwizardry.jam_self": "Your magic is rendered useless!",
   "forfeit.ebwizardry.curse_self": "You are cursed with undeath!",
-
   "ebwizardry.raw_line_14": "========================================================",
   "ebwizardry.effect.desc": "EBWIZARDRY MOB EFFECTS",
   "ebwizardry.raw_line_15": "========================================================",
@@ -544,18 +533,17 @@
   "effect.ebwizardry.fire_skin": "Fire Skin",
   "effect.ebwizardry.ward": "Ward",
   "effect.ebwizardry.static_aura": "Static Aura",
-
   "ebwizardry.raw_line_16": "========================================================",
   "ebwizardry.block.desc": "EBWIZARDRY BLOCKS",
   "ebwizardry.raw_line_17": "========================================================",
-  "block.ebwizardry.crystal_block_earth" : "Earth Crystal Block",
-  "block.ebwizardry.crystal_block_fire" : "Fire Crystal Block",
-  "block.ebwizardry.crystal_block_healing" : "Healing Crystal Block",
-  "block.ebwizardry.crystal_block_ice" : "Ice Crystal Block",
-  "block.ebwizardry.crystal_block_lightning" : "Lightning Crystal Block",
-  "block.ebwizardry.crystal_block_magic" : "Magic Crystal Block",
-  "block.ebwizardry.crystal_block_necromancy" : "Necromancy Crystal Block",
-  "block.ebwizardry.crystal_block_sorcery" : "Sorcery Crystal Block",
+  "block.ebwizardry.crystal_block_earth": "Earth Crystal Block",
+  "block.ebwizardry.crystal_block_fire": "Fire Crystal Block",
+  "block.ebwizardry.crystal_block_healing": "Healing Crystal Block",
+  "block.ebwizardry.crystal_block_ice": "Ice Crystal Block",
+  "block.ebwizardry.crystal_block_lightning": "Lightning Crystal Block",
+  "block.ebwizardry.crystal_block_magic": "Magic Crystal Block",
+  "block.ebwizardry.crystal_block_necromancy": "Necromancy Crystal Block",
+  "block.ebwizardry.crystal_block_sorcery": "Sorcery Crystal Block",
   "block.ebwizardry.crystal_ore": "Crystal Ore",
   "block.ebwizardry.deepslate_crystal_ore": "Deepslate Crystal Ore",
   "block.ebwizardry.crystal_flower": "Crysta Flower",
@@ -587,8 +575,6 @@
   "block.ebwizardry.jungle_lectern": "Jungle Lectern",
   "block.ebwizardry.acacia_lectern": "Acacia Lectern",
   "block.ebwizardry.dark_oak_lectern": "Dark Oak Lectern",
-
-
   "ebwizardry.raw_line_18": "========================================================",
   "ebwizardry.item.desc": "EBWIZARDRY ITEMS",
   "ebwizardry.raw_line_19": "========================================================",
@@ -708,7 +694,6 @@
   "item.ebwizardry.storage_upgrade": "Wand Storage Upgrade",
   "item.ebwizardry.range_upgrade": "Wand Range Upgrade",
   "item.ebwizardry.attunement_upgrade": "Wand Attunement Upgrade",
-
   "item.ebwizardry.siphon_upgrade": "Wand Siphon Upgrade",
   "item.ebwizardry.melee_upgrade": "Wand Melee Upgrade",
   "item.ebwizardry.wand_upgrade.generic.desc": "Apply this upgrade to a wand in the arcane workbench.",
@@ -721,7 +706,6 @@
   "item.ebwizardry.blast_upgrade.desc": "Upgrades the area of effect of spells cast by a wand",
   "item.ebwizardry.attunement_upgrade.desc": "Upgrades the number of spells that can be bound to a wand",
   "item.ebwizardry.melee_upgrade.desc": "Upgrades a wand to use mana to deal more damage to mobs when hit",
-
   "item.ebwizardry.resplendent_thread.desc": "Upgrades regular wizard armor into sage armor",
   "item.ebwizardry.resplendent_thread.desc_extended": "A shimmering silken thread used to embroider the finest robes with arcane symbols, improving their enchantability.\n\nApply this upgrade to a piece of wizard armor in the arcane workbench.",
   "item.ebwizardry.crystal_silver_plating": "Crystal Silver Plating",
@@ -930,7 +914,6 @@
   "item.ebwizardry.wizard_robe_sorcery": "Sorcerer Robes",
   "item.ebwizardry.arcane_tome.desc": "Upgrades any %s wand with sufficient progression to %s tier",
   "tooltip.ebwizardry.conjured_item": "Disappears in %s seconds",
-
   "ebwizardry.raw_line_20": "========================================================",
   "ebwizardry.advant.desc": "EBWIZARDRY ADVANCEMENTS",
   "ebwizardry.raw_line_21": "========================================================",

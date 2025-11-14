@@ -24,14 +24,17 @@ import java.util.UUID;
  * a few others. The caster UUID, lifetime and damage multiplier are stored here, and lifetime is also synced here.
  */
 public abstract class MagicConstructEntity extends Entity implements OwnableEntity {
+    /**
+     * The time in ticks this magical construct lasts for; defaults to 600 (30 seconds). If this is -1 the construct
+     * doesn't despawn.
+     */
+    public int lifetime = 600;
+    /**
+     * The damage multiplier for this construct, determined by the wand with which it was cast.
+     */
+    public float damageMultiplier = 1.0f;
     private UUID casterUUID;
 
-    /** The time in ticks this magical construct lasts for; defaults to 600 (30 seconds). If this is -1 the construct
-     * doesn't despawn. */
-    public int lifetime = 600;
-
-    /** The damage multiplier for this construct, determined by the wand with which it was cast. */
-    public float damageMultiplier = 1.0f;
     public MagicConstructEntity(EntityType<?> type, Level world) {
         super(type, world);
         this.noPhysics = true;
@@ -39,7 +42,7 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
 
     @Override
     public @NotNull InteractionResult interactAt(@NotNull Player player, @NotNull Vec3 vec3, @NotNull InteractionHand hand) {
-        if(lifetime == -1 && getCaster() == player && player.isShiftKeyDown() && player.getMainHandItem().getItem() instanceof ISpellCastingItem){
+        if (lifetime == -1 && getCaster() == player && player.isShiftKeyDown() && player.getMainHandItem().getItem() instanceof ISpellCastingItem) {
             this.despawn();
             return InteractionResult.SUCCESS;
         }
@@ -67,18 +70,19 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
     }
 
     @Override
-    protected void defineSynchedData() {}
+    protected void defineSynchedData() {
+    }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
-        if(compoundTag.contains("casterUUID")) casterUUID = compoundTag.getUUID("casterUUID");
+        if (compoundTag.contains("casterUUID")) casterUUID = compoundTag.getUUID("casterUUID");
         lifetime = compoundTag.getInt("lifetime");
         damageMultiplier = compoundTag.getFloat("damageMultiplier");
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag compoundTag) {
-        if(casterUUID != null){
+        if (casterUUID != null) {
             compoundTag.putUUID("casterUUID", casterUUID);
         }
         compoundTag.putInt("lifetime", lifetime);

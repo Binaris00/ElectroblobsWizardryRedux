@@ -17,7 +17,7 @@ public class MagicProjectileRenderer<T extends MagicProjectileEntity> extends En
     private final boolean blend = false;
     private final ResourceLocation texture;
 
-    public MagicProjectileRenderer(EntityRendererProvider.Context context, ResourceLocation texture){
+    public MagicProjectileRenderer(EntityRendererProvider.Context context, ResourceLocation texture) {
         super(context);
         this.texture = texture;
     }

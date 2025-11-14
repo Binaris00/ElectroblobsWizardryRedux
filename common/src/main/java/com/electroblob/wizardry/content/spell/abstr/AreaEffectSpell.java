@@ -51,21 +51,21 @@ public abstract class AreaEffectSpell extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         boolean result = findAndAffectEntities(ctx, ctx.caster().position());
-        if(result) this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
+        if (result) this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return result;
     }
 
     @Override
     public boolean cast(EntityCastContext ctx) {
         boolean result = findAndAffectEntities(ctx, ctx.caster().position());
-        if(result) this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
+        if (result) this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return result;
     }
 
     @Override
     public boolean cast(LocationCastContext ctx) {
         boolean result = findAndAffectEntities(ctx, ctx.vec3());
-        if(result) this.playSound(ctx.world(), ctx.vec3(), ctx.castingTicks(), -1);
+        if (result) this.playSound(ctx.world(), ctx.vec3(), ctx.castingTicks(), -1);
         return result;
     }
 
@@ -74,8 +74,9 @@ public abstract class AreaEffectSpell extends Spell {
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, origin.x, origin.y, origin.z, ctx.world());
 
-        if (targetAllies) targets.removeIf(target -> target != ctx.caster() && !AllyDesignation.isAllied(ctx.caster(), target));
-         else targets.removeIf(target -> !AllyDesignation.isValidTarget(ctx.caster(), target));
+        if (targetAllies)
+            targets.removeIf(target -> target != ctx.caster() && !AllyDesignation.isAllied(ctx.caster(), target));
+        else targets.removeIf(target -> !AllyDesignation.isValidTarget(ctx.caster(), target));
 
         targets.sort(Comparator.comparingDouble(e -> e.distanceToSqr(origin.x, origin.y, origin.z)));
 

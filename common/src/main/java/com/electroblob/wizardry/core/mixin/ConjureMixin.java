@@ -23,7 +23,8 @@ import java.util.List;
  * We need to modify the way that the items load the durability bar, with this we check for the ConjureData
  * if the item isn't a conjure item it just continues with the normal behavior, if the item is a conjure item and is
  * summoned the mod will load the remaining lifetime based on gameTime and expireTime.
- * */
+ *
+ */
 @Mixin(ItemStack.class)
 public class ConjureMixin {
     @Unique
@@ -33,7 +34,7 @@ public class ConjureMixin {
     @Inject(method = "isBarVisible", at = @At("RETURN"), cancellable = true)
     public void EBWIZARDRY$conjureIsBarVisible(CallbackInfoReturnable<Boolean> cir) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-        if(data == null || !data.isSummoned()) return;
+        if (data == null || !data.isSummoned()) return;
         cir.setReturnValue(true);
     }
 
@@ -41,14 +42,14 @@ public class ConjureMixin {
     @Inject(method = "getBarColor", at = @At("RETURN"), cancellable = true)
     public void EBWIZARDRY$conjureGetBarColor(CallbackInfoReturnable<Integer> cir) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-        if(data == null || !data.isSummoned()) return;
+        if (data == null || !data.isSummoned()) return;
         cir.setReturnValue(DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getBarWidth()));
     }
 
     @Inject(method = "getTooltipLines", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void EBWIZARDDRY$conjureGetTooltipLines(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, List<Component> list){
+    public void EBWIZARDDRY$conjureGetTooltipLines(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, List<Component> list) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-        if(data == null || !data.isSummoned()) return;
+        if (data == null || !data.isSummoned()) return;
 
         long currentGameTime = player.level().getGameTime();
         int remaining = data.getRemainingLifetime(currentGameTime);
@@ -62,7 +63,7 @@ public class ConjureMixin {
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void EBWIZARDRY$preventDurabilityLoss(int amount, RandomSource random, ServerPlayer user, CallbackInfoReturnable<Boolean> cir) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-        if(data != null && data.isSummoned()) {
+        if (data != null && data.isSummoned()) {
             cir.setReturnValue(false);
         }
     }
@@ -71,7 +72,7 @@ public class ConjureMixin {
     @Inject(method = "isDamaged", at = @At("RETURN"), cancellable = true)
     public void EBWIZARDRY$preventBroken(CallbackInfoReturnable<Boolean> cir) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-        if(data != null && data.isSummoned()) {
+        if (data != null && data.isSummoned()) {
             cir.setReturnValue(false);
         }
     }

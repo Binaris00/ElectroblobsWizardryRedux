@@ -24,14 +24,14 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class ForestsCurse extends AreaEffectSpell {
-    public ForestsCurse(){
+    public ForestsCurse() {
         this.alwaysSucceed(true);
         this.soundValues(1, 1.1f, 0.2f);
     }
 
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, target)){
+        if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, target)) {
             DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.POISON)
                     : target.damageSources().magic();
             target.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));

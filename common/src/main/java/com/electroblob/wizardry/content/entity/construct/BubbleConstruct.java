@@ -33,6 +33,16 @@ public class BubbleConstruct extends MagicConstructEntity {
         super(EBEntities.BUBBLE.get(), world);
     }
 
+    public static void onLivingHurt(EBLivingHurtEvent event) {
+        if (event.isCanceled()) return;
+
+        LivingEntity entity = event.getDamagedEntity();
+        if (entity.getVehicle() instanceof BubbleConstruct bubble && !bubble.isDarkOrb) {
+            entity.getVehicle().playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
+            entity.getVehicle().discard();
+        }
+    }
+
     public void tick() {
         super.tick();
 
@@ -104,17 +114,7 @@ public class BubbleConstruct extends MagicConstructEntity {
 
     @Override
     protected boolean canRide(@NotNull Entity entity) {
-        if(EntityUtil.getRider(this) != null) return false;
+        if (EntityUtil.getRider(this) != null) return false;
         return super.canRide(entity);
-    }
-
-    public static void onLivingHurt(EBLivingHurtEvent event){
-        if(event.isCanceled()) return;
-
-        LivingEntity entity = event.getDamagedEntity();
-        if(entity.getVehicle() instanceof BubbleConstruct bubble && !bubble.isDarkOrb){
-            entity.getVehicle().playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
-            entity.getVehicle().discard();
-        }
     }
 }

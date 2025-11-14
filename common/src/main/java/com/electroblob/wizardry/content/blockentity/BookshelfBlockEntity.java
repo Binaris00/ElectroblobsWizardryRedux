@@ -149,13 +149,13 @@ public class BookshelfBlockEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    protected @NotNull AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory) {
-        return new BookshelfMenu(i, inventory, this);
+    protected void setItems(@NotNull NonNullList<ItemStack> stacks) {
+        this.inventory = stacks;
     }
 
     @Override
-    protected void setItems(@NotNull NonNullList<ItemStack> stacks) {
-        this.inventory = stacks;
+    protected @NotNull AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory) {
+        return new BookshelfMenu(i, inventory, this);
     }
 
     @Override

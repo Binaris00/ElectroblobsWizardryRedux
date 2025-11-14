@@ -26,7 +26,7 @@ public class IceLanceEntity extends MagicArrowEntity {
         super(entityType, world);
     }
 
-    public IceLanceEntity(Level world){
+    public IceLanceEntity(Level world) {
         super(EBEntities.ICE_LANCE.get(), world);
     }
 

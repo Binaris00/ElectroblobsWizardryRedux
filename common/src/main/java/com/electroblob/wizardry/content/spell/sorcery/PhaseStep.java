@@ -35,8 +35,8 @@ public class PhaseStep extends Spell {
         HitResult rayTrace = RayTracer.standardBlockRayTrace(ctx.world(), ctx.caster(),
                 range, hitLiquids, !hitLiquids, false);
 
-        if(ctx.world().isClientSide){
-            for(int i = 0; i < 10; i++){
+        if (ctx.world().isClientSide) {
+            for (int i = 0; i < 10; i++) {
                 double dx1 = ctx.caster().xo;
                 double dy1 = ctx.caster().yo + 2 * ctx.world().random.nextFloat();
                 double dz1 = ctx.caster().zo;
@@ -50,16 +50,16 @@ public class PhaseStep extends Spell {
 
         Entity toTeleport = teleportMount ? ctx.caster().getVehicle() : ctx.caster();
 
-        if(rayTrace instanceof BlockHitResult blockHitResult){
+        if (rayTrace instanceof BlockHitResult blockHitResult) {
             BlockPos pos = blockHitResult.getBlockPos();
             int maxThickness = 1;
 
-            if(blockHitResult.getDirection() == Direction.UP) maxThickness++;
+            if (blockHitResult.getDirection() == Direction.UP) maxThickness++;
 
-            for(int i = 0; i <= maxThickness; i++) {
+            for (int i = 0; i <= maxThickness; i++) {
                 BlockPos pos1 = BlockPos.of(BlockPos.offset(i, blockHitResult.getDirection().getOpposite()));
 
-                if ((BlockUtil.isBlockUnbreakable(ctx.world(), pos1) || BlockUtil.isBlockUnbreakable(ctx.world(), pos1.relative(Direction.UP)))){
+                if ((BlockUtil.isBlockUnbreakable(ctx.world(), pos1) || BlockUtil.isBlockUnbreakable(ctx.world(), pos1.relative(Direction.UP)))) {
                     break;
                 }
 
@@ -73,20 +73,20 @@ public class PhaseStep extends Spell {
             Vec3 vec = GeometryUtil.getFaceCentre(pos, Direction.DOWN);
             return attemptTeleport(ctx.world(), toTeleport, vec, teleportMount, ctx.caster(), 1);
 
-        }else{ // The ray trace missed
+        } else { // The ray trace missed
             Vec3 vec = ctx.caster().position().add(ctx.caster().getLookAngle().scale(range));
             return attemptTeleport(ctx.world(), toTeleport, vec, teleportMount, ctx.caster(), 1);
         }
     }
 
-    protected boolean attemptTeleport(Level world, Entity toTeleport, Vec3 destination, boolean teleportMount, Player caster, int ticksInUse){
+    protected boolean attemptTeleport(Level world, Entity toTeleport, Vec3 destination, boolean teleportMount, Player caster, int ticksInUse) {
         destination = EntityUtil.findSpaceForTeleport(toTeleport, destination, teleportMount);
 
-        if(destination != null){
+        if (destination != null) {
             this.playSound(world, caster, 0, -1);
 
-            if(!teleportMount && caster.getVehicle() != null) caster.stopRiding();
-            if(!world.isClientSide) toTeleport.setPos(destination.x, destination.y, destination.z);
+            if (!teleportMount && caster.getVehicle() != null) caster.stopRiding();
+            if (!world.isClientSide) toTeleport.setPos(destination.x, destination.y, destination.z);
 
             this.playSound(world, caster, 0, -1);
             return true;

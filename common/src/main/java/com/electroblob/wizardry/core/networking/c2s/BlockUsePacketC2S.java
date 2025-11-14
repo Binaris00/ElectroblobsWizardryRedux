@@ -36,7 +36,7 @@ public class BlockUsePacketC2S implements Message {
     @Override
     public void handleServer(MinecraftServer server, ServerPlayer player) {
         Pig pig = EntityType.PIG.create(server.getLevel(Level.OVERWORLD));
-        if(pig != null) {
+        if (pig != null) {
             pig.setPos(pos.getX(), pos.getY(), pos.getZ());
             pig.setAge(0);
             server.getLevel(Level.OVERWORLD).addFreshEntity(pig);

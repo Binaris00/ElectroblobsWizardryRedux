@@ -1,6 +1,5 @@
 {
   "name": "ebwizardry:obelisk/start_pool_sorcery",
-
   "fallback": "minecraft:empty",
   "elements": [
     {

@@ -41,6 +41,30 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
         this.element = element;
     }
 
+    public static void onSpellPreCast(SpellCastEvent.Pre event) {
+        if (event.getCaster() == null) return;
+
+        SpellModifiers armourModifiers = new SpellModifiers();
+
+        Arrays.stream(InventoryUtil.ARMOR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
+                .filter(i -> i instanceof WizardArmorItem)
+                .forEach(i -> ((WizardArmorItem) i).applySpellModifiers(event.getCaster(), event.getSpell(), armourModifiers));
+
+        event.getModifiers().combine(armourModifiers);
+    }
+
+    public static void onSpellTickCast(SpellCastEvent.Tick event) {
+        if (event.getCaster() == null) return;
+
+        SpellModifiers armourModifiers = new SpellModifiers();
+
+        Arrays.stream(InventoryUtil.ARMOR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
+                .filter(i -> i instanceof WizardArmorItem)
+                .forEach(i -> ((WizardArmorItem) i).applySpellModifiers(event.getCaster(), event.getSpell(), armourModifiers));
+
+        event.getModifiers().combine(armourModifiers);
+    }
+
     public WizardArmorType getWizardArmorType() {
         return wizardArmorType;
     }
@@ -162,41 +186,17 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
         }
     }
 
-    protected void applySpellModifiers(LivingEntity caster, Spell spell, SpellModifiers modifiers){
-        if(spell.getElement() == this.element){
+    protected void applySpellModifiers(LivingEntity caster, Spell spell, SpellModifiers modifiers) {
+        if (spell.getElement() == this.element) {
             modifiers.set(SpellModifiers.COST, modifiers.get(SpellModifiers.COST) - getWizardArmorType().elementalCostReduction, false);
         }
         modifiers.set(SpellModifiers.POTENCY, 2, false);
         modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), modifiers.get(EBItems.COOLDOWN_UPGRADE.get()) - getWizardArmorType().cooldownReduction, true);
 
-        if(getEquipmentSlot() == EquipmentSlot.HEAD && InventoryUtil.isWearingFullSet(caster, element, getWizardArmorType()) && InventoryUtil.doAllArmourPiecesHaveMana(caster)){
-            if(getWizardArmorType() == WizardArmorType.SAGE && spell.getElement() != this.element){
+        if (getEquipmentSlot() == EquipmentSlot.HEAD && InventoryUtil.isWearingFullSet(caster, element, getWizardArmorType()) && InventoryUtil.doAllArmourPiecesHaveMana(caster)) {
+            if (getWizardArmorType() == WizardArmorType.SAGE && spell.getElement() != this.element) {
                 modifiers.set(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION, false);
             }
         }
-    }
-
-    public static void onSpellPreCast(SpellCastEvent.Pre event){
-        if(event.getCaster() == null) return;
-
-        SpellModifiers armourModifiers = new SpellModifiers();
-
-        Arrays.stream(InventoryUtil.ARMOR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
-                .filter(i -> i instanceof WizardArmorItem)
-                .forEach(i -> ((WizardArmorItem)i).applySpellModifiers(event.getCaster(), event.getSpell(), armourModifiers));
-
-        event.getModifiers().combine(armourModifiers);
-    }
-
-    public static void onSpellTickCast(SpellCastEvent.Tick event){
-        if(event.getCaster() == null) return;
-
-        SpellModifiers armourModifiers = new SpellModifiers();
-
-        Arrays.stream(InventoryUtil.ARMOR_SLOTS).map(slot -> event.getCaster().getItemBySlot(slot).getItem())
-                .filter(i -> i instanceof WizardArmorItem)
-                .forEach(i -> ((WizardArmorItem)i).applySpellModifiers(event.getCaster(), event.getSpell(), armourModifiers));
-
-        event.getModifiers().combine(armourModifiers);
     }
 }

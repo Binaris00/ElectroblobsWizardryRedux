@@ -104,6 +104,10 @@ public class SpellProperty<T> {
         return property;
     }
 
+    public static @Nullable SpellProperty<?> fromID(String identifier) {
+        return PROPERTIES.stream().filter(p -> p.identifier.equals(identifier)).findFirst().orElse(null);
+    }
+
     public T get() {
         return this.value;
     }
@@ -141,10 +145,5 @@ public class SpellProperty<T> {
         cloned.defaultValue = this.defaultValue;
         cloned.value = this.value;
         return cloned;
-    }
-
-
-    public static @Nullable SpellProperty<?> fromID(String identifier) {
-        return PROPERTIES.stream().filter(p -> p.identifier.equals(identifier)).findFirst().orElse(null);
     }
 }

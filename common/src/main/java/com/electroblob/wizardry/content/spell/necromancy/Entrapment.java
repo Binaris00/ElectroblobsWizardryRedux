@@ -27,13 +27,13 @@ import org.jetbrains.annotations.NotNull;
 public class Entrapment extends RaySpell {
     public static final SpellProperty<Integer> DAMAGE_INTERVAL = SpellProperty.intProperty("damage_interval", 30);
 
-    public Entrapment(){
+    public Entrapment() {
         this.soundValues(1, 0.85f, 0.3f);
     }
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if(ctx.world().isClientSide) return true;
+        if (ctx.world().isClientSide) return true;
 
         if (entityHit.getEntity() instanceof LivingEntity target) {
             DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SORCERY)
@@ -43,7 +43,7 @@ public class Entrapment extends RaySpell {
             BubbleConstruct bubble = new BubbleConstruct(ctx.world());
             bubble.setPos(target.getX(), target.getY(), target.getZ());
             bubble.setCaster(ctx.caster());
-            bubble.lifetime = ((int)(property(DefaultProperties.EFFECT_DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+            bubble.lifetime = ((int) (property(DefaultProperties.EFFECT_DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
             bubble.isDarkOrb = true;
             bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
 

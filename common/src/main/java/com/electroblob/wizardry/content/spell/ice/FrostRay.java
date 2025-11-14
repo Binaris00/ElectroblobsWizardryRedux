@@ -34,16 +34,17 @@ public class FrostRay extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if(!(entityHit.getEntity() instanceof LivingEntity target) || EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, target)) return false;
-        if(target.isOnFire()) target.clearFire();
+        if (!(entityHit.getEntity() instanceof LivingEntity target) || EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
+            return false;
+        if (target.isOnFire()) target.clearFire();
 
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                 property(DefaultProperties.EFFECT_DURATION),
                 property(DefaultProperties.EFFECT_STRENGTH)));
 
-        if(ctx.castingTicks() % target.invulnerableDuration == 1){
+        if (ctx.castingTicks() % target.invulnerableDuration == 1) {
             float damage = property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY);
-            if(target instanceof Blaze || target instanceof MagmaCube) damage *= 2;
+            if (target instanceof Blaze || target instanceof MagmaCube) damage *= 2;
 
             DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST)
                     : target.damageSources().magic();

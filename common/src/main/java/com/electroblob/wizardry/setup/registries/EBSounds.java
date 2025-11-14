@@ -13,15 +13,12 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public final class EBSounds {
     static Map<String, DeferredObject<SoundEvent>> SOUNDS = new HashMap<>();
-    private EBSounds(){}
-
     public static final DeferredObject<SoundEvent> BLOCK_ARCANE_WORKBENCH_SPELLBIND = sound("block.arcane_workbench.bind_spell");
     public static final DeferredObject<SoundEvent> BLOCK_PEDESTAL_ACTIVATE = sound("block.pedestal.activate");
     public static final DeferredObject<SoundEvent> BLOCK_PEDESTAL_CONQUER = sound("block.pedestal.conquer");
     public static final DeferredObject<SoundEvent> BLOCK_LECTERN_LOCATE_SPELL = sound("block.lectern.locate_spell");
     public static final DeferredObject<SoundEvent> BLOCK_RECEPTACLE_IGNITE = sound("block.receptacle.ignite");
     public static final DeferredObject<SoundEvent> BLOCK_IMBUEMENT_ALTAR_IMBUE = sound("block.imbuement_altar.imbue");
-
     public static final DeferredObject<SoundEvent> ITEM_WAND_SWITCH_SPELL = sound("item.wand.switch_spell");
     public static final DeferredObject<SoundEvent> ITEM_WAND_LEVELUP = sound("item.wand.levelup");
     public static final DeferredObject<SoundEvent> ITEM_WAND_MELEE = sound("item.wand.melee");
@@ -35,7 +32,6 @@ public final class EBSounds {
     public static final DeferredObject<SoundEvent> ITEM_MANA_FLASK_RECHARGE = sound("item.mana_flask.recharge");
     public static final DeferredObject<SoundEvent> ITEM_FLAMECATCHER_SHOOT = sound("item.flamecatcher.shoot");
     public static final DeferredObject<SoundEvent> ITEM_FLAMECATCHER_FLAME = sound("item.flamecatcher.flame");
-
     public static final DeferredObject<SoundEvent> ENTITY_BLACK_HOLE_AMBIENT = sound("entity.black_hole.ambient");
     public static final DeferredObject<SoundEvent> ENTITY_BLACK_HOLE_VANISH = sound("entity.black_hole.vanish");
     public static final DeferredObject<SoundEvent> ENTITY_BLACK_HOLE_BREAK_BLOCK = sound("entity.black_hole.break_block");
@@ -70,7 +66,6 @@ public final class EBSounds {
     public static final DeferredObject<SoundEvent> ENTITY_WITHERING_TOTEM_AMBIENT = sound("entity.withering_totem.ambient");
     public static final DeferredObject<SoundEvent> ENTITY_WITHERING_TOTEM_EXPLODE = sound("entity.withering_totem.explode");
     public static final DeferredObject<SoundEvent> ENTITY_ZOMBIE_SPAWNER_SPAWN = sound("entity.zombie_spawner.spawn");
-
     public static final DeferredObject<SoundEvent> ENTITY_EVIL_WIZARD_AMBIENT = sound("entity.evil_wizard.ambient");
     public static final DeferredObject<SoundEvent> ENTITY_EVIL_WIZARD_HURT = sound("entity.evil_wizard.hurt");
     public static final DeferredObject<SoundEvent> ENTITY_EVIL_WIZARD_DEATH = sound("entity.evil_wizard.death");
@@ -108,7 +103,6 @@ public final class EBSounds {
     public static final DeferredObject<SoundEvent> ENTITY_WIZARD_HURT = sound("entity.wizard.hurt");
     public static final DeferredObject<SoundEvent> ENTITY_WIZARD_DEATH = sound("entity.wizard.death");
     public static final DeferredObject<SoundEvent> ENTITY_WIZARD_HOHOHO = sound("entity.wizard.hohoho");
-
     public static final DeferredObject<SoundEvent> ENTITY_DARKNESS_ORB_HIT = sound("entity.darkness_orb.hit");
     public static final DeferredObject<SoundEvent> ENTITY_DART_HIT = sound("entity.dart.hit");
     public static final DeferredObject<SoundEvent> ENTITY_DART_HIT_BLOCK = sound("entity.dart.hit_block");
@@ -142,31 +136,30 @@ public final class EBSounds {
     public static final DeferredObject<SoundEvent> ENTITY_SPARK_BOMB_HIT_BLOCK = sound("entity.spark_bomb.hit_block");
     public static final DeferredObject<SoundEvent> ENTITY_SPARK_BOMB_CHAIN = sound("entity.spark_bomb.chain");
     public static final DeferredObject<SoundEvent> ENTITY_THUNDERBOLT_HIT = sound("entity.thunderbolt.hit");
-
     public static final DeferredObject<SoundEvent> SPELL_STATIC_AURA_RETALIATE = sound("spell.static_aura.retaliate");
     public static final DeferredObject<SoundEvent> SPELL_CURSE_OF_SOULBINDING_RETALIATE = sound("spell.curse_of_soulbinding.retaliate");
     public static final DeferredObject<SoundEvent> SPELL_TRANSPORTATION_TRAVEL = sound("spell.transportation.travel");
-
     public static final DeferredObject<SoundEvent> MISC_DISCOVER_SPELL = sound("misc.discover_spell");
     public static final DeferredObject<SoundEvent> MISC_BOOK_OPEN = sound("misc.book_open");
     public static final DeferredObject<SoundEvent> MISC_PAGE_TURN = sound("misc.page_turn");
     public static final DeferredObject<SoundEvent> MISC_FREEZE = sound("misc.freeze");
     public static final DeferredObject<SoundEvent> MISC_SPELL_FAIL = sound("misc.spell_fail");
-
+    private EBSounds() {
+    }
 
     // ======= Registry =======
-    public static void register(RegisterFunction<SoundEvent> function){
+    public static void register(RegisterFunction<SoundEvent> function) {
         SOUNDS.forEach(((id, sound) ->
                 function.register(BuiltInRegistries.SOUND_EVENT, WizardryMainMod.location(id), sound.get())));
     }
 
     // ======= Helpers =======
     @Nullable
-    public static DeferredObject<SoundEvent> getSound(String name){
+    public static DeferredObject<SoundEvent> getSound(String name) {
         return SOUNDS.get(name);
     }
 
-    static DeferredObject<SoundEvent> sound(String name){
+    static DeferredObject<SoundEvent> sound(String name) {
         SoundEvent sound = SoundEvent.createVariableRangeEvent(WizardryMainMod.location(name));
         DeferredObject<SoundEvent> deferredSound = new DeferredObject<>(() -> sound);
         SOUNDS.put(name, deferredSound);

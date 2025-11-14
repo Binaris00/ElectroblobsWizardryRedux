@@ -16,19 +16,19 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public class Levitation extends Spell {
-    public Levitation(){
+    public Levitation() {
         soundValues(0.5f, 1, 0);
     }
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if(!EBConfig.replaceVanillaFallDamage) ctx.caster().fallDistance = 0;
+        if (!EBConfig.replaceVanillaFallDamage) ctx.caster().fallDistance = 0;
 
         ctx.caster().setDeltaMovement(ctx.caster().getDeltaMovement().x, ctx.caster().getDeltaMovement().y < property(DefaultProperties.SPEED) ?
                 ctx.caster().getDeltaMovement().y
                         + property(DefaultProperties.ACCELERATION) : ctx.caster().getDeltaMovement().y, ctx.caster().getDeltaMovement().z);
 
-        if(ctx.world().isClientSide){
+        if (ctx.world().isClientSide) {
             double x = ctx.caster().getX() - 0.25 + ctx.world().random.nextDouble() * 0.5;
             double y = ctx.caster().getEyePosition(1).y;
             double z = ctx.caster().getZ() - 0.25 + ctx.world().random.nextDouble() * 0.5;

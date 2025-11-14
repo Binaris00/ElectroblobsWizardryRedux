@@ -28,7 +28,7 @@ public class SpellAccessPacketC2S implements Message {
 
     @Override
     public void handleServer(MinecraftServer server, ServerPlayer player) {
-        if(player == null) return;
+        if (player == null) return;
 
         ItemStack wand = player.getMainHandItem();
 

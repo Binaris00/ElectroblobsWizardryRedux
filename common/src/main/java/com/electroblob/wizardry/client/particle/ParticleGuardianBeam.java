@@ -20,6 +20,7 @@ public class ParticleGuardianBeam extends ParticleTargeted {
     private static final float THICKNESS = 0.15f;
 
     private static final ResourceLocation TEXTURE = new ResourceLocation("minecraft:textures/entity/guardian_beam.png");
+
     public ParticleGuardianBeam(ClientLevel world, double x, double y, double z, SpriteSet spriteProvider) {
         super(world, x, y, z, spriteProvider, false);
         this.setColor(1, 1, 1);
@@ -71,14 +72,14 @@ public class ParticleGuardianBeam extends ParticleTargeted {
             spriteProvider = sprite;
         }
 
+        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
+            return new ParticleGuardianBeam(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteProvider);
+        }
+
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleGuardianBeam(world, x, y, z, spriteProvider);
-        }
-
-        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
-            return new ParticleGuardianBeam(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteProvider);
         }
     }
 }

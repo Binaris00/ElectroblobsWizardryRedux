@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public class BlockWithSurprise extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if(ctx.world().isClientSide){
+        if (ctx.world().isClientSide) {
             ctx.world().addParticle(ParticleTypes.EXPLOSION_EMITTER, ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getBbHeight() / 2, ctx.caster().getZ(), 0, 0, 0);
             ctx.caster().sendSystemMessage(Component.literal("Surprise!"));
             Services.NETWORK_HELPER.sendToServer(new BlockUsePacketC2S(ctx.caster().getOnPos()));

@@ -12,34 +12,33 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 public abstract class Forfeit {
-	// Originally BY_2D_DATA on Direction class
-	public static final Direction[] HORIZONTALS = Arrays.stream(Direction.values()).filter((direction)
-			-> direction.getAxis().isHorizontal()).sorted(Comparator.comparingInt(Direction::get2DDataValue))
-			.toArray(Direction[]::new);
+    // Originally BY_2D_DATA on Direction class
+    public static final Direction[] HORIZONTALS = Arrays.stream(Direction.values()).filter((direction)
+                    -> direction.getAxis().isHorizontal()).sorted(Comparator.comparingInt(Direction::get2DDataValue))
+            .toArray(Direction[]::new);
+    protected final SoundEvent sound;
+    private final ResourceLocation name;
 
-	private final ResourceLocation name;
-	protected final SoundEvent sound;
+    public Forfeit(ResourceLocation name) {
+        this.name = name;
+        this.sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(name.getNamespace(), "forfeit." + name.getPath()));
+    }
 
-	public Forfeit(ResourceLocation name){
-		this.name = name;
-		this.sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(name.getNamespace(), "forfeit." + name.getPath()));
-	}
+    public abstract void apply(Level world, Player player);
 
-	public abstract void apply(Level world, Player player);
+    public Component getMessage(Component implementName) {
+        return Component.translatable("forfeit." + name.getNamespace() + "." + name.getPath(), implementName);
+    }
 
-	public Component getMessage(Component implementName){
-		return Component.translatable("forfeit." + name.getNamespace() + "." + name.getPath(), implementName);
-	}
-	
-	public Component getMessageForWand(){
-		return getMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".wand.generic"));
-	}
+    public Component getMessageForWand() {
+        return getMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".wand.generic"));
+    }
 
-	public Component getMessageForScroll(){
-		return getMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".scroll.generic"));
-	}
-	
-	public SoundEvent getSound(){
-		return sound;
-	}
+    public Component getMessageForScroll() {
+        return getMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".scroll.generic"));
+    }
+
+    public SoundEvent getSound() {
+        return sound;
+    }
 }

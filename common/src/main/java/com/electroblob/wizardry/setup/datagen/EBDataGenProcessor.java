@@ -15,31 +15,41 @@ import java.util.Map;
  * <br><br>
  * Some of the things that are made here are: <i>items with just a simple texture, block items with a simple model and block states</i>
  * and also register the mods features that are frequently used but have the same behaviour among them, like wand items
- * */
+ *
+ */
 public final class EBDataGenProcessor {
     private static final Map<String, DeferredObject<? extends Item>> DEFAULT_ITEMS = new HashMap<>();
     private static final Map<String, DeferredObject<? extends Item>> WAND_ITEMS = new HashMap<>();
     private static final Map<String, DeferredObject<Block>> DEFAULT_BLOCK_MODELS = new HashMap<>();
     private static final Map<String, DeferredObject<Block>> DEFAULT_BLOCK_DROP = new HashMap<>();
 
-    private EBDataGenProcessor() {}
+    private EBDataGenProcessor() {
+    }
 
-    /** Default item with just a png as a model and texture */
+    /**
+     * Default item with just a png as a model and texture
+     */
     public static void addDefaultItem(String name, DeferredObject<? extends Item> item) {
         DEFAULT_ITEMS.put(name, item);
     }
 
-    /** Makes a regular wand item with the custom point model */
+    /**
+     * Makes a regular wand item with the custom point model
+     */
     public static void addWandItem(String name, DeferredObject<? extends Item> item) {
         WAND_ITEMS.put(name, item);
     }
 
-    /** Makes the block have a normal block item model and block state */
+    /**
+     * Makes the block have a normal block item model and block state
+     */
     public static void addDefaultBlockModel(String name, DeferredObject<Block> blockModel) {
         DEFAULT_BLOCK_MODELS.put(name, blockModel);
     }
 
-    /** Blocks that should drop itself */
+    /**
+     * Blocks that should drop itself
+     */
     public static void addDefaultBlockDrop(String name, DeferredObject<Block> blockDrop) {
         DEFAULT_BLOCK_DROP.put(name, blockDrop);
     }
@@ -47,12 +57,15 @@ public final class EBDataGenProcessor {
     public static Map<String, DeferredObject<? extends Item>> items() {
         return DEFAULT_ITEMS;
     }
+
     public static Map<String, DeferredObject<? extends Item>> wandItems() {
         return WAND_ITEMS;
     }
+
     public static Map<String, DeferredObject<Block>> defaultBlockModels() {
         return DEFAULT_BLOCK_MODELS;
     }
+
     public static Map<String, DeferredObject<Block>> defaultBlockDrops() {
         return DEFAULT_BLOCK_DROP;
     }

@@ -46,7 +46,7 @@ public class SpellPropertiesSyncS2C implements Message {
 
     @Override
     public void handleClient(Minecraft minecraft, Player player) {
-        for(Map.Entry<ResourceLocation, SpellProperties> entry : propertiesMap.entrySet()) {
+        for (Map.Entry<ResourceLocation, SpellProperties> entry : propertiesMap.entrySet()) {
             Optional<Spell> spell = Optional.ofNullable(Services.REGISTRY_UTIL.getSpell(entry.getKey()));
             if (spell.isEmpty()) {
                 EBLogger.warn("Received spell properties for unknown spell: {}", entry.getKey());

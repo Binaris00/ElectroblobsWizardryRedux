@@ -21,6 +21,11 @@ public class VanishingCobwebBlock extends BaseEntityBlock {
         super(p_49795_);
     }
 
+    @Nullable
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<VanishingCobwebBlockEntity> p_151990_) {
+        return createTickerHelper(p_151989_, p_151990_, VanishingCobwebBlockEntity::update);
+    }
+
     @Override
     public @NotNull RenderShape getRenderShape(@NotNull BlockState state) {
         return RenderShape.MODEL;
@@ -40,10 +45,5 @@ public class VanishingCobwebBlock extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return createTicker(level, type, EBBlockEntities.VANISHING_COBWEB.get());
-    }
-
-    @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<VanishingCobwebBlockEntity> p_151990_) {
-        return createTickerHelper(p_151989_, p_151990_, VanishingCobwebBlockEntity::update);
     }
 }

@@ -19,6 +19,7 @@ public class MagicArrowRenderer<T extends MagicArrowEntity> extends ArrowRendere
      * It calls the constructor of the superclass, ProjectileEntityRenderer.
      * <p>
      * If you don't understand what this does, don't touch it ^^
+     *
      * @param ctx context of the EntityRendererFactory.
      */
     public MagicArrowRenderer(EntityRendererProvider.Context ctx) {

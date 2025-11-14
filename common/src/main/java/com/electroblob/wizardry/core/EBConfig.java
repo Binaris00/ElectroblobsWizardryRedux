@@ -26,7 +26,27 @@ public final class EBConfig {
 
     public static final int NON_ELEMENTAL_UPGRADE_BONUS = 3;
     public static final float MAX_PROGRESSION_REDUCTION = 0.75F;
-
+    public static final float STORAGE_INCREASE_PER_LEVEL = 0.15f;
+    public static final int CONDENSER_TICK_INTERVAL = 50;
+    public static final int UPGRADE_STACK_LIMIT = 3;
+    /**
+     * Items that cannot be melted by the Pocket Furnace spell.
+     */
+    public static final ResourceLocation[] meltItemsBlackList = {new ResourceLocation("minecraft:potato")};
+    /**
+     * The amount of mana given for a kill for each level of siphon upgrade. A random amount from 0 to this number - 1
+     * is also added.
+     *
+     * @see com.electroblob.wizardry.content.item.WandUpgradeItem#onLivingDeath(EBLivingDeathEvent)
+     */
+    public static final int SIPHON_MANA_PER_LEVEL = 5;
+    public static final int MAX_RECENT_SPELLS = 5;
+    public static final int RECENT_SPELL_EXPIRY_TICKS = 1200; // 60 seconds
+    private static final String[] DEFAULT_LOOT_INJECTION_LOCATIONS = {"minecraft:chests/simple_dungeon",
+            "minecraft:chests/abandoned_mineshaft", "minecraft:chests/desert_pyramid", "minecraft:chests/jungle_temple",
+            "minecraft:chests/stronghold_corridor", "minecraft:chests/stronghold_crossing",
+            "minecraft:chests/stronghold_library", "minecraft:chests/igloo_chest", "minecraft:chests/woodland_mansion",
+            "minecraft:chests/end_city_treasure"};
     public static boolean damageTypePerElement = false;
     public static boolean playersMoveEachOther = true;
     public static boolean replaceVanillaFallDamage = true;
@@ -38,49 +58,22 @@ public final class EBConfig {
     public static boolean wandsMustBeHeldToDecrementCooldown = false;
     public static boolean discoveryMode = true;
     public static double forfeitChance = 0.2; // 2
-
     public static float COOLDOWN_REDUCTION_PER_LEVEL = 0.15f;
-    public static final float STORAGE_INCREASE_PER_LEVEL = 0.15f;
     public static float POTENCY_INCREASE_PER_TIER = 0.15f;
     public static float DURATION_INCREASE_PER_LEVEL = 0.25f;
     public static float RANGE_INCREASE_PER_LEVEL = 0.25f;
     public static float BLAST_RADIUS_INCREASE_PER_LEVEL = 0.25f;
-    public static final int CONDENSER_TICK_INTERVAL = 50;
-    public static final int UPGRADE_STACK_LIMIT = 3;
     public static boolean booksPauseGame = true;
     public static boolean blockPlayersAlliesDamage = true;
     public static boolean blockOwnedAlliesDamage = true;
-
-    /**
-     * Items that cannot be melted by the Pocket Furnace spell.
-     */
-    public static final ResourceLocation[] meltItemsBlackList = {new ResourceLocation("minecraft:potato")};
-
-    /**
-     * The amount of mana given for a kill for each level of siphon upgrade. A random amount from 0 to this number - 1
-     * is also added.
-     *
-     * @see com.electroblob.wizardry.content.item.WandUpgradeItem#onLivingDeath(EBLivingDeathEvent)
-     */
-    public static final int SIPHON_MANA_PER_LEVEL = 5;
-
-    private static final String[] DEFAULT_LOOT_INJECTION_LOCATIONS = {"minecraft:chests/simple_dungeon",
-            "minecraft:chests/abandoned_mineshaft", "minecraft:chests/desert_pyramid", "minecraft:chests/jungle_temple",
-            "minecraft:chests/stronghold_corridor", "minecraft:chests/stronghold_crossing",
-            "minecraft:chests/stronghold_library", "minecraft:chests/igloo_chest", "minecraft:chests/woodland_mansion",
-            "minecraft:chests/end_city_treasure"};
-
     public static ResourceLocation[] lootInjectionLocations = toResourceLocations(DEFAULT_LOOT_INJECTION_LOCATIONS);
-
     public static Map<Pair<ResourceLocation, Short>, Integer> currencyItems = new HashMap<>();
     public static boolean injectMobDrops = true;
-
     /**
      * Passive mobs that will have the normal additional loot added to their drops. Passive Mobs (not hostile ones)
      * not on this list will be ignored. This is to prevent things like cows dropping spell books.
      */
     public static ResourceLocation[] modifiableMobs = new ResourceLocation[]{};
-
     /**
      * Hostile mobs that will not have the normal additional loot added to their drops. Hostile mobs (not passive
      * ones) not on this list will be affected. This is to prevent things like the Ender Dragon dropping spell
@@ -93,22 +86,17 @@ public final class EBConfig {
             new ResourceLocation("minecraft:shulker")
     ).toArray(new ResourceLocation[0]);
     public static boolean passiveMobsAreAllies = true;
-
-    public static final int MAX_RECENT_SPELLS = 5;
-    public static final int RECENT_SPELL_EXPIRY_TICKS = 1200; // 60 seconds
-
-
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);
 
+
+    private EBConfig() {
+    }
 
     private static ResourceLocation[] toResourceLocations(String... strings) {
         return Arrays.stream(strings).map(s -> new ResourceLocation(s.toLowerCase(Locale.ROOT).trim())).toArray(ResourceLocation[]::new);
     }
 
-    public static boolean isOnList(ResourceLocation[] list, ItemStack stack){
+    public static boolean isOnList(ResourceLocation[] list, ItemStack stack) {
         return Arrays.stream(list).anyMatch(rl -> rl.equals(BuiltInRegistries.ITEM.getKey(stack.getItem())));
-    }
-
-    private EBConfig() {
     }
 }

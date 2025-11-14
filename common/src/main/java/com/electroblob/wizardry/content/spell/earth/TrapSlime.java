@@ -16,7 +16,6 @@ import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Slime;
 import net.minecraft.world.entity.player.Player;
@@ -32,21 +31,21 @@ public class TrapSlime extends RaySpell {
         if (!(entityHit.getEntity() instanceof LivingEntity target) || target instanceof MagicSlime) return true;
 
         // Resist if target is a slime (it would be weird to summon a slime onto another slime)
-        if(target instanceof Slime){
-            if(!ctx.world().isClientSide && ctx.caster() instanceof Player player) player.displayClientMessage(
+        if (target instanceof Slime) {
+            if (!ctx.world().isClientSide && ctx.caster() instanceof Player player) player.displayClientMessage(
                     Component.translatable("spell.resist", target.getName(), this.getDescriptionFormatted()), true);
             return true;
         }
 
         // Summon the slime
-        if(!ctx.world().isClientSide){
+        if (!ctx.world().isClientSide) {
             MagicSlime slime = new MagicSlime(ctx.world(), target);
 
             MinionData data = Services.OBJECT_DATA.getMinionData(slime);
             data.setSummoned(true);
             data.setOwnerUUID(ctx.caster().getUUID());
             data.setShouldFollowOwner(false);
-            data.setLifetime((int)(property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+            data.setLifetime((int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
 
             ctx.world().addFreshEntity(slime);
         }

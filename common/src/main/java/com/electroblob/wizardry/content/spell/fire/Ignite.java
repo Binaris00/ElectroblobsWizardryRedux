@@ -25,8 +25,8 @@ public class Ignite extends RaySpell {
     @Override
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         BlockPos blockPos = blockHit.getBlockPos().relative(blockHit.getDirection());
-        if(ctx.world().isEmptyBlock(blockPos)){
-            if(!ctx.world().isClientSide && BlockUtil.canPlaceBlock(ctx.caster(), ctx.world(), blockPos))
+        if (ctx.world().isEmptyBlock(blockPos)) {
+            if (!ctx.world().isClientSide && BlockUtil.canPlaceBlock(ctx.caster(), ctx.world(), blockPos))
                 ctx.world().setBlockAndUpdate(blockPos, Blocks.FIRE.defaultBlockState());
             return true;
         }
@@ -35,7 +35,7 @@ public class Ignite extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if(entityHit.getEntity() instanceof LivingEntity target && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
+        if (entityHit.getEntity() instanceof LivingEntity target && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
             target.setSecondsOnFire((int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
             return true;
         }
@@ -50,7 +50,7 @@ public class Ignite extends RaySpell {
 
     @Override
     protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz) {
-        ctx.world().addParticle(ParticleTypes.FLAME, x, y, z, 0,0,0);
+        ctx.world().addParticle(ParticleTypes.FLAME, x, y, z, 0, 0, 0);
     }
 
     @Override

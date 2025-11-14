@@ -34,7 +34,7 @@ public class DarknessOrbEntity extends MagicProjectileEntity {
     protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
 
-        if(!(result.getEntity() instanceof LivingEntity livingEntity)
+        if (!(result.getEntity() instanceof LivingEntity livingEntity)
                 || EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity)) return;
 
         float damage = Spells.DARKNESS_ORB.property(DefaultProperties.DAMAGE) * damageMultiplier;

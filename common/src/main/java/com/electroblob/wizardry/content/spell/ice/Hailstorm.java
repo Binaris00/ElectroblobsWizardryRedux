@@ -29,7 +29,7 @@ public class Hailstorm extends ConstructRangedSpell<HailstormConstruct> {
         double x = vec3.x;
         double y = vec3.y;
         double z = vec3.z;
-        if(dist != 0){
+        if (dist != 0) {
             double distRatio = 3 / dist;
             x += dx * distRatio;
             z = dz * distRatio;
@@ -42,9 +42,9 @@ public class Hailstorm extends ConstructRangedSpell<HailstormConstruct> {
 
     @Override
     protected void addConstructExtras(HailstormConstruct construct, Direction side, @Nullable LivingEntity caster) {
-        if(caster != null){
+        if (caster != null) {
             construct.setYRot(caster.getYHeadRot());
-        }else{
+        } else {
             construct.setYRot(side.toYRot());
         }
     }

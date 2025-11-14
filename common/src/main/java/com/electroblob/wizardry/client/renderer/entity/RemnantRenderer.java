@@ -41,7 +41,7 @@ public class RemnantRenderer extends EntityRenderer<Remnant> {
             expansion -= f * 0.75f;
         } else if (entity.hurtTime > 0) {
             float f = (entity.hurtTime - partialTicks) / entity.hurtDuration;
-            f = Mth.sin(f * f * f * f * (float)Math.PI);
+            f = Mth.sin(f * f * f * f * (float) Math.PI);
             expansion += f * 0.2f;
         }
         float rotationSpeed = entity.isSwimming() ? 10f : 3f;
@@ -51,23 +51,23 @@ public class RemnantRenderer extends EntityRenderer<Remnant> {
         ps.pushPose();
         ps.scale(expansion, expansion, expansion);
         ps.mulPose(Axis.YP.rotationDegrees(age * rotationSpeed / 2f));
-        ps.mulPose(new Quaternionf().setAngleAxis((float)Math.toRadians(60),
-                (float)Math.sin(Math.PI/4),0,(float)Math.sin(Math.PI/4)));
+        ps.mulPose(new Quaternionf().setAngleAxis((float) Math.toRadians(60),
+                (float) Math.sin(Math.PI / 4), 0, (float) Math.sin(Math.PI / 4)));
         ps.mulPose(Axis.YP.rotationDegrees(age * rotationSpeed));
         VertexConsumer vb = buffer.getBuffer(RENDER_TYPE);
         this.model.renderToBuffer(ps, vb, packedLight,
                 OverlayTexture.NO_OVERLAY,
-                1f,1f,1f,1f);
+                1f, 1f, 1f, 1f);
         ps.popPose();
 
         ps.pushPose();
         ps.scale(0.875f, 0.875f, 0.875f);
-        ps.mulPose(new Quaternionf().setAngleAxis((float)Math.toRadians(60),
-                (float)Math.sin(Math.PI/4),0,(float)Math.sin(Math.PI/4)));
+        ps.mulPose(new Quaternionf().setAngleAxis((float) Math.toRadians(60),
+                (float) Math.sin(Math.PI / 4), 0, (float) Math.sin(Math.PI / 4)));
         ps.mulPose(Axis.YP.rotationDegrees(age * rotationSpeed));
         this.model.renderToBuffer(ps, vb, packedLight,
                 OverlayTexture.NO_OVERLAY,
-                1f,1f,1f,1f);
+                1f, 1f, 1f, 1f);
         ps.popPose();
 
         ps.popPose();

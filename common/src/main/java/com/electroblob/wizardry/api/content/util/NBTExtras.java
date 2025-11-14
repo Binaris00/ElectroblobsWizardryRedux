@@ -10,7 +10,8 @@ import java.util.Collection;
 import java.util.function.Function;
 
 public final class NBTExtras {
-    private NBTExtras() {}
+    private NBTExtras() {
+    }
 
     public static void storeTagSafely(CompoundTag compound, String key, Tag tag) {
         if (compound == tag || deepContains(tag, compound)) {

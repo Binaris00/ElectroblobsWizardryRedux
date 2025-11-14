@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.core.platform.services;
 
 import net.minecraft.core.Holder;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
 public interface IPlatformHelper {

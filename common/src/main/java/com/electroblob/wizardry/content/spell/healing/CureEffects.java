@@ -19,11 +19,11 @@ public class CureEffects extends BuffSpell {
 
     @Override
     protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
-        if(!caster.getActiveEffects().isEmpty()){
+        if (!caster.getActiveEffects().isEmpty()) {
             boolean flag = false;
 
-            for(MobEffectInstance effect : caster.getActiveEffects()){
-                if(!(effect.getEffect() instanceof CurseMobEffect)){
+            for (MobEffectInstance effect : caster.getActiveEffects()) {
+                if (!(effect.getEffect() instanceof CurseMobEffect)) {
                     caster.removeEffect(effect.getEffect());
                     flag = true;
                 }

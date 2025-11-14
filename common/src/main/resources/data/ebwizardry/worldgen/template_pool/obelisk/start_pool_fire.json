@@ -1,6 +1,5 @@
 {
   "name": "ebwizardry:obelisk/start_pool_fire",
-
   "fallback": "minecraft:empty",
   "elements": [
     {

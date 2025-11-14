@@ -56,7 +56,7 @@ public class SpellGlyphPacketS2C implements Message {
 
     @Override
     public void handleClient(Minecraft minecraft, Player player) {
-        if(GlyphClientHandler.INSTANCE.getGlyphData() == null){
+        if (GlyphClientHandler.INSTANCE.getGlyphData() == null) {
             GlyphClientHandler.INSTANCE.setGlyphData(new SpellGlyphData());
         }
 

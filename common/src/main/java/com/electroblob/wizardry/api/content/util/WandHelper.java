@@ -28,18 +28,18 @@ public final class WandHelper {
         ArrayList<Spell> spells = new ArrayList<>();
         wand.getOrCreateTag();
 
-        if(wand.getOrCreateTag().contains(SPELL_ARRAY_KEY)) {
+        if (wand.getOrCreateTag().contains(SPELL_ARRAY_KEY)) {
             ListTag list = wand.getOrCreateTag().getList(SPELL_ARRAY_KEY, Tag.TAG_STRING);
-            for(Tag element : list){
-                if(!(element instanceof StringTag stringTag)) continue;
+            for (Tag element : list) {
+                if (!(element instanceof StringTag stringTag)) continue;
                 ResourceLocation location = ResourceLocation.tryParse(stringTag.getAsString());
                 Spell spell = Services.REGISTRY_UTIL.getSpell(location);
-                if(location != null) spells.add(spell);
+                if (location != null) spells.add(spell);
             }
         }
 
-        int maxSlots = wand .getItem() instanceof WandItem wandItem ? wandItem.getSpellSlotCount(wand) : 5;
-        while(spells.size() < maxSlots) {
+        int maxSlots = wand.getItem() instanceof WandItem wandItem ? wandItem.getSpellSlotCount(wand) : 5;
+        while (spells.size() < maxSlots) {
             spells.add(Spells.NONE);
         }
 
@@ -48,7 +48,7 @@ public final class WandHelper {
 
     public static void setSpells(ItemStack wand, Collection<Spell> spells) {
         ListTag list = new ListTag();
-        for(Spell spell : spells) {
+        for (Spell spell : spells) {
             list.add(StringTag.valueOf(spell.getLocation().toString()));
         }
 
@@ -81,11 +81,15 @@ public final class WandHelper {
 
     public static Spell getPreviousSpell(ItemStack wand) {
         List<Spell> spells = getSpells(wand);
-        if (spells.isEmpty()) { return Spells.NONE; }
+        if (spells.isEmpty()) {
+            return Spells.NONE;
+        }
         Spell current = getCurrentSpell(wand);
         int currentIndex = spells.indexOf(current);
 
-        if (currentIndex == -1) { return spells.get(0); }
+        if (currentIndex == -1) {
+            return spells.get(0);
+        }
 
         int prevIndex = (currentIndex - 1 + spells.size()) % spells.size();
         return spells.get(prevIndex);
@@ -93,7 +97,7 @@ public final class WandHelper {
 
     public static void updateSelectedSpell(ItemStack wand, int selectedIndex) {
         List<Spell> spells = getSpells(wand);
-        if(selectedIndex < 0 || selectedIndex >= spells.size()){
+        if (selectedIndex < 0 || selectedIndex >= spells.size()) {
             wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, Spells.NONE.getLocation().toString());
         } else {
             wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, spells.get(selectedIndex).getLocation().toString());
@@ -103,7 +107,7 @@ public final class WandHelper {
     public static void selectNextSpell(ItemStack wand) {
         List<Spell> spells = getSpells(wand);
         int currentSpellIndex = spells.indexOf(getCurrentSpell(wand));
-        if(currentSpellIndex >= 0 && currentSpellIndex < spells.size() - 1) {
+        if (currentSpellIndex >= 0 && currentSpellIndex < spells.size() - 1) {
             wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, getNextSpell(wand).getLocation().toString());
         }
     }
@@ -111,7 +115,7 @@ public final class WandHelper {
     public static void selectPreviousSpell(ItemStack wand) {
         List<Spell> spells = getSpells(wand);
         int currentSpellIndex = spells.indexOf(getCurrentSpell(wand));
-        if(currentSpellIndex > 0) {
+        if (currentSpellIndex > 0) {
             wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, getPreviousSpell(wand).getLocation().toString());
         }
     }
@@ -211,10 +215,10 @@ public final class WandHelper {
                 : 0;
     }
 
-    public static int getUpgradeLevel(ItemStack wand, Item upgrade){
+    public static int getUpgradeLevel(ItemStack wand, Item upgrade) {
         String key = "";
-        for(DeferredObject<Item> item : WandUpgrades.getWandUpgrades().keySet()){
-            if(item.get().equals(upgrade)) {
+        for (DeferredObject<Item> item : WandUpgrades.getWandUpgrades().keySet()) {
+            if (item.get().equals(upgrade)) {
                 key = WandUpgrades.getWandUpgrades().get(item);
             }
         }
@@ -231,7 +235,8 @@ public final class WandHelper {
     }
 
     public static void applyUpgrade(ItemStack wand, DeferredObject<Item> upgrade) {
-        if (!wand.getOrCreateTag().contains(UPGRADES_KEY)) NBTExtras.storeTagSafely(wand.getOrCreateTag(), UPGRADES_KEY, new CompoundTag());
+        if (!wand.getOrCreateTag().contains(UPGRADES_KEY))
+            NBTExtras.storeTagSafely(wand.getOrCreateTag(), UPGRADES_KEY, new CompoundTag());
 
         CompoundTag upgrades = wand.getOrCreateTag().getCompound(UPGRADES_KEY);
         String key = WandUpgrades.getWandUpgrades().get(upgrade);
@@ -240,13 +245,14 @@ public final class WandHelper {
         NBTExtras.storeTagSafely(wand.getOrCreateTag(), UPGRADES_KEY, upgrades);
     }
 
-    public static void applyUpgrade(ItemStack wand, Item upgrade){
-        if (!wand.getOrCreateTag().contains(UPGRADES_KEY)) NBTExtras.storeTagSafely(wand.getOrCreateTag(), UPGRADES_KEY, new CompoundTag());
+    public static void applyUpgrade(ItemStack wand, Item upgrade) {
+        if (!wand.getOrCreateTag().contains(UPGRADES_KEY))
+            NBTExtras.storeTagSafely(wand.getOrCreateTag(), UPGRADES_KEY, new CompoundTag());
 
         CompoundTag upgrades = wand.getOrCreateTag().getCompound(UPGRADES_KEY);
         String key = "";
-        for(Map.Entry<DeferredObject<Item>, String> entry : WandUpgrades.getWandUpgrades().entrySet()){
-            if(entry.getKey().get().equals(upgrade)) key = entry.getValue();
+        for (Map.Entry<DeferredObject<Item>, String> entry : WandUpgrades.getWandUpgrades().entrySet()) {
+            if (entry.getKey().get().equals(upgrade)) key = entry.getValue();
         }
 
         if (!key.isEmpty()) upgrades.putInt(key, upgrades.getInt(key) + 1);
@@ -257,10 +263,9 @@ public final class WandHelper {
         return WandUpgrades.getWandUpgrades().containsKey(upgrade);
     }
 
-    public static boolean isWandUpgrade(Item upgrade){
+    public static boolean isWandUpgrade(Item upgrade) {
         return WandUpgrades.getWandUpgrades().keySet().stream().anyMatch(itemDeferred -> itemDeferred.get() == upgrade);
     }
-
 
 
     public static Set<DeferredObject<Item>> getSpecialUpgrades() {

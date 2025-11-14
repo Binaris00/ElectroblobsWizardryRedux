@@ -22,27 +22,39 @@ import java.util.function.Supplier;
 public class BuffSpell extends Spell {
 
     protected final Supplier<MobEffect>[] effects;
-    protected Set<MobEffect> potionSet = new java.util.HashSet<>();
     protected final float r, g, b;
+    protected Set<MobEffect> potionSet = new java.util.HashSet<>();
     protected float particleCount = 10;
 
     @SafeVarargs
-    public BuffSpell(float r, float g, float b, Supplier<MobEffect>... effects){
+    public BuffSpell(float r, float g, float b, Supplier<MobEffect>... effects) {
         this.effects = effects;
         this.r = r;
         this.g = g;
         this.b = b;
-        for(Supplier<MobEffect> effect : effects){
+        for (Supplier<MobEffect> effect : effects) {
             potionSet.add(effect.get());
         }
     }
 
-    public BuffSpell particleCount(int particleCount){
+    public static int getStandardBonusAmplifier(float potencyModifier) {
+        return (int) ((potencyModifier - 1) / 0.4);
+    }
+
+    public static SpellProperty<Integer> getEffectDurationProperty(MobEffect effect) {
+        return SpellProperty.intProperty(effect.getDescriptionId() + "_duration");
+    }
+
+    public static SpellProperty<Integer> getEffectStrengthProperty(MobEffect effect) {
+        return SpellProperty.intProperty(effect.getDescriptionId() + "_strength");
+    }
+
+    public BuffSpell particleCount(int particleCount) {
         this.particleCount = particleCount;
         return this;
     }
 
-    public Set<MobEffect> getPotionSet(){
+    public Set<MobEffect> getPotionSet() {
         return Collections.unmodifiableSet(potionSet);
     }
 
@@ -100,7 +112,7 @@ public class BuffSpell extends Spell {
         return true;
     }
 
-    protected boolean applyEffects(CastContext ctx, LivingEntity caster){
+    protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
         int bonusAmplifier = getBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
 
         for (MobEffect effect : potionSet) {
@@ -114,8 +126,8 @@ public class BuffSpell extends Spell {
         return true;
     }
 
-    protected void spawnParticles(Level world, LivingEntity caster){
-        for(int i = 0; i < particleCount; i++){
+    protected void spawnParticles(Level world, LivingEntity caster) {
+        for (int i = 0; i < particleCount; i++) {
             double x = caster.xo + world.random.nextDouble() * 2 - 1;
             double y = caster.yo + caster.getEyeHeight() - 0.5 + world.random.nextDouble();
             double z = caster.zo + world.random.nextDouble() * 2 - 1;
@@ -124,20 +136,8 @@ public class BuffSpell extends Spell {
         ParticleBuilder.create(EBParticles.BUFF).entity(caster).color(r, g, b).spawn(world);
     }
 
-    protected int getBonusAmplifier(float potencyModifier){
+    protected int getBonusAmplifier(float potencyModifier) {
         return getStandardBonusAmplifier(potencyModifier);
-    }
-
-    public static int getStandardBonusAmplifier(float potencyModifier) {
-        return (int) ((potencyModifier - 1) / 0.4);
-    }
-
-    public static SpellProperty<Integer> getEffectDurationProperty(MobEffect effect){
-        return SpellProperty.intProperty(effect.getDescriptionId() + "_duration");
-    }
-
-    public static SpellProperty<Integer> getEffectStrengthProperty(MobEffect effect){
-        return SpellProperty.intProperty(effect.getDescriptionId() + "_strength");
     }
 
     @Override

@@ -25,18 +25,19 @@ public final class WandSpellCommand {
             Component::literal
     );
 
-    private WandSpellCommand() {}
+    private WandSpellCommand() {
+    }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("wand")
-            .then(Commands.argument("spell", ResourceLocationArgument.id()).suggests(SPELL_SUGGESTIONS)
-                .then(Commands.argument("slot", IntegerArgumentType.integer(0))
-                    .executes((c) -> execute(c, ResourceLocationArgument.getId(c,"spell"), IntegerArgumentType.getInteger(c,"slot"))))));
+                .then(Commands.argument("spell", ResourceLocationArgument.id()).suggests(SPELL_SUGGESTIONS)
+                        .then(Commands.argument("slot", IntegerArgumentType.integer(0))
+                                .executes((c) -> execute(c, ResourceLocationArgument.getId(c, "spell"), IntegerArgumentType.getInteger(c, "slot"))))));
     }
 
     private static int execute(CommandContext<CommandSourceStack> context, ResourceLocation location, int slot) {
         CommandSourceStack source = context.getSource();
-        if(!source.isPlayer()) {
+        if (!source.isPlayer()) {
             source.sendFailure(Component.literal("You need to be a player to execute this!"));
             return 0;
         }
@@ -65,7 +66,7 @@ public final class WandSpellCommand {
         int currentSelectedIndex = spells.indexOf(WandHelper.getCurrentSpell(stack));
         spells.set(slot, spell);
 
-        if(currentSelectedIndex == slot) {
+        if (currentSelectedIndex == slot) {
             WandHelper.setCurrentSpell(stack, spell);
         }
 

@@ -1,6 +1,9 @@
 package com.electroblob.wizardry.content.item;
 
-import net.minecraft.world.item.*;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.SwordItem;
+import net.minecraft.world.item.Tiers;
 import org.jetbrains.annotations.NotNull;
 
 public class SpectralSwordItem extends SwordItem {

@@ -7,7 +7,7 @@ import java.nio.charset.StandardCharsets;
 
 public class ByteBufUtils {
     public static String readUTF8String(ByteBuf from) {
-        int len = readVarInt(from,2);
+        int len = readVarInt(from, 2);
         String str = from.toString(from.readerIndex(), len, StandardCharsets.UTF_8);
         from.readerIndex(from.readerIndex() + len);
         return str;
@@ -19,13 +19,11 @@ public class ByteBufUtils {
         int j = 0;
         byte b0;
 
-        do
-        {
+        do {
             b0 = buf.readByte();
             i |= (b0 & 127) << j++ * 7;
 
-            if (j > maxSize)
-            {
+            if (j > maxSize) {
                 throw new RuntimeException("VarInt too big");
             }
         }

@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ServerPlayerMixin {
 
     @Inject(method = "drop*", at = @At("HEAD"))
-    public void EBWIZARDRY$drop(ItemStack itemStack, boolean bl, boolean bl2,CallbackInfoReturnable<ItemEntity> cir){
+    public void EBWIZARDRY$drop(ItemStack itemStack, boolean bl, boolean bl2, CallbackInfoReturnable<ItemEntity> cir) {
         boolean result = WizardryEventBus.getInstance().fire(new EBItemTossEvent((Player) (Object) this, itemStack));
         if (result) cir.cancel();
     }

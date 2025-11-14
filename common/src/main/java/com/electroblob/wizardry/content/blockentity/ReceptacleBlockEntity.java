@@ -21,21 +21,21 @@ public class ReceptacleBlockEntity extends BlockEntity {
         return stack;
     }
 
-    public Element getElement(){
-    	return stack != null && stack.getItem() instanceof ReceptacleItemValue receptacleItem ?
-                receptacleItem.getElement() : null;
-    }
-
     public void setStack(ItemStack stack) {
         this.stack = stack;
         level.blockUpdated(worldPosition, getBlockState().getBlock());
         level.getChunkSource().getLightEngine().checkBlock(worldPosition);
     }
 
+    public Element getElement() {
+        return stack != null && stack.getItem() instanceof ReceptacleItemValue receptacleItem ?
+                receptacleItem.getElement() : null;
+    }
+
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
-        if(stack != null) tag.put("Stack", stack.save(new CompoundTag()));
+        if (stack != null) tag.put("Stack", stack.save(new CompoundTag()));
     }
 
     @Override

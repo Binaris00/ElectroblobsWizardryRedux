@@ -5,7 +5,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-public class EntityCastContext extends CastContext{
+public class EntityCastContext extends CastContext {
     protected LivingEntity caster;
     protected InteractionHand hand;
     // What if I'm a wizard that just want to chill out casting funny spells without damaging someone?

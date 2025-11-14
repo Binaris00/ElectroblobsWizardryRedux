@@ -20,18 +20,9 @@ import org.jetbrains.annotations.Nullable;
 import java.util.*;
 
 public class EBMagicDamageSource extends DamageSource {
-    private static final Map<Class<? extends Entity>, Set<ResourceKey<DamageType>>> immunityMapping = new HashMap<>();
     public static final String DIRECT_MAGIC_DAMAGE = "wizardry_magic";
     public static final String INDIRECT_MAGIC_DAMAGE = "indirect_wizardry_magic";
-    private final boolean isRetaliatory;
-
-    public EBMagicDamageSource(Holder<DamageType> damageTypeHolder, @Nullable Entity directEntity, @Nullable Entity causingEntity, boolean isRetaliatory) {
-        super(damageTypeHolder, directEntity, causingEntity);
-        this.isRetaliatory = isRetaliatory;
-//        if (type == DamageType.FIRE) this.setIsFire();
-//        if (type == DamageType.BLAST) this.setExplosion();
-    }
-
+    private static final Map<Class<? extends Entity>, Set<ResourceKey<DamageType>>> immunityMapping = new HashMap<>();
 
     // Immunity
     static {
@@ -61,6 +52,15 @@ public class EBMagicDamageSource extends DamageSource {
         //setEntityImmunities(BlazeMinion.class, DamageType.FIRE);
     }
 
+    private final boolean isRetaliatory;
+
+
+    public EBMagicDamageSource(Holder<DamageType> damageTypeHolder, @Nullable Entity directEntity, @Nullable Entity causingEntity, boolean isRetaliatory) {
+        super(damageTypeHolder, directEntity, causingEntity);
+        this.isRetaliatory = isRetaliatory;
+//        if (type == DamageType.FIRE) this.setIsFire();
+//        if (type == DamageType.BLAST) this.setExplosion();
+    }
 
     @SafeVarargs
     public static void setEntityImmunities(Class<? extends Entity> entityType, ResourceKey<DamageType>... immunities) {
@@ -80,14 +80,14 @@ public class EBMagicDamageSource extends DamageSource {
      * Otherwise, the damage is direct and the caster is considered the source of the damage.
      * (Normally {@param caster} is a projectile)
      *
-     * @param caster the entity applying the damage
-     * @param target the entity taking the damage
-     * @param damage the amount of damage to apply
-     * @param type the type of magic damage to apply
+     * @param caster        the entity applying the damage
+     * @param target        the entity taking the damage
+     * @param damage        the amount of damage to apply
+     * @param type          the type of magic damage to apply
      * @param isRetaliatory whether this damage is retaliatory (i.e. the target is attacking the caster)
      * @return whether the target entity was damaged
      */
-    public static boolean causeMagicDamage(Entity caster, Entity target, float damage, ResourceKey<DamageType> type, boolean isRetaliatory){
+    public static boolean causeMagicDamage(Entity caster, Entity target, float damage, ResourceKey<DamageType> type, boolean isRetaliatory) {
         if ((caster instanceof OwnableEntity ownableCaster && ownableCaster.getOwner() != null) || (caster instanceof TraceableEntity traceableCaster && traceableCaster.getOwner() != null)) {
             Entity owner = (caster instanceof OwnableEntity) ? ((OwnableEntity) caster).getOwner() : ((TraceableEntity) caster).getOwner();
 

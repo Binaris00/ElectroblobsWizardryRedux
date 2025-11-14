@@ -26,9 +26,11 @@ import org.jetbrains.annotations.NotNull;
 
 public class FlamecatcherArrow extends MagicArrowEntity {
     public static final float SPEED = 3;
+
     public FlamecatcherArrow(EntityType<? extends AbstractArrow> entityType, Level world) {
         super(entityType, world);
     }
+
     public FlamecatcherArrow(Level world) {
         super(EBEntities.FLAME_CATCHER_ARROW.get(), world);
     }
@@ -60,10 +62,11 @@ public class FlamecatcherArrow extends MagicArrowEntity {
 
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
-        if(hitResult.getEntity() instanceof LivingEntity livingEntity) {
-            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, livingEntity)) livingEntity.setSecondsOnFire(15);
+        if (hitResult.getEntity() instanceof LivingEntity livingEntity) {
+            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, livingEntity))
+                livingEntity.setSecondsOnFire(15);
             this.playSound(EBSounds.ENTITY_FLAMECATCHER_ARROW_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-            if(this.level().isClientSide) {
+            if (this.level().isClientSide) {
                 ParticleBuilder.create(EBParticles.FLASH).pos(getX(), getY(), getZ()).color(0xff6d00).spawn(level());
             }
         }
@@ -74,7 +77,7 @@ public class FlamecatcherArrow extends MagicArrowEntity {
     @Override
     protected void onHitBlock(@NotNull BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
-        if(this.level().isClientSide){
+        if (this.level().isClientSide) {
             Vec3 vec = blockHitResult.getLocation().add(new Vec3(blockHitResult.getDirection().getStepX(),
                     blockHitResult.getDirection().getStepY(), blockHitResult.getDirection().getStepZ()).scale(0.15));
             ParticleBuilder.create(EBParticles.FLASH).pos(vec).color(0xff6d00).fade(0.85f, 0.5f, 0.8f).spawn(level());
@@ -88,11 +91,11 @@ public class FlamecatcherArrow extends MagicArrowEntity {
 
     @Override
     public void ticksInAir() {
-        if(this.level().isClientSide) {
+        if (this.level().isClientSide) {
             ParticleBuilder.create(EBParticles.MAGIC_FIRE, level().getRandom(), this.getX(), this.getY(), this.getZ(), 0.03, false)
                     .time(20 + this.random.nextInt(10)).spawn(level());
 
-            if(this.getLifetime() > 1) {
+            if (this.getLifetime() > 1) {
                 double x = this.getX() - this.getDeltaMovement().x / 2;
                 double y = this.getY() - this.getDeltaMovement().y / 2;
                 double z = this.getZ() - this.getDeltaMovement().z / 2;

@@ -38,35 +38,6 @@ public class SpellGlyphData extends SavedData {
 
     }
 
-    public void generateGlyphNames(Level world) {
-        for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
-            if (!randomNames.containsKey(spell)) randomNames.put(spell, generateRandomName(world.random));
-            if(!randomDescriptions.containsKey(spell)) randomDescriptions.put(spell, generateRandomDescription(world.random));
-        }
-
-        this.setDirty();
-    }
-
-    private String generateRandomName(RandomSource random) {
-        StringBuilder name = new StringBuilder();
-
-        for (int i = 0; i < random.nextInt(2) + 2; i++) {
-            name.append(RandomStringUtils.random(3 + random.nextInt(5), "abcdefghijklmnopqrstuvwxyz")).append(" ");
-        }
-
-        return name.toString().trim();
-    }
-
-    private String generateRandomDescription(RandomSource random) {
-        StringBuilder name = new StringBuilder();
-
-        for (int i = 0; i < random.nextInt(16) + 8; i++) {
-            name.append(RandomStringUtils.random(2 + random.nextInt(7), "abcdefghijklmnopqrstuvwxyz")).append(" ");
-        }
-
-        return name.toString().trim();
-    }
-
     public static SpellGlyphData get(ServerLevel world) {
         SpellGlyphData instance = world.getDataStorage().get(SpellGlyphData::load, NAME);
         if (instance == null) {
@@ -81,25 +52,10 @@ public class SpellGlyphData extends SavedData {
         return instance;
     }
 
-    public void sync(ServerPlayer player) {
-        HashMap<ResourceLocation, String> names = new HashMap<>();
-        HashMap<ResourceLocation, String> descriptions = new HashMap<>();
-
-        for(Spell spell : Services.REGISTRY_UTIL.getSpells()) {
-            names.put(spell.getLocation(), this.randomNames.get(spell));
-            descriptions.put(spell.getLocation(), this.randomDescriptions.get(spell));
-        }
-
-        SpellGlyphPacketS2C msg = new SpellGlyphPacketS2C(names, descriptions);
-        Services.NETWORK_HELPER.sendTo(player, msg);
-
-        EBLogger.info("Synchronising spell glyph data for " + player.getName().getString());
-    }
-
-    public static Component getGlyphNameFormatted(Spell spell, SpellGlyphData data){
+    public static Component getGlyphNameFormatted(Spell spell, SpellGlyphData data) {
         return Component.literal(getGlyphName(spell, data)).withStyle(Style.EMPTY.withFont(new ResourceLocation("minecraft", "alt")));
     }
-    
+
     public static String getGlyphName(Spell spell, SpellGlyphData data) {
         Map<Spell, String> names = data.randomNames;
         return names == null ? "" : names.get(spell);
@@ -135,6 +91,60 @@ public class SpellGlyphData extends SavedData {
         return data;
     }
 
+    public static void onServerLevelLoad(EBServerLevelLoadEvent event) {
+        if (event.getLevel().isClientSide) return;
+
+        ServerLevel level = (ServerLevel) event.getLevel();
+        if (level.dimension().location().getPath().equals("overworld")) {
+            level.getDataStorage().computeIfAbsent((compoundTag) -> SpellGlyphData.get(level), SpellGlyphData::new, NAME);
+        }
+    }
+
+    public void generateGlyphNames(Level world) {
+        for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
+            if (!randomNames.containsKey(spell)) randomNames.put(spell, generateRandomName(world.random));
+            if (!randomDescriptions.containsKey(spell))
+                randomDescriptions.put(spell, generateRandomDescription(world.random));
+        }
+
+        this.setDirty();
+    }
+
+    private String generateRandomName(RandomSource random) {
+        StringBuilder name = new StringBuilder();
+
+        for (int i = 0; i < random.nextInt(2) + 2; i++) {
+            name.append(RandomStringUtils.random(3 + random.nextInt(5), "abcdefghijklmnopqrstuvwxyz")).append(" ");
+        }
+
+        return name.toString().trim();
+    }
+
+    private String generateRandomDescription(RandomSource random) {
+        StringBuilder name = new StringBuilder();
+
+        for (int i = 0; i < random.nextInt(16) + 8; i++) {
+            name.append(RandomStringUtils.random(2 + random.nextInt(7), "abcdefghijklmnopqrstuvwxyz")).append(" ");
+        }
+
+        return name.toString().trim();
+    }
+
+    public void sync(ServerPlayer player) {
+        HashMap<ResourceLocation, String> names = new HashMap<>();
+        HashMap<ResourceLocation, String> descriptions = new HashMap<>();
+
+        for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
+            names.put(spell.getLocation(), this.randomNames.get(spell));
+            descriptions.put(spell.getLocation(), this.randomDescriptions.get(spell));
+        }
+
+        SpellGlyphPacketS2C msg = new SpellGlyphPacketS2C(names, descriptions);
+        Services.NETWORK_HELPER.sendTo(player, msg);
+
+        EBLogger.info("Synchronising spell glyph data for " + player.getName().getString());
+    }
+
     @Override
     public @NotNull CompoundTag save(@NotNull CompoundTag nbt) {
         ListTag tagList = new ListTag();
@@ -142,25 +152,16 @@ public class SpellGlyphData extends SavedData {
         for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
             CompoundTag tag = new CompoundTag();
             tag.putString("spell", spell.getLocation().toString());
-            if(this.randomNames.get(spell) != null) {
-            	tag.putString("name", this.randomNames.get(spell));
+            if (this.randomNames.get(spell) != null) {
+                tag.putString("name", this.randomNames.get(spell));
             }
-            if(this.randomDescriptions.get(spell) != null) {
-            	tag.putString("description", this.randomDescriptions.get(spell));
+            if (this.randomDescriptions.get(spell) != null) {
+                tag.putString("description", this.randomDescriptions.get(spell));
             }
             tagList.add(tag);
         }
 
         NBTExtras.storeTagSafely(nbt, "spellGlyphData", tagList);
         return nbt;
-    }
-
-    public static void onServerLevelLoad(EBServerLevelLoadEvent event) {
-        if(event.getLevel().isClientSide) return;
-
-        ServerLevel level = (ServerLevel) event.getLevel();
-        if (level.dimension().location().getPath().equals("overworld")) {
-            level.getDataStorage().computeIfAbsent((compoundTag) -> SpellGlyphData.get(level), SpellGlyphData::new, NAME);
-        }
     }
 }

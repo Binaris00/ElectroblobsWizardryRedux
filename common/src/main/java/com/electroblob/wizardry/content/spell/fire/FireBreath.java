@@ -27,7 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class FireBreath extends RaySpell {
-    public FireBreath(){
+    public FireBreath() {
         this.particleVelocity(1);
         this.particleJitter(0.3);
         this.particleSpacing(0.25);
@@ -36,11 +36,11 @@ public class FireBreath extends RaySpell {
 
     @Override
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
-        if(!EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return false;
+        if (!EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return false;
         BlockPos pos = blockHit.getBlockPos().relative(blockHit.getDirection());
 
         if (ctx.world().isEmptyBlock(pos) && BlockUtil.canPlaceBlock(ctx.caster(), ctx.world(), pos)) {
-            if(!ctx.world().isClientSide) ctx.world().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
+            if (!ctx.world().isClientSide) ctx.world().setBlockAndUpdate(pos, Blocks.FIRE.defaultBlockState());
             return true;
         }
 

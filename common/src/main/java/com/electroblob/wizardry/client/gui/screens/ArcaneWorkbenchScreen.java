@@ -22,7 +22,6 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
 import net.minecraft.world.entity.player.Inventory;
-import net.minecraft.world.inventory.ClickType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -39,10 +38,9 @@ import static com.electroblob.wizardry.client.EBClientConstants.LINE_SPACING_WID
 public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkbenchMenu> {
     private final Inventory playerInventory;
     private final ArcaneWorkbenchMenu menu;
+    private final List<TooltipElement> tooltipElements = new ArrayList<>();
     private AbstractWidget applyBtn;
     private AbstractWidget clearBtn;
-
-    private final List<TooltipElement> tooltipElements = new ArrayList<>();
     private int animationTimer = 0;
 
     public ArcaneWorkbenchScreen(ArcaneWorkbenchMenu menu, Inventory playerInventory, Component name) {
@@ -98,8 +96,8 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
      * Renders the screen, including background, slots, tooltips, and animations.
      *
      * @param guiGraphics The graphics context.
-     * @param mouseX Mouse X position.
-     * @param mouseY Mouse Y position.
+     * @param mouseX      Mouse X position.
+     * @param mouseY      Mouse Y position.
      * @param partialTick Partial tick time.
      */
     @Override
@@ -128,8 +126,8 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
      *
      * @param guiGraphics The graphics context.
      * @param partialTick Partial tick time.
-     * @param mouseX Mouse X position.
-     * @param mouseY Mouse Y position.
+     * @param mouseX      Mouse X position.
+     * @param mouseY      Mouse Y position.
      */
     @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
@@ -261,8 +259,8 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
      * Also draws tooltip foreground if needed.
      *
      * @param guiGraphics The graphics context.
-     * @param mouseX Mouse X position.
-     * @param mouseY Mouse Y position.
+     * @param mouseX      Mouse X position.
+     * @param mouseY      Mouse Y position.
      */
     @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {

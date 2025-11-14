@@ -7,7 +7,6 @@ import com.electroblob.wizardry.client.sound.SoundLoop;
 import com.electroblob.wizardry.client.sound.SoundLoopSpell;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.client.Minecraft;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.Entity;

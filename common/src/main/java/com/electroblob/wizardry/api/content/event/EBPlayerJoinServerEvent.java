@@ -8,12 +8,13 @@ import net.minecraft.world.entity.player.Player;
  * This applies to: <br><br>
  * Fabric: {@code ServerPlayConnectionEvents#JOIN} <br>
  * Forge: {@code EntityJoinLevelEvent}
- * */
+ *
+ */
 public class EBPlayerJoinServerEvent extends WizardryEvent {
     Player player;
     MinecraftServer server;
 
-    public EBPlayerJoinServerEvent(Player player, MinecraftServer server){
+    public EBPlayerJoinServerEvent(Player player, MinecraftServer server) {
         this.player = player;
         this.server = server;
     }

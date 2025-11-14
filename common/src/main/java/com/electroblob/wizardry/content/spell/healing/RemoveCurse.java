@@ -22,10 +22,10 @@ public class RemoveCurse extends BuffSpell {
 
     @Override
     protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
-        if(!caster.getActiveEffects().isEmpty()){
+        if (!caster.getActiveEffects().isEmpty()) {
             boolean flag = false;
-            for(MobEffectInstance effect : caster.getActiveEffects()){
-                if(effect.getEffect() instanceof CurseMobEffect){
+            for (MobEffectInstance effect : caster.getActiveEffects()) {
+                if (effect.getEffect() instanceof CurseMobEffect) {
                     caster.removeEffect(effect.getEffect());
                     flag = true;
                 }
@@ -41,7 +41,7 @@ public class RemoveCurse extends BuffSpell {
     protected void spawnParticles(Level world, LivingEntity caster) {
         super.spawnParticles(world, caster);
 
-        for(int i = 0; i < particleCount*2; i++){
+        for (int i = 0; i < particleCount * 2; i++) {
             double x = caster.xo + world.random.nextDouble() * 2 - 1;
             double y = caster.yo + caster.getEyeHeight() - 0.5 + world.random.nextDouble();
             double z = caster.zo + world.random.nextDouble() * 2 - 1;

@@ -124,7 +124,6 @@ public class IceChargeEntity extends BombEntity {
     }
 
 
-
     @Override
     protected @NotNull Item getDefaultItem() {
         return ItemStack.EMPTY.getItem();

@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.client.renderer.blockentity;
 
 import com.electroblob.wizardry.content.blockentity.ImbuementAltarBlockEntity;
-import com.electroblob.wizardry.content.item.ReceptacleItemValue;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -43,14 +42,14 @@ public class ImbuementAltarRender implements BlockEntityRenderer<ImbuementAltarB
 
     private void renderItem(PoseStack posestack, ImbuementAltarBlockEntity entity, float t, MultiBufferSource source, int light) {
         ItemStack stack = entity.getStack();
-        if(stack.isEmpty()) return;
+        if (stack.isEmpty()) return;
         posestack.pushPose();
 
         posestack.mulPose(Axis.XP.rotationDegrees(180));
         posestack.mulPose(Axis.YP.rotationDegrees(t));
         posestack.scale(0.85F, 0.85F, 0.85F);
 
-        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, posestack, source, entity.getLevel(),0);
+        Minecraft.getInstance().getItemRenderer().renderStatic(stack, ItemDisplayContext.FIXED, light, OverlayTexture.NO_OVERLAY, posestack, source, entity.getLevel(), 0);
         posestack.popPose();
     }
 
@@ -118,8 +117,8 @@ public class ImbuementAltarRender implements BlockEntityRenderer<ImbuementAltarB
             double x2 = scale * Mth.sin((t + 40 * j - sliceAngle) * ((float) Math.PI / 180));
             double z2 = scale * Mth.cos((t + 40 * j - sliceAngle) * ((float) Math.PI / 180));
 
-            buffer.vertex(poseStack.last().pose(), (float)x1, 0, (float)z1).color(r2, g2, b2, 0).endVertex();
-            buffer.vertex(poseStack.last().pose(), (float)x2, 0, (float)z2).color(r2, g2, b2, 0).endVertex();
+            buffer.vertex(poseStack.last().pose(), (float) x1, 0, (float) z1).color(r2, g2, b2, 0).endVertex();
+            buffer.vertex(poseStack.last().pose(), (float) x2, 0, (float) z2).color(r2, g2, b2, 0).endVertex();
 
             BufferUploader.drawWithShader(buffer.end());
 

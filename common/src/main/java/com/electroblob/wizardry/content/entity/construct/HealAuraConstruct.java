@@ -23,7 +23,7 @@ public class HealAuraConstruct extends ScaledConstructEntity {
         super(type, world);
     }
 
-    public HealAuraConstruct(Level world){
+    public HealAuraConstruct(Level world) {
         super(EBEntities.HEAL_AURA.get(), world);
         setSize(Spells.HEALING_AURA.property(DefaultProperties.EFFECT_RADIUS) * 2, 1);
     }
@@ -31,13 +31,13 @@ public class HealAuraConstruct extends ScaledConstructEntity {
     @Override
     public void tick() {
         super.tick();
-        if(this.tickCount % 25 == 1) this.playSound(EBSounds.ENTITY_HEAL_AURA_AMBIENT.get(), 0.1f, 1.0f);
+        if (this.tickCount % 25 == 1) this.playSound(EBSounds.ENTITY_HEAL_AURA_AMBIENT.get(), 0.1f, 1.0f);
 
-        if(this.level().isClientSide){
-            for(int i=1; i<3; i++){
+        if (this.level().isClientSide) {
+            for (int i = 1; i < 3; i++) {
                 float brightness = 0.5f + (random.nextFloat() * 0.5f);
-                double radius = random.nextDouble() * (getBbWidth()/2);
-                float angle = random.nextFloat() * (float)Math.PI * 2;
+                double radius = random.nextDouble() * (getBbWidth() / 2);
+                float angle = random.nextFloat() * (float) Math.PI * 2;
 
                 ParticleBuilder.create(EBParticles.SPARKLE)
                         .pos(this.xo + radius * Mth.cos(angle), this.yo, this.zo + radius * Mth.sin(angle))
@@ -49,16 +49,16 @@ public class HealAuraConstruct extends ScaledConstructEntity {
             return;
         }
 
-        List<LivingEntity> targets = EntityUtil.getLivingWithinCylinder(getBbWidth()/2, xo, yo, zo, getBbHeight(), level());
-        for(LivingEntity target : targets){
-            if(!this.isValidTarget(target)) {
-                if(target.getHealth() < target.getMaxHealth() && target.tickCount % 5 == 0){
+        List<LivingEntity> targets = EntityUtil.getLivingWithinCylinder(getBbWidth() / 2, xo, yo, zo, getBbHeight(), level());
+        for (LivingEntity target : targets) {
+            if (!this.isValidTarget(target)) {
+                if (target.getHealth() < target.getMaxHealth() && target.tickCount % 5 == 0) {
                     target.heal(Spells.HEALING_AURA.property(DefaultProperties.HEALTH) * damageMultiplier);
                 }
                 continue;
             }
 
-            if(target.getMobType() == MobType.UNDEAD && this.tickCount % 10 == 1) {
+            if (target.getMobType() == MobType.UNDEAD && this.tickCount % 10 == 1) {
                 EntityUtil.attackEntityWithoutKnockback(target, this.getCaster() != null ?
                                 EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.RADIANT) :
                                 EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY),

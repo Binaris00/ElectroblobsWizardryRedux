@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.core.mixin;
 
 import com.electroblob.wizardry.content.item.RandomSpellBookItem;
-import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
@@ -17,7 +16,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ItemEntity.class)
 public abstract class ItemEntityMixin {
     @Unique
-    private ItemEntity itemEntity = (ItemEntity)(Object)this;
+    private ItemEntity itemEntity = (ItemEntity) (Object) this;
 
     @Shadow
     public abstract ItemStack getItem();
@@ -28,7 +27,7 @@ public abstract class ItemEntityMixin {
         Item item = itemstack.getItem();
         int i = itemstack.getCount();
 
-        if(itemstack.getItem() instanceof RandomSpellBookItem){
+        if (itemstack.getItem() instanceof RandomSpellBookItem) {
             RandomSpellBookItem.create(entity.level(), entity, itemstack);
             entity.awardStat(Stats.ITEM_PICKED_UP.get(item), i);
             itemEntity.discard();

@@ -15,7 +15,8 @@ import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 /**
  * Encapsulate all the work and info needed to cast spells in the mod, this contains 3 subclasses
  * that are used depending on how you're casting a spell
- * */
+ *
+ */
 public abstract class SoundLoopSpell extends SoundLoop {
     private final Spell spell;
 
@@ -35,7 +36,9 @@ public abstract class SoundLoopSpell extends SoundLoop {
         }
     }
 
-    /** Sound loop from a spell cast by an entity **/
+    /**
+     * Sound loop from a spell cast by an entity
+     **/
     public static class SoundLoopSpellEntity extends SoundLoopSpell {
         private final LivingEntity source;
 
@@ -53,19 +56,22 @@ public abstract class SoundLoopSpell extends SoundLoop {
     public static abstract class SoundLoopSpellLocation extends SoundLoopSpell {
         public SoundLoopSpellLocation(SoundEvent start, SoundEvent loop, SoundEvent end, Spell spell, double x, double y, double z, float sndVolume, float sndPitch) {
             super(start, loop, end, sndVolume, (sound, category, v, r) ->
-                    new AbstractSoundInstance(sound, category, Minecraft.getInstance().level.random) {{
-                    this.x = (float) x;
-                    this.y = (float) y;
-                    this.z = (float) z;
-                    this.looping = r;
-                    this.volume = v;
-                    this.pitch = sndPitch;
-                }
-            }, spell);
+                    new AbstractSoundInstance(sound, category, Minecraft.getInstance().level.random) {
+                        {
+                            this.x = (float) x;
+                            this.y = (float) y;
+                            this.z = (float) z;
+                            this.looping = r;
+                            this.volume = v;
+                            this.pitch = sndPitch;
+                        }
+                    }, spell);
         }
     }
 
-    /** Sound loop from a spell cast by a dispenser **/
+    /**
+     * Sound loop from a spell cast by a dispenser
+     **/
     public static class SoundLoopSpellDispenser extends SoundLoopSpellLocation {
         private final DispenserBlockEntity source;
 
@@ -87,7 +93,9 @@ public abstract class SoundLoopSpell extends SoundLoop {
         }
     }
 
-    /** Sound loop from a spell cast just by the location, normally a /cast command **/
+    /**
+     * Sound loop from a spell cast just by the location, normally a /cast command
+     **/
     public static class SoundLoopSpellPosTimed extends SoundLoopSpellLocation {
         private int timeLeft;
 

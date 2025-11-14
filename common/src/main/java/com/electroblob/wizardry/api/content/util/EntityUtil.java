@@ -29,15 +29,16 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public final class EntityUtil {
-    private EntityUtil() {}
+    private EntityUtil() {
+    }
 
     @Nullable
-    public static Entity getEntityByUUID(Level world, @Nullable UUID id){
-        if(id == null) return null; // It would return null eventually, but there's no point even looking
+    public static Entity getEntityByUUID(Level world, @Nullable UUID id) {
+        if (id == null) return null; // It would return null eventually, but there's no point even looking
 
-        if(world instanceof ServerLevel serverWorld){
+        if (world instanceof ServerLevel serverWorld) {
             for (Entity entity : serverWorld.getAllEntities()) {
-                if(entity.getUUID().equals(id)) return entity;
+                if (entity.getUUID().equals(id)) return entity;
             }
         }
         return null;
@@ -51,7 +52,7 @@ public final class EntityUtil {
         return getEntitiesWithinRadius(radius, x, y, z, world, LivingEntity.class);
     }
 
-    public static <T extends Entity> List<T> getEntitiesInRange(Level world, double x, double y, double z, double range, Class<T> entityClass){
+    public static <T extends Entity> List<T> getEntitiesInRange(Level world, double x, double y, double z, double range, Class<T> entityClass) {
         AABB boundingBox = new AABB(x - range, y - range, z - range, x + range, y + range, z + range);
         Predicate<T> alwaysTrue = entity -> true;
 
@@ -73,7 +74,7 @@ public final class EntityUtil {
     }
 
     //@Deprecated(forRemoval = true, since = "1.20.1")
-    public static boolean isLiving(Entity entity){
+    public static boolean isLiving(Entity entity) {
         return entity instanceof LivingEntity && !(entity instanceof ArmorStand);
     }
 
@@ -93,8 +94,9 @@ public final class EntityUtil {
      * Finds the nearest space to the specified position that the given entity can teleport to without being inside one
      * or more solid blocks. The search volume is twice the size of the entity's bounding box (meaning that when
      * teleported to the returned position, the original destination remains within the entity's bounding box).
-     * @param entity The entity being teleported
-     * @param destination The target position to search around
+     *
+     * @param entity               The entity being teleported
+     * @param destination          The target position to search around
      * @param accountForPassengers True to take passengers into account when searching for a space, false to ignore them
      * @return The resulting position, or null if no space was found.
      */
@@ -160,7 +162,7 @@ public final class EntityUtil {
     public static <T extends Entity> List<T> getEntitiesWithinCylinder(double radius, double x, double y, double z, double height, Level world, Class<T> entityType) {
         AABB aabb = new AABB(x - radius, y, z - radius, x + radius, y + height, z + radius);
         List<T> entityList = world.getEntitiesOfClass(entityType, aabb);
-        for(T entity : entityList) {
+        for (T entity : entityList) {
             if (entity.distanceToSqr(x, entity.yo, z) > radius) {
                 entityList.remove(entity);
                 break;
@@ -178,7 +180,7 @@ public final class EntityUtil {
         return true;
     }
 
-    public static int getDefaultAimingError(Difficulty difficulty){
+    public static int getDefaultAimingError(Difficulty difficulty) {
         return switch (difficulty) {
             case EASY -> 10;
             case NORMAL -> 6;
@@ -192,7 +194,7 @@ public final class EntityUtil {
     }
 
     public static boolean isCasting(LivingEntity caster, Spell spell) {
-        if(spell.isInstantCast()) return false;
+        if (spell.isInstantCast()) return false;
 
         if (caster instanceof Player) {
             // TODO WIZARD DATA CURRENT SPELL
@@ -206,7 +208,7 @@ public final class EntityUtil {
                 ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
                 return stack.getItem() instanceof ISpellCastingItem && ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack) == spell;
             }
-        } else if (caster instanceof ISpellCaster spellCaster){
+        } else if (caster instanceof ISpellCaster spellCaster) {
             return spellCaster.getContinuousSpell() == spell;
         }
 

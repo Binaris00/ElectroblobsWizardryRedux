@@ -66,7 +66,7 @@ public class WizardryAdvancementTrigger implements CriterionTrigger<WizardryAdva
             super(triggerId, EntityPredicate.fromJson(json, "player", context));
         }
 
-        public TriggerInstance(ResourceLocation triggerId){
+        public TriggerInstance(ResourceLocation triggerId) {
             super(triggerId, ContextAwarePredicate.ANY);
         }
     }

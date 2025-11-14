@@ -37,22 +37,22 @@ public class FireBombEntity extends BombEntity {
     @Override
     protected void onHit(@NotNull HitResult hitResult) {
         super.onHit(hitResult);
-        if(hitResult instanceof EntityHitResult entityHitResult){
+        if (hitResult instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
 
             float damage = Spells.FIRE_BOMB.property(DefaultProperties.DAMAGE);
             EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
-        } else if(hitResult instanceof BlockHitResult){
+        } else if (hitResult instanceof BlockHitResult) {
             List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), Spells.FIRE_BOMB.property(DefaultProperties.EFFECT_RADIUS));
 
-            for(LivingEntity entity: livingEntities){
+            for (LivingEntity entity : livingEntities) {
                 EBMagicDamageSource.causeMagicDamage(this, entity, Spells.FIRE_BOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE, false);
-                if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
+                if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
                     entity.setSecondsOnFire(Spells.FIRE_BOMB.property(DefaultProperties.EFFECT_DURATION));
             }
         }
 
-        if(!level().isClientSide()){
+        if (!level().isClientSide()) {
             this.playSound(EBSounds.ENTITY_FIREBOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
             this.playSound(EBSounds.ENTITY_FIREBOMB_FIRE.get(), 1, 1);
 
@@ -64,7 +64,7 @@ public class FireBombEntity extends BombEntity {
 
     @Override
     public void handleEntityEvent(byte b) {
-        if(b == 3){
+        if (b == 3) {
             ParticleBuilder.create(EBParticles.FLASH).pos(this.position()).scale(5 * blastMultiplier).color(1, 0.6f, 0).spawn(level());
 
             for (int i = 0; i < 60 * blastMultiplier; i++) {

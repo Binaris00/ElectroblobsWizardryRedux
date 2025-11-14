@@ -24,7 +24,7 @@ public class InvokeWeather extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if(!ctx.world().dimension().equals(Level.OVERWORLD)) return false;
+        if (!ctx.world().dimension().equals(Level.OVERWORLD)) return false;
 
         if (!ctx.world().isClientSide) {
 

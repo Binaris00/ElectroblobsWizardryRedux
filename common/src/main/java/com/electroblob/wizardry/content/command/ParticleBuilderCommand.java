@@ -18,18 +18,20 @@ public final class ParticleBuilderCommand {
             value -> value,
             Component::literal
     );
-    private ParticleBuilderCommand() {}
+
+    private ParticleBuilderCommand() {
+    }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("particlebuilder")
                 .requires((p) -> p.hasPermission(2))
-                        .then(Commands.argument("particle", ResourceLocationArgument.id()).suggests(PARTICLE_SUGGESTIONS)
-                                .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                                        .executes(c -> execute(c.getSource(),
-                                                ResourceLocationArgument.getId(c,"particle"),
-                                                BlockPosArgument.getBlockPos(c,"pos")))
-                                )
+                .then(Commands.argument("particle", ResourceLocationArgument.id()).suggests(PARTICLE_SUGGESTIONS)
+                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                                .executes(c -> execute(c.getSource(),
+                                        ResourceLocationArgument.getId(c, "particle"),
+                                        BlockPosArgument.getBlockPos(c, "pos")))
                         )
+                )
         );
     }
 

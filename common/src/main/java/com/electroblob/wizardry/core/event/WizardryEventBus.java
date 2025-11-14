@@ -21,10 +21,14 @@ import java.util.Map;
  * <br>
  * You don't need to use or access to this interface, this could help
  * you if you want to make events for you mod
- * */
+ */
 public final class WizardryEventBus implements EventRegistry {
     private static final WizardryEventBus INSTANCE = new WizardryEventBus();
     private final Map<Class<? extends IWizardryEvent>, List<EventListener<? extends IWizardryEvent>>> listeners = new HashMap<>();
+
+    public static WizardryEventBus getInstance() {
+        return INSTANCE;
+    }
 
     @Override
     public synchronized <E extends IWizardryEvent> void register(Class<E> eventClass, EventListener<E> listener) {
@@ -42,9 +46,5 @@ public final class WizardryEventBus implements EventRegistry {
         }
 
         return event.canBeCanceled() && event.isCanceled();
-    }
-
-    public static WizardryEventBus getInstance() {
-        return INSTANCE;
     }
 }

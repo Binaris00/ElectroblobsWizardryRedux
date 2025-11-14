@@ -17,24 +17,20 @@ import java.util.function.Supplier;
 
 public final class EBCreativeTabs {
     static Map<String, Supplier<CreativeModeTab>> CREATIVE_MODE_TABS = new HashMap<>();
-
-    private EBCreativeTabs() {}
-
     // All EBWizardry Items
     public static final Supplier<CreativeModeTab> ITEMS = creativeTab("ebwizardry",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBItems.MAGIC_CRYSTAL.get()))
                     .title(Component.translatable("creativetab.ebwizardry"))
                     .displayItems((parameters, output) -> EBItems.GENERAL_ITEMS.forEach((item) -> {
-                        if(item.equals(EBItems.ARCANE_TOME)){
+                        if (item.equals(EBItems.ARCANE_TOME)) {
                             createTomes().forEach(output::accept);
                         } else {
                             output.accept(item.get());
                         }
                     }))
                     .build()
-            );
-
+    );
     // All Wands
     public static final Supplier<CreativeModeTab> WANDS = creativeTab("ebwizardry_wands",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -42,8 +38,7 @@ public final class EBCreativeTabs {
                     .title(Component.translatable("creativetab.ebwizardry_wands"))
                     .displayItems((parameters, output) -> EBItems.WANDS.forEach(i -> output.accept(i.get())))
                     .build()
-            );
-
+    );
     // All Armors
     public static final Supplier<CreativeModeTab> ARMORS = creativeTab("ebwizardry_armors",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -51,8 +46,7 @@ public final class EBCreativeTabs {
                     .title(Component.translatable("creativetab.ebwizardry_armors"))
                     .displayItems((parameters, output) -> EBItems.ARMORS.forEach(i -> output.accept(i.get())))
                     .build()
-            );
-
+    );
     // All Artifacts
     public static final Supplier<CreativeModeTab> ARTIFACTS = creativeTab("ebwizardry_artifacts",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -60,9 +54,7 @@ public final class EBCreativeTabs {
                     .title(Component.translatable("creativetab.ebwizardry_artifacts"))
                     .displayItems((parameters, output) -> EBItems.ARTIFACTS.forEach(i -> output.accept(i.get())))
                     .build()
-            );
-
-
+    );
     // All Spell Books and scrolls
     public static final Supplier<CreativeModeTab> SPELLS = creativeTab("ebwizardry_spells",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -73,8 +65,7 @@ public final class EBCreativeTabs {
                         createScrolls().forEach(output::accept);
                     })
                     .build()
-                );
-
+    );
     public static final Supplier<CreativeModeTab> BLOCKS = creativeTab("ebwizardry_blocks",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBBlocks.EARTH_CRYSTAL_BLOCK.get().asItem()))
@@ -82,7 +73,6 @@ public final class EBCreativeTabs {
                     .displayItems((parameters, output) -> EBBlocks.BLOCK_ITEMS.forEach((name, block) -> output.accept(block.get())))
                     .build()
     );
-
     public static final Supplier<CreativeModeTab> DEBUGS = creativeTab("ebwizardry_debugs",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBItems.FLAMING_AXE.get()))
@@ -91,8 +81,11 @@ public final class EBCreativeTabs {
                     .build()
     );
 
+    private EBCreativeTabs() {
+    }
+
     // ======= Registry =======
-    public static void register(RegisterFunction<CreativeModeTab> function){
+    public static void register(RegisterFunction<CreativeModeTab> function) {
         CREATIVE_MODE_TABS.forEach(((id, creativeModeTabSupplier) -> {
             function.register(BuiltInRegistries.CREATIVE_MODE_TAB, WizardryMainMod.location(id), creativeModeTabSupplier.get());
         }));
@@ -116,10 +109,10 @@ public final class EBCreativeTabs {
         return list;
     }
 
-    private static List<ItemStack> createTomes(){
+    private static List<ItemStack> createTomes() {
         List<ItemStack> list = new ArrayList<>();
         Services.REGISTRY_UTIL.getTiers().forEach(spellTier -> {
-            if(spellTier != SpellTiers.NOVICE) {
+            if (spellTier != SpellTiers.NOVICE) {
                 ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get());
                 stack.getOrCreateTag().putString("Tier", spellTier.getLocation().toString());
                 list.add(stack);

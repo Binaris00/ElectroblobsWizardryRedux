@@ -26,8 +26,8 @@ public final class DataEvents {
     private DataEvents() {
     }
 
-    public static void onPlayerTick(EBLivingTick event){
-        if(!(event.getEntity() instanceof Player player)) return;
+    public static void onPlayerTick(EBLivingTick event) {
+        if (!(event.getEntity() instanceof Player player)) return;
 
         spellDataTick(player);
         castCommandTick(player);
@@ -44,9 +44,9 @@ public final class DataEvents {
         spellData.entrySet().removeIf(entry -> entry.getKey().canPurge(player, entry.getValue()));
     }
 
-    public static void onMinionTick(EBLivingTick event){
-        if(!(event.getEntity() instanceof Mob mob)) return;
-        if(!Services.OBJECT_DATA.isMinion(mob)) return;
+    public static void onMinionTick(EBLivingTick event) {
+        if (!(event.getEntity() instanceof Mob mob)) return;
+        if (!Services.OBJECT_DATA.isMinion(mob)) return;
         Services.OBJECT_DATA.getMinionData(mob).tick();
     }
 
@@ -62,12 +62,12 @@ public final class DataEvents {
         }
     }
 
-    private static void castCommandTick(Player player){
+    private static void castCommandTick(Player player) {
         CastCommandData castData = Services.OBJECT_DATA.getCastCommandData(player);
         castData.tick();
     }
 
-    private static void conjureItemTick(Player player){
+    private static void conjureItemTick(Player player) {
         if (player.tickCount % CONJURE_CHECK_INTERVAL != 0) return;
 
         long currentGameTime = player.level().getGameTime();
@@ -91,14 +91,14 @@ public final class DataEvents {
         }
     }
 
-    private static void imbuementTick(Player player){
+    private static void imbuementTick(Player player) {
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
 
         Iterator<ImbuementLoader> iterator = data.getImbuementLoaders().iterator();
-        while(iterator.hasNext()) {
+        while (iterator.hasNext()) {
             ImbuementLoader loader = iterator.next();
             boolean result = loader.hasReachedLimit();
-            if(result){
+            if (result) {
                 data.removeImbuement(loader);
                 iterator.remove();
             }
@@ -106,7 +106,7 @@ public final class DataEvents {
         data.sync();
     }
 
-    private static void recentSpells(Player player){
+    private static void recentSpells(Player player) {
         WizardData data = Services.OBJECT_DATA.getWizardData(player);
         if (player.tickCount % 60 == 0) {
             long currentTime = player.level().getGameTime();

@@ -30,7 +30,7 @@ public class LightningPulse extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if(!ctx.caster().onGround()) return false;
+        if (!ctx.caster().onGround()) return false;
         float radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.world());
@@ -41,7 +41,7 @@ public class LightningPulse extends Spell {
                     property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY)
             );
 
-            if(!ctx.world().isClientSide()){
+            if (!ctx.world().isClientSide()) {
                 double dx = target.getX() - ctx.caster().getX();
                 double dz = target.getZ() - ctx.caster().getZ();
                 double vectorLength = Math.sqrt(dx * dx + dz * dz);
@@ -60,7 +60,7 @@ public class LightningPulse extends Spell {
             }
         }
 
-        if(ctx.world().isClientSide()){
+        if (ctx.world().isClientSide()) {
             ParticleBuilder.create(EBParticles.LIGHTNING_PULSE)
                     .pos(ctx.caster().getX(), ctx.caster().getY() + GeometryUtil.ANTI_Z_FIGHTING_OFFSET, ctx.caster().getZ())
                     .scale(ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()))
@@ -74,7 +74,7 @@ public class LightningPulse extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT_DOWN,25, 0, 75)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT_DOWN, 25, 0, 75)
                 .add(DefaultProperties.DAMAGE, 8.0F)
                 .add(DefaultProperties.EFFECT_RADIUS, 3)
                 .add(REPULSION_VELOCITY)

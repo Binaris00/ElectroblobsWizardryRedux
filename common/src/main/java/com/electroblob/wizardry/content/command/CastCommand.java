@@ -23,7 +23,8 @@ import net.minecraft.world.InteractionHand;
 public final class CastCommand {
     public static final int DEFAULT_CASTING_DURATION = 400;
 
-    private CastCommand() {}
+    private CastCommand() {
+    }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("cast")

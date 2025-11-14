@@ -8,6 +8,9 @@ import net.minecraft.network.chat.Component;
 
 public final class ListTiersCommand {
 
+    private ListTiersCommand() {
+    }
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("tiers")
                 .requires((p) -> p.hasPermission(2))
@@ -21,6 +24,4 @@ public final class ListTiersCommand {
         });
         return 1;
     }
-
-    private ListTiersCommand(){}
 }

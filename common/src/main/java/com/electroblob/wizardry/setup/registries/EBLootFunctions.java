@@ -13,14 +13,13 @@ import java.util.function.Supplier;
 
 public final class EBLootFunctions {
     static Map<String, Supplier<LootItemFunctionType>> LOOT_FUNCTIONS = new HashMap<>();
-    private EBLootFunctions(){}
-
-    public static final Supplier<LootItemFunctionType> RANDOM_SPELL =  lootFunction("random_spell", () -> new LootItemFunctionType(new RandomSpellFunction.Serializer()));
-    public static final Supplier<LootItemFunctionType> WIZARD_SPELL =  lootFunction("wizard_spell", () -> new LootItemFunctionType(new WizardSpellFunction.Serializer()));
-
+    public static final Supplier<LootItemFunctionType> RANDOM_SPELL = lootFunction("random_spell", () -> new LootItemFunctionType(new RandomSpellFunction.Serializer()));
+    public static final Supplier<LootItemFunctionType> WIZARD_SPELL = lootFunction("wizard_spell", () -> new LootItemFunctionType(new WizardSpellFunction.Serializer()));
+    private EBLootFunctions() {
+    }
 
     // ======= Registry =======
-    public static void register(RegisterFunction<LootItemFunctionType> function){
+    public static void register(RegisterFunction<LootItemFunctionType> function) {
         LOOT_FUNCTIONS.forEach(((id, loot_function) ->
                 function.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, WizardryMainMod.location(id), loot_function.get())));
     }

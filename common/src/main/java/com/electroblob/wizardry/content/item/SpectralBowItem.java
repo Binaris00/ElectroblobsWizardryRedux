@@ -7,7 +7,6 @@ import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
@@ -40,7 +39,7 @@ public class SpectralBowItem extends BowItem {
         int i = this.getUseDuration(stack) - timeLeft;
         if (i < 0) return;
         double f = getPowerForTime(i);
-        if(f < 0.1D) return;
+        if (f < 0.1D) return;
 
         if (!world.isClientSide) {
             ConjuredArrowEntity arrow = new ConjuredArrowEntity(EBEntities.CONJURED_ARROW.get(), player, world);
@@ -56,7 +55,8 @@ public class SpectralBowItem extends BowItem {
             int k = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.PUNCH_ARROWS, stack);
 
             if (k > 0) arrow.setKnockback(k);
-            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0) arrow.setSecondsOnFire(100);
+            if (EnchantmentHelper.getItemEnchantmentLevel(Enchantments.FLAMING_ARROWS, stack) > 0)
+                arrow.setSecondsOnFire(100);
 
 
             arrow.pickup = AbstractArrow.Pickup.DISALLOWED;

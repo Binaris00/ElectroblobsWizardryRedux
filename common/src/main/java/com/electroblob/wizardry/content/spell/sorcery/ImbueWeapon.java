@@ -10,6 +10,14 @@ import net.minecraft.world.item.SwordItem;
 import org.jetbrains.annotations.NotNull;
 
 public class ImbueWeapon extends Spell {
+    public static boolean isSword(ItemStack stack) {
+        return stack.getItem() instanceof SwordItem;
+    }
+
+    public static boolean isBow(ItemStack stack) {
+        return stack.getItem() instanceof BowItem;
+    }
+
     @Override
     public boolean cast(PlayerCastContext ctx) {
         // Won't work if the weapon already has the enchantment
@@ -61,15 +69,6 @@ public class ImbueWeapon extends Spell {
 //        return false;
 
         return false;
-    }
-
-
-    public static boolean isSword(ItemStack stack){
-        return stack.getItem() instanceof SwordItem;
-    }
-
-    public static boolean isBow(ItemStack stack){
-        return stack.getItem() instanceof BowItem;
     }
 
     @Override

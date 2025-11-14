@@ -13,7 +13,10 @@ import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBLootFunctions;
 import com.electroblob.wizardry.setup.registries.Spells;
-import com.google.gson.*;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonSerializationContext;
 import com.mojang.serialization.DataResult;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.resources.ResourceLocation;
@@ -48,6 +51,11 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         this.undiscoveredBias = undiscoveredBias;
         this.tiers = tiers;
         this.elements = elements;
+    }
+
+    public static LootItemConditionalFunction.Builder<?> setRandomSpell(List<Spell> spells, boolean ignoreWeighting, float undiscoveredBias, List<SpellTier> tiers, List<Element> elements) {
+        return simpleBuilder((conditions) ->
+                new RandomSpellFunction(conditions, spells, ignoreWeighting, undiscoveredBias, tiers, elements));
     }
 
     @Override
@@ -105,7 +113,8 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
 
         if (player != null && undiscoveredBias > 0) {
             float bias = undiscoveredBias;
-            if (EBAccessoriesIntegration.isEquipped(player, EBItems.CHARM_SPELL_DISCOVERY.get())) bias = Math.min(bias + 0.4f, 0.9f);
+            if (EBAccessoriesIntegration.isEquipped(player, EBItems.CHARM_SPELL_DISCOVERY.get()))
+                bias = Math.min(bias + 0.4f, 0.9f);
             if (bias > 0) {
                 SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
                 int discoveredCount = (int) possibleSpells.stream().filter(data::hasSpellBeenDiscovered).count();
@@ -122,13 +131,6 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         }
 
         return possibleSpells.get(random.nextInt(possibleSpells.size()));
-    }
-
-
-
-    public static LootItemConditionalFunction.Builder<?> setRandomSpell(List<Spell> spells, boolean ignoreWeighting, float undiscoveredBias, List<SpellTier> tiers, List<Element> elements) {
-        return simpleBuilder((conditions) ->
-                new RandomSpellFunction(conditions, spells, ignoreWeighting, undiscoveredBias, tiers, elements));
     }
 
     public static class Serializer extends LootItemConditionalFunction.Serializer<RandomSpellFunction> {
@@ -175,7 +177,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
                 DataResult<List<ResourceLocation>> result = ResourceLocation.CODEC.listOf().parse(JsonOps.INSTANCE, object.get("tiers"));
                 if (result.result().isPresent()) {
                     tiers = result.result().get().stream().map(Services.REGISTRY_UTIL::getTier).collect(Collectors.toList());
-                    if(tiers.contains(null)) {
+                    if (tiers.contains(null)) {
                         EBLogger.warn("One or more invalid spell tiers found when deserializing random_spell loot function.");
                         tiers.removeIf(Objects::isNull);
                     }
@@ -186,7 +188,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
                 DataResult<List<ResourceLocation>> result = ResourceLocation.CODEC.listOf().parse(JsonOps.INSTANCE, object.get("elements"));
                 if (result.result().isPresent()) {
                     elements = result.result().get().stream().map(Services.REGISTRY_UTIL::getElement).collect(Collectors.toList());
-                    if(elements.contains(null)) {
+                    if (elements.contains(null)) {
                         EBLogger.warn("One or more invalid elements found when deserializing random_spell loot function.");
                         elements.removeIf(Objects::isNull);
                     }

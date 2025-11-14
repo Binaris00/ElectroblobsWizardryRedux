@@ -25,16 +25,6 @@ public class WandUpgradeItem extends Item {
         super(properties);
     }
 
-    @Override
-    public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
-        return Rarity.UNCOMMON;
-    }
-
-    @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
-        tooltip.add(Component.translatable(getOrCreateDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
-    }
-
     public static void onLivingDeath(EBLivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) return;
 
@@ -50,5 +40,15 @@ public class WandUpgradeItem extends Item {
                     if (EBAccessoriesIntegration.isEquipped(player, EBItems.RING_SIPHONING.get())) mana *= 1.3f;
                     ((IManaStoringItem) stack.getItem()).rechargeMana(stack, (int) mana);
                 });
+    }
+
+    @Override
+    public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
+        return Rarity.UNCOMMON;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, List<Component> tooltip, @NotNull TooltipFlag flag) {
+        tooltip.add(Component.translatable(getOrCreateDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
     }
 }

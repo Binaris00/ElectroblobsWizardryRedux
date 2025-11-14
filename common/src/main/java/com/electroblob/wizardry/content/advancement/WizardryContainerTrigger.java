@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.content.advancement;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
@@ -62,7 +61,7 @@ public class WizardryContainerTrigger implements CriterionTrigger<WizardryContai
             this.item = item;
         }
 
-        public TriggerInstance(ResourceLocation criterionIn, ItemPredicate item){
+        public TriggerInstance(ResourceLocation criterionIn, ItemPredicate item) {
             super(criterionIn, ContextAwarePredicate.ANY);
             this.item = item;
         }

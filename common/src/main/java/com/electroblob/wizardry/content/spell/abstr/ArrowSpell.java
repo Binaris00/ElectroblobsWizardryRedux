@@ -29,7 +29,9 @@ import java.util.function.Function;
  * @param <T> The type of {@link MagicArrowEntity} this spell launches.
  */
 public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
-    /** A factory function to create instances of the projectile entity. */
+    /**
+     * A factory function to create instances of the projectile entity.
+     */
     protected final Function<Level, T> arrowFactory;
 
     public ArrowSpell(Function<Level, T> arrowFactory) {
@@ -100,9 +102,9 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
     /**
      * Calculates the velocity of the projectile based on gravity and range.
      *
-     * @param ctx           Cast Context about how the spell is cast
-     * @param projectile    The projectile entity.
-     * @param launchHeight  The vertical height from which the projectile is launched.
+     * @param ctx          Cast Context about how the spell is cast
+     * @param projectile   The projectile entity.
+     * @param launchHeight The vertical height from which the projectile is launched.
      * @return The velocity value to be used when launching the projectile.
      */
     public float calculateVelocity(CastContext ctx, MagicArrowEntity projectile, float launchHeight) {

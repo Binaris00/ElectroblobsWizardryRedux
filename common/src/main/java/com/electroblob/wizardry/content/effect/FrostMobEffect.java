@@ -17,8 +17,8 @@ public class FrostMobEffect extends MagicMobEffect {
 
     @Override
     public void applyEffectTick(LivingEntity livingEntity, int i) {
-        if(livingEntity.isOnFire()){
-            if(livingEntity.hasEffect(this)){
+        if (livingEntity.isOnFire()) {
+            if (livingEntity.hasEffect(this)) {
                 livingEntity.removeEffect(this);
                 livingEntity.setSecondsOnFire(0);
             }

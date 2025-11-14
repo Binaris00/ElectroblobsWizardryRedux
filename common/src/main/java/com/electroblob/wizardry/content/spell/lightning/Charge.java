@@ -28,26 +28,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Charge extends Spell {
-    public static final ISpellVar<Integer> CHARGE_TIME = new ISpellVar.SpellVar<Integer>(Persistence.NEVER).withTicker(Charge::update);
     public static final ISpellVar<SpellModifiers> CHARGE_MODIFIERS = new ISpellVar.SpellVar<>(Persistence.NEVER);
-
     public static final SpellProperty<Float> CHARGE_SPEED = SpellProperty.floatProperty("charge_speed");
+    public static final ISpellVar<Integer> CHARGE_TIME = new ISpellVar.SpellVar<Integer>(Persistence.NEVER).withTicker(Charge::update);
 
     public Charge() {
         this.soundValues(0.6f, 1, 0);
-    }
-
-    @Override
-    public boolean cast(PlayerCastContext ctx) {
-        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
-        data.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
-        data.setVariable(CHARGE_MODIFIERS, ctx.modifiers());
-
-        if (ctx.world().isClientSide)
-            ctx.world().addParticle(ParticleTypes.EXPLOSION_EMITTER, ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getBbHeight() / 2, ctx.caster().getZ(), 0, 0, 0);
-
-        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
-        return true;
     }
 
     private static int update(Player player, Integer chargeTime) {
@@ -92,7 +78,7 @@ public class Charge extends Spell {
     }
 
     public static void onLivingHurt(EBLivingHurtEvent event) {
-        if(event.isCanceled()) return;
+        if (event.isCanceled()) return;
 
         if (event.getDamagedEntity() instanceof Player player && event.getSource().getEntity() instanceof LivingEntity attacker) {
             SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
@@ -103,6 +89,19 @@ public class Charge extends Spell {
             }
 
         }
+    }
+
+    @Override
+    public boolean cast(PlayerCastContext ctx) {
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
+        data.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+        data.setVariable(CHARGE_MODIFIERS, ctx.modifiers());
+
+        if (ctx.world().isClientSide)
+            ctx.world().addParticle(ParticleTypes.EXPLOSION_EMITTER, ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getBbHeight() / 2, ctx.caster().getZ(), 0, 0, 0);
+
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
+        return true;
     }
 
     @Override

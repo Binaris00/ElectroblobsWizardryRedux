@@ -18,14 +18,14 @@ import java.util.List;
 
 public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
     private final T attacker;
-    private LivingEntity target;
-    private int cooldown;
     private final int baseCooldown;
-    private int continuousSpellTimer;
     private final int continuousSpellDuration;
     private final double speed;
-    private int seeTime;
     private final float maxAttackDistance;
+    private LivingEntity target;
+    private int cooldown;
+    private int continuousSpellTimer;
+    private int seeTime;
 
     public AttackSpellGoal(T attacker, double speed, float maxDistance, int baseCooldown, int continuousSpellDuration) {
         this.cooldown = -1;

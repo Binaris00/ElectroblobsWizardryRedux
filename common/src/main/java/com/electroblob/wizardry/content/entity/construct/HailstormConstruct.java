@@ -14,47 +14,47 @@ import org.jetbrains.annotations.NotNull;
 
 public class HailstormConstruct extends ScaledConstructEntity {
 
-	public HailstormConstruct(EntityType<?> entityType, Level level) {
-		super(entityType, level);
-	}
+    public HailstormConstruct(EntityType<?> entityType, Level level) {
+        super(entityType, level);
+    }
 
-	public HailstormConstruct(Level level) {
-		super(EBEntities.HAILSTORM.get(), level);
-		this.lifetime = Spells.HAILSTORM.property(DefaultProperties.DURATION);
-	}
+    public HailstormConstruct(Level level) {
+        super(EBEntities.HAILSTORM.get(), level);
+        this.lifetime = Spells.HAILSTORM.property(DefaultProperties.DURATION);
+    }
 
-	@Override
-	public void tick(){
+    @Override
+    public void tick() {
 
-		super.tick();
+        super.tick();
 
-		if(!this.level().isClientSide){
+        if (!this.level().isClientSide) {
 
-			double x = getX() + (level().random.nextDouble() - 0.5D) * (double)getBbWidth();
-			double y = getY() + level().random.nextDouble() * (double)getBbHeight();
-			double z = getZ() + (level().random.nextDouble() - 0.5D) * (double)getBbWidth();
+            double x = getX() + (level().random.nextDouble() - 0.5D) * (double) getBbWidth();
+            double y = getY() + level().random.nextDouble() * (double) getBbHeight();
+            double z = getZ() + (level().random.nextDouble() - 0.5D) * (double) getBbWidth();
 
-			IceShardEntity iceshard = new IceShardEntity(level());
-			iceshard.setPos(x, y, z);
+            IceShardEntity iceshard = new IceShardEntity(level());
+            iceshard.setPos(x, y, z);
 
-			iceshard.setDeltaMovement(Mth.cos((float)Math.toRadians(this.getYRot() + 90)), -0.6,
-					Mth.sin((float)Math.toRadians(this.getYRot() + 90)));
+            iceshard.setDeltaMovement(Mth.cos((float) Math.toRadians(this.getYRot() + 90)), -0.6,
+                    Mth.sin((float) Math.toRadians(this.getYRot() + 90)));
 
-			// TODO OWNER STUFF
-			//iceshard.setCaster(this.getCaster());
-			//iceshard.damageMultiplier = this.damageMultiplier;
+            // TODO OWNER STUFF
+            //iceshard.setCaster(this.getCaster());
+            //iceshard.damageMultiplier = this.damageMultiplier;
 
-			this.level().addFreshEntity(iceshard);
-		}
-	}
+            this.level().addFreshEntity(iceshard);
+        }
+    }
 
-	@Override
-	public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-		return EntityDimensions.scalable(2 * 2, 5);
-	}
+    @Override
+    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
+        return EntityDimensions.scalable(2 * 2, 5);
+    }
 
-	@Override
-	protected boolean shouldScaleHeight(){
-		return false;
-	}
+    @Override
+    protected boolean shouldScaleHeight() {
+        return false;
+    }
 }

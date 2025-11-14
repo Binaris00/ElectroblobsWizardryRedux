@@ -31,6 +31,9 @@ import static com.electroblob.wizardry.core.ClientSpellSoundManager.playSpellSou
  * This makes the code more organized, easier to understand, and less prone to errors.
  */
 public abstract class Spell {
+    protected float volume = 1;
+    protected float pitch = 1;
+    protected float pitchVariation = 0;
     /**
      * Description ID is how a spell is formatted, with the same format as items or blocks.
      * e.g. "spell.ebwizardry.fireball"
@@ -41,13 +44,8 @@ public abstract class Spell {
      */
     private ResourceLocation location;
     private ResourceLocation icon;
-
     private SpellProperties properties = SpellProperties.empty();
     private boolean ended;
-
-    protected float volume = 1;
-    protected float pitch = 1;
-    protected float pitchVariation = 0;
 
     public Spell() {
         this.properties = properties();

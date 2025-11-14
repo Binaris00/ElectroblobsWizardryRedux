@@ -31,9 +31,10 @@ public class GrowthAura extends Spell {
 
         for (BlockPos pos : sphere) {
             BlockState state = level.getBlockState(pos);
-            if(!(state.getBlock() instanceof BonemealableBlock plant) || !(plant.isBonemealSuccess(level, level.random, pos, state))) continue;
+            if (!(state.getBlock() instanceof BonemealableBlock plant) || !(plant.isBonemealSuccess(level, level.random, pos, state)))
+                continue;
 
-            if(!(plant.isValidBonemealTarget(level, pos, state, false))){
+            if (!(plant.isValidBonemealTarget(level, pos, state, false))) {
                 continue;
             } else {
                 flag = true;

@@ -22,22 +22,23 @@ public class WandSelectCommand {
     private static final SuggestionProvider<CommandSourceStack> MODE_SUGGESTIONS = (context, builder) ->
             SharedSuggestionProvider.suggest(Arrays.asList("next", "previous"), builder);
 
-    private WandSelectCommand() {}
+    private WandSelectCommand() {
+    }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(
-            Commands.literal("wandselect")
-                .then(Commands.literal("mode")
-                    .then(Commands.argument("option", StringArgumentType.word())
-                        .suggests(MODE_SUGGESTIONS)
-                        .executes(ctx -> executeMode(ctx, StringArgumentType.getString(ctx, "option")))
-                    )
-                )
-                .then(Commands.literal("index")
-                    .then(Commands.argument("slot", IntegerArgumentType.integer(0))
-                        .executes(ctx -> executeIndex(ctx, IntegerArgumentType.getInteger(ctx, "slot")))
-                    )
-                )
+                Commands.literal("wandselect")
+                        .then(Commands.literal("mode")
+                                .then(Commands.argument("option", StringArgumentType.word())
+                                        .suggests(MODE_SUGGESTIONS)
+                                        .executes(ctx -> executeMode(ctx, StringArgumentType.getString(ctx, "option")))
+                                )
+                        )
+                        .then(Commands.literal("index")
+                                .then(Commands.argument("slot", IntegerArgumentType.integer(0))
+                                        .executes(ctx -> executeIndex(ctx, IntegerArgumentType.getInteger(ctx, "slot")))
+                                )
+                        )
         );
     }
 
@@ -58,7 +59,7 @@ public class WandSelectCommand {
         Spell newSelected;
         if (option.equalsIgnoreCase("previous")) {
             newSelected = WandHelper.getPreviousSpell(wandStack);
-        } else if(option.equalsIgnoreCase("next")) {
+        } else if (option.equalsIgnoreCase("next")) {
             newSelected = WandHelper.getNextSpell(wandStack);
         } else {
             newSelected = WandHelper.getCurrentSpell(wandStack);

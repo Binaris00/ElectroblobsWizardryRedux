@@ -35,6 +35,54 @@ public interface IStoredSpellVar<T> extends ISpellVar<T> {
             this.ticker = (p, t) -> t;
         }
 
+        public static StoredSpellVar<Byte, ByteTag> ofByte(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, ByteTag::valueOf, ByteTag::getAsByte, persistence);
+        }
+
+        public static StoredSpellVar<Boolean, ByteTag> ofBoolean(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, b -> ByteTag.valueOf((byte) (b ? 1 : 0)), t -> t.getAsByte() == 1, persistence);
+        }
+
+        public static StoredSpellVar<Integer, IntTag> ofInt(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, IntTag::valueOf, IntTag::getAsInt, persistence);
+        }
+
+        public static StoredSpellVar<int[], IntArrayTag> ofIntArray(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, IntArrayTag::new, IntArrayTag::getAsIntArray, persistence);
+        }
+
+        public static StoredSpellVar<Float, FloatTag> ofFloat(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, FloatTag::valueOf, FloatTag::getAsFloat, persistence);
+        }
+
+        public static StoredSpellVar<Double, DoubleTag> ofDouble(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, DoubleTag::valueOf, DoubleTag::getAsDouble, persistence);
+        }
+
+        public static StoredSpellVar<Short, ShortTag> ofShort(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, ShortTag::valueOf, ShortTag::getAsShort, persistence);
+        }
+
+        public static StoredSpellVar<Long, LongTag> ofLong(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, LongTag::valueOf, LongTag::getAsLong, persistence);
+        }
+
+        public static StoredSpellVar<String, StringTag> ofString(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, StringTag::valueOf, StringTag::getAsString, persistence);
+        }
+
+        public static StoredSpellVar<BlockPos, CompoundTag> ofBlockPos(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, NbtUtils::writeBlockPos, NbtUtils::readBlockPos, persistence);
+        }
+
+        public static StoredSpellVar<UUID, IntArrayTag> ofUUID(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, NbtUtils::createUUID, NbtUtils::loadUUID, persistence);
+        }
+
+        public static StoredSpellVar<CompoundTag, CompoundTag> ofNBT(String key, Persistence persistence) {
+            return new StoredSpellVar<>(key, t -> t, t -> t, persistence);
+        }
+
         public StoredSpellVar<T, E> withTicker(BiFunction<Player, T, T> ticker) {
             this.ticker = ticker;
             return this;
@@ -85,54 +133,6 @@ public interface IStoredSpellVar<T> extends ISpellVar<T> {
             CompoundTag nbt = buf.readNbt();
             if (nbt == null) return null;
             return read(nbt);
-        }
-
-        public static StoredSpellVar<Byte, ByteTag> ofByte(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, ByteTag::valueOf, ByteTag::getAsByte, persistence);
-        }
-
-        public static StoredSpellVar<Boolean, ByteTag> ofBoolean(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, b -> ByteTag.valueOf((byte) (b ? 1 : 0)), t -> t.getAsByte() == 1, persistence);
-        }
-
-        public static StoredSpellVar<Integer, IntTag> ofInt(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, IntTag::valueOf, IntTag::getAsInt, persistence);
-        }
-
-        public static StoredSpellVar<int[], IntArrayTag> ofIntArray(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, IntArrayTag::new, IntArrayTag::getAsIntArray, persistence);
-        }
-
-        public static StoredSpellVar<Float, FloatTag> ofFloat(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, FloatTag::valueOf, FloatTag::getAsFloat, persistence);
-        }
-
-        public static StoredSpellVar<Double, DoubleTag> ofDouble(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, DoubleTag::valueOf, DoubleTag::getAsDouble, persistence);
-        }
-
-        public static StoredSpellVar<Short, ShortTag> ofShort(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, ShortTag::valueOf, ShortTag::getAsShort, persistence);
-        }
-
-        public static StoredSpellVar<Long, LongTag> ofLong(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, LongTag::valueOf, LongTag::getAsLong, persistence);
-        }
-
-        public static StoredSpellVar<String, StringTag> ofString(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, StringTag::valueOf, StringTag::getAsString, persistence);
-        }
-
-        public static StoredSpellVar<BlockPos, CompoundTag> ofBlockPos(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, NbtUtils::writeBlockPos, NbtUtils::readBlockPos, persistence);
-        }
-
-        public static StoredSpellVar<UUID, IntArrayTag> ofUUID(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, NbtUtils::createUUID, NbtUtils::loadUUID, persistence);
-        }
-
-        public static StoredSpellVar<CompoundTag, CompoundTag> ofNBT(String key, Persistence persistence) {
-            return new StoredSpellVar<>(key, t -> t, t -> t, persistence);
         }
     }
 }

@@ -28,10 +28,6 @@ public class ArtefactItem extends Item {
         this.effect = effect;
     }
 
-    public @Nullable IArtefactEffect getEffect() {
-        return effect;
-    }
-
     public static void onArtifactTick(EBLivingTick event) {
         if (!(event.getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
@@ -65,5 +61,9 @@ public class ArtefactItem extends Item {
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
                 .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onSpellPostCast(event, stack));
+    }
+
+    public @Nullable IArtefactEffect getEffect() {
+        return effect;
     }
 }

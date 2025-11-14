@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public final class ClientPlayerMixin {
 
     @Inject(method = "tick", at = @At("HEAD"))
-    public void EBWIZARDRY$tick(CallbackInfo ci){
+    public void EBWIZARDRY$tick(CallbackInfo ci) {
 //        if(!WizardryMainMod.isFabric()) return;
 //
 //        Player player = (Player) (Object) this;

@@ -22,17 +22,16 @@ import java.util.function.Supplier;
  * armor piece names. The armor piece names are used to construct the registry names for the armor items.
  * Implementation note: This enum implements ArmorMaterial so that the armor material can be accessed directly from
  * the enum value.
- * */
+ *
+ */
 public enum WizardArmorType implements ArmorMaterial {
     WIZARD("wizard", () -> null, 15, 0.1F, 0, SoundEvents.ARMOR_EQUIP_DIAMOND, new int[]{2, 4, 5, 2}, 15, "hat", "robe", "leggings", "boots"),
-    SAGE("sage", EBItems.RESPLENDENT_THREAD, 15, 0.2f, 0, EBSounds.ITEM_ARMOUR_EQUIP_SAGE.get(), new int[]{2, 5, 6, 3}, 15,"hat", "robe", "leggings", "boots"),
-    BATTLEMAGE("battlemage", EBItems.CRYSTAL_SILVER_PLATING, 15, 0.05f, 0.05f, EBSounds.ITEM_ARMOUR_EQUIP_BATTLEMAGE.get(), new int[]{3, 6, 8, 3}, 15,"helmet", "chestplate", "leggings", "boots"),
-    WARLOCK("warlock", EBItems.ETHEREAL_CRYSTAL_WEAVE, 20, 0.1f, 0.1f, EBSounds.ITEM_ARMOUR_EQUIP_WARLOCK.get(),new int[]{2, 4, 5, 2},15, "hood", "robe", "leggings", "boots");
+    SAGE("sage", EBItems.RESPLENDENT_THREAD, 15, 0.2f, 0, EBSounds.ITEM_ARMOUR_EQUIP_SAGE.get(), new int[]{2, 5, 6, 3}, 15, "hat", "robe", "leggings", "boots"),
+    BATTLEMAGE("battlemage", EBItems.CRYSTAL_SILVER_PLATING, 15, 0.05f, 0.05f, EBSounds.ITEM_ARMOUR_EQUIP_BATTLEMAGE.get(), new int[]{3, 6, 8, 3}, 15, "helmet", "chestplate", "leggings", "boots"),
+    WARLOCK("warlock", EBItems.ETHEREAL_CRYSTAL_WEAVE, 20, 0.1f, 0.1f, EBSounds.ITEM_ARMOUR_EQUIP_WARLOCK.get(), new int[]{2, 4, 5, 2}, 15, "hood", "robe", "leggings", "boots");
 
 
-    private final int[] BASE_DURABILITY = new int[] {13, 15, 16, 11};
     final int[] protectionValues;
-
     final int durabilityMultiplier;
     final String name;
     final Supplier<Item> upgradeItem;
@@ -42,9 +41,10 @@ public enum WizardArmorType implements ArmorMaterial {
     final Map<EquipmentSlot, String> armourPieceNames;
     final SoundEvent equipSound;
     final int enchantability;
+    private final int[] BASE_DURABILITY = new int[]{13, 15, 16, 11};
     Element element = null;
 
-    WizardArmorType(String name, Supplier<Item> upgradeItem, int durabilityMultiplier, float elementalCostReduction, float cooldownReduction, SoundEvent equipSound, int[] protectionValues, int enchantability, String... armourPieceNames){
+    WizardArmorType(String name, Supplier<Item> upgradeItem, int durabilityMultiplier, float elementalCostReduction, float cooldownReduction, SoundEvent equipSound, int[] protectionValues, int enchantability, String... armourPieceNames) {
         this.name = name;
         this.durabilityMultiplier = durabilityMultiplier;
         this.upgradeItem = upgradeItem;
@@ -55,7 +55,9 @@ public enum WizardArmorType implements ArmorMaterial {
         this.enchantability = enchantability;
 
 
-        if(armourPieceNames.length != 4){throw new IllegalArgumentException("Armour class " + name + " must have exactly 4 armour piece names. Try again!!!!!");}
+        if (armourPieceNames.length != 4) {
+            throw new IllegalArgumentException("Armour class " + name + " must have exactly 4 armour piece names. Try again!!!!!");
+        }
         this.armourPieceNames = new EnumMap<>(EquipmentSlot.class);
         this.armourPieceNames.put(EquipmentSlot.HEAD, armourPieceNames[0]);
         this.armourPieceNames.put(EquipmentSlot.CHEST, armourPieceNames[1]);

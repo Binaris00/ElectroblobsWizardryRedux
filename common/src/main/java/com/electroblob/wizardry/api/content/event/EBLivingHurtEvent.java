@@ -8,7 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 /**
  * This applies to loaders with the Mixin
  * {@link com.electroblob.wizardry.core.mixin.LivingEntityMixin#EBWIZARDRY$livingEntityHurt(DamageSource, float, CallbackInfoReturnable) LivingEntityMixin#EBWIZARDRY$livingEntityHurt}
- * */
+ *
+ */
 public class EBLivingHurtEvent extends WizardryCancelableEvent {
     private LivingEntity damagedEntity;
     private DamageSource source;
@@ -24,8 +25,16 @@ public class EBLivingHurtEvent extends WizardryCancelableEvent {
         return damagedEntity;
     }
 
+    public void setDamagedEntity(LivingEntity damagedEntity) {
+        this.damagedEntity = damagedEntity;
+    }
+
     public DamageSource getSource() {
         return source;
+    }
+
+    public void setSource(DamageSource source) {
+        this.source = source;
     }
 
     public float getAmount() {
@@ -34,13 +43,5 @@ public class EBLivingHurtEvent extends WizardryCancelableEvent {
 
     public void setAmount(float amount) {
         this.amount = amount;
-    }
-
-    public void setSource(DamageSource source) {
-        this.source = source;
-    }
-
-    public void setDamagedEntity(LivingEntity damagedEntity) {
-        this.damagedEntity = damagedEntity;
     }
 }

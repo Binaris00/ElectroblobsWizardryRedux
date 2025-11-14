@@ -25,10 +25,6 @@ import java.util.function.Function;
 public final class EBParticles {
     static final Map<String, DeferredObject<SimpleParticleType>> PARTICLE_TYPES = new HashMap<>();
     static final Map<DeferredObject<SimpleParticleType>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>> PARTICLE_PROVIDERS = new HashMap<>();
-
-    private EBParticles() {
-    }
-
     @Deprecated
     public static final DeferredObject<SimpleParticleType> BEAM = particle("beam", ParticleBeam.BeamProvider::createParticle, ParticleBeam.BeamProvider::new);
     @Deprecated
@@ -50,6 +46,8 @@ public final class EBParticles {
     public static final DeferredObject<SimpleParticleType> FLASH = particle("flash", ParticleFlash.FlashProvider::createParticle, ParticleFlash.FlashProvider::new);
     public static final DeferredObject<SimpleParticleType> LIGHTNING_PULSE = particle("lightning_pulse", ParticleLightningPulse.LightningPulseProvider::createParticle, ParticleLightningPulse.LightningPulseProvider::new);
     public static final DeferredObject<SimpleParticleType> SPHERE = particle("sphere", ParticleSphere.SphereProvider::createParticle, ParticleSphere.SphereProvider::new);
+    private EBParticles() {
+    }
 
     static void handleParticleTypeRegistration(Consumer<Map<String, DeferredObject<SimpleParticleType>>> handler) {
         handler.accept(PARTICLE_TYPES);

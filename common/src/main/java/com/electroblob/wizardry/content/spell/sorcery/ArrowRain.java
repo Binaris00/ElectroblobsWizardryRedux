@@ -31,7 +31,7 @@ public class ArrowRain extends ConstructRangedSpell<ArrowRainConstruct> {
         double x = vec3.x;
         double y = vec3.y;
         double z = vec3.z;
-        if(dist != 0){
+        if (dist != 0) {
             double distRatio = 3 / dist;
             x += dx * distRatio;
             z = dz * distRatio;
@@ -47,11 +47,11 @@ public class ArrowRain extends ConstructRangedSpell<ArrowRainConstruct> {
     protected void addConstructExtras(ArrowRainConstruct construct, Direction side, @Nullable LivingEntity caster) {
         // Makes the arrows shoot in the direction the caster was looking when they cast the spell.
         // TODO FIX YHEAD
-        if(caster != null){
+        if (caster != null) {
             EBLogger.error("Player is using yhead for arrow rain");
             //construct.setXRot(caster.getXRot());
             construct.setYHeadRot(caster.getYHeadRot());
-        }else{
+        } else {
             //construct.setXRot(0);
             construct.setYHeadRot(side.toYRot());
             EBLogger.error("Side is using yhead for arrow rain");

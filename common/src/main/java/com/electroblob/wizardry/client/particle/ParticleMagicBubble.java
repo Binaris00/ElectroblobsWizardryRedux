@@ -42,13 +42,14 @@ public class ParticleMagicBubble extends ParticleWizardry {
             spriteProvider = sprite;
         }
 
+        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
+            return new ParticleMagicBubble(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteProvider);
+        }
+
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleMagicBubble(world, x, y, z, spriteProvider);
-        }
-        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
-            return new ParticleMagicBubble(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteProvider);
         }
     }
 }

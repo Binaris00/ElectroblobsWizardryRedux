@@ -6,7 +6,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class LocationCastContext extends CastContext{
+public class LocationCastContext extends CastContext {
     protected Vec3 vec3;
     protected Direction direction;
     protected int duration;
@@ -23,11 +23,11 @@ public class LocationCastContext extends CastContext{
         return null;
     }
 
-    public Vec3 vec3(){
+    public Vec3 vec3() {
         return vec3;
     }
 
-    public BlockPos pos(){
+    public BlockPos pos() {
         return BlockPos.containing(vec3);
     }
 

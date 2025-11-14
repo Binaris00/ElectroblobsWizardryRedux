@@ -16,9 +16,9 @@ public abstract class SpellCastEvent implements IWizardryEvent {
     private final Level world;
     private final double x, y, z;
     private final Direction direction;
+    private boolean isCanceled;
 
-
-    public SpellCastEvent(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers){
+    public SpellCastEvent(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers) {
         super();
         this.spell = spell;
         this.modifiers = modifiers;
@@ -31,7 +31,7 @@ public abstract class SpellCastEvent implements IWizardryEvent {
         this.direction = null;
     }
 
-    public SpellCastEvent(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers){
+    public SpellCastEvent(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers) {
         super();
         this.spell = spell;
         this.modifiers = modifiers;
@@ -44,48 +44,52 @@ public abstract class SpellCastEvent implements IWizardryEvent {
         this.direction = direction;
     }
 
-    public Spell getSpell(){
+    public Spell getSpell() {
         return spell;
     }
 
-    public SpellModifiers getModifiers(){
+    public SpellModifiers getModifiers() {
         return modifiers;
     }
 
-    public Source getSource(){
+    public Source getSource() {
         return source;
     }
 
     @Nullable
-    public LivingEntity getCaster(){
+    public LivingEntity getCaster() {
         return caster;
     }
 
-    public Level getLevel(){
+    public Level getLevel() {
         return world;
     }
 
-    /**This is could be NaN if there's no pos*/
-    public double getX(){
+    /**
+     * This is could be NaN if there's no pos
+     */
+    public double getX() {
         return x;
     }
 
-    /**This is could be NaN if there's no pos*/
-    public double getY(){
+    /**
+     * This is could be NaN if there's no pos
+     */
+    public double getY() {
         return y;
     }
 
-    /**This is could be NaN if there's no pos*/
-    public double getZ(){
+    /**
+     * This is could be NaN if there's no pos
+     */
+    public double getZ() {
         return z;
     }
 
     @Nullable
-    public Direction getDirection(){
+    public Direction getDirection() {
         return direction;
     }
-
-    private boolean isCanceled;
 
     @Override
     public boolean isCanceled() {
@@ -107,11 +111,11 @@ public abstract class SpellCastEvent implements IWizardryEvent {
     }
 
     public static class Pre extends SpellCastEvent {
-        public Pre(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers){
+        public Pre(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers) {
             super(source, spell, caster, modifiers);
         }
 
-        public Pre(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers){
+        public Pre(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers) {
             super(source, spell, world, x, y, z, direction, modifiers);
         }
 
@@ -123,11 +127,11 @@ public abstract class SpellCastEvent implements IWizardryEvent {
 
     public static class Post extends SpellCastEvent {
 
-        public Post(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers){
+        public Post(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers) {
             super(source, spell, caster, modifiers);
         }
 
-        public Post(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers){
+        public Post(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers) {
             super(source, spell, world, x, y, z, direction, modifiers);
         }
 
@@ -140,17 +144,17 @@ public abstract class SpellCastEvent implements IWizardryEvent {
     public static class Tick extends SpellCastEvent {
         private final int ticksCasting;
 
-        public Tick(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers, int ticks){
+        public Tick(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers, int ticks) {
             super(source, spell, caster, modifiers);
             this.ticksCasting = ticks;
         }
 
-        public Tick(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers, int ticks){
+        public Tick(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers, int ticks) {
             super(source, spell, world, x, y, z, direction, modifiers);
             this.ticksCasting = ticks;
         }
 
-        public int getTicksCasting(){
+        public int getTicksCasting() {
             return ticksCasting;
         }
 
@@ -163,17 +167,17 @@ public abstract class SpellCastEvent implements IWizardryEvent {
     public static class Finish extends SpellCastEvent {
         private final int ticksCasting;
 
-        public Finish(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers, int ticks){
+        public Finish(Source source, Spell spell, LivingEntity caster, SpellModifiers modifiers, int ticks) {
             super(source, spell, caster, modifiers);
             this.ticksCasting = ticks;
         }
 
-        public Finish(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers, int ticks){
+        public Finish(Source source, Spell spell, Level world, double x, double y, double z, Direction direction, SpellModifiers modifiers, int ticks) {
             super(source, spell, world, x, y, z, direction, modifiers);
             this.ticksCasting = ticks;
         }
 
-        public int getTicksCasting(){
+        public int getTicksCasting() {
             return ticksCasting;
         }
 

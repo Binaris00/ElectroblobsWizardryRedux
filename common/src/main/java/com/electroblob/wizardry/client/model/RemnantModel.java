@@ -27,7 +27,7 @@ public class RemnantModel extends EntityModel<Remnant> {
         MeshDefinition mesh = new MeshDefinition();
         PartDefinition part = mesh.getRoot();
         part.addOrReplaceChild("cube", CubeListBuilder.create()
-                        .texOffs(0,0)
+                        .texOffs(0, 0)
                         .addBox(-4, -4, -4, 8, 8, 8),
                 PartPose.ZERO
         );

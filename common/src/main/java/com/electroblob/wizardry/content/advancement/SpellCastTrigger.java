@@ -63,7 +63,7 @@ public class SpellCastTrigger implements CriterionTrigger<SpellCastTrigger.Trigg
         private final ItemPredicate item;
 
         public TriggerInstance(ResourceLocation criterion, SpellPredicate spell, ItemPredicate item, JsonObject json, DeserializationContext context) {
-			super(criterion, EntityPredicate.fromJson(json, "spell", context));
+            super(criterion, EntityPredicate.fromJson(json, "spell", context));
             this.spell = spell;
             this.item = item;
         }

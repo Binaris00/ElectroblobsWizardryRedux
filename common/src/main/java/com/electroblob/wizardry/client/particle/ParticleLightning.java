@@ -30,6 +30,7 @@ public class ParticleLightning extends ParticleTargeted {
     private static final float FORK_CHANCE = 0.3f;
 
     private static final int UPDATE_PERIOD = 1;
+
     public ParticleLightning(ClientLevel world, double x, double y, double z, SpriteSet spriteProvider) {
         super(world, x, y, z, spriteProvider, false);
         seed = this.random.nextLong();
@@ -144,14 +145,14 @@ public class ParticleLightning extends ParticleTargeted {
             spriteProvider = sprite;
         }
 
+        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
+            return new ParticleLightning(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteProvider);
+        }
+
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleLightning(world, x, y, z, spriteProvider);
-        }
-
-        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
-            return new ParticleLightning(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteProvider);
         }
     }
 }

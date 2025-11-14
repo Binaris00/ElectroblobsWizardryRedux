@@ -34,25 +34,27 @@ public class IdentificationScrollItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
 
-        for(ItemStack stack1 : InventoryUtil.getPrioritisedHotBarAndOffhand(player)){
-            if(stack1.isEmpty()) continue;
+        for (ItemStack stack1 : InventoryUtil.getPrioritisedHotBarAndOffhand(player)) {
+            if (stack1.isEmpty()) continue;
             Spell spell = SpellUtil.getSpell(stack1);
-            if(stack1.getItem() instanceof IdentificationScrollItem || spell == Spells.NONE) continue;
+            if (stack1.getItem() instanceof IdentificationScrollItem || spell == Spells.NONE) continue;
 
-            if((stack1.getItem() instanceof SpellBookItem || stack1.getItem() instanceof ScrollItem) && !data.hasSpellBeenDiscovered(spell)){
-                if(!WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL)))
+            if ((stack1.getItem() instanceof SpellBookItem || stack1.getItem() instanceof ScrollItem) && !data.hasSpellBeenDiscovered(spell)) {
+                if (!WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL)))
                     return InteractionResultHolder.fail(stack);
                 data.discoverSpell(spell);
                 player.playSound(EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
-                if(!player.isCreative()) stack.shrink(1);
-                if (!level.isClientSide) player.sendSystemMessage(Component.translatable("spell.discover", spell.getDescriptionFormatted()));
+                if (!player.isCreative()) stack.shrink(1);
+                if (!level.isClientSide)
+                    player.sendSystemMessage(Component.translatable("spell.discover", spell.getDescriptionFormatted()));
                 player.getCooldowns().addCooldown(stack.getItem(), 60);
                 return InteractionResultHolder.success(stack);
             }
         }
 
         player.getCooldowns().addCooldown(stack.getItem(), 60);
-        if (!level.isClientSide) player.sendSystemMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".identification_scroll.nothing_to_identify"));
+        if (!level.isClientSide)
+            player.sendSystemMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".identification_scroll.nothing_to_identify"));
         return InteractionResultHolder.fail(stack);
     }
 

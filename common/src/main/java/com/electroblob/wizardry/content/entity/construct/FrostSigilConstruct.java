@@ -30,7 +30,7 @@ public class FrostSigilConstruct extends ScaledConstructEntity {
     @Override
     public void tick() {
         super.tick();
-        if(level().isClientSide && this.random.nextInt(15) == 0){
+        if (level().isClientSide && this.random.nextInt(15) == 0) {
             double radius = (0.5 + random.nextDouble() * 0.3) * getBbWidth() / 2;
             float angle = random.nextFloat() * (float) Math.PI * 2;
             ParticleBuilder.create(EBParticles.SNOW).pos(this.getX() + radius * Mth.cos(angle), this.getY() + 0.1, this.getZ() + radius * Mth.sin(angle)).velocity(0, 0, 0).spawn(level());
@@ -39,12 +39,12 @@ public class FrostSigilConstruct extends ScaledConstructEntity {
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, this.getX(), this.getY(), this.getZ(), this.level());
 
         for (LivingEntity target : targets) {
-            if(!this.isValidTarget(target)) continue;
+            if (!this.isValidTarget(target)) continue;
             EntityUtil.attackEntityWithoutKnockback(target, this.getCaster() != null ?
                     EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.FROST) :
                     EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY), Spells.FROST_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier);
 
-            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
+            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
                 target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_DURATION),
                         Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_STRENGTH)));
 

@@ -31,14 +31,20 @@ public class ArcaneWorkbenchBlock extends BaseEntityBlock {
         super(properties);
     }
 
+    @Nullable
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<ArcaneWorkbenchBlockEntity> entityType) {
+        return level.isClientSide ? createTickerHelper(type, entityType, ArcaneWorkbenchBlockEntity::clientTick) : createTickerHelper(type, entityType, ArcaneWorkbenchBlockEntity::serverTick);
+    }
+
     @Override
     public @Nullable BlockEntity newBlockEntity(@NotNull BlockPos blockPos, @NotNull BlockState blockState) {
         return new ArcaneWorkbenchBlockEntity(blockPos, blockState);
     }
 
-    @Override @SuppressWarnings("deprecation")
+    @Override
+    @SuppressWarnings("deprecation")
     public @NotNull InteractionResult use(@NotNull BlockState blockState, Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-        if(level.isClientSide) return InteractionResult.SUCCESS;
+        if (level.isClientSide) return InteractionResult.SUCCESS;
 
         BlockEntity blockentity = level.getBlockEntity(pos);
         if (blockentity == null || player.isShiftKeyDown()) {
@@ -66,12 +72,6 @@ public class ArcaneWorkbenchBlock extends BaseEntityBlock {
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return createTicker(level, type, EBBlockEntities.ARCANE_WORKBENCH.get());
     }
-
-    @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<ArcaneWorkbenchBlockEntity> entityType) {
-        return level.isClientSide ? createTickerHelper(type, entityType, ArcaneWorkbenchBlockEntity::clientTick) : createTickerHelper(type, entityType, ArcaneWorkbenchBlockEntity::serverTick);
-    }
-
 
     // Misc
     @Override

@@ -25,14 +25,16 @@ import java.util.List;
 public class ShulkerBullet extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if (shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.modifiers())) return false;
+        if (shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.modifiers()))
+            return false;
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
     @Override
     public boolean cast(EntityCastContext ctx) {
-        if (shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.modifiers())) return false;
+        if (shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.modifiers()))
+            return false;
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }

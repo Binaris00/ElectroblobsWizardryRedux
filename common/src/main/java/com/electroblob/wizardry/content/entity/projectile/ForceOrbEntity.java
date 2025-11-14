@@ -34,12 +34,12 @@ public class ForceOrbEntity extends BombEntity {
     @Override
     protected void onHit(@NotNull HitResult hitResult) {
         super.onHit(hitResult);
-        if(hitResult.getType() == HitResult.Type.ENTITY){
+        if (hitResult.getType() == HitResult.Type.ENTITY) {
             this.playSound(EBSounds.ENTITY_FORCE_ORB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
         }
 
-        if(this.level().isClientSide){
-            for(int j = 0; j < 20; j++){
+        if (this.level().isClientSide) {
+            for (int j = 0; j < 20; j++) {
                 float brightness = 0.5f + (random.nextFloat() / 2);
                 ParticleBuilder.create(EBParticles.SPARKLE, random, xo, yo, zo, 0.25, true).time(6)
                         .color(brightness, 1.0f, brightness + 0.2f).spawn(level());
@@ -57,8 +57,8 @@ public class ForceOrbEntity extends BombEntity {
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(blastRadius, this.xo,
                 this.yo, this.zo, this.level());
 
-        for(LivingEntity target : targets){
-            if(target != this.getOwner()){
+        for (LivingEntity target : targets) {
+            if (target != this.getOwner()) {
 
                 double velY = target.getDeltaMovement().y;
                 double dx = this.xo - target.xo > 0 ? -0.5 - (this.xo - target.xo) / 8 : 0.5 - (this.xo - target.xo) / 8;

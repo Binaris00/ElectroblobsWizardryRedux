@@ -34,12 +34,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
-    private NonNullList<ItemStack> inventory;
     public float timer = 0;
-
     public float rot;
     public float oRot;
     public float tRot;
+    private NonNullList<ItemStack> inventory;
 
     public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(EBBlockEntities.ARCANE_WORKBENCH.get(), blockPos, blockState);
@@ -49,11 +48,6 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     // ===============================
     // Sync and tickers
     // ===============================
-
-    public void sync() {
-        setChanged();
-        level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
-    }
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
         ItemStack stack = entity.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
@@ -106,6 +100,11 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
 
         entity.rot += rotDiff * 0.4F;
 
+    }
+
+    public void sync() {
+        setChanged();
+        level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
     }
 
 

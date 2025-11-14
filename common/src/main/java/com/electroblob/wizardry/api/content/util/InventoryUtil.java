@@ -69,9 +69,9 @@ public final class InventoryUtil {
         return hotBar;
     }
 
-    public static boolean isWearingFullSet(LivingEntity entity, @Nullable Element element, @Nullable WizardArmorType armor){
+    public static boolean isWearingFullSet(LivingEntity entity, @Nullable Element element, @Nullable WizardArmorType armor) {
         ItemStack helmet = entity.getItemBySlot(EquipmentSlot.HEAD);
-        if(!(helmet.getItem() instanceof WizardArmorItem wizardArmor)) return false;
+        if (!(helmet.getItem() instanceof WizardArmorItem wizardArmor)) return false;
 
         Element e = element == null ? wizardArmor.getElement() : element;
         WizardArmorType ac = armor == null ? wizardArmor.getWizardArmorType() : armor;
@@ -81,7 +81,7 @@ public final class InventoryUtil {
                         && armor2.getWizardArmorType() == ac);
     }
 
-    public static boolean doAllArmourPiecesHaveMana(LivingEntity entity){
+    public static boolean doAllArmourPiecesHaveMana(LivingEntity entity) {
         return Arrays.stream(ARMOR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaStoringItem manaStoringItem
                 && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
     }

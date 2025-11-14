@@ -26,17 +26,8 @@ public final class PropertyTypes {
      */
     private static final Map<String, IPropertyType<?>> PROPERTY_TYPES = new HashMap<>();
 
-    public static final PropertyType<Byte> BYTE = addType("byte_", (t, s) -> deserializeNbt(t, s, a -> t.getByte(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsByte), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putByte(p.identifier, val)));
-    public static final PropertyType<Short> SHORT = addType("short_", (t, s) -> deserializeNbt(t, s, a -> t.getShort(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsShort), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putShort(p.identifier, val)));
-    public static final PropertyType<Integer> INT = addType("int_", (t, s) -> deserializeNbt(t, s, a -> t.getInt(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsInt), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putInt(p.identifier, val)));
-    public static final PropertyType<Long> LONG = addType("long_", (t, s) -> deserializeNbt(t, s, a -> t.getLong(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsLong), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putLong(p.identifier, val)));
-    public static final PropertyType<Float> FLOAT = addType("float_", (t, s) -> deserializeNbt(t, s, a -> t.getFloat(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsFloat), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putFloat(p.identifier, val)));
-    public static final PropertyType<Double> DOUBLE = addType("double_", (t, s) -> deserializeNbt(t, s, a -> t.getDouble(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsDouble), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putDouble(p.identifier, val)));
-    public static final PropertyType<Boolean> BOOLEAN = addType("boolean_", (t, s) -> deserializeNbt(t, s, a -> t.getBoolean(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsBoolean), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putBoolean(p.identifier, val)));
-    public static final PropertyType<String> STRING = addType("string_", (t, s) -> deserializeNbt(t, s, a -> t.getString(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsString), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putString(p.identifier, val)));
-
     private PropertyTypes() {
-    }
+    }    public static final PropertyType<Byte> BYTE = addType("byte_", (t, s) -> deserializeNbt(t, s, a -> t.getByte(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsByte), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putByte(p.identifier, val)));
 
     /**
      * Registers a new property type with the given identifier.
@@ -49,7 +40,7 @@ public final class PropertyTypes {
     public static <T> IPropertyType<T> addType(String id, IPropertyType<T> propertyType) {
         PROPERTY_TYPES.put(id, propertyType);
         return propertyType;
-    }
+    }    public static final PropertyType<Short> SHORT = addType("short_", (t, s) -> deserializeNbt(t, s, a -> t.getShort(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsShort), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putShort(p.identifier, val)));
 
     /**
      * Retrieves the property type associated with the given identifier.
@@ -59,7 +50,7 @@ public final class PropertyTypes {
      */
     public static @Nullable IPropertyType<?> getType(String id) {
         return PROPERTY_TYPES.getOrDefault(id, null);
-    }
+    }    public static final PropertyType<Integer> INT = addType("int_", (t, s) -> deserializeNbt(t, s, a -> t.getInt(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsInt), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putInt(p.identifier, val)));
 
     /**
      * Checks if a property type with the given identifier is registered.
@@ -69,7 +60,7 @@ public final class PropertyTypes {
      */
     public static boolean hasType(String id) {
         return PROPERTY_TYPES.containsKey(id);
-    }
+    }    public static final PropertyType<Long> LONG = addType("long_", (t, s) -> deserializeNbt(t, s, a -> t.getLong(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsLong), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putLong(p.identifier, val)));
 
     /**
      * Returns a map of all registered property types.
@@ -78,7 +69,7 @@ public final class PropertyTypes {
      */
     public static Map<String, IPropertyType<?>> getAllTypes() {
         return PROPERTY_TYPES;
-    }
+    }    public static final PropertyType<Float> FLOAT = addType("float_", (t, s) -> deserializeNbt(t, s, a -> t.getFloat(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsFloat), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putFloat(p.identifier, val)));
 
     /**
      * Adds a new property type using functional interfaces for serialization and deserialization.
@@ -93,12 +84,7 @@ public final class PropertyTypes {
      */
     private static <T> PropertyType<T> addType(String name, BiFunction<CompoundTag, String, SpellProperty<T>> tagDeserializer, BiFunction<JsonElement, String, SpellProperty<T>> jsonDeserializer, BiConsumer<JsonObject, SpellProperty<T>> jsonSerializer, BiConsumer<CompoundTag, SpellProperty<T>> tagSerializer) {
         return (PropertyType<T>) addType(name, new PropertyType<>(jsonDeserializer, tagDeserializer, jsonSerializer, tagSerializer));
-    }
-
-
-    // =================================================================
-    // Helper methods for (de)serialization
-    // =================================================================
+    }    public static final PropertyType<Double> DOUBLE = addType("double_", (t, s) -> deserializeNbt(t, s, a -> t.getDouble(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsDouble), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putDouble(p.identifier, val)));
 
     /**
      * Deserializes a spell property from a compound NBT tag using the provided getter function. Used to avoid
@@ -118,7 +104,7 @@ public final class PropertyTypes {
         SpellProperty property = base.copyOf();
         property.value = getter.apply(location);
         return property;
-    }
+    }    public static final PropertyType<Boolean> BOOLEAN = addType("boolean_", (t, s) -> deserializeNbt(t, s, a -> t.getBoolean(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsBoolean), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putBoolean(p.identifier, val)));
 
     /**
      * Deserializes a spell property from a JSON element using the provided getter function. Used to avoid
@@ -138,7 +124,7 @@ public final class PropertyTypes {
         SpellProperty property = base.copyOf();
         property.value = getter.apply(json);
         return property;
-    }
+    }    public static final PropertyType<String> STRING = addType("string_", (t, s) -> deserializeNbt(t, s, a -> t.getString(s)), (j, s) -> deserializeJson(j, s, JsonElement::getAsString), (j, p) -> serializeJson(j, p, (obj, val) -> obj.addProperty(p.identifier, val)), (t, p) -> serializeNbt(t, p, (tag, val) -> tag.putString(p.identifier, val)));
 
     /**
      * Serializes a spell property to a JSON object using the provided setter function. Used to avoid
@@ -150,7 +136,7 @@ public final class PropertyTypes {
      * @param <T>      The type of the property value.
      */
     private static <T> void serializeJson(JsonObject json, SpellProperty<T> property, BiConsumer<JsonObject, T> setter) {
-        if(property.type.equals(PropertyTypes.STRING)){
+        if (property.type.equals(PropertyTypes.STRING)) {
             EBLogger.warn("Serializing property {%s} with value {%s}-{%s}".formatted(property.identifier, property.value, property.defaultValue));
         }
         setter.accept(json, property.value);
@@ -168,4 +154,25 @@ public final class PropertyTypes {
     private static <T> void serializeNbt(CompoundTag tag, SpellProperty<T> property, BiConsumer<CompoundTag, T> setter) {
         setter.accept(tag, property.value);
     }
+
+
+
+
+
+
+
+
+
+
+    // =================================================================
+    // Helper methods for (de)serialization
+    // =================================================================
+
+
+
+
+
+
+
+
 }

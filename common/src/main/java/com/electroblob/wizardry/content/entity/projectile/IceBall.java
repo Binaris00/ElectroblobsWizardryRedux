@@ -28,13 +28,13 @@ public class IceBall extends MagicProjectileEntity {
         super(entityType, world);
     }
 
+    public IceBall(Level world) {
+        super(EBEntities.ICE_BALL.get(), world);
+    }
+
     @Override
     protected @NotNull Item getDefaultItem() {
         return Items.SNOWBALL;
-    }
-
-    public IceBall(Level world) {
-        super(EBEntities.ICE_BALL.get(), world);
     }
 
     @Override
@@ -47,7 +47,7 @@ public class IceBall extends MagicProjectileEntity {
 
             if (entity instanceof LivingEntity livingEntity)
                 livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
-                            Spells.ICE_BALL.property(DefaultProperties.EFFECT_DURATION),
+                        Spells.ICE_BALL.property(DefaultProperties.EFFECT_DURATION),
                         Spells.ICE_BALL.property(DefaultProperties.EFFECT_STRENGTH)));
         }
 

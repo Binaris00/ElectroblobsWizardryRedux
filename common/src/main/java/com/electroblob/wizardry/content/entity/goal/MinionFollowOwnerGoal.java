@@ -20,17 +20,15 @@ import java.util.EnumSet;
 public class MinionFollowOwnerGoal extends Goal {
     private final Mob minion;
     private final MinionData data;
-    private LivingEntity owner;
     private final LevelReader level;
-
     private final float speedModifier = 1.0F;
     private final float stopDistance = 2.0F;
     private final float startDistance = 10.0F;
     private final boolean canFly = false;
-
+    private final PathNavigation navigation;
+    private LivingEntity owner;
     private float oldWaterCost;
     private int timeToRecalcPath;
-    private final PathNavigation navigation;
 
     public MinionFollowOwnerGoal(Mob minion) {
         if (!Services.OBJECT_DATA.isMinion(minion))
@@ -54,7 +52,7 @@ public class MinionFollowOwnerGoal extends Goal {
             return false;
         } else if (this.unableToMove()) {
             return false;
-        } else if (this.minion.distanceToSqr(livingentity) < (double)(this.startDistance * this.startDistance)) {
+        } else if (this.minion.distanceToSqr(livingentity) < (double) (this.startDistance * this.startDistance)) {
             return false;
         } else {
             this.owner = livingentity;
@@ -68,7 +66,7 @@ public class MinionFollowOwnerGoal extends Goal {
         } else if (this.unableToMove()) {
             return false;
         } else {
-            return !(this.minion.distanceToSqr(this.owner) <= (double)(this.stopDistance * this.stopDistance));
+            return !(this.minion.distanceToSqr(this.owner) <= (double) (this.stopDistance * this.stopDistance));
         }
     }
 
@@ -89,10 +87,10 @@ public class MinionFollowOwnerGoal extends Goal {
     }
 
     public void tick() {
-        this.minion.getLookControl().setLookAt(this.owner, 10.0F, (float)this.minion.getMaxHeadXRot());
+        this.minion.getLookControl().setLookAt(this.owner, 10.0F, (float) this.minion.getMaxHeadXRot());
         if (--this.timeToRecalcPath <= 0) {
             this.timeToRecalcPath = this.adjustedTickDelay(10);
-            if (this.minion.distanceToSqr(this.owner) >= (double)144.0F) {
+            if (this.minion.distanceToSqr(this.owner) >= (double) 144.0F) {
                 this.teleportToOwner();
             } else {
                 this.navigation.moveTo(this.owner, this.speedModifier);
@@ -104,7 +102,7 @@ public class MinionFollowOwnerGoal extends Goal {
     private void teleportToOwner() {
         BlockPos blockpos = this.owner.blockPosition();
 
-        for(int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 10; ++i) {
             int j = this.randomIntInclusive(-3, 3);
             int k = this.randomIntInclusive(-1, 1);
             int l = this.randomIntInclusive(-3, 3);
@@ -117,12 +115,12 @@ public class MinionFollowOwnerGoal extends Goal {
     }
 
     private boolean maybeTeleportTo(int x, int y, int z) {
-        if (Math.abs((double)x - this.owner.getX()) < 2.0D && Math.abs((double)z - this.owner.getZ()) < 2.0D) {
+        if (Math.abs((double) x - this.owner.getX()) < 2.0D && Math.abs((double) z - this.owner.getZ()) < 2.0D) {
             return false;
         } else if (!this.canTeleportTo(new BlockPos(x, y, z))) {
             return false;
         } else {
-            this.minion.moveTo((double)x + 0.5D, y, (double)z + 0.5D, this.minion.getYRot(), this.minion.getXRot());
+            this.minion.moveTo((double) x + 0.5D, y, (double) z + 0.5D, this.minion.getYRot(), this.minion.getXRot());
             this.navigation.stop();
             return true;
         }

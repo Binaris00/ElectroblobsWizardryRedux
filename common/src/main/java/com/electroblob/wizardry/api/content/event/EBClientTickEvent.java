@@ -7,11 +7,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 /**
  * This applies to loaders with the Mixin
  * {@link com.electroblob.wizardry.core.mixin.MinecraftMixin#EBWIZARDRY$clientTick(CallbackInfo) MinecraftMixin#EBWIZARDRY$clientTick}
- * */
+ *
+ */
 public final class EBClientTickEvent extends WizardryEvent {
     Minecraft minecraft;
 
-    public EBClientTickEvent(Minecraft mc){
+    public EBClientTickEvent(Minecraft mc) {
         this.minecraft = mc;
     }
 

@@ -62,18 +62,16 @@ public class TooltipElementSpellEntry extends TooltipElementText {
     @Override
     protected Component getText(ItemStack stack) {
         Spell spell = getSpell(stack);
-        if(spell == null) {
+        if (spell == null) {
             return Component.empty();
         }
         // TODO Better spell display name
-        if(ClientUtils.shouldDisplayDiscovered(spell, null)) {
+        if (ClientUtils.shouldDisplayDiscovered(spell, null)) {
             return Component.translatable(spell.getDescriptionId().toString()).withStyle(spell.getElement().getColor());
-        }
-         else {
+        } else {
             return Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData())).withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE).withFont(new ResourceLocation("minecraft", "alt")));
         }
     }
-
 
 
     @Override

@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Function;
 
-public class ConstructRangedSpell<T extends MagicConstructEntity> extends ConstructSpell<T>{
+public class ConstructRangedSpell<T extends MagicConstructEntity> extends ConstructSpell<T> {
     protected boolean hitLiquids = false;
     protected boolean ignoreUncollidables = false;
 
@@ -54,7 +54,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
         if (rayTrace instanceof BlockHitResult blockTrace) {
             Direction direction = blockTrace.getDirection();
             if (!ctx.world().isClientSide && (direction == Direction.UP || !requiresFloor)) {
-                    if (!spawnConstruct(ctx, blockTrace.getLocation(), direction)) return false;
+                if (!spawnConstruct(ctx, blockTrace.getLocation(), direction)) return false;
             } else {
                 return false;
             }

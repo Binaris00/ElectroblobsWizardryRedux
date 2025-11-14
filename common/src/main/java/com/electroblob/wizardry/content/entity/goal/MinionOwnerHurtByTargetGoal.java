@@ -12,9 +12,9 @@ import java.util.EnumSet;
 
 public class MinionOwnerHurtByTargetGoal extends TargetGoal {
     private final Mob minion;
+    private final MinionData data;
     private LivingEntity ownerLastHurtBy;
     private int timestamp;
-    private final MinionData data;
 
     public MinionOwnerHurtByTargetGoal(Mob minion) {
         super(minion, false);

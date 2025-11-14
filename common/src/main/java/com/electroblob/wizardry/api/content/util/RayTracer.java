@@ -19,7 +19,7 @@ public class RayTracer {
 
     @Nullable
     public static HitResult rayTrace(Level world, Entity caster, Vec3 origin, Vec3 endpoint, float aimAssist,
-                                     boolean hitLiquids, Class<? extends Entity> entityType, Predicate<? super Entity> filter){
+                                     boolean hitLiquids, Class<? extends Entity> entityType, Predicate<? super Entity> filter) {
         HitResult result = world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, caster));
 
         endpoint = result.getLocation();

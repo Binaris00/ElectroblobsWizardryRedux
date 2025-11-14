@@ -29,14 +29,14 @@ public class ArrowRainConstruct extends ScaledConstructEntity {
     public void tick() {
         super.tick();
 
-        if(!this.level().isClientSide){
-            double x = this.xo + (this.level().random.nextDouble() - 0.5D) * (double)getBbWidth();
-            double y = this.yo + this.level().random.nextDouble() * (double)getBbHeight();
-            double z = this.zo + (this.level().random.nextDouble() - 0.5D) * (double)getBbWidth();
+        if (!this.level().isClientSide) {
+            double x = this.xo + (this.level().random.nextDouble() - 0.5D) * (double) getBbWidth();
+            double y = this.yo + this.level().random.nextDouble() * (double) getBbHeight();
+            double z = this.zo + (this.level().random.nextDouble() - 0.5D) * (double) getBbWidth();
 
             ConjuredArrowEntity arrow = new ConjuredArrowEntity(x, y, z, this.level());
 
-            arrow.setDeltaMovement(Mth.cos((float)Math.toRadians(this.getYRot() + 90)), -0.6, Mth.sin((float) Math.toRadians(this.getYRot() + 90)));
+            arrow.setDeltaMovement(Mth.cos((float) Math.toRadians(this.getYRot() + 90)), -0.6, Mth.sin((float) Math.toRadians(this.getYRot() + 90)));
             arrow.setOwner(this.getCaster());
             arrow.setBaseDamage(7.0d * damageMultiplier);
             this.level().addFreshEntity(arrow);

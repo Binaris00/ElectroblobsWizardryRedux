@@ -15,9 +15,9 @@ import java.util.UUID;
 
 public final class ImbuementLoader {
     private final @NotNull Item item;
-    private final@NotNull Enchantment imbuement;
-    private int timeLimit;
+    private final @NotNull Enchantment imbuement;
     private final String uuid;
+    private int timeLimit;
 
     public ImbuementLoader(@NotNull Item item, @NotNull Enchantment imbuement, int timeLimit) {
         this.item = item;
@@ -33,13 +33,28 @@ public final class ImbuementLoader {
         this.uuid = uuid;
     }
 
-    public boolean hasReachedLimit(){
+    public static ImbuementLoader deserializeNbt(CompoundTag tag) {
+        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(tag.getString("item")));
+        Enchantment imbuement = BuiltInRegistries.ENCHANTMENT.get(ResourceLocation.tryParse(tag.getString("imbuement")));
+        int timeLimit = tag.getInt("timeLimit");
+        String uuid = tag.contains("uuid") ? tag.getString("uuid") : UUID.randomUUID().toString();
+        if (item == null || imbuement == null) {
+            EBLogger.error("Failed to deserialize imbuement loader: " + tag + (item == null) + " " + (imbuement == null));
+        }
+        return new ImbuementLoader(item, imbuement, timeLimit, uuid);
+    }
+
+    public static String getTagName(Enchantment enchantment) {
+        return "imbuement_" + enchantment.getDescriptionId();
+    }
+
+    public boolean hasReachedLimit() {
         timeLimit -= 1;
         return timeLimit <= 0;
     }
 
-    public CompoundTag serializeNbt(CompoundTag tag){
-        if(item == null || imbuement == null) {
+    public CompoundTag serializeNbt(CompoundTag tag) {
+        if (item == null || imbuement == null) {
             EBLogger.error("Failed to serialize imbuement loader: " + tag + (item == null) + " " + (imbuement == null));
         }
         tag.put("item", StringTag.valueOf(BuiltInRegistries.ITEM.getKey(item).toString()));
@@ -47,17 +62,6 @@ public final class ImbuementLoader {
         tag.putInt("timeLimit", timeLimit);
         tag.putString("uuid", uuid);
         return tag;
-    }
-
-    public static ImbuementLoader deserializeNbt(CompoundTag tag){
-        Item item = BuiltInRegistries.ITEM.get(ResourceLocation.tryParse(tag.getString("item")));
-        Enchantment imbuement = BuiltInRegistries.ENCHANTMENT.get(ResourceLocation.tryParse(tag.getString("imbuement")));
-        int timeLimit = tag.getInt("timeLimit");
-        String uuid = tag.contains("uuid") ? tag.getString("uuid") : UUID.randomUUID().toString();
-        if(item == null || imbuement == null) {
-            EBLogger.error("Failed to deserialize imbuement loader: " + tag + (item == null) + " " + (imbuement == null));
-        }
-        return new ImbuementLoader(item, imbuement, timeLimit, uuid);
     }
 
     public @NotNull Item getItem() {
@@ -77,18 +81,14 @@ public final class ImbuementLoader {
     }
 
     @Override
-    public boolean equals(Object obj){
-        if(this == obj) return true;
-        if(obj instanceof ImbuementLoader) return true;
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj instanceof ImbuementLoader) return true;
         ImbuementLoader other = (ImbuementLoader) obj;
         return this.uuid.equals(other.uuid);
     }
 
-    public static String getTagName(Enchantment enchantment){
-        return "imbuement_" + enchantment.getDescriptionId();
-    }
-
-    public boolean isValid(ItemStack stack){
+    public boolean isValid(ItemStack stack) {
         return stack.getItem().equals(item) &&
                 EnchantmentHelper.getEnchantments(stack).containsKey(imbuement) &&
                 stack.getOrCreateTag().contains(getTagName(imbuement));

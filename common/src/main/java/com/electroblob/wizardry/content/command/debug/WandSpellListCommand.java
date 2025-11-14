@@ -13,7 +13,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
 
 public final class WandSpellListCommand {
-    private WandSpellListCommand() {}
+    private WandSpellListCommand() {
+    }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("wand_spells")
@@ -22,7 +23,7 @@ public final class WandSpellListCommand {
 
     private static int execute(CommandContext<CommandSourceStack> context) {
         CommandSourceStack source = context.getSource();
-        if(!source.isPlayer()) {
+        if (!source.isPlayer()) {
             source.sendFailure(Component.literal("You need to be a player to execute this!"));
             return 0;
         }
@@ -34,8 +35,8 @@ public final class WandSpellListCommand {
         }
         java.util.List<Spell> spells = WandHelper.getSpells(stack);
 
-        for(Spell spell : spells) {
-            if(WandHelper.getCurrentSpell(stack) == spell) {
+        for (Spell spell : spells) {
+            if (WandHelper.getCurrentSpell(stack) == spell) {
                 player.sendSystemMessage(Component.literal("Spell at %s is currently active".formatted(spells.indexOf(spell))).withStyle(ChatFormatting.YELLOW));
                 continue;
             }

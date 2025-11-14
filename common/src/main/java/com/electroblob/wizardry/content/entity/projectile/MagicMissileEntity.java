@@ -42,12 +42,13 @@ public class MagicMissileEntity extends MagicArrowEntity {
     protected void onHitBlock(@NotNull BlockHitResult blockHitResult) {
         super.onHitBlock(blockHitResult);
         Vec3 vec = blockHitResult.getLocation();
-        if(this.level().isClientSide) ParticleBuilder.create(EBParticles.FLASH).pos(vec).color(1, 1, 0.65f).fade(0.85f, 0.5f, 0.8f).spawn(this.level());
+        if (this.level().isClientSide)
+            ParticleBuilder.create(EBParticles.FLASH).pos(vec).color(1, 1, 0.65f).fade(0.85f, 0.5f, 0.8f).spawn(this.level());
     }
 
     @Override
     public void ticksInAir() {
-        if(!this.level().isClientSide) return;
+        if (!this.level().isClientSide) return;
 
         double x = getX() - getDeltaMovement().x / 2;
         double y = getY() - getDeltaMovement().y / 2;

@@ -1,17 +1,17 @@
 package com.electroblob.wizardry.setup.registries.client;
 
 import com.electroblob.wizardry.api.content.data.ConjureData;
-import com.electroblob.wizardry.core.mixin.ItemPropertiesAccessor;
+import com.electroblob.wizardry.core.mixin.accessor.ItemPropertiesAccessor;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 
 public final class EBItemProperties {
-    private EBItemProperties(){
+    private EBItemProperties() {
     }
 
-    public static void register(){
+    public static void register() {
         pullingItem(EBItems.FLAMECATCHER.get());
         conjureItem(EBItems.FLAMECATCHER.get());
 
@@ -22,7 +22,7 @@ public final class EBItemProperties {
         conjureItem(EBItems.SPECTRAL_BOW.get());
     }
 
-    private static void pullingItem(Item item){
+    private static void pullingItem(Item item) {
         ItemPropertiesAccessor.callRegister(item, new ResourceLocation("pull"), (stack, clientLevel, entity, seed) -> {
             if (entity == null) {
                 return 0.0F;
@@ -36,10 +36,10 @@ public final class EBItemProperties {
 
     }
 
-    private static void conjureItem(Item item){
+    private static void conjureItem(Item item) {
         ItemPropertiesAccessor.callRegister(item, new ResourceLocation("conjure"), (stack, clientLevel, entity, seed) -> {
             ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-            if (data != null && data.isSummoned()){
+            if (data != null && data.isSummoned()) {
                 int frames = 8;
                 int damage = data.getRemainingLifetime(clientLevel.getGameTime());
                 return damage < frames ? (float) damage / frames : (float) (stack.getMaxDamage() - damage) / frames;
@@ -49,7 +49,7 @@ public final class EBItemProperties {
 
         ItemPropertiesAccessor.callRegister(item, new ResourceLocation("conjuring"), (stack, clientLevel, entity, seed) -> {
             ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-            if (data != null && data.isSummoned()){
+            if (data != null && data.isSummoned()) {
                 int frames = 8;
                 int damage = data.getRemainingLifetime(clientLevel.getGameTime());
                 return damage < frames || damage > stack.getMaxDamage() - frames ? 1.0F : 0.0F;

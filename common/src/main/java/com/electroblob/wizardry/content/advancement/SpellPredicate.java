@@ -33,16 +33,6 @@ public class SpellPredicate {
         return new SpellPredicate(null, trs, els);
     }
 
-    public boolean test(Spell spell) {
-        if (this.spell != null && !this.spell.equals(spell)) {
-            return false;
-        }
-        if (!this.tiers.contains(spell.getTier())) {
-            return false;
-        }
-        return this.elements.contains(spell.getElement());
-    }
-
     public static SpellPredicate deserialize(@Nullable JsonElement element) {
         if (element == null || element.isJsonNull()) {
             return any();
@@ -69,5 +59,15 @@ public class SpellPredicate {
                 : new HashSet<>(Services.REGISTRY_UTIL.getElements());
 
         return new SpellPredicate(spell, tiers, elements);
+    }
+
+    public boolean test(Spell spell) {
+        if (this.spell != null && !this.spell.equals(spell)) {
+            return false;
+        }
+        if (!this.tiers.contains(spell.getTier())) {
+            return false;
+        }
+        return this.elements.contains(spell.getElement());
     }
 }

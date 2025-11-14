@@ -8,6 +8,9 @@ import net.minecraft.network.chat.Component;
 
 public final class ListSpellsCommand {
 
+    private ListSpellsCommand() {
+    }
+
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("listSpells")
                 .requires((p) -> p.hasPermission(2))
@@ -21,6 +24,4 @@ public final class ListSpellsCommand {
         });
         return 1;
     }
-
-    private ListSpellsCommand(){}
 }

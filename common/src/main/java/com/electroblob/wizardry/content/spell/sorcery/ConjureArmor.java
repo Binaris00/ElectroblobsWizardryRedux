@@ -34,9 +34,9 @@ public class ConjureArmor extends ConjureItemSpell {
         ItemStack armor;
         boolean flag = false;
 
-        for(EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS){
+        for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) {
             // Player already has this piece of armor, skip to next slot
-            if(!ctx.caster().getItemBySlot(slot).isEmpty() && InventoryUtil.doesPlayerHaveItem(ctx.caster(), SPECTRAL_ARMOUR_MAP.get(slot))){
+            if (!ctx.caster().getItemBySlot(slot).isEmpty() && InventoryUtil.doesPlayerHaveItem(ctx.caster(), SPECTRAL_ARMOUR_MAP.get(slot))) {
                 continue;
             }
 

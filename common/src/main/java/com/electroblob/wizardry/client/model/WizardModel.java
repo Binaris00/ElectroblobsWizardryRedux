@@ -10,7 +10,7 @@ import net.minecraft.client.model.geom.builders.*;
 
 public class WizardModel<T extends AbstractWizard> extends HumanoidModel<T> {
     public static final ModelLayerLocation LAYER_LOCATION = new ModelLayerLocation(WizardryMainMod.location("wizard"), "main");
-    
+
     public WizardModel(ModelPart root) {
         super(root);
     }

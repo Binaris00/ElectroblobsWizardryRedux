@@ -20,7 +20,7 @@ public class GuiButtonApply extends Button {
         int k = 72;
         int l = 220;
 
-        if(this.active) {
+        if (this.active) {
             if (this.isHovered) {
                 k += this.width * 2;
             }

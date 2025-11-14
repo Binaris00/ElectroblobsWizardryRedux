@@ -78,7 +78,7 @@ public abstract class SpellInfoScreen extends Screen {
         guiGraphics.drawString(font, getSpell().getType().getDisplayName(), left + 17, top + 26, 0x777777, false);
 
         ChatFormatting tierColor = getSpell().getTier() == SpellTiers.NOVICE ? ChatFormatting.GRAY : getSpell().getTier().getColor();
-        MutableComponent tier = Component.translatable(TRANSLATION_KEY_PREFIX + ".tier", ((MutableComponent)getSpell().getTier().getDescriptionFormatted()).withStyle(tierColor));
+        MutableComponent tier = Component.translatable(TRANSLATION_KEY_PREFIX + ".tier", ((MutableComponent) getSpell().getTier().getDescriptionFormatted()).withStyle(tierColor));
         guiGraphics.drawString(this.font, tier, left + 17, top + 45, 0, false);
 
         ChatFormatting elementColor = getSpell().getElement() == Elements.HEALING ? ChatFormatting.GOLD : getSpell().getElement().getColor();
@@ -87,7 +87,8 @@ public abstract class SpellInfoScreen extends Screen {
         guiGraphics.drawString(this.font, element, left + 17, top + 57, 0, false);
 
         String manaCost = I18n.get(TRANSLATION_KEY_PREFIX + ".mana_cost", getSpell().getCost());
-        if (!getSpell().isInstantCast()) manaCost = I18n.get(TRANSLATION_KEY_PREFIX + ".mana_cost_continuous", getSpell().getCost());
+        if (!getSpell().isInstantCast())
+            manaCost = I18n.get(TRANSLATION_KEY_PREFIX + ".mana_cost_continuous", getSpell().getCost());
         if (!discovered) manaCost = I18n.get(TRANSLATION_KEY_PREFIX + ".mana_cost_undiscovered");
         guiGraphics.drawString(this.font, manaCost, left + 17, top + 69, 0, false);
 

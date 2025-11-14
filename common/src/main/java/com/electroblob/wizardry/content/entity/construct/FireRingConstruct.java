@@ -32,7 +32,7 @@ public class FireRingConstruct extends ScaledConstructEntity {
     public void tick() {
         super.tick();
         if (this.tickCount % 40 == 1) this.playSound(EBSounds.ENTITY_FIRE_RING_AMBIENT.get(), 4.0f, 0.7f);
-        if(this.tickCount % 5 != 0 && this.level().isClientSide) return;
+        if (this.tickCount % 5 != 0 && this.level().isClientSide) return;
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, this.getX(), this.getY(), this.getZ(), this.level());
 

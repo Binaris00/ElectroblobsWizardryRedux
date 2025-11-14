@@ -28,7 +28,7 @@ public final class EBMobEffects {
     public static final DeferredObject<MobEffect> CURSE_OF_SOULBINDING = mobEffect("curse_of_soulbinding", () -> new CurseMobEffect(MobEffectCategory.HARMFUL, 0x0f000f));
 
     // ======= Registry =======
-    public static void register(RegisterFunction<MobEffect> function){
+    public static void register(RegisterFunction<MobEffect> function) {
         MOB_EFFECTS.forEach(((id, mobEffect) ->
                 function.register(BuiltInRegistries.MOB_EFFECT, WizardryMainMod.location(id), mobEffect.get())));
     }

@@ -10,13 +10,14 @@ import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
 import net.minecraft.core.BlockPos;
 
 public class PacketTestCommand {
-    private PacketTestCommand() {}
+    private PacketTestCommand() {
+    }
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("packet_test")
-                        .then(Commands.argument("pos", BlockPosArgument.blockPos())
-                                .executes(context -> execute(context, BlockPosArgument.getBlockPos(context,"pos")))
-                        )
+                .then(Commands.argument("pos", BlockPosArgument.blockPos())
+                        .executes(context -> execute(context, BlockPosArgument.getBlockPos(context, "pos")))
+                )
         );
     }
 

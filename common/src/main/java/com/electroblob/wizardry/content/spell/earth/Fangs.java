@@ -31,35 +31,45 @@ import org.jetbrains.annotations.NotNull;
 public class Fangs extends Spell {
     private static final double FANG_SPACING = 1.25;
 
+    public static void onHurt(EBLivingHurtEvent event) {
+        if (event.getSource().getDirectEntity() instanceof EvokerFangs) {
+            if (!AllyDesignation.isValidTarget(event.getSource().getEntity(), event.getDamagedEntity())) {
+                event.setCanceled(true);
+            }
+        }
+    }
+
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if(spawnFangs(ctx, ctx.caster().position(), GeometryUtil.horizontalise(ctx.caster().getLookAngle()))) return false;
+        if (spawnFangs(ctx, ctx.caster().position(), GeometryUtil.horizontalise(ctx.caster().getLookAngle())))
+            return false;
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
     @Override
     public boolean cast(EntityCastContext ctx) {
-        if(ctx.target() == null) return false;
-        if(spawnFangs(ctx, ctx.caster().position(), ctx.target().position().subtract(ctx.caster().position()).normalize())) return false;
+        if (ctx.target() == null) return false;
+        if (spawnFangs(ctx, ctx.caster().position(), ctx.target().position().subtract(ctx.caster().position()).normalize()))
+            return false;
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 
     @Override
     public boolean cast(LocationCastContext ctx) {
-        if(spawnFangs(ctx, ctx.vec3(), Vec3.atLowerCornerOf(ctx.direction().getNormal()))) return false;
+        if (spawnFangs(ctx, ctx.vec3(), Vec3.atLowerCornerOf(ctx.direction().getNormal()))) return false;
         this.playSound(ctx.world(), ctx.vec3(), ctx.castingTicks(), -1);
         return true;
     }
 
-    protected boolean spawnFangs(CastContext ctx, Vec3 origin, Vec3 direction){
+    protected boolean spawnFangs(CastContext ctx, Vec3 origin, Vec3 direction) {
         boolean defensiveCircle = ctx.caster() instanceof Player caster && caster.isCrouching() && EBAccessoriesIntegration.isEquipped(caster, EBItems.RING_EVOKER.get());
         boolean flag = false;
 
         if (ctx.world().isClientSide) {
             double x = origin.x;
-            double y =  ctx.caster() != null ? origin.y + ctx.caster().getEyeHeight() : origin.y;
+            double y = ctx.caster() != null ? origin.y + ctx.caster().getEyeHeight() : origin.y;
             double z = origin.z;
 
             for (int i = 0; i < 12; i++) {
@@ -106,14 +116,6 @@ public class Fangs extends Spell {
         }
 
         return false;
-    }
-
-    public static void onHurt(EBLivingHurtEvent event){
-        if(event.getSource().getDirectEntity() instanceof EvokerFangs){
-            if(!AllyDesignation.isValidTarget(event.getSource().getEntity(), event.getDamagedEntity())){
-                event.setCanceled(true);
-            }
-        }
     }
 
     @Override

@@ -36,7 +36,7 @@ public class ControlInputPacketC2S implements Message {
     // TODO MISSING SOME KEYS...
     @Override
     public void handleServer(MinecraftServer server, ServerPlayer player) {
-        if(player == null) return;
+        if (player == null) return;
         ItemStack wand = player.getMainHandItem();
 
         if (!(wand.getItem() instanceof ISpellCastingItem)) {

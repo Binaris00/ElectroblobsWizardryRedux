@@ -43,7 +43,7 @@ public class PoisonBombEntity extends BombEntity {
 
     @Override
     protected void onHit(@NotNull HitResult hitResult) {
-        if(level().isClientSide) return;
+        if (level().isClientSide) return;
         float damage = Spells.POISON_BOMB.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
         if (hitResult instanceof EntityHitResult entityHitResult) {
@@ -57,7 +57,7 @@ public class PoisonBombEntity extends BombEntity {
             for (LivingEntity entity : livingEntities) {
                 if (entity != null && entity != this.getOwner()) {
                     EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
-                    if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, entity))
+                    if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, entity))
                         entity.addEffect(new MobEffectInstance(MobEffects.POISON,
                                 Spells.POISON_BOMB.property(DefaultProperties.EFFECT_DURATION),
                                 Spells.POISON_BOMB.property(DefaultProperties.EFFECT_STRENGTH)));

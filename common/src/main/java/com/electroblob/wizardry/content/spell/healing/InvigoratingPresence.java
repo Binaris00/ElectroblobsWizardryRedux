@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class InvigoratingPresence extends AreaEffectSpell {
-    public InvigoratingPresence(){
+    public InvigoratingPresence() {
         this.soundValues(0.7f, 1.2f, 0.4f);
         this.alwaysSucceed(true);
         this.targetAllies(true);
@@ -39,7 +39,7 @@ public class InvigoratingPresence extends AreaEffectSpell {
     }
 
     @Override
-    protected void spawnParticle(Level world, double x, double y, double z){
+    protected void spawnParticle(Level world, double x, double y, double z) {
         ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).velocity(0, 0.03, 0).time(50)
                 .color(1, 0.2f, 0.2f).spawn(world);
     }

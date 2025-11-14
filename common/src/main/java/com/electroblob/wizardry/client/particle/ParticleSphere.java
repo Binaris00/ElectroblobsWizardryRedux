@@ -25,6 +25,38 @@ public class ParticleSphere extends ParticleWizardry {
         this.alpha = 0.8f;
     }
 
+    private static void drawSphere(PoseStack stack, BufferBuilder buffer, float radius, float latStep, float longStep, boolean inside, float r, float g, float b, float a) {
+        buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
+
+        boolean goingUp = inside;
+
+        buffer.vertex(stack.last().pose(), 0, goingUp ? -radius : radius, 0).color(r, g, b, a).endVertex();
+
+        for (float longitude = -(float) Math.PI; longitude <= (float) Math.PI; longitude += longStep) {
+            for (float theta = (float) Math.PI / 2 - latStep; theta >= -(float) Math.PI / 2 + latStep; theta -= latStep) {
+                float latitude = goingUp ? -theta : theta;
+
+                float hRadius = radius * Mth.cos(latitude);
+                float vy = radius * Mth.sin(latitude);
+                float vx = hRadius * Mth.sin(longitude);
+                float vz = hRadius * Mth.cos(longitude);
+
+                buffer.vertex(stack.last().pose(), vx, vy, vz).color(r, g, b, a).endVertex();
+
+                vx = hRadius * Mth.sin(longitude + longStep);
+                vz = hRadius * Mth.cos(longitude + longStep);
+
+                buffer.vertex(stack.last().pose(), vx, vy, vz).color(r, g, b, a).endVertex();
+            }
+
+            buffer.vertex(stack.last().pose(), 0, goingUp ? radius : -radius, 0).color(r, g, b, a).endVertex();
+
+            goingUp = !goingUp;
+        }
+
+        BufferUploader.drawWithShader(buffer.end());
+    }
+
     @Override
     public @NotNull ParticleRenderType getRenderType() {
         return ParticleRenderType.CUSTOM;
@@ -67,38 +99,6 @@ public class ParticleSphere extends ParticleWizardry {
         stack.pushPose();
     }
 
-    private static void drawSphere(PoseStack stack, BufferBuilder buffer, float radius, float latStep, float longStep, boolean inside, float r, float g, float b, float a) {
-        buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_COLOR);
-
-        boolean goingUp = inside;
-
-        buffer.vertex(stack.last().pose(), 0, goingUp ? -radius : radius, 0).color(r, g, b, a).endVertex();
-
-        for (float longitude = -(float) Math.PI; longitude <= (float) Math.PI; longitude += longStep) {
-            for (float theta = (float) Math.PI / 2 - latStep; theta >= -(float) Math.PI / 2 + latStep; theta -= latStep) {
-                float latitude = goingUp ? -theta : theta;
-
-                float hRadius = radius * Mth.cos(latitude);
-                float vy = radius * Mth.sin(latitude);
-                float vx = hRadius * Mth.sin(longitude);
-                float vz = hRadius * Mth.cos(longitude);
-
-                buffer.vertex(stack.last().pose(), vx, vy, vz).color(r, g, b, a).endVertex();
-
-                vx = hRadius * Mth.sin(longitude + longStep);
-                vz = hRadius * Mth.cos(longitude + longStep);
-
-                buffer.vertex(stack.last().pose(), vx, vy, vz).color(r, g, b, a).endVertex();
-            }
-
-            buffer.vertex(stack.last().pose(), 0, goingUp ? radius : -radius, 0).color(r, g, b, a).endVertex();
-
-            goingUp = !goingUp;
-        }
-
-        BufferUploader.drawWithShader(buffer.end());
-    }
-
     public static class SphereProvider implements ParticleProvider<SimpleParticleType> {
         static SpriteSet spriteSet;
 
@@ -106,14 +106,14 @@ public class ParticleSphere extends ParticleWizardry {
             spriteSet = sprite;
         }
 
+        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
+            return new ParticleSphere(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteSet);
+        }
+
         @Nullable
         @Override
         public Particle createParticle(@NotNull SimpleParticleType parameters, @NotNull ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleSphere(world, x, y, z, spriteSet);
-        }
-
-        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
-            return new ParticleSphere(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteSet);
         }
     }
 }

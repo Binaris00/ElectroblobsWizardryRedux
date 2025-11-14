@@ -17,8 +17,8 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.DrawingUtils;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.api.content.util.WandHelper;
-import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.ClientSpellSoundManager;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
@@ -49,6 +49,7 @@ import java.util.List;
  *     <li>{@link Item#onUseTick(Level, LivingEntity, ItemStack, int)} handle charge and continuous effects</li>
  *     <li>{@link Item#releaseUsing(ItemStack, Level, LivingEntity, int)} handle cooldown and casting finish</li>
  * </ul>
+ *
  * @see ISpellCastingItem
  * @see IWizardryItem
  */
@@ -61,6 +62,32 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         super(new Properties().stacksTo(1).durability(tier.maxCharge));
         this.tier = tier;
         this.element = element;
+    }
+
+    // =====================================
+    // Utils
+    // =====================================
+    public static Item getWand(SpellTier tier, Element element) {
+        if (tier == null) throw new NullPointerException("The given tier cannot be null.");
+        if (element == null) element = Elements.MAGIC;
+        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "magic" : tier.getLocation().getPath();
+        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
+        registryName = "wand_" + registryName;
+        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
+    }
+
+    protected static int getDistributedCost(int cost, int castingTick) {
+        int partialCost;
+
+        if (castingTick % 20 == 0) {
+            partialCost = cost / 2 + cost % 2;
+        } else if (castingTick % 10 == 0) {
+            partialCost = cost / 2;
+        } else {
+            partialCost = 0;
+        }
+
+        return partialCost;
     }
 
     @Override
@@ -127,7 +154,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         return cost <= this.getMana(stack) && spell.getTier().level <= this.tier.level && (WandHelper.getCurrentCooldown(stack) == 0 || ctx.caster().isCreative());
     }
 
-
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         // TODO if (world.isClientSide && spell.isInstantCast() && spell.requiresPacket()) return false;
@@ -182,6 +208,12 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         return InteractionResult.FAIL;
     }
 
+    // ==================================
+    // Spell Casting methods - Handle spells
+    // This is where you can see how the item
+    // saves and loads the spells
+    // ==================================
+
     @Override
     public int getUseDuration(@NotNull ItemStack stack) {
         return 72000;
@@ -212,12 +244,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())));
         }
     }
-
-    // ==================================
-    // Spell Casting methods - Handle spells
-    // This is where you can see how the item
-    // saves and loads the spells
-    // ==================================
 
     @NotNull
     @Override
@@ -291,7 +317,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         stack.setDamageValue(getManaCapacity(stack) - mana);
     }
 
-
     // ==================================
     // Workbench Item Methods
     // This is how you modify how the wands
@@ -317,7 +342,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (spells.size() <= 0) spells = new ArrayList<>();
 
         for (int i = 0; i < spells.size(); i++) {
-            if(spellBooks[i].getItem() == ItemStack.EMPTY) continue;
+            if (spellBooks[i].getItem() == ItemStack.EMPTY) continue;
 
             Spell spell = SpellUtil.getSpell(spellBooks[i].getItem());
 
@@ -330,7 +355,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
                 // Fix to ""sync"" the selected spell with the rest of the spells
                 int currentSelectedIndex = spells.indexOf(WandHelper.getCurrentSpell(centre.getItem()));
-                if(currentSelectedIndex == i) {
+                if (currentSelectedIndex == i) {
                     WandHelper.setCurrentSpell(centre.getItem(), spell);
                 }
 
@@ -463,18 +488,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         return wand;
     }
 
-    // =====================================
-    // Utils
-    // =====================================
-    public static Item getWand(SpellTier tier, Element element) {
-        if (tier == null) throw new NullPointerException("The given tier cannot be null.");
-        if (element == null) element = Elements.MAGIC;
-        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "magic" : tier.getLocation().getPath();
-        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
-        registryName = "wand_" + registryName;
-        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
-    }
-
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         return (this.element == null ? super.getName(stack) : Component.literal(super.getName(stack).getString()).withStyle(this.element.getColor()));
@@ -505,24 +518,9 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         }
     }
 
-
     @Override
     public int getBarColor(ItemStack stack) {
         return DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getDamageValue());
-    }
-
-    protected static int getDistributedCost(int cost, int castingTick) {
-        int partialCost;
-
-        if (castingTick % 20 == 0) {
-            partialCost = cost / 2 + cost % 2;
-        } else if (castingTick % 10 == 0) {
-            partialCost = cost / 2;
-        } else {
-            partialCost = 0;
-        }
-
-        return partialCost;
     }
 
     public SpellModifiers calculateModifiers(ItemStack stack, Player player, Spell spell) {

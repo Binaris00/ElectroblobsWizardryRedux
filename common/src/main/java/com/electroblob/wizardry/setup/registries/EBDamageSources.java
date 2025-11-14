@@ -12,8 +12,6 @@ import java.util.ArrayList;
 
 public final class EBDamageSources {
     public static ArrayList<ResourceKey<DamageType>> TYPES = new ArrayList<>();
-    private EBDamageSources(){}
-
     public static final ResourceKey<DamageType> SORCERY = createType("sorcery");
     public static final ResourceKey<DamageType> FIRE = createType("fire");
     public static final ResourceKey<DamageType> FROST = createType("frost");
@@ -23,23 +21,28 @@ public final class EBDamageSources {
     public static final ResourceKey<DamageType> FORCE = createType("force");
     public static final ResourceKey<DamageType> BLAST = createType("blast");
     public static final ResourceKey<DamageType> RADIANT = createType("radiant");
+    private EBDamageSources() {
+    }
 
-    public static void init(){}
+    public static void init() {
+    }
 
-    private static ResourceKey<DamageType> createType(String name){
+    private static ResourceKey<DamageType> createType(String name) {
         var key = ResourceKey.create(Registries.DAMAGE_TYPE, WizardryMainMod.location(name));
         TYPES.add(key);
         return key;
     }
 
-    /** TODO (Check addon compatibility) Could be used for addons, add a custom magic damage type to the mod list */
-    public static ResourceKey<DamageType> createType(ResourceLocation location){
+    /**
+     * TODO (Check addon compatibility) Could be used for addons, add a custom magic damage type to the mod list
+     */
+    public static ResourceKey<DamageType> createType(ResourceLocation location) {
         var key = ResourceKey.create(Registries.DAMAGE_TYPE, location);
         TYPES.add(key);
         return key;
     }
 
-    public static boolean isMagic(DamageSource source){
+    public static boolean isMagic(DamageSource source) {
         return TYPES.stream().anyMatch(source::is) || source.is(DamageTypes.MAGIC);
     }
 }

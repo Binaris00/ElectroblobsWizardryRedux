@@ -70,28 +70,28 @@ public class Remnant extends Monster {
         this.noPhysics = false;
         this.setNoGravity(true);
 
-        if(!level().isClientSide) return;
+        if (!level().isClientSide) return;
 
 
-        Vec3 centre = new Vec3(getX(), getY(), getZ()).add(0, getBbHeight()/2, 0);
+        Vec3 centre = new Vec3(getX(), getY(), getZ()).add(0, getBbHeight() / 2, 0);
 
         Element element = Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(this.getElement()));
-        if(element == null) return;
+        if (element == null) return;
         int[] colours = element.getColors();
 
-        double r = getBbHeight()/3;
+        double r = getBbHeight() / 3;
 
         double x = r * (random.nextDouble() * 2 - 1);
         double y = r * (random.nextDouble() * 2 - 1);
         double z = r * (random.nextDouble() * 2 - 1);
 
-        if(this.deathTime > 0){
+        if (this.deathTime > 0) {
             // Spew out particles on death
-            for(int i = 0; i < 8; i++){
+            for (int i = 0; i < 8; i++) {
                 ParticleBuilder.create(EBParticles.DUST, random, centre.x + x, centre.y + y, centre.z + z, 0.1, true)
                         .time(12).color(colours[1]).fade(colours[2]).spawn(level());
             }
-        }else{
+        } else {
             ParticleBuilder.create(EBParticles.DUST).pos(centre.x + x, centre.y + y, centre.z + z)
                     .velocity(x * -0.03, 0.02, z * -0.03).time(24 + random.nextInt(8)).color(colours[1]).fade(colours[2]).spawn(level());
         }
@@ -113,14 +113,14 @@ public class Remnant extends Monster {
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
         super.addAdditionalSaveData(compound);
         compound.putString("Element", this.getElement());
-        if(boundOrigin != null) compound.put("BoundOrigin", NbtUtils.writeBlockPos(boundOrigin));
+        if (boundOrigin != null) compound.put("BoundOrigin", NbtUtils.writeBlockPos(boundOrigin));
     }
 
     @Override
     public void readAdditionalSaveData(@NotNull CompoundTag compound) {
         super.readAdditionalSaveData(compound);
         this.setElement(compound.getString("Element"));
-        if(compound.contains("BoundOrigin")) boundOrigin = NbtUtils.readBlockPos(compound.getCompound("BoundOrigin"));
+        if (compound.contains("BoundOrigin")) boundOrigin = NbtUtils.readBlockPos(compound.getCompound("BoundOrigin"));
     }
 
     @Nullable
@@ -157,12 +157,12 @@ public class Remnant extends Monster {
         this.entityData.set(ATTACKING, attacking);
     }
 
-    public void setBoundOrigin(@Nullable BlockPos boundOrigin) {
-        this.boundOrigin = boundOrigin;
-    }
-
     public @Nullable BlockPos getBoundOrigin() {
         return this.boundOrigin;
+    }
+
+    public void setBoundOrigin(@Nullable BlockPos boundOrigin) {
+        this.boundOrigin = boundOrigin;
     }
 
     @Override
@@ -171,17 +171,17 @@ public class Remnant extends Monster {
     }
 
     @Override
-    protected SoundEvent getAmbientSound(){
+    protected SoundEvent getAmbientSound() {
         return EBSounds.ENTITY_REMNANT_AMBIENT.get();
     }
 
     @Override
-    protected SoundEvent getDeathSound(){
+    protected SoundEvent getDeathSound() {
         return EBSounds.ENTITY_REMNANT_DEATH.get();
     }
 
     @Override
-    protected SoundEvent getHurtSound(@NotNull DamageSource source){
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
         return EBSounds.ENTITY_REMNANT_HURT.get();
     }
 
@@ -257,12 +257,12 @@ public class Remnant extends Monster {
                     Remnant.this.setDeltaMovement(Remnant.this.getDeltaMovement().add(vec3.scale(this.speedModifier * 0.05D / d0)));
                     if (Remnant.this.getTarget() == null) {
                         Vec3 vec31 = Remnant.this.getDeltaMovement();
-                        Remnant.this.setYRot(-((float) Mth.atan2(vec31.x, vec31.z)) * (180F / (float)Math.PI));
+                        Remnant.this.setYRot(-((float) Mth.atan2(vec31.x, vec31.z)) * (180F / (float) Math.PI));
                         Remnant.this.yBodyRot = Remnant.this.getYRot();
                     } else {
                         double d2 = Remnant.this.getTarget().getX() - Remnant.this.getX();
                         double d1 = Remnant.this.getTarget().getZ() - Remnant.this.getZ();
-                        Remnant.this.setYRot(-((float)Mth.atan2(d2, d1)) * (180F / (float)Math.PI));
+                        Remnant.this.setYRot(-((float) Mth.atan2(d2, d1)) * (180F / (float) Math.PI));
                         Remnant.this.yBodyRot = Remnant.this.getYRot();
                     }
                 }
@@ -290,12 +290,12 @@ public class Remnant extends Monster {
                 blockpos = Remnant.this.blockPosition();
             }
 
-            for(int i = 0; i < 3; ++i) {
+            for (int i = 0; i < 3; ++i) {
                 BlockPos blockpos1 = blockpos.offset(Remnant.this.random.nextInt(15) - 7, Remnant.this.random.nextInt(11) - 5, Remnant.this.random.nextInt(15) - 7);
                 if (Remnant.this.level().isEmptyBlock(blockpos1)) {
-                    Remnant.this.moveControl.setWantedPosition((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 0.25D);
+                    Remnant.this.moveControl.setWantedPosition((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 0.25D);
                     if (Remnant.this.getTarget() == null) {
-                        Remnant.this.getLookControl().setLookAt((double)blockpos1.getX() + 0.5D, (double)blockpos1.getY() + 0.5D, (double)blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
+                        Remnant.this.getLookControl().setLookAt((double) blockpos1.getX() + 0.5D, (double) blockpos1.getY() + 0.5D, (double) blockpos1.getZ() + 0.5D, 180.0F, 20.0F);
                     }
                     break;
                 }

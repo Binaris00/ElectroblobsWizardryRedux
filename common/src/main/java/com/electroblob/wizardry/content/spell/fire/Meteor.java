@@ -22,9 +22,9 @@ public class Meteor extends RaySpell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if(!(EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.RING_METEOR.get()))) return super.cast(ctx);
+        if (!(EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.RING_METEOR.get()))) return super.cast(ctx);
 
-        if(!ctx.world().isClientSide){
+        if (!ctx.world().isClientSide) {
             MeteorEntity meteor = new MeteorEntity(ctx.world(), ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight(), ctx.caster().getZ(),
                     ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
 
@@ -40,8 +40,8 @@ public class Meteor extends RaySpell {
 
     @Override
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
-        if(ctx.world().canSeeSky(blockHit.getBlockPos().above())){
-            if(!ctx.world().isClientSide){
+        if (ctx.world().canSeeSky(blockHit.getBlockPos().above())) {
+            if (!ctx.world().isClientSide) {
                 MeteorEntity meteor = new MeteorEntity(ctx.world(), blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY() + 50, blockHit.getBlockPos().getZ(),
                         ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
                 ctx.world().addFreshEntity(meteor);

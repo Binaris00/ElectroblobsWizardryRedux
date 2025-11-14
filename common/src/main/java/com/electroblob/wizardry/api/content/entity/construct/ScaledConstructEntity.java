@@ -30,7 +30,7 @@ public abstract class ScaledConstructEntity extends MagicConstructEntity {
         this.size = EntityDimensions.scalable(shouldScaleWidth() ? getBbWidth() * sizeMultiplier : getBbWidth(), shouldScaleHeight() ? getBbHeight() * sizeMultiplier : getBbHeight());
     }
 
-    public void setSize(float width, float height){
+    public void setSize(float width, float height) {
         this.size = EntityDimensions.scalable(width, height);
     }
 

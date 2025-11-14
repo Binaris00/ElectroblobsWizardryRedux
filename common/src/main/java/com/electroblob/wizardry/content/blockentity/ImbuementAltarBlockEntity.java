@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.content.blockentity;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.recipe.ImbuementAltarRecipe;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
@@ -11,7 +10,6 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -82,6 +80,22 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         }
     }
 
+    private static ItemStack[] getReceptacleItems(Level level, BlockPos pos) {
+        ItemStack[] items = new ItemStack[4];
+        BlockEntity te;
+
+        for (int i = 0; i < 4; i++) {
+            te = level.getBlockEntity(pos.relative(BlockUtil.getHorizontals()[i]));
+            if (te instanceof ReceptacleBlockEntity e && e.getStack() != null) {
+                items[i] = e.getStack();
+            } else {
+                items[i] = null;
+            }
+        }
+
+        return items;
+    }
+
     public void checkRecipe() {
         if (level == null || level.isClientSide) return;
 
@@ -114,22 +128,6 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         } else if (recipe == null) {
             imbuementTimer = 0;
         }
-    }
-
-    private static ItemStack[] getReceptacleItems(Level level, BlockPos pos) {
-        ItemStack[] items = new ItemStack[4];
-        BlockEntity te;
-
-        for (int i = 0; i < 4; i++) {
-            te = level.getBlockEntity(pos.relative(BlockUtil.getHorizontals()[i]));
-            if (te instanceof ReceptacleBlockEntity e && e.getStack() != null) {
-                items[i] = e.getStack();
-            } else {
-                items[i] = null;
-            }
-        }
-
-        return items;
     }
 
     private void craftRecipe() {
@@ -218,13 +216,13 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         return stack;
     }
 
+    public Player getLastUser() {
+        return lastUser;
+    }
+
     public void setLastUser(Player player) {
         this.lastUser = player;
         if (player != null) this.lastUserUUID = player.getUUID();
-    }
-
-    public Player getLastUser() {
-        return lastUser;
     }
 
     public UUID getLastUserUUID() {

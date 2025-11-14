@@ -42,9 +42,9 @@ import org.jetbrains.annotations.NotNull;
 public abstract class MagicArrowEntity extends AbstractArrow {
     public static final double LAUNCH_Y_OFFSET = 0.1;
     public static final int SEEKING_TIME = 15;
+    public float damageMultiplier = 1.0f;
     protected int ticksInGround;
     protected int ticksInAir;
-    public float damageMultiplier = 1.0f;
 
     public MagicArrowEntity(EntityType<? extends AbstractArrow> entityType, Level world) {
         super(entityType, world);
@@ -150,6 +150,7 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     }
 
     // ======================= Property getters (to be overridden by subclasses) =======================
+
     /**
      * Subclasses must override this to set their own base damage.
      */

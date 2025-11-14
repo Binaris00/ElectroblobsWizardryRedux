@@ -23,7 +23,7 @@ public class ArcaneTomeItem extends Item {
     public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
         String tierKey = stack.getOrCreateTag().getString("Tier");
         SpellTier tier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
-        if(tier == null) return Rarity.COMMON;
+        if (tier == null) return Rarity.COMMON;
         return switch (tier.level) {
             case 1 -> Rarity.UNCOMMON;
             case 2 -> Rarity.RARE;
@@ -36,14 +36,14 @@ public class ArcaneTomeItem extends Item {
     public void appendHoverText(ItemStack stack, Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
         String tierKey = stack.getOrCreateTag().getString("Tier");
         SpellTier tier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
-        if(tier == null || tier.level <= 0) return;
+        if (tier == null || tier.level <= 0) return;
 
         List<SpellTier> tiers = Services.REGISTRY_UTIL.getTiers().stream().toList();
         int index = tiers.indexOf(tier);
 
         tooltip.add(tier.getDescriptionFormatted());
 
-        if(index > 0){
+        if (index > 0) {
             SpellTier tier2 = tiers.get(index - 1);
             tooltip.add(Component.translatable("item.ebwizardry.arcane_tome.desc",
                     tier2.getDescriptionFormatted().getString(),

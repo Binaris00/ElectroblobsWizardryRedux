@@ -34,21 +34,21 @@ public class FireBoltEntity extends MagicProjectileEntity {
     protected void onHit(@NotNull HitResult hitResult) {
         super.onHit(hitResult);
 
-        if(hitResult.getType() == HitResult.Type.ENTITY){
+        if (hitResult.getType() == HitResult.Type.ENTITY) {
             EntityHitResult entityHitResult = (EntityHitResult) hitResult;
             Entity entity = entityHitResult.getEntity();
 
             float damage = Spells.FIREBOLT.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
-            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) {
+            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) {
                 EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
                 entity.setSecondsOnFire(Spells.FIREBOLT.property(DefaultProperties.EFFECT_DURATION));
             }
         }
 
         this.playSound(EBSounds.ENTITY_FIREBOLT_HIT.get(), 2, 0.8f + random.nextFloat() * 0.3f);
-        if(level().isClientSide()){
-            for(int i = 0; i < 8; i++){
+        if (level().isClientSide()) {
+            for (int i = 0; i < 8; i++) {
                 level().addParticle(ParticleTypes.LAVA, getX() + random.nextFloat() - 0.5, getY() + getBbHeight() / 2 + random.nextFloat() - 0.5, getZ() + random.nextFloat() - 0.5, 0, 0, 0);
             }
         }
@@ -58,10 +58,10 @@ public class FireBoltEntity extends MagicProjectileEntity {
     @Override
     public void tick() {
         super.tick();
-        if(level().isClientSide){
+        if (level().isClientSide) {
             ParticleBuilder.create(EBParticles.MAGIC_FIRE, this).time(14).spawn(level());
 
-            if(this.tickCount > 1){
+            if (this.tickCount > 1) {
                 double x = xo - getDeltaMovement().x / 2 + random.nextFloat() * 0.2 - 0.1;
                 double y = yo + getBbHeight() / 2 - getDeltaMovement().y / 2 + random.nextFloat() * 0.2 - 0.1;
                 double z = zo - getDeltaMovement().z / 2 + random.nextFloat() * 0.2 - 0.1;

@@ -20,27 +20,23 @@ import java.util.Map;
 
 public interface Imbuement {
 
-    default void onImbuementRemoval(ItemStack stack){}
-
-
-
-    static void onLivingDeath(EBLivingDeathEvent event){
-        if(!(event.getEntity() instanceof Player player))return;
+    static void onLivingDeath(EBLivingDeathEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return;
 
         InventoryUtil.getAllItems(player).forEach(stack -> removeImbuements(player, stack));
     }
 
-    static void onItemTossEvent(EBItemTossEvent event){
+    static void onItemTossEvent(EBItemTossEvent event) {
         removeImbuements(event.getPlayer(), event.getStack());
     }
 
-    static boolean removeImbuements(Player player,ItemStack stack){
-        if(stack.isEnchanted()){
+    static boolean removeImbuements(Player player, ItemStack stack) {
+        if (stack.isEnchanted()) {
             Map<Enchantment, Integer> enchants = EnchantmentHelper.getEnchantments(stack);
             Iterator<Enchantment> iterator = enchants.keySet().iterator();
-            while(iterator.hasNext()){
+            while (iterator.hasNext()) {
                 Enchantment enchantment = iterator.next();
-                if(enchantment instanceof Imbuement imbuement){
+                if (enchantment instanceof Imbuement imbuement) {
                     imbuement.onImbuementRemoval(stack);
                     iterator.remove();
                     SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
@@ -53,8 +49,8 @@ public interface Imbuement {
     }
 
     static void onEntityJoinLevel(EBEntityJoinLevelEvent event) {
-        if(event.getEntity().level().isClientSide() || !(event.getEntity() instanceof AbstractArrow arrow)) return;
-        if(!(arrow.getOwner() instanceof LivingEntity archer)) return;
+        if (event.getEntity().level().isClientSide() || !(event.getEntity() instanceof AbstractArrow arrow)) return;
+        if (!(arrow.getOwner() instanceof LivingEntity archer)) return;
 
         ItemStack bow = archer.getMainHandItem();
 
@@ -84,5 +80,8 @@ public interface Imbuement {
 //                arrow.getPersistentData().putInt(FreezingWeapon.FREEZING_ARROW_NBT_KEY, level);
 //            }
 //        }
+    }
+
+    default void onImbuementRemoval(ItemStack stack) {
     }
 }

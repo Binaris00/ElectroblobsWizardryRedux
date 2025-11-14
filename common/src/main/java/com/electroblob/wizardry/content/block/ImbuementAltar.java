@@ -44,29 +44,34 @@ public class ImbuementAltar extends BaseEntityBlock {
         this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
     }
 
+    @javax.annotation.Nullable
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<ImbuementAltarBlockEntity> entityType) {
+        return createTickerHelper(type, type, ImbuementAltarBlockEntity::update);
+    }
+
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-        if(!(level.getBlockEntity(pos) instanceof ImbuementAltarBlockEntity entity) || player.isShiftKeyDown()){
+        if (!(level.getBlockEntity(pos) instanceof ImbuementAltarBlockEntity entity) || player.isShiftKeyDown()) {
             return InteractionResult.FAIL;
         }
 
         ItemStack currentStack = entity.getStack();
         ItemStack toInsert = player.getItemInHand(hand);
 
-        if(currentStack.isEmpty()){
+        if (currentStack.isEmpty()) {
             ItemStack stack = toInsert.copy();
             stack.setCount(1);
             entity.setStack(stack, true);
             entity.setLastUser(player);
-            if(!player.isCreative()) toInsert.shrink(1);
+            if (!player.isCreative()) toInsert.shrink(1);
 
-        }else{
-            if(currentStack.getItem() instanceof RandomSpellBookItem){
+        } else {
+            if (currentStack.getItem() instanceof RandomSpellBookItem) {
                 RandomSpellBookItem.create(level, player, currentStack);
             } else {
-                if(toInsert.isEmpty()){
+                if (toInsert.isEmpty()) {
                     player.addItem(currentStack);
-                }else if(!player.addItem(currentStack)){
+                } else if (!player.addItem(currentStack)) {
                     player.drop(currentStack, false);
                 }
             }
@@ -86,21 +91,21 @@ public class ImbuementAltar extends BaseEntityBlock {
                 .allMatch(s -> level.getBlockState(pos.relative(s)).getBlock() == EBBlocks.RECEPTACLE.get()
                         && level.getBlockState(pos.relative(s)).getValue(ReceptacleBlock.FACING) == s);
 
-        if(level.getBlockState(pos).getValue(ACTIVE) != shouldBeActive){
+        if (level.getBlockState(pos).getValue(ACTIVE) != shouldBeActive) {
             BlockEntity te = level.getBlockEntity(pos);
             ItemStack stack = ItemStack.EMPTY;
-            if(te instanceof ImbuementAltarBlockEntity e) stack = e.getStack();
+            if (te instanceof ImbuementAltarBlockEntity e) stack = e.getStack();
 
             level.setBlockAndUpdate(pos, level.getBlockState(pos).setValue(ACTIVE, shouldBeActive));
 
             te = level.getBlockEntity(pos);
-            if(te instanceof ImbuementAltarBlockEntity e) e.setStack(stack, true);
+            if (te instanceof ImbuementAltarBlockEntity e) e.setStack(stack, true);
 
             level.getChunkSource().getLightEngine().checkBlock(pos);
         }
 
         BlockEntity tileEntity = level.getBlockEntity(pos);
-        if(tileEntity instanceof ImbuementAltarBlockEntity e){
+        if (tileEntity instanceof ImbuementAltarBlockEntity e) {
             EBLogger.info("Imbuement altar found on neighbor change, start checking recipe inside block entity");
             e.checkRecipe();
         }
@@ -132,11 +137,6 @@ public class ImbuementAltar extends BaseEntityBlock {
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(@NotNull Level level, @NotNull BlockState state, @NotNull BlockEntityType<T> type) {
         return createTicker(level, type, EBBlockEntities.IMBUEMENT_ALTAR.get());
-    }
-
-    @javax.annotation.Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<ImbuementAltarBlockEntity> entityType) {
-        return createTickerHelper(type, type, ImbuementAltarBlockEntity::update);
     }
 
     @Nullable

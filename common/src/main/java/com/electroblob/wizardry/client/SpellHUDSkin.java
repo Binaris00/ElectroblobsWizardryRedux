@@ -23,10 +23,12 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 public class SpellHUDSkin {
+    private static final Minecraft mc = Minecraft.getInstance();
+    private static final Gson gson = new Gson();
+    private static final Random random = new Random();
     private final ResourceLocation texture;
     private String name;
     private String description;
-
     private int width;
     private int height;
     private boolean mirrorX;
@@ -44,10 +46,6 @@ public class SpellHUDSkin {
     private boolean cooldownBarMirrorX;
     private boolean cooldownBarMirrorY;
     private boolean showCooldownWhenFull;
-
-    private static final Minecraft mc = Minecraft.getInstance();
-    private static final Gson gson = new Gson();
-    private static final Random random = new Random();
 
     public SpellHUDSkin(ResourceLocation texture, ResourceLocation metadata) {
         this.texture = texture;
@@ -214,8 +212,8 @@ public class SpellHUDSkin {
             float maxWidthNext = maxWidth - (flipY ? -1 : 1) * cascadeOffsetX * (1 - animationProgress);
             float scalePrev = SpellGUIDisplay.SPELL_NAME_SCALE + (1 - SpellGUIDisplay.SPELL_NAME_SCALE) * (1 - animationProgress);
             float scaleNext = SpellGUIDisplay.SPELL_NAME_SCALE + (1 - SpellGUIDisplay.SPELL_NAME_SCALE) * (animationProgress);
-            int clrPrev = DrawingUtils.makeTranslucent(0xffffff, (int)(SpellGUIDisplay.SPELL_NAME_OPACITY + (1 - SpellGUIDisplay.SPELL_NAME_OPACITY) * (1 - animationProgress)));
-            int clrNext = DrawingUtils.makeTranslucent(0xffffff, (int)(SpellGUIDisplay.SPELL_NAME_OPACITY + (1 - SpellGUIDisplay.SPELL_NAME_OPACITY) * animationProgress));
+            int clrPrev = DrawingUtils.makeTranslucent(0xffffff, (int) (SpellGUIDisplay.SPELL_NAME_OPACITY + (1 - SpellGUIDisplay.SPELL_NAME_OPACITY) * (1 - animationProgress)));
+            int clrNext = DrawingUtils.makeTranslucent(0xffffff, (int) (SpellGUIDisplay.SPELL_NAME_OPACITY + (1 - SpellGUIDisplay.SPELL_NAME_OPACITY) * animationProgress));
 
             if (reverse) {
                 DrawingUtils.drawScaledStringToWidth(guiGraphics, font, spellName, xPrev, yPrev, scalePrev, clrPrev, maxWidthPrev, true, flipX && mirrorX);

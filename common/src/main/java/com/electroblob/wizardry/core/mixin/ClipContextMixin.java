@@ -16,10 +16,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClipContext.class)
 public abstract class ClipContextMixin {
     @Mutable
-    @Shadow @Final private CollisionContext collisionContext;
+    @Shadow
+    @Final
+    private CollisionContext collisionContext;
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    public void EBWIZARDRY$clipInit(Vec3 from, Vec3 _to, ClipContext.Block block, ClipContext.Fluid fluid, Entity entity, CallbackInfo ci){
+    public void EBWIZARDRY$clipInit(Vec3 from, Vec3 _to, ClipContext.Block block, ClipContext.Fluid fluid, Entity entity, CallbackInfo ci) {
         collisionContext = entity == null ? CollisionContext.empty() : CollisionContext.of(entity);
     }
 }

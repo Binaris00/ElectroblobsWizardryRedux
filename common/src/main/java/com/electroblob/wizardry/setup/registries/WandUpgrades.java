@@ -9,19 +9,21 @@ import java.util.Map;
 /**
  * TODO: This is just a quick implementation for wand upgrades, needs to be improved
  * This just saves all the wand upgrades for quick use.
- * */
+ *
+ */
 public final class WandUpgrades {
     private static final HashMap<DeferredObject<Item>, String> UPGRADES = new HashMap<>();
 
-    private WandUpgrades(){}
+    private WandUpgrades() {
+    }
 
-    public static void registerSpecialUpgrade(DeferredObject<Item> upgrade, String identifier){
-        if(UPGRADES.containsValue(identifier))
+    public static void registerSpecialUpgrade(DeferredObject<Item> upgrade, String identifier) {
+        if (UPGRADES.containsValue(identifier))
             throw new IllegalArgumentException("Duplicate wand upgrade identifier: " + identifier);
         UPGRADES.put(upgrade, identifier);
     }
 
-    public static void initUpgrades(){
+    public static void initUpgrades() {
         UPGRADES.put(EBItems.CONDENSER_UPGRADE, "condenser");
         UPGRADES.put(EBItems.STORAGE_UPGRADE, "storage");
         UPGRADES.put(EBItems.SIPHON_UPGRADE, "siphon");
@@ -33,9 +35,9 @@ public final class WandUpgrades {
         UPGRADES.put(EBItems.MELEE_UPGRADE, "melee");
     }
 
-    public static String getIdentifier(Item upgrade){
-        for(Map.Entry<DeferredObject<Item>, String> entry : UPGRADES.entrySet()){
-            if(entry.getKey().get().equals(upgrade)) return entry.getValue();
+    public static String getIdentifier(Item upgrade) {
+        for (Map.Entry<DeferredObject<Item>, String> entry : UPGRADES.entrySet()) {
+            if (entry.getKey().get().equals(upgrade)) return entry.getValue();
         }
         return "";
     }

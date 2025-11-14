@@ -13,18 +13,19 @@ import java.util.Map;
 @SuppressWarnings("unused")
 public final class EBEnchantments {
     static Map<String, DeferredObject<Enchantment>> ENCHANTMENTS = new HashMap<>();
-    private EBEnchantments(){}
-
     public static final DeferredObject<Enchantment> FLAMING_WEAPON = enchantment("flaming_weapon", new TimedEnchantment());
 
+    private EBEnchantments() {
+    }
+
     // ======= Registry =======
-    public static void register(RegisterFunction<Enchantment> function){
+    public static void register(RegisterFunction<Enchantment> function) {
         ENCHANTMENTS.forEach(((id, enchantment) ->
                 function.register(BuiltInRegistries.ENCHANTMENT, WizardryMainMod.location(id), enchantment.get())));
     }
 
     // ======= Helpers =======
-    static DeferredObject<Enchantment> enchantment(String name, Enchantment enchantment){
+    static DeferredObject<Enchantment> enchantment(String name, Enchantment enchantment) {
         DeferredObject<Enchantment> deferredEnchant = new DeferredObject<>(() -> enchantment);
         ENCHANTMENTS.put(name, deferredEnchant);
         return deferredEnchant;

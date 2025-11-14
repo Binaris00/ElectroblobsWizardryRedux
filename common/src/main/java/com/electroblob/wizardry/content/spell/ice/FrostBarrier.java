@@ -30,7 +30,8 @@ public class FrostBarrier extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if (ctx.caster().onGround()) {
-            if (!createBarriers(ctx.world(), ctx.caster().position(), ctx.caster().getLookAngle(), ctx.caster())) return false;
+            if (!createBarriers(ctx.world(), ctx.caster().position(), ctx.caster().getLookAngle(), ctx.caster()))
+                return false;
             this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
             return true;
         }

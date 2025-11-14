@@ -33,7 +33,7 @@ public class IceShardEntity extends MagicArrowEntity {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         if (hitResult.getEntity() instanceof LivingEntity livingEntity) {
-            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, livingEntity))
+            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, livingEntity))
                 livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                         Spells.ICE_SHARD.property(DefaultProperties.EFFECT_DURATION),
                         Spells.ICE_SHARD.property(DefaultProperties.EFFECT_STRENGTH), false, false));

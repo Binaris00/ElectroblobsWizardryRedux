@@ -41,7 +41,7 @@ public class DecayConstruct extends ScaledConstructEntity {
         if (!this.level().isClientSide) {
             List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(1.0d, this.getX(), this.getY(), this.getZ(), this.level());
             for (LivingEntity target : targets) {
-                if(!this.isValidTarget(target)) continue;
+                if (!this.isValidTarget(target)) continue;
                 if (!target.hasEffect(EBMobEffects.DECAY.get()))
                     target.addEffect(new MobEffectInstance(EBMobEffects.DECAY.get(),
                             Spells.DECAY.property(DefaultProperties.EFFECT_DURATION)));

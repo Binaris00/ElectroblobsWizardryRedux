@@ -53,7 +53,7 @@ public class ClientUtils {
         return Services.OBJECT_DATA.getSpellManagerData(player).hasSpellBeenDiscovered(spell);
     }
 
-    public static LocalPlayer getPlayer(){
+    public static LocalPlayer getPlayer() {
         return Minecraft.getInstance().player;
     }
 

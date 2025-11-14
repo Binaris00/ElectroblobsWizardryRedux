@@ -34,11 +34,12 @@ public final class EBKeyBinding {
         }
     }
 
-    private EBKeyBinding() {}
+    private EBKeyBinding() {
+    }
 
-    public static void onClientTick(EBClientTickEvent event){
+    public static void onClientTick(EBClientTickEvent event) {
         Player player = event.getMinecraft().player;
-        if(player == null) return;
+        if (player == null) return;
 
         ItemStack wand = getWandInUse(player);
         if (wand == null) return;

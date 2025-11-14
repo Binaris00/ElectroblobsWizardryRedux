@@ -5,7 +5,9 @@ import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
 import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.client.EBClientConstants;
 import com.electroblob.wizardry.content.item.SpellBookItem;
-import com.electroblob.wizardry.content.menu.slot.*;
+import com.electroblob.wizardry.content.menu.slot.SlotItemClassList;
+import com.electroblob.wizardry.content.menu.slot.SlotItemList;
+import com.electroblob.wizardry.content.menu.slot.SlotWorkbenchItem;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.mixin.accessor.SlotAccessor;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
@@ -24,7 +26,8 @@ import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Where <i>Part</i> of the magic happens. This class handles the server-side logic of the Arcane Workbench GUI,
@@ -32,7 +35,8 @@ import java.util.*;
  * item and the changes between when is a wand is in the centre slot and when there isn't one are handled here.
  *
  * @see IWorkbenchItem
- * */
+ *
+ */
 public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
     public static final int CRYSTAL_SLOT = 8;
     public static final int CENTRE_SLOT = 9;
@@ -79,6 +83,32 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
         onSlotChanged(CENTRE_SLOT, wand, null);
     }
 
+    /**
+     * Returns the X offset of the book slot at the given index, this is all assuming the slots are arranged in a circle
+     * around the centre slot.
+     *
+     * @param i             The index of the book slot (0-7).
+     * @param bookSlotCount The number of book slots to arrange in a circle (1 - 8).
+     * @return The X offset of the book slot at the given index.
+     */
+    private static int getBookSlotXOffset(int i, int bookSlotCount) {
+        float angle = i * (2 * (float) Math.PI) / bookSlotCount;
+        return Math.round(SLOT_RADIUS * Mth.sin(angle));
+    }
+
+    /**
+     * Returns the Y offset of the book slot at the given index, this is all assuming the slots are arranged in a circle
+     * around the centre slot.
+     *
+     * @param i             The index of the book slot (0-7).
+     * @param bookSlotCount The number of book slots to arrange in a circle (1 - 8).
+     * @return The Y offset of the book slot at the given index.
+     */
+    private static int getBookSlotYOffset(int i, int bookSlotCount) {
+        float angle = i * (2 * (float) Math.PI) / bookSlotCount;
+        return Math.round(SLOT_RADIUS * -Mth.cos(angle));
+    }
+
     @Override
     public boolean stillValid(@NotNull Player player) {
         return this.container.stillValid(player);
@@ -120,7 +150,6 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             }
         }
     }
-
 
     /**
      * Handles shift-clicking. If the clicked slot is a virtual slot (i.e. one of the spell book slots), it tries to
@@ -188,32 +217,6 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             Slot[] spellBooks = this.slots.subList(0, 8).toArray(new Slot[8]);
             workbenchItem.onClearButtonPressed(player, centre, this.getSlot(CRYSTAL_SLOT), this.getSlot(UPGRADE_SLOT), spellBooks);
         }
-    }
-
-    /**
-     * Returns the X offset of the book slot at the given index, this is all assuming the slots are arranged in a circle
-     * around the centre slot.
-     *
-     * @param i             The index of the book slot (0-7).
-     * @param bookSlotCount The number of book slots to arrange in a circle (1 - 8).
-     * @return The X offset of the book slot at the given index.
-     */
-    private static int getBookSlotXOffset(int i, int bookSlotCount) {
-        float angle = i * (2 * (float) Math.PI) / bookSlotCount;
-        return Math.round(SLOT_RADIUS * Mth.sin(angle));
-    }
-
-    /**
-     * Returns the Y offset of the book slot at the given index, this is all assuming the slots are arranged in a circle
-     * around the centre slot.
-     *
-     * @param i             The index of the book slot (0-7).
-     * @param bookSlotCount The number of book slots to arrange in a circle (1 - 8).
-     * @return The Y offset of the book slot at the given index.
-     */
-    private static int getBookSlotYOffset(int i, int bookSlotCount) {
-        float angle = i * (2 * (float) Math.PI) / bookSlotCount;
-        return Math.round(SLOT_RADIUS * -Mth.cos(angle));
     }
 
     /**

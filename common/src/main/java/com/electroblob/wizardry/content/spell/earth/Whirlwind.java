@@ -23,14 +23,14 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class Whirlwind extends RaySpell {
-    public Whirlwind(){
+    public Whirlwind() {
         this.soundValues(0.8f, 0.7f, 0.2f);
     }
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if(!(ctx instanceof PlayerCastContext playerCtx)) return false;
-        if(!(entityHit.getEntity() instanceof LivingEntity target)) return false;
+        if (!(ctx instanceof PlayerCastContext playerCtx)) return false;
+        if (!(entityHit.getEntity() instanceof LivingEntity target)) return false;
 
         if (target instanceof Player && !EBConfig.playersMoveEachOther) {
             playerCtx.caster().displayClientMessage(Component.translatable("spell.resist", target.getName(),

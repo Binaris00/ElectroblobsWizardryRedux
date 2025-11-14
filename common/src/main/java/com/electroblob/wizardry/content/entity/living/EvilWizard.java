@@ -12,7 +12,6 @@ import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
-import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
@@ -24,6 +23,10 @@ import static net.minecraft.world.entity.monster.Monster.isDarkEnoughToSpawn;
 public class EvilWizard extends AbstractWizard implements Enemy {
     public EvilWizard(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
+    }
+
+    public static boolean checkEvilWizardSpawnRules(EntityType<? extends AbstractWizard> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     @Override
@@ -45,10 +48,13 @@ public class EvilWizard extends AbstractWizard implements Enemy {
         return EBSounds.ENTITY_EVIL_WIZARD_AMBIENT.get();
     }
 
-    public static boolean checkEvilWizardSpawnRules(EntityType<? extends AbstractWizard> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(type, level, spawnType, pos, random);
+    @Override
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return EBSounds.ENTITY_EVIL_WIZARD_HURT.get();
     }
 
-    @Override protected SoundEvent getHurtSound(@NotNull DamageSource source) { return EBSounds.ENTITY_EVIL_WIZARD_HURT.get(); }
-    @Override protected SoundEvent getDeathSound() { return EBSounds.ENTITY_EVIL_WIZARD_DEATH.get(); }
+    @Override
+    protected SoundEvent getDeathSound() {
+        return EBSounds.ENTITY_EVIL_WIZARD_DEATH.get();
+    }
 }

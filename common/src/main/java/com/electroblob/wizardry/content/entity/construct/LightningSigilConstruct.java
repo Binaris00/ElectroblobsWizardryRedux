@@ -40,14 +40,14 @@ public class LightningSigilConstruct extends ScaledConstructEntity {
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, this.getX(), this.getY(), this.getZ(), this.level());
         for (LivingEntity target : targets) {
-            if(!this.isValidTarget(target)) continue;
+            if (!this.isValidTarget(target)) continue;
 
             Vec3 originalVec = target.getDeltaMovement();
 
             boolean damageResult = EBMagicDamageSource.causeMagicDamage(this, target,
                     Spells.LIGHTNING_SIGIL.property(DefaultProperties.DAMAGE) * this.damageMultiplier,
                     EBDamageSources.SHOCK, false);
-            if(!damageResult) continue;
+            if (!damageResult) continue;
 
 
             this.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0f, 1.0f);

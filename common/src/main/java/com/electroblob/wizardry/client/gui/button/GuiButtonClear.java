@@ -20,7 +20,7 @@ public class GuiButtonClear extends Button {
         int k = 72;
         int l = 236;
 
-        if(this.active) {
+        if (this.active) {
             if (this.isHovered) {
                 k += this.width * 2;
             }

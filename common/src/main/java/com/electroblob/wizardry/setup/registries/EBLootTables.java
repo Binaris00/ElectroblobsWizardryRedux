@@ -19,16 +19,10 @@ import java.util.function.BiConsumer;
 
 public final class EBLootTables {
     private static final Set<ResourceLocation> LOOT_TABLES = Sets.newHashSet();
-    private static final List<Pair<ResourceLocation, LootPool>> LOOT_INJECTIONS = new ArrayList<>();
-
-    private EBLootTables() {
-    }
-
     public static final ResourceLocation DUNGEON_ADDITIONS = register("chests/dungeon_additions");
     public static final ResourceLocation DISPENSER_ADDITIONS = register("chests/jungle_dispenser_additions");
     public static final ResourceLocation JUNK_FISHING_ADDITIONS = register("gameplay/fishing/junk_additions");
     public static final ResourceLocation TREASURE_FISHING_ADDITIONS = register("gameplay/fishing/treasure_additions");
-
     public static final ResourceLocation SUBSET_ARCANE_TOMES = register("subsets/arcane_tomes");
     public static final ResourceLocation SUBSET_ARMOR_UPGRADES = register("subsets/armor_upgrades");
     public static final ResourceLocation SUBSET_ELEMENTAL_CRYSTALS = register("subsets/elemental_crystals");
@@ -37,6 +31,9 @@ public final class EBLootTables {
     public static final ResourceLocation SUBSET_UNCOMMON_ARTEFACTS = register("subsets/uncommon_artefacts");
     public static final ResourceLocation SUBSET_WIZARD_ARMOR = register("subsets/wizard_armor");
     public static final ResourceLocation SUBSET_WAND_UPGRADES = register("subsets/wand_upgrades");
+    private static final List<Pair<ResourceLocation, LootPool>> LOOT_INJECTIONS = new ArrayList<>();
+    private EBLootTables() {
+    }
 
     private static ResourceLocation register(String location) {
         return register(WizardryMainMod.location(location));

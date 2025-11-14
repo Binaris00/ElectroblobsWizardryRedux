@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.content.menu.ArcaneWorkbenchMenu;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

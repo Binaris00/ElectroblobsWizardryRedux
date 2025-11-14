@@ -29,7 +29,7 @@ public class IceSpikeConstruct extends ScaledConstructEntity {
     public void tick() {
         super.tick();
         if (lifetime - this.tickCount == 30) this.playSound(EBSounds.ENTITY_ICE_SPIKE_EXTEND.get(), 1, 2.5f);
-        if(level().isClientSide) return;
+        if (level().isClientSide) return;
         double extensionSpeed = 0;
 
         if (lifetime - this.tickCount < 15) {
@@ -53,6 +53,10 @@ public class IceSpikeConstruct extends ScaledConstructEntity {
         }
     }
 
+    public Direction getFacing() {
+        return facing;
+    }
+
     public void setFacing(Direction facing) {
         this.facing = facing;
         this.setRot(-facing.toYRot(), GeometryUtil.getPitch(facing));
@@ -61,9 +65,5 @@ public class IceSpikeConstruct extends ScaledConstructEntity {
         Vec3 min = this.position().add(new Vec3(-getBbWidth() / 2, 0, -getBbWidth() / 2).xRot(pitch).yRot(yaw));
         Vec3 max = this.position().add(new Vec3(getBbWidth() / 2, getBbHeight(), getBbWidth() / 2).xRot(pitch).yRot(yaw));
         this.setBoundingBox(new AABB(min.x, min.y, min.z, max.x, max.y, max.z));
-    }
-
-    public Direction getFacing() {
-        return facing;
     }
 }

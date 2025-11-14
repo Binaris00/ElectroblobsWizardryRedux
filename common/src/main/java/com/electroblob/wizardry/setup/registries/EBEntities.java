@@ -24,8 +24,6 @@ import static com.electroblob.wizardry.WizardryMainMod.location;
 
 public final class EBEntities {
     static Map<String, DeferredObject<EntityType<? extends Entity>>> ENTITY_TYPES = new HashMap<>();
-    private EBEntities() {}
-
     public static final DeferredObject<EntityType<DartEntity>> DART = entity(DartEntity::new, "dart", MobCategory.MISC, 0.5F, 0.5F, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<ConjuredArrowEntity>> CONJURED_ARROW = entity(ConjuredArrowEntity::new, "conjured_arrow", MobCategory.MISC, 0.5F, 0.5F, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<FireBoltEntity>> FIRE_BOLT = entity(FireBoltEntity::new, "fire_bolt", MobCategory.MISC, 0.25f, 0.25f, MagicType.PROJECTILE);
@@ -46,7 +44,7 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<IceChargeEntity>> ICE_CHARGE = entity(IceChargeEntity::new, "ice_charge", MobCategory.MISC, 0.25f, 0.25f, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<DarknessOrbEntity>> DARKNESS_ORB = entity(DarknessOrbEntity::new, "darkness_orb", MobCategory.MISC, 0.5f, 0.5f, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<MeteorEntity>> METEOR = entity(MeteorEntity::new, "meteor", MobCategory.MISC, 0.98f, 0.98f, MagicType.CONSTRUCT);
-    public static final DeferredObject<EntityType<ArrowRainConstruct>> ARROW_RAIN = entity(ArrowRainConstruct::new, "arrow_rain",  MobCategory.MISC,3, 3, MagicType.CONSTRUCT);
+    public static final DeferredObject<EntityType<ArrowRainConstruct>> ARROW_RAIN = entity(ArrowRainConstruct::new, "arrow_rain", MobCategory.MISC, 3, 3, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<ForceOrbEntity>> FORCE_ORB = entity(ForceOrbEntity::new, "force_orb", MobCategory.MISC, 0.25f, 0.25f, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<BlizzardConstruct>> BLIZZARD = entity(BlizzardConstruct::new, "blizzard", MobCategory.MISC, 3, 3, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<FireSigilConstruct>> FIRE_SIGIL = entity(FireSigilConstruct::new, "fire_sigil", MobCategory.MISC, 0.2f, 0.2f, MagicType.CONSTRUCT);
@@ -61,29 +59,20 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<BubbleConstruct>> BUBBLE = entity("bubble", EntityType.Builder.<BubbleConstruct>of(BubbleConstruct::new, MobCategory.MISC).sized(0.6f, 1.8f).updateInterval(3).clientTrackingRange(160));
     public static final DeferredObject<EntityType<HailstormConstruct>> HAILSTORM = entity(HailstormConstruct::new, "hailstorm", MobCategory.MISC, 5, 5, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<DecayConstruct>> DECAY = entity(DecayConstruct::new, "decay", MobCategory.MISC, 2f, 0.2f, MagicType.CONSTRUCT);
-
+    public static final DeferredObject<EntityType<IceGiant>> ICE_GIANT = entity(IceGiant::new, "ice_giant", MobCategory.CREATURE, 1.4f, 2.9f, MagicType.LIVING);
     public static final DeferredObject<EntityType<LightningWraith>> LIGHTNING_WRAITH = entity(LightningWraith::new, "lightning_wraith", MobCategory.MONSTER, 0.6F, 1.8F, MagicType.LIVING);
+    public static final DeferredObject<EntityType<IceWraith>> ICE_WRAITH = entity(IceWraith::new, "ice_wraith", MobCategory.MONSTER, 0.6F, 1.8F, MagicType.LIVING);
+    public static final DeferredObject<EntityType<StormElemental>> STORM_ELEMENTAL = entity(StormElemental::new, "storm_elemental", MobCategory.MONSTER, 0.6F, 1.8F, MagicType.LIVING);
+    public static final DeferredObject<EntityType<ShadowWraith>> SHADOW_WRAITH = entity(ShadowWraith::new, "shadow_wraith", MobCategory.MONSTER, 0.6F, 1.8F, MagicType.LIVING);
     public static final DeferredObject<EntityType<MagicSlime>> MAGIC_SLIME = entity(MagicSlime::new, "magic_slime", MobCategory.CREATURE, 2.04F, 2.04F, MagicType.LIVING);
     public static final DeferredObject<EntityType<Remnant>> REMNANT = entity(Remnant::new, "remnant", MobCategory.CREATURE, 0.8f, 0.8f, MagicType.LIVING);
     public static final DeferredObject<EntityType<Wizard>> WIZARD = entity(Wizard::new, "wizard", MobCategory.CREATURE, 0.6f, 1.8f, MagicType.LIVING);
     public static final DeferredObject<EntityType<EvilWizard>> EVIL_WIZARD = entity(EvilWizard::new, "evil_wizard", MobCategory.CREATURE, 0.6f, 1.8f, MagicType.LIVING);
-
-    enum MagicType {
-        LIVING(80, 3),
-        PROJECTILE(64, 10),
-        CONSTRUCT(160, 10);
-
-        final int range;
-        final int interval;
-
-        MagicType(int range, int interval) {
-            this.range = range;
-            this.interval = interval;
-        }
+    private EBEntities() {
     }
 
     // ======= Registry =======
-    public static void register(RegisterFunction<EntityType<?>> function){
+    public static void register(RegisterFunction<EntityType<?>> function) {
         ENTITY_TYPES.forEach(((id, entityType) ->
                 function.register(BuiltInRegistries.ENTITY_TYPE, WizardryMainMod.location(id), entityType.get())));
         EBEntities.registerSpawns();
@@ -95,9 +84,13 @@ public final class EBEntities {
         consumer.accept(EVIL_WIZARD.get(), AbstractWizard.createAttributes().build());
         consumer.accept(MAGIC_SLIME.get(), Monster.createMonsterAttributes().build());
         consumer.accept(LIGHTNING_WRAITH.get(), Blaze.createAttributes().build());
+        consumer.accept(ICE_WRAITH.get(), Blaze.createAttributes().build());
+        consumer.accept(STORM_ELEMENTAL.get(), Blaze.createAttributes().build());
+        consumer.accept(SHADOW_WRAITH.get(), Blaze.createAttributes().build());
+        consumer.accept(ICE_GIANT.get(), IceGiant.createAttributes().build());
     }
 
-    public static void registerSpawns(){
+    public static void registerSpawns() {
         SpawnPlacementsInvoker.callRegister(EBEntities.EVIL_WIZARD.get(), SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES, EvilWizard::checkEvilWizardSpawnRules);
     }
 
@@ -115,5 +108,19 @@ public final class EBEntities {
         DeferredObject<EntityType<T>> ret = new DeferredObject<>(() -> builder.build(location(name).toString()));
         ENTITY_TYPES.put(name, (DeferredObject<EntityType<? extends Entity>>) (Object) ret);
         return ret;
+    }
+
+    enum MagicType {
+        LIVING(80, 3),
+        PROJECTILE(64, 10),
+        CONSTRUCT(160, 10);
+
+        final int range;
+        final int interval;
+
+        MagicType(int range, int interval) {
+            this.range = range;
+            this.interval = interval;
+        }
     }
 }

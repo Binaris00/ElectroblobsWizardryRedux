@@ -89,14 +89,15 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     protected void customServerAiStep() {
         super.customServerAiStep();
 
-        if(this.isTrading() && this.timeUntilReset < 0) return;
+        if (this.isTrading() && this.timeUntilReset < 0) return;
         --this.timeUntilReset;
 
         if (this.timeUntilReset <= 0) {
-            if(!this.updateRecipes) return;
+            if (!this.updateRecipes) return;
 
             for (MerchantOffer offer : this.trades) {
-                if (offer.isOutOfStock()) offer.addToSpecialPriceDiff(this.random.nextInt(6) + this.random.nextInt(6) + 2);
+                if (offer.isOutOfStock())
+                    offer.addToSpecialPriceDiff(this.random.nextInt(6) + this.random.nextInt(6) + 2);
             }
 
             if (this.trades.size() < 12) this.addRandomRecipes(1);
@@ -197,7 +198,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
 
     private void addRandomRecipes(int numberOfItemsToAdd) {
         MerchantOffers offers = new MerchantOffers();
-        if(this.trades == null) return;
+        if (this.trades == null) return;
 
         for (int i = 0; i < numberOfItemsToAdd; i++) {
             ItemStack itemToSell = ItemStack.EMPTY;
@@ -276,7 +277,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
 //        spells.removeIf(s -> !s.isEnabled(SpellProperties.Context.BOOK));
 //        specialismSpells.removeIf(s -> !s.isEnabled(SpellProperties.Context.BOOK));
 
-        if(tier == SpellTiers.NOVICE) {
+        if (tier == SpellTiers.NOVICE) {
             randomizer = random.nextInt(5);
             if (randomizer < 4 && !spells.isEmpty()) {
                 if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0 && !specialismSpells.isEmpty()) {
@@ -291,8 +292,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
                     return new ItemStack(WandItem.getWand(tier, SpellUtil.getRandomElement(random)));
                 }
             }
-        }
-        else if(tier == SpellTiers.APPRENTICE) {
+        } else if (tier == SpellTiers.APPRENTICE) {
             randomizer = random.nextInt(EBConfig.discoveryMode ? 12 : 10);
             if (randomizer < 5 && !spells.isEmpty()) {
                 if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0 && !specialismSpells.isEmpty()) {
@@ -322,8 +322,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
             } else {
                 return new ItemStack(EBItems.IDENTIFICATION_SCROLL.get());
             }
-        }
-        else if(tier == SpellTiers.ADVANCED) {
+        } else if (tier == SpellTiers.ADVANCED) {
             randomizer = random.nextInt(12);
             if (randomizer < 5 && !spells.isEmpty()) {
                 if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0 && !specialismSpells.isEmpty()) {
@@ -348,8 +347,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
                 randomizer = random.nextInt(upgrades.size());
                 return new ItemStack(upgrades.get(randomizer).get());
             }
-        }
-        else if(tier == SpellTiers.MASTER) {
+        } else if (tier == SpellTiers.MASTER) {
             randomizer = this.getElement() != Elements.MAGIC ? random.nextInt(8) : 5 + random.nextInt(3);
 
             if (randomizer < 5 && this.getElement() != Elements.MAGIC && !specialismSpells.isEmpty()) {
@@ -381,19 +379,57 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
 
-    public boolean isTrading() { return this.getTradingPlayer() != null; }
-    @Override public void setTradingPlayer(Player player) { this.customer = player; }
-    @Override public Player getTradingPlayer() {
+    public boolean isTrading() {
+        return this.getTradingPlayer() != null;
+    }
+
+    @Override
+    public Player getTradingPlayer() {
         return this.customer;
     }
-    @Override public @NotNull SoundEvent getNotifyTradeSound() { return EBSounds.ENTITY_WIZARD_YES.get(); }
-    @Override protected SoundEvent getHurtSound(@NotNull DamageSource source) { return EBSounds.ENTITY_WIZARD_HURT.get(); }
-    @Override protected SoundEvent getDeathSound() { return EBSounds.ENTITY_WIZARD_DEATH.get(); }
-    @Override public void overrideOffers(@NotNull MerchantOffers offers) {}
-    @Override public int getVillagerXp() { return 0; }
-    @Override public void overrideXp(int xp) {}
-    @Override public boolean showProgressBar() { return false; }
-    @Override public boolean isClientSide() { return level().isClientSide(); }
+
+    @Override
+    public void setTradingPlayer(Player player) {
+        this.customer = player;
+    }
+
+    @Override
+    public @NotNull SoundEvent getNotifyTradeSound() {
+        return EBSounds.ENTITY_WIZARD_YES.get();
+    }
+
+    @Override
+    protected SoundEvent getHurtSound(@NotNull DamageSource source) {
+        return EBSounds.ENTITY_WIZARD_HURT.get();
+    }
+
+    @Override
+    protected SoundEvent getDeathSound() {
+        return EBSounds.ENTITY_WIZARD_DEATH.get();
+    }
+
+    @Override
+    public void overrideOffers(@NotNull MerchantOffers offers) {
+    }
+
+    @Override
+    public int getVillagerXp() {
+        return 0;
+    }
+
+    @Override
+    public void overrideXp(int xp) {
+    }
+
+    @Override
+    public boolean showProgressBar() {
+        return false;
+    }
+
+    @Override
+    public boolean isClientSide() {
+        return level().isClientSide();
+    }
 
     static class WizardLookAtTradePlayer extends LookAtPlayerGoal {
         private final Wizard wizard;

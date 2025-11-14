@@ -16,10 +16,9 @@ import java.util.function.Consumer;
  * Check {@link com.electroblob.wizardry.core.mixin.CommandsMixin CommandsMixin} to see the registry
  * <br>
  * We only need to use {@link EBCommands#COMMANDS_TO_REGISTER} :p
- * */
+ *
+ */
 public final class EBCommands {
-    private EBCommands() {}
-
     public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> COMMANDS_TO_REGISTER = ImmutableList.of(
             ListSpellsCommand::register,
             ListElementsCommand::register,
@@ -27,11 +26,13 @@ public final class EBCommands {
             CastCommand::register,
             AllyCommand::register
     );
-
     public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> DEBUG_COMMANDS = ImmutableList.of(
             WandSpellCommand::register,
             WandSpellListCommand::register,
             WandSelectCommand::register,
             PacketTestCommand::register
     );
+
+    private EBCommands() {
+    }
 }

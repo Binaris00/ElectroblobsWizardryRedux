@@ -36,14 +36,14 @@ public class WizardSpellFunction extends LootItemConditionalFunction {
         if (!(stack.getItem() instanceof SpellBookItem) && !(stack.getItem() instanceof ScrollItem))
             EBLogger.warn("Applying the wizard_spell loot function to an item that isn't a spell book or scroll.");
 
-        if(!(context.getParam(LootContextParams.THIS_ENTITY) instanceof ISpellCaster)){
+        if (!(context.getParam(LootContextParams.THIS_ENTITY) instanceof ISpellCaster)) {
             EBLogger.warn("Applying the wizard_spell loot function to an entity that isn't a spell caster.");
             return stack;
         }
 
         List<Spell> spells = ((ISpellCaster) context.getParam(LootContextParams.THIS_ENTITY)).getSpells();
         spells.remove(Spells.MAGIC_MISSILE);
-        if(spells.isEmpty()){
+        if (spells.isEmpty()) {
             EBLogger.warn("Tried to apply the wizard_spell loot function to an item, but none of the looted entity's spells were applicable for that item. This is probably a bug!");
             return stack;
         }
@@ -53,10 +53,12 @@ public class WizardSpellFunction extends LootItemConditionalFunction {
     }
 
     public static class Serializer extends LootItemConditionalFunction.Serializer<WizardSpellFunction> {
-        public Serializer() {}
+        public Serializer() {
+        }
 
         @Override
-        public void serialize(@NotNull JsonObject json, @NotNull WizardSpellFunction loot, @NotNull JsonSerializationContext context) {}
+        public void serialize(@NotNull JsonObject json, @NotNull WizardSpellFunction loot, @NotNull JsonSerializationContext context) {
+        }
 
         @Override
         public @NotNull WizardSpellFunction deserialize(@NotNull JsonObject object, @NotNull JsonDeserializationContext context, LootItemCondition @NotNull [] conditions) {

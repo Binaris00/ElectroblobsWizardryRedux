@@ -15,16 +15,16 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class GroupHeal extends AreaEffectSpell {
-    public GroupHeal(){
+    public GroupHeal() {
         this.targetAllies(true);
     }
 
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        if(target.getHealth() < target.getMaxHealth() && target.getHealth() > 0){
+        if (target.getHealth() < target.getMaxHealth() && target.getHealth() > 0) {
             Heal.heal(target, property(DefaultProperties.HEALTH) * ctx.modifiers().get(SpellModifiers.POTENCY));
 
-            if(ctx.world().isClientSide) ParticleBuilder.spawnHealParticles(ctx.world(), target);
+            if (ctx.world().isClientSide) ParticleBuilder.spawnHealParticles(ctx.world(), target);
             playSound(ctx.world(), target, 0, -1);
             return true;
         }

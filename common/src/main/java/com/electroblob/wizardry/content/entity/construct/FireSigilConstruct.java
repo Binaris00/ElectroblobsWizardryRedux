@@ -32,7 +32,7 @@ public class FireSigilConstruct extends ScaledConstructEntity {
     @Override
     public void tick() {
         super.tick();
-        if(this.level().isClientSide && this.random.nextInt(15) == 0){
+        if (this.level().isClientSide && this.random.nextInt(15) == 0) {
             double radius = (0.5 + random.nextDouble() * 0.3) * getBbWidth() / 2;
             float angle = random.nextFloat() * (float) Math.PI * 2;
             level().addParticle(ParticleTypes.FLAME, this.getX() + radius
@@ -42,12 +42,12 @@ public class FireSigilConstruct extends ScaledConstructEntity {
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, getX(), getY(), getZ(), level());
 
         for (LivingEntity target : targets) {
-            if(!this.isValidTarget(target)) continue;
+            if (!this.isValidTarget(target)) continue;
             Vec3 originalVec = target.getDeltaMovement();
             EBMagicDamageSource.causeMagicDamage(this, target, Spells.FIRE_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier, EBDamageSources.FIRE, false);
 
             target.setDeltaMovement(originalVec);
-            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
+            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
                 target.setSecondsOnFire(Spells.FIRE_SIGIL.property(DefaultProperties.EFFECT_DURATION));
 
             this.playSound(EBSounds.ENTITY_FIRE_SIGIL_TRIGGER.get(), 1, 1);

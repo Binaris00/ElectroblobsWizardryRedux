@@ -3,7 +3,7 @@ package com.electroblob.wizardry.content.entity.living;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
-import com.electroblob.wizardry.core.mixin.BlazeAccessor;
+import com.electroblob.wizardry.core.mixin.accessor.BlazeAccessor;
 import com.electroblob.wizardry.core.mixin.accessor.MobGoalsAccessor;
 import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;

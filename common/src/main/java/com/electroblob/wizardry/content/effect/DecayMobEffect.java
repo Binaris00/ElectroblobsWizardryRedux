@@ -35,11 +35,11 @@ public class DecayMobEffect extends MagicMobEffect {
             // The victim spreading the decay is the 'caster' here, so that it can actually wear off, otherwise it
             // just gets infected with its own decay and the effect lasts forever.
             DecayConstruct decay = new DecayConstruct(EBEntities.DECAY.get(), livingEntity.level());
-            if(livingEntity instanceof Player player) decay.setCaster(player);
+            if (livingEntity instanceof Player player) decay.setCaster(player);
             decay.setPos(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
             livingEntity.level().addFreshEntity(decay);
 
-            if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity))
+            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity))
                 livingEntity.hurt(livingEntity.damageSources().wither(), 1);
         }
     }

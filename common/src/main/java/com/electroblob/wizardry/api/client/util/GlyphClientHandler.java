@@ -4,12 +4,14 @@ import com.electroblob.wizardry.content.data.SpellGlyphData;
 
 /**
  * Hey! I'm just a client handler for the glyph data
- * */
+ *
+ */
 public final class GlyphClientHandler {
-    private SpellGlyphData glyphData;
     public static GlyphClientHandler INSTANCE = new GlyphClientHandler();
+    private SpellGlyphData glyphData;
 
-    private GlyphClientHandler() {}
+    private GlyphClientHandler() {
+    }
 
     public SpellGlyphData getGlyphData() {
         return glyphData;

@@ -29,7 +29,7 @@ public class CombustionRuneConstruct extends ScaledConstructEntity {
         if (!this.level().isClientSide) {
             List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, getX(), getY(), getZ(), level());
             for (LivingEntity target : targets) {
-                if(!this.isValidTarget(target)) continue;
+                if (!this.isValidTarget(target)) continue;
                 float strength = Spells.COMBUSTION_RUNE.property(DefaultProperties.BLAST_RADIUS) * sizeMultiplier;
                 level().explode(this.getCaster(), this.getX(), this.getY(), this.getZ(), strength, true,
                         EntityUtil.canDamageBlocks(getCaster(), level()) ?

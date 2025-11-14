@@ -25,7 +25,8 @@ import java.util.stream.Collectors;
 public final class SpellUtil {
     public static String SPELL_KEY = "Spell";
 
-    private SpellUtil() {}
+    private SpellUtil() {
+    }
 
     /**
      * Sets a spell to the given ItemStack.
@@ -92,9 +93,11 @@ public final class SpellUtil {
 
     /**
      * Gets a spell from the given id.
+     *
      * @param id The id of the spell.
      * @return The spell with the given id.
-     * */
+     *
+     */
     private static Spell byId(String id) {
         return Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(id));
     }

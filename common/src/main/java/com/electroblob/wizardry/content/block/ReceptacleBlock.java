@@ -43,12 +43,11 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
-public class ReceptacleBlock extends Block implements EntityBlock{
+public class ReceptacleBlock extends Block implements EntityBlock {
     public static final DirectionProperty FACING = HorizontalDirectionalBlock.FACING;
     public static final BooleanProperty ON_WALL = BooleanProperty.create("on_wall");
-    private static final double WALL_PARTICLE_OFFSET = 3 / 16d;
-
     protected static final VoxelShape FLOOR_AABB = Block.box(6.0D, 0.0D, 6.0D, 10.0D, 10.0D, 10.0D);
+    private static final double WALL_PARTICLE_OFFSET = 3 / 16d;
     private static final Map<Direction, VoxelShape> WALL_AABBS = Maps.newEnumMap(ImmutableMap.of(
             Direction.NORTH, Block.box(5.5D, 3.0D, 11.0D, 10.5D, 13.0D, 16.0D),
             Direction.SOUTH, Block.box(5.5D, 3.0D, 0.0D, 10.5D, 13.0D, 5.0D),
@@ -95,17 +94,17 @@ public class ReceptacleBlock extends Block implements EntityBlock{
 
     @Override
     public boolean canSurvive(BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
-        if(!state.getValue(ON_WALL)) return canSupportCenter(level, pos.below(), Direction.UP);
+        if (!state.getValue(ON_WALL)) return canSupportCenter(level, pos.below(), Direction.UP);
 
         Direction direction = state.getValue(FACING);
         BlockPos blockPos = pos.relative(direction.getOpposite());
         BlockState blockState = level.getBlockState(blockPos);
-        if(blockState.getBlock() instanceof ImbuementAltar) return direction.getAxis().isHorizontal();
+        if (blockState.getBlock() instanceof ImbuementAltar) return direction.getAxis().isHorizontal();
         return direction.getAxis().isHorizontal() && blockState.isFaceSturdy(level, blockPos, direction);
     }
 
     public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
-        if(state.getValue(ON_WALL)){
+        if (state.getValue(ON_WALL)) {
             return direction.getOpposite() == state.getValue(FACING) && !state.canSurvive(level, pos) ? Blocks.AIR.defaultBlockState() : state;
         }
         return direction == Direction.DOWN && !this.canSurvive(state, level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, neighborState, level, pos, neighborPos);

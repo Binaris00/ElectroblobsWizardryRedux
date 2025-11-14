@@ -69,7 +69,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
         }
     }
 
-    private @Nullable SpellTier getNextTier(ItemStack stack){
+    private @Nullable SpellTier getNextTier(ItemStack stack) {
         SpellTier tier = ((WandItem) stack.getItem()).tier;
 
         if (tier != SpellTiers.MASTER) {

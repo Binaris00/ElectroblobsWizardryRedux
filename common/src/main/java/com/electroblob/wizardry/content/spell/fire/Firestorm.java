@@ -27,7 +27,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class Firestorm extends AreaEffectSpell {
-    public Firestorm(){
+    public Firestorm() {
         this.soundValues(2f, 1.0f, 0);
         this.alwaysSucceed(true);
     }
@@ -62,13 +62,13 @@ public class Firestorm extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
+        if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
             target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
         return true;
     }
 
     private void burnNearbyBlocks(CastContext ctx, Vec3 origin) {
-        if(ctx.world().isClientSide || !EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return;
+        if (ctx.world().isClientSide || !EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return;
 
         double radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
 

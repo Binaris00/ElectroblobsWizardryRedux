@@ -34,12 +34,12 @@ public abstract class BlockEntityTimer extends BlockEntity {
         }
     }
 
-    public void setLifetime(int lifetime) {
-        this.maxTimer = lifetime;
-    }
-
     public int getLifetime() {
         return maxTimer;
+    }
+
+    public void setLifetime(int lifetime) {
+        this.maxTimer = lifetime;
     }
 
     @Override

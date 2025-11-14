@@ -11,7 +11,8 @@ import java.util.function.Function;
 
 // TODO Something about the old particle registry that I need to fix...
 public final class EBClientRegister {
-    private EBClientRegister() {}
+    private EBClientRegister() {
+    }
 
     public static void registerParticleProviders(Consumer<Map<DeferredObject<SimpleParticleType>, Function<SpriteSet, ParticleProvider<SimpleParticleType>>>> handler) {
         EBParticles.registerProvider(handler);

@@ -41,7 +41,7 @@ public class RayOfPurification extends RaySpell {
                 );
             return false;
         }
-        if(ctx.castingTicks() % 10 != 0) return true;
+        if (ctx.castingTicks() % 10 != 0) return true;
         float damage = property(UNDEAD_DAMAGE_MULTIPLIER) * ctx.modifiers().get(SpellModifiers.POTENCY);
         if (target.isInvertedHealAndHarm()) damage *= property(UNDEAD_DAMAGE_MULTIPLIER);
 

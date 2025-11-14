@@ -49,6 +49,37 @@ public class BookshelfMenu extends AbstractContainerMenu {
         }
     }
 
+    public static boolean isBook(ItemStack stack) {
+        return validItems.contains(stack.getItem());
+    }
+
+    public static void registerBookItem(Item item) {
+        validItems.add(item);
+    }
+
+    public static void initBookItems() {
+        registerBookItem(Items.BOOK);
+        registerBookItem(Items.WRITTEN_BOOK);
+        registerBookItem(Items.WRITABLE_BOOK);
+        registerBookItem(Items.ENCHANTED_BOOK);
+        registerBookItem(EBItems.SPELL_BOOK.get());
+        registerBookItem(EBItems.ARCANE_TOME.get());
+        registerBookItem(EBItems.RUINED_SPELL_BOOK.get());
+        registerBookItem(EBItems.SCROLL.get());
+        registerBookItem(EBItems.BLANK_SCROLL.get());
+        registerBookItem(EBItems.IDENTIFICATION_SCROLL.get());
+
+        registerBookItem(EBItems.STORAGE_UPGRADE.get());
+        registerBookItem(EBItems.SIPHON_UPGRADE.get());
+        registerBookItem(EBItems.CONDENSER_UPGRADE.get());
+        registerBookItem(EBItems.RANGE_UPGRADE.get());
+        registerBookItem(EBItems.DURATION_UPGRADE.get());
+        registerBookItem(EBItems.COOLDOWN_UPGRADE.get());
+        registerBookItem(EBItems.BLAST_UPGRADE.get());
+        registerBookItem(EBItems.ATTUNEMENT_UPGRADE.get());
+        registerBookItem(EBItems.MELEE_UPGRADE.get());
+    }
+
     @Override
     public boolean stillValid(@NotNull Player player) {
         return this.container.stillValid(player);
@@ -90,37 +121,6 @@ public class BookshelfMenu extends AbstractContainerMenu {
         slot.onTake(player, stack);
 
         return remainder;
-    }
-
-    public static boolean isBook(ItemStack stack) {
-        return validItems.contains(stack.getItem());
-    }
-
-    public static void registerBookItem(Item item) {
-        validItems.add(item);
-    }
-
-    public static void initBookItems() {
-        registerBookItem(Items.BOOK);
-        registerBookItem(Items.WRITTEN_BOOK);
-        registerBookItem(Items.WRITABLE_BOOK);
-        registerBookItem(Items.ENCHANTED_BOOK);
-        registerBookItem(EBItems.SPELL_BOOK.get());
-        registerBookItem(EBItems.ARCANE_TOME.get());
-        registerBookItem(EBItems.RUINED_SPELL_BOOK.get());
-        registerBookItem(EBItems.SCROLL.get());
-        registerBookItem(EBItems.BLANK_SCROLL.get());
-        registerBookItem(EBItems.IDENTIFICATION_SCROLL.get());
-
-        registerBookItem(EBItems.STORAGE_UPGRADE.get());
-        registerBookItem(EBItems.SIPHON_UPGRADE.get());
-        registerBookItem(EBItems.CONDENSER_UPGRADE.get());
-        registerBookItem(EBItems.RANGE_UPGRADE.get());
-        registerBookItem(EBItems.DURATION_UPGRADE.get());
-        registerBookItem(EBItems.COOLDOWN_UPGRADE.get());
-        registerBookItem(EBItems.BLAST_UPGRADE.get());
-        registerBookItem(EBItems.ATTUNEMENT_UPGRADE.get());
-        registerBookItem(EBItems.MELEE_UPGRADE.get());
     }
 
     public static class SlotBookshelf extends Slot {

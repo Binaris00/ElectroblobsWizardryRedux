@@ -69,19 +69,20 @@ public class SpellDiscoveryTrigger implements CriterionTrigger<SpellDiscoveryTri
             this.source = source;
         }
 
-        public TriggerInstance(SpellPredicate spell, EBDiscoverSpellEvent.Source source){
+        public TriggerInstance(SpellPredicate spell, EBDiscoverSpellEvent.Source source) {
             super(ID, ContextAwarePredicate.ANY);
             this.spell = spell;
             this.source = source;
         }
 
-        public static TriggerInstance discoverSpell(EBDiscoverSpellEvent.Source source){
+        public static TriggerInstance discoverSpell(EBDiscoverSpellEvent.Source source) {
             return new TriggerInstance(SpellPredicate.any(), source);
         }
 
         public boolean test(Spell spell, EBDiscoverSpellEvent.Source source) {
             return this.spell.test(spell) && source == this.source;
         }
+
         @Override
         public @NotNull JsonObject serializeToJson(@NotNull SerializationContext conditions) {
             JsonObject jsonobject = super.serializeToJson(conditions);

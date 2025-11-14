@@ -24,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class Bubble extends RaySpell {
 
-    public Bubble(){
+    public Bubble() {
         this.soundValues(0.5f, 1.1f, 0.2f);
     }
 
@@ -32,13 +32,13 @@ public class Bubble extends RaySpell {
     // This will always return true
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if(!(entityHit.getEntity() instanceof LivingEntity target)) return true;
-        if(ctx.world().isClientSide) return true;
+        if (!(entityHit.getEntity() instanceof LivingEntity target)) return true;
+        if (ctx.world().isClientSide) return true;
 
         BubbleConstruct bubble = new BubbleConstruct(ctx.world());
         bubble.setPos(target.getX(), target.getY(), target.getZ());
-        if(ctx.caster() != null) bubble.setCaster(ctx.caster());
-        bubble.lifetime = ((int)(property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+        if (ctx.caster() != null) bubble.setCaster(ctx.caster());
+        bubble.lifetime = ((int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
         bubble.isDarkOrb = false;
         bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
         ctx.world().addFreshEntity(bubble);

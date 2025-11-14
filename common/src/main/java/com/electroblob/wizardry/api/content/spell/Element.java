@@ -9,13 +9,12 @@ import net.minecraft.resources.ResourceLocation;
 
 public class Element {
     private final ChatFormatting color;
-
+    private final int[] colors;
     private String descriptionId;
     private ResourceLocation location;
     private ResourceLocation icon;
-    private final int[] colors;
 
-    public Element(ChatFormatting colour, int... colors){
+    public Element(ChatFormatting colour, int... colors) {
         this.color = colour;
         this.colors = colors;
     }
@@ -27,18 +26,24 @@ public class Element {
     // ===================================================
     // LOCATION AND FORMATTING
     // ==================================================
-    /** Will return the description for the spell (e.g. "Fireball") */
+
+    /**
+     * Will return the description for the spell (e.g. "Fireball")
+     */
     public Component getDescriptionFormatted() {
         return Component.translatable(getOrCreateDescriptionId()).withStyle(this.color);
     }
 
     protected String getOrCreateDescriptionId() {
-        if (this.descriptionId == null) this.descriptionId = Util.makeDescriptionId("element", Services.REGISTRY_UTIL.getElement(this));
+        if (this.descriptionId == null)
+            this.descriptionId = Util.makeDescriptionId("element", Services.REGISTRY_UTIL.getElement(this));
         return this.descriptionId;
     }
 
-    /** Will return the description ID for the spell (e.g. "spell.ebwizardry.fireball")
-     * if you want the location instead, use {@link #getLocation()} */
+    /**
+     * Will return the description ID for the spell (e.g. "spell.ebwizardry.fireball")
+     * if you want the location instead, use {@link #getLocation()}
+     */
     public String getDescriptionId() {
         return this.getOrCreateDescriptionId();
     }
@@ -48,36 +53,43 @@ public class Element {
         return this.location;
     }
 
-    /** Will return the location for the spell (e.g. "ebwizardry:fireball") */
+    /**
+     * Will return the location for the spell (e.g. "ebwizardry:fireball")
+     */
     public ResourceLocation getLocation() {
         return this.getOrCreateLocation();
     }
 
-    /** Will return true if the spell is registered at the given location */
+    /**
+     * Will return true if the spell is registered at the given location
+     */
     public final boolean is(ResourceLocation location) {
         return location.equals(getLocation());
     }
 
-    /** Will return true if the spell is registered at the given location */
+    /**
+     * Will return true if the spell is registered at the given location
+     */
     public final boolean is(String location) {
         return location.equals(getLocation().toString());
     }
 
 
-    public String getName(){
+    public String getName() {
         return getLocation().getPath();
     }
 
-    public ChatFormatting getColor(){
+    public ChatFormatting getColor() {
         return color;
     }
 
-    public Component getWizardName(){
+    public Component getWizardName() {
         return Component.translatable(getDescriptionId() + ".wizard");
     }
 
-    public ResourceLocation getIconId(){
-        if(icon == null) icon = new ResourceLocation(WizardryMainMod.MOD_ID, "textures/gui/container/element_icon_" + getOrCreateLocation().getPath() + ".png");
+    public ResourceLocation getIconId() {
+        if (icon == null)
+            icon = new ResourceLocation(WizardryMainMod.MOD_ID, "textures/gui/container/element_icon_" + getOrCreateLocation().getPath() + ".png");
         return icon;
     }
 }

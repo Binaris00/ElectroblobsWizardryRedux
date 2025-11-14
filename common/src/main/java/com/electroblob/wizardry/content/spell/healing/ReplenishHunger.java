@@ -29,7 +29,7 @@ public class ReplenishHunger extends BuffSpell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if(ctx.caster().getFoodData().needsFood()){
+        if (ctx.caster().getFoodData().needsFood()) {
             ctx.caster().getFoodData().eat((int) (property(HUNGER_POINTS) * ctx.modifiers().get(SpellModifiers.POTENCY)), property(SATURATION_MODIFIER));
         }
         return super.cast(ctx);

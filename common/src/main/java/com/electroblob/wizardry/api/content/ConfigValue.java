@@ -6,14 +6,6 @@ public class ConfigValue<T extends Number> {
 
     private T value;
 
-    public void set(T value) {
-        this.value = value;
-    }
-
-    public T value() {
-        return value;
-    }
-
     public ConfigValue(T lowerbound, T upperbound) {
         this(null, lowerbound, upperbound);
     }
@@ -22,5 +14,13 @@ public class ConfigValue<T extends Number> {
         this.value = defaultValue;
         this.lowerbound = lowerbound;
         this.upperbound = upperbound;
+    }
+
+    public void set(T value) {
+        this.value = value;
+    }
+
+    public T value() {
+        return value;
     }
 }

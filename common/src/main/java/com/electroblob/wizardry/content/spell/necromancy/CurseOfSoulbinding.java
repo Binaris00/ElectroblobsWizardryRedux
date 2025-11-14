@@ -42,6 +42,33 @@ public class CurseOfSoulbinding extends RaySpell {
         Services.OBJECT_DATA.spellStoredVariables(TARGETS_KEY);
     }
 
+    public static Set<UUID> getSoulboundCreatures(SpellManagerData data) {
+        if (data.getVariable(TARGETS_KEY) == null) {
+            Set<UUID> result = new HashSet<>();
+            data.setVariable(TARGETS_KEY, result);
+            return result;
+
+        } else return data.getVariable(TARGETS_KEY);
+    }
+
+    public static void onLivingHurt(EBLivingHurtEvent event) {
+        if (!event.getDamagedEntity().level().isClientSide && event.getDamagedEntity() instanceof Player playerDamaged) {
+            SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(playerDamaged);
+
+            for (Iterator<UUID> iterator = getSoulboundCreatures(data).iterator(); iterator.hasNext(); ) {
+                Entity entity = EntityUtil.getEntityByUUID(playerDamaged.level(), iterator.next());
+
+                if (entity == null || (entity instanceof LivingEntity && !((LivingEntity) entity).hasEffect(EBMobEffects.CURSE_OF_SOULBINDING.get()))) {
+                    iterator.remove();
+                } else if (entity instanceof LivingEntity) {
+                    if (entity.hurt(EBMagicDamageSource.causeDirectMagicDamage(playerDamaged, EBDamageSources.SORCERY), event.getAmount())) {
+                        entity.playSound(EBSounds.SPELL_CURSE_OF_SOULBINDING_RETALIATE.get(), 1.0F, playerDamaged.level().random.nextFloat() * 0.2F + 1.0F);
+                    }
+                }
+            }
+        }
+    }
+
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (entityHit.getEntity() instanceof LivingEntity livingTarget && ctx.caster() instanceof Player caster) {
@@ -71,33 +98,6 @@ public class CurseOfSoulbinding extends RaySpell {
         ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(x, y, z).color(0.4f, 0, 0).spawn(ctx.world());
         ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(x, y, z).color(0.1f, 0, 0).spawn(ctx.world());
         ParticleBuilder.create(EBParticles.SPARKLE).pos(x, y, z).time(12 + ctx.world().random.nextInt(8)).color(1, 0.8f, 1).spawn(ctx.world());
-    }
-
-    public static Set<UUID> getSoulboundCreatures(SpellManagerData data) {
-        if (data.getVariable(TARGETS_KEY) == null) {
-            Set<UUID> result = new HashSet<>();
-            data.setVariable(TARGETS_KEY, result);
-            return result;
-
-        } else return data.getVariable(TARGETS_KEY);
-    }
-
-    public static void onLivingHurt(EBLivingHurtEvent event) {
-        if (!event.getDamagedEntity().level().isClientSide && event.getDamagedEntity() instanceof Player playerDamaged) {
-            SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(playerDamaged);
-
-            for (Iterator<UUID> iterator = getSoulboundCreatures(data).iterator(); iterator.hasNext(); ) {
-                Entity entity = EntityUtil.getEntityByUUID(playerDamaged.level(), iterator.next());
-
-                if (entity == null || (entity instanceof LivingEntity && !((LivingEntity) entity).hasEffect(EBMobEffects.CURSE_OF_SOULBINDING.get()))) {
-                    iterator.remove();
-                } else if (entity instanceof LivingEntity) {
-                    if(entity.hurt(EBMagicDamageSource.causeDirectMagicDamage(playerDamaged, EBDamageSources.SORCERY), event.getAmount())){
-                        entity.playSound(EBSounds.SPELL_CURSE_OF_SOULBINDING_RETALIATE.get(), 1.0F, playerDamaged.level().random.nextFloat() * 0.2F + 1.0F);
-                    }
-                }
-            }
-        }
     }
 
     @Override

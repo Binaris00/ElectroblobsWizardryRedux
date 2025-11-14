@@ -14,7 +14,6 @@ import com.electroblob.wizardry.content.spell.BlockWithSurprise;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.*;
 import com.electroblob.wizardry.content.spell.earth.*;
-import com.electroblob.wizardry.content.spell.earth.TrapSlime;
 import com.electroblob.wizardry.content.spell.fire.*;
 import com.electroblob.wizardry.content.spell.healing.*;
 import com.electroblob.wizardry.content.spell.ice.*;
@@ -36,9 +35,6 @@ import java.util.function.Supplier;
 
 
 public final class Spells {
-    public static Map<String, Spell> SPELLS = new HashMap<>();
-    private Spells() {}
-
     public static final Spell NONE;
     public static final Spell MAGIC_MISSILE;
     public static final Spell SMOKE_BOMB;
@@ -148,11 +144,12 @@ public final class Spells {
     public static final Spell SLIME;
     public static final Spell ARC;
     public static final Spell SUMMON_LIGHTNING_WRAITH;
-
+    public static final Spell SUMMON_ICE_GIANT;
     public static final Spell OJOSPOCOS;
     public static final Spell FLAME_FLAME;
     public static final Spell SUMMON_RICH;
     public static final Spell BLOCK_SURPRISE;
+    public static Map<String, Spell> SPELLS = new HashMap<>();
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -674,69 +671,69 @@ public final class Spells {
         SUMMON_BLAZE = spell("summon_blaze", () -> new MinionSpell<>((l) -> new Blaze(EntityType.BLAZE, l))
                 .soundValues(1, 1.1f, 0.2f)
                 .assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
-                        .add(DefaultProperties.MINION_COUNT, 1)
-                        .add(DefaultProperties.MINION_LIFETIME, 600)
-                        .add(DefaultProperties.SUMMON_RADIUS, 2)
-                        .build()
-        ));
+                        SpellProperties.builder()
+                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
+                                .add(DefaultProperties.MINION_COUNT, 1)
+                                .add(DefaultProperties.MINION_LIFETIME, 600)
+                                .add(DefaultProperties.SUMMON_RADIUS, 2)
+                                .build()
+                ));
 
         SPIDER_SWARM = spell("spider_swarm", () -> new MinionSpell<>((l) -> new Spider(EntityType.SPIDER, l)))
                 .soundValues(1, 1.1f, 0.1f)
                 .assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
-                        .add(DefaultProperties.MINION_COUNT, 5)
-                        .add(DefaultProperties.MINION_LIFETIME, 600)
-                        .add(DefaultProperties.SUMMON_RADIUS, 3)
-                        .build()
-        );
+                        SpellProperties.builder()
+                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
+                                .add(DefaultProperties.MINION_COUNT, 5)
+                                .add(DefaultProperties.MINION_LIFETIME, 600)
+                                .add(DefaultProperties.SUMMON_RADIUS, 3)
+                                .build()
+                );
 
         SILVERFISH_SWARM = spell("silverfish_swarm", () -> new MinionSpell<>((l) -> new Silverfish(EntityType.SILVERFISH, l)))
                 .soundValues(1, 1.1f, 0.1f)
                 .assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.MINION, SpellAction.SUMMON, 80, 20, 300)
-                        .add(DefaultProperties.MINION_COUNT, 20)
-                        .add(DefaultProperties.MINION_LIFETIME, 600)
-                        .add(DefaultProperties.SUMMON_RADIUS, 3)
-                        .add(DefaultProperties.SENSIBLE, true)
-                        .build()
-        );
+                        SpellProperties.builder()
+                                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.MINION, SpellAction.SUMMON, 80, 20, 300)
+                                .add(DefaultProperties.MINION_COUNT, 20)
+                                .add(DefaultProperties.MINION_LIFETIME, 600)
+                                .add(DefaultProperties.SUMMON_RADIUS, 3)
+                                .add(DefaultProperties.SENSIBLE, true)
+                                .build()
+                );
 
         VEX_SWARM = spell("vex_swarm", () -> new MinionSpell<>((l) -> new Vex(EntityType.VEX, l)))
                 .soundValues(1, 1.1f, 0.1f)
                 .assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY, SpellType.MINION, SpellAction.SUMMON, 50, 10, 200)
-                        .add(DefaultProperties.MINION_COUNT, 5)
-                        .add(DefaultProperties.MINION_LIFETIME, 600)
-                        .add(DefaultProperties.SUMMON_RADIUS, 3)
-                        .build()
-        );
+                        SpellProperties.builder()
+                                .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY, SpellType.MINION, SpellAction.SUMMON, 50, 10, 200)
+                                .add(DefaultProperties.MINION_COUNT, 5)
+                                .add(DefaultProperties.MINION_LIFETIME, 600)
+                                .add(DefaultProperties.SUMMON_RADIUS, 3)
+                                .build()
+                );
 
         SUMMON_WITHER_SKELETON = spell("summon_wither_skeleton", () -> new SummonWitherSkeleton()
                 .soundValues(1, 1.1f, 0.2f)
                 .assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 35, 10, 150)
-                        .add(DefaultProperties.MINION_COUNT, 1)
-                        .add(DefaultProperties.MINION_LIFETIME, 600)
-                        .add(DefaultProperties.SUMMON_RADIUS, 2)
-                        .build()
-        ));
+                        SpellProperties.builder()
+                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 35, 10, 150)
+                                .add(DefaultProperties.MINION_COUNT, 1)
+                                .add(DefaultProperties.MINION_LIFETIME, 600)
+                                .add(DefaultProperties.SUMMON_RADIUS, 2)
+                                .build()
+                ));
 
         SUMMON_SKELETON = spell("summon_skeleton", () -> new SummonSkeleton()
                 .soundValues(1, 1.1f, 0.2f)
                 .assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 15, 0, 50)
-                        .add(DefaultProperties.MINION_COUNT, 1)
-                        .add(DefaultProperties.MINION_LIFETIME, 600)
-                        .add(DefaultProperties.SUMMON_RADIUS, 2)
-                        .build()
-        ));
+                        SpellProperties.builder()
+                                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 15, 0, 50)
+                                .add(DefaultProperties.MINION_COUNT, 1)
+                                .add(DefaultProperties.MINION_LIFETIME, 600)
+                                .add(DefaultProperties.SUMMON_RADIUS, 2)
+                                .build()
+                ));
 
         SLIME = spell("slime", TrapSlime::new);
 
@@ -752,17 +749,22 @@ public final class Spells {
                                 .add(DefaultProperties.SUMMON_RADIUS, 2)
                                 .build()
                 );
+
+        SUMMON_ICE_GIANT = spell("summon_ice_giant", SummonIceGiant::new);
+    }
+
+    private Spells() {
     }
 
     // ======= Registry =======
-    public static void registerNull(RegisterFunction<Spell> function){
+    public static void registerNull(RegisterFunction<Spell> function) {
         register(null, function);
     }
 
     @SuppressWarnings("unchecked")
-    public static void register(Registry<?> registry, RegisterFunction<Spell> function){
+    public static void register(Registry<?> registry, RegisterFunction<Spell> function) {
         // remove all the spells with the sensible property
-        if(!Services.PLATFORM.isDevelopmentEnvironment()) {
+        if (!Services.PLATFORM.isDevelopmentEnvironment()) {
             SPELLS.values().removeIf(spell -> spell.property(DefaultProperties.SENSIBLE));
         }
 

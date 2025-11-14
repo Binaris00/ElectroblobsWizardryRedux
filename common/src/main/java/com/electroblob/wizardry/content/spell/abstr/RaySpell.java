@@ -82,7 +82,8 @@ public abstract class RaySpell extends Spell {
         Vec3 look = ctx.caster().getLookAngle();
         Vec3 origin = new Vec3(ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight() - Y_OFFSET, ctx.caster().getZ());
 
-        if (this.isInstantCast() && ctx.world().isClientSide && ClientUtils.isFirstPerson(ctx.caster())) origin = origin.add(look.scale(1.2));
+        if (this.isInstantCast() && ctx.world().isClientSide && ClientUtils.isFirstPerson(ctx.caster()))
+            origin = origin.add(look.scale(1.2));
         if (!shootSpell(ctx, origin, look)) return false;
 
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
@@ -129,7 +130,9 @@ public abstract class RaySpell extends Spell {
     }
 
     protected abstract boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction);
+
     protected abstract boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin);
+
     protected abstract boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin);
 
     protected boolean shootSpell(CastContext ctx, Vec3 origin, Vec3 direction) {
@@ -161,16 +164,17 @@ public abstract class RaySpell extends Spell {
         return true;
     }
 
-    protected void spawnParticleRay(CastContext ctx, Vec3 origin, Vec3 direction, double distance){
+    protected void spawnParticleRay(CastContext ctx, Vec3 origin, Vec3 direction, double distance) {
         Vec3 velocity = direction.scale(particleVelocity);
 
-        for(double d = particleSpacing; d <= distance; d += particleSpacing){
-            double x = origin.x + d*direction.x + particleJitter * (ctx.world().random.nextDouble()*2 - 1);
-            double y = origin.y + d*direction.y + particleJitter * (ctx.world().random.nextDouble()*2 - 1);
-            double z = origin.z + d*direction.z + particleJitter * (ctx.world().random.nextDouble()*2 - 1);
+        for (double d = particleSpacing; d <= distance; d += particleSpacing) {
+            double x = origin.x + d * direction.x + particleJitter * (ctx.world().random.nextDouble() * 2 - 1);
+            double y = origin.y + d * direction.y + particleJitter * (ctx.world().random.nextDouble() * 2 - 1);
+            double z = origin.z + d * direction.z + particleJitter * (ctx.world().random.nextDouble() * 2 - 1);
             spawnParticle(ctx, x, y, z, velocity.x, velocity.y, velocity.z);
         }
     }
 
-    protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz){}
+    protected void spawnParticle(CastContext ctx, double x, double y, double z, double vx, double vy, double vz) {
+    }
 }

@@ -47,20 +47,77 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 public abstract class AbstractWizard extends PathfinderMob implements ISpellCaster {
-    protected Predicate<LivingEntity> entityTargetSelector;
-
     private static final EntityDataAccessor<Integer> HEAL_COOLDOWN = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<String> ELEMENT = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<String> CONTINUOUS_SPELL = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.STRING);
     private static final EntityDataAccessor<Integer> SPELL_COUNTER = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
     private static final EntityDataAccessor<Integer> TEXTURE_INDEX = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
-
+    protected Predicate<LivingEntity> entityTargetSelector;
     protected List<Spell> spells = new ArrayList<>(4);
 
     private Set<BlockPos> towerBlocks;
 
     public AbstractWizard(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
+    }
+
+    public static AttributeSupplier.Builder createAttributes() {
+        return PathfinderMob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5F).add(Attributes.MAX_HEALTH, 30);
+    }
+
+    static SpellTier populateSpells(final Mob wizard, List<Spell> spells, Element e, boolean master, int n, RandomSource random) {
+        SpellTier maxTier = SpellTiers.NOVICE;
+
+        List<Spell> npcSpells = SpellUtil.getSpells(Spell::canCastByEntity);
+
+        for (int i = 0; i < n; i++) {
+            SpellTier tier;
+            Element element = e == Elements.MAGIC ? SpellUtil.getRandomElement(random) : e;
+
+            int randomizer = random.nextInt(20);
+
+            if (randomizer < 10) tier = SpellTiers.NOVICE;
+            else if (randomizer < 16)
+                tier = SpellTiers.APPRENTICE;
+            else if (randomizer < 19 || !master)
+                tier = SpellTiers.ADVANCED;
+            else
+                tier = SpellTiers.MASTER;
+
+
+            if (tier.level > maxTier.level) maxTier = tier;
+
+            // TODO: Add a filter for NPC spells
+            List<Spell> list = SpellUtil.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element);
+
+            list.retainAll(npcSpells);
+            list.removeAll(spells);
+
+            if (list.isEmpty()) {
+                list = npcSpells;
+                list.removeAll(spells);
+            }
+            if (!list.isEmpty()) spells.add(list.get(random.nextInt(list.size())));
+        }
+        return maxTier;
+    }
+
+    // ============================
+    // Wizard data
+    // ============================
+
+    public static ItemStack getBookStackForSpell(Spell spell) {
+        ItemStack stack = new ItemStack(EBItems.SPELL_BOOK.get(), 1);
+        SpellUtil.setSpell(stack, spell);
+        return stack;
+    }
+
+    public static ItemStack getItemWithMetadata(Item item, int count, int metadata) {
+        ItemStack stack = new ItemStack(item, count);
+        CompoundTag tag = new CompoundTag();
+        tag.putInt("Spell", metadata);
+        stack.addTagElement("Spells", tag);
+        return stack;
     }
 
     @Override
@@ -70,7 +127,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         this.entityData.define(ELEMENT, Elements.FIRE.getLocation().toString());
         this.entityData.define(CONTINUOUS_SPELL, Spells.NONE.getLocation().toString());
         this.entityData.define(SPELL_COUNTER, 0);
-         this.entityData.define(TEXTURE_INDEX, 0);
+        this.entityData.define(TEXTURE_INDEX, 0);
     }
 
     @Override
@@ -93,14 +150,6 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
 
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(AbstractWizard.class));
         this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Mob.class, 0, false, true, this.entityTargetSelector));
-    }
-
-    // ============================
-    // Wizard data
-    // ============================
-
-    public static AttributeSupplier.Builder createAttributes() {
-        return PathfinderMob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5F).add(Attributes.MAX_HEALTH, 30);
     }
 
     private int getHealCooldown() {
@@ -137,25 +186,24 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
     }
 
     @Override
-    public void setContinuousSpell(Spell spell) {
-        this.entityData.set(CONTINUOUS_SPELL, spell.getLocation().toString());
-    }
-
-    @Override
     public @NotNull Spell getContinuousSpell() {
         Spell spell = Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(this.entityData.get(CONTINUOUS_SPELL)));
         return spell == null ? Spells.NONE : spell;
     }
 
-
     @Override
-    public void setSpellCounter(int count) {
-        this.entityData.set(SPELL_COUNTER, count);
+    public void setContinuousSpell(Spell spell) {
+        this.entityData.set(CONTINUOUS_SPELL, spell.getLocation().toString());
     }
 
     @Override
     public int getSpellCounter() {
         return this.entityData.get(SPELL_COUNTER);
+    }
+
+    @Override
+    public void setSpellCounter(int count) {
+        this.entityData.set(SPELL_COUNTER, count);
     }
 
     @Override
@@ -231,15 +279,14 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
             elements.remove(Elements.MAGIC);
             Element element = elements.get(random.nextInt(elements.size()));
             this.setElement(element);
-        }
-
-        else {
+        } else {
             this.setElement(Elements.MAGIC);
         }
 
         Element element = this.getElement();
 
-        for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) this.setItemSlot(slot, new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, element, slot)));
+        for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS)
+            this.setItemSlot(slot, new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, element, slot)));
         for (EquipmentSlot slot : EquipmentSlot.values()) this.setDropChance(slot, 0.0f);
 
         spells.add(Spells.MAGIC_MISSILE);
@@ -253,57 +300,6 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
 
         this.setHealCooldown(50);
         return super.finalizeSpawn(level, difficulty, mobSpawnType, spawnData, tag);
-    }
-
-    static SpellTier populateSpells(final Mob wizard, List<Spell> spells, Element e, boolean master, int n, RandomSource random) {
-        SpellTier maxTier = SpellTiers.NOVICE;
-
-        List<Spell> npcSpells = SpellUtil.getSpells(Spell::canCastByEntity);
-
-        for (int i = 0; i < n; i++) {
-            SpellTier tier;
-            Element element = e == Elements.MAGIC ? SpellUtil.getRandomElement(random) : e;
-
-            int randomizer = random.nextInt(20);
-
-            if (randomizer < 10) tier = SpellTiers.NOVICE;
-            else if (randomizer < 16)
-                tier = SpellTiers.APPRENTICE;
-            else if (randomizer < 19 || !master)
-                tier = SpellTiers.ADVANCED;
-            else
-                tier = SpellTiers.MASTER;
-
-
-            if (tier.level > maxTier.level) maxTier = tier;
-
-            // TODO: Add a filter for NPC spells
-            List<Spell> list = SpellUtil.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element);
-
-            list.retainAll(npcSpells);
-            list.removeAll(spells);
-
-            if (list.isEmpty()) {
-                list = npcSpells;
-                list.removeAll(spells);
-            }
-            if (!list.isEmpty()) spells.add(list.get(random.nextInt(list.size())));
-        }
-        return maxTier;
-    }
-
-    public static ItemStack getBookStackForSpell(Spell spell) {
-        ItemStack stack = new ItemStack(EBItems.SPELL_BOOK.get(), 1);
-        SpellUtil.setSpell(stack, spell);
-        return stack;
-    }
-
-    public static ItemStack getItemWithMetadata(Item item, int count, int metadata) {
-        ItemStack stack = new ItemStack(item, count);
-        CompoundTag tag = new CompoundTag();
-        tag.putInt("Spell", metadata);
-        stack.addTagElement("Spells", tag);
-        return stack;
     }
 
     @Override

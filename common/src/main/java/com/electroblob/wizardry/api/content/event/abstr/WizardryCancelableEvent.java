@@ -13,7 +13,8 @@ import com.electroblob.wizardry.core.event.IWizardryEvent;
  *
  * @see com.electroblob.wizardry.core.event.WizardryEventBus#fire(IWizardryEvent) WizardryEventBus#fire
  * @see com.electroblob.wizardry.core.event.WizardryEventBus#register(Class, EventListener) WizardryEventBus#register
- * */
+ *
+ */
 public abstract class WizardryCancelableEvent implements IWizardryEvent {
     private boolean isCanceled;
 

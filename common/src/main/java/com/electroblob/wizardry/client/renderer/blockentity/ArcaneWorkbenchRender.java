@@ -58,7 +58,7 @@ public class ArcaneWorkbenchRender implements BlockEntityRenderer<ArcaneWorkbenc
 
     private void renderEffect(PoseStack poseStack, ArcaneWorkbenchBlockEntity entity, float partialTicks) {
         ItemStack stack = entity.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
-        if(stack.isEmpty()) return;
+        if (stack.isEmpty()) return;
 
         poseStack.pushPose();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
@@ -84,7 +84,7 @@ public class ArcaneWorkbenchRender implements BlockEntityRenderer<ArcaneWorkbenc
 
     private void renderWand(PoseStack posestack, ArcaneWorkbenchBlockEntity entity, double v, float partialTicks, int light, MultiBufferSource bufferSource) {
         ItemStack stack = entity.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
-        if(stack.isEmpty()) return;
+        if (stack.isEmpty()) return;
 
         posestack.pushPose();
         posestack.mulPose(Axis.XP.rotationDegrees(90.0F));

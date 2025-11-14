@@ -11,9 +11,9 @@ import java.util.EnumSet;
 
 public class MinionOwnerHurtTargetGoal extends TargetGoal {
     private final Mob minion;
+    private final MinionData data;
     private LivingEntity ownerLastHurt;
     private int timestamp;
-    private final MinionData data;
 
     public MinionOwnerHurtTargetGoal(Mob mob) {
         super(mob, false);
@@ -25,7 +25,7 @@ public class MinionOwnerHurtTargetGoal extends TargetGoal {
     }
 
     public boolean canUse() {
-        if(!this.data.isSummoned()) return false;
+        if (!this.data.isSummoned()) return false;
 
         LivingEntity livingentity = this.data.getOwner();
         if (livingentity == null) {

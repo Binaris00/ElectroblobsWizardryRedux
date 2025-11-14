@@ -216,11 +216,15 @@ public final class BlockUtil {
     @FunctionalInterface
     public interface SurfaceCriteria {
 
-        boolean test(Level world, BlockPos pos, Direction side);
-
-        default SurfaceCriteria flip() {
-            return (world, pos, side) -> this.test(world, pos.relative(side), side.getOpposite());
-        }
+        SurfaceCriteria COLLIDABLE = basedOn(BlockBehaviour.BlockStateBase::blocksMotion);
+        /**
+         * Surface criterion which defines a surface as the boundary between a block that is solid on the required side and
+         * a block that is replaceable. This means the surface can be built on.
+         */
+        SurfaceCriteria BUILDABLE = (world, pos, side) -> world.getBlockState(pos).isFaceSturdy(world, pos, side) && world.getBlockState(pos.relative(side)).canBeReplaced();
+        SurfaceCriteria SOLID_LIQUID_TO_AIR = (world, pos, side) -> (world.getBlockState(pos).liquid() || world.getBlockState(pos).isFaceSturdy(world, pos, side) && world.isEmptyBlock(pos.relative(side)));
+        SurfaceCriteria NOT_AIR_TO_AIR = basedOn(Level::isEmptyBlock).flip();
+        SurfaceCriteria COLLIDABLE_IGNORING_TREES = basedOn((world, pos) -> world.getBlockState(pos).blocksMotion() && !isTreeBlock(world, pos));
 
         static SurfaceCriteria basedOn(BiPredicate<Level, BlockPos> condition) {
             return (world, pos, side) -> condition.test(world, pos) && !condition.test(world, pos.relative(side));
@@ -230,19 +234,10 @@ public final class BlockUtil {
             return (world, pos, side) -> condition.test(world.getBlockState(pos)) && !condition.test(world.getBlockState(pos.relative(side)));
         }
 
-        SurfaceCriteria COLLIDABLE = basedOn(BlockBehaviour.BlockStateBase::blocksMotion);
+        boolean test(Level world, BlockPos pos, Direction side);
 
-        /**
-         * Surface criterion which defines a surface as the boundary between a block that is solid on the required side and
-         * a block that is replaceable. This means the surface can be built on.
-         */
-        SurfaceCriteria BUILDABLE = (world, pos, side) -> world.getBlockState(pos).isFaceSturdy(world, pos, side) && world.getBlockState(pos.relative(side)).canBeReplaced();
-
-
-        SurfaceCriteria SOLID_LIQUID_TO_AIR = (world, pos, side) -> (world.getBlockState(pos).liquid() || world.getBlockState(pos).isFaceSturdy(world, pos, side) && world.isEmptyBlock(pos.relative(side)));
-
-        SurfaceCriteria NOT_AIR_TO_AIR = basedOn(Level::isEmptyBlock).flip();
-
-        SurfaceCriteria COLLIDABLE_IGNORING_TREES = basedOn((world, pos) -> world.getBlockState(pos).blocksMotion() && !isTreeBlock(world, pos));
+        default SurfaceCriteria flip() {
+            return (world, pos, side) -> this.test(world, pos.relative(side), side.getOpposite());
+        }
     }
 }

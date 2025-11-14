@@ -105,7 +105,7 @@ public class ForfeitRegistry {
 
         if (event.getSource() == SpellCastEvent.Source.WAND || event.getSource() == SpellCastEvent.Source.SCROLL) {
             float chance = (float) EBConfig.forfeitChance;
-            if(EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WISDOM.get())) chance *= 0.5F;
+            if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WISDOM.get())) chance *= 0.5F;
 
             float f = WizardryMainMod.getRandom(player).nextFloat();
 

@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.core.integrations;
 
-import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.api.content.util.ArtefactItem;
+import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.core.IArtefactEffect;
 import com.electroblob.wizardry.core.platform.Services;
 import io.wispforest.accessories.api.AccessoriesCapability;
@@ -29,8 +29,8 @@ public final class EBAccessoriesIntegration {
         return !isAccessoriesLoaded() ? new ArtefactItem(rarity, effect) : new AccessoriesArtefactItem(rarity, effect);
     }
 
-    public static List<ItemStack> getEquippedItems(Player player){
-        if(isAccessoriesLoaded()){
+    public static List<ItemStack> getEquippedItems(Player player) {
+        if (isAccessoriesLoaded()) {
             if (AccessoriesCapability.get(player) != null) {
                 return AccessoriesCapability.get(player).getAllEquipped().stream().map(SlotEntryReference::stack).collect(Collectors.toList());
             }

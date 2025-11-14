@@ -60,7 +60,7 @@ class TooltipElementUpgrades extends TooltipElement {
 
         for (DeferredObject<Item> item : WandHelper.getSpecialUpgrades()) {
             int level = WandHelper.getUpgradeLevel(stack, item);
-            if(level < 0) continue;
+            if (level < 0) continue;
 
             // FIXME upgrades tooltip item on arcane workbench
 //            if (screen.isHovering(x + x1, y, ITEM_SIZE, ITEM_SIZE, mouseX, mouseY)) {

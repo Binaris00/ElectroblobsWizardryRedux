@@ -16,7 +16,7 @@ public class EnfeeblementCurse extends CurseMobEffect {
 
     @Override
     public void applyEffectTick(@NotNull LivingEntity livingEntity, int tick) {
-        if(!(livingEntity instanceof Player player)) return;
+        if (!(livingEntity instanceof Player player)) return;
         // Prob should be 0.2
         if (player.getFoodData().getFoodLevel() > 17 && player.level().random.nextDouble() < 0.2) {
             player.getFoodData().setFoodLevel(0);

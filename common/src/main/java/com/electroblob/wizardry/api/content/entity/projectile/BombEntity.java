@@ -8,7 +8,9 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class BombEntity extends MagicProjectileEntity {
-    /** The entity blast multiplier. This is now synced and saved centrally from {@link BombEntity}. */
+    /**
+     * The entity blast multiplier. This is now synced and saved centrally from {@link BombEntity}.
+     */
     public float blastMultiplier = 1.0f;
 
     public BombEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {

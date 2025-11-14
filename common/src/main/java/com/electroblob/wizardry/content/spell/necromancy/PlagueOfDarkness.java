@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public class PlagueOfDarkness extends AreaEffectSpell {
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        if(!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
+        if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
 
             target.hurt(target.damageSources().wither(), property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
             target.addEffect(new MobEffectInstance(MobEffects.WITHER,
@@ -44,7 +44,7 @@ public class PlagueOfDarkness extends AreaEffectSpell {
     protected void spawnParticleEffect(CastContext ctx, Vec3 origin, double radius) {
         double particleX, particleZ;
 
-        for(int i = 0; i < 40; i++){
+        for (int i = 0; i < 40; i++) {
             particleX = origin.x - 1.0d + 2 * ctx.world().random.nextDouble();
             particleZ = origin.z - 1.0d + 2 * ctx.world().random.nextDouble();
             ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(particleX, origin.y, particleZ)
@@ -60,12 +60,12 @@ public class PlagueOfDarkness extends AreaEffectSpell {
 
             BlockState state = ctx.world().getBlockState(new BlockPos((int) origin.x, (int) (origin.y - 0.5), (int) origin.z));
 
-            if(state.getRenderShape() != RenderShape.INVISIBLE) {
+            if (state.getRenderShape() != RenderShape.INVISIBLE) {
                 ctx.world().addParticle(new BlockParticleOption(ParticleTypes.BLOCK, state), particleX, origin.y, particleZ, particleX - origin.x, 0, particleZ - origin.z);
             }
         }
 
-        ParticleBuilder.create(EBParticles.SPHERE).pos(origin.add(0, 0.1, 0)).scale((float)radius * 0.8f).color(0.8f, 0, 0.05f).spawn(ctx.world());
+        ParticleBuilder.create(EBParticles.SPHERE).pos(origin.add(0, 0.1, 0)).scale((float) radius * 0.8f).color(0.8f, 0, 0.05f).spawn(ctx.world());
     }
 
     @Override

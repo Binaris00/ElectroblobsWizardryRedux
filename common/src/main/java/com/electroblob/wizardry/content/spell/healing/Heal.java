@@ -20,24 +20,24 @@ public class Heal extends BuffSpell {
         super(1, 1, 0.3f);
     }
 
+    public static void heal(LivingEntity entity, float health) {
+        float excessHealth = entity.getHealth() + health - entity.getMaxHealth();
+
+        entity.heal(health);
+
+        if (excessHealth > 0 && entity instanceof Player player && EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_ABSORPTION.get())) {
+            entity.setAbsorptionAmount(excessHealth);
+        }
+    }
+
     @Override
     protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
-        if(caster.getHealth() < caster.getMaxHealth() && caster.getHealth() > 0){
+        if (caster.getHealth() < caster.getMaxHealth() && caster.getHealth() > 0) {
             heal(caster, property(DefaultProperties.HEALTH) * ctx.modifiers().get(SpellModifiers.POTENCY));
             return true;
         }
 
         return false;
-    }
-
-    public static void heal(LivingEntity entity, float health){
-        float excessHealth = entity.getHealth() + health - entity.getMaxHealth();
-
-        entity.heal(health);
-
-        if(excessHealth > 0 && entity instanceof Player player && EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_ABSORPTION.get())){
-            entity.setAbsorptionAmount(excessHealth);
-        }
     }
 
     @Override

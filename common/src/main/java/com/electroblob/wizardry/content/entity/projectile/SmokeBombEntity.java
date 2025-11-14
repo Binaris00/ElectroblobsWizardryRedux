@@ -38,7 +38,7 @@ public class SmokeBombEntity extends BombEntity {
 
     @Override
     protected void onHit(@NotNull HitResult hitResult) {
-        if(level().isClientSide) return;
+        if (level().isClientSide) return;
         List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(this.level(), this.getX(), this.getY(), this.getZ(), 10);
 
         for (LivingEntity entity : livingEntities) {

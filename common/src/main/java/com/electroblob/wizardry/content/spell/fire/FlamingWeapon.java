@@ -27,21 +27,21 @@ public class FlamingWeapon extends Spell {
     public boolean cast(PlayerCastContext ctx) {
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
 
-        if(data.getGeneralImbuementDuration(EBEnchantments.FLAMING_WEAPON.get()) > 0) return false;
+        if (data.getGeneralImbuementDuration(EBEnchantments.FLAMING_WEAPON.get()) > 0) return false;
 
-        for(ItemStack stack : InventoryUtil.getPrioritisedHotBarAndOffhand(ctx.caster())){
+        for (ItemStack stack : InventoryUtil.getPrioritisedHotBarAndOffhand(ctx.caster())) {
             // If the item isn't a sword or a bow, or if it already has the enchantment, skip
-            if((!ImbueWeapon.isSword(stack) && !ImbueWeapon.isBow(stack)) ||
+            if ((!ImbueWeapon.isSword(stack) && !ImbueWeapon.isBow(stack)) ||
                     EnchantmentHelper.getEnchantments(stack).containsKey(EBEnchantments.FLAMING_WEAPON.get())) continue;
 
             stack.enchant(EBEnchantments.FLAMING_WEAPON.get(), ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1
-                    : (int)((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5f));
+                    : (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5f));
 
-            data.setImbuementDuration(stack, EBEnchantments.FLAMING_WEAPON.get(), (int)(property(DefaultProperties.EFFECT_DURATION)
+            data.setImbuementDuration(stack, EBEnchantments.FLAMING_WEAPON.get(), (int) (property(DefaultProperties.EFFECT_DURATION)
                     * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
 
-            if(ctx.world().isClientSide){
-                for(int i=0; i<10; i++){
+            if (ctx.world().isClientSide) {
+                for (int i = 0; i < 10; i++) {
                     double x = ctx.caster().xo + ctx.world().random.nextDouble() * 2 - 1;
                     double y = ctx.caster().yo + ctx.caster().getEyeHeight() - 0.5 + ctx.world().random.nextDouble();
                     double z = ctx.caster().zo + ctx.world().random.nextDouble() * 2 - 1;

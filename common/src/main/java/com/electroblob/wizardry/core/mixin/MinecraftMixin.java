@@ -12,12 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(Minecraft.class)
 public abstract class MinecraftMixin {
     @Inject(method = "<init>", at = @At("TAIL"))
-    public void EBWIZARDRY$clientInit(CallbackInfo ci){
+    public void EBWIZARDRY$clientInit(CallbackInfo ci) {
         SpellGUIDisplay.init();
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
-    public void EBWIZARDRY$clientTick(CallbackInfo ci){
+    public void EBWIZARDRY$clientTick(CallbackInfo ci) {
         Minecraft minecraft = ((Minecraft) (Object) this);
         WizardryEventBus.getInstance().fire(new EBClientTickEvent(minecraft));
     }

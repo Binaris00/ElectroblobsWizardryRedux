@@ -74,7 +74,7 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 30,	0,	75)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 30, 0, 75)
                 .add(DefaultProperties.RANGE, 20F)
                 .add(DefaultProperties.EFFECT_RADIUS, 3)
                 .add(DefaultProperties.ENTITIES, 18)

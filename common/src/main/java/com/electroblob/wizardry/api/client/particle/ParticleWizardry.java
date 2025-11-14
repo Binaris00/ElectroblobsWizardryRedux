@@ -38,57 +38,70 @@ import java.util.function.BiFunction;
 
 public abstract class ParticleWizardry extends TextureSheetParticle {
     public static final Map<DeferredObject<SimpleParticleType>, BiFunction<ClientLevel, Vec3, ParticleWizardry>> PROVIDERS = new LinkedHashMap<>();
-
-    /** The sprite of the particle. */
-    SpriteSet spriteSet;
+    /**
+     * The fraction of the impact velocity that should be the maximum spread speed added on impact.
+     */
+    private static final double SPREAD_FACTOR = 0.2;
 
     // ------------------------- Some field properties -------------------------------- //
-    /** A long value used by the renderer as a random number seed, ensuring anything that is randomized remains the
+    /**
+     * Lateral velocity is reduced by this factor on impact, before adding random spread velocity.
+     */
+    private static final double IMPACT_FRICTION = 0.2;
+    private final boolean updateTextureOnTick;
+    /**
+     * A long value used by the renderer as a random number seed, ensuring anything that is randomized remains the
      * same across multiple frames. For example, lightning particles use this to keep their shape across ticks.
      * This value can also be set during particle creation, allowing users to keep randomized properties the same
-     * even across multiple particles. If unspecified, the seed is chosen at random. */
+     * even across multiple particles. If unspecified, the seed is chosen at random.
+     */
     protected long seed;
-
     protected Random random = new Random(); // If we're not using a seed, this defaults to any old seed
-
-    /** True if the particle is shaded, false if the particle always renders at full brightness. Defaults to false. */
+    /**
+     * True if the particle is shaded, false if the particle always renders at full brightness. Defaults to false.
+     */
     protected boolean shaded = false;
-
     protected float initialRed;
     protected float initialGreen;
     protected float initialBlue;
-
     protected float fadeRed = 0;
     protected float fadeGreen = 0;
     protected float fadeBlue = 0;
-
     protected float angle;
     protected double radius = 0;
     protected double speed = 0;
-
-    /** The entity this particle is linked to. The particle will move with this entity. */
+    /**
+     * The entity this particle is linked to. The particle will move with this entity.
+     */
     @Nullable
     protected Entity entity = null;
-    /** Coordinates of this particle relative to the linked entity. If the linked entity is null, these are used as
+    /**
+     * Coordinates of this particle relative to the linked entity. If the linked entity is null, these are used as
      * the absolute coordinates of the centre of rotation for particles with spin. If the particle has neither a
-     * linked entity nor spin, these are not used. */
+     * linked entity nor spin, these are not used.
+     */
     protected double relativeX, relativeY, relativeZ;
-    /** Velocity of this particle relative to the linked entity. If the linked entity is null, these are not used. */
+    /**
+     * Velocity of this particle relative to the linked entity. If the linked entity is null, these are not used.
+     */
     protected double relativeMotionX, relativeMotionY, relativeMotionZ;
-    /** The yaw angle this particle is facing, or {@code NaN} if this particle always faces the viewer (default behaviour). */
+    /**
+     * The yaw angle this particle is facing, or {@code NaN} if this particle always faces the viewer (default behaviour).
+     */
     protected float yaw = Float.NaN;
-    /** The pitch angle this particle is facing, or {@code NaN} if this particle always faces the viewer (default behaviour). */
+    /**
+     * The pitch angle this particle is facing, or {@code NaN} if this particle always faces the viewer (default behaviour).
+     */
     protected float pitch = Float.NaN;
-
-    /** The fraction of the impact velocity that should be the maximum spread speed added on impact. */
-    private static final double SPREAD_FACTOR = 0.2;
-    /** Lateral velocity is reduced by this factor on impact, before adding random spread velocity. */
-    private static final double IMPACT_FRICTION = 0.2;
-
-    /** Previous-tick velocity, used in collision detection. */
-    private double prevVelX, prevVelY, prevVelZ;
     protected boolean adjustQuadSize;
-    private final boolean updateTextureOnTick;
+    /**
+     * The sprite of the particle.
+     */
+    SpriteSet spriteSet;
+    /**
+     * Previous-tick velocity, used in collision detection.
+     */
+    private double prevVelX, prevVelY, prevVelZ;
 
 
     public ParticleWizardry(ClientLevel world, double x, double y, double z, SpriteSet spriteSet, boolean updateTextureOnTick) {
@@ -106,33 +119,42 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
     // Setters for parameters that affect all particles - these are implemented in this class (although they may be
     // reimplemented in subclasses)
 
-    /** Sets the seed for this particle's randomly generated values and resets {@link ParticleWizardry#random} to use
+    /**
+     * Sets the seed for this particle's randomly generated values and resets {@link ParticleWizardry#random} to use
      * that seed. Implementations will differ between particle types; for example, ParticleLightning has an update
      * period which changes the seed every few ticks, whereas ParticleVine simply retains the same seed for its entire
-     * lifetime. */
-    public void setSeed(long seed){
+     * lifetime.
+     */
+    public void setSeed(long seed) {
         this.seed = seed;
         this.random = new Random(seed);
     }
 
-    /** Sets whether the particle should render at full brightness or not. True if the particle is shaded, false if
-     * the particle always renders at full brightness. Defaults to false.*/
-    public void setShaded(boolean shaded){
+    /**
+     * Sets whether the particle should render at full brightness or not. True if the particle is shaded, false if
+     * the particle always renders at full brightness. Defaults to false.
+     */
+    public void setShaded(boolean shaded) {
         this.shaded = shaded;
     }
 
-    /** Sets this particle's gravity. True to enable gravity, false to disable. Defaults to false.*/
-    public void setGravity(boolean gravity){
+    /**
+     * Sets this particle's gravity. True to enable gravity, false to disable. Defaults to false.
+     */
+    public void setGravity(boolean gravity) {
         this.gravity = gravity ? 1 : 0;
     }
 
-    /** Sets this particle's collisions. True to enable block collisions, false to disable. Defaults to false.*/
-    public void setCollisions(boolean canCollide){
+    /**
+     * Sets this particle's collisions. True to enable block collisions, false to disable. Defaults to false.
+     */
+    public void setCollisions(boolean canCollide) {
         this.hasPhysics = canCollide;
     }
 
     /**
      * Sets the velocity of the particle.
+     *
      * @param velocityX The x velocity
      * @param velocityY The y velocity
      * @param velocityZ The z velocity
@@ -144,13 +166,14 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
 
     /**
      * Sets the spin parameters of the particle.
+     *
      * @param radius The spin radius
-     * @param speed The spin speed in rotations per tick
+     * @param speed  The spin speed in rotations per tick
      */
-    public void setSpin(double radius, double speed){
+    public void setSpin(double radius, double speed) {
         this.radius = radius;
         this.speed = speed * 2 * Math.PI; // Converts rotations per tick into radians per tick for the trig functions
-        this.angle = this.random.nextFloat() * (float)Math.PI * 2; // Random start angle
+        this.angle = this.random.nextFloat() * (float) Math.PI * 2; // Random start angle
         this.x = relativeX - radius * Mth.cos(angle);
         this.z = relativeZ + radius * Mth.sin(angle);
 
@@ -162,12 +185,13 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
 
     /**
      * Links this particle to the given entity. This will cause its position and velocity to be relative to the entity.
+     *
      * @param entity The entity to link to.
      */
-    public void setEntity(Entity entity){
+    public void setEntity(Entity entity) {
         this.entity = entity;
         // Set these to the correct values
-        if(entity != null){
+        if (entity != null) {
             this.setPos(this.entity.xo + relativeX, this.entity.yo
                     + relativeY, this.entity.zo + relativeZ);
             this.xo = this.x;
@@ -183,9 +207,10 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
     /**
      * Sets the base color of the particle. <i>Note that this also sets the fade colour so that particles without a
      * fade colour do not change colour at all; as such fade colour must be set <b>after</b> calling this method.</i>
-     * @param red The red color component
+     *
+     * @param red   The red color component
      * @param green The green color component
-     * @param blue The blue colour component
+     * @param blue  The blue colour component
      */
     @Override
     public void setColor(float red, float green, float blue) {
@@ -199,11 +224,12 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
 
     /**
      * Sets the fade color of the particle.
+     *
      * @param r The red color component
      * @param g The green color component
      * @param b The blue colour component
      */
-    public void setFadeColour(float r, float g, float b){
+    public void setFadeColour(float r, float g, float b) {
         this.fadeRed = r;
         this.fadeGreen = g;
         this.fadeBlue = b;
@@ -211,10 +237,11 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
 
     /**
      * Sets the direction this particle faces. This will cause the particle to render facing the given direction.
-     * @param yaw The yaw angle of this particle in degrees, where 0 is south.
+     *
+     * @param yaw   The yaw angle of this particle in degrees, where 0 is south.
      * @param pitch The pitch angle of this particle in degrees, where 0 is horizontal.
      */
-    public void setFacing(float yaw, float pitch){
+    public void setFacing(float yaw, float pitch) {
         this.yaw = yaw;
         this.pitch = pitch;
     }
@@ -222,39 +249,43 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
     /**
      * Sets the target position for this particle. This will cause it to stretch to touch the given position,
      * if supported.
+     *
      * @param x The x-coordinate of the target position.
      * @param y The y-coordinate of the target position.
      * @param z The z-coordinate of the target position.
      */
-    public void setTargetPosition(double x, double y, double z){
+    public void setTargetPosition(double x, double y, double z) {
         // Does nothing for normal particles since normal particles always render at a single point
     }
 
     /**
      * Sets the target point velocity for this particle. This will cause the position it stretches to touch to move
      * at the given velocity.
+     *
      * @param vx The x velocity of the target point.
      * @param vy The y velocity of the target point.
      * @param vz The z velocity of the target point.
      */
-    public void setTargetVelocity(double vx, double vy, double vz){
+    public void setTargetVelocity(double vx, double vy, double vz) {
         // Does nothing for normal particles since normal particles always render at a single point
     }
 
     /**
      * Links this particle to the given target. This will cause it to stretch to touch the target, if supported.
+     *
      * @param target The target to link to.
      */
-    public void setTargetEntity(Entity target){
+    public void setTargetEntity(Entity target) {
         // Does nothing for normal particles since normal particles always render at a single point
     }
 
     /**
      * Sets the length of this particle. This will cause it to stretch to touch a point this distance along its
      * linked entity's line of sight.
+     *
      * @param length The length to set.
      */
-    public void setLength(double length){
+    public void setLength(double length) {
         // Does nothing for normal particles since normal particles always render at a single point
     }
 
@@ -290,7 +321,7 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
         }
     }
 
-    protected void drawParticle(VertexConsumer buffer, Camera camera, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ){
+    protected void drawParticle(VertexConsumer buffer, Camera camera, float partialTicks, float rotationX, float rotationZ, float rotationYZ, float rotationXY, float rotationXZ) {
         Vec3 vec3 = camera.getPosition();
 
         float s = this.adjustQuadSize ? 0.1f : 1;

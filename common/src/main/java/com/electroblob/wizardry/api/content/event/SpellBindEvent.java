@@ -8,7 +8,8 @@ import net.minecraft.world.entity.player.Player;
  * Event fired when a player presses the apply button in the Arcane Workbench GUI (not confuse, this is only called on
  * the server side). This event is fired before anything is actually done, so you can use it to prevent or modify any
  * changes. This event is cancelable.
- * */
+ *
+ */
 public class SpellBindEvent extends WizardryCancelableEvent {
     Player player;
     ArcaneWorkbenchMenu menu;

@@ -2,6 +2,7 @@ package com.electroblob.wizardry.setup.registries.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.client.model.IceGiantModel;
 import com.electroblob.wizardry.client.model.RemnantModel;
 import com.electroblob.wizardry.client.model.WizardModel;
 import com.electroblob.wizardry.client.model.armor.RobeArmorModel;
@@ -20,6 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.monster.Blaze;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Map;
 import java.util.function.BiConsumer;
@@ -27,13 +29,16 @@ import java.util.function.Supplier;
 
 public final class EBRenderers {
     private static final Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> providers = Maps.newHashMap();
-    private EBRenderers() {}
+
+    private EBRenderers() {
+    }
 
     public static void createEntityLayers(BiConsumer<ModelLayerLocation, Supplier<LayerDefinition>> consumer) {
         consumer.accept(WizardArmorModel.LAYER_LOCATION, WizardArmorModel::createBodyLayer);
         consumer.accept(RobeArmorModel.LAYER_LOCATION, RobeArmorModel::createBodyLayer);
         consumer.accept(RemnantModel.LAYER_LOCATION, RemnantModel::createBodyLayer);
         consumer.accept(WizardModel.LAYER_LOCATION, WizardModel::createBodyLayer);
+        consumer.accept(IceGiantModel.LAYER_LOCATION, IceGiantModel::createBodyLayer);
     }
 
     public static void registerRenderers() {
@@ -63,6 +68,7 @@ public final class EBRenderers {
         registerEntityRender(EBEntities.REMNANT, RemnantRenderer::new);
         registerEntityRender(EBEntities.WIZARD, WizardRenderer::new);
         registerEntityRender(EBEntities.EVIL_WIZARD, EvilWizardRenderer::new);
+        registerEntityRender(EBEntities.ICE_GIANT, IceGiantRenderer::new);
 
         registerEntityRender(EBEntities.SPARK, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/spark.png"))));
         registerEntityRender(EBEntities.ICE_CHARGE, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/ice_charge.png"))));
@@ -71,7 +77,6 @@ public final class EBRenderers {
         registerEntityRender(EBEntities.DARKNESS_ORB, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/darkness_orb.png"))));
         registerEntityRender(EBEntities.FORCE_ORB, (ctx -> new MagicProjectileRenderer<>(ctx, WizardryMainMod.location("textures/entity/force_orb.png"))));
         registerEntityRender(EBEntities.RING_OF_FIRE, (ctx -> new FireRingRenderer(ctx, WizardryMainMod.location("textures/entity/ring_of_fire.png"))));
-
 
         registerEntityRender(EBEntities.FIRE_SIGIL, (ctx ->
                 new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/fire_sigil.png"), 0, true)));
@@ -85,12 +90,24 @@ public final class EBRenderers {
                 new SigilRenderer(ctx, WizardryMainMod.location("textures/entity/combustion_rune.png"), 0, true));
         registerEntityRender(EBEntities.MAGIC_SLIME, SlimeRenderer::new);
 
-        registerEntityRender(EBEntities.LIGHTNING_WRAITH, (ctx -> new BlazeRenderer(ctx){
+        registerEntityRender(EBEntities.LIGHTNING_WRAITH, (ctx -> new BlazeRenderer(ctx) {
             @Override
-            public ResourceLocation getTextureLocation(Blaze entity) {
+            public @NotNull ResourceLocation getTextureLocation(@NotNull Blaze entity) {
                 return WizardryMainMod.location("textures/entity/lightning_wraith.png");
             }
         }));
+
+        registerEntityRender(EBEntities.ICE_WRAITH, (ctx -> new BlazeRenderer(ctx) {
+            @Override
+            public @NotNull ResourceLocation getTextureLocation(@NotNull Blaze entity) {
+                return WizardryMainMod.location("textures/entity/ice_wraith.png");
+            }
+        }));
+
+
+        registerEntityRender(EBEntities.SHADOW_WRAITH, BlankRenderer::new);
+        registerEntityRender(EBEntities.STORM_ELEMENTAL, BlankRenderer::new);
+
     }
 
     public static Map<DeferredObject<EntityType<? extends Entity>>, EntityRendererProvider<?>> getRenderers() {
@@ -99,6 +116,6 @@ public final class EBRenderers {
 
     @SuppressWarnings("unchecked")
     private static <T extends Entity> void registerEntityRender(DeferredObject<EntityType<T>> entityType, EntityRendererProvider provider) {
-        providers.put((DeferredObject<EntityType<? extends Entity>>) (Object)entityType, provider);
+        providers.put((DeferredObject<EntityType<? extends Entity>>) (Object) entityType, provider);
     }
 }

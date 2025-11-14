@@ -18,7 +18,7 @@ import org.jetbrains.annotations.Nullable;
  * Based on the vanilla {@code ParticleParticle}, but with modified rendering to allow for a pulsing scale and a fade out
  */
 public class ParticleFlash extends ParticleWizardry {
-    
+
     public ParticleFlash(ClientLevel world, double x, double y, double z, SpriteSet spriteProvider) {
         super(world, x, y, z, spriteProvider, false);
         this.setColor(1, 1, 1);
@@ -38,7 +38,7 @@ public class ParticleFlash extends ParticleWizardry {
     }
 
     public float getQuadSize(float scaleFactor) {
-        return 0.17F * Mth.sin(((float)this.age + scaleFactor - 1.0F) * 0.25F * (float)Math.PI);
+        return 0.17F * Mth.sin(((float) this.age + scaleFactor - 1.0F) * 0.25F * (float) Math.PI);
     }
 
     public static class FlashProvider implements ParticleProvider<SimpleParticleType> {
@@ -48,14 +48,14 @@ public class ParticleFlash extends ParticleWizardry {
             spriteProvider = sprite;
         }
 
+        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
+            return new ParticleFlash(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteProvider);
+        }
+
         @Nullable
         @Override
         public Particle createParticle(@NotNull SimpleParticleType parameters, @NotNull ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleFlash(world, x, y, z, spriteProvider);
-        }
-
-        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
-            return new ParticleFlash(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteProvider);
         }
     }
 }

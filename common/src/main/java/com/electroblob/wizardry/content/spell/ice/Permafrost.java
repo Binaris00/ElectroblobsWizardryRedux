@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Permafrost extends RaySpell {
-    public Permafrost(){
+    public Permafrost() {
         this.particleVelocity(1);
         this.particleSpacing(0.5);
         soundValues(0.5f, 1, 0);
@@ -37,9 +37,9 @@ public class Permafrost extends RaySpell {
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         boolean flag = false;
         if (!ctx.world().isClientSide) {
-            int blastUpgradeCount = (int)((ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1) / EBConfig.BLAST_RADIUS_INCREASE_PER_LEVEL + 0.5f);
+            int blastUpgradeCount = (int) ((ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1) / EBConfig.BLAST_RADIUS_INCREASE_PER_LEVEL + 0.5f);
             float radius = 0.5f + 0.73f * blastUpgradeCount;
-            int duration = (int)(property(DefaultProperties.DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
+            int duration = (int) (property(DefaultProperties.DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
             List<BlockPos> sphere = BlockUtil.getBlockSphere(blockHit.getBlockPos().above(), radius);
             for (BlockPos pos1 : sphere) {
                 flag |= tryToPlaceIce(ctx.world(), pos1, ctx.caster(), duration);

@@ -13,19 +13,19 @@ import java.util.Map;
 
 public final class EBRecipeTypes {
     static Map<String, RecipeType<?>> RECIPE_TYPES = new HashMap<>();
-    static Map<String, RecipeSerializer<?>> RECIPE_SERIALIZERS = new HashMap<>();
-    private EBRecipeTypes() {}
-
     public static final RecipeType<ImbuementAltarRecipe> IMBUEMENT_ALTAR = recipe("imbuement_altar");
+    static Map<String, RecipeSerializer<?>> RECIPE_SERIALIZERS = new HashMap<>();
     public static final RecipeSerializer<ImbuementAltarRecipe> IMBUEMENT_ALTAR_SERIALIZER = serializer("imbuement_altar",
             new ImbuementAltarRecipe.Serializer());
+    private EBRecipeTypes() {
+    }
 
     // ======= Registry =======
-    public static void register(RegisterFunction<RecipeType<?>> function){
+    public static void register(RegisterFunction<RecipeType<?>> function) {
         RECIPE_TYPES.forEach((name, type) -> function.register(BuiltInRegistries.RECIPE_TYPE, WizardryMainMod.location(name), type));
     }
 
-    public static void registerSerializers(RegisterFunction<RecipeSerializer<?>> function){
+    public static void registerSerializers(RegisterFunction<RecipeSerializer<?>> function) {
         RECIPE_SERIALIZERS.forEach((name, serializer) -> function.register(BuiltInRegistries.RECIPE_SERIALIZER, WizardryMainMod.location(name), serializer));
     }
 

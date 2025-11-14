@@ -9,9 +9,20 @@ import com.electroblob.wizardry.core.event.IWizardryEvent;
  *
  * @see com.electroblob.wizardry.core.event.WizardryEventBus#fire(IWizardryEvent) WizardryEventBus#fire
  * @see com.electroblob.wizardry.core.event.WizardryEventBus#register(Class, EventListener) WizardryEventBus#register
- * */
+ *
+ */
 public abstract class WizardryEvent implements IWizardryEvent {
-    @Override public final void setCanceled(boolean cancel) {}
-    @Override public final boolean canBeCanceled() { return false; }
-    @Override public final boolean isCanceled() { return false; }
+    @Override
+    public final boolean canBeCanceled() {
+        return false;
+    }
+
+    @Override
+    public final boolean isCanceled() {
+        return false;
+    }
+
+    @Override
+    public final void setCanceled(boolean cancel) {
+    }
 }

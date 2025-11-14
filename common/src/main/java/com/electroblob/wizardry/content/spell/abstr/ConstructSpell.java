@@ -23,7 +23,7 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
     protected boolean requiresFloor = false;
     protected boolean allowOverlap = false;
 
-    public ConstructSpell(Function<Level, T> constructFactory, boolean permanent){
+    public ConstructSpell(Function<Level, T> constructFactory, boolean permanent) {
         this.constructFactory = constructFactory;
         this.permanent = permanent;
     }
@@ -51,7 +51,8 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if (ctx.caster().onGround() || !requiresFloor) {
-            if (!spawnConstruct(ctx, ctx.caster().position(), ctx.caster().onGround() ? Direction.UP : null)) return false;
+            if (!spawnConstruct(ctx, ctx.caster().position(), ctx.caster().onGround() ? Direction.UP : null))
+                return false;
             this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
             return true;
         }
@@ -61,7 +62,8 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
     @Override
     public boolean cast(EntityCastContext ctx) {
         if (ctx.target() != null && (ctx.caster().onGround() || !requiresFloor)) {
-            if (!spawnConstruct(ctx, ctx.caster().position(), ctx.caster().onGround() ? Direction.UP : null)) return false;
+            if (!spawnConstruct(ctx, ctx.caster().position(), ctx.caster().onGround() ? Direction.UP : null))
+                return false;
             this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
             return true;
         }
@@ -94,11 +96,12 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
             T construct = constructFactory.apply(ctx.world());
 
             construct.setPos(vec3);
-            if(ctx.caster() != null) construct.setCaster(ctx.caster());
+            if (ctx.caster() != null) construct.setCaster(ctx.caster());
 
             construct.lifetime = permanent ? -1 : (int) (property(DefaultProperties.DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
             construct.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
-            if (construct instanceof ScaledConstructEntity scaledConstruct) scaledConstruct.setSizeMultiplier(ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
+            if (construct instanceof ScaledConstructEntity scaledConstruct)
+                scaledConstruct.setSizeMultiplier(ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
             addConstructExtras(construct, side, ctx.caster());
 
             if (!allowOverlap && !ctx.world().getEntitiesOfClass(construct.getClass(), construct.getBoundingBox()).isEmpty())

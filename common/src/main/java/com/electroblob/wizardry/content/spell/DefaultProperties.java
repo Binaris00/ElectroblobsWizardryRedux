@@ -37,5 +37,6 @@ public final class DefaultProperties {
     // if you want this you should make the condition inside your register method
     public static final SpellProperty<Boolean> SENSIBLE = SpellProperty.booleanProperty("sensible", false);
 
-    private DefaultProperties() {}
+    private DefaultProperties() {
+    }
 }

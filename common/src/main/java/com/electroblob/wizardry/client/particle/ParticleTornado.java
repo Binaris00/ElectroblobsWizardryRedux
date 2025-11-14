@@ -9,11 +9,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ParticleTornado extends TerrainParticle {
-    private float angle;
     private final double radius;
     private final double speed;
     private final double velX;
     private final double velZ;
+    private float angle;
     private boolean fullBrightness = false;
 
     public ParticleTornado(ClientLevel world, int maxAge, double originX, double originZ, double radius, double yPos, double velX, double velZ, BlockState block) {
@@ -39,6 +39,10 @@ public class ParticleTornado extends TerrainParticle {
         speed = random.nextDouble() * 2 + 1;
         this.velX = velX;
         this.velZ = velZ;
+    }
+
+    public static void spawnTornadoParticle(Level world, double x, double y, double z, double velX, double velZ, double radius, int maxAge, BlockState block, BlockPos pos) {
+        Minecraft.getInstance().particleEngine.add(new ParticleTornado((ClientLevel) world, maxAge, x, z, radius, y, velX, velZ, block));//.setPos(pos));
     }
 
     @Override
@@ -68,10 +72,5 @@ public class ParticleTornado extends TerrainParticle {
     @Override
     public int getLightColor(float partialTicks) {
         return fullBrightness ? 15728880 : super.getLightColor(partialTicks);
-    }
-
-
-    public static void spawnTornadoParticle(Level world, double x, double y, double z, double velX, double velZ, double radius, int maxAge, BlockState block, BlockPos pos) {
-        Minecraft.getInstance().particleEngine.add(new ParticleTornado((ClientLevel) world, maxAge, x, z, radius, y, velX, velZ, block));//.setPos(pos));
     }
 }

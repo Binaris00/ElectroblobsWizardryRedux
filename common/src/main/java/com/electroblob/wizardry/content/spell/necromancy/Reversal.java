@@ -27,12 +27,12 @@ import java.util.List;
 public class Reversal extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if(ctx.caster() == null || !(entityHit.getEntity() instanceof LivingEntity target)) return true;
+        if (ctx.caster() == null || !(entityHit.getEntity() instanceof LivingEntity target)) return true;
 
         List<MobEffectInstance> negativePotions = new ArrayList<>(ctx.caster().getActiveEffects());
         negativePotions.removeIf(p -> !p.getEffect().getCategory().equals(MobEffectCategory.HARMFUL));
 
-        if(ctx.world().isClientSide) {
+        if (ctx.world().isClientSide) {
             ParticleBuilder.create(EBParticles.BUFF).entity(ctx.caster()).color(1, 1, 0.3f).spawn(ctx.world());
             return true;
         }

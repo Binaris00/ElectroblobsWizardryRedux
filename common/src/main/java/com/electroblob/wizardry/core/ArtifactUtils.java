@@ -2,7 +2,6 @@ package com.electroblob.wizardry.core;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
-import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
@@ -12,7 +11,9 @@ import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
-import com.electroblob.wizardry.setup.registries.*;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
+import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.damagesource.DamageSource;

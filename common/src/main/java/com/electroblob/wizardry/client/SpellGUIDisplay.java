@@ -31,26 +31,24 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public final class SpellGUIDisplay {
-    public SpellGUIDisplay() {} // Why would you do this
-
-    private static final ResourceLocation CHARGE_METER = WizardryMainMod.location("textures/gui/spell_charge_meter.png");
-    private static final Map<String, SpellHUDSkin> SKINS = new LinkedHashMap<>(14);
-
     public static final int CHARGE_METER_WIDTH = 25;
     public static final int CHARGE_METER_HEIGHT = 9;
     public static final int SPELL_ICON_SIZE = 32;
-    private static final int SPELL_SWITCH_TIME = 4;
     public static final float SPELL_NAME_SCALE = 0.5f;
     public static final float SPELL_NAME_OPACITY = 0.3f;
+    private static final ResourceLocation CHARGE_METER = WizardryMainMod.location("textures/gui/spell_charge_meter.png");
+    private static final Map<String, SpellHUDSkin> SKINS = new LinkedHashMap<>(14);
+    private static final int SPELL_SWITCH_TIME = 4;
     private static final int HALF_HOTBAR_WIDTH = 97;
     private static final int OFFHAND_SLOT_WIDTH = 29;
-
-    private static int switchTimer = 0;
     private static final Minecraft mc = Minecraft.getInstance();
+    private static int switchTimer = 0;
+    public SpellGUIDisplay() {
+    } // Why would you do this
 
     // Where the mod saves the default skin
     // TODO more spell guis
-    public static void init(){
+    public static void init() {
         addSkin("default", WizardryMainMod.location("gui/spell_hud/default.png"), WizardryMainMod.location("gui/spell_hud/default.json"));
     }
 
@@ -58,6 +56,7 @@ public final class SpellGUIDisplay {
         EBLogger.debug("Loading spell HUD skin: " + key);
         SKINS.put(key, new SpellHUDSkin(texture, metadata));
     }
+
     @Nullable
     public static SpellHUDSkin getSkin(String key) {
         SpellHUDSkin skin = SKINS.get(key);
@@ -172,7 +171,7 @@ public final class SpellGUIDisplay {
     }
 
     public static void renderChargeMeter(PoseStack stack, Player player, ItemStack wand, int width, int height, float partialTicks) {
-        if(player.isSpectator()) return;
+        if (player.isSpectator()) return;
         stack.pushPose();
 
         //if (!Wizardry.settings.showChargeMeter) return;

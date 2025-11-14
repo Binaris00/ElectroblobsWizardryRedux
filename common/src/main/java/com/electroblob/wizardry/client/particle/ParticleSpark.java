@@ -27,14 +27,14 @@ public class ParticleSpark extends ParticleWizardry {
             spriteSet = sprite;
         }
 
+        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
+            return new ParticleSpark(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteSet);
+        }
+
         @Nullable
         @Override
         public Particle createParticle(SimpleParticleType parameters, ClientLevel world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ParticleSpark(world, x, y, z, spriteSet);
-        }
-
-        public static ParticleWizardry createParticle(ClientLevel clientWorld, Vec3 vec3d) {
-            return new ParticleSpark(clientWorld, vec3d.x, vec3d.y, vec3d.z, spriteSet);
         }
     }
 }

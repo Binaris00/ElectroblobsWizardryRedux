@@ -18,7 +18,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class BlindingFlash extends AreaEffectSpell {
-    public BlindingFlash(){
+    public BlindingFlash() {
         this.alwaysSucceed(true);
     }
 

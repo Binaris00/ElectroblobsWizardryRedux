@@ -28,15 +28,8 @@ public class RandomSpellBookItem extends Item {
         super(properties);
     }
 
-    @Override
-    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
-        ItemStack stack = player.getItemInHand(hand);
-        create(level, player, stack);
-        return InteractionResultHolder.pass(stack);
-    }
-
-    public static void create(Level level, Player player, ItemStack original){
-        if(level.isClientSide) return;
+    public static void create(Level level, Player player, ItemStack original) {
+        if (level.isClientSide) return;
         ItemStack stack;
         CompoundTag tag = original.getTag();
 
@@ -73,5 +66,12 @@ public class RandomSpellBookItem extends Item {
     private static void spawn(Level level, BlockPos pos, ItemStack stack) {
         ItemEntity itemEntity = new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, stack);
         level.addFreshEntity(itemEntity);
+    }
+
+    @Override
+    public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
+        ItemStack stack = player.getItemInHand(hand);
+        create(level, player, stack);
+        return InteractionResultHolder.pass(stack);
     }
 }

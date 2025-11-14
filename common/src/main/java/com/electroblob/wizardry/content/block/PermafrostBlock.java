@@ -19,7 +19,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
-public class PermafrostBlock extends DryFrostedIceBlock{
+public class PermafrostBlock extends DryFrostedIceBlock {
     protected static final VoxelShape BOUNDING_BOX = Shapes.create(0, 0, 0, 1, 0.05, 1);
 
     @Override

@@ -38,21 +38,21 @@ public class Blink extends Spell {
 //            BlockPos pos = blockHitResult.getBlockPos().relative(blockHitResult.getDirection());
 //
 //            // TODO Bin: Add better blind effect
-////            Vec3 vec = EntityUtil.findSpaceForTeleport(toTeleport, GeometryUtils.getFaceCentre(pos, EnumFacing.DOWN), teleportMount);
-////
-////            if(vec != null){
-////                // Plays before and after so it is heard from both positions
-////                this.playSound(world, caster, ticksInUse, -1, modifiers);
-////
-////                if(!teleportMount && caster.isRiding()) caster.dismountRidingEntity();
-////                if(!world.isRemote) toTeleport.setPositionAndUpdate(vec.x, vec.y, vec.z);
-////
-////                this.playSound(world, caster, ticksInUse, -1, modifiers);
-////                return true;
-////            }
+
+    /// /            Vec3 vec = EntityUtil.findSpaceForTeleport(toTeleport, GeometryUtils.getFaceCentre(pos, EnumFacing.DOWN), teleportMount);
+    /// /
+    /// /            if(vec != null){
+    /// /                // Plays before and after so it is heard from both positions
+    /// /                this.playSound(world, caster, ticksInUse, -1, modifiers);
+    /// /
+    /// /                if(!teleportMount && caster.isRiding()) caster.dismountRidingEntity();
+    /// /                if(!world.isRemote) toTeleport.setPositionAndUpdate(vec.x, vec.y, vec.z);
+    /// /
+    /// /                this.playSound(world, caster, ticksInUse, -1, modifiers);
+    /// /                return true;
+    /// /            }
 //        }
 //    }
-
     @Override
     public boolean cast(PlayerCastContext ctx) {
         return false;

@@ -19,12 +19,21 @@ public final class EBBlockEntities {
     private EBBlockEntities() {
     }
 
-
-    public static final DeferredObject<BlockEntityType<VanishingCobwebBlockEntity>> VANISHING_COBWEB = blockEntity(
+    // ======= Registry =======
+    public static void register(RegisterFunction<BlockEntityType<?>> function) {
+        BLOCK_ENTITIES.forEach((name, blockEntityType) ->
+                function.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, WizardryMainMod.location(name), blockEntityType.get()));
+    }    public static final DeferredObject<BlockEntityType<VanishingCobwebBlockEntity>> VANISHING_COBWEB = blockEntity(
             "vanishing_cobweb", () -> BlockEntityType.Builder.of(VanishingCobwebBlockEntity::new, EBBlocks.VANISHING_COBWEB.get()).build(null)
     );
 
-    public static final DeferredObject<BlockEntityType<ArcaneWorkbenchBlockEntity>> ARCANE_WORKBENCH = blockEntity(
+    // ======= Helpers =======
+    @SuppressWarnings("unchecked")
+    static <V extends BlockEntity, T extends BlockEntityType<V>> DeferredObject<T> blockEntity(String name, Supplier<T> beSupplier) {
+        DeferredObject<T> ret = new DeferredObject<>(beSupplier);
+        BLOCK_ENTITIES.put(name, (DeferredObject<BlockEntityType<BlockEntity>>) ret);
+        return ret;
+    }    public static final DeferredObject<BlockEntityType<ArcaneWorkbenchBlockEntity>> ARCANE_WORKBENCH = blockEntity(
             "arcane_workbench", () -> BlockEntityType.Builder.of(ArcaneWorkbenchBlockEntity::new, EBBlocks.ARCANE_WORKBENCH.get()).build(null)
     );
 
@@ -42,17 +51,7 @@ public final class EBBlockEntities {
                             EBBlocks.JUNGLE_BOOKSHELF.get(), EBBlocks.ACACIA_BOOKSHELF.get(), EBBlocks.DARK_OAK_BOOKSHELF.get())
                     .build(null));
 
-    // ======= Registry =======
-    public static void register(RegisterFunction<BlockEntityType<?>> function) {
-        BLOCK_ENTITIES.forEach((name, blockEntityType) ->
-                function.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, WizardryMainMod.location(name), blockEntityType.get()));
-    }
 
-    // ======= Helpers =======
-    @SuppressWarnings("unchecked")
-    static <V extends BlockEntity, T extends BlockEntityType<V>> DeferredObject<T> blockEntity(String name, Supplier<T> beSupplier) {
-        DeferredObject<T> ret = new DeferredObject<>(beSupplier);
-        BLOCK_ENTITIES.put(name, (DeferredObject<BlockEntityType<BlockEntity>>) ret);
-        return ret;
-    }
+
+
 }

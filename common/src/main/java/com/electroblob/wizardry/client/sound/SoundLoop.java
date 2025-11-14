@@ -18,7 +18,8 @@ import java.util.Set;
  * This class only works as a blueprint for situations that you need to play a sound loop, for example:
  * {@link ClientSpellSoundManager SpellSoundManager}, all the logic here is just for simplify
  * the process of doing a sound loop
- * */
+ *
+ */
 public abstract class SoundLoop extends AbstractTickableSoundInstance {
     private static final Set<SoundLoop> activeLoops = new HashSet<>();
     private final SoundInstance startPrimer;
@@ -38,22 +39,29 @@ public abstract class SoundLoop extends AbstractTickableSoundInstance {
         this.end = factory.create(end, category, volume, false);
     }
 
+    public static void addLoop(SoundLoop loop) {
+        activeLoops.add(loop);
+        Minecraft.getInstance().getSoundManager().play(loop.startPrimer);
+        Minecraft.getInstance().getSoundManager().playDelayed(loop.start, 2);
+    }
+
+    public static void onClientTick(EBClientTickEvent event) {
+        activeLoops.stream().filter(s -> s.needsRemoving).forEach(SoundLoop::stopStartAndLoop);
+        activeLoops.removeIf(s -> s.needsRemoving);
+        activeLoops.forEach(SoundLoop::tick);
+    }
+
     /**
      * Used to know when the sound is ready to be looped, all the
      * rest of the tick logic is handled in the client tick {@link SoundLoop#onClientTick(EBClientTickEvent)}
-     * */
+     *
+     */
     @Override
     public void tick() {
         if (!looping && !Minecraft.getInstance().getSoundManager().isActive(startPrimer)) {
             Minecraft.getInstance().getSoundManager().play(loop);
             looping = true;
         }
-    }
-
-    public static void addLoop(SoundLoop loop) {
-        activeLoops.add(loop);
-        Minecraft.getInstance().getSoundManager().play(loop.startPrimer);
-        Minecraft.getInstance().getSoundManager().playDelayed(loop.start, 2);
     }
 
     public void endLoop() {
@@ -65,12 +73,6 @@ public abstract class SoundLoop extends AbstractTickableSoundInstance {
         Minecraft.getInstance().getSoundManager().stop(startPrimer);
         Minecraft.getInstance().getSoundManager().stop(start);
         Minecraft.getInstance().getSoundManager().stop(loop);
-    }
-
-    public static void onClientTick(EBClientTickEvent event){
-        activeLoops.stream().filter(s -> s.needsRemoving).forEach(SoundLoop::stopStartAndLoop);
-        activeLoops.removeIf(s -> s.needsRemoving);
-        activeLoops.forEach(SoundLoop::tick);
     }
 
     @FunctionalInterface

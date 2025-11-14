@@ -30,7 +30,7 @@ public class Decay extends ConstructRangedSpell<DecayConstruct> {
         BlockPos origin = BlockPos.containing(vec3);
         if (ctx.world().getBlockState(origin).isCollisionShapeFullBlock(ctx.world(), origin)) return false;
 
-        super.spawnConstruct(ctx,vec3, side);
+        super.spawnConstruct(ctx, vec3, side);
 
         float decayCount = property(PATCHES_SPAWNED);
         int quantity = (int) (decayCount * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
