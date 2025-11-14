@@ -150,7 +150,7 @@ public class ReceptacleBlock extends Block implements EntityBlock {
 
         Direction facing = state.getValue(FACING).getOpposite();
         Vec3 centre = GeometryUtil.getCentre(pos);
-        if (facing.getAxis().isHorizontal())
+        if (facing.getAxis().isHorizontal() && state.getValue(ON_WALL))
             centre = centre.add(new Vec3(facing.step()).scale(WALL_PARTICLE_OFFSET)).add(0, 0.125, 0);
         int[] colors = element.getColors();
         ParticleBuilder.create(EBParticles.FLASH).pos(centre).scale(0.35f).time(48).color(colors[0]).spawn(level);

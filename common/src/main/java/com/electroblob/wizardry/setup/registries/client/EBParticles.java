@@ -40,9 +40,8 @@ public final class EBParticles {
     public static final DeferredObject<SimpleParticleType> DUST = particle("dust", ParticleDust.DustProvider::createParticle, ParticleDust.DustProvider::new);
     public static final DeferredObject<SimpleParticleType> LIGHTNING_PULSE = particle("lightning_pulse", ParticleLightningPulse.LightningPulseProvider::createParticle, ParticleLightningPulse.LightningPulseProvider::new);
     public static final DeferredObject<SimpleParticleType> SPHERE = particle("sphere", ParticleSphere.SphereProvider::createParticle, ParticleSphere.SphereProvider::new);
-
-    @Deprecated
     public static final DeferredObject<SimpleParticleType> FLASH = particle("flash", ParticleFlash.FlashProvider::createParticle, ParticleFlash.FlashProvider::new);
+
     @Deprecated
     public static final DeferredObject<SimpleParticleType> SCORCH = particle("scorch", ParticleScorch.ScorchProvider::createParticle, ParticleScorch.ScorchProvider::new);
     @Deprecated
