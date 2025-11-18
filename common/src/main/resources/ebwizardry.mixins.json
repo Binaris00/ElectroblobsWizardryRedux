@@ -17,6 +17,7 @@
     "ServerLevelMixin",
     "ServerPlayerMixin",
     "SlotMixin",
+    "TemporaryEnchantmentMixin",
     "accessor.BlazeAccessor",
     "accessor.CriteriaAccessor",
     "accessor.ItemPropertiesAccessor",

@@ -916,6 +916,7 @@
   "item.ebwizardry.wizard_robe_sorcery": "Sorcerer Robes",
   "item.ebwizardry.arcane_tome.desc": "Upgrades any %s wand with sufficient progression to %s tier",
   "tooltip.ebwizardry.conjured_item": "Disappears in %s seconds",
+  "tooltip.ebwizardry.temporary_enchantment": "Temporary enchantment expires in %s seconds",
   "ebwizardry.raw_line_20": "========================================================",
   "ebwizardry.advant.desc": "EBWIZARDRY ADVANCEMENTS",
   "ebwizardry.raw_line_21": "========================================================",
