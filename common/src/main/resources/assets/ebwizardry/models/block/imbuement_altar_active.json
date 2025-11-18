@@ -4,7 +4,9 @@
     "particle": "ebwizardry:block/imbuement_altar_bottom",
     "bottom": "ebwizardry:block/imbuement_altar_bottom",
     "top": "ebwizardry:block/imbuement_altar_top",
-    "side": "ebwizardry:block/imbuement_altar_side"
+    "side": "ebwizardry:block/imbuement_altar_side",
+    "top_overlay": "ebwizardry:block/imbuement_altar_top_overlay",
+    "side_overlay": "ebwizardry:block/imbuement_altar_side_overlay"
   },
   "elements": [
     {
@@ -76,6 +78,69 @@
             16
           ],
           "texture": "#side",
+          "cullface": "east"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        12,
+        16
+      ],
+      "faces": {
+        "up": {
+          "uv": [
+            0,
+            0,
+            16,
+            16
+          ],
+          "texture": "#top_overlay"
+        },
+        "north": {
+          "uv": [
+            0,
+            4,
+            16,
+            16
+          ],
+          "texture": "#side_overlay",
+          "cullface": "north"
+        },
+        "south": {
+          "uv": [
+            0,
+            4,
+            16,
+            16
+          ],
+          "texture": "#side_overlay",
+          "cullface": "south"
+        },
+        "west": {
+          "uv": [
+            0,
+            4,
+            16,
+            16
+          ],
+          "texture": "#side_overlay",
+          "cullface": "west"
+        },
+        "east": {
+          "uv": [
+            0,
+            4,
+            16,
+            16
+          ],
+          "texture": "#side_overlay",
           "cullface": "east"
         }
       }

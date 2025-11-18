@@ -11,13 +11,14 @@ import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class ReceptacleBlockEntity extends BlockEntity {
-    private ItemStack stack;
+    private @NotNull ItemStack stack;
 
     public ReceptacleBlockEntity(BlockPos pos, BlockState blockState) {
         super(EBBlockEntities.RECEPTACLE.get(), pos, blockState);
+        stack = ItemStack.EMPTY;
     }
 
-    public ItemStack getStack() {
+    public @NotNull ItemStack getStack() {
         return stack;
     }
 
@@ -28,19 +29,19 @@ public class ReceptacleBlockEntity extends BlockEntity {
     }
 
     public Element getElement() {
-        return stack != null && stack.getItem() instanceof ReceptacleItemValue receptacleItem ?
-                receptacleItem.getElement() : null;
+        return stack.getItem() instanceof ReceptacleItemValue receptacleItem ? receptacleItem.getElement() : null;
     }
 
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
-        if (stack != null) tag.put("Stack", stack.save(new CompoundTag()));
+        if (!stack.isEmpty()) tag.put("Stack", stack.save(new CompoundTag()));
     }
 
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-        this.stack = ItemStack.of(tag.getCompound("Stack"));
+        if (tag.contains("Stack")) this.stack = ItemStack.of(tag.getCompound("Stack"));
+        else this.stack = ItemStack.EMPTY;
     }
 }

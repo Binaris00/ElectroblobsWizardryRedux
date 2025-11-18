@@ -5,7 +5,7 @@ import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.gui.screens.BookshelfScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.client.renderer.blockentity.BookshelfRenderer;
-import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRender;
+import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRenderer;
 import com.electroblob.wizardry.content.menu.BookshelfMenu;
 import com.electroblob.wizardry.network.EBForgeNetwork;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
@@ -63,7 +63,7 @@ public final class WizardryForgeMod {
         MenuScreens.register(EBMenus.BOOKSHELF_MENU.get(), BookshelfScreen::new);
 
         BlockEntityRenderers.register(EBBlockEntities.ARCANE_WORKBENCH.get(), ArcaneWorkbenchRender::new);
-        BlockEntityRenderers.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRender::new);
+        BlockEntityRenderers.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRenderer::new);
         BlockEntityRenderers.register(EBBlockEntities.BOOKSHELF.get(), BookshelfRenderer::new);
     }
 }

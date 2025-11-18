@@ -5,11 +5,10 @@ import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.gui.screens.BookshelfScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.electroblob.wizardry.client.renderer.blockentity.BookshelfRenderer;
-import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRender;
+import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRenderer;
 import com.electroblob.wizardry.network.EBFabricClientNetwork;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
-import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBMenus;
 import com.electroblob.wizardry.setup.registries.client.*;
 import net.fabricmc.api.ClientModInitializer;
@@ -23,11 +22,8 @@ import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.core.Registry;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.item.Items;
 
 public final class WizardryFabricClient implements ClientModInitializer {
     @Override
@@ -61,7 +57,7 @@ public final class WizardryFabricClient implements ClientModInitializer {
 
         // TODO
         BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.ARCANE_WORKBENCH.get(), ArcaneWorkbenchRender::new);
-        BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRender::new);
+        BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRenderer::new);
         BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.BOOKSHELF.get(), BookshelfRenderer::new);
 
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.CRYSTAL_FLOWER.get(), RenderType.cutout());

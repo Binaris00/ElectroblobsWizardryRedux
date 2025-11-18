@@ -1,13 +1,19 @@
 package com.electroblob.wizardry.content.blockentity;
 
+import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
+import com.electroblob.wizardry.content.item.ReceptacleItemValue;
 import com.electroblob.wizardry.content.recipe.ImbuementAltarRecipe;
+import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBRecipeTypes;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -15,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -48,6 +55,13 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
      */
     private UUID lastUserUUID;
 
+    /**
+     * The element associated with the current imbuement. For imbuements involving multiple elements, this is the selected
+     * element (i.e. random element from the receptacles). Used for particle effects and the imbuement rays.
+     * Can be null if there's no imbuement in process.
+     */
+    private @Nullable Element element;
+
     public ImbuementAltarBlockEntity(BlockPos pos, BlockState blockState) {
         super(EBBlockEntities.IMBUEMENT_ALTAR.get(), pos, blockState);
         this.stack = ItemStack.EMPTY;
@@ -59,24 +73,17 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         if (altar.getLastUserUUID() != null && altar.getLastUser() == null)
             altar.lastUser = level.getPlayerByUUID(altar.lastUserUUID);
 
-        if (altar.imbuementTimer > 0) {
-            if (!level.isClientSide) {
-                if (altar.imbuementTimer == 1) {
-                    level.playLocalSound(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5,
-                            EBSounds.BLOCK_IMBUEMENT_ALTAR_IMBUE.get(), SoundSource.BLOCKS, 1, 1, false);
-                }
+        if (altar.imbuementTimer <= 0) return;
 
-                altar.imbuementTimer++;
+        if (altar.imbuementTimer == 1) {
+            level.playSound(altar.lastUser, pos, EBSounds.BLOCK_IMBUEMENT_ALTAR_IMBUE.get(), SoundSource.BLOCKS, 1, 1);
+        }
 
-                if (altar.imbuementTimer >= IMBUEMENT_DURATION) {
-                    altar.craftRecipe();
-                } else {
-                    if (altar.imbuementTimer % 5 == 0) {
-                        altar.setChanged();
-                        level.sendBlockUpdated(pos, state, state, 3);
-                    }
-                }
-            }
+        // Finalise imbuement
+        if (altar.imbuementTimer++ >= IMBUEMENT_DURATION) {
+            altar.craftRecipe();
+            if (altar.lastUser instanceof ServerPlayer serverPlayer)
+                EBAdvancementTriggers.IMBUEMENT_ALTAR.trigger(serverPlayer, altar.stack);
         }
     }
 
@@ -86,7 +93,7 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
 
         for (int i = 0; i < 4; i++) {
             te = level.getBlockEntity(pos.relative(BlockUtil.getHorizontals()[i]));
-            if (te instanceof ReceptacleBlockEntity e && e.getStack() != null) {
+            if (te instanceof ReceptacleBlockEntity e) {
                 items[i] = e.getStack();
             } else {
                 items[i] = null;
@@ -105,7 +112,6 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
             return;
         }
 
-
         ItemStack[] receptacleItems = getReceptacleItems(level, worldPosition);
         if (Arrays.stream(receptacleItems).anyMatch(Objects::isNull)) {
             imbuementTimer = 0;
@@ -123,6 +129,7 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
 
         if (recipe != null && imbuementTimer == 0) {
             imbuementTimer = 1; // Start the imbuement process
+            selectElement();
             setChanged();
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         } else if (recipe == null) {
@@ -175,6 +182,22 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         setChanged();
     }
 
+    private void selectElement() {
+        if (level == null) return;
+
+        ItemStack[] receptacleItems = getReceptacleItems(level, worldPosition);
+        if (Arrays.stream(receptacleItems).anyMatch(Objects::isNull)) {
+            element = null;
+            return;
+        }
+
+        // Select the element randomly from the receptacles
+        ItemStack item = receptacleItems[level.random.nextInt(receptacleItems.length)];
+        if (item.getItem() instanceof ReceptacleItemValue receptacleItem) {
+            element = receptacleItem.getElement();
+        }
+    }
+
     @Override
     protected void saveAdditional(@NotNull CompoundTag nbt) {
         super.saveAdditional(nbt);
@@ -182,6 +205,7 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         stack.save(itemTag);
         nbt.put("item", itemTag);
         nbt.putInt("imbuementTimer", imbuementTimer);
+        if (element != null) nbt.putString("element", Services.REGISTRY_UTIL.getElement(element).toString());
         if (lastUser != null) nbt.putUUID("lastUser", lastUser.getUUID());
     }
 
@@ -191,9 +215,9 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         CompoundTag itemTag = nbt.getCompound("item");
         this.stack = ItemStack.of(itemTag);
         this.imbuementTimer = nbt.getInt("imbuementTimer");
-        if (nbt.hasUUID("lastUser")) {
-            this.lastUserUUID = nbt.getUUID("lastUser");
-        }
+        if (nbt.contains("element"))
+            this.element = Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(nbt.getString("element")));
+        if (nbt.hasUUID("lastUser")) this.lastUserUUID = nbt.getUUID("lastUser");
     }
 
     @Override
@@ -229,6 +253,10 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         return lastUserUUID;
     }
 
+    public @Nullable Element getElement() {
+        return element;
+    }
+
     public void setStack(ItemStack stack, boolean shouldCheckRecipe) {
         this.stack = stack;
         if (shouldCheckRecipe) checkRecipe();
@@ -237,5 +265,4 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
             level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
         }
     }
-
 }

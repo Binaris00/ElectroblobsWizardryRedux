@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.content.block;
 
 import com.electroblob.wizardry.api.EBLogger;
+import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.electroblob.wizardry.content.item.RandomSpellBookItem;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
@@ -35,11 +36,11 @@ import java.util.Arrays;
 import java.util.Comparator;
 
 @SuppressWarnings("deprecation")
-public class ImbuementAltar extends BaseEntityBlock {
+public class ImbuementAltarBlock extends BaseEntityBlock {
     public static final BooleanProperty ACTIVE = BooleanProperty.create("active");
     private static final VoxelShape AABB = Shapes.box(0.0, 0.0, 0.0, 1.0, 0.75, 1.0);
 
-    public ImbuementAltar() {
+    public ImbuementAltarBlock() {
         super(BlockBehaviour.Properties.copy(Blocks.STONE).strength(-1.0F, 6000000.0F).lightLevel((state) -> 1));
         this.registerDefaultState(this.stateDefinition.any().setValue(ACTIVE, false));
     }
@@ -84,10 +85,7 @@ public class ImbuementAltar extends BaseEntityBlock {
 
     @Override
     public void neighborChanged(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Block neighborBlock, @NotNull BlockPos neighborPos, boolean movedByPiston) {
-        Direction[] HORIZONTALS = Arrays.stream(Direction.values()).filter((direction)
-                        -> direction.getAxis().isHorizontal()).sorted(Comparator.comparingInt(Direction::get2DDataValue))
-                .toArray(Direction[]::new);
-        boolean shouldBeActive = Arrays.stream(HORIZONTALS)
+        boolean shouldBeActive = Arrays.stream(BlockUtil.getHorizontals())
                 .allMatch(s -> level.getBlockState(pos.relative(s)).getBlock() == EBBlocks.RECEPTACLE.get()
                         && level.getBlockState(pos.relative(s)).getValue(ReceptacleBlock.FACING) == s);
 

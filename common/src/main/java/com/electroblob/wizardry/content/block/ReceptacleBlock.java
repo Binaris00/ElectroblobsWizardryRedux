@@ -14,6 +14,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -99,7 +100,7 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         Direction direction = state.getValue(FACING);
         BlockPos blockPos = pos.relative(direction.getOpposite());
         BlockState blockState = level.getBlockState(blockPos);
-        if (blockState.getBlock() instanceof ImbuementAltar) return direction.getAxis().isHorizontal();
+        if (blockState.getBlock() instanceof ImbuementAltarBlock) return direction.getAxis().isHorizontal();
         return direction.getAxis().isHorizontal() && blockState.isFaceSturdy(level, blockPos, direction);
     }
 
@@ -118,12 +119,12 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         ItemStack stack = blockEntity.getStack();
 
         // If wanting to add an item to an empty receptacle
-        if (stack == null && !heldItem.isEmpty() && heldItem.getItem() instanceof ReceptacleItemValue) {
+        if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof ReceptacleItemValue) {
             ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
             blockEntity.setStack(receptacleItem.split(1));
         }
         // If wanting to take an item out of a filled receptacle
-        if (stack != null && !player.getInventory().add(stack)) {
+        if (!stack.isEmpty() && !player.getInventory().add(stack)) {
             player.drop(stack, false);
         }
         level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f, false);
@@ -131,15 +132,12 @@ public class ReceptacleBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public @NotNull List<ItemStack> getDrops(@NotNull BlockState state, LootParams.Builder params) {
-        BlockEntity entity = params.getOptionalParameter(LootContextParams.BLOCK_ENTITY);
-        if (entity instanceof ReceptacleBlockEntity blockEntity) {
-            ItemStack stack = blockEntity.getStack();
-            if (stack != null) {
-                return List.of(stack);
-            }
+    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+        if (level.getBlockEntity(pos) instanceof ReceptacleBlockEntity entity) {
+            ItemStack stack = entity.getStack();
+            if (!stack.isEmpty()) Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
         }
-        return List.of();
+        super.onRemove(state, level, pos, newState, movedByPiston);
     }
 
     @Override

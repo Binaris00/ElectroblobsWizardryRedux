@@ -178,7 +178,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
                 if (result.result().isPresent()) {
                     tiers = result.result().get().stream().map(Services.REGISTRY_UTIL::getTier).collect(Collectors.toList());
                     if (tiers.contains(null)) {
-                        EBLogger.warn("One or more invalid spell tiers found when deserializing random_spell loot function.");
+                        EBLogger.warn("One or more invalid spell tiers found when deserializing random_spell loot function from " + object.toString());
                         tiers.removeIf(Objects::isNull);
                     }
                 }
@@ -189,7 +189,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
                 if (result.result().isPresent()) {
                     elements = result.result().get().stream().map(Services.REGISTRY_UTIL::getElement).collect(Collectors.toList());
                     if (elements.contains(null)) {
-                        EBLogger.warn("One or more invalid elements found when deserializing random_spell loot function.");
+                        EBLogger.warn("One or more invalid elements found when deserializing random_spell loot function from " + object.toString());
                         elements.removeIf(Objects::isNull);
                     }
                 }
