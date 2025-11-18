@@ -43,6 +43,7 @@ public final class EBEventHelper {
         onEntityJoinLevel(bus);
         onSpellDiscovery(bus);
         onPlayerInteractEntity(bus);
+        onItemPlaceInContainer(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -86,11 +87,17 @@ public final class EBEventHelper {
 
     private static void onItemTossEvent(WizardryEventBus bus) {
         bus.register(EBItemTossEvent.class, Imbuement::onItemTossEvent);
+        bus.register(EBItemTossEvent.class, DataEvents::onConjureToss);
     }
 
     private static void onLivingDeathEvent(WizardryEventBus bus) {
         bus.register(EBLivingDeathEvent.class, Imbuement::onLivingDeath);
         bus.register(EBLivingDeathEvent.class, ArtefactItem::onArtifactDeath);
+        bus.register(EBLivingDeathEvent.class, DataEvents::onConjureEntityDeath);
+    }
+
+    private static void onItemPlaceInContainer(WizardryEventBus bus) {
+        bus.register(EBItemPlaceInContainerEvent.class, DataEvents::onConjureItemPlaceInContainer);
     }
 
     private static void onSpellPreCast(WizardryEventBus bus) {

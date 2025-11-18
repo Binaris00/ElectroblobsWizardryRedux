@@ -25,12 +25,31 @@ public class ConjureItemSpell extends Spell {
         registerSupportedItem(item);
     }
 
-    public static boolean isSupportedItem(Item item) {
+    /**
+     * Checks if the given item stack is currently summoned (i.e. conjured and not expired). The item must also be part of
+     * the supported conjure items inside the mod. For a check of whether an item is part of the supported conjure items
+     * (not checking if it is summoned), use {@link #isSummonableItem(ItemStack)}.
+     */
+    public static boolean isSummoned(ItemStack stack) {
+        if (!isSummonableItem(stack)) return false; // It should be part of the supported items
+        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
+        return data != null && data.isSummoned();
+    }
+
+    /**
+     * Checks if the given item is part of the supported conjure items inside the mod. For a better check of whether an item
+     * is actually summoned, use {@link #isSummoned(ItemStack)}.
+     */
+    public static boolean isSummonableItem(Item item) {
         return SUPPORTED_ITEMS.contains(item);
     }
 
-    public static boolean isSupportedItem(ItemStack stack) {
-        return isSupportedItem(stack.getItem());
+    /**
+     * Checks if the given item stack is part of the supported conjure items inside the mod. For a better check of whether an
+     * item is actually summoned, use {@link #isSummoned(ItemStack)}.
+     */
+    public static boolean isSummonableItem(ItemStack stack) {
+        return isSummonableItem(stack.getItem());
     }
 
     public static void registerSupportedItem(Item item) {

@@ -15,7 +15,6 @@ import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import net.minecraft.world.entity.Mob;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * Cardinal Components Entry Point, we use this for entity data and item data
@@ -39,6 +38,6 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
 
     @Override
     public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
-        registry.register(ConjureItemSpell::isSupportedItem, CONJURE, ConjureDataHolder::new);
+        registry.register(ConjureItemSpell::isSummonableItem, CONJURE, ConjureDataHolder::new);
     }
 }

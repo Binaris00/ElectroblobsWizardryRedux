@@ -1,6 +1,5 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
@@ -23,7 +22,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
-import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
@@ -92,7 +90,7 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void attachCapabilityItem(final AttachCapabilitiesEvent<ItemStack> event) {
-            if(ConjureItemSpell.isSupportedItem(event.getObject().getItem())){
+            if(ConjureItemSpell.isSummonableItem(event.getObject().getItem())){
                 final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(event.getObject());
                 event.addCapability(ConjureDataHolder.LOCATION, provider);
             }

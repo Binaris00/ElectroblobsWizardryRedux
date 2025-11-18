@@ -31,7 +31,7 @@ public class FabricObjectData implements IObjectData {
 
     @Override
     public @Nullable ConjureData getConjureData(ItemStack stack) {
-        if(!ConjureItemSpell.isSupportedItem(stack.getItem())) return null;
+        if(!ConjureItemSpell.isSummonableItem(stack.getItem())) return null;
         return EBComponents.CONJURE.get(stack);
     }
 
