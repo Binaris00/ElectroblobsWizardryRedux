@@ -18,6 +18,31 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import java.util.Iterator;
 import java.util.Map;
 
+/**
+ * Interface for the old imbuement system.
+ * 
+ * @deprecated Use the new temporary enchantment system instead.
+ * See {@link SpellManagerData#setTemporaryEnchantment} 
+ * and {@link com.electroblob.wizardry.api.content.util.TemporaryEnchantmentLoader}.
+ * <p>
+ * The old imbuement system required custom enchantment classes implementing this interface.
+ * The new system allows using ANY enchantment (vanilla or modded) as a temporary effect.
+ * <p>
+ * Example migration:
+ * <pre>{@code
+ * // Old way:
+ * if (enchantment instanceof Imbuement) {
+ *     data.setImbuementDuration(stack, enchantment, duration);
+ * }
+ * 
+ * // New way (works with ANY enchantment):
+ * data.setTemporaryEnchantment(stack, Enchantments.FLAMING_ARROWS, 1, duration);
+ * data.setTemporaryEnchantment(stack, Enchantments.FIRE_ASPECT, 2, duration);
+ * }</pre>
+ * <p>
+ * This interface is kept for backwards compatibility.
+ */
+@Deprecated(since = "1.0.0-dev11", forRemoval = false)
 public interface Imbuement {
 
     static void onLivingDeath(EBLivingDeathEvent event) {
