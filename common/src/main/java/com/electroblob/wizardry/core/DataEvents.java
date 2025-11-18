@@ -6,6 +6,7 @@ import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.*;
 import com.electroblob.wizardry.api.content.util.ImbuementLoader;
+import com.electroblob.wizardry.api.content.util.TemporaryEnchantmentLoader;
 import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.world.entity.Mob;
@@ -68,6 +69,7 @@ public final class DataEvents {
         castCommandTick(player);
         conjureItemTick(player);
         imbuementTick(player);
+        temporaryEnchantmentTick(player);
         recentSpells(player);
     }
 
@@ -129,6 +131,21 @@ public final class DataEvents {
             boolean result = loader.hasReachedLimit();
             if (result) {
                 data.removeImbuement(loader);
+                iterator.remove();
+            }
+        }
+        data.sync();
+    }
+
+    private static void temporaryEnchantmentTick(Player player) {
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
+
+        Iterator<TemporaryEnchantmentLoader> iterator = data.getTemporaryEnchantmentLoaders().iterator();
+        while (iterator.hasNext()) {
+            TemporaryEnchantmentLoader loader = iterator.next();
+            boolean result = loader.hasReachedLimit();
+            if (result) {
+                data.removeTemporaryEnchantment(loader);
                 iterator.remove();
             }
         }

@@ -10,6 +10,7 @@ import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.ImbuementLoader;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
+import com.electroblob.wizardry.api.content.util.TemporaryEnchantmentLoader;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import net.minecraft.core.Direction;
@@ -23,6 +24,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -44,6 +46,7 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
 
     public Set<Spell> spellsDiscovered = new HashSet<>();
     public final List<ImbuementLoader> imbuementLoaders = new ArrayList<>();
+    public final List<TemporaryEnchantmentLoader> temporaryEnchantmentLoaders = new ArrayList<>();
     @SuppressWarnings("rawtypes") public final Map<ISpellVar, Object> spellData = new HashMap<>();
     @SuppressWarnings("rawtypes") public static final Set<IStoredSpellVar> storedVariables = new HashSet<>();
 
@@ -186,6 +189,86 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
         sync();
     }
 
+    // ===== NEW TEMPORARY ENCHANTMENT SYSTEM =====
+
+    @Override
+    public void setTemporaryEnchantment(ItemStack stack, Enchantment enchantment, int level, int duration) {
+        TemporaryEnchantmentLoader loader = new TemporaryEnchantmentLoader(stack.getItem(), enchantment, level, duration);
+        stack.getOrCreateTag().putString(TemporaryEnchantmentLoader.getTagName(enchantment), loader.getUuid());
+        
+        // Add the enchantment to the item
+        Map<Enchantment, Integer> enchantments = EnchantmentHelper.getEnchantments(stack);
+        enchantments.put(enchantment, level);
+        EnchantmentHelper.setEnchantments(enchantments, stack);
+        
+        temporaryEnchantmentLoaders.add(loader);
+        EBLogger.info("Set temporary enchantment: " + enchantment.getDescriptionId() + " level " + level + " -> " + duration + " ticks on item " + stack.getItem().getDescriptionId());
+        sync();
+    }
+
+    @Override
+    public int getTemporaryEnchantmentDuration(ItemStack stack, Enchantment enchantment) {
+        EBLogger.info("Getting temporary enchantment duration for " + enchantment.getDescriptionId());
+        for (TemporaryEnchantmentLoader loader : temporaryEnchantmentLoaders) {
+            if (loader.getItem().equals(stack.getItem()) && loader.getEnchantment().equals(enchantment)) {
+                EBLogger.info("Found temporary enchantment duration for " + enchantment.getDescriptionId() + " -> " + loader.getTimeLimit());
+                return loader.getTimeLimit();
+            }
+        }
+        return 0;
+    }
+
+    @Override
+    public List<TemporaryEnchantmentLoader> getTemporaryEnchantmentLoaders() {
+        return temporaryEnchantmentLoaders;
+    }
+
+    @Override
+    public boolean removeTemporaryEnchantment(ItemStack stack, Enchantment enchantment) {
+        Iterator<TemporaryEnchantmentLoader> iterator = temporaryEnchantmentLoaders.iterator();
+        while (iterator.hasNext()) {
+            TemporaryEnchantmentLoader loader = iterator.next();
+
+            if (stack.getOrCreateTag().getString(TemporaryEnchantmentLoader.getTagName(enchantment)).equals(loader.getUuid())) {
+                stack.getOrCreateTag().remove(TemporaryEnchantmentLoader.getTagName(enchantment));
+                InventoryUtil.removeEnchant(stack, loader.getEnchantment());
+                iterator.remove();
+                sync();
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    public void removeTemporaryEnchantment(TemporaryEnchantmentLoader loader) {
+        sync();
+
+        for (ItemStack stack : provider.getInventory().items) {
+            if (loader.isValid(stack)) {
+                InventoryUtil.removeEnchant(stack, loader.getEnchantment());
+                stack.getOrCreateTag().remove(TemporaryEnchantmentLoader.getTagName(loader.getEnchantment()));
+                return;
+            }
+        }
+        for (ItemStack stack : provider.getInventory().armor) {
+            if (loader.isValid(stack)) {
+                InventoryUtil.removeEnchant(stack, loader.getEnchantment());
+                stack.getOrCreateTag().remove(TemporaryEnchantmentLoader.getTagName(loader.getEnchantment()));
+                return;
+            }
+        }
+        for (ItemStack stack : provider.getInventory().offhand) {
+            if (loader.isValid(stack)) {
+                InventoryUtil.removeEnchant(stack, loader.getEnchantment());
+                stack.getOrCreateTag().remove(TemporaryEnchantmentLoader.getTagName(loader.getEnchantment()));
+                return;
+            }
+        }
+        sync();
+    }
+
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
@@ -198,6 +281,14 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
             imbuedItemsTag.add(loader.serializeNbt(new CompoundTag()));
         }
         tag.put("imbuedItems", imbuedItemsTag);
+        
+        // Serialize temporary enchantments
+        ListTag tempEnchantsTag = new ListTag();
+        for (TemporaryEnchantmentLoader loader : temporaryEnchantmentLoaders) {
+            tempEnchantsTag.add(loader.serializeNbt(new CompoundTag()));
+        }
+        tag.put("temporaryEnchantments", tempEnchantsTag);
+        
         storedVariables.forEach(k -> k.write(tag, this.spellData.get(k)));
         return tag;
     }
@@ -220,6 +311,15 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
             ListTag listTag = tag.getList("imbuedItems", Tag.TAG_COMPOUND);
             for (Tag element : listTag) {
                 imbuementLoaders.add(ImbuementLoader.deserializeNbt((CompoundTag) element));
+            }
+        }
+        
+        // Deserialize temporary enchantments
+        temporaryEnchantmentLoaders.clear();
+        if (tag.contains("temporaryEnchantments", Tag.TAG_LIST)) {
+            ListTag listTag = tag.getList("temporaryEnchantments", Tag.TAG_COMPOUND);
+            for (Tag element : listTag) {
+                temporaryEnchantmentLoaders.add(TemporaryEnchantmentLoader.deserializeNbt((CompoundTag) element));
             }
         }
 

@@ -18,6 +18,14 @@ public interface IObjectData {
     ConjureData getConjureData(ItemStack stack);
 
     /**
+     * Gives you the temporary enchantment data to manipulate and view the current status of temporary enchantments.
+     *
+     * @return the temporary enchantment data, could return null if the item doesn't have temporary enchantments
+     */
+    @Nullable
+    TemporaryEnchantmentData getTemporaryEnchantmentData(ItemStack stack);
+
+    /**
      * Gives you the cast command data to manipulate and view the current status of the cast command.
      *
      * @return the cast command data

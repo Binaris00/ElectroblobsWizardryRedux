@@ -3,6 +3,7 @@ package com.electroblob.wizardry.api.content.data;
 import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.ImbuementLoader;
+import com.electroblob.wizardry.api.content.util.TemporaryEnchantmentLoader;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 
@@ -119,6 +120,55 @@ public interface SpellManagerData {
      * @param loader the ImbuementLoader to remove from the player's inventory
      */
     void removeImbuement(ImbuementLoader loader);
+
+    // ===== NEW TEMPORARY ENCHANTMENT SYSTEM =====
+
+    /**
+     * Applies a temporary enchantment to an item. This works with ANY enchantment (vanilla or modded),
+     * not just custom Imbuement enchantments. The enchantment will be automatically removed after
+     * the specified duration.
+     *
+     * @param stack       the ItemStack to enchant
+     * @param enchantment the Enchantment to apply
+     * @param level       the level of the enchantment
+     * @param duration    the duration in ticks before the enchantment expires
+     */
+    void setTemporaryEnchantment(ItemStack stack, Enchantment enchantment, int level, int duration);
+
+    /**
+     * Gets the remaining duration of a temporary enchantment on the given item.
+     * If no matching temporary enchantment is found, returns 0.
+     *
+     * @param stack       the ItemStack to check
+     * @param enchantment the Enchantment to check for
+     * @return the remaining duration in ticks, or 0 if not found
+     */
+    int getTemporaryEnchantmentDuration(ItemStack stack, Enchantment enchantment);
+
+    /**
+     * Returns the list of TemporaryEnchantmentLoaders currently active.
+     *
+     * @return a List of TemporaryEnchantmentLoaders
+     */
+    List<TemporaryEnchantmentLoader> getTemporaryEnchantmentLoaders();
+
+    /**
+     * Removes a temporary enchantment from the given ItemStack.
+     * If the enchantment is found and removed, this method will also remove the corresponding
+     * TemporaryEnchantmentLoader from the list.
+     *
+     * @param stack       the ItemStack to remove the enchantment from
+     * @param enchantment the Enchantment to remove
+     * @return true if the enchantment was found and removed, false otherwise
+     */
+    boolean removeTemporaryEnchantment(ItemStack stack, Enchantment enchantment);
+
+    /**
+     * <b>Internal use only.</b> <br><br>
+     * This method is called when a temporary enchantment's time limit has been reached.
+     * It removes the enchantment from the player's inventory.
+     *
+     * @param loader the TemporaryEnchantmentLoader to remove from the player's inventory
+     */
+    void removeTemporaryEnchantment(TemporaryEnchantmentLoader loader);
 }
-
-

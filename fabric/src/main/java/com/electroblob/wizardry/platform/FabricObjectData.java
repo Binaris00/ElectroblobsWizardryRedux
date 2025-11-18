@@ -36,6 +36,11 @@ public class FabricObjectData implements IObjectData {
     }
 
     @Override
+    public @Nullable TemporaryEnchantmentData getTemporaryEnchantmentData(ItemStack stack) {
+        return EBComponents.TEMPORARY_ENCHANTMENT.get(stack);
+    }
+
+    @Override
     public CastCommandData getCastCommandData(Player player) {
         return EBComponents.CAST_COMMAND_DATA.get(player);
     }

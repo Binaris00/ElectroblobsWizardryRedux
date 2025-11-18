@@ -94,6 +94,10 @@ public class WizardryForgeEvents {
                 final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(event.getObject());
                 event.addCapability(ConjureDataHolder.LOCATION, provider);
             }
+            
+            // Register temporary enchantment capability for all items
+            final TemporaryEnchantmentDataHolder.Provider tempEnchantProvider = new TemporaryEnchantmentDataHolder.Provider(event.getObject());
+            event.addCapability(TemporaryEnchantmentDataHolder.LOCATION, tempEnchantProvider);
         }
     }
 

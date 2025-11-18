@@ -6,6 +6,7 @@ import com.electroblob.wizardry.cca.player.CastCommandDataHolder;
 import com.electroblob.wizardry.cca.player.SpellManagerDataHolder;
 import com.electroblob.wizardry.cca.player.WizardDataHolder;
 import com.electroblob.wizardry.cca.stack.ConjureDataHolder;
+import com.electroblob.wizardry.cca.stack.TemporaryEnchantmentDataHolder;
 import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
@@ -26,6 +27,7 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
 
     public static final ComponentKey<MinionDataHolder> MINION_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("minion_data"), MinionDataHolder.class);
     public static final ComponentKey<ConjureDataHolder> CONJURE = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("conjure"), ConjureDataHolder.class);
+    public static final ComponentKey<TemporaryEnchantmentDataHolder> TEMPORARY_ENCHANTMENT = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("temporary_enchantment"), TemporaryEnchantmentDataHolder.class);
 
 
     @Override
@@ -39,5 +41,7 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
     @Override
     public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
         registry.register(ConjureItemSpell::isSummonableItem, CONJURE, ConjureDataHolder::new);
+        // Register temporary enchantment data for all items
+        registry.register(stack -> true, TEMPORARY_ENCHANTMENT, TemporaryEnchantmentDataHolder::new);
     }
 }
