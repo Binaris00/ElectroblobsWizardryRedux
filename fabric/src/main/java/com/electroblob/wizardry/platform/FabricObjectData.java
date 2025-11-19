@@ -36,6 +36,11 @@ public class FabricObjectData implements IObjectData {
     }
 
     @Override
+    public ImbuementEnchantData getImbuementData(ItemStack stack) {
+        return EBComponents.IMBUEMENT_ENCHANTS.get(stack);
+    }
+
+    @Override
     public CastCommandData getCastCommandData(Player player) {
         return EBComponents.CAST_COMMAND_DATA.get(player);
     }

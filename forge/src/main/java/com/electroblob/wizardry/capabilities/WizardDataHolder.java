@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.capabilities;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
@@ -199,6 +200,21 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
                 }
             }
         }
+    }
+
+    public void copyFrom(@NotNull WizardDataHolder holder) {
+        this.allies.clear();
+        this.allies.addAll(holder.allies);
+
+        this.allyNames.clear();
+        this.allyNames.addAll(holder.allyNames);
+
+        this.itemModifiers = holder.itemModifiers;
+        this.maxTierReached = holder.maxTierReached;
+
+        this.recentSpells.clear();
+        this.recentSpells.addAll(holder.recentSpells);
+        sync();
     }
 
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {

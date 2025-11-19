@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.spell.fire;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
-import com.electroblob.wizardry.api.content.data.SpellManagerData;
+import com.electroblob.wizardry.api.content.data.ImbuementEnchantData;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
@@ -13,32 +13,38 @@ import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.sorcery.ImbueWeapon;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.EBEnchantments;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.SwordItem;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import org.jetbrains.annotations.NotNull;
 
 public class FlamingWeapon extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
-
-        if (data.getGeneralImbuementDuration(EBEnchantments.FLAMING_WEAPON.get()) > 0) return false;
-
         for (ItemStack stack : InventoryUtil.getPrioritisedHotBarAndOffhand(ctx.caster())) {
-            // If the item isn't a sword or a bow, or if it already has the enchantment, skip
+            // If the item isn't a sword or a bow, or if it already has Fire Aspect or Flaming Arrows, skip it
             if ((!ImbueWeapon.isSword(stack) && !ImbueWeapon.isBow(stack)) ||
-                    EnchantmentHelper.getEnchantments(stack).containsKey(EBEnchantments.FLAMING_WEAPON.get())) continue;
+                    EnchantmentHelper.getEnchantments(stack).containsKey(Enchantments.FLAMING_ARROWS) ||
+                    EnchantmentHelper.getEnchantments(stack).containsKey(Enchantments.FIRE_ASPECT))
+                continue;
 
-            stack.enchant(EBEnchantments.FLAMING_WEAPON.get(), ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1
-                    : (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5f));
+            ImbuementEnchantData data = Services.OBJECT_DATA.getImbuementData(stack);
+            if (data == null) continue;
+            int level = ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1 : (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5f);
+            long duration = (long) (ctx.world().getGameTime() + (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
 
-            data.setImbuementDuration(stack, EBEnchantments.FLAMING_WEAPON.get(), (int) (property(DefaultProperties.EFFECT_DURATION)
-                    * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+            if (stack.getItem() instanceof SwordItem) {
+                stack.enchant(Enchantments.FIRE_ASPECT, level);
+                data.addImbuement(Enchantments.FIRE_ASPECT, duration);
+            } else {
+                stack.enchant(Enchantments.FLAMING_ARROWS, level);
+                data.addImbuement(Enchantments.FLAMING_ARROWS, duration);
+            }
 
             if (ctx.world().isClientSide) {
                 for (int i = 0; i < 10; i++) {

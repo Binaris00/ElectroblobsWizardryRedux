@@ -37,7 +37,8 @@
             "ebwizardry:conjure_item",
             "ebwizardry:conjure",
             "ebwizardry:cast_command_data",
-            "ebwizardry:spell_manager_data"
+            "ebwizardry:spell_manager_data",
+            "ebwizardry:imbuement_enchants"
         ]
     },
     "depends": {

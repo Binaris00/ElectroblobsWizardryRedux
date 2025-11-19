@@ -230,6 +230,16 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
         }
     }
 
+    public void copyFrom(@NotNull SpellManagerDataHolder old) {
+        this.spellsDiscovered = new HashSet<>(old.spellsDiscovered);
+
+        this.imbuementLoaders.clear();
+        this.imbuementLoaders.addAll(old.imbuementLoaders);
+
+        this.spellData.clear();
+        this.spellData.putAll(old.spellData);
+    }
+
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<SpellManagerDataHolder> dataHolder;
 

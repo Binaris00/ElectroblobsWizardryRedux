@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.capabilities;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.CastCommandData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
@@ -127,6 +128,13 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
         } else {
             this.castCommandModifiers = new SpellModifiers();
         }
+    }
+
+    public void copyFrom(@NotNull CastCommandDataHolder old) {
+        this.castCommandSpell = old.castCommandSpell;
+        this.castCommandTick = old.castCommandTick;
+        this.castCommandModifiers = old.castCommandModifiers;
+        this.castCommandDuration = old.castCommandDuration;
     }
 
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {

@@ -1,11 +1,7 @@
 package com.electroblob.wizardry.platform;
 
 import com.electroblob.wizardry.api.content.data.*;
-import com.electroblob.wizardry.capabilities.MinionDataHolder;
-import com.electroblob.wizardry.capabilities.CastCommandDataHolder;
-import com.electroblob.wizardry.capabilities.SpellManagerDataHolder;
-import com.electroblob.wizardry.capabilities.WizardDataHolder;
-import com.electroblob.wizardry.capabilities.ConjureDataHolder;
+import com.electroblob.wizardry.capabilities.*;
 import com.electroblob.wizardry.core.platform.services.IObjectData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -18,6 +14,11 @@ public class ForgeObjectData implements IObjectData {
     @Override
     public ConjureData getConjureData(ItemStack stack) {
         return stack.getCapability(ConjureDataHolder.INSTANCE).orElse(null);
+    }
+
+    @Override
+    public ImbuementEnchantData getImbuementData(ItemStack stack) {
+        return stack.getCapability(ImbuementEnchantDataHolder.INSTANCE).orElse(null);
     }
 
     @Override

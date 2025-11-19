@@ -1,5 +1,6 @@
 package com.electroblob.wizardry;
 
+import com.electroblob.wizardry.api.content.data.*;
 import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
@@ -22,6 +23,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
 import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
@@ -94,6 +96,43 @@ public class WizardryForgeEvents {
                 final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(event.getObject());
                 event.addCapability(ConjureDataHolder.LOCATION, provider);
             }
+            final ImbuementEnchantDataHolder.Provider provider = new ImbuementEnchantDataHolder.Provider(event.getObject());
+            event.addCapability(ImbuementEnchantDataHolder.LOCATION, provider);
+        }
+
+        @SubscribeEvent
+        public static void onPlayerCloned(PlayerEvent.Clone event) {
+            if (!event.isWasDeath()) return; // Only copy data when player respawns after death
+
+            // Revive the original player's capabilities to be able to read them
+            event.getOriginal().reviveCaps();
+
+            event.getOriginal().getCapability(WizardDataHolder.INSTANCE).ifPresent(old ->
+                    event.getEntity().getCapability(WizardDataHolder.INSTANCE).ifPresent(holder ->
+                            holder.copyFrom(old)));
+
+            event.getOriginal().getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(old ->
+                    event.getEntity().getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(holder ->
+                            holder.copyFrom(old)));
+
+            event.getOriginal().getCapability(CastCommandDataHolder.INSTANCE).ifPresent(old ->
+                    event.getEntity().getCapability(CastCommandDataHolder.INSTANCE).ifPresent(holder ->
+                            holder.copyFrom(old)));
+
+            // Invalidate the original player's capabilities again
+            event.getOriginal().invalidateCaps();
+        }
+
+
+        @SubscribeEvent
+        public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {
+            event.register(WizardDataHolder.class);
+            event.register(SpellManagerDataHolder.class);
+            event.register(CastCommandDataHolder.class);
+            event.register(MinionDataHolder.class);
+            event.register(ConjureDataHolder.class);
+            event.register(ImbuementEnchantDataHolder.class);
+
         }
     }
 

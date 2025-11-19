@@ -5,8 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-
-import javax.annotation.Nullable;
+import org.jetbrains.annotations.Nullable;
 
 public interface IObjectData {
     /**
@@ -18,8 +17,16 @@ public interface IObjectData {
     ConjureData getConjureData(ItemStack stack);
 
     /**
+     * Gives you the imbuement data to manipulate and view the current status of the imbuements on the item.
+     *
+     * @return the imbuement data
+     */
+    ImbuementEnchantData getImbuementData(ItemStack stack);
+
+    /**
      * Gives you the cast command data to manipulate and view the current status of the cast command.
      *
+     * @param player player whose cast command data is to be retrieved.
      * @return the cast command data
      */
     CastCommandData getCastCommandData(Player player);
@@ -27,6 +34,7 @@ public interface IObjectData {
     /**
      * Gives you the spell manager data to manipulate and view the current status of spells and spell variables.
      *
+     * @param player player whose spell manager data is to be retrieved.
      * @return the spell manager data
      */
     SpellManagerData getSpellManagerData(Player player);
