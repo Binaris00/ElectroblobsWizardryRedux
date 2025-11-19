@@ -1,7 +1,6 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
-import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.event.*;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.ArtefactItem;
@@ -81,17 +80,14 @@ public final class EBEventHelper {
     }
 
     private static void onEntityJoinLevel(WizardryEventBus bus) {
-        bus.register(EBEntityJoinLevelEvent.class, Imbuement::onEntityJoinLevel);
         bus.register(EBEntityJoinLevelEvent.class, DataEvents::onMinionJoinLevel);
     }
 
     private static void onItemTossEvent(WizardryEventBus bus) {
-        bus.register(EBItemTossEvent.class, Imbuement::onItemTossEvent);
         bus.register(EBItemTossEvent.class, DataEvents::onConjureToss);
     }
 
     private static void onLivingDeathEvent(WizardryEventBus bus) {
-        bus.register(EBLivingDeathEvent.class, Imbuement::onLivingDeath);
         bus.register(EBLivingDeathEvent.class, ArtefactItem::onArtifactDeath);
         bus.register(EBLivingDeathEvent.class, DataEvents::onConjureEntityDeath);
     }

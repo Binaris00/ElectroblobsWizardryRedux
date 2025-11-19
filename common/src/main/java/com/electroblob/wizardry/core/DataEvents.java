@@ -2,7 +2,6 @@ package com.electroblob.wizardry.core;
 
 import com.electroblob.wizardry.api.content.data.*;
 import com.electroblob.wizardry.api.content.event.*;
-import com.electroblob.wizardry.api.content.util.ImbuementLoader;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.core.platform.Services;
@@ -72,7 +71,6 @@ public final class DataEvents {
         spellDataTick(player);
         castCommandTick(player);
         conjureItemTick(player);
-        imbuementTick(player);
         recentSpells(player);
         temporaryEnchantmentTick(player);
     }
@@ -159,21 +157,6 @@ public final class DataEvents {
             stack.shrink(1);
             data.setSummoned(false);
         }
-    }
-
-    private static void imbuementTick(Player player) {
-        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
-
-        Iterator<ImbuementLoader> iterator = data.getImbuementLoaders().iterator();
-        while (iterator.hasNext()) {
-            ImbuementLoader loader = iterator.next();
-            boolean result = loader.hasReachedLimit();
-            if (result) {
-                data.removeImbuement(loader);
-                iterator.remove();
-            }
-        }
-        data.sync();
     }
 
     private static void recentSpells(Player player) {

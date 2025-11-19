@@ -5,10 +5,8 @@ import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.ISpellVar;
 import com.electroblob.wizardry.api.content.data.IStoredSpellVar;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
-import com.electroblob.wizardry.api.content.enchantment.Imbuement;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.util.ImbuementLoader;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
@@ -19,7 +17,6 @@ import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
@@ -29,9 +26,6 @@ import net.minecraftforge.common.capabilities.CapabilityToken;
 import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
-import net.minecraftforge.event.AttachCapabilitiesEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -43,7 +37,6 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
     public static final Capability<SpellManagerDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
 
     public Set<Spell> spellsDiscovered = new HashSet<>();
-    public final List<ImbuementLoader> imbuementLoaders = new ArrayList<>();
     @SuppressWarnings("rawtypes") public final Map<ISpellVar, Object> spellData = new HashMap<>();
     @SuppressWarnings("rawtypes") public static final Set<IStoredSpellVar> storedVariables = new HashSet<>();
 
@@ -90,114 +83,12 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
         return spellsDiscovered.add(spell);
     }
 
-
-    @Override
-    public void setImbuementDuration(ItemStack stack, Enchantment enchantment, int duration) {
-        if (enchantment instanceof Imbuement) {
-            ImbuementLoader loader = new ImbuementLoader(stack.getItem(), enchantment, duration);
-            stack.getOrCreateTag().putString(ImbuementLoader.getTagName(enchantment), loader.getUuid());
-            imbuementLoaders.add(loader);
-            EBLogger.info("Set imbuement duration: " + enchantment.getDescriptionId() + " -> " + duration + " ticks on item " + stack.getItem().getDescriptionId());
-            sync();
-            return;
-        }
-
-        throw new IllegalArgumentException("Attempted to set an imbuement duration for something that isn't an Imbuement!");
-    }
-
-    @Override
-    public int getImbuementDuration(ItemStack stack, Enchantment enchantment) {
-        EBLogger.info("Getting imbuement duration for " + enchantment.getDescriptionId());
-        for (ImbuementLoader loader : imbuementLoaders) {
-            if (loader.getItem().equals(stack.getItem()) && loader.getImbuement().equals(enchantment)) {
-                EBLogger.info("Found imbuement duration for " + enchantment.getDescriptionId() + " -> " + loader.getTimeLimit());
-                return loader.getTimeLimit();
-            }
-        }
-        return 0;
-    }
-
-    @Override
-    public int getGeneralImbuementDuration(Enchantment enchantment) {
-        EBLogger.info("Getting imbuement duration for " + enchantment.getDescriptionId());
-        for (ImbuementLoader loader : imbuementLoaders) {
-            if (loader.getImbuement().equals(enchantment)) {
-                EBLogger.info("Found imbuement duration for " + enchantment.getDescriptionId() + " -> " + loader.getTimeLimit());
-                return loader.getTimeLimit();
-            }
-        }
-
-        EBLogger.info("No imbuement duration found for " + enchantment.getDescriptionId());
-        return 0;
-    }
-
-    @Override
-    public List<ImbuementLoader> getImbuementLoaders() {
-        return imbuementLoaders;
-    }
-
-    @Override
-    public boolean removeImbuement(ItemStack stack, Enchantment enchantment) {
-        Iterator<ImbuementLoader> iterator = imbuementLoaders.iterator();
-        while (iterator.hasNext()) {
-            ImbuementLoader loader = iterator.next();
-
-            if (stack.getOrCreateTag().getString(ImbuementLoader.getTagName(enchantment)).equals(loader.getUuid())) {
-                stack.getOrCreateTag().remove(ImbuementLoader.getTagName(enchantment));
-                InventoryUtil.removeEnchant(stack, loader.getImbuement());
-                if (loader.getImbuement() instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
-                iterator.remove();
-                sync();
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    public void removeImbuement(ImbuementLoader loader) {
-        sync();
-
-        for (ItemStack stack : provider.getInventory().items) {
-            if (loader.isValid(stack)) {
-                InventoryUtil.removeEnchant(stack, loader.getImbuement());
-                stack.getOrCreateTag().remove(ImbuementLoader.getTagName(loader.getImbuement()));
-                if (loader.getImbuement() instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
-                return;
-            }
-        }
-        for (ItemStack stack : provider.getInventory().armor) {
-            if (loader.isValid(stack)) {
-                InventoryUtil.removeEnchant(stack, loader.getImbuement());
-                stack.getOrCreateTag().remove(ImbuementLoader.getTagName(loader.getImbuement()));
-                if (loader.getImbuement() instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
-                return;
-            }
-        }
-        for (ItemStack stack : provider.getInventory().offhand) {
-            if (loader.isValid(stack)) {
-                InventoryUtil.removeEnchant(stack, loader.getImbuement());
-                stack.getOrCreateTag().remove(ImbuementLoader.getTagName(loader.getImbuement()));
-                if (loader.getImbuement() instanceof Imbuement imbuement) imbuement.onImbuementRemoval(stack);
-                return;
-            }
-        }
-        sync();
-    }
-
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         ListTag spellsDiscoveredTag = new ListTag();
         spellsDiscovered.forEach((spell -> spellsDiscoveredTag.add(StringTag.valueOf(spell.getLocation().toString()))));
         tag.put("spellsDiscovered", spellsDiscoveredTag);
-
-        ListTag imbuedItemsTag = new ListTag();
-        for (ImbuementLoader loader : imbuementLoaders) {
-            imbuedItemsTag.add(loader.serializeNbt(new CompoundTag()));
-        }
-        tag.put("imbuedItems", imbuedItemsTag);
         storedVariables.forEach(k -> k.write(tag, this.spellData.get(k)));
         return tag;
     }
@@ -215,14 +106,6 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
             }
         }
 
-        imbuementLoaders.clear();
-        if (tag.contains("imbuedItems", Tag.TAG_LIST)) {
-            ListTag listTag = tag.getList("imbuedItems", Tag.TAG_COMPOUND);
-            for (Tag element : listTag) {
-                imbuementLoaders.add(ImbuementLoader.deserializeNbt((CompoundTag) element));
-            }
-        }
-
         try {
             storedVariables.forEach(k -> spellData.put(k, k.read(tag)));
         } catch (ClassCastException e) {
@@ -231,10 +114,8 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
     }
 
     public void copyFrom(@NotNull SpellManagerDataHolder old) {
-        this.spellsDiscovered = new HashSet<>(old.spellsDiscovered);
-
-        this.imbuementLoaders.clear();
-        this.imbuementLoaders.addAll(old.imbuementLoaders);
+        this.spellsDiscovered.clear();
+        this.spellsDiscovered.addAll(old.spellsDiscovered);
 
         this.spellData.clear();
         this.spellData.putAll(old.spellData);
