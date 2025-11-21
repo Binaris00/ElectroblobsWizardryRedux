@@ -56,6 +56,12 @@ public class ForgeObjectData implements IObjectData {
 
     @Override
     public boolean isMinion(Entity mob) {
-        return mob.getCapability(MinionDataHolder.INSTANCE).isPresent();
+        if (!(mob instanceof Mob)) return false;
+        if (!mob.getCapability(MinionDataHolder.INSTANCE).isPresent()) return false;
+
+        MinionDataHolder minionData = mob.getCapability(MinionDataHolder.INSTANCE).orElseThrow(
+                () -> new IllegalStateException("MinionData capability not present on mob " + mob)
+        );
+        return minionData.isSummoned();
     }
 }

@@ -64,32 +64,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         this.element = element;
     }
 
-    // =====================================
-    // Utils
-    // =====================================
-    public static Item getWand(SpellTier tier, Element element) {
-        if (tier == null) throw new NullPointerException("The given tier cannot be null.");
-        if (element == null) element = Elements.MAGIC;
-        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "magic" : tier.getLocation().getPath();
-        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
-        registryName = "wand_" + registryName;
-        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
-    }
-
-    protected static int getDistributedCost(int cost, int castingTick) {
-        int partialCost;
-
-        if (castingTick % 20 == 0) {
-            partialCost = cost / 2 + cost % 2;
-        } else if (castingTick % 10 == 0) {
-            partialCost = cost / 2;
-        } else {
-            partialCost = 0;
-        }
-
-        return partialCost;
-    }
-
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
@@ -101,14 +75,14 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (spell.isInstantCast() || charge < 0)
             if (cast(stack, spell, ctx)) return InteractionResultHolder.success(stack);
 
-        if (!player.isUsingItem()) {
+        if (!player.isUsingItem() && spell.isInstantCast()) {
             player.startUsingItem(hand);
             Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
             if (charge > 0 && level.isClientSide) ClientSpellSoundManager.playChargeSound(player);
             return InteractionResultHolder.success(stack);
         }
 
-        return InteractionResultHolder.fail(stack);
+        return InteractionResultHolder.pass(stack);
     }
 
     @Override
@@ -562,5 +536,31 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
         modifiers.set(SpellModifiers.PROGRESSION, progressionModifier, false);
         return modifiers;
+    }
+
+    // =====================================
+    // Utils
+    // =====================================
+    public static Item getWand(SpellTier tier, Element element) {
+        if (tier == null) throw new NullPointerException("The given tier cannot be null.");
+        if (element == null) element = Elements.MAGIC;
+        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "magic" : tier.getLocation().getPath();
+        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
+        registryName = "wand_" + registryName;
+        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
+    }
+
+    protected static int getDistributedCost(int cost, int castingTick) {
+        int partialCost;
+
+        if (castingTick % 20 == 0) {
+            partialCost = cost / 2 + cost % 2;
+        } else if (castingTick % 10 == 0) {
+            partialCost = cost / 2;
+        } else {
+            partialCost = 0;
+        }
+
+        return partialCost;
     }
 }

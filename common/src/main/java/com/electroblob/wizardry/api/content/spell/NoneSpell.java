@@ -14,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 public final class NoneSpell extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        return true;
+        return false;
     }
 
     @Override
