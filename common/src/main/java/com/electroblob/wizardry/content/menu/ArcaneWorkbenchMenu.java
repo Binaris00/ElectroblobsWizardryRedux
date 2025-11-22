@@ -109,6 +109,76 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
         return Math.round(SLOT_RADIUS * -Mth.cos(angle));
     }
 
+    /**
+     * Handles shift-clicking. Attempts to move items between the workbench slots and the player inventory. If the item
+     * can go in multiple workbench slots (e.g. spell books), it will try to put it in the first available one. If it
+     * can't go in any workbench slots, it will try to move it between the hotbar and main inventory.
+     *
+     * @param player The player using the workbench.
+     * @param index  The ID of the slot that was shift-clicked.
+     * @return The rest of the stack that couldn't be moved, or ItemStack.EMPTY if the entire stack was moved.
+     */
+    @Override
+    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
+        ItemStack itemstack = ItemStack.EMPTY;
+        Slot slot = this.slots.get(index);
+
+        if (!slot.hasItem()) return itemstack;
+
+        ItemStack itemstack1 = slot.getItem();
+        itemstack = itemstack1.copy();
+
+        // If shift-clicking from workbench slots (0-10)
+        if (index < 11) {
+            // Try to move to player inventory (slots 11-46)
+            if (!this.moveItemStackTo(itemstack1, 11, 11 + PLAYER_INVENTORY_SIZE, true)) {
+                return ItemStack.EMPTY;
+            }
+        }
+        // If shift-clicking from player inventory
+        else if (index >= 11 && index < 11 + PLAYER_INVENTORY_SIZE) {
+            int[] slotRange = findSlotRangeForItem(itemstack1);
+
+            if (slotRange != null) {
+                // Try to move to the appropriate workbench slot(s)
+                if (!this.moveItemStackTo(itemstack1, slotRange[0], slotRange[1] + 1, false)) {
+                    // If that fails, try moving between hotbar and main inventory
+                    if (index < 38) {
+                        if (!this.moveItemStackTo(itemstack1, 38, 47, false)) {
+                            return ItemStack.EMPTY;
+                        }
+                    } else if (!this.moveItemStackTo(itemstack1, 11, 38, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                }
+            } else {
+                // No valid workbench slot, move between hotbar and main inventory
+                if (index < 38) {
+                    if (!this.moveItemStackTo(itemstack1, 38, 47, false)) {
+                        return ItemStack.EMPTY;
+                    }
+                } else if (!this.moveItemStackTo(itemstack1, 11, 38, false)) {
+                    return ItemStack.EMPTY;
+                }
+            }
+        }
+
+        if (itemstack1.isEmpty()) {
+            slot.setByPlayer(ItemStack.EMPTY);
+        } else {
+            slot.setChanged();
+        }
+
+        if (itemstack1.getCount() == itemstack.getCount()) {
+            return ItemStack.EMPTY;
+        }
+
+        slot.onTake(player, itemstack1);
+
+        return itemstack;
+    }
+
+
     @Override
     public boolean stillValid(@NotNull Player player) {
         return this.container.stillValid(player);
@@ -151,37 +221,6 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
         }
     }
 
-    /**
-     * Handles shift-clicking. If the clicked slot is a virtual slot (i.e. one of the spell book slots), it tries to
-     * move the item into the first valid slot (which will depend on what the item is). If the clicked slot is a
-     * normal slot, it tries to move the item into the spell book slots if it's a spell book, or the crystal,
-     * centre or upgrade slots if it's a valid item for one of those slots. If it can't be moved into any of those,
-     * it tries to move it into the player's inventory.
-     *
-     * @param player        The player using the workbench.
-     * @param clickedSlotId The ID of the slot that was shift-clicked.
-     * @return The rest of the stack that couldn't be moved, or ItemStack.EMPTY if the entire stack was moved.
-     */
-    @Override
-    public @NotNull ItemStack quickMoveStack(@NotNull Player player, int clickedSlotId) {
-        ItemStack rest = ItemStack.EMPTY;
-        Slot slot = this.slots.get(clickedSlotId);
-        if (!slot.hasItem()) return rest;
-
-        ItemStack stack = slot.getItem();
-        rest = stack.copy();
-
-        if (stack.getCount() == 0) {
-            slot.set(ItemStack.EMPTY);
-        } else {
-            slot.setChanged();
-        }
-
-        if (stack.getCount() == rest.getCount()) return ItemStack.EMPTY;
-        slot.onTake(player, stack);
-
-        return rest;
-    }
 
     /**
      * Called when the apply button is pressed. Delegates the logic to the workbench item in the centre slot, if
