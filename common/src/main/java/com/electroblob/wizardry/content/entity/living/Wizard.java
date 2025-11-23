@@ -1,25 +1,19 @@
 package com.electroblob.wizardry.content.entity.living;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.event.EBDiscoverSpellEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
-import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
-import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.content.item.SpellBookItem;
-import com.electroblob.wizardry.content.item.WandItem;
-import com.electroblob.wizardry.content.item.WizardArmorType;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBSounds;
-import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
@@ -33,7 +27,6 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
@@ -46,7 +39,6 @@ import net.minecraft.world.item.trading.Merchant;
 import net.minecraft.world.item.trading.MerchantOffer;
 import net.minecraft.world.item.trading.MerchantOffers;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Blocks;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -265,110 +257,22 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
     private ItemStack getRandomItemOfTier(SpellTier tier) {
-        int randomizer;
-
-        // TODO, this should be: "if the spell is available in trades"
         List<Spell> spells = SpellUtil.getSpells((s) -> true);
-
-        // TODO, the same than before, but with element
         List<Spell> specialismSpells = SpellUtil.getSpells((s) -> s.getElement() == this.getElement());
 
-        // todo, remove spells if not available in books
-//        spells.removeIf(s -> !s.isEnabled(SpellProperties.Context.BOOK));
-//        specialismSpells.removeIf(s -> !s.isEnabled(SpellProperties.Context.BOOK));
+        return tier.getTradeItem(this.getElement(), random, (ArrayList<Spell>) spells, (ArrayList<Spell>) specialismSpells);
+    }
 
-        if (tier == SpellTiers.NOVICE) {
-            randomizer = random.nextInt(5);
-            if (randomizer < 4 && !spells.isEmpty()) {
-                if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0 && !specialismSpells.isEmpty()) {
-                    return getBookStackForSpell(specialismSpells.get(random.nextInt(specialismSpells.size())));
-                } else {
-                    return getBookStackForSpell(spells.get(random.nextInt(spells.size())));
-                }
-            } else {
-                if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0) {
-                    return new ItemStack(WandItem.getWand(tier, this.getElement()));
-                } else {
-                    return new ItemStack(WandItem.getWand(tier, SpellUtil.getRandomElement(random)));
-                }
-            }
-        } else if (tier == SpellTiers.APPRENTICE) {
-            randomizer = random.nextInt(EBConfig.discoveryMode ? 12 : 10);
-            if (randomizer < 5 && !spells.isEmpty()) {
-                if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0 && !specialismSpells.isEmpty()) {
-                    return getBookStackForSpell(specialismSpells.get(random.nextInt(specialismSpells.size())));
-                } else {
-                    return getBookStackForSpell(spells.get(random.nextInt(spells.size())));
-                }
-            } else if (randomizer < 6) {
-                if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0) {
-                    return new ItemStack(WandItem.getWand(tier, this.getElement()));
-                } else {
-                    return new ItemStack(WandItem.getWand(tier, SpellUtil.getRandomElement(random)));
-                }
-            } else if (randomizer < 8) {
-                ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get(), 1);
-                CompoundTag tag = new CompoundTag();
-                tag.putInt("Tier", 1);
-                stack.addTagElement("Tiers", tag);
-                return stack;
-            } else if (randomizer < 10) {
-                EquipmentSlot slot = InventoryUtil.ARMOR_SLOTS[random.nextInt(InventoryUtil.ARMOR_SLOTS.length)];
-                if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0) {
-                    return new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, this.getElement(), slot));
-                } else {
-                    return new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, SpellUtil.getRandomElement(random), slot));
-                }
-            } else {
-                return new ItemStack(EBItems.IDENTIFICATION_SCROLL.get());
-            }
-        } else if (tier == SpellTiers.ADVANCED) {
-            randomizer = random.nextInt(12);
-            if (randomizer < 5 && !spells.isEmpty()) {
-                if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0 && !specialismSpells.isEmpty()) {
-                    return getBookStackForSpell(specialismSpells.get(random.nextInt(specialismSpells.size())));
-                } else {
-                    return getBookStackForSpell(spells.get(random.nextInt(spells.size())));
-                }
-            } else if (randomizer < 6) {
-                if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0) {
-                    return new ItemStack(WandItem.getWand(tier, this.getElement()));
-                } else {
-                    return new ItemStack(WandItem.getWand(tier, SpellUtil.getRandomElement(random)));
-                }
-            } else if (randomizer < 8) {
-                ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get(), 1);
-                CompoundTag tag = new CompoundTag();
-                tag.putInt("Tier", 2);
-                stack.addTagElement("Tiers", tag);
-                return stack;
-            } else {
-                List<DeferredObject<Item>> upgrades = new ArrayList<>(WandHelper.getSpecialUpgrades());
-                randomizer = random.nextInt(upgrades.size());
-                return new ItemStack(upgrades.get(randomizer).get());
-            }
-        } else if (tier == SpellTiers.MASTER) {
-            randomizer = this.getElement() != Elements.MAGIC ? random.nextInt(8) : 5 + random.nextInt(3);
-
-            if (randomizer < 5 && this.getElement() != Elements.MAGIC && !specialismSpells.isEmpty()) {
-                return getBookStackForSpell(specialismSpells.get(random.nextInt(specialismSpells.size())));
-
-            } else if (randomizer < 6) {
-                if (this.getElement() != Elements.MAGIC && random.nextInt(4) > 0) {
-                    return new ItemStack(WandItem.getWand(tier, this.getElement()));
-                } else {
-                    return new ItemStack(EBItems.MASTER_WAND.get());
-                }
-            } else {
-                ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get(), 1);
-                CompoundTag tag = new CompoundTag();
-                tag.putInt("Tier", 3);
-                stack.addTagElement("Tiers", tag);
-                return stack;
-            }
-        }
-
-        return new ItemStack(Blocks.STONE);
+    /**
+     * Creates a spell book ItemStack containing the given spell.
+     *
+     * @param spell The spell to put in the book.
+     * @return The spell book ItemStack.
+     */
+    private static ItemStack spellBook(Spell spell) {
+        ItemStack stack = new ItemStack(EBItems.SPELL_BOOK.get(), 1);
+        SpellUtil.setSpell(stack, spell);
+        return stack;
     }
 
 

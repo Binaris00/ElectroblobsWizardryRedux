@@ -112,11 +112,7 @@ public final class EBCreativeTabs {
     private static List<ItemStack> createTomes() {
         List<ItemStack> list = new ArrayList<>();
         Services.REGISTRY_UTIL.getTiers().forEach(spellTier -> {
-            if (spellTier != SpellTiers.NOVICE) {
-                ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get());
-                stack.getOrCreateTag().putString("Tier", spellTier.getLocation().toString());
-                list.add(stack);
-            }
+            if (spellTier != SpellTiers.NOVICE) list.add(SpellUtil.arcaneTomeItem(spellTier));
         });
         return list;
     }

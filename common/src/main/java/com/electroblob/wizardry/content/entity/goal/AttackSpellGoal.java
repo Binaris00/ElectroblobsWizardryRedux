@@ -5,7 +5,10 @@ import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.content.entity.living.AbstractWizard;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.networking.s2c.NPCSpellCastS2C;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,15 +19,43 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * A goal which allows a spell-casting mob to attack its target with spells. The mob will move towards the target
+ * until it is within a specified distance and has line of sight, at which point it will stop and cast spells at it.
+ * It can cast both instant and continuous spells.
+ * <p>
+ * For reference (specially related to continuous spells), check {@link com.electroblob.wizardry.content.entity.living.AbstractWizard}
+ * for an example of how to implement the {@link ISpellCaster} and handle spell casting properly.
+ *
+ * @param <T> The type of mob that is also a spell caster.
+ */
 public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
+
+    /** The mob that is casting the spell that's also implementing {@code ISpellCaster}. */
     private final T attacker;
+
+    /** The base cooldown between spell casts, in ticks (not including spell-specific cooldowns). */
     private final int baseCooldown;
+
+    /** The duration for which continuous spells are cast, in ticks. */
     private final int continuousSpellDuration;
+
+    /** The movement speed of the mob towards its target. */
     private final double speed;
+
+    /** The maximum distance at which the mob can cast spells, squared. */
     private final float maxAttackDistance;
+
+    /** The current target of the mob. {@link AttackSpellGoal#attacker} */
     private LivingEntity target;
+
+    /** The current cooldown before the next spell can be cast, in ticks. */
     private int cooldown;
+
+    /** The timer for continuous spell casting, in ticks. */
     private int continuousSpellTimer;
+
+    /** The number of ticks that are needed to see the target before casting. */
     private int seeTime;
 
     public AttackSpellGoal(T attacker, double speed, float maxDistance, int baseCooldown, int continuousSpellDuration) {
@@ -64,9 +95,12 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
     }
 
     private void setContinuousSpellAndNotify(Spell spell, SpellModifiers modifiers) {
-        //TODO might be incorrect;
         attacker.setContinuousSpell(spell);
-        //WizardryPacketHandler.net.send(PacketDistributor.ALL.noArg(), new PacketNPCCastSpell(attacker.getId(), target == null ? -1 : target.getId(), InteractionHand.MAIN_HAND, spell, modifiers));
+
+        if (!attacker.level().isClientSide) {
+            Services.NETWORK_HELPER.sendToTracking(attacker,
+                    new NPCSpellCastS2C(attacker.getId(), target == null ? -1 : target.getId(), InteractionHand.MAIN_HAND, spell, modifiers));
+        }
     }
 
     @Override
@@ -74,40 +108,42 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
         double distanceSq = this.attacker.distanceToSqr(this.target.getX(), this.target.getY(), this.target.getZ());
         boolean targetIsVisible = this.attacker.getSensing().hasLineOfSight(this.target);
 
-        if (targetIsVisible) {
-            ++this.seeTime;
-        } else {
-            this.seeTime = 0;
-        }
+        if (targetIsVisible) ++this.seeTime;
+        else this.seeTime = 0;
 
-        if (distanceSq <= (double) this.maxAttackDistance && this.seeTime >= 20) {
-            this.attacker.getNavigation().stop();
-        } else {
-            this.attacker.getNavigation().moveTo(this.target, this.speed);
-        }
+        if (distanceSq <= (double) this.maxAttackDistance && this.seeTime >= 5) this.attacker.getNavigation().stop();
+        else this.attacker.getNavigation().moveTo(this.target, this.speed);
 
         this.attacker.getLookControl().setLookAt(this.target, 30.0F, 30.0F);
 
         if (this.continuousSpellTimer > 0) {
             this.continuousSpellTimer--;
 
-            EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, this.continuousSpellDuration - this.continuousSpellTimer, target, attacker.getModifiers());
+            int currentTick = this.continuousSpellDuration - this.continuousSpellTimer;
+            EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, currentTick, target, attacker.getModifiers());
+
+            // Update spell counter on server to sync with clients
+            attacker.setSpellCounter(currentTick);
 
             if (distanceSq > (double) this.maxAttackDistance
-                    || !targetIsVisible || WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers(), this.continuousSpellDuration - this.continuousSpellTimer))
+                    || !targetIsVisible || WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers(), currentTick))
                     || !attacker.getContinuousSpell().cast(ctx)
                     || this.continuousSpellTimer == 0) {
                 this.continuousSpellTimer = 0;
                 this.cooldown = attacker.getContinuousSpell().getCooldown() + this.baseCooldown;
                 setContinuousSpellAndNotify(Spells.NONE, new SpellModifiers());
+                attacker.setSpellCounter(0);
                 return;
 
-            } else if (this.continuousSpellDuration - this.continuousSpellTimer == 1) {
+            } else if (currentTick == 1) {
                 WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers()));
             }
 
         } else if (--this.cooldown == 0) {
+            // Check if target is in range and visible before attempting to cast
             if (distanceSq > (double) this.maxAttackDistance || !targetIsVisible) {
+                // Reset cooldown to try again soon instead of waiting forever
+                this.cooldown = 10; // Try again in 10 ticks
                 return;
             }
 
@@ -116,24 +152,25 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
 
             List<Spell> spells = new ArrayList<>(attacker.getSpells());
 
-            if (!spells.isEmpty()) {
-                if (!attacker.level().isClientSide) {
-                    Spell spell;
+            if (!spells.isEmpty() && !attacker.level().isClientSide) {
+                Spell spell;
 
-                    while (!spells.isEmpty()) {
-                        spell = spells.get(attacker.level().random.nextInt(spells.size()));
+                while (!spells.isEmpty()) {
+                    spell = spells.get(attacker.level().random.nextInt(spells.size()));
 
-                        SpellModifiers modifiers = attacker.getModifiers();
+                    SpellModifiers modifiers = attacker.getModifiers();
 
-                        if (spell != null && attemptCastSpell(spell, modifiers)) {
-                            attacker.setYRot((float) (Math.atan2(dz, dx) * 180.0D / Math.PI) - 90.0F);
-                            return;
-                        } else {
-                            spells.remove(spell);
-                        }
+                    if (spell != null && attemptCastSpell(spell, modifiers)) {
+                        attacker.setYRot((float) (Math.atan2(dz, dx) * 180.0D / Math.PI) - 90.0F);
+                        return;
+                    } else {
+                        spells.remove(spell);
                     }
                 }
             }
+
+            // If we reach here, no spell was cast successfully, reset cooldown
+            this.cooldown = this.baseCooldown;
 
         } else if (this.cooldown < 0) {
             this.cooldown = this.baseCooldown;
@@ -141,30 +178,33 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
     }
 
     private boolean attemptCastSpell(Spell spell, SpellModifiers modifiers) {
-        if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.NPC, spell, attacker, modifiers))) {
+        if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.NPC, spell, attacker, modifiers)))
             return false;
-        }
 
         EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, 0, target, modifiers);
-        if (spell.cast(ctx)) {
-            if (!spell.isInstantCast()) {
-                this.continuousSpellTimer = this.continuousSpellDuration - 1;
-                setContinuousSpellAndNotify(spell, modifiers);
 
-            } else {
-                WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, spell, attacker, modifiers));
+        if (!spell.cast(ctx)) return false;
 
-                this.cooldown = this.baseCooldown + spell.getCooldown();
-                // TODO PACKETS
-//                if (spell.requiresPacket()) {
-//                    PacketNPCCastSpell msg = new PacketNPCCastSpell(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, modifiers);
-//                    WizardryPacketHandler.net.send(PacketDistributor.DIMENSION.with(() -> attacker.level.dimension()), msg);
-//                }
+        // Send spell cast packet and post cast event to clients for instant spells
+        if (spell.isInstantCast()) {
+            WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, spell, attacker, modifiers));
+            this.cooldown = this.baseCooldown + spell.getCooldown();
+
+            if (!attacker.level().isClientSide) {
+                NPCSpellCastS2C msg = new NPCSpellCastS2C(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, modifiers);
+                Services.NETWORK_HELPER.sendToTracking(attacker, msg);
             }
 
-            return true;
+        } else {
+            // Start continuous spell casting if applicable
+            this.continuousSpellTimer = this.continuousSpellDuration - 1;
+            setContinuousSpellAndNotify(spell, modifiers);
+            // FIXME - this could be better, the target isn't available on client (aiStep) so we're saving the entity ID here
+            attacker.setTarget(target);
+            if (attacker instanceof AbstractWizard wizard) wizard.setSpellTargetId(target.getId());
         }
 
-        return false;
+        return true;
+
     }
 }

@@ -1,13 +1,15 @@
 package com.electroblob.wizardry.api.content.spell;
 
-import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.item.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpellTier {
@@ -17,21 +19,22 @@ public class SpellTier {
     public final int weight;
     private final int progression;
     private final ChatFormatting color;
-    private final ResourceLocation location;
     private String descriptionId;
 
-    public SpellTier(String name, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color, int progression) {
-        this(WizardryMainMod.location(name), maxCharge, upgradeLimit, weight, level, color, progression);
-    }
-
-    public SpellTier(ResourceLocation location, int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color, int progression) {
-        this.location = location;
+    public SpellTier(int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color, int progression) {
         this.maxCharge = maxCharge;
         this.level = level;
         this.upgradeLimit = upgradeLimit;
         this.weight = weight;
         this.color = color;
         this.progression = progression;
+    }
+
+    public ItemStack getTradeItem(Element element, RandomSource random, ArrayList<Spell> spells, ArrayList<Spell> specializedSpells) {
+        // TODO, this should be: "if the spell is available in trades"
+        // TODO, the same than before, but checking if the spell is of this tier
+        // TODO, remove spells if not available in books
+        return SpellUtil.spellBookItem(spells.get(random.nextInt(spells.size())));
     }
 
     /**
@@ -113,7 +116,7 @@ public class SpellTier {
      * Will return the location for the tier (e.g. "ebwizardry:novice")
      */
     public ResourceLocation getLocation() {
-        return this.location;
+        return Services.REGISTRY_UTIL.getTier(this);
     }
 
     /**
@@ -124,13 +127,6 @@ public class SpellTier {
     }
 
     // ===================================================
-
-    /**
-     * Will return true if the tier is registered at the given location
-     */
-    public final boolean is(String location) {
-        return location.equals(getLocation().toString());
-    }
 
     public ChatFormatting getColor() {
         return color;

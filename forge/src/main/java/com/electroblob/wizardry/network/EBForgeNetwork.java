@@ -5,9 +5,7 @@ import com.electroblob.wizardry.core.networking.abst.Message;
 import com.electroblob.wizardry.core.networking.c2s.BlockUsePacketC2S;
 import com.electroblob.wizardry.core.networking.c2s.ControlInputPacketC2S;
 import com.electroblob.wizardry.core.networking.c2s.SpellAccessPacketC2S;
-import com.electroblob.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
-import com.electroblob.wizardry.core.networking.s2c.SpellPropertiesSyncS2C;
-import com.electroblob.wizardry.core.networking.s2c.TestParticlePacketS2C;
+import com.electroblob.wizardry.core.networking.s2c.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraftforge.network.NetworkDirection;
@@ -31,6 +29,8 @@ public class EBForgeNetwork {
         register(SpellAccessPacketC2S.class, SpellAccessPacketC2S::new, NetworkDirection.PLAY_TO_SERVER);
         register(SpellGlyphPacketS2C.class, SpellGlyphPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(SpellPropertiesSyncS2C.class, SpellPropertiesSyncS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+        register(NPCSpellCastS2C.class, NPCSpellCastS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+        register(SpellCastS2C.class, SpellCastS2C::new, NetworkDirection.PLAY_TO_CLIENT);
 
         register(MinionSyncPacketS2C.class, MinionSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(PlayerCapabilitySyncPacketS2C.class, PlayerCapabilitySyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);

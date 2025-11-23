@@ -2,7 +2,11 @@ package com.electroblob.wizardry.api.content.util;
 
 import com.electroblob.wizardry.api.content.entity.living.ISpellCaster;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
+import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -10,6 +14,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -213,5 +218,49 @@ public final class EntityUtil {
         }
 
         return false;
+    }
+
+    /**
+     * Adds n random spells to the given list. The spells will be of the given element if possible. Extracted as a
+     * separate function since it was the same in both EntityWizard and EntityEvilWizard.
+     *
+     * @param spells The spell list to be populated.
+     * @param e      The element that the spells should belong to, or {@link Elements#MAGIC} for a random element each time.
+     * @param master Whether to include master spells.
+     * @param n      The number of spells to add.
+     * @param random A random number generator to use.
+     * @return The tier of the highest-tier spell that was added to the list.
+     *
+     */
+    public static SpellTier populateSpells(List<Spell> spells, Element e, boolean master, int n, RandomSource random) {
+        // This is the tier of the highest tier spell added, novice only at the start
+        SpellTier maxTier = SpellTiers.NOVICE;
+
+        List<Spell> npcSpells = SpellUtil.getSpells(Spell::canCastByEntity);
+
+        for (int i = 0; i < n; i++) {
+            SpellTier tier;
+            Element element = e == Elements.MAGIC ? SpellUtil.getRandomElement(random) : e;
+
+            int randomizer = random.nextInt(20);
+            if (randomizer < 10) tier = SpellTiers.NOVICE;
+            else if (randomizer < 16) tier = SpellTiers.APPRENTICE;
+            else if (randomizer < 19 || !master) tier = SpellTiers.ADVANCED;
+            else tier = SpellTiers.MASTER;
+            if (tier.level > maxTier.level) maxTier = tier;
+
+            // TODO: Add a filter for NPC spells
+            List<Spell> list = SpellUtil.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element);
+
+            list.retainAll(npcSpells);
+            list.removeAll(spells);
+
+            if (list.isEmpty()) {
+                list = npcSpells;
+                list.removeAll(spells);
+            }
+            if (!list.isEmpty()) spells.add(list.get(random.nextInt(list.size())));
+        }
+        return maxTier;
     }
 }

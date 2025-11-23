@@ -3,8 +3,11 @@ package com.electroblob.wizardry.api.content.util;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
+import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -28,6 +31,14 @@ public final class SpellUtil {
     private SpellUtil() {
     }
 
+    public static List<Spell> getSpells(Predicate<Spell> filter) {
+        return Services.REGISTRY_UTIL.getSpells().stream().filter(filter.and(s -> s != Spells.NONE)).collect(Collectors.toList());
+    }
+
+    public static Element getRandomElement(RandomSource random) {
+        return Services.REGISTRY_UTIL.getElements().stream().toList().get(random.nextInt(Services.REGISTRY_UTIL.getElements().size()));
+    }
+
     /**
      * Sets a spell to the given ItemStack.
      *
@@ -40,13 +51,41 @@ public final class SpellUtil {
         return stack;
     }
 
-    public static List<Spell> getSpells(Predicate<Spell> filter) {
-        return Services.REGISTRY_UTIL.getSpells().stream().filter(filter.and(s -> s != Spells.NONE)).collect(Collectors.toList());
+    /**
+     * Creates a spell book ItemStack containing the given spell.
+     *
+     * @param spell The spell to put in the book.
+     * @return The spell book ItemStack.
+     */
+    public static ItemStack spellBookItem(Spell spell) {
+        ItemStack stack = new ItemStack(EBItems.SPELL_BOOK.get(), 1);
+        setSpell(stack, spell);
+        return stack;
     }
 
-    public static Element getRandomElement(RandomSource random) {
-        return Services.REGISTRY_UTIL.getElements().stream().toList().get(random.nextInt(Services.REGISTRY_UTIL.getElements().size()));
+    /**
+     * Creates a wand ItemStack of the given tier and element.
+     *
+     * @param tier    The tier of the wand.
+     * @param element The element of the wand.
+     * @return The wand ItemStack.
+     */
+    public static ItemStack wandItem(SpellTier tier, Element element) {
+        return new ItemStack(WandItem.getWand(tier, element));
     }
+
+    /**
+     * Creates an arcane tome ItemStack of the given tier.
+     *
+     * @param tier The tier of the arcane tome.
+     * @return The arcane tome ItemStack.
+     */
+    public static ItemStack arcaneTomeItem(SpellTier tier) {
+        ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get());
+        stack.getOrCreateTag().putString("Tier", tier.getLocation().toString());
+        return stack;
+    }
+
 
     /**
      * Retrieves the spell from the given ItemStack.

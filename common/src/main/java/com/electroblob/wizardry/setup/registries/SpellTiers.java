@@ -3,7 +3,10 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
-import net.minecraft.ChatFormatting;
+import com.electroblob.wizardry.content.spell_tier.AdvancedTier;
+import com.electroblob.wizardry.content.spell_tier.ApprenticeTier;
+import com.electroblob.wizardry.content.spell_tier.MasterTier;
+import com.electroblob.wizardry.content.spell_tier.NoviceTier;
 import net.minecraft.core.Registry;
 
 import java.util.HashMap;
@@ -12,10 +15,11 @@ import java.util.function.Supplier;
 
 public final class SpellTiers {
     public static Map<String, SpellTier> TIERS = new HashMap<>();
-    public static final SpellTier NOVICE = tier("novice", () -> new SpellTier("novice", 700, 3, 12, 0, ChatFormatting.WHITE, 100));
-    public static final SpellTier APPRENTICE = tier("apprentice", () -> new SpellTier("apprentice", 1500, 5, 5, 1, ChatFormatting.AQUA, 200));
-    public static final SpellTier ADVANCED = tier("advanced", () -> new SpellTier("advanced", 3500, 7, 2, 2, ChatFormatting.DARK_BLUE, 300));
-    public static final SpellTier MASTER = tier("master", () -> new SpellTier("master", 6000, 9, 1, 3, ChatFormatting.DARK_PURPLE, 400));
+    public static final SpellTier NOVICE = tier("novice", NoviceTier::new);
+    public static final SpellTier APPRENTICE = tier("apprentice", ApprenticeTier::new);
+    public static final SpellTier ADVANCED = tier("advanced", AdvancedTier::new);
+    public static final SpellTier MASTER = tier("master", MasterTier::new);
+
     private SpellTiers() {
     }
 

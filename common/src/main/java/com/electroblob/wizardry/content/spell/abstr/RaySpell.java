@@ -113,7 +113,7 @@ public abstract class RaySpell extends Spell {
 
         if (targetPos == null) return false;
 
-        if (shootSpell(ctx, origin, targetPos.subtract(origin).normalize())) return false;
+        if (!shootSpell(ctx, origin, targetPos.subtract(origin).normalize())) return false;
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }

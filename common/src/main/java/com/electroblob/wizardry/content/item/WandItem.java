@@ -20,6 +20,7 @@ import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.networking.s2c.SpellCastS2C;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -73,7 +74,14 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (!canCast(stack, spell, ctx)) return InteractionResultHolder.fail(stack);
         int charge = (int) (spell.getCharge() * ctx.modifiers().get(SpellModifiers.CHARGEUP));
         if (spell.isInstantCast() || charge < 0)
-            if (cast(stack, spell, ctx)) return InteractionResultHolder.success(stack);
+            if (cast(stack, spell, ctx)) {
+                if (!level.isClientSide) {
+                    // TODO spell requires packet
+                    SpellCastS2C msg = new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers());
+                    Services.NETWORK_HELPER.sendToDimension(level.getServer(), msg, level.dimension());
+                }
+                return InteractionResultHolder.success(stack);
+            }
 
         if (!player.isUsingItem() && spell.isInstantCast()) {
             player.startUsingItem(hand);
