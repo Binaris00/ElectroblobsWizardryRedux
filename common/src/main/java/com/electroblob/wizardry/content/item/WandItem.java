@@ -75,8 +75,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         int charge = (int) (spell.getCharge() * ctx.modifiers().get(SpellModifiers.CHARGEUP));
         if (spell.isInstantCast() || charge < 0)
             if (cast(stack, spell, ctx)) {
-                if (!level.isClientSide) {
-                    // TODO spell requires packet
+                if (!level.isClientSide && spell.isInstantCast() && spell.requiresPacket()) {
                     SpellCastS2C msg = new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers());
                     Services.NETWORK_HELPER.sendToDimension(level.getServer(), msg, level.dimension());
                 }

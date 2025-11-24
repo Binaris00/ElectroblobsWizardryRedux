@@ -112,6 +112,11 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
     }
 
     @Override
+    public boolean requiresPacket() {
+        return false;
+    }
+
+    @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.empty();
     }

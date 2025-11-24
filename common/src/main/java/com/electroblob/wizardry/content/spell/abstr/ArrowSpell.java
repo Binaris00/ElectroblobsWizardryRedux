@@ -131,6 +131,11 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
     }
 
     @Override
+    public boolean requiresPacket() {
+        return false;
+    }
+
+    @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.empty();
     }

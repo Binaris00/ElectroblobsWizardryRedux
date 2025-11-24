@@ -57,6 +57,11 @@ public class GrowthAura extends Spell {
     }
 
     @Override
+    public boolean requiresPacket() {
+        return false;
+    }
+
+    @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.UTILITY, SpellAction.POINT_UP, 20, 0, 50)

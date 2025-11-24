@@ -190,7 +190,7 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
             WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, spell, attacker, modifiers));
             this.cooldown = this.baseCooldown + spell.getCooldown();
 
-            if (!attacker.level().isClientSide) {
+            if (!attacker.level().isClientSide && spell.requiresPacket()) {
                 NPCSpellCastS2C msg = new NPCSpellCastS2C(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, modifiers);
                 Services.NETWORK_HELPER.sendToTracking(attacker, msg);
             }

@@ -52,6 +52,11 @@ public class WitherSkullSpell extends Spell {
     }
 
     @Override
+    public boolean requiresPacket() {
+        return false;
+    }
+
+    @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 20, 5, 30)

@@ -23,6 +23,11 @@ public class PocketWorkbench extends Spell {
     }
 
     @Override
+    public boolean requiresPacket() {
+        return false;
+    }
+
+    @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT_UP, 30, 0, 40)

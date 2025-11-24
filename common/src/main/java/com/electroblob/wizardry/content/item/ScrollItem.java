@@ -10,6 +10,7 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.networking.s2c.SpellCastS2C;
 import com.electroblob.wizardry.core.platform.Services;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -53,8 +54,13 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
             return InteractionResultHolder.fail(player.getItemInHand(hand));
 
         if (spell.isInstantCast()) {
-            if (cast(player.getItemInHand(hand), spell, ctx))
+            if (cast(player.getItemInHand(hand), spell, ctx)) {
+                if (!level.isClientSide && spell.requiresPacket()) {
+                    SpellCastS2C msg = new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers());
+                    Services.NETWORK_HELPER.sendToDimension(level.getServer(), msg, level.dimension());
+                }
                 return InteractionResultHolder.success(player.getItemInHand(hand));
+            }
         } else {
             if (!player.isUsingItem()) player.startUsingItem(hand);
             Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());

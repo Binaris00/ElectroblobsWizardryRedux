@@ -116,6 +116,10 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
     protected void addConstructExtras(T construct, Direction side, @Nullable LivingEntity caster) {
     }
 
+    @Override
+    public boolean requiresPacket() {
+        return false;
+    }
 
     @Override
     protected @NotNull SpellProperties properties() {

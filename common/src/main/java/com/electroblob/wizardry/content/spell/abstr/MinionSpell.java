@@ -202,6 +202,11 @@ public class MinionSpell<T extends Mob> extends Spell {
     }
 
     @Override
+    public boolean requiresPacket() {
+        return false;
+    }
+
+    @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.empty();
     }

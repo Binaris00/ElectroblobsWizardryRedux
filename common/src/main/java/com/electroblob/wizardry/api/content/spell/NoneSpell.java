@@ -18,8 +18,8 @@ public final class NoneSpell extends Spell {
     }
 
     @Override
-    public Element getElement() {
-        return Elements.MAGIC;
+    public boolean requiresPacket() {
+        return false;
     }
 
     @Override

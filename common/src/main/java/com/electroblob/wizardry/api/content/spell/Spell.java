@@ -88,6 +88,20 @@ public abstract class Spell {
         return this instanceof NoneSpell;
     }
 
+    /**
+     * Whether this spell requires a packet to be sent when it is cast. Returns true by default, but can be overridden
+     * to return false <b>if</b> the spell's cast() method does not use any code that must be executed client-side (i.e.
+     * particle spawning). This is not checked for continuous spells, because they never need to send packets.
+     * <p>
+     * <i>If in doubt, leave this method as is; it is purely an optimisation.</i>
+     *
+     * @return true if the spell code should be run on the server and all clients in the dimension, false if the spell
+     * code should only be run on the server and the client of the player casting it.
+     */
+    public boolean requiresPacket() {
+        return true;
+    }
+
     // ===================================================
     // NAME AND FORMATTING
     // ==================================================
