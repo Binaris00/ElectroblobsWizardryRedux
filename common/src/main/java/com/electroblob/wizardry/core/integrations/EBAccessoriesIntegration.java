@@ -4,17 +4,13 @@ import com.electroblob.wizardry.api.content.util.ArtefactItem;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.core.IArtefactEffect;
 import com.electroblob.wizardry.core.platform.Services;
-import io.wispforest.accessories.api.AccessoriesCapability;
-import io.wispforest.accessories.api.slot.SlotEntryReference;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("ConstantConditions")
 public final class EBAccessoriesIntegration {
@@ -26,28 +22,49 @@ public final class EBAccessoriesIntegration {
     }
 
     public static Item getSafeArtifact(Rarity rarity, IArtefactEffect effect) {
-        return !isAccessoriesLoaded() ? new ArtefactItem(rarity, effect) : new AccessoriesArtefactItem(rarity, effect);
+        if (!isAccessoriesLoaded()) {
+            return new ArtefactItem(rarity, effect);
+        }
+        // Isolate the class loading by calling a separate method
+        try {
+            return AccessoriesIntegrationImpl.createAccessoryItem(rarity, effect);
+        } catch (NoClassDefFoundError e) {
+            // Fallback if Accessories classes are not available
+            return new ArtefactItem(rarity, effect);
+        }
     }
 
     public static List<ItemStack> getEquippedItems(Player player) {
         if (isAccessoriesLoaded()) {
-            if (AccessoriesCapability.get(player) != null) {
-                return AccessoriesCapability.get(player).getAllEquipped().stream().map(SlotEntryReference::stack).collect(Collectors.toList());
+            try {
+                return AccessoriesIntegrationImpl.getEquippedItemsFromAccessories(player);
+            } catch (NoClassDefFoundError e) {
+                // Fallback if Accessories classes are not available
             }
-            return Collections.emptyList();
         }
 
         return InventoryUtil.getPrioritisedHotBarAndOffhand(player); // TODO Important, delete repeated artefacts
     }
 
     public static boolean isEquipped(Player player, Item item) {
-        if (AccessoriesCapability.get(player) != null) return AccessoriesCapability.get(player).isEquipped(item);
+        if (isAccessoriesLoaded()) {
+            try {
+                return AccessoriesIntegrationImpl.isEquippedInAccessories(player, item);
+            } catch (NoClassDefFoundError e) {
+                // Fallback if Accessories classes are not available
+            }
+        }
         return false;
     }
 
     public static @Nullable ItemStack getEquipped(Player player, Item item) {
-        if (AccessoriesCapability.get(player) != null)
-            return AccessoriesCapability.get(player).getFirstEquipped(item).stack();
+        if (isAccessoriesLoaded()) {
+            try {
+                return AccessoriesIntegrationImpl.getEquippedFromAccessories(player, item);
+            } catch (NoClassDefFoundError e) {
+                // Fallback if Accessories classes are not available
+            }
+        }
         return null;
     }
 }

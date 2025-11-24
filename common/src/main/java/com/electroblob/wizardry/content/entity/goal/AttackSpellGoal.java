@@ -97,10 +97,8 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
     private void setContinuousSpellAndNotify(Spell spell, SpellModifiers modifiers) {
         attacker.setContinuousSpell(spell);
 
-        if (!attacker.level().isClientSide) {
             Services.NETWORK_HELPER.sendToTracking(attacker,
                     new NPCSpellCastS2C(attacker.getId(), target == null ? -1 : target.getId(), InteractionHand.MAIN_HAND, spell, modifiers));
-        }
     }
 
     @Override

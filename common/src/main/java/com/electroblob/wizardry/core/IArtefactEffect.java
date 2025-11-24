@@ -18,10 +18,6 @@ import net.minecraft.world.level.Level;
  * <br><br>
  * You have all the freedom to add a custom implementation of this interface for your own artefacts, but if you do so,
  * you must ensure to load the events yourself.
- *
- * @see ArtefactItem
- * @see com.electroblob.wizardry.core.integrations.AccessoriesArtefactItem
- * @see com.electroblob.wizardry.setup.registries.EBItems
  */
 public interface IArtefactEffect {
     default void onTick(LivingEntity entity, Level level, ItemStack stack) {
