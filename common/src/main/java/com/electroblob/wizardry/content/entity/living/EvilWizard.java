@@ -25,10 +25,6 @@ public class EvilWizard extends AbstractWizard implements Enemy {
         super(type, world);
     }
 
-    public static boolean checkEvilWizardSpawnRules(EntityType<? extends AbstractWizard> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(type, level, spawnType, pos, random);
-    }
-
     @Override
     protected void registerGoals() {
         super.registerGoals();
@@ -40,6 +36,10 @@ public class EvilWizard extends AbstractWizard implements Enemy {
     public @NotNull Component getDisplayName() {
         if (this.hasCustomName()) return super.getDisplayName();
         return this.getElement().getWizardName();
+    }
+
+    public static boolean checkEvilWizardSpawnRules(EntityType<? extends AbstractWizard> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
+        return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 
     @Nullable
