@@ -1,6 +1,8 @@
 package com.electroblob.wizardry.datagen.provider;
 
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.google.common.collect.Sets;
 import com.google.gson.JsonObject;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
@@ -8,13 +10,10 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.concurrent.CompletableFuture;
-
-import com.google.common.collect.Sets;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
 /**
@@ -42,8 +41,11 @@ public abstract class SpellDataProvider implements DataProvider {
         this.buildSpells(spell -> {
             if (!duplicates.add(spell.getLocation()))
                 throw new IllegalStateException("Duplicate spell " + spell.getLocation());
-            JsonObject jsonObject = spell.getProperties().toJson();
-            futures.add(DataProvider.saveStable(output, jsonObject, this.pathProvider.json(spell.getLocation())));
+            // Don't generate empty sensible property files
+            if (!spell.property(DefaultProperties.SENSIBLE)) {
+                JsonObject jsonObject = spell.getProperties().toJson();
+                futures.add(DataProvider.saveStable(output, jsonObject, this.pathProvider.json(spell.getLocation())));
+            }
         });
 
         return CompletableFuture.allOf(futures.toArray(CompletableFuture[]::new));

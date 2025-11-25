@@ -119,7 +119,7 @@ public class SpellProperties {
     public SpellTier getTier() {
         String s = get(DefaultProperties.TIER);
         for (SpellTier tier : Services.REGISTRY_UTIL.getTiers()) {
-            if (tier.getLocation().toString().equals(s)) return tier;
+            if (tier.getOrCreateLocation().toString().equals(s)) return tier;
         }
         return SpellTiers.NOVICE; // Default
     }
@@ -202,9 +202,9 @@ public class SpellProperties {
         }
 
         public Builder assignBaseProperties(SpellTier tier, Element element, SpellType type, SpellAction action, int cost, int charge, int cooldown) {
-            add(DefaultProperties.TIER, tier.getLocation().toString());
             add(DefaultProperties.ELEMENT, element.getLocation().toString());
             add(DefaultProperties.SPELL_TYPE, type.getUnlocalisedName());
+            add(DefaultProperties.TIER, tier.getOrCreateLocation().toString());
             add(DefaultProperties.SPELL_ACTION, action.location.toString());
             add(DefaultProperties.COST, cost);
             add(DefaultProperties.COOLDOWN, cooldown);

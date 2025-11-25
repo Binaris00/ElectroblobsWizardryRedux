@@ -82,7 +82,7 @@ public final class SpellUtil {
      */
     public static ItemStack arcaneTomeItem(SpellTier tier) {
         ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get());
-        stack.getOrCreateTag().putString("Tier", tier.getLocation().toString());
+        stack.getOrCreateTag().putString("Tier", tier.getOrCreateLocation().toString());
         return stack;
     }
 

@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.platform;
 
 import com.electroblob.wizardry.core.platform.services.IPlatformHelper;
+import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.core.Holder;
@@ -22,6 +23,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public boolean isDevelopmentEnvironment() {
         return FabricLoader.getInstance().isDevelopmentEnvironment();
+    }
+
+    @Override
+    public boolean isDedicatedServer() {
+        return FabricLoader.getInstance().getEnvironmentType() == EnvType.SERVER;
     }
 
     @Override

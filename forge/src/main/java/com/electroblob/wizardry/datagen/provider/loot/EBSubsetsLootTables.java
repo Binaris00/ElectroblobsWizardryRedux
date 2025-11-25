@@ -202,7 +202,7 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
 
     private static CompoundTag tierTag(SpellTier tier){
         CompoundTag tag = new CompoundTag();
-        tag.putString("Tier", tier.getLocation().toString());
+        tag.putString("Tier", tier.getOrCreateLocation().toString());
         return tag;
     }
 }

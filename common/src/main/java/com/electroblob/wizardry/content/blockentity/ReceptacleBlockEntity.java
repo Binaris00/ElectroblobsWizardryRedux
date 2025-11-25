@@ -24,8 +24,10 @@ public class ReceptacleBlockEntity extends BlockEntity {
 
     public void setStack(ItemStack stack) {
         this.stack = stack;
-        level.blockUpdated(worldPosition, getBlockState().getBlock());
-        level.getChunkSource().getLightEngine().checkBlock(worldPosition);
+        setChanged();
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
     }
 
     public Element getElement() {

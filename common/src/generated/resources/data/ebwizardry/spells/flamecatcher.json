@@ -1,0 +1,16 @@
+{
+  "base_properties": {
+    "damage": 16.0,
+    "effect_duration": 15,
+    "item_lifetime": 900,
+    "range": 20.0,
+    "shot_count": 5
+  },
+  "charge": 20,
+  "cooldown": 150,
+  "cost": 100,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:summon",
+  "spell_type": "utility",
+  "tier": "ebwizardry:master"
+}

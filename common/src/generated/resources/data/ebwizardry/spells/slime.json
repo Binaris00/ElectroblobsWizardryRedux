@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "duration": 200,
+    "range": 8.0
+  },
+  "charge": 0,
+  "cooldown": 50,
+  "cost": 20,
+  "element": "ebwizardry:earth",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "attack",
+  "tier": "ebwizardry:advanced"
+}

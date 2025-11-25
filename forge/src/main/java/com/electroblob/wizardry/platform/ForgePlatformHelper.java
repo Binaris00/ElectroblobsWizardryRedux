@@ -25,6 +25,11 @@ public class ForgePlatformHelper implements IPlatformHelper {
     }
 
     @Override
+    public boolean isDedicatedServer() {
+        return FMLLoader.getDist().isDedicatedServer();
+    }
+
+    @Override
     public boolean intHotBiomes(Holder<Biome> biome) {
         return biome.is(Tags.Biomes.IS_HOT) || biome.is(Tags.Biomes.IS_DRY);
     }

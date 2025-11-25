@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.capabilities;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
@@ -131,7 +130,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.putString("maxTier", maxTierReached.getLocation().toString());
+        tag.putString("maxTier", maxTierReached.getOrCreateLocation().toString());
 
         ListTag alliesTag = new ListTag();
         allies.forEach(uuid -> alliesTag.add(StringTag.valueOf(uuid.toString())));

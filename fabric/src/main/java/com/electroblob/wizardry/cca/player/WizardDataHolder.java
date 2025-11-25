@@ -161,7 +161,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
 
     @Override
     public void writeToNbt(@NotNull CompoundTag tag) {
-        tag.putString("maxTier", maxTierReached.getLocation().toString());
+        tag.putString("maxTier", maxTierReached.getOrCreateLocation().toString());
 
         ListTag alliesTag = new ListTag();
         allies.forEach(uuid -> alliesTag.add(StringTag.valueOf(uuid.toString())));

@@ -34,9 +34,9 @@ public final class SpellTiers {
                 function.register((Registry<SpellTier>) registry, WizardryMainMod.location(id), tier)));
     }
 
-    //
     static SpellTier tier(String name, Supplier<SpellTier> tierSupplier) {
         var tier = tierSupplier.get();
+        tier.setLocation(WizardryMainMod.location(name));
         TIERS.put(name, tier);
         return tier;
     }

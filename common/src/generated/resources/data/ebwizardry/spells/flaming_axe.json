@@ -1,0 +1,13 @@
+{
+  "base_properties": {
+    "effect_duration": 8,
+    "item_lifetime": 1200
+  },
+  "charge": 10,
+  "cooldown": 50,
+  "cost": 45,
+  "element": "ebwizardry:fire",
+  "spell_action": "ebwizardry:summon",
+  "spell_type": "utility",
+  "tier": "ebwizardry:advanced"
+}

@@ -1,13 +1,13 @@
 {
   "base_properties": {
-    "item_lifetime": 200,
-    "sensible": true
+    "damage": 8.0,
+    "range": 3.0
   },
   "charge": 0,
-  "cooldown": 5,
+  "cooldown": 15,
   "cost": 5,
-  "element": "ebwizardry:fire",
+  "element": "ebwizardry:lightning",
   "spell_action": "ebwizardry:point",
-  "spell_type": "construct",
+  "spell_type": "attack",
   "tier": "ebwizardry:novice"
 }

@@ -148,7 +148,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
             object.addProperty("undiscovered_bias", function.undiscoveredBias);
 
             if (function.tiers != null && !function.tiers.isEmpty()) {
-                DataResult<JsonElement> result = ResourceLocation.CODEC.listOf().encodeStart(JsonOps.INSTANCE, function.tiers.stream().map(SpellTier::getLocation).collect(Collectors.toList()));
+                DataResult<JsonElement> result = ResourceLocation.CODEC.listOf().encodeStart(JsonOps.INSTANCE, function.tiers.stream().map(SpellTier::getOrCreateLocation).collect(Collectors.toList()));
                 result.result().ifPresent((jsonElement -> object.add("tiers", jsonElement)));
             }
 

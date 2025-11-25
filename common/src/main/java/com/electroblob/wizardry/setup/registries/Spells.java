@@ -768,8 +768,10 @@ public final class Spells {
 
     @SuppressWarnings("unchecked")
     public static void register(Registry<?> registry, RegisterFunction<Spell> function) {
-        // remove all the spells with the sensible property
-        if (!Services.PLATFORM.isDevelopmentEnvironment()) {
+        // remove all the spells with the sensible property, except in dev environments where testers might want to try
+        // them out, removing them on dedicated servers as well since we could want to test in a dev environment but not have
+        // these spells available on a dedicated server (e.g. for multiplayer testing).
+        if (!Services.PLATFORM.isDevelopmentEnvironment() || Services.PLATFORM.isDedicatedServer()) {
             SPELLS.values().removeIf(spell -> spell.property(DefaultProperties.SENSIBLE));
         }
 

@@ -120,14 +120,24 @@ public class ReceptacleBlock extends Block implements EntityBlock {
 
         // If wanting to add an item to an empty receptacle
         if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof ReceptacleItemValue) {
-            ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
-            blockEntity.setStack(receptacleItem.split(1));
+            if (!level.isClientSide) {
+                ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
+                blockEntity.setStack(receptacleItem.split(1));
+                level.playSound(null, pos, EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
         // If wanting to take an item out of a filled receptacle
-        if (!stack.isEmpty() && !player.getInventory().add(stack)) {
-            player.drop(stack, false);
+        if (!stack.isEmpty()) {
+            if (!level.isClientSide) {
+                if (!player.getInventory().add(stack)) {
+                    player.drop(stack, false);
+                }
+                blockEntity.setStack(ItemStack.EMPTY);
+                level.playSound(null, pos, EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f);
+            }
+            return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f, false);
         return InteractionResult.SUCCESS;
     }
 

@@ -1,4 +1,4 @@
-// 1.20.1	2025-09-29T08:54:41.5368557	Loot Tables
+// 1.20.1	2025-11-24T21:31:17.864550884	Loot Tables
 3770f93b9b53f0fd4b09297525301407e419141c data/ebwizardry/loot_tables/blocks/acacia_bookshelf.json
 88143e64aad1aa93d3e22696c4f728e9442b9b1b data/ebwizardry/loot_tables/blocks/acacia_lectern.json
 bf581132b9cc6376faa77b60bdaade7f6a19df65 data/ebwizardry/loot_tables/blocks/arcane_workbench.json
@@ -36,7 +36,6 @@ d9c095819408d7456b9f6113439b550e62a6969b data/ebwizardry/loot_tables/blocks/jung
 82abdd4fb14622dcbb482c5c4981cce621190dbf data/ebwizardry/loot_tables/blocks/jungle_lectern.json
 7de48fb1629dcf31dfb8c00762801713d0c88801 data/ebwizardry/loot_tables/blocks/lightning_runestone.json
 e2308b2b36b633d31ee43d8130b920d7bcfcfe88 data/ebwizardry/loot_tables/blocks/lightning_runestone_pedestal.json
-5b5d5f9bee03cfab9ad86e4d035834605587c38b data/ebwizardry/loot_tables/blocks/meteor.json
 4bb9232fe1f0d5f306c211bea9906a70094336d8 data/ebwizardry/loot_tables/blocks/necromancy_runestone.json
 26ecfee05608e05005e94d95b84f3409cd6ce197 data/ebwizardry/loot_tables/blocks/necromancy_runestone_pedestal.json
 dd3687aa63fc9eba7110cbcccdae84d8c9d0b852 data/ebwizardry/loot_tables/blocks/oak_bookshelf.json

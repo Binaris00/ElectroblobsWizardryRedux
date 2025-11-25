@@ -8,6 +8,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,7 @@ public class SpellTier {
     private final int progression;
     private final ChatFormatting color;
     private String descriptionId;
+    private ResourceLocation location;
 
     public SpellTier(int maxCharge, int upgradeLimit, int weight, int level, ChatFormatting color, int progression) {
         this.maxCharge = maxCharge;
@@ -106,17 +108,37 @@ public class SpellTier {
 
     /**
      * Will return the description ID for the tier (e.g. "tier.ebwizardry.novice")
-     * if you want the location instead, use {@link #getLocation()}
+     * if you want the location instead, use {@link #getOrCreateLocation()}
      */
     public String getDescriptionId() {
         return this.getOrCreateDescriptionId();
     }
 
     /**
+     * Will return the location for the tier, or null if it hasn't been registered yet (e.g. "ebwizardry:novice")
+     */
+    public @Nullable ResourceLocation getOrCreateLocation() {
+        if (this.location == null) this.location = Services.REGISTRY_UTIL.getTier(this);
+        return this.location;
+    }
+
+    /**
      * Will return the location for the tier (e.g. "ebwizardry:novice")
      */
     public ResourceLocation getLocation() {
-        return Services.REGISTRY_UTIL.getTier(this);
+        return this.getOrCreateLocation();
+    }
+
+    /**
+     * Sets the location for this tier. This should only be called during registration.
+     *
+     * @param location The resource location for this tier
+     */
+    public void setLocation(ResourceLocation location) {
+        if (this.location != null) {
+            throw new IllegalStateException("Location already set for tier");
+        }
+        this.location = location;
     }
 
     /**

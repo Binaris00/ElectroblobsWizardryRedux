@@ -22,6 +22,8 @@ public final class NoneSpell extends Spell {
         return false;
     }
 
+
+
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder().assignBaseProperties(SpellTiers.NOVICE, Elements.MAGIC, SpellType.UTILITY, SpellAction.NONE, 0, 0, 0)

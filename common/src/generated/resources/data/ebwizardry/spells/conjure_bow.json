@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "item_lifetime": 1200
+  },
+  "charge": 0,
+  "cooldown": 50,
+  "cost": 25,
+  "element": "ebwizardry:magic",
+  "spell_action": "ebwizardry:summon",
+  "spell_type": "utility",
+  "tier": "ebwizardry:apprentice"
+}
