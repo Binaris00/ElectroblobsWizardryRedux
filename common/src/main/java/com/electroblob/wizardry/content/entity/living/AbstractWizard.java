@@ -7,7 +7,7 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.util.*;
-import com.electroblob.wizardry.content.entity.goal.AttackSpellGoal;
+import com.electroblob.wizardry.content.entity.goal.*;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
 import com.electroblob.wizardry.core.platform.Services;
@@ -72,7 +72,9 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
     @Override
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new FloatGoal(this));
-        this.goalSelector.addGoal(3, new AttackSpellGoal<>(this, 0.5D, 14.0F, 30, 50));
+        this.goalSelector.addGoal(2, new RangedKitingGoal(this, 0.6D));
+        this.goalSelector.addGoal(3, new HardLookAtTargetGoal(this, 10.0F, 10.0F));
+        this.goalSelector.addGoal(4, new AttackSpellBasicGoal<>(this, 14.0F, 30, 50));
         this.goalSelector.addGoal(5, new OpenDoorGoal(this, true));
         this.goalSelector.addGoal(6, new MoveTowardsRestrictionGoal(this, 0.6D));
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, Player.class, 3.0F, 1.0F));

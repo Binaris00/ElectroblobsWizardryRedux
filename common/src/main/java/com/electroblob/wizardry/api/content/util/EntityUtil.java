@@ -7,6 +7,7 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -187,10 +188,10 @@ public final class EntityUtil {
 
     public static int getDefaultAimingError(Difficulty difficulty) {
         return switch (difficulty) {
-            case EASY -> 10;
-            case NORMAL -> 6;
-            case HARD -> 2;
-            default -> 10;
+            case EASY -> 5;
+            case NORMAL -> 3;
+            case HARD -> 0;
+            default -> 4;
         };
     }
 

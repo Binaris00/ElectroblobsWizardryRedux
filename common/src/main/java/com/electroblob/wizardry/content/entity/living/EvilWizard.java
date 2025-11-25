@@ -28,6 +28,7 @@ public class EvilWizard extends AbstractWizard implements Enemy {
     @Override
     protected void registerGoals() {
         super.registerGoals();
+        this.targetSelector.removeAllGoals((g) -> true); // Clear existing target goals added by AbstractWizard
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Wizard.class, true));
     }
