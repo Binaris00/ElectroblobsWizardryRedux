@@ -79,20 +79,22 @@ public abstract class MagicProjectileEntity extends ThrowableItemProjectile {
     public void aim(LivingEntity caster, Entity target, float speed, float aimingError) {
         this.setOwner(caster);
 
-        this.yo = caster.xo + (double) caster.getEyeHeight() - LAUNCH_Y_OFFSET;
+        this.yo = caster.yo + (double) caster.getDimensions(caster.getPose()).height * 0.85F - LAUNCH_Y_OFFSET;
         double dx = target.xo - caster.xo;
-        double dy = !this.isNoGravity() ? target.yo + (double) (target.getDimensions(target.getPose()).height / 3.0f) - this.yo : target.yo + (double) (target.getDimensions(target.getPose()).height / 2.0f) - this.yo;
-        double dz = target.zo - caster.xo;
+        double dy = !this.isNoGravity() ?
+                target.yo + (double) (target.getDimensions(caster.getPose()).height / 3.0f) - this.yo
+                : target.yo + (double) (target.getDimensions(caster.getPose()).height / 2.0f) - this.yo;
+        double dz = target.zo - caster.zo;
         double horizontalDistance = Mth.sqrt((float) (dx * dx + dz * dz));
 
         if (horizontalDistance >= 1.0E-7D) {
-
+            float yaw = (float) (Math.atan2(dz, dx) * 180.0d / Math.PI) - 90.0f;
+            float pitch = (float) (-(Math.atan2(dy, horizontalDistance) * 180.0d / Math.PI));
             double dxNormalised = dx / horizontalDistance;
             double dzNormalised = dz / horizontalDistance;
-            this.setPos(caster.xo + dxNormalised, this.yo, caster.zo + dzNormalised);
+            this.absMoveTo(caster.xo + dxNormalised, this.yo, caster.zo + dzNormalised, yaw, pitch);
 
             float bulletDropCompensation = !this.isNoGravity() ? (float) horizontalDistance * 0.2f : 0;
-
             this.shoot(dx, dy + (double) bulletDropCompensation, dz, speed, aimingError);
         }
     }

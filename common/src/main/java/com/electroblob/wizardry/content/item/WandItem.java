@@ -551,7 +551,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     public static Item getWand(SpellTier tier, Element element) {
         if (tier == null) throw new NullPointerException("The given tier cannot be null.");
         if (element == null) element = Elements.MAGIC;
-        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "magic" : tier.getOrCreateLocation().getPath();
+        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "novice" : tier.getOrCreateLocation().getPath();
         if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
         registryName = "wand_" + registryName;
         return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));

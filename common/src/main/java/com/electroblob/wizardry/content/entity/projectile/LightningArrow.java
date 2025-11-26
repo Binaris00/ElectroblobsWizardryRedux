@@ -42,13 +42,9 @@ public class LightningArrow extends MagicArrowEntity {
     }
 
     @Override
-    public void tick() {
-        if (!this.inGround) {
-            if (this.tickCount > 1) {
-                ParticleBuilder.create(EBParticles.SPARK).pos(this.xo, this.yo, this.zo).spawn(this.level());
-            }
-        }
-        super.tick();
+    public void tickInGround() {
+        if (this.tickCount > 1 && level().isClientSide)
+            ParticleBuilder.create(EBParticles.SPARK).pos(this.xo, this.yo, this.zo).spawn(this.level());
     }
 
     @Override

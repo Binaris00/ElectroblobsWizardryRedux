@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.entity.living;
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.living.ISpellCaster;
 import com.electroblob.wizardry.api.content.spell.Element;
@@ -11,10 +12,7 @@ import com.electroblob.wizardry.content.entity.goal.*;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
-import com.electroblob.wizardry.setup.registries.EBMobEffects;
-import com.electroblob.wizardry.setup.registries.Elements;
-import com.electroblob.wizardry.setup.registries.Spells;
+import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
@@ -35,7 +33,9 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.ServerLevelAccessor;
 import org.jetbrains.annotations.NotNull;
@@ -214,7 +214,12 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         ArrayList<Spell> list = new ArrayList<>(spells);
         list.add(Spells.HEAL);
 
-        ItemStack wand = new ItemStack(WandItem.getWand(maxTier, element));
+        Item item = WandItem.getWand(maxTier, element);
+        if (item == null || item == Items.AIR || !(item instanceof WandItem)) {
+            EBLogger.warn("Failed to create wand for wizard with element {} and max tier {}. Defaulting to apprentice wand.", element.getName(), maxTier);
+            item = EBItems.APPRENTICE_WAND.get();
+        }
+        ItemStack wand = new ItemStack(item);
         Spell[] spellsArray = list.toArray(new Spell[0]);
         WandHelper.setSpells(wand, java.util.Arrays.asList(spellsArray));
         this.setItemSlot(EquipmentSlot.MAINHAND, wand);

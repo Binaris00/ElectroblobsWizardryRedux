@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.content.entity.living.AbstractWizard;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.networking.s2c.NPCSpellCastS2C;
 import com.electroblob.wizardry.core.platform.Services;
@@ -121,7 +122,6 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
             int currentTick = this.continuousSpellDuration - this.continuousSpellTimer;
             EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, currentTick, target, attacker.getModifiers());
 
-            // Update spell counter for continuous spells
             attacker.setSpellCounter(currentTick);
 
             // Conditions to stop casting the continuous spell
@@ -203,6 +203,7 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
             this.continuousSpellTimer = this.continuousSpellDuration - 1;
             setContinuousSpellAndNotify(spell, modifiers);
             attacker.setTarget(target);
+            if (attacker instanceof AbstractWizard wizard) wizard.setSpellTargetId(target.getId());
         }
 
         return true;

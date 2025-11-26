@@ -70,7 +70,6 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
         }
 
         ctx.caster().swing(ctx.hand());
-
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
