@@ -103,10 +103,7 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
         }
 
         BlockEntity tileEntity = level.getBlockEntity(pos);
-        if (tileEntity instanceof ImbuementAltarBlockEntity e) {
-            EBLogger.info("Imbuement altar found on neighbor change, start checking recipe inside block entity");
-            e.checkRecipe();
-        }
+        if (tileEntity instanceof ImbuementAltarBlockEntity e) e.checkRecipe();
 
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
     }

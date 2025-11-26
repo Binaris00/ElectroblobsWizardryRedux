@@ -37,7 +37,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
 
     @Override
     protected void drawBackground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, float partialTicks, int mouseX, int mouseY) {
-        y += EBClientConstants.FONT.lineHeight + EBClientConstants.LINE_SPACING_NARROW;
+        y += Minecraft.getInstance().font.lineHeight + EBClientConstants.LINE_SPACING_NARROW;
         float progressFraction = 1;
 
         SpellTier nextTier = getNextTier(stack);

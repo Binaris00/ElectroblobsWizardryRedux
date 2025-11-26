@@ -2,15 +2,12 @@ package com.electroblob.wizardry.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import net.minecraft.ChatFormatting;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.Font;
 import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 
 public class EBClientConstants {
     public static final int PROGRESSION_BAR_WIDTH = 131;
     public static final int PROGRESSION_BAR_HEIGHT = 3;
-    public static final Font FONT = Minecraft.getInstance().font;
 
     public static final ResourceLocation ARCANE_WORKBENCH_CONTAINER_TEXTURE = WizardryMainMod.location("textures/gui/container/arcane_workbench.png");
     public static final ResourceLocation ARCANE_WORKBENCH_EMPTY_SLOT_CRYSTAL = new ResourceLocation("item/empty_slot_crystal");
