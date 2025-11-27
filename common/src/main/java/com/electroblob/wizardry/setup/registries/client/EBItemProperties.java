@@ -3,6 +3,7 @@ package com.electroblob.wizardry.setup.registries.client;
 import com.electroblob.wizardry.api.content.data.ConjureData;
 import com.electroblob.wizardry.core.mixin.accessor.ItemPropertiesAccessor;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
@@ -12,6 +13,10 @@ public final class EBItemProperties {
     }
 
     public static void register() {
+        EBDataGenProcessor.wandItems().forEach((s, i) ->
+                registerWandProperties(i.get()));
+
+        // Other items with pulling/conjure properties
         pullingItem(EBItems.FLAMECATCHER.get());
         conjureItem(EBItems.FLAMECATCHER.get());
 
@@ -20,6 +25,11 @@ public final class EBItemProperties {
 
         pullingItem(EBItems.SPECTRAL_BOW.get());
         conjureItem(EBItems.SPECTRAL_BOW.get());
+    }
+
+    private static void registerWandProperties(Item wand) {
+        ItemPropertiesAccessor.callRegister(wand, new ResourceLocation("casting"), (stack, clientLevel, entity, seed) ->
+                entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
     }
 
     private static void pullingItem(Item item) {

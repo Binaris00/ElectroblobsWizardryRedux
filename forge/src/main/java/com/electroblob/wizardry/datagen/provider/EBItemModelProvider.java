@@ -55,12 +55,35 @@ public final class EBItemModelProvider extends ItemModelProvider {
     }
 
     private void simpleWand(String name) {
-        withExistingParent(
-                name,
-                new ResourceLocation("item/handheld"))
+        ItemModelBuilder pointModel = withExistingParent(name + "_casting", "item/handheld")
+                .texture("layer0", new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + name));
+
+        pointModel.transforms()
+                .transform(ItemDisplayContext.THIRD_PERSON_RIGHT_HAND)
+                .rotation(0, -90, 105)
+                .translation(0, 0, -3.25f)
+                .scale(0.85f)
+                .end()
+                .transform(ItemDisplayContext.THIRD_PERSON_LEFT_HAND)
+                .rotation(0, 90, -105)
+                .translation(0, 0, -3.25f)
+                .scale(0.85f)
+                .end()
+                .transform(ItemDisplayContext.FIRST_PERSON_RIGHT_HAND)
+                .rotation(0, -90, 105)
+                .translation(1.13f, 3.2f, 0.5f)
+                .scale(0.68f)
+                .end()
+                .transform(ItemDisplayContext.FIRST_PERSON_LEFT_HAND)
+                .rotation(0, 90, -105)
+                .translation(1.13f, 3.2f, 0.5f)
+                .scale(0.68f)
+                .end();
+
+        withExistingParent(name, new ResourceLocation("item/handheld"))
                 .texture("layer0", new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + name))
-                .override().predicate(new ResourceLocation("this_gets_ignored"), 1)
-                .model(withExistingParent("wand_point", "item/handheld")).end();
+                .override().predicate(new ResourceLocation("casting"), 1)
+                .model(pointModel).end();
     }
 
     private void generateWandPointModel() {

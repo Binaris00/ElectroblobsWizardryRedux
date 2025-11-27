@@ -2,9 +2,9 @@
   "parent": "minecraft:item/handheld",
   "overrides": [
     {
-      "model": "ebwizardry:item/wand_point",
+      "model": "ebwizardry:item/wand_novice_fire_casting",
       "predicate": {
-        "minecraft:this_gets_ignored": 1.0
+        "minecraft:casting": 1.0
       }
     }
   ],
