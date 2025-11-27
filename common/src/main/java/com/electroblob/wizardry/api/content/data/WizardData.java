@@ -6,6 +6,7 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.AbstractMap;
+import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
@@ -84,4 +85,11 @@ public interface WizardData {
      *                  recent spell casts. If the predicate returns true for an entry, that entry will be removed.
      */
     void removeRecentCasts(Predicate<AbstractMap.SimpleEntry<Spell, Long>> predicate);
+
+    /**
+     * Gets a Random instance associated with this WizardData.
+     *
+     * @return A Random instance.
+     */
+    Random getRandom();
 }

@@ -40,6 +40,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
     private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
+    private Random random = new Random();
 
     private final Player provider;
 
@@ -126,6 +127,11 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         sync();
     }
 
+    @Override
+    public Random getRandom() {
+        return random;
+    }
+
 
     @Override
     public CompoundTag serializeNBT() {
@@ -150,6 +156,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
             recentSpellsTag.add(spellEntryTag);
         }
         tag.put("recentSpells", recentSpellsTag);
+        tag.putLong("randomSeed", random.nextLong());
         return tag;
     }
 
@@ -199,6 +206,11 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
                 }
             }
         }
+
+        if (tag.contains("randomSeed")) {
+            long seed = tag.getLong("randomSeed");
+            this.random = new Random(seed);
+        }
     }
 
     public void copyFrom(@NotNull WizardDataHolder holder) {
@@ -213,6 +225,8 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
 
         this.recentSpells.clear();
         this.recentSpells.addAll(holder.recentSpells);
+
+        this.random = holder.random;
         sync();
     }
 

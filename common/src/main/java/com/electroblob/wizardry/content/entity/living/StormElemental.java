@@ -3,6 +3,7 @@ package com.electroblob.wizardry.content.entity.living;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.core.mixin.accessor.BlazeAccessor;
 import com.electroblob.wizardry.core.mixin.accessor.MobGoalsAccessor;
+import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
@@ -30,6 +31,10 @@ public class StormElemental extends Blaze {
         ((MobGoalsAccessor) this).getPathfindingMalus().remove(BlockPathTypes.LAVA);
         ((MobGoalsAccessor) this).getPathfindingMalus().remove(BlockPathTypes.DANGER_FIRE);
         ((MobGoalsAccessor) this).getPathfindingMalus().remove(BlockPathTypes.DAMAGE_FIRE);
+    }
+
+    public StormElemental(Level level) {
+        this(EBEntities.STORM_ELEMENTAL.get(), level);
     }
 
     @Override

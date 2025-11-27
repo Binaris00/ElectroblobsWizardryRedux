@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.core.mixin.accessor.BlazeAccessor;
 import com.electroblob.wizardry.core.mixin.accessor.MobGoalsAccessor;
+import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -36,6 +37,10 @@ public class ShadowWraith extends Blaze {
         ((MobGoalsAccessor) this).getPathfindingMalus().remove(BlockPathTypes.LAVA);
         ((MobGoalsAccessor) this).getPathfindingMalus().remove(BlockPathTypes.DANGER_FIRE);
         ((MobGoalsAccessor) this).getPathfindingMalus().remove(BlockPathTypes.DAMAGE_FIRE);
+    }
+
+    public ShadowWraith(Level level) {
+        this(EBEntities.SHADOW_WRAITH.get(), level);
     }
 
     @Override

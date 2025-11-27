@@ -122,11 +122,17 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         if (ctx.castingTicks() == 0) {
-            if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers())))
+            if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers()))) {
+                // We want to add a short cooldown if the spell is cancelled at the start
+                ctx.caster().getCooldowns().addCooldown(this, 40);
                 return false;
+            }
         } else {
-            if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks())))
+            if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks()))) {
+                // We want to add a short cooldown if the spell is cancelled at the start
+                ctx.caster().getCooldowns().addCooldown(this, 40);
                 return false;
+            }
         }
 
         int cost = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.COST) + 0.1f);

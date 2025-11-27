@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.entity.living;
 
+import com.electroblob.wizardry.setup.registries.EBEntities;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.EntityType;
@@ -20,6 +21,10 @@ public class IceGiant extends IronGolem {
     public IceGiant(EntityType<? extends IceGiant> entityType, Level level) {
         super(entityType, level);
         this.xpReward = 0;
+    }
+
+    public IceGiant(Level level) {
+        this(EBEntities.ICE_GIANT.get(), level);
     }
 
     public static AttributeSupplier.@NotNull Builder createAttributes() {

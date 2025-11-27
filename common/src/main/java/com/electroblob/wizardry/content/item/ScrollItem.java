@@ -90,10 +90,20 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     // Just checking the spell cast events
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (ctx.castingTicks() == 0)
-            return !WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.SCROLL, spell, ctx.caster(), ctx.modifiers()));
-        else
-            return !WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.SCROLL, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks()));
+        if (ctx.castingTicks() == 0) {
+            if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers()))) {
+                // We want to add a short cooldown if the spell is cancelled at the start
+                ctx.caster().getCooldowns().addCooldown(this, 40);
+                return false;
+            }
+        } else {
+            if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks()))) {
+                // We want to add a short cooldown if the spell is cancelled at the start
+                ctx.caster().getCooldowns().addCooldown(this, 40);
+                return false;
+            }
+        }
+        return false;
     }
 
     @Override

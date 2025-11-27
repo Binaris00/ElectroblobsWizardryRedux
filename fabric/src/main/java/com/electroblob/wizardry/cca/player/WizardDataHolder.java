@@ -30,6 +30,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
     private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
+    private Random random = new Random();
 
     public WizardDataHolder(Player provider) {
         this.provider = provider;
@@ -109,6 +110,11 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         sync();
     }
 
+    @Override
+    public Random getRandom() {
+        return random;
+    }
+
 
     @Override
     public void readFromNbt(@NotNull CompoundTag tag) {
@@ -157,6 +163,11 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
                 }
             }
         }
+
+        if (tag.contains("randomSeed")) {
+            long seed = tag.getLong("randomSeed");
+            this.random = new Random(seed);
+        }
     }
 
     @Override
@@ -181,5 +192,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
             recentSpellsTag.add(spellEntryTag);
         }
         tag.put("recentSpells", recentSpellsTag);
+
+        tag.putLong("randomSeed", this.random.nextLong());
     }
 }
