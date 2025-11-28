@@ -1,6 +1,7 @@
 package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.client.EBClientEventHelper;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.gui.screens.BookshelfScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
@@ -52,6 +53,7 @@ public final class WizardryForgeMod {
 
     @SuppressWarnings("unchecked")
     public static void clientSetup(final FMLClientSetupEvent event) {
+        EBClientEventHelper.register();
         SpellAction.register();
         EBRenderers.registerRenderers();
         EBRenderers.getRenderers().forEach((entity, renderer) ->

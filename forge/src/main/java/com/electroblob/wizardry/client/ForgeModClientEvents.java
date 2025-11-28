@@ -13,9 +13,8 @@ import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-// TODO
 @Mod.EventBusSubscriber(value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD, modid = WizardryMainMod.MOD_ID)
-public class ForgeClientEvents {
+public class ForgeModClientEvents {
     @SubscribeEvent
     public static void onRegisterOverlays(RegisterGuiOverlaysEvent event) {
         event.registerBelow(VanillaGuiOverlay.CROSSHAIR.id(), "charge_meter", (forgeGui, guiGraphics, partialTicks, width, height) -> {

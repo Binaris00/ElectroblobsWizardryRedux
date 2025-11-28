@@ -69,6 +69,8 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
         Spell spell = WandHelper.getCurrentSpell(stack);
+        if (spell == Spells.NONE) return InteractionResultHolder.pass(stack);
+
         PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), 0, this.calculateModifiers(stack, player, spell));
 
         if (!canCast(stack, spell, ctx)) return InteractionResultHolder.fail(stack);

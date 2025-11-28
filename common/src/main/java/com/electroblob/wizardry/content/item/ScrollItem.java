@@ -103,7 +103,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
                 return false;
             }
         }
-        return false;
+        return true;
     }
 
     @Override
