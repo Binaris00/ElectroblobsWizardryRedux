@@ -1,10 +1,7 @@
 package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.content.command.*;
-import com.electroblob.wizardry.content.command.debug.PacketTestCommand;
-import com.electroblob.wizardry.content.command.debug.WandSelectCommand;
-import com.electroblob.wizardry.content.command.debug.WandSpellCommand;
-import com.electroblob.wizardry.content.command.debug.WandSpellListCommand;
+import com.electroblob.wizardry.content.command.debug.*;
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
 import net.minecraft.commands.CommandSourceStack;
@@ -30,7 +27,8 @@ public final class EBCommands {
             WandSpellCommand::register,
             WandSpellListCommand::register,
             WandSelectCommand::register,
-            PacketTestCommand::register
+            PacketTestCommand::register,
+            ForfeitTestCommand::register
     );
 
     private EBCommands() {

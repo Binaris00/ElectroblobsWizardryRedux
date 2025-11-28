@@ -9,6 +9,7 @@
     "ClipContextMixin",
     "CommandsMixin",
     "ConjureMixin",
+    "FallingBlockEntityAccessor",
     "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",

@@ -46,6 +46,8 @@ public class IceGiant extends IronGolem {
         this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, LivingEntity.class,
                 10, false, false, entity -> entity instanceof Enemy));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Player.class,
+                10, true, false, null));
     }
 
     @Override

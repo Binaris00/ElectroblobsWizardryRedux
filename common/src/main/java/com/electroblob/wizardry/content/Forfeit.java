@@ -24,15 +24,7 @@ public class Forfeit {
     private final ResourceLocation name;
     private final Element element;
     private final SpellTier spellTier;
-    private @Nullable BiConsumer<Level, Player> effect;
-
-    @Deprecated
-    public Forfeit(ResourceLocation name) {
-        this.name = name;
-        this.sound = SoundEvent.createVariableRangeEvent(new ResourceLocation(name.getNamespace(), "forfeit." + name.getPath()));
-        element = Elements.SORCERY;
-        spellTier = SpellTiers.ADVANCED;
-    }
+    private final @Nullable BiConsumer<Level, Player> effect;
 
     public Forfeit(ResourceLocation name, Element element, SpellTier spellTier, @Nullable BiConsumer<Level, Player> effect) {
         this.name = name;
@@ -47,7 +39,7 @@ public class Forfeit {
     }
 
     public void apply(Level world, Player player) {
-
+        if (effect != null) effect.accept(world, player);
     }
 
     public Component getMessage(Component implementName) {
@@ -60,6 +52,10 @@ public class Forfeit {
 
     public Component getMessageForScroll() {
         return getMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".scroll.generic"));
+    }
+
+    public ResourceLocation getName() {
+        return name;
     }
 
     public SoundEvent getSound() {
