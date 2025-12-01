@@ -6,7 +6,7 @@
       "weight": 1,
       "element": {
         "location": "ebwizardry:obelisk_0",
-        "processors": "ebwizardry:ice_obelisk",
+        "processors": "ebwizardry:ice_runestone_parser",
         "projection": "rigid",
         "element_type": "minecraft:single_pool_element"
       }
@@ -15,7 +15,7 @@
       "weight": 1,
       "element": {
         "location": "ebwizardry:obelisk_1",
-        "processors": "ebwizardry:ice_obelisk",
+        "processors": "ebwizardry:ice_runestone_parser",
         "projection": "rigid",
         "element_type": "minecraft:single_pool_element"
       }
@@ -23,8 +23,8 @@
     {
       "weight": 1,
       "element": {
-        "location": "obelisk_2",
-        "processors": "ebwizardry:ice_obelisk",
+        "location": "ebwizardry:obelisk_2",
+        "processors": "ebwizardry:ice_runestone_parser",
         "projection": "rigid",
         "element_type": "minecraft:single_pool_element"
       }
@@ -32,8 +32,8 @@
     {
       "weight": 1,
       "element": {
-        "location": "obelisk_3",
-        "processors": "ebwizardry:ice_obelisk",
+        "location": "ebwizardry:obelisk_3",
+        "processors": "ebwizardry:ice_runestone_parser",
         "projection": "rigid",
         "element_type": "minecraft:single_pool_element"
       }
