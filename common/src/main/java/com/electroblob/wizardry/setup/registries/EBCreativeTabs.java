@@ -95,25 +95,25 @@ public final class EBCreativeTabs {
     // ======= Helpers =======
     private static List<ItemStack> createSpellBooks() {
         List<ItemStack> list = new ArrayList<>();
-        Services.REGISTRY_UTIL.getSpells().forEach(
-                spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SPELL_BOOK.get()), spell))
-        );
+        Services.REGISTRY_UTIL.getSpells()
+                .stream().filter(spell -> spell != Spells.NONE)
+                .forEach(spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SPELL_BOOK.get()), spell)));
         return list;
     }
 
     private static List<ItemStack> createScrolls() {
         List<ItemStack> list = new ArrayList<>();
-        Services.REGISTRY_UTIL.getSpells().forEach(
-                spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), spell))
-        );
+        Services.REGISTRY_UTIL.getSpells()
+                .stream().filter(spell -> spell != Spells.NONE)
+                .forEach(spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), spell)));
         return list;
     }
 
     private static List<ItemStack> createTomes() {
         List<ItemStack> list = new ArrayList<>();
-        Services.REGISTRY_UTIL.getTiers().forEach(spellTier -> {
-            if (spellTier != SpellTiers.NOVICE) list.add(SpellUtil.arcaneTomeItem(spellTier));
-        });
+        Services.REGISTRY_UTIL.getTiers()
+                .stream().filter(tier -> tier != SpellTiers.NOVICE)
+                .forEach(spellTier -> list.add(SpellUtil.arcaneTomeItem(spellTier)));
         return list;
     }
 

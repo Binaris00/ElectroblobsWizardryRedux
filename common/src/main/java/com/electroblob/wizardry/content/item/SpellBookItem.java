@@ -27,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 public class SpellBookItem extends Item {
+    // TODO This should be loaded automatically when a mod registers a new spell tier
     private static final Map<SpellTier, ResourceLocation> GUI_TEXTURES = ImmutableMap.of(
             SpellTiers.NOVICE, WizardryMainMod.location("textures/gui/spell_book_novice.png"),
             SpellTiers.APPRENTICE, WizardryMainMod.location("textures/gui/spell_book_apprentice.png"),
@@ -46,15 +47,16 @@ public class SpellBookItem extends Item {
         return super.use(level, player, interactionHand);
     }
 
+    @Override
+    public @NotNull Component getName(@NotNull ItemStack stack) {
+        return ClientUtils.getBookDisplayName(stack);
+    }
 
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
         if (level == null) return;
         Spell spell = SpellUtil.getSpell(stack);
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
-
-        list.add(discovered ? spell.getDescriptionFormatted() : Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData())).withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE)
-                .withFont(new ResourceLocation("minecraft", "alt"))));
         list.add(spell.getTier().getDescriptionFormatted());
 
         if (discovered && tooltipFlag.isAdvanced()) {

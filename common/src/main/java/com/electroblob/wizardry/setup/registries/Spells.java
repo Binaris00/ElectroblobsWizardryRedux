@@ -52,11 +52,11 @@ public final class Spells {
     public static final Spell ICE_BALL;
     public static final Spell ICE_SHARD;
     public static final Spell ICE_CHARGE;
-    public static final Spell MAGIC_FIREBALL;
+    public static final Spell FIREBALL;
     public static final Spell HOMING_SPARK;
     public static final Spell LIGHTNING_ARROW;
     public static final Spell FIRE_RESISTANCE;
-    public static final Spell NIGHT_VISION;
+    public static final Spell DARK_VISION;
     public static final Spell FONT_OF_VITALITY;
     public static final Spell INVISIBILITY;
     public static final Spell WATER_BREATHING;
@@ -242,7 +242,7 @@ public final class Spells {
                         .build()
         ));
 
-        ICE_BALL = spell("ice_ball", () -> new ProjectileSpell<>(IceBall::new).assignProperties(
+        ICE_BALL = spell("iceball", () -> new ProjectileSpell<>(IceBall::new).assignProperties(
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 15)
                         .add(DefaultProperties.RANGE, 20f)
@@ -273,7 +273,7 @@ public final class Spells {
                         .build()
         ));
 
-        MAGIC_FIREBALL = spell("magic_fireball", () -> new ProjectileSpell<>(MagicFireballEntity::new).assignProperties(
+        FIREBALL = spell("fireball", () -> new ProjectileSpell<>(MagicFireballEntity::new).assignProperties(
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 15)
                         .add(DefaultProperties.RANGE, 20f)
@@ -324,7 +324,7 @@ public final class Spells {
                         .build()
         ));
 
-        NIGHT_VISION = spell("night_vision", () -> new BuffSpell(0, 0.4f, 0.7f, () -> MobEffects.NIGHT_VISION).assignProperties(
+        DARK_VISION = spell("dark_vision", () -> new BuffSpell(0, 0.4f, 0.7f, () -> MobEffects.NIGHT_VISION).assignProperties(
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.BUFF, SpellAction.POINT_UP, 20, 0, 40)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.NIGHT_VISION), 900)
@@ -438,7 +438,7 @@ public final class Spells {
 
         GROUP_HEAL = spell("group_heal", GroupHeal::new);
 
-        BLINDING_FLASH = spell("blind_flash", BlindingFlash::new);
+        BLINDING_FLASH = spell("blinding_flash", BlindingFlash::new);
 
         DETONATE = spell("detonate", Detonate::new);
 
@@ -481,7 +481,7 @@ public final class Spells {
 
         PLAGUE_DARKNESS = spell("plague_of_darkness", PlagueOfDarkness::new);
 
-        FOREST_CURSE = spell("forest_curse", ForestsCurse::new);
+        FOREST_CURSE = spell("forests_curse", ForestsCurse::new);
 
         BLIZZARD = spell("blizzard", () -> new ConstructRangedSpell<>(BlizzardConstruct::new, false)
                 .assignProperties(SpellProperties.builder()

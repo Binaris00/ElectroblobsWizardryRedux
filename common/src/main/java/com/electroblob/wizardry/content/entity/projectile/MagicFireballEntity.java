@@ -38,7 +38,7 @@ public class MagicFireballEntity extends MagicProjectileEntity {
     }
 
     public double getDamage() {
-        return damage == -1 ? Spells.MAGIC_FIREBALL.property(DefaultProperties.DAMAGE) : damage;
+        return damage == -1 ? Spells.FIREBALL.property(DefaultProperties.DAMAGE) : damage;
     }
 
     public void setDamage(float damage) {
@@ -46,7 +46,7 @@ public class MagicFireballEntity extends MagicProjectileEntity {
     }
 
     public int getBurnDuration() {
-        return burnDuration == -1 ? Spells.MAGIC_FIREBALL.property(DefaultProperties.DAMAGE).intValue() : burnDuration;
+        return burnDuration == -1 ? Spells.FIREBALL.property(DefaultProperties.DAMAGE).intValue() : burnDuration;
     }
 
     public void setBurnDuration(int burnDuration) {

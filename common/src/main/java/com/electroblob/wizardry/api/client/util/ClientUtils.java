@@ -80,6 +80,14 @@ public class ClientUtils {
         return Component.translatable("item." + WizardryMainMod.MOD_ID + ".scroll", name);
     }
 
+    public static Component getBookDisplayName(ItemStack book) {
+        Spell spell = SpellUtil.getSpell(book);
+        boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, book);
+        Component name = discovered ? spell.getDescriptionFormatted() :
+                SpellGlyphData.getGlyphNameFormatted(spell, GlyphClientHandler.INSTANCE.getGlyphData());
+        return Component.translatable("item." + WizardryMainMod.MOD_ID + ".spell_book", name);
+    }
+
     public static void openSpellBook(ItemStack stack) {
         Minecraft.getInstance().setScreen(new SpellBookScreen(stack));
     }
