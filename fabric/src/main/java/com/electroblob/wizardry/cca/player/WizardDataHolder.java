@@ -11,6 +11,7 @@ import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.EvictingQueue;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -18,6 +19,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -31,6 +33,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     private SpellTier maxTierReached = SpellTiers.NOVICE;
     private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
     private Random random = new Random();
+    private @Nullable BlockPos containmentPos = null;
 
     public WizardDataHolder(Player provider) {
         this.provider = provider;
@@ -115,6 +118,17 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         return random;
     }
 
+    @Override
+    public @Nullable BlockPos getContainmentPos() {
+        return this.containmentPos;
+    }
+
+    @Override
+    public void setContainmentPos(BlockPos pos) {
+        this.containmentPos = pos;
+        sync();
+    }
+
 
     @Override
     public void readFromNbt(@NotNull CompoundTag tag) {
@@ -168,6 +182,16 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
             long seed = tag.getLong("randomSeed");
             this.random = new Random(seed);
         }
+
+        if (tag.contains("containmentPos")) {
+            CompoundTag posTag = tag.getCompound("containmentPos");
+            int x = posTag.getInt("x");
+            int y = posTag.getInt("y");
+            int z = posTag.getInt("z");
+            this.containmentPos = new BlockPos(x, y, z);
+        } else {
+            this.containmentPos = null;
+        }
     }
 
     @Override
@@ -194,5 +218,13 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         tag.put("recentSpells", recentSpellsTag);
 
         tag.putLong("randomSeed", this.random.nextLong());
+
+        if (containmentPos != null) {
+            CompoundTag posTag = new CompoundTag();
+            posTag.putInt("x", containmentPos.getX());
+            posTag.putInt("y", containmentPos.getY());
+            posTag.putInt("z", containmentPos.getZ());
+            tag.put("containmentPos", posTag);
+        }
     }
 }

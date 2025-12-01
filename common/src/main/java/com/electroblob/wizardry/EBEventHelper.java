@@ -6,6 +6,7 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.ArtefactItem;
 import com.electroblob.wizardry.content.ForfeitRegistry;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
+import com.electroblob.wizardry.content.effect.ContainmentEffect;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
 import com.electroblob.wizardry.content.effect.StaticAuraMobEffect;
 import com.electroblob.wizardry.content.effect.WardMobEffect;
@@ -61,6 +62,7 @@ public final class EBEventHelper {
         bus.register(EBLivingTick.class, ArtefactItem::onArtifactTick);
         bus.register(EBLivingTick.class, DataEvents::onMinionTick);
         bus.register(EBLivingTick.class, DataEvents::onPlayerTick);
+        bus.register(EBLivingTick.class, ContainmentEffect::onLivingUpdateEvent);
     }
 
     private static void onSpellDiscovery(WizardryEventBus bus) {

@@ -22,6 +22,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.projectile.Arrow;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
@@ -36,6 +38,16 @@ import java.util.stream.Collectors;
 
 public final class EntityUtil {
     private EntityUtil() {
+    }
+
+    public static void undoGravity(Entity entity){
+        if(!entity.isNoGravity()){
+            double gravity = 0.04;
+            if(entity instanceof ThrowableProjectile) gravity = 0.03;
+            else if(entity instanceof Arrow) gravity = 0.05;
+            else if(entity instanceof LivingEntity) gravity = 0.08;
+            entity.setDeltaMovement(entity.getDeltaMovement().add(0, gravity, 0));
+        }
     }
 
     @Nullable

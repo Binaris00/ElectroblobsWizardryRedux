@@ -16,9 +16,7 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
-import net.fabricmc.fabric.api.client.rendering.v1.HudRenderCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -68,5 +66,11 @@ public final class WizardryFabricClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.JUNGLE_LECTERN.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.ACACIA_LECTERN.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.DARK_OAK_LECTERN.get(), RenderType.cutout());
+
+        WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderContainmentField);
+    }
+
+    private void renderContainmentField(WorldRenderContext ctx) {
+        ContainmentFieldRender.render(ctx.camera(), ctx.matrixStack(), ctx.tickDelta());
     }
 }

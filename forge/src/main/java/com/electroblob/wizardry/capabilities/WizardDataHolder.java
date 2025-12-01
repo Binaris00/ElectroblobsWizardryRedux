@@ -10,6 +10,7 @@ import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.EvictingQueue;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -41,6 +42,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     private SpellTier maxTierReached = SpellTiers.NOVICE;
     private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
     private Random random = new Random();
+    private BlockPos containmentPos = null;
 
     private final Player provider;
 
@@ -132,6 +134,17 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         return random;
     }
 
+    @Override
+    public @Nullable BlockPos getContainmentPos() {
+        return containmentPos;
+    }
+
+    @Override
+    public void setContainmentPos(BlockPos pos) {
+        this.containmentPos = pos;
+        sync();
+    }
+
 
     @Override
     public CompoundTag serializeNBT() {
@@ -157,6 +170,13 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         }
         tag.put("recentSpells", recentSpellsTag);
         tag.putLong("randomSeed", random.nextLong());
+        if (containmentPos != null) {
+            CompoundTag posTag = new CompoundTag();
+            posTag.putInt("x", containmentPos.getX());
+            posTag.putInt("y", containmentPos.getY());
+            posTag.putInt("z", containmentPos.getZ());
+            tag.put("containmentPos", posTag);
+        }
         return tag;
     }
 
@@ -211,6 +231,16 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
             long seed = tag.getLong("randomSeed");
             this.random = new Random(seed);
         }
+
+        if (tag.contains("containmentPos")) {
+            CompoundTag posTag = tag.getCompound("containmentPos");
+            int x = posTag.getInt("x");
+            int y = posTag.getInt("y");
+            int z = posTag.getInt("z");
+            this.containmentPos = new BlockPos(x, y, z);
+        } else {
+            this.containmentPos = null;
+        }
     }
 
     public void copyFrom(@NotNull WizardDataHolder holder) {
@@ -227,6 +257,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         this.recentSpells.addAll(holder.recentSpells);
 
         this.random = holder.random;
+        this.containmentPos = holder.containmentPos;
         sync();
     }
 
