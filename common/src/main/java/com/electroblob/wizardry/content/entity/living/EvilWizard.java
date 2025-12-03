@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.entity.living;
 
+import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
@@ -23,6 +24,10 @@ import static net.minecraft.world.entity.monster.Monster.isDarkEnoughToSpawn;
 public class EvilWizard extends AbstractWizard implements Enemy {
     public EvilWizard(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
+    }
+
+    public EvilWizard(Level level) {
+        this(EBEntities.EVIL_WIZARD.get(), level);
     }
 
     @Override

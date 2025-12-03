@@ -24,7 +24,7 @@ import com.electroblob.wizardry.content.spell.necromancy.Banish;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
-import com.electroblob.wizardry.core.mixin.FallingBlockEntityAccessor;
+import com.electroblob.wizardry.core.mixin.accessor.FallingBlockEntityAccessor;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.BlockPos;

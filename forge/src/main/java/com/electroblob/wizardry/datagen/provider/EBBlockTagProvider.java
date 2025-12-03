@@ -20,6 +20,22 @@ public final class EBBlockTagProvider extends BlockTagsProvider {
 
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
+        this.tag(BlockTags.NEEDS_STONE_TOOL)
+                .add(EBBlocks.EARTH_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.FIRE_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.HEALING_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.ICE_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.LIGHTNING_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.NECROMANCY_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.SORCERY_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.EARTH_RUNESTONE.get())
+                .add(EBBlocks.FIRE_RUNESTONE.get())
+                .add(EBBlocks.HEALING_RUNESTONE.get())
+                .add(EBBlocks.ICE_RUNESTONE.get())
+                .add(EBBlocks.LIGHTNING_RUNESTONE.get())
+                .add(EBBlocks.NECROMANCY_RUNESTONE.get())
+                .add(EBBlocks.SORCERY_RUNESTONE.get());
+
         this.tag(BlockTags.NEEDS_IRON_TOOL)
                 .add(EBBlocks.CRYSTAL_ORE.get())
                 .add(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get())
@@ -42,7 +58,21 @@ public final class EBBlockTagProvider extends BlockTagsProvider {
                 .add(EBBlocks.NECROMANCY_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.EARTH_CRYSTAL_BLOCK.get())
                 .add(EBBlocks.SORCERY_CRYSTAL_BLOCK.get())
-                .add(EBBlocks.HEALING_CRYSTAL_BLOCK.get());
+                .add(EBBlocks.HEALING_CRYSTAL_BLOCK.get())
+                .add(EBBlocks.EARTH_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.FIRE_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.HEALING_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.ICE_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.LIGHTNING_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.NECROMANCY_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.SORCERY_RUNESTONE_PEDESTAL.get())
+                .add(EBBlocks.EARTH_RUNESTONE.get())
+                .add(EBBlocks.FIRE_RUNESTONE.get())
+                .add(EBBlocks.HEALING_RUNESTONE.get())
+                .add(EBBlocks.ICE_RUNESTONE.get())
+                .add(EBBlocks.LIGHTNING_RUNESTONE.get())
+                .add(EBBlocks.NECROMANCY_RUNESTONE.get())
+                .add(EBBlocks.SORCERY_RUNESTONE.get());
 
         this.tag(EBTags.GILDED_WOOD_BLOCK)
                 .add(EBBlocks.GILDED_ACACIA_WOOD.get())

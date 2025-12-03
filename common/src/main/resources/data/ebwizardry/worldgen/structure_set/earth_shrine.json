@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "ebwizardry:earth_shrine",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 9614332,
+    "separation": 8,
+    "spacing": 34,
+    "type": "minecraft:random_spread"
+  }
+}

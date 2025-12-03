@@ -163,13 +163,15 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag) {
         setTextureIndex(this.random.nextInt(6));
 
-        Element element = chooseElement();
-        this.setElement(element);
-        equipArmorAndDisableDrops(element);
+        if (getElement() == null) {
+            Element element = chooseElement();
+            this.setElement(element);
+        }
+        equipArmorAndDisableDrops(getElement());
 
         spells.add(Spells.MAGIC_MISSILE);
-        SpellTier maxTier = EntityUtil.populateSpells(spells, element, false, 3, random);
-        prepareWandWithSpells(element, maxTier);
+        SpellTier maxTier = EntityUtil.populateSpells(spells, getElement(), false, 3, random);
+        prepareWandWithSpells(getElement(), maxTier);
 
         this.setHealCooldown(50);
         return super.finalizeSpawn(level, difficulty, mobSpawnType, spawnData, tag);

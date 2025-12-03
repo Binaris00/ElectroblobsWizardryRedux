@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "ebwizardry:necromancy_shrine",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 9618889,
+    "separation": 8,
+    "spacing": 34,
+    "type": "minecraft:random_spread"
+  }
+}

@@ -5,9 +5,11 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.content.blockentity.*;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +25,9 @@ public final class EBBlockEntities {
     public static void register(RegisterFunction<BlockEntityType<?>> function) {
         BLOCK_ENTITIES.forEach((name, blockEntityType) ->
                 function.register(BuiltInRegistries.BLOCK_ENTITY_TYPE, WizardryMainMod.location(name), blockEntityType.get()));
-    }    public static final DeferredObject<BlockEntityType<VanishingCobwebBlockEntity>> VANISHING_COBWEB = blockEntity(
+    }
+
+    public static final DeferredObject<BlockEntityType<VanishingCobwebBlockEntity>> VANISHING_COBWEB = blockEntity(
             "vanishing_cobweb", () -> BlockEntityType.Builder.of(VanishingCobwebBlockEntity::new, EBBlocks.VANISHING_COBWEB.get()).build(null)
     );
 
@@ -33,7 +37,9 @@ public final class EBBlockEntities {
         DeferredObject<T> ret = new DeferredObject<>(beSupplier);
         BLOCK_ENTITIES.put(name, (DeferredObject<BlockEntityType<BlockEntity>>) ret);
         return ret;
-    }    public static final DeferredObject<BlockEntityType<ArcaneWorkbenchBlockEntity>> ARCANE_WORKBENCH = blockEntity(
+    }
+
+    public static final DeferredObject<BlockEntityType<ArcaneWorkbenchBlockEntity>> ARCANE_WORKBENCH = blockEntity(
             "arcane_workbench", () -> BlockEntityType.Builder.of(ArcaneWorkbenchBlockEntity::new, EBBlocks.ARCANE_WORKBENCH.get()).build(null)
     );
 
@@ -52,6 +58,11 @@ public final class EBBlockEntities {
                     .build(null));
 
 
-
+    public static final DeferredObject<BlockEntityType<RunestonePedestalBlockEntity>> RUNESTONE_PEDESTAL = blockEntity(
+            "runestone_pedestal", () -> BlockEntityType.Builder.of(RunestonePedestalBlockEntity::new,
+                            EBBlocks.EARTH_RUNESTONE_PEDESTAL.get(), EBBlocks.FIRE_RUNESTONE_PEDESTAL.get(), EBBlocks.HEALING_RUNESTONE_PEDESTAL.get(),
+                            EBBlocks.ICE_RUNESTONE_PEDESTAL.get(), EBBlocks.LIGHTNING_RUNESTONE_PEDESTAL.get(), EBBlocks.NECROMANCY_RUNESTONE_PEDESTAL.get()
+                            , EBBlocks.SORCERY_RUNESTONE_PEDESTAL.get())
+                    .build(null));
 
 }

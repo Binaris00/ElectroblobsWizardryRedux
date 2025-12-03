@@ -1,4 +1,5 @@
-// 1.20.1	2025-08-21T16:53:43.0823777	Tags for minecraft:block mod id ebwizardry
+// 1.20.1	2025-12-02T09:26:25.385454122	Tags for minecraft:block mod id ebwizardry
 026654df8432db60dca779913e84fd4599e6f648 data/ebwizardry/tags/blocks/gilded_wood.json
-46d758bb57e45ccf83e1c31db53489018eaff075 data/minecraft/tags/blocks/mineable/pickaxe.json
+56ef8b68c180c5efbd8de6ad10d5866bcc0bdbd9 data/minecraft/tags/blocks/mineable/pickaxe.json
 46d758bb57e45ccf83e1c31db53489018eaff075 data/minecraft/tags/blocks/needs_iron_tool.json
+fcce583b6d417cf6c7b8d1e853be97774abadc2f data/minecraft/tags/blocks/needs_stone_tool.json

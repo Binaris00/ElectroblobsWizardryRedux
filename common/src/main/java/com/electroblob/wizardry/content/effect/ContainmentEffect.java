@@ -61,8 +61,8 @@ public class ContainmentEffect extends MagicMobEffect {
             }
         }
 
-        // Need to do this here because it's the only way to hook into potion ending both client- and server-side
-        if(target.hasEffect(this) && target.getEffect(this).getDuration() <= 1) {
+        // need to check the -1, being the infinite duration case
+        if(target.hasEffect(this) && target.getEffect(this).getDuration() <= 1 && target.getEffect(this).getDuration() != -1) {
             data.setContainmentPos(null);
         }
     }

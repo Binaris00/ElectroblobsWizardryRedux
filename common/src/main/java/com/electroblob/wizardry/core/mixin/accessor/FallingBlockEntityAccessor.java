@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.core.mixin;
+package com.electroblob.wizardry.core.mixin.accessor;
 
 import net.minecraft.world.entity.item.FallingBlockEntity;
 import net.minecraft.world.level.Level;

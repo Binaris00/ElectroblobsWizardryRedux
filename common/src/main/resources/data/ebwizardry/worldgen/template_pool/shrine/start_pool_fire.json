@@ -1,0 +1,78 @@
+{
+  "name": "ebwizardry:shrine/start_pool_fire",
+  "fallback": "minecraft:empty",
+  "elements": [
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:shrine_0",
+        "processors": "ebwizardry:fire_runestone_parser",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:shrine_1",
+        "processors": "ebwizardry:fire_runestone_parser",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:shrine_2",
+        "processors": "ebwizardry:fire_runestone_parser",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:shrine_3",
+        "processors": "ebwizardry:fire_runestone_parser",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:shrine_4",
+        "processors": "ebwizardry:fire_runestone_parser",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:shrine_5",
+        "processors": "ebwizardry:fire_runestone_parser",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:shrine_6",
+        "processors": "ebwizardry:fire_runestone_parser",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    },
+    {
+      "weight": 1,
+      "element": {
+        "location": "ebwizardry:shrine_7",
+        "processors": "ebwizardry:fire_runestone_parser",
+        "projection": "rigid",
+        "element_type": "minecraft:single_pool_element"
+      }
+    }
+  ]
+}

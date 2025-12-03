@@ -46,6 +46,25 @@
               "SpawnCount": 3
             }
           }
+        },
+        {
+          "location_predicate": {
+            "predicate_type": "minecraft:always_true"
+          },
+          "input_predicate": {
+            "predicate_type": "minecraft:random_block_match",
+            "block": "ebwizardry:fire_runestone_pedestal",
+            "probability": 1.0
+          },
+          "output_state": {
+            "Name": "ebwizardry:sorcery_runestone_pedestal"
+          },
+          "block_entity_modifier": {
+            "type": "minecraft:append_static",
+            "data": {
+              "Natural": true
+            }
+          }
         }
       ]
     }
