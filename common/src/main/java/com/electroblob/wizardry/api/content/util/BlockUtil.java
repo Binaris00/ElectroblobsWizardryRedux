@@ -9,10 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.CactusBlock;
-import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.HitResult;
@@ -148,6 +145,17 @@ public final class BlockUtil {
         }
 
         return sphere;
+    }
+
+    public static BlockPos getConnectedChest(Level level, BlockPos pos) {
+        if (!(level.getBlockState(pos).getBlock() instanceof ChestBlock chest)) return null;
+
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            BlockPos pos1 = pos.offset(direction.getNormal());
+            if (level.getBlockState(pos1).getBlock() == chest) return pos1;
+        }
+
+        return null;
     }
 
     /**

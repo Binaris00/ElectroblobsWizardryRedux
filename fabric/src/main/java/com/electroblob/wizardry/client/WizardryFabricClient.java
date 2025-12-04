@@ -1,6 +1,8 @@
 package com.electroblob.wizardry.client;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
+import com.electroblob.wizardry.client.effect.ArcaneLockRender;
+import com.electroblob.wizardry.client.effect.ContainmentFieldRender;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.electroblob.wizardry.client.gui.screens.BookshelfScreen;
 import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
@@ -72,5 +74,6 @@ public final class WizardryFabricClient implements ClientModInitializer {
 
     private void renderContainmentField(WorldRenderContext ctx) {
         ContainmentFieldRender.render(ctx.camera(), ctx.matrixStack(), ctx.tickDelta());
+        ArcaneLockRender.render(ctx.camera(), ctx.matrixStack(), ctx.tickDelta());
     }
 }

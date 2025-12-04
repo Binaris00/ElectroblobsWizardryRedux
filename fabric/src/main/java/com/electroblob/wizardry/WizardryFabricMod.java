@@ -2,10 +2,13 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
+import com.electroblob.wizardry.api.content.event.EBPlayerUseBlockEvent;
+import com.electroblob.wizardry.api.content.event.EBPlayerBreakBlockEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.content.menu.BookshelfMenu;
 import com.electroblob.wizardry.core.PropertiesFabricDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.EBFabricServerNetwork;
 import com.electroblob.wizardry.setup.registries.*;
 import net.fabricmc.api.ModInitializer;
@@ -13,6 +16,7 @@ import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.UseEntityCallback;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayConnectionEvents;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -74,6 +78,17 @@ public final class WizardryFabricMod implements ModInitializer {
                 return InteractionResult.FAIL;
             }
             return InteractionResult.PASS;
+        });
+
+        UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
+            if (WizardryEventBus.getInstance().fire(new EBPlayerUseBlockEvent(player, world, hitResult.getBlockPos(), hand))) {
+                return InteractionResult.FAIL;
+            }
+            return InteractionResult.PASS;
+        });
+
+        net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
+            return !WizardryEventBus.getInstance().fire(new EBPlayerBreakBlockEvent(player, world, pos));
         });
 
         EBFabricServerNetwork.registerC2SMessages();

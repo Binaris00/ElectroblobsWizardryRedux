@@ -1,6 +1,8 @@
 package com.electroblob.wizardry.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.client.effect.ArcaneLockRender;
+import com.electroblob.wizardry.client.effect.ContainmentFieldRender;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -17,5 +19,6 @@ public class ForgeClientEvents {
         }
 
         ContainmentFieldRender.render(event.getCamera(), event.getPoseStack(), event.getPartialTick());
+        ArcaneLockRender.render(event.getCamera(), event.getPoseStack(), event.getPartialTick());
     }
 }

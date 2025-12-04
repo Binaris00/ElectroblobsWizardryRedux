@@ -2,6 +2,7 @@ package com.electroblob.wizardry.api.content.util;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 public final class GeometryUtil {
@@ -34,5 +35,18 @@ public final class GeometryUtil {
 
     public static float getPitch(Direction facing) {
         return facing == Direction.UP ? 90 : facing == Direction.DOWN ? -90 : 0;
+    }
+
+    public static Vec3[] getVertices(AABB box){
+        return new Vec3[]{
+                new Vec3(box.minX, box.minY, box.minZ),
+                new Vec3(box.maxX, box.minY, box.minZ),
+                new Vec3(box.maxX, box.minY, box.maxZ),
+                new Vec3(box.minX, box.minY, box.maxZ),
+                new Vec3(box.minX, box.maxY, box.minZ),
+                new Vec3(box.maxX, box.maxY, box.minZ),
+                new Vec3(box.maxX, box.maxY, box.maxZ),
+                new Vec3(box.minX, box.maxY, box.maxZ)
+        };
     }
 }

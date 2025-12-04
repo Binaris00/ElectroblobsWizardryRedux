@@ -9,6 +9,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import javax.annotation.Nullable;
 import java.util.Arrays;
@@ -53,5 +54,10 @@ public class FabricObjectData implements IObjectData {
     @Override
     public void spellStoredVariables(IStoredSpellVar<?>... variables) {
         SpellManagerDataHolder.storedVariables.addAll(Arrays.asList(variables));
+    }
+
+    @Override
+    public ArcaneLockData getArcaneLockData(BlockEntity blockEntity) {
+        return EBComponents.ARCANE_LOCK_DATA.get(blockEntity);
     }
 }

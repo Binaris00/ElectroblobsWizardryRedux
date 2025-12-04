@@ -6,9 +6,11 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "BlazeMixin",
+    "BlockEntityAccessor",
     "ClipContextMixin",
     "CommandsMixin",
     "ConjureMixin",
+    "ExplosionMixin",
     "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
@@ -41,4 +43,3 @@
     "defaultRequire": 1
   }
 }
-

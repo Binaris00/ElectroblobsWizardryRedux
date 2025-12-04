@@ -14,6 +14,7 @@ import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
 import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
+import com.electroblob.wizardry.content.spell.sorcery.ArcaneLockSpell;
 import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.DataEvents;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
@@ -44,6 +45,8 @@ public final class EBEventHelper {
         onSpellDiscovery(bus);
         onPlayerInteractEntity(bus);
         onItemPlaceInContainer(bus);
+        onPlayerUseBlock(bus);
+        onPlayerBreakBlock(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -115,5 +118,13 @@ public final class EBEventHelper {
 
     private static void onPlayerInteractEntity(WizardryEventBus bus) {
         bus.register(EBPlayerInteractEntityEvent.class, DataEvents::onPlayerInteractMinion);
+    }
+
+    private static void onPlayerUseBlock(WizardryEventBus bus) {
+        bus.register(EBPlayerUseBlockEvent.class, ArcaneLockSpell::onPlayerUseBlock);
+    }
+
+    private static void onPlayerBreakBlock(WizardryEventBus bus) {
+        bus.register(EBPlayerBreakBlockEvent.class, ArcaneLockSpell::onPlayerBreakBlock);
     }
 }

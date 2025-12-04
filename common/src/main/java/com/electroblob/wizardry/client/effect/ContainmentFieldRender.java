@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.client;
+package com.electroblob.wizardry.client.effect;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.data.WizardData;

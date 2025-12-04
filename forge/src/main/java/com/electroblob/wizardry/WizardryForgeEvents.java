@@ -1,14 +1,16 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.content.data.*;
 import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
+import com.electroblob.wizardry.api.content.event.EBPlayerUseBlockEvent;
+import com.electroblob.wizardry.api.content.event.EBPlayerBreakBlockEvent;
 import com.electroblob.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.electroblob.wizardry.api.content.util.RegisterFunction;
 import com.electroblob.wizardry.capabilities.*;
 import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.core.PropertiesForgeDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.core.registry.EBRegistries;
 import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
@@ -20,6 +22,8 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -30,6 +34,8 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
+import net.minecraftforge.event.level.BlockEvent;
+import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.LevelEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -74,27 +80,66 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-            if(WizardryEventBus.getInstance().fire(new EBPlayerInteractEntityEvent(event.getEntity(), event.getTarget()))) event.setCanceled(true);
+            if (WizardryEventBus.getInstance().fire(new EBPlayerInteractEntityEvent(event.getEntity(), event.getTarget())))
+                event.setCanceled(true);
+        }
+
+        @SubscribeEvent
+        public static void onBlockUse(PlayerInteractEvent.RightClickBlock event) {
+            if (WizardryEventBus.getInstance().fire(new EBPlayerUseBlockEvent(event.getEntity(), event.getLevel(), event.getPos(), event.getHand())))
+                event.setCanceled(true);
+        }
+
+        @SubscribeEvent
+        public static void onBlockBreak(BlockEvent.BreakEvent event) {
+            if (WizardryEventBus.getInstance().fire(new EBPlayerBreakBlockEvent(event.getPlayer(), (net.minecraft.world.level.Level) event.getLevel(), event.getPos())))
+                event.setCanceled(true);
+        }
+
+        @SubscribeEvent
+        public static void onChunkWatch(ChunkWatchEvent.Watch event) {
+            // Sync ArcaneLock data for all block entities in the chunk when a player starts watching it
+            net.minecraft.server.level.ServerLevel level = event.getLevel();
+            net.minecraft.world.level.chunk.LevelChunk chunk = level.getChunk(event.getPos().x, event.getPos().z);
+
+            for (net.minecraft.world.level.block.entity.BlockEntity blockEntity : chunk.getBlockEntities().values()) {
+                if (blockEntity instanceof BaseContainerBlockEntity) {
+                    blockEntity.getCapability(com.electroblob.wizardry.capabilities.ArcaneLockDataHolder.INSTANCE).ifPresent(data -> {
+                        if (data.isArcaneLocked()) {
+                            // Send sync packet to the player
+                            com.electroblob.wizardry.network.ArcaneLockSyncPacketS2C packet =
+                                    new com.electroblob.wizardry.network.ArcaneLockSyncPacketS2C(blockEntity.getBlockPos(), data.serializeNBT());
+                            Services.NETWORK_HELPER.sendTo(event.getPlayer(), packet);
+                        }
+                    });
+                }
+            }
         }
 
         @SubscribeEvent
         public static void attachCapability(final AttachCapabilitiesEvent<Entity> event) {
-            if(event.getObject() instanceof Player player){
+            if (event.getObject() instanceof Player player) {
                 event.addCapability(CastCommandDataHolder.LOCATION, new CastCommandDataHolder.Provider(player));
                 event.addCapability(SpellManagerDataHolder.LOCATION, new SpellManagerDataHolder.Provider(player));
                 event.addCapability(WizardDataHolder.LOCATION, new WizardDataHolder.Provider(player));
             }
 
-            if(event.getObject() instanceof Mob mob){
+            if (event.getObject() instanceof Mob mob) {
                 event.addCapability(MinionDataHolder.LOCATION, new MinionDataHolder.Provider(mob));
             }
+        }
+
+        @SubscribeEvent
+        public static void attachCapabilityBlock(final AttachCapabilitiesEvent<BlockEntity> event) {
+            if (event.getObject() instanceof BaseContainerBlockEntity)
+                event.addCapability(ArcaneLockDataHolder.LOCATION, new ArcaneLockDataHolder.Provider(event.getObject()));
         }
 
         @SubscribeEvent
         public static void attachCapabilityItem(final AttachCapabilitiesEvent<ItemStack> event) {
             ItemStack stack = event.getObject();
 
-            if(ConjureItemSpell.isSummonableItem(event.getObject().getItem())){
+            if (ConjureItemSpell.isSummonableItem(event.getObject().getItem())) {
                 final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(event.getObject());
                 event.addCapability(ConjureDataHolder.LOCATION, provider);
             }
@@ -136,7 +181,7 @@ public class WizardryForgeEvents {
             event.register(MinionDataHolder.class);
             event.register(ConjureDataHolder.class);
             event.register(ImbuementEnchantDataHolder.class);
-
+            event.register(ArcaneLockDataHolder.class);
         }
     }
 

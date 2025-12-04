@@ -7,6 +7,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 
 import java.util.Arrays;
 
@@ -63,5 +64,10 @@ public class ForgeObjectData implements IObjectData {
                 () -> new IllegalStateException("MinionData capability not present on mob " + mob)
         );
         return minionData.isSummoned();
+    }
+
+    @Override
+    public ArcaneLockData getArcaneLockData(BlockEntity blockEntity) {
+        return blockEntity.getCapability(ArcaneLockDataHolder.INSTANCE).orElse(null);
     }
 }

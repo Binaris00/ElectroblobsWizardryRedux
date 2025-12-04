@@ -148,6 +148,7 @@ public final class Spells {
     public static final Spell SUMMON_LIGHTNING_WRAITH;
     public static final Spell SUMMON_ICE_GIANT;
     public static final Spell RAY_OF_PURIFICATION;
+    public static final Spell ARCANE_LOCK;
 
     public static final Spell OJOSPOCOS;
     public static final Spell FLAME_FLAME;
@@ -756,6 +757,8 @@ public final class Spells {
         SUMMON_ICE_GIANT = spell("summon_ice_giant", SummonIceGiant::new);
 
         RAY_OF_PURIFICATION = spell("ray_of_purification", RayOfPurification::new);
+
+        ARCANE_LOCK = spell("arcane_lock", ArcaneLockSpell::new);
     }
 
     private Spells() {

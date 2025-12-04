@@ -5,6 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
 public interface IObjectData {
@@ -70,4 +71,12 @@ public interface IObjectData {
      * @return true if the entity is a minion, false otherwise.
      */
     boolean isMinion(Entity mob);
+
+    /**
+     * Gets the arcane lock data for the given block entity.
+     *
+     * @param blockEntity The block entity whose arcane lock data is to be retrieved.
+     * @return The ArcaneLockData associated with the block entity.
+     */
+    ArcaneLockData getArcaneLockData(BlockEntity blockEntity);
 }

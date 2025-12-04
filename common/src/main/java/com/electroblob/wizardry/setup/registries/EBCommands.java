@@ -16,11 +16,11 @@ import java.util.function.Consumer;
  *
  */
 public final class EBCommands {
+    // TODO CastCommand::register
     public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> COMMANDS_TO_REGISTER = ImmutableList.of(
             ListSpellsCommand::register,
             ListElementsCommand::register,
             ListTiersCommand::register,
-            CastCommand::register,
             AllyCommand::register
     );
     public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> DEBUG_COMMANDS = ImmutableList.of(
@@ -28,6 +28,7 @@ public final class EBCommands {
             WandSpellListCommand::register,
             WandSelectCommand::register,
             PacketTestCommand::register,
+            CastCommand::register,
             ForfeitTestCommand::register
     );
 
