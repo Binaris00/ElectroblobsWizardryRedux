@@ -13,7 +13,7 @@ import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
-import com.electroblob.wizardry.setup.registries.Spells;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -65,7 +65,8 @@ public class ArcaneLockSpell extends RaySpell {
             if (data.getArcaneLockOwnerUUID().equals(player.getUUID())) {
                 // Unlocking
                 data.setArcaneLockOwner(null);
-                player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking").withStyle(this.getElement().getColor()), true);
+                player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking")
+                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
                 return true;
             } else {
                 player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(this.getElement().getColor()), true);
@@ -76,7 +77,8 @@ public class ArcaneLockSpell extends RaySpell {
             data.setArcaneLockOwner(player.getUUID().toString());
             blockEntity.setChanged();
             ctx.world().sendBlockUpdated(pos, ctx.world().getBlockState(pos), ctx.world().getBlockState(pos), 3);
-            player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking").withStyle(this.getElement().getColor()), true);
+            player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.locking")
+                    .withStyle(ChatFormatting.LIGHT_PURPLE), true);
             return true;
         }
     }
@@ -98,8 +100,8 @@ public class ArcaneLockSpell extends RaySpell {
         if (data.isArcaneLocked()) {
             // Check if the player is the owner
             if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID())) {
-                event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking")
-                        .withStyle(Spells.ARCANE_LOCK.getElement().getColor()), true);
+                event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning")
+                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
                 event.setCanceled(true);
             }
         }
@@ -122,8 +124,8 @@ public class ArcaneLockSpell extends RaySpell {
         if (data.isArcaneLocked()) {
             // Check if the player is the owner
             if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID())) {
-                event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking")
-                        .withStyle(Spells.ARCANE_LOCK.getElement().getColor()), true);
+                event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning")
+                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
                 event.setCanceled(true);
             }
         }
@@ -132,7 +134,7 @@ public class ArcaneLockSpell extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT, 50, 0, 100)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT, 50, 0, 100)
                 .add(DefaultProperties.RANGE, 8.0F)
                 .build();
     }

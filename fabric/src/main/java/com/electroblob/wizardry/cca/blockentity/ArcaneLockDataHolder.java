@@ -40,6 +40,12 @@ public class ArcaneLockDataHolder implements ArcaneLockData, ComponentV3, AutoSy
     }
 
     @Override
+    public void clearArcaneLockOwner() {
+        this.ownerUUID = null;
+        sync();
+    }
+
+    @Override
     public @Nullable UUID getArcaneLockOwnerUUID() {
         return ownerUUID;
     }

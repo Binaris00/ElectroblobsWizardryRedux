@@ -53,6 +53,12 @@ public class ArcaneLockDataHolder implements INBTSerializable<CompoundTag>, Arca
     }
 
     @Override
+    public void clearArcaneLockOwner() {
+        this.ownerUUID = null;
+        sync();
+    }
+
+    @Override
     public @Nullable UUID getArcaneLockOwnerUUID() {
         return ownerUUID;
     }

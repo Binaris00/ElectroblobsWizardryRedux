@@ -1,8 +1,11 @@
 package com.electroblob.wizardry.content.entity.living;
 
+import com.electroblob.wizardry.content.entity.goal.ReturnToShrineGoal;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
@@ -22,6 +25,9 @@ import org.jetbrains.annotations.Nullable;
 import static net.minecraft.world.entity.monster.Monster.isDarkEnoughToSpawn;
 
 public class EvilWizard extends AbstractWizard implements Enemy {
+    @Nullable
+    private BlockPos shrinePosition;
+
     public EvilWizard(EntityType<? extends PathfinderMob> type, Level world) {
         super(type, world);
     }
@@ -36,6 +42,36 @@ public class EvilWizard extends AbstractWizard implements Enemy {
         this.targetSelector.removeAllGoals((g) -> true); // Clear existing target goals added by AbstractWizard
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, true));
         this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Wizard.class, true));
+
+        // Add goal to return to shrine if bound to one (high priority to prevent getting stuck)
+        this.goalSelector.addGoal(1, new ReturnToShrineGoal(this, this::getShrinePosition, 20.0F, 30.0F));
+    }
+
+    public void setShrinePosition(@Nullable BlockPos pos) {
+        this.shrinePosition = pos;
+    }
+
+    @Nullable
+    public BlockPos getShrinePosition() {
+        return this.shrinePosition;
+    }
+
+    @Override
+    public void addAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.addAdditionalSaveData(tag);
+        if (this.shrinePosition != null) {
+            tag.put("ShrinePosition", NbtUtils.writeBlockPos(this.shrinePosition));
+        }
+    }
+
+    @Override
+    public void readAdditionalSaveData(@NotNull CompoundTag tag) {
+        super.readAdditionalSaveData(tag);
+        if (tag.contains("ShrinePosition")) {
+            this.shrinePosition = NbtUtils.readBlockPos(tag.getCompound("ShrinePosition"));
+        } else {
+            this.shrinePosition = null;
+        }
     }
 
     @Override

@@ -11,5 +11,7 @@ public interface ArcaneLockData {
 
     void setArcaneLockOwner(String ownerUUID);
 
+    void clearArcaneLockOwner();
+
     @Nullable UUID getArcaneLockOwnerUUID();
 }

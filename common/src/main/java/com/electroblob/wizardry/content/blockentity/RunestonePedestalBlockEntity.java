@@ -2,10 +2,12 @@ package com.electroblob.wizardry.content.blockentity;
 
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
+import com.electroblob.wizardry.api.content.data.ArcaneLockData;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.block.RunestonePedestalBlock;
 import com.electroblob.wizardry.content.entity.living.EvilWizard;
 import com.electroblob.wizardry.core.mixin.accessor.RCBEAccessor;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -37,7 +39,7 @@ import java.util.UUID;
 
 public class RunestonePedestalBlockEntity extends BlockEntity {
     // If there's a player within this radius, the pedestal activates its event
-    private static final double ACTIVATION_RADIUS = 15;
+    private static final double ACTIVATION_RADIUS = 7;
     // Number of evil wizards to spawn
     private static final int WIZARD_SPAWN_COUNT = 4;
     // Radius around the pedestal to spawn evil wizards
@@ -94,12 +96,16 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         }
 
         // Linking logic - only if not yet linked
-        if (pedestal.linkedPos == null && pedestal.natural) {
+        if (pedestal.linkedPos == null) {
             BlockPos abovePos = pos.above();
             BlockEntity blockEntity = level.getBlockEntity(abovePos);
 
             if (blockEntity instanceof RandomizableContainerBlockEntity container) {
-                if (((RCBEAccessor) container).getLootTable() != null) pedestal.setLinkedPos(abovePos);
+                if (((RCBEAccessor) container).getLootTable() != null) {
+                    ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(container);
+                    data.setArcaneLockOwner(UUID.randomUUID().toString()); // No player owns this lock :)
+                    pedestal.setLinkedPos(abovePos);
+                }
             } else {
                 EBLogger.warn("Runestone Pedestal at {} is marked as natural but has no valid container block entity above it, check the structure and try to have a container block above it", pos);
                 pedestal.setNatural(false); // No valid container above, so this pedestal is no longer natural
@@ -158,10 +164,9 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
             float angle = level.random.nextFloat() * 2 * (float) Math.PI;
             BlockPos spawnPos = findSpawnPositionWizard(angle);
             wizard.setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
-
             wizard.setElement(getBlockState().getBlock() instanceof RunestonePedestalBlock runestone
                     ? runestone.getElement() : Elements.FIRE);
-
+            wizard.setShrinePosition(getBlockPos());
             wizard.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(getBlockPos()), MobSpawnType.STRUCTURE, null, null);
             level.addFreshEntity(wizard);
             spawnedWizards.add(wizard.getUUID());
@@ -216,6 +221,9 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
                         .color(1, brightness, brightness).spawn(level);
             }
         }
+
+        ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(level.getBlockEntity(linkedPos));
+        data.clearArcaneLockOwner();
         setNatural(false); // This pedestal is now inactive and the block entity will be deleted
         sync();
     }
