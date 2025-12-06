@@ -1,15 +1,10 @@
 package com.electroblob.wizardry.network;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.capabilities.CastCommandDataHolder;
-import com.electroblob.wizardry.capabilities.SpellManagerDataHolder;
-import com.electroblob.wizardry.capabilities.WizardDataHolder;
 import com.electroblob.wizardry.core.networking.abst.Message;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 
 public class PlayerCapabilitySyncPacketS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("player_capability_sync");
@@ -40,21 +35,20 @@ public class PlayerCapabilitySyncPacketS2C implements Message {
     }
 
     @Override
-    public void handleClient(Minecraft minecraft, Player player) {
-        if (minecraft.level == null) return;
-
-        switch (type) {
-            case CAST_COMMAND -> player.getCapability(CastCommandDataHolder.INSTANCE)
-                    .ifPresent(d -> d.deserializeNBT(data));
-            case SPELL_MANAGER -> player.getCapability(SpellManagerDataHolder.INSTANCE)
-                    .ifPresent(d -> d.deserializeNBT(data));
-            case WIZARD_DATA -> player.getCapability(WizardDataHolder.INSTANCE)
-                    .ifPresent(d -> d.deserializeNBT(data));
-        }
+    public void handleClient() {
+        ClientMessageHandlerForge.playerCapabilitySync(this);
     }
 
     @Override
     public ResourceLocation getId() {
         return ID;
+    }
+
+    public CompoundTag getData() {
+        return data;
+    }
+
+    public CapabilityType getType() {
+        return type;
     }
 }

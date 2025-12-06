@@ -1,20 +1,15 @@
 package com.electroblob.wizardry.core.networking.s2c;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.core.networking.abst.Message;
-import com.electroblob.wizardry.core.platform.Services;
-import net.minecraft.client.Minecraft;
+import com.electroblob.wizardry.core.networking.ClientMessageHandler;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public class SpellPropertiesSyncS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("spell_properties_sync");
@@ -45,15 +40,12 @@ public class SpellPropertiesSyncS2C implements Message {
     }
 
     @Override
-    public void handleClient(Minecraft minecraft, Player player) {
-        for (Map.Entry<ResourceLocation, SpellProperties> entry : propertiesMap.entrySet()) {
-            Optional<Spell> spell = Optional.ofNullable(Services.REGISTRY_UTIL.getSpell(entry.getKey()));
-            if (spell.isEmpty()) {
-                EBLogger.warn("Received spell properties for unknown spell: {}", entry.getKey());
-                continue;
-            }
-            spell.get().setProperties(entry.getValue());
-        }
+    public void handleClient() {
+        ClientMessageHandler.spellPropertiesSync(this);
+    }
+
+    public Map<ResourceLocation, SpellProperties> getPropertiesMap() {
+        return propertiesMap;
     }
 
     @Override

@@ -20,7 +20,7 @@ public class EBFabricClientNetwork {
     private static <T extends Message> void registerClientMessage(ResourceLocation id, Function<FriendlyByteBuf, T> decoder) {
         ClientPlayNetworking.registerGlobalReceiver(id, (client, handler, buf, responseSender) -> {
             T packet = decoder.apply(buf);
-            client.execute(() -> packet.handleClient(client, client.player));
+            client.execute(() -> packet.handleClient());
         });
     }
 }

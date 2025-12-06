@@ -30,7 +30,7 @@ public final class ParticleBuilder {
     /**
      * The particle type
      */
-    private DeferredObject<SimpleParticleType> particle;
+    private SimpleParticleType particle;
     /**
      * The world for spawning the particle
      */
@@ -214,7 +214,7 @@ public final class ParticleBuilder {
             EBLogger.warn("Attempted to build an already built particle: " + this.getCurrentParticleString());
             return instance;
         }
-        this.particle = particle;
+        this.particle = particle.get();
         this.building = true;
         return this;
     }

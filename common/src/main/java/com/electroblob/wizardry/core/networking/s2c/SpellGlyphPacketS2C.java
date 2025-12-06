@@ -1,14 +1,10 @@
 package com.electroblob.wizardry.core.networking.s2c;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.client.util.ClientUtils;
-import com.electroblob.wizardry.api.client.util.GlyphClientHandler;
-import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.core.networking.abst.Message;
-import net.minecraft.client.Minecraft;
+import com.electroblob.wizardry.core.networking.ClientMessageHandler;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 
 import java.util.HashMap;
 
@@ -55,12 +51,8 @@ public class SpellGlyphPacketS2C implements Message {
     }
 
     @Override
-    public void handleClient(Minecraft minecraft, Player player) {
-        if (GlyphClientHandler.INSTANCE.getGlyphData() == null) {
-            GlyphClientHandler.INSTANCE.setGlyphData(new SpellGlyphData());
-        }
-
-        ClientUtils.handleGlyphDataPacket(this);
+    public void handleClient() {
+        ClientMessageHandler.spellGlyph(this);
     }
 
     public HashMap<ResourceLocation, String> getDescriptions() {

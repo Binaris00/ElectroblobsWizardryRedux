@@ -37,7 +37,7 @@ import java.util.function.BiFunction;
  */
 
 public abstract class ParticleWizardry extends TextureSheetParticle {
-    public static final Map<DeferredObject<SimpleParticleType>, BiFunction<ClientLevel, Vec3, ParticleWizardry>> PROVIDERS = new LinkedHashMap<>();
+    public static final Map<SimpleParticleType, BiFunction<ClientLevel, Vec3, ParticleWizardry>> PROVIDERS = new LinkedHashMap<>();
     /**
      * The fraction of the impact velocity that should be the maximum spread speed added on impact.
      */

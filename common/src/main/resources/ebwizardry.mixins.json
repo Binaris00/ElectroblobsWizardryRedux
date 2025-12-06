@@ -31,7 +31,6 @@
   ],
   "client": [
     "ClientLevelMixin",
-    "ClientPlayerMixin",
     "HumanoidModelMixin",
     "MinecraftMixin",
     "client.ConjureBarMixin",

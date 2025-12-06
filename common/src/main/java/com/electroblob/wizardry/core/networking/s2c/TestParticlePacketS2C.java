@@ -2,13 +2,10 @@ package com.electroblob.wizardry.core.networking.s2c;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.core.networking.abst.Message;
-import net.minecraft.client.Minecraft;
+import com.electroblob.wizardry.core.networking.ClientMessageHandler;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.player.Player;
 
 /**
  * Used just for testing the network api
@@ -40,9 +37,8 @@ public class TestParticlePacketS2C implements Message {
     }
 
     @Override
-    public void handleClient(Minecraft minecraft, Player player) {
-        minecraft.level.addParticle(ParticleTypes.EXPLOSION_EMITTER, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 0, 0, 0);
-        player.sendSystemMessage(Component.literal("Test particle at " + pos + " with color " + color));
+    public void handleClient() {
+        ClientMessageHandler.testParticle(this);
     }
 
     public BlockPos getPos() {

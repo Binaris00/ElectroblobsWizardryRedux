@@ -1,23 +1,14 @@
 package com.electroblob.wizardry.core.networking.s2c;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.content.entity.living.ISpellCaster;
-import com.electroblob.wizardry.api.content.event.SpellCastEvent;
-import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
-import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.networking.ClientMessageHandler;
 import com.electroblob.wizardry.core.networking.abst.Message;
 import com.electroblob.wizardry.core.platform.Services;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 
 public class NPCSpellCastS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("npc_spell_cast");
@@ -58,24 +49,27 @@ public class NPCSpellCastS2C implements Message {
     }
 
     @Override
-    public void handleClient(Minecraft minecraft, Player player) {
-        Level level = minecraft.level;
-        Entity caster = level.getEntity(casterID);
-        Entity target = targetID == -1 ? null : level.getEntity(targetID);
+    public void handleClient() {
+        ClientMessageHandler.npcSpellCast(this);
+    }
 
-        // Safety check, the npc cannot be a non-living entity and the target must be a living entity
-        if (!(caster instanceof LivingEntity livingCaster) || !(target instanceof LivingEntity livingTarget)) return;
+    public InteractionHand getHand() {
+        return hand;
+    }
 
-        spell.cast(new EntityCastContext(level, livingCaster, hand, 0, livingTarget, modifiers));
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, spell, livingCaster, modifiers));
+    public Spell getSpell() {
+        return spell;
+    }
 
-        if (caster instanceof ISpellCaster spellCaster) {
-            if (!spell.isInstantCast() || spell instanceof NoneSpell) {
-                spellCaster.setContinuousSpell(spell);
-                spellCaster.setSpellCounter(spell instanceof NoneSpell ? 0 : 1);
-            } else {
-                spellCaster.setSpellCounter(0);
-            }
-        }
+    public SpellModifiers getModifiers() {
+        return modifiers;
+    }
+
+    public int getCasterID() {
+        return casterID;
+    }
+
+    public int getTargetID() {
+        return targetID;
     }
 }

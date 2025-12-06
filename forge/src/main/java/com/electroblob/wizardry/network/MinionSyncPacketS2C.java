@@ -1,14 +1,10 @@
 package com.electroblob.wizardry.network;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.capabilities.MinionDataHolder;
 import com.electroblob.wizardry.core.networking.abst.Message;
-import net.minecraft.client.Minecraft;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 
 public class MinionSyncPacketS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("minion_sync");
@@ -32,18 +28,20 @@ public class MinionSyncPacketS2C implements Message {
     }
 
     @Override
-    public void handleClient(Minecraft minecraft, Player player) {
-        if(minecraft.level == null) return;
-
-        Entity entity = minecraft.level.getEntity(entityId);
-        if(entity == null) return;
-
-        entity.getCapability(MinionDataHolder.INSTANCE).ifPresent(minionData ->
-                minionData.deserializeNBT(data));
+    public void handleClient() {
+        ClientMessageHandlerForge.minionSync(this);
     }
 
     @Override
     public ResourceLocation getId() {
         return ID;
+    }
+
+    public CompoundTag getData() {
+        return data;
+    }
+
+    public int getEntityId() {
+        return entityId;
     }
 }

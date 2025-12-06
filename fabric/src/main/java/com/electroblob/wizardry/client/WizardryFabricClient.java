@@ -36,10 +36,11 @@ public final class WizardryFabricClient implements ClientModInitializer {
         EBRenderers.getRenderers().forEach((entity, renderer) -> EntityRendererRegistry.register(entity.get(), (EntityRendererProvider<Entity>) renderer));
         EBParticles.registerType(Registry::register);
 
-        EBClientRegister.registerParticleProviders(collection -> collection.forEach((type, provider) -> {
+        EBParticleProviders.registerProvider((p, f) -> {
             var reg = ParticleFactoryRegistry.getInstance();
-            reg.register(type.get(), provider::apply);
-        }));
+            reg.register(p.get(), f::apply);
+        });
+
         HudRenderCallback.EVENT.register(((guiGraphics, delta) -> SpellGUIDisplay.draw(guiGraphics, guiGraphics.pose(), delta)));
 
         EBRenderers.createEntityLayers((layer, supplier) -> EntityModelLayerRegistry.registerModelLayer(layer, supplier::get));

@@ -13,7 +13,7 @@ import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.core.registry.EBRegistries;
 import com.electroblob.wizardry.setup.registries.*;
-import com.electroblob.wizardry.setup.registries.client.EBClientRegister;
+import com.electroblob.wizardry.setup.registries.client.EBParticleProviders;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.core.registries.Registries;
@@ -229,9 +229,9 @@ public class WizardryForgeEvents {
     public static class ModBusEventsClient {
         @SubscribeEvent
         public static void registerProviders(RegisterParticleProvidersEvent event) {
-            EBClientRegister.registerParticleProviders(collection -> collection.forEach((type, provider)
-                    -> event.registerSpriteSet(type.get(), provider::apply)
-            ));
+            EBParticleProviders.registerProvider((type, provider) ->
+                    event.registerSpriteSet(type.get(), provider::apply)
+            );
         }
 
         @SubscribeEvent
