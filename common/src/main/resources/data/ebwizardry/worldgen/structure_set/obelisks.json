@@ -1,0 +1,38 @@
+{
+  "structures": [
+    {
+      "structure": "ebwizardry:earth_obelisk",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:fire_obelisk",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:healing_obelisk",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:ice_obelisk",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:lightning_obelisk",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:necromancy_obelisk",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:sorcery_obelisk",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 381692683,
+    "separation": 12,
+    "spacing": 48,
+    "type": "minecraft:random_spread"
+  }
+}

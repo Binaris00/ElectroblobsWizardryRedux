@@ -1,0 +1,38 @@
+{
+  "structures": [
+    {
+      "structure": "ebwizardry:fire_shrine",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:earth_shrine",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:ice_shrine",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:lightning_shrine",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:necromancy_shrine",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:sorcery_shrine",
+      "weight": 1
+    },
+    {
+      "structure": "ebwizardry:healing_shrine",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 624782787,
+    "separation": 12,
+    "spacing": 48,
+    "type": "minecraft:random_spread"
+  }
+}
