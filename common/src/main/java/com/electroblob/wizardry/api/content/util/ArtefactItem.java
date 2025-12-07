@@ -6,10 +6,15 @@ import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.core.IArtefactEffect;
 import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.Level;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -26,6 +31,11 @@ public class ArtefactItem extends Item {
     public ArtefactItem(Rarity rarity, @Nullable IArtefactEffect effect) {
         super(new Item.Properties().stacksTo(1).rarity(rarity));
         this.effect = effect;
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag isAdvanced) {
+        list.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
     }
 
     public static void onArtifactTick(EBLivingTick event) {

@@ -41,7 +41,7 @@ public final class Spells {
     public static final Spell MAGIC_MISSILE;
     public static final Spell SMOKE_BOMB;
     public static final Spell POISON_BOMB;
-    public static final Spell FIRE_BOMB;
+    public static final Spell FIREBOMB;
     public static final Spell THUNDERBOLT;
     public static final Spell DART;
     public static final Spell LEAP;
@@ -187,7 +187,7 @@ public final class Spells {
         ));
 
 
-        FIRE_BOMB = spell("fire_bomb", () -> new ProjectileSpell<>(FireBombEntity::new).assignProperties(
+        FIREBOMB = spell("firebomb", () -> new ProjectileSpell<>(FireBombEntity::new).assignProperties(
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 25)
                         .add(DefaultProperties.RANGE, 10f)

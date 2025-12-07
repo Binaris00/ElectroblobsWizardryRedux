@@ -75,7 +75,7 @@ public abstract class SpellInfoScreen extends Screen {
 
         Component spellName = discovered ? ((MutableComponent) getSpell().getDescriptionFormatted()).withStyle(ChatFormatting.BLACK) : Component.literal(SpellGlyphData.getGlyphName(getSpell(), GlyphClientHandler.INSTANCE.getGlyphData())).withStyle(Style.EMPTY.withFont(new ResourceLocation("minecraft", "alt")));
         guiGraphics.drawString(font, spellName, left + 17, top + 15, 0, false);
-        guiGraphics.drawString(font, getSpell().getType().getDisplayName(), left + 17, top + 26, 0x777777, false);
+        guiGraphics.drawString(font, Component.translatable(getSpell().getType().getDisplayName()), left + 17, top + 26, 0x777777, false);
 
         ChatFormatting tierColor = getSpell().getTier() == SpellTiers.NOVICE ? ChatFormatting.GRAY : getSpell().getTier().getColor();
         MutableComponent tier = Component.translatable(TRANSLATION_KEY_PREFIX + ".tier", ((MutableComponent) getSpell().getTier().getDescriptionFormatted()).withStyle(tierColor));

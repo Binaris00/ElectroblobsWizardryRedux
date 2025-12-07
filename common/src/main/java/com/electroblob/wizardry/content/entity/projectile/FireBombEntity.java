@@ -40,15 +40,15 @@ public class FireBombEntity extends BombEntity {
         if (hitResult instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
 
-            float damage = Spells.FIRE_BOMB.property(DefaultProperties.DAMAGE);
+            float damage = Spells.FIREBOMB.property(DefaultProperties.DAMAGE);
             EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
         } else if (hitResult instanceof BlockHitResult) {
-            List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), Spells.FIRE_BOMB.property(DefaultProperties.EFFECT_RADIUS));
+            List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), Spells.FIREBOMB.property(DefaultProperties.EFFECT_RADIUS));
 
             for (LivingEntity entity : livingEntities) {
-                EBMagicDamageSource.causeMagicDamage(this, entity, Spells.FIRE_BOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE, false);
+                EBMagicDamageSource.causeMagicDamage(this, entity, Spells.FIREBOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE, false);
                 if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
-                    entity.setSecondsOnFire(Spells.FIRE_BOMB.property(DefaultProperties.EFFECT_DURATION));
+                    entity.setSecondsOnFire(Spells.FIREBOMB.property(DefaultProperties.EFFECT_DURATION));
             }
         }
 

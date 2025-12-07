@@ -1,17 +1,10 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.util.ClientUtils;
-import com.electroblob.wizardry.api.client.util.GlyphClientHandler;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
-import com.electroblob.wizardry.content.data.SpellGlyphData;
-import com.electroblob.wizardry.setup.registries.SpellTiers;
-import com.google.common.collect.ImmutableMap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.Style;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -24,16 +17,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Map;
 
 public class SpellBookItem extends Item {
-    // TODO This should be loaded automatically when a mod registers a new spell tier
-    private static final Map<SpellTier, ResourceLocation> GUI_TEXTURES = ImmutableMap.of(
-            SpellTiers.NOVICE, WizardryMainMod.location("textures/gui/spell_book_novice.png"),
-            SpellTiers.APPRENTICE, WizardryMainMod.location("textures/gui/spell_book_apprentice.png"),
-            SpellTiers.ADVANCED, WizardryMainMod.location("textures/gui/spell_book_advanced.png"),
-            SpellTiers.MASTER, WizardryMainMod.location("textures/gui/spell_book_master.png"));
-
     public SpellBookItem(Properties properties) {
         super(properties);
     }
@@ -41,9 +26,7 @@ public class SpellBookItem extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
-        if (level.isClientSide) {
-            ClientUtils.openSpellBook(stack);
-        }
+        if (level.isClientSide) ClientUtils.openSpellBook(stack);
         return super.use(level, player, interactionHand);
     }
 
@@ -66,6 +49,7 @@ public class SpellBookItem extends Item {
     }
 
     public ResourceLocation getGuiTexture(Spell spell) {
-        return GUI_TEXTURES.get(spell.getTier());
+        ResourceLocation l = spell.getTier().getOrCreateLocation();
+        return new ResourceLocation(l.getNamespace(), "textures/gui/spell_book_" + l.getPath() + ".png");
     }
 }
