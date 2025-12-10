@@ -3,21 +3,24 @@ package com.electroblob.wizardry.api.client;
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.particle.ParticleWizardry;
 import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.client.ParticleSpawner;
+import com.electroblob.wizardry.core.networking.s2c.ParticleBuilderS2C;
+import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.function.BiFunction;
 
 
 public final class ParticleBuilder {
@@ -72,17 +75,35 @@ public final class ParticleBuilder {
      */
     private boolean gravity;
 
-    private long seed;
-    private double length;
-    private Entity entity;
-    private float yaw, pitch;
-    private double radius;
-    private double rpt;
-    private boolean collide;
-    private double tx, ty, tz;
-    private double tvx, tvy, tvz;
-    private Entity target;
+    /**
+     * Normally we don't want to allow server-side spawning of particles, as this can cause performance issues (too many
+     * particles being sent to clients). However, in some cases (notably for particles that aren't from spells), it is
+     * desirable to allow this. This flag indicates whether server-side spawning is allowed for the particle being built.
+     * <p>
+     * There's no need to allow this for spell casting (normally) as spells handle particle spawning and synchronization
+     * themselves, check {@link Spell#requiresPacket()} for more details.
+     */
+    private boolean serverAllowed;
 
+    private long seed;
+
+    private double length;
+
+    private Entity entity;
+
+    private float yaw, pitch;
+
+    private double radius;
+
+    private double rpt;
+
+    private boolean collide;
+
+    private double tx, ty, tz;
+
+    private double tvx, tvy, tvz;
+
+    private Entity target;
 
     // ------------------------- Core methods -------------------------------- //
 
@@ -549,7 +570,22 @@ public final class ParticleBuilder {
      */
     public ParticleBuilder face(Direction direction) {
         return face(direction.toYRot(), direction.getAxis().isVertical() ? direction.getAxisDirection().getStep() * 90 : 0);
+    }
 
+    /**
+     * Sets whether server-side spawning is allowed for the particle being built. By default this is false.
+     * <p>
+     * There's no need to allow this for spell casting (normally) as spells handle particle spawning and synchronization
+     * themselves, check {@link Spell#requiresPacket()} for more details.
+     *
+     * @param allow True to allow server-side spawning, false to prevent it
+     * @return The particle builder instance, allowing other methods to be chained onto this one
+     * @throws IllegalStateException if the particle builder is not yet building.
+     */
+    public ParticleBuilder allowServer(boolean allow) {
+        if (!building) throw new IllegalStateException("Not building yet!");
+        this.serverAllowed = allow;
+        return this;
     }
 
     // ============================================= Targeted-only methods =============================================
@@ -701,47 +737,61 @@ public final class ParticleBuilder {
         if (x == 0 && y == 0 && z == 0 && entity == null)
             EBLogger.error("Failed to spawn particle of type - %s - are you sure it exists?");
 
+        // Server-side spawning: send packet to clients
+        if (serverAllowed && !world.isClientSide()) {
+            ParticleData data = captureData();
+            ParticleBuilderS2C packet = new ParticleBuilderS2C(data);
+            Services.NETWORK_HELPER.sendToDimension(world.getServer(), packet, world.dimension());
+            reset();
+            return;
+        }
+
         if (!world.isClientSide()) {
-            EBLogger.error("ParticleBuilder.spawn(...) called on the server side! ParticleBuilder has prevented a server crash, but calling it on the server will do nothing. Consider adding a world.isClientSide() check.");
+            EBLogger.error("ParticleBuilder.spawn(...) called on the server side! ParticleBuilder has prevented a server crash, but calling it on the server will do nothing. Consider adding a world.isClientSide() check or use .serverAllowed(true) to send particles to clients.");
             reset();
             return;
         }
 
-        BiFunction<ClientLevel, Vec3, ParticleWizardry> factory = ParticleWizardry.PROVIDERS.get(particle);
-        ParticleWizardry particleWizardry = factory == null ? null : factory.apply((ClientLevel) world, new Vec3(x, y, z));
-
-        if (particleWizardry == null) {
-            EBLogger.error("Failed to spawn particle of type - %s - are you sure it exists?", particle.toString());
-            reset();
-            return;
-        }
-
-
-        // Set the properties
-        if (!Double.isNaN(velocityX) && !Double.isNaN(velocityY) && !Double.isNaN(velocityZ))
-            particleWizardry.setParticleSpeed(velocityX, velocityY, velocityZ);
-        if (red >= 0 && green >= 0 && blue >= 0) particleWizardry.setColor(red, green, blue);
-        if (fadeRed >= 0 && fadeGreen >= 0 && fadeBlue >= 0)
-            particleWizardry.setFadeColour(fadeRed, fadeGreen, fadeBlue);
-        if (lifetime >= 0) particleWizardry.setLifetime(lifetime);
-        if (radius > 0) particleWizardry.setSpin(radius, rpt);
-        if (!Float.isNaN(yaw) && !Float.isNaN(pitch)) particleWizardry.setFacing(yaw, pitch);
-        if (seed != 0) particleWizardry.setSeed(seed);
-        if (!Double.isNaN(tvx) && !Double.isNaN(tvy) && !Double.isNaN(tvz))
-            particleWizardry.setTargetVelocity(tvx, tvy, tvz);
-        if (length > 0) particleWizardry.setLength(length);
-
-        particleWizardry.scale(scale);
-        particleWizardry.setGravity(gravity);
-        particleWizardry.setShaded(shaded);
-        particleWizardry.setCollisions(collide);
-        particleWizardry.setEntity(entity);
-        particleWizardry.setTargetPosition(tx, ty, tz);
-        particleWizardry.setTargetEntity(target);
-
-        Minecraft.getInstance().particleEngine.add(particleWizardry);
-
+        ParticleSpawner.spawnClientParticle(captureData());
         reset();
+    }
+
+
+    private ParticleData captureData() {
+        ParticleData data = new ParticleData();
+        data.particleType = BuiltInRegistries.PARTICLE_TYPE.getKey(particle);
+        data.x = x;
+        data.y = y;
+        data.z = z;
+        data.vx = velocityX;
+        data.vy = velocityY;
+        data.vz = velocityZ;
+        data.r = red;
+        data.g = green;
+        data.b = blue;
+        data.fr = fadeRed;
+        data.fg = fadeGreen;
+        data.fb = fadeBlue;
+        data.lifetime = lifetime;
+        data.scale = scale;
+        data.gravity = gravity;
+        data.shaded = shaded;
+        data.collide = collide;
+        data.radius = radius;
+        data.rpt = rpt;
+        data.yaw = yaw;
+        data.pitch = pitch;
+        data.seed = seed;
+        data.length = length;
+        data.tx = tx;
+        data.ty = ty;
+        data.tz = tz;
+        data.tvx = tvx;
+        data.tvy = tvy;
+        data.tvz = tvz;
+        data.entityId = entity != null ? entity.getId() : null;
+        data.targetId = target != null ? target.getId() : null;
+        return data;
     }
 
     /**
@@ -781,5 +831,105 @@ public final class ParticleBuilder {
         target = null;
         seed = 0;
         length = -1;
+        serverAllowed = false;
+    }
+
+    /**
+     * Data class for particle properties to be sent over the network and spawned client-side. In the normal course of
+     * events, users of ParticleBuilder will not need to interact with this class directly, as ParticleBuilder handles
+     * it internally.
+     */
+    public static class ParticleData {
+        public ResourceLocation particleType;
+        public double x, y, z;
+        public double vx, vy, vz;
+        public float r, g, b;
+        public float fr, fg, fb;
+        public int lifetime;
+        public float scale;
+        public boolean gravity, shaded, collide;
+        public double radius;
+        public double rpt;
+        public float yaw, pitch;
+        public long seed;
+        public double length;
+        public double tx, ty, tz;
+        public double tvx, tvy, tvz;
+        public Integer entityId;
+        public Integer targetId;
+
+        public void write(FriendlyByteBuf buf) {
+            buf.writeResourceLocation(particleType);
+            buf.writeDouble(x);
+            buf.writeDouble(y);
+            buf.writeDouble(z);
+            buf.writeDouble(vx);
+            buf.writeDouble(vy);
+            buf.writeDouble(vz);
+            buf.writeFloat(r);
+            buf.writeFloat(g);
+            buf.writeFloat(b);
+            buf.writeFloat(fr);
+            buf.writeFloat(fg);
+            buf.writeFloat(fb);
+            buf.writeInt(lifetime);
+            buf.writeFloat(scale);
+            buf.writeBoolean(gravity);
+            buf.writeBoolean(shaded);
+            buf.writeBoolean(collide);
+            buf.writeDouble(radius);
+            buf.writeDouble(rpt);
+            buf.writeFloat(yaw);
+            buf.writeFloat(pitch);
+            buf.writeLong(seed);
+            buf.writeDouble(length);
+            buf.writeDouble(tx);
+            buf.writeDouble(ty);
+            buf.writeDouble(tz);
+            buf.writeDouble(tvx);
+            buf.writeDouble(tvy);
+            buf.writeDouble(tvz);
+            buf.writeBoolean(entityId != null);
+            if (entityId != null) buf.writeInt(entityId);
+            buf.writeBoolean(targetId != null);
+            if (targetId != null) buf.writeInt(targetId);
+        }
+
+        public static ParticleData read(FriendlyByteBuf buf) {
+            ParticleData data = new ParticleData();
+            data.particleType = buf.readResourceLocation();
+            data.x = buf.readDouble();
+            data.y = buf.readDouble();
+            data.z = buf.readDouble();
+            data.vx = buf.readDouble();
+            data.vy = buf.readDouble();
+            data.vz = buf.readDouble();
+            data.r = buf.readFloat();
+            data.g = buf.readFloat();
+            data.b = buf.readFloat();
+            data.fr = buf.readFloat();
+            data.fg = buf.readFloat();
+            data.fb = buf.readFloat();
+            data.lifetime = buf.readInt();
+            data.scale = buf.readFloat();
+            data.gravity = buf.readBoolean();
+            data.shaded = buf.readBoolean();
+            data.collide = buf.readBoolean();
+            data.radius = buf.readDouble();
+            data.rpt = buf.readDouble();
+            data.yaw = buf.readFloat();
+            data.pitch = buf.readFloat();
+            data.seed = buf.readLong();
+            data.length = buf.readDouble();
+            data.tx = buf.readDouble();
+            data.ty = buf.readDouble();
+            data.tz = buf.readDouble();
+            data.tvx = buf.readDouble();
+            data.tvy = buf.readDouble();
+            data.tvz = buf.readDouble();
+            if (buf.readBoolean()) data.entityId = buf.readInt();
+            if (buf.readBoolean()) data.targetId = buf.readInt();
+            return data;
+        }
     }
 }

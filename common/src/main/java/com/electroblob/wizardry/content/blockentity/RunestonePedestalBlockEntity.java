@@ -123,9 +123,8 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
             double y = pos.getY() + 0.5;
             double z = pos.getZ() + 0.5;
 
-            // TODO: This isn't reaching the client, so the best solution here could be creating a packet for using ParticleBuilder logic on server
-            if (level.isClientSide)
-                ParticleBuilder.create(EBParticles.SPHERE).pos(x, y + 1, z).color(0xf06495).scale(5).time(12).spawn(level);
+            ParticleBuilder.create(EBParticles.SPHERE).pos(x, y + 1, z).color(0xf06495).scale(5)
+                    .time(12).allowServer(true).spawn(level);
             pedestal.activateEvent(nearbyPlayers);
             level.playLocalSound(x, y, z, EBSounds.BLOCK_PEDESTAL_ACTIVATE.get(), SoundSource.BLOCKS, 1.5f, 1, false);
         }
@@ -209,17 +208,15 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         });
         playersInContainment.clear();
 
-        // TODO: This isn't reaching the client, so the best solution here could be creating a packet for using ParticleBuilder logic on server
-        if (level.isClientSide) {
-            double x = getBlockPos().getX() + 0.5;
-            double y = getBlockPos().getY() + 0.5;
-            double z = getBlockPos().getZ() + 0.5;
-            ParticleBuilder.create(EBParticles.SPHERE).scale(5).pos(x, y + 1, z).color(0xf06495).time(12).spawn(level);
-            for (int i = 0; i < 5; i++) {
-                float brightness = 0.8f + level.random.nextFloat() * 0.2f;
-                ParticleBuilder.create(EBParticles.SPARKLE, level.random, x, y + 1, z, 1, true)
-                        .color(1, brightness, brightness).spawn(level);
-            }
+        double x = getBlockPos().getX() + 0.5;
+        double y = getBlockPos().getY() + 0.5;
+        double z = getBlockPos().getZ() + 0.5;
+        ParticleBuilder.create(EBParticles.SPHERE).scale(5).pos(x, y + 1, z).color(0xf06495)
+                .time(12).allowServer(true).spawn(level);
+        for (int i = 0; i < 5; i++) {
+            float brightness = 0.8f + level.random.nextFloat() * 0.2f;
+            ParticleBuilder.create(EBParticles.SPARKLE, level.random, x, y + 1, z, 1, true)
+                    .color(1, brightness, brightness).allowServer(true).spawn(level);
         }
 
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(level.getBlockEntity(linkedPos));

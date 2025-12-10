@@ -7,14 +7,11 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.EntityCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.client.ParticleSpawner;
 import com.electroblob.wizardry.content.item.ScrollItem;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
-import com.electroblob.wizardry.core.networking.s2c.NPCSpellCastS2C;
-import com.electroblob.wizardry.core.networking.s2c.SpellCastS2C;
-import com.electroblob.wizardry.core.networking.s2c.TestParticlePacketS2C;
-import com.electroblob.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
-import com.electroblob.wizardry.core.networking.s2c.SpellPropertiesSyncS2C;
+import com.electroblob.wizardry.core.networking.s2c.*;
 import com.electroblob.wizardry.api.client.util.ClientUtils;
 import com.electroblob.wizardry.api.client.util.GlyphClientHandler;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
@@ -111,5 +108,10 @@ public final class ClientMessageHandler {
             }
             spell.get().setProperties(entry.getValue());
         }
+    }
+
+    public static void particleBuilder(ParticleBuilderS2C m) {
+        // Use ParticleSpawner to avoid loading client classes in ParticleData
+        ParticleSpawner.spawnClientParticle(m.getData());
     }
 }

@@ -15,12 +15,13 @@ public class EBFabricClientNetwork {
         registerClientMessage(SpellPropertiesSyncS2C.ID, SpellPropertiesSyncS2C::new);
         registerClientMessage(NPCSpellCastS2C.ID, NPCSpellCastS2C::new);
         registerClientMessage(SpellCastS2C.ID, SpellCastS2C::new);
+        registerClientMessage(ParticleBuilderS2C.ID, ParticleBuilderS2C::new);
     }
 
     private static <T extends Message> void registerClientMessage(ResourceLocation id, Function<FriendlyByteBuf, T> decoder) {
         ClientPlayNetworking.registerGlobalReceiver(id, (client, handler, buf, responseSender) -> {
             T packet = decoder.apply(buf);
-            client.execute(() -> packet.handleClient());
+            client.execute(packet::handleClient);
         });
     }
 }

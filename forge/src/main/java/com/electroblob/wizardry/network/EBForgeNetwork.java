@@ -36,6 +36,7 @@ public class EBForgeNetwork {
         register(MinionSyncPacketS2C.class, MinionSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(PlayerCapabilitySyncPacketS2C.class, PlayerCapabilitySyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ArcaneLockSyncPacketS2C.class, ArcaneLockSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+        register(ParticleBuilderS2C.class, ParticleBuilderS2C::new, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     private static <T extends Message> void register(Class<T> clazz, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {
