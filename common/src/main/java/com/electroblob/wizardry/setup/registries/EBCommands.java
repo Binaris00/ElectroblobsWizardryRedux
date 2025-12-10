@@ -21,7 +21,8 @@ public final class EBCommands {
             ListSpellsCommand::register,
             ListElementsCommand::register,
             ListTiersCommand::register,
-            AllyCommand::register
+            AllyCommand::register,
+            DiscoverSpellCommand::register
     );
     public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> DEBUG_COMMANDS = ImmutableList.of(
             WandSpellCommand::register,

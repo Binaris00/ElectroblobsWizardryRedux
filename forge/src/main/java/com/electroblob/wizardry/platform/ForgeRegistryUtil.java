@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.platform;
 
-import com.electroblob.wizardry.EBRegistriesForge;
+import com.electroblob.wizardry.registry.EBRegistriesForge;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;

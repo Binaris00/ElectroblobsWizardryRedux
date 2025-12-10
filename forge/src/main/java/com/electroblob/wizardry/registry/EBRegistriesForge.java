@@ -1,5 +1,6 @@
-package com.electroblob.wizardry;
+package com.electroblob.wizardry.registry;
 
+import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;

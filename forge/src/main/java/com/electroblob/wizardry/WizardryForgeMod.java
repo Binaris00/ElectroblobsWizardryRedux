@@ -3,6 +3,8 @@ package com.electroblob.wizardry;
 import com.electroblob.wizardry.client.WizardryForgeClient;
 import com.electroblob.wizardry.content.menu.BookshelfMenu;
 import com.electroblob.wizardry.network.EBForgeNetwork;
+import com.electroblob.wizardry.registry.EBArgumentTypesForge;
+import com.electroblob.wizardry.registry.EBRegistriesForge;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -21,6 +23,7 @@ public final class WizardryForgeMod {
         EBRegistriesForge.tiers(modBus);
         EBRegistriesForge.elements(modBus);
         EBRegistriesForge.spells(modBus);
+        EBArgumentTypesForge.register(modBus);
 
         modBus.addListener(WizardryForgeMod::commonSetup);
         if(FMLEnvironment.dist.isClient()) {

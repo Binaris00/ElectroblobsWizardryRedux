@@ -1,10 +1,14 @@
 package com.electroblob.wizardry.platform;
 
 import com.electroblob.wizardry.core.platform.services.IPlatformHelper;
+import com.mojang.brigadier.arguments.ArgumentType;
 import net.fabricmc.api.EnvType;
+import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.biome.Biome;
 
@@ -43,6 +47,11 @@ public class FabricPlatformHelper implements IPlatformHelper {
     @Override
     public boolean inIceBiomes(Holder<Biome> biome) {
         return biome.is(ConventionalBiomeTags.SNOWY);
+    }
+
+    @Override
+    public <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>> void registerArgumentType(ResourceLocation id, Class<? extends A> clazz, ArgumentTypeInfo<A, T> serializer) {
+        ArgumentTypeRegistry.registerArgumentType(id, clazz, serializer);
     }
 
 

@@ -89,7 +89,6 @@ public final class EBItems {
     static final LinkedList<DeferredObject<? extends Item>> LEGGINGS = new LinkedList<>();
     static final LinkedList<DeferredObject<? extends Item>> WANDS = new LinkedList<>();
     static final LinkedList<DeferredObject<? extends Item>> ARTIFACTS = new LinkedList<>();
-    static final LinkedList<DeferredObject<? extends Item>> DEBUG_ITEMS = new LinkedList<>();
     static final LinkedList<DeferredObject<? extends Item>> GENERAL_ITEMS = new LinkedList<>(); // For main item tab
     static final Map<String, DeferredObject<? extends Item>> ITEMS_REGISTER = new HashMap<>(); // For register function
     //Bombs
@@ -389,19 +388,19 @@ public final class EBItems {
     public static final DeferredObject<Item> RING_SOULBINDING = artifact("ring_soulbinding", Rarity.EPIC, new SoulBindingRingEffect());
     public static final DeferredObject<Item> RING_STORMCLOUD = artifact("ring_stormcloud", Rarity.RARE);
     //Spectral Armor
-    public static final DeferredObject<Item> SPECTRAL_HELMET = debug("spectral_helmet", () -> new SpectralArmorItem(ArmorItem.Type.HELMET));
-    public static final DeferredObject<Item> SPECTRAL_CHESTPLATE = debug("spectral_chestplate", () -> new SpectralArmorItem(ArmorItem.Type.CHESTPLATE));
-    public static final DeferredObject<Item> SPECTRAL_LEGGINGS = debug("spectral_leggings", () -> new SpectralArmorItem(ArmorItem.Type.LEGGINGS));
-    public static final DeferredObject<Item> SPECTRAL_BOOTS = debug("spectral_boots", () -> new SpectralArmorItem(ArmorItem.Type.BOOTS));
+    public static final DeferredObject<Item> SPECTRAL_HELMET = item("spectral_helmet", () -> new SpectralArmorItem(ArmorItem.Type.HELMET));
+    public static final DeferredObject<Item> SPECTRAL_CHESTPLATE = item("spectral_chestplate", () -> new SpectralArmorItem(ArmorItem.Type.CHESTPLATE));
+    public static final DeferredObject<Item> SPECTRAL_LEGGINGS = item("spectral_leggings", () -> new SpectralArmorItem(ArmorItem.Type.LEGGINGS));
+    public static final DeferredObject<Item> SPECTRAL_BOOTS = item("spectral_boots", () -> new SpectralArmorItem(ArmorItem.Type.BOOTS));
     //Spectral
-    public static final DeferredObject<Item> SPECTRAL_SWORD = debug("spectral_sword", SpectralSwordItem::new);
-    public static final DeferredObject<Item> SPECTRAL_BOW = debug("spectral_bow", SpectralBowItem::new);
-    public static final DeferredObject<Item> SPECTRAL_PICKAXE = debug("spectral_pickaxe", SpectralPickaxeItem::new);
+    public static final DeferredObject<Item> SPECTRAL_SWORD = item("spectral_sword", SpectralSwordItem::new);
+    public static final DeferredObject<Item> SPECTRAL_BOW = item("spectral_bow", SpectralBowItem::new);
+    public static final DeferredObject<Item> SPECTRAL_PICKAXE = item("spectral_pickaxe", SpectralPickaxeItem::new);
     //Cast Items
-    public static final DeferredObject<Item> FLAMECATCHER = debug("flamecatcher", FlameCatcherItem::new);
-    public static final DeferredObject<Item> FLAMING_AXE = debug("flaming_axe", FlamingAxeItem::new);
-    public static final DeferredObject<Item> FROST_AXE = debug("frost_axe", FrostAxeItem::new);
-    public static final DeferredObject<Item> LIGHTNING_HAMMER = debug("lightning_hammer");
+    public static final DeferredObject<Item> FLAMECATCHER = item("flamecatcher", FlameCatcherItem::new, false, true);
+    public static final DeferredObject<Item> FLAMING_AXE = item("flaming_axe", FlamingAxeItem::new, false, true);
+    public static final DeferredObject<Item> FROST_AXE = item("frost_axe", FrostAxeItem::new, false, true);
+    public static final DeferredObject<Item> LIGHTNING_HAMMER = item("lightning_hammer");
     // Spawn egg
     public static final DeferredObject<Item> WIZARD_SPAWN_EGG = item("wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.WIZARD.get(), 0x19295e, 0xee9312, new Item.Properties()), false, true);
     public static final DeferredObject<Item> EVIL_WIZARD_SPAWN_EGG = item("evil_wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.EVIL_WIZARD.get(), 0x290404, 0xee9312, new Item.Properties()), false, true);
@@ -499,22 +498,6 @@ public final class EBItems {
         var registeredArtifact = item(name, sup, true, false);
         ARTIFACTS.add(registeredArtifact);
         return registeredArtifact;
-    }
-
-    /**
-     * Add debug-items (items that are not meant to be public) with a default model and not inside the item creative tab
-     */
-    static DeferredObject<Item> debug(String name) {
-        return debug(name, () -> new Item(new Item.Properties()));
-    }
-
-    /**
-     * Add debug-items (items that are not meant to be public) with a default model and not inside the item creative tab
-     */
-    static <T extends Item> DeferredObject<T> debug(String name, Supplier<T> sup) {
-        var registeredDebug = item(name, sup, false, false);
-        DEBUG_ITEMS.add(registeredDebug);
-        return registeredDebug;
     }
 
     // Basically just a temp method to add items without any functional use

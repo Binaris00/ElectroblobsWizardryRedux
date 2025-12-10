@@ -1,7 +1,11 @@
 package com.electroblob.wizardry.platform;
 
+import com.electroblob.wizardry.registry.EBArgumentTypesForge;
 import com.electroblob.wizardry.core.platform.services.IPlatformHelper;
+import com.mojang.brigadier.arguments.ArgumentType;
+import net.minecraft.commands.synchronization.ArgumentTypeInfo;
 import net.minecraft.core.Holder;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraftforge.common.Tags;
@@ -42,5 +46,10 @@ public class ForgePlatformHelper implements IPlatformHelper {
     @Override
     public boolean inIceBiomes(Holder<Biome> biome) {
         return biome.is(Tags.Biomes.IS_SNOWY);
+    }
+
+    @Override
+    public <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>> void registerArgumentType(ResourceLocation id, Class<? extends A> clazz, ArgumentTypeInfo<A, T> serializer) {
+        EBArgumentTypesForge.registerArgumentType(id.getPath(), clazz, serializer);
     }
 }
