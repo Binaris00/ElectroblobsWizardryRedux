@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "ebwizardry:library_ruins",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "salt": 687610358,
+    "separation": 8,
+    "spacing": 36,
+    "type": "minecraft:random_spread"
+  }
+}
