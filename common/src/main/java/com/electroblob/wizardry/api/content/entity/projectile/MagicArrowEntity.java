@@ -55,7 +55,7 @@ public abstract class MagicArrowEntity extends AbstractArrow {
      * aims it in the direction they are looking with the given speed.
      */
     public void aim(LivingEntity caster, float speed) {
-        this.setOwner(caster);
+        if (getOwner() == null) this.setOwner(caster);
 
         this.absMoveTo(caster.getX(), caster.getY() + caster.getDimensions(caster.getPose()).height - LAUNCH_Y_OFFSET, caster.getZ()
                 , caster.getYRot(), caster.getXRot());
@@ -77,7 +77,7 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     }
 
     public void aim(LivingEntity caster, Entity target, float speed, float aimingError) {
-        this.setOwner(caster);
+        if (getOwner() == null) this.setOwner(caster);
 
         this.yo = caster.yo + (double) caster.getDimensions(caster.getPose()).height * 0.85F - LAUNCH_Y_OFFSET;
         double dx = target.xo - caster.xo;

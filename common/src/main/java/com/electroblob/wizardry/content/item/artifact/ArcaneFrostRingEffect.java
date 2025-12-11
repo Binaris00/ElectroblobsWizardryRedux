@@ -22,8 +22,7 @@ public class ArcaneFrostRingEffect implements IArtefactEffect {
                     player.yo + player.getBbHeight() / 2 + dy,
                     player.zo + dz + Math.signum(dz) * player.getBbWidth());
             iceshard.setDeltaMovement(dx * 1.5, dy * 1.5, dz * 1.5);
-            // TODO SET CASTER ON PROJECTILE
-            //iceshard.setCaster(player);
+            iceshard.setOwner(player);
             player.level().addFreshEntity(iceshard);
         }
     }

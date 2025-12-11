@@ -24,7 +24,6 @@ public class ShatteringRingEffect implements IArtefactEffect {
                 IceShardEntity iceshard = new IceShardEntity(event.getDamagedEntity().level());
                 iceshard.setPos(event.getDamagedEntity().xo + dx + Math.signum(dx) * event.getDamagedEntity().getBbWidth(), event.getDamagedEntity().yo + event.getDamagedEntity().getBbHeight() / 2 + dy, event.getDamagedEntity().zo + dz + Math.signum(dz) * event.getDamagedEntity().getBbWidth());
                 iceshard.setDeltaMovement(dx * 1.5, dy * 1.5, dz * 1.5);
-                // TODO SET CASTER ON PROJECTILE
                 iceshard.setOwner(player);
                 event.getDamagedEntity().level().addFreshEntity(iceshard);
             }
