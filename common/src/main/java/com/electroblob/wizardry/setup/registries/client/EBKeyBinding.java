@@ -3,6 +3,7 @@ package com.electroblob.wizardry.setup.registries.client;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
+import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.client.SpellGUIDisplay;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.core.EBConfig;
@@ -17,6 +18,8 @@ import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.stream.IntStream;
+
 public final class EBKeyBinding {
     public static final String CATEGORY = "key.categories." + WizardryMainMod.MOD_ID;
 
@@ -29,9 +32,8 @@ public final class EBKeyBinding {
     static boolean[] quickAccessKeyPressed = new boolean[SPELL_QUICK_ACCESS.length];
 
     static {
-        for (int i = 0; i < SPELL_QUICK_ACCESS.length; i++) {
-            SPELL_QUICK_ACCESS[i] = new KeyMapping("key." + WizardryMainMod.MOD_ID + ".spell_" + (i + 1), InputConstants.Type.KEYSYM, InputConstants.KEY_1 + i, CATEGORY);
-        }
+        IntStream.range(0, SPELL_QUICK_ACCESS.length).forEach(i -> SPELL_QUICK_ACCESS[i]
+                = new KeyMapping("key." + WizardryMainMod.MOD_ID + ".spell_" + (i + 1), InputConstants.Type.KEYSYM, InputConstants.KEY_1 + i, CATEGORY));
     }
 
     private EBKeyBinding() {
@@ -41,7 +43,7 @@ public final class EBKeyBinding {
         Player player = event.getMinecraft().player;
         if (player == null) return;
 
-        ItemStack wand = getWandInUse(player);
+        ItemStack wand = EntityUtil.getWandInUse(player);
         if (wand == null) return;
 
         if (NEXT_SPELL.isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
@@ -74,19 +76,7 @@ public final class EBKeyBinding {
         }
     }
 
-    private static ItemStack getWandInUse(Player player) {
-        ItemStack wand = player.getMainHandItem();
-
-        if (!(wand.getItem() instanceof ISpellCastingItem) || ((ISpellCastingItem) wand.getItem()).getSpells(wand).length < 2) {
-            wand = player.getOffhandItem();
-            if (!(wand.getItem() instanceof ISpellCastingItem) || ((ISpellCastingItem) wand.getItem()).getSpells(wand).length < 2)
-                return null;
-        }
-
-        return wand;
-    }
-
-    private static void selectNextSpell(ItemStack wand) {
+    public static void selectNextSpell(ItemStack wand) {
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.NEXT_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
         ((ISpellCastingItem) wand.getItem()).selectNextSpell(wand);
@@ -95,7 +85,7 @@ public final class EBKeyBinding {
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
     }
 
-    private static void selectPreviousSpell(ItemStack wand) {
+    public static void selectPreviousSpell(ItemStack wand) {
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.PREVIOUS_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
         ((ISpellCastingItem) wand.getItem()).selectPreviousSpell(wand);
@@ -113,25 +103,4 @@ public final class EBKeyBinding {
             Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
         }
     }
-
-    // TODO MOUSE SCROLL EVENT (I was lazy and I didn't want to do it)
-//    @SuppressWarnings("resource")
-//    @SubscribeEvent
-//    public static void onMouseEvent(InputEvent.MouseScrollingEvent event) {
-//        Player player = Minecraft.getInstance().player;
-//        ItemStack wand = getWandInUse(player);
-//        if (wand == null) return;
-//
-//        if (Minecraft.getInstance().mouseHandler.isMouseGrabbed() && !wand.isEmpty() && event.getScrollDelta() != 0 && player.isShiftKeyDown() && Wizardry.settings.shiftScrolling) {
-//            event.setCanceled(true);
-//
-//            int d = (int) (Wizardry.settings.reverseScrollDirection ? -event.getScrollDelta() : event.getScrollDelta());
-//
-//            if (d > 0) {
-//                selectNextSpell(wand);
-//            } else if (d < 0) {
-//                selectPreviousSpell(wand);
-//            }
-//        }
-//    }
 }

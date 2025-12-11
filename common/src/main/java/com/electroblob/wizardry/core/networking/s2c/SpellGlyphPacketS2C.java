@@ -1,12 +1,14 @@
 package com.electroblob.wizardry.core.networking.s2c;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.core.networking.abst.Message;
 import com.electroblob.wizardry.core.networking.ClientMessageHandler;
+import com.electroblob.wizardry.core.networking.abst.Message;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SpellGlyphPacketS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("spell_glyph_packet");
@@ -15,8 +17,8 @@ public class SpellGlyphPacketS2C implements Message {
 
 
     public SpellGlyphPacketS2C(HashMap<ResourceLocation, String> names, HashMap<ResourceLocation, String> descriptions) {
-        this.names = names;
-        this.descriptions = descriptions;
+        this.names = (names != null) ? names : new HashMap<>();
+        this.descriptions = (descriptions != null) ? descriptions : new HashMap<>();
     }
 
     public SpellGlyphPacketS2C(FriendlyByteBuf pBuf) {
@@ -36,12 +38,20 @@ public class SpellGlyphPacketS2C implements Message {
 
     @Override
     public void encode(FriendlyByteBuf pBuf) {
-        pBuf.writeVarInt(names.size());
+        // use the union of keys to avoid missing entries if one map has extra keys
+        Set<ResourceLocation> keys = new HashSet<>(names.keySet());
+        keys.addAll(descriptions.keySet());
 
-        for (ResourceLocation key : names.keySet()) {
+        pBuf.writeVarInt(keys.size());
+
+        for (ResourceLocation key : keys) {
             pBuf.writeResourceLocation(key);
-            pBuf.writeUtf(names.get(key));
-            pBuf.writeUtf(descriptions.getOrDefault(key, ""));
+            String name = names.get(key);
+            if (name == null) name = "";
+            String desc = descriptions.get(key);
+            if (desc == null) desc = "";
+            pBuf.writeUtf(name);
+            pBuf.writeUtf(desc);
         }
     }
 

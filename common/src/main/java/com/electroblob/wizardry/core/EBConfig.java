@@ -86,6 +86,8 @@ public final class EBConfig {
             new ResourceLocation("minecraft:shulker")
     ).toArray(new ResourceLocation[0]);
     public static boolean passiveMobsAreAllies = true;
+    public static boolean shiftScrolling = true;
+    public static boolean reverseScrollDirection = false;
     public final ConfigValue<Double> defaultMana = new ConfigValue<>(100.0, MIN_PRECISE_DOUBLE, MAX_PRECISE_DOUBLE);
 
 

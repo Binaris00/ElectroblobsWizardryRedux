@@ -24,31 +24,51 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class is responsible for storing and managing the random names and descriptions assigned to spell glyphs, this
+ * is when the player don't know what a spell does and they have to identify it first, all the scrolls/books showing
+ * that spell will then have the same random name/description. The names and descriptions are generated randomly when
+ * the world is first created and saved to disk.
+ * <p>
+ * Note that this data is stored per-world, not per-player, so all players in the same world will see the same random
+ * names/descriptions for spell glyphs.
+ */
 public class SpellGlyphData extends SavedData {
     private static final String NAME = WizardryMainMod.MOD_ID + "_glyphData";
 
     public Map<Spell, String> randomNames = new HashMap<>();
     public Map<Spell, String> randomDescriptions = new HashMap<>();
 
-    public SpellGlyphData() {
-        this(NAME);
-    }
-
-    public SpellGlyphData(String name) {
-
-    }
-
+    /**
+     * Retrieves the SpellGlyphData instance for the given world, creating and populating it if it doesn't already
+     * exist. This also ensures that all registered spells have entries in the data, adding any that are missing (for
+     * example, due to addons being installed or spells being renamed).
+     *
+     * @param world The server level to get the SpellGlyphData for.
+     * @return The SpellGlyphData instance for the given world.
+     */
     public static SpellGlyphData get(ServerLevel world) {
         SpellGlyphData instance = world.getDataStorage().get(SpellGlyphData::load, NAME);
-        if (instance == null) {
-            instance = new SpellGlyphData();
+        if (instance == null) instance = new SpellGlyphData();
+
+        boolean changed = false;
+        // Ensure every registered spell has entries (covers addons / renames)
+        for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
+            if (!instance.randomNames.containsKey(spell)) {
+                instance.randomNames.put(spell, instance.generateRandomName(world.random));
+                changed = true;
+            }
+            if (!instance.randomDescriptions.containsKey(spell)) {
+                instance.randomDescriptions.put(spell, instance.generateRandomDescription(world.random));
+                changed = true;
+            }
         }
 
-        if (instance.randomNames.size() < Services.REGISTRY_UTIL.getSpells().size()
-                || instance.randomDescriptions.size() < Services.REGISTRY_UTIL.getSpells().size()) {
-            instance.generateGlyphNames(world);
+        if (changed) {
+            instance.setDirty();
             world.getDataStorage().set(NAME, instance);
         }
+
         return instance;
     }
 
@@ -58,22 +78,22 @@ public class SpellGlyphData extends SavedData {
 
     public static String getGlyphName(Spell spell, SpellGlyphData data) {
         Map<Spell, String> names = data.randomNames;
-        return names == null ? "" : names.get(spell);
+        return names == null ? "" : names.getOrDefault(spell, "");
     }
 
     public static String getGlyphDescription(Spell spell, SpellGlyphData data) {
         Map<Spell, String> descriptions = data.randomDescriptions;
-        return descriptions == null ? "" : descriptions.get(spell);
+        return descriptions == null ? "" : descriptions.getOrDefault(spell, "");
     }
 
     public static String getGlyphName(Spell spell, ServerLevel world) {
         Map<Spell, String> names = SpellGlyphData.get(world).randomNames;
-        return names == null ? "" : names.get(spell);
+        return names == null ? "" : names.getOrDefault(spell, "");
     }
 
     public static String getGlyphDescription(Spell spell, ServerLevel world) {
         Map<Spell, String> descriptions = SpellGlyphData.get(world).randomDescriptions;
-        return descriptions == null ? "" : descriptions.get(spell);
+        return descriptions == null ? "" : descriptions.getOrDefault(spell, "");
     }
 
     public static SpellGlyphData load(CompoundTag nbt) {
@@ -85,8 +105,19 @@ public class SpellGlyphData extends SavedData {
 
         for (int i = 0; i < tagList.size(); i++) {
             CompoundTag tag = tagList.getCompound(i);
-            data.randomNames.put(Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getString("spell"))), tag.getString("name"));
-            data.randomDescriptions.put(Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getString("spell"))), tag.getString("description"));
+            String spellStr = tag.getString("spell");
+            ResourceLocation loc = ResourceLocation.tryParse(spellStr);
+            if (loc == null) {
+                EBLogger.warn("Skipping malformed spell entry in glyph data: " + spellStr);
+                continue;
+            }
+            Spell spell = Services.REGISTRY_UTIL.getSpell(loc);
+            if (spell == null) {
+                EBLogger.info("Skipping unknown spell in glyph data: " + loc);
+                continue;
+            }
+            data.randomNames.put(spell, tag.getString("name"));
+            data.randomDescriptions.put(spell, tag.getString("description"));
         }
         return data;
     }
@@ -96,7 +127,8 @@ public class SpellGlyphData extends SavedData {
 
         ServerLevel level = (ServerLevel) event.getLevel();
         if (level.dimension().location().getPath().equals("overworld")) {
-            level.getDataStorage().computeIfAbsent((compoundTag) -> SpellGlyphData.get(level), SpellGlyphData::new, NAME);
+            // Ensure saved data exists and is updated to include any new/missing spells
+            SpellGlyphData.get(level);
         }
     }
 

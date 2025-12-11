@@ -276,4 +276,16 @@ public final class EntityUtil {
         }
         return maxTier;
     }
+
+    public static ItemStack getWandInUse(Player player) {
+        ItemStack wand = player.getMainHandItem();
+
+        if (!(wand.getItem() instanceof ISpellCastingItem) || ((ISpellCastingItem) wand.getItem()).getSpells(wand).length < 2) {
+            wand = player.getOffhandItem();
+            if (!(wand.getItem() instanceof ISpellCastingItem) || ((ISpellCastingItem) wand.getItem()).getSpells(wand).length < 2)
+                return null;
+        }
+
+        return wand;
+    }
 }
