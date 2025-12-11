@@ -9,4 +9,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 public interface RCBEAccessor {
     @Accessor
     ResourceLocation getLootTable();
+
+    @Accessor
+    void setLootTable(ResourceLocation lootTable);
 }

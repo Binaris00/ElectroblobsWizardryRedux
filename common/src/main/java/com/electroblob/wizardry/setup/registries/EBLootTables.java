@@ -31,6 +31,8 @@ public final class EBLootTables {
     public static final ResourceLocation SUBSET_UNCOMMON_ARTEFACTS = register("subsets/uncommon_artefacts");
     public static final ResourceLocation SUBSET_WIZARD_ARMOR = register("subsets/wizard_armor");
     public static final ResourceLocation SUBSET_WAND_UPGRADES = register("subsets/wand_upgrades");
+    public static final ResourceLocation SHRINE = register("chests/shrine");
+
     private static final List<Pair<ResourceLocation, LootPool>> LOOT_INJECTIONS = new ArrayList<>();
     private EBLootTables() {
     }

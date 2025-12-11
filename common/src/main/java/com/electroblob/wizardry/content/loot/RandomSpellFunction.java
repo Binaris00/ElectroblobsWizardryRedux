@@ -72,7 +72,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         Spell spell = pickRandomSpell(stack, context.getRandom(), player);
 
         if (spell == Spells.NONE) {
-            EBLogger.warn("Tried to apply the random_spell loot function to an item, but no enabled spells matched the criteria specified. Using Magic Missile as a fallback.");
+            EBLogger.debug("Tried to apply the random_spell loot function to an item, but no enabled spells matched the criteria specified. Using Magic Missile as a fallback.");
             return SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
         }
 
@@ -82,34 +82,34 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
     private Spell pickRandomSpell(ItemStack stack, RandomSource random, Player player) {
         ArrayList<Spell> possibleSpells = new ArrayList<>(Services.REGISTRY_UTIL.getSpells());
 
-        EBLogger.info("Picking random spell for loot with {} possible spells before filtering.", possibleSpells.size());
+        EBLogger.debug("Picking random spell for loot with {} possible spells before filtering.", possibleSpells.size());
 
         // Checking spells, if the spells list is specified
         if (spells != null && !spells.isEmpty()) possibleSpells.retainAll(spells);
 
-        EBLogger.info("{} possible spells after spell filtering.", possibleSpells.size());
+        EBLogger.debug("{} possible spells after spell filtering.", possibleSpells.size());
 
         // Checking tiers, if the tiers list is specified
         if (tiers != null && !tiers.isEmpty()) {
-            EBLogger.info("Filtering by tiers: {}", tiers);
-            EBLogger.info("Sample spell tiers before filtering: {}",
+            EBLogger.debug("Filtering by tiers: {}", tiers);
+            EBLogger.debug("Sample spell tiers before filtering: {}",
                     possibleSpells.stream().limit(5).map(s -> s.getLocation() + "=" + s.getTier()).collect(Collectors.toList()));
             possibleSpells.removeIf(possibleSpell -> !tiers.contains(possibleSpell.getTier()));
         }
 
-        EBLogger.info("{} possible spells after tier filtering.", possibleSpells.size());
+        EBLogger.debug("{} possible spells after tier filtering.", possibleSpells.size());
 
         // Checking elements, if the elements list is specified
         if (elements != null && !elements.isEmpty()) {
-            EBLogger.info("Filtering by elements: {}", elements);
+            EBLogger.debug("Filtering by elements: {}", elements);
             if (!possibleSpells.isEmpty()) {
-                EBLogger.info("Sample spell elements before filtering: {}",
+                EBLogger.debug("Sample spell elements before filtering: {}",
                         possibleSpells.stream().limit(5).map(s -> s.getLocation() + "=" + s.getElement()).collect(Collectors.toList()));
             }
             possibleSpells.removeIf(possibleSpell -> !elements.contains(possibleSpell.getElement()));
         }
 
-        EBLogger.info("{} possible spells after element filtering.", possibleSpells.size());
+        EBLogger.debug("{} possible spells after element filtering.", possibleSpells.size());
 
         if (player != null && undiscoveredBias > 0) {
             float bias = undiscoveredBias;
@@ -126,8 +126,8 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         }
 
         if (possibleSpells.isEmpty()) {
-            EBLogger.error("No spells matched the loot criteria after filtering.");
-            return Spells.NONE;
+            EBLogger.debug("No spells matched the loot criteria after filtering.");
+            return Spells.NONE; // don't worry, this is converted to Magic Missile in run();
         }
 
         return possibleSpells.get(random.nextInt(possibleSpells.size()));
