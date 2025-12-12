@@ -40,7 +40,6 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("deprecation")
@@ -120,29 +119,19 @@ public class ReceptacleBlock extends Block implements EntityBlock {
 
         // If wanting to add an item to an empty receptacle
         if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof ReceptacleItemValue) {
-            if (!level.isClientSide) {
-                ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
-                blockEntity.setStack(receptacleItem.split(1));
-                level.playSound(null, pos, EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f);
-            }
-            return InteractionResult.sidedSuccess(level.isClientSide);
+            ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
+            blockEntity.setStack(receptacleItem.split(1));
         }
         // If wanting to take an item out of a filled receptacle
-        if (!stack.isEmpty()) {
-            if (!level.isClientSide) {
-                if (!player.getInventory().add(stack)) {
-                    player.drop(stack, false);
-                }
-                blockEntity.setStack(ItemStack.EMPTY);
-                level.playSound(null, pos, EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f);
-            }
-            return InteractionResult.sidedSuccess(level.isClientSide);
+        if (!stack.isEmpty() && !player.getInventory().add(stack)) {
+            player.drop(stack, false);
         }
+        level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f, false);
         return InteractionResult.SUCCESS;
     }
 
     @Override
-    public void onRemove(BlockState state, Level level, BlockPos pos, BlockState newState, boolean movedByPiston) {
+    public void onRemove(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull BlockState newState, boolean movedByPiston) {
         if (level.getBlockEntity(pos) instanceof ReceptacleBlockEntity entity) {
             ItemStack stack = entity.getStack();
             if (!stack.isEmpty()) Containers.dropItemStack(level, pos.getX(), pos.getY(), pos.getZ(), stack);
