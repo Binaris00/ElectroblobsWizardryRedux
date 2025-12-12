@@ -4,10 +4,15 @@ import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
+import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -24,6 +29,17 @@ public abstract class LivingEntityMixin {
     @Inject(at = @At("HEAD"), method = "tick")
     public void EBWIZARDRY$tick(CallbackInfo ci) {
         WizardryEventBus.getInstance().fire(new EBLivingTick(livingEntity, livingEntity.level()));
+    }
+
+    @Inject(method = "canBeAffected", at = @At("HEAD"), cancellable = true)
+    public void EBWIZARDRY$livingCanBeAffected(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
+        if (!(livingEntity instanceof Player player)) return;
+
+        if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_ICE_IMMUNITY.get()))
+            if (effect.getEffect() == EBMobEffects.FROST.get()) cir.setReturnValue(false);
+
+        if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WITHER_IMMUNITY.get()))
+            if (effect.getEffect() == MobEffects.WITHER) cir.setReturnValue(false);
     }
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
