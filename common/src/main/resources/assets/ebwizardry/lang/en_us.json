@@ -870,6 +870,8 @@
   "item.ebwizardry.wand_master_sorcery": "Master Sorcerer Wand",
   "item.ebwizardry.wand_master": "Master Wand",
   "item.ebwizardry.wand.levelup": "%s is ready to upgrade to %s tier",
+  "item.ebwizardry.wand.add_ally": "Added %s as an ally for this wand",
+  "item.ebwizardry.wand.remove_ally": "Removed %s as an ally",
   "item.ebwizardry.medium_mana_flask": "Medium Mana Flask",
   "item.ebwizardry.wand_novice_earth": "Wand of the Forest",
   "item.ebwizardry.wand_novice_fire": "Wand of Embers",

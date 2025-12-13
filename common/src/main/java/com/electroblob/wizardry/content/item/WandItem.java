@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
@@ -72,53 +71,48 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (spell == Spells.NONE) return InteractionResultHolder.pass(stack);
 
         PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), 0, this.calculateModifiers(stack, player, spell));
-
         if (!canCast(stack, spell, ctx)) return InteractionResultHolder.fail(stack);
+
         int charge = (int) (spell.getCharge() * ctx.modifiers().get(SpellModifiers.CHARGEUP));
-        if (spell.isInstantCast() || charge < 0)
-            if (cast(stack, spell, ctx)) {
-                if (!level.isClientSide && spell.isInstantCast() && spell.requiresPacket()) {
-                    SpellCastS2C msg = new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers());
-                    Services.NETWORK_HELPER.sendToDimension(level.getServer(), msg, level.dimension());
-                }
+        if (!spell.isInstantCast() || charge > 0) {
+            if (!player.isUsingItem()) {
+                player.startUsingItem(hand);
+                Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
+                if (charge > 0 && level.isClientSide) ClientSpellSoundManager.playChargeSound(player);
                 return InteractionResultHolder.success(stack);
             }
-
-        if (!player.isUsingItem() && spell.isInstantCast()) {
-            player.startUsingItem(hand);
-            Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
-            if (charge > 0 && level.isClientSide) ClientSpellSoundManager.playChargeSound(player);
-            return InteractionResultHolder.success(stack);
+        } else {
+            if (cast(stack, spell, ctx)) return InteractionResultHolder.success(stack);
         }
 
-        return InteractionResultHolder.pass(stack);
+        return InteractionResultHolder.fail(stack);
     }
 
     @Override
-    public void onUseTick(@NotNull Level level, @NotNull LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
-        if (!(livingEntity instanceof Player user)) return;
+    public void onUseTick(@NotNull Level level, @NotNull LivingEntity user, @NotNull ItemStack stack, int timeLeft) {
+        if (!(user instanceof Player player)) return;
+
         Spell spell = WandHelper.getCurrentSpell(stack);
         SpellModifiers modifiers;
-        WizardData data = Services.OBJECT_DATA.getWizardData(user);
-        modifiers = data.getSpellModifiers();
+        modifiers = Services.OBJECT_DATA.getWizardData(player).getSpellModifiers();
 
         int useTick = stack.getUseDuration() - timeLeft;
         int charge = (int) (spell.getCharge() * modifiers.get(SpellModifiers.CHARGEUP));
-        PlayerCastContext ctx = new PlayerCastContext(level, user, user.getUsedItemHand(), useTick - charge, modifiers);
+        PlayerCastContext ctx = new PlayerCastContext(level, player, user.getUsedItemHand(), useTick, modifiers);
 
-        // I don't really think instant spells can come here anyway
         if (spell.isInstantCast()) {
             if (charge > 0 && useTick == charge) cast(stack, spell, ctx);
             return;
         }
 
-        if (useTick <= charge) {
-            spell.onCharge(ctx);
-            return;
+        if (useTick >= charge) {
+            int castingTick = useTick - charge;
+            if (castingTick == 0 || canCast(stack, spell, ctx)) {
+                cast(stack, spell, ctx);
+            } else {
+                player.stopUsingItem();
+            }
         }
-
-        if (ctx.castingTicks() == 0 || canCast(stack, spell, ctx)) cast(stack, spell, ctx);
-        else user.stopUsingItem();
     }
 
     @Override
@@ -145,17 +139,17 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        // TODO if (world.isClientSide && spell.isInstantCast() && spell.requiresPacket()) return false;
+        if (ctx.world().isClientSide && spell.isInstantCast() && spell.requiresPacket()) return false;
         if (!spell.cast(ctx)) return false;
 
         if (ctx.castingTicks() == 0)
             WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers()));
 
         if (!ctx.world().isClientSide) {
-            // TODO
-//                if (!spell.isContinuous && spell.requiresPacket()) {
-//                    WizardryPacketHandler.net.send(PacketDistributor.DIMENSION.with(() -> world.dimension()), new PacketCastSpell(caster.getId(), hand, spell, modifiers));
-//                }
+            if (spell.isInstantCast() && spell.requiresPacket()) {
+                SpellCastS2C msg = new SpellCastS2C(ctx.caster().getId(), ctx.hand(), spell, ctx.modifiers());
+                Services.NETWORK_HELPER.sendToDimension(ctx.world().getServer(), msg, ctx.world().dimension());
+            }
 
             int cost = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.COST) + 0.1f);
             if (!spell.isInstantCast()) cost = getDistributedCost(cost, ctx.castingTicks());
@@ -175,7 +169,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (excess >= 0 && excess < progression) {
             ctx.caster().playSound(EBSounds.ITEM_WAND_LEVELUP.get(), 1.25f, 1);
             if (!ctx.world().isClientSide)
-                ctx.caster().sendSystemMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".wand.levelup", this.getName(stack), nextTier.getDescriptionFormatted()));
+                ctx.caster().sendSystemMessage(Component.translatable("item.ebwizardry.wand.levelup", this.getName(stack), nextTier.getDescriptionFormatted()));
         }
 
         Services.OBJECT_DATA.getWizardData(ctx.caster()).trackRecentSpell(spell, ctx.caster().level().getGameTime());
@@ -186,9 +180,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     public @NotNull InteractionResult interactLivingEntity(@NotNull ItemStack stack, Player player, @NotNull LivingEntity interactionTarget, @NotNull InteractionHand usedHand) {
         if (player.isCrouching() && interactionTarget instanceof Player playerTarget) {
             WizardData data = Services.OBJECT_DATA.getWizardData(player);
-            String string = data.toggleAlly(playerTarget) ?
-                    "item." + WizardryMainMod.MOD_ID + ":wand.addally"
-                    : "item." + WizardryMainMod.MOD_ID + ":wand.removeally";
+            String string = data.toggleAlly(playerTarget) ? "item.ebwizardry.wand.add_ally" : "item.ebwizardry.wand.remove_ally";
             if (!player.level().isClientSide)
                 player.sendSystemMessage(Component.translatable(string, playerTarget.getName()));
             return InteractionResult.SUCCESS;
