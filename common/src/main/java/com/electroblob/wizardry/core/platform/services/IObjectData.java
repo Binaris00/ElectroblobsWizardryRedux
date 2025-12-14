@@ -25,7 +25,9 @@ public interface IObjectData {
     ImbuementEnchantData getImbuementData(ItemStack stack);
 
     /**
-     * Gives you the cast command data to manipulate and view the current status of the cast command.
+     * Gives you the cast command data to manipulate and view the current status of the cast command. Remember to
+     * check if the player is alive before using this! If the player is dead (on death screen or respawning), this could
+     * cause a crash, so if in doubt, check Player.isAlive().
      *
      * @param player player whose cast command data is to be retrieved.
      * @return the cast command data
@@ -33,7 +35,9 @@ public interface IObjectData {
     CastCommandData getCastCommandData(Player player);
 
     /**
-     * Gives you the spell manager data to manipulate and view the current status of spells and spell variables.
+     * Gives you the spell manager data to manipulate and view the current status of spells and spell variables. Remember
+     * to check if the player is alive before using this! If the player is dead (on death screen or respawning), this could
+     * cause a crash, so if in doubt, check Player.isAlive().
      *
      * @param player player whose spell manager data is to be retrieved.
      * @return the spell manager data
@@ -49,7 +53,8 @@ public interface IObjectData {
     void spellStoredVariables(IStoredSpellVar<?>... variables);
 
     /**
-     * Gets the wizard data for the given player.
+     * Gets the wizard data for the given player. Don't forget to check if the player is alive before using this! If
+     * the player is dead (on death screen or respawning), this could cause a crash, so if in doubt, check Player.isAlive().
      *
      * @param player The player whose wizard data is to be retrieved.
      * @return The PlayerWizardData associated with the player.

@@ -69,7 +69,7 @@ public class ContainmentEffect extends MagicMobEffect {
 
     public static void onLivingUpdateEvent(EBLivingTick event){
         if (!(event.getEntity() instanceof Player player)) return;
-
+        if (!player.isAlive()) return;
         WizardData data = Services.OBJECT_DATA.getWizardData(player);
 
         if(event.getEntity().tickCount % 20 == 0 && data.getContainmentPos() != null && !player.hasEffect(EBMobEffects.CONTAINMENT.get()))
