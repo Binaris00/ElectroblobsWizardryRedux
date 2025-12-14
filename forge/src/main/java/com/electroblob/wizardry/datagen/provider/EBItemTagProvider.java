@@ -111,7 +111,6 @@ public final class EBItemTagProvider extends ItemTagsProvider {
                 .add(EBItems.AMULET_FIRE_CLOAKING.get())
                 .add(EBItems.AMULET_FIRE_PROTECTION.get())
                 .add(EBItems.AMULET_FROST_WARDING.get())
-                .add(EBItems.AMULET_GLIDE.get())
                 .add(EBItems.AMULET_ICE_IMMUNITY.get())
                 .add(EBItems.AMULET_ICE_PROTECTION.get())
                 .add(EBItems.AMULET_LICH.get())

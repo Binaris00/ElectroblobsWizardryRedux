@@ -65,7 +65,6 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
                                 .add(LootItem.lootTableItem(EBItems.RING_INTERDICTION.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_ICE_IMMUNITY.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_WITHER_IMMUNITY.get()).setWeight(1))
-                                .add(LootItem.lootTableItem(EBItems.AMULET_GLIDE.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_RESURRECTION.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_ABSORPTION.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_EXPERIENCE_TOME.get()).setWeight(1))

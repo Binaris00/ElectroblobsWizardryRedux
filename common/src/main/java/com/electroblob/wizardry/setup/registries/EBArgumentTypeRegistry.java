@@ -13,11 +13,7 @@ public final class EBArgumentTypeRegistry {
     }
 
     public static void init() {
-        registerArgumentType(
-                WizardryMainMod.location("spell"),
-                SpellArgument.class,
-                SingletonArgumentInfo.contextFree(SpellArgument::new)
-        );
+        registerArgumentType(WizardryMainMod.location("spell"), SpellArgument.class, SingletonArgumentInfo.contextFree(SpellArgument::new));
     }
 
     private static <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>> void registerArgumentType(ResourceLocation id, Class<? extends A> clazz, ArgumentTypeInfo<A, T> serializer) {
