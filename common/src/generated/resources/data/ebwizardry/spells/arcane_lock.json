@@ -1,0 +1,12 @@
+{
+  "base_properties": {
+    "range": 8.0
+  },
+  "charge": 0,
+  "cooldown": 100,
+  "cost": 50,
+  "element": "ebwizardry:sorcery",
+  "spell_action": "ebwizardry:point",
+  "spell_type": "utility",
+  "tier": "ebwizardry:advanced"
+}

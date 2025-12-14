@@ -1,4 +1,4 @@
-// 1.20.1	2025-09-03T12:29:42.2708651	Advancements
+// 1.20.1	2025-12-14T08:02:51.96211309	Advancements
 32cda8f3a28b61aa1ff193a694b76154ec38fc2f data/ebwizardry/advancements/advanced.json
 99ad2f87e40622d8f37229f08fb6ca96b07d2d66 data/ebwizardry/advancements/anger_wizard.json
 2a2a50cd4917c8d94be803b12c49e453750fe87f data/ebwizardry/advancements/apprentice.json
@@ -18,7 +18,7 @@ d4eeb97c7613069b6215e87ca8c0180fba97bf87 data/ebwizardry/advancements/find_libra
 bd19887b0400fc2595a835aa5ed49e10ad0b83bf data/ebwizardry/advancements/identify_spell.json
 5cb1f324ff3f71de55f06c8d51a812838edcccbd data/ebwizardry/advancements/master.json
 abaece473065d45f540a765d82400aeeeb2c8d98 data/ebwizardry/advancements/max_out_wand.json
-6fc40d99c5f8cd28228d383aad115ac5532f4893 data/ebwizardry/advancements/restore_imbuement_altar.json
+a2d95743d6fef2ea35d2375ac5326e2c6d5fe3e5 data/ebwizardry/advancements/restore_imbuement_altar.json
 60ba9d487cc3b04d3407d5641a9438e3482200b4 data/ebwizardry/advancements/restore_ruined_book.json
 f99d3d819076aa4ec774f9f653e48d6a96fa1f6b data/ebwizardry/advancements/root.json
 bab60cde79997e574afc662ebfdf1a957cba6969 data/ebwizardry/advancements/sage.json

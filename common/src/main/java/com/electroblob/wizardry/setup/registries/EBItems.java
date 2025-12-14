@@ -40,7 +40,6 @@ import static com.electroblob.wizardry.core.ArtifactUtils.meleeRing;
  * The registration of all wizardry items, sorted by category for helping with creative tabs <br><br>
  * Sorted by:
  * <ul>
- *     <li>Bombs</li>
  *     <li>General Items</li>
  *     <li>Flasks</li>
  *     <li>Spectral Dust</li>
@@ -50,6 +49,7 @@ import static com.electroblob.wizardry.core.ArtifactUtils.meleeRing;
  *     <li>Wizard Armor</li>
  *     <li>Artifacts</li>
  *     <li>Conjured (Spectral) Spell Cast Items</li>
+ *     <li>Bombs</li>
  * </ul>
  */
 @SuppressWarnings("unused")
@@ -91,11 +91,6 @@ public final class EBItems {
     static final LinkedList<DeferredObject<? extends Item>> ARTIFACTS = new LinkedList<>();
     static final LinkedList<DeferredObject<? extends Item>> GENERAL_ITEMS = new LinkedList<>(); // For main item tab
     static final Map<String, DeferredObject<? extends Item>> ITEMS_REGISTER = new HashMap<>(); // For register function
-    //Bombs
-    public static final DeferredObject<Item> FIREBOMB = item("firebomb");
-    public static final DeferredObject<Item> POISON_BOMB = item("poison_bomb");
-    public static final DeferredObject<Item> SMOKE_BOMB = item("smoke_bomb");
-    public static final DeferredObject<Item> SPARK_BOMB = item("spark_bomb");
     //General Items
     public static final DeferredObject<Item> ARCANE_TOME = item("arcane_tome", ArcaneTomeItem::new, true, true);
     public static final DeferredObject<Item> BLANK_SCROLL = item("blank_scroll");
@@ -392,14 +387,19 @@ public final class EBItems {
     public static final DeferredObject<Item> SPECTRAL_LEGGINGS = item("spectral_leggings", () -> new SpectralArmorItem(ArmorItem.Type.LEGGINGS));
     public static final DeferredObject<Item> SPECTRAL_BOOTS = item("spectral_boots", () -> new SpectralArmorItem(ArmorItem.Type.BOOTS));
     //Spectral
-    public static final DeferredObject<Item> SPECTRAL_SWORD = item("spectral_sword", SpectralSwordItem::new);
-    public static final DeferredObject<Item> SPECTRAL_BOW = item("spectral_bow", SpectralBowItem::new);
+    public static final DeferredObject<Item> SPECTRAL_SWORD = item("spectral_sword", SpectralSwordItem::new, false, true);
+    public static final DeferredObject<Item> SPECTRAL_BOW = item("spectral_bow", SpectralBowItem::new, false, true);
     public static final DeferredObject<Item> SPECTRAL_PICKAXE = item("spectral_pickaxe", SpectralPickaxeItem::new);
     //Cast Items
     public static final DeferredObject<Item> FLAMECATCHER = item("flamecatcher", FlameCatcherItem::new, false, true);
     public static final DeferredObject<Item> FLAMING_AXE = item("flaming_axe", FlamingAxeItem::new, false, true);
     public static final DeferredObject<Item> FROST_AXE = item("frost_axe", FrostAxeItem::new, false, true);
-    public static final DeferredObject<Item> LIGHTNING_HAMMER = item("lightning_hammer");
+    public static final DeferredObject<Item> LIGHTNING_HAMMER = item("lightning_hammer", () -> new Item(new Item.Properties().stacksTo(1)), false, true);
+    //Bombs
+    public static final DeferredObject<Item> FIREBOMB = item("firebomb", () -> new BombItem<>(EBEntities.FIRE_BOMB, EBSounds.ENTITY_FIREBOMB_THROW), true, true);
+    public static final DeferredObject<Item> POISON_BOMB = item("poison_bomb", () -> new BombItem<>(EBEntities.POISON_BOMB, EBSounds.ENTITY_POISON_BOMB_THROW), true, true);
+    public static final DeferredObject<Item> SMOKE_BOMB = item("smoke_bomb", () -> new BombItem<>(EBEntities.SMOKE_BOMB, EBSounds.ENTITY_SMOKE_BOMB_THROW), true, true);
+    public static final DeferredObject<Item> SPARK_BOMB = item("spark_bomb", () -> new BombItem<>(EBEntities.SPARK_BOMB, EBSounds.ENTITY_SPARK_BOMB_THROW), true, false);
     // Spawn egg
     public static final DeferredObject<Item> WIZARD_SPAWN_EGG = item("wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.WIZARD.get(), 0x19295e, 0xee9312, new Item.Properties()), false, true);
     public static final DeferredObject<Item> EVIL_WIZARD_SPAWN_EGG = item("evil_wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.EVIL_WIZARD.get(), 0x290404, 0xee9312, new Item.Properties()), false, true);

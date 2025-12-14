@@ -42,10 +42,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "ebwizardry:amulet_glide"
-        },
-        {
-          "type": "minecraft:item",
           "name": "ebwizardry:amulet_resurrection"
         },
         {

@@ -1,6 +1,7 @@
-// 1.20.1	2025-12-02T09:15:57.13098534	Spell Data Provider: ebwizardry
+// 1.20.1	2025-12-14T08:02:51.961186038	Spell Data Provider: ebwizardry
 dcd8a3fd94e0f44a7717557d77d08533f6e520b2 data/ebwizardry/spells/agility.json
 52fdf0a10561c365d02461b0643d5763fabe3301 data/ebwizardry/spells/arc.json
+652c3abacfa67eb03a67d515bb8ca47fff526082 data/ebwizardry/spells/arcane_lock.json
 4f6f8f6bb13ecb046e1f6c2c568124130c14dd58 data/ebwizardry/spells/arrow_rain.json
 5a678c88cf1fddc05d238ec605a22564d086878b data/ebwizardry/spells/banish.json
 055c120cda15c9bb47fcba80feb5e92dee227258 data/ebwizardry/spells/blinding_flash.json
@@ -26,13 +27,13 @@ d6655ced4cce0f1d780be0ed4c7256f209f6b31e data/ebwizardry/spells/enrage.json
 9e66f9a1e399bee131aefe7dc52f84f767bb706d data/ebwizardry/spells/entrapment.json
 43976a39d138225d4fe7b813b9a04ca5509f25ea data/ebwizardry/spells/evade.json
 535c68d436db15a36349c52f073035d71bc82727 data/ebwizardry/spells/fangs.json
-f0e71b86bd12f3dc4a1e7fccef04a1c116fd26d8 data/ebwizardry/spells/fire_bomb.json
 762e3b08b5b517b57087a6938806769df6a7c738 data/ebwizardry/spells/fire_breath.json
 be569832b53eb0e204745e589c36a14466acde9b data/ebwizardry/spells/fire_resistance.json
 46fc86f8dd50f75264345900f0926c3e651f1dda data/ebwizardry/spells/fire_sigil.json
 b60545d737e9dbd1d417ec370d994ab16c3a5126 data/ebwizardry/spells/fire_skin.json
 13bda0c1ef9cd5f4d305f2e9984170c41cffd61e data/ebwizardry/spells/fireball.json
 c3e01768419936d01ff84b36add6a2df957754df data/ebwizardry/spells/firebolt.json
+f0e71b86bd12f3dc4a1e7fccef04a1c116fd26d8 data/ebwizardry/spells/firebomb.json
 3fb74e2c9351f054e76b41e9d7337cf2edcc457a data/ebwizardry/spells/firestorm.json
 5b70d3db6fa82f8d9c2947a1fe5acd34d7144147 data/ebwizardry/spells/flame_ray.json
 2e91e248bb702a20998deb68955d78d47037747a data/ebwizardry/spells/flamecatcher.json
