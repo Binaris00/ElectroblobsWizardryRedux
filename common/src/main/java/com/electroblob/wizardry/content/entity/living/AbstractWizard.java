@@ -155,18 +155,18 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
      * @return {@code true} if the wizard should start healing; {@code false} otherwise.
      */
     private boolean shouldStartHealing() {
-        return getHealCooldown() == 0 && getHealth() < getMaxHealth() && getHealth() > 0
-                && !hasEffect(EBMobEffects.ARCANE_JAMMER.get());
+        return getHealCooldown() == 0 && getHealth() < getMaxHealth() && getHealth() > 0 && !hasEffect(EBMobEffects.ARCANE_JAMMER.get());
     }
 
     @Override
     public SpawnGroupData finalizeSpawn(@NotNull ServerLevelAccessor level, @NotNull DifficultyInstance difficulty, @NotNull MobSpawnType mobSpawnType, @Nullable SpawnGroupData spawnData, @Nullable CompoundTag tag) {
         setTextureIndex(this.random.nextInt(6));
 
-        if (getElement() == null) {
+        if (this.entityData.get(ELEMENT).isEmpty()) {
             Element element = chooseElement();
             this.setElement(element);
         }
+
         equipArmorAndDisableDrops(getElement());
 
         spells.add(Spells.MAGIC_MISSILE);
@@ -242,7 +242,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
     protected void defineSynchedData() {
         super.defineSynchedData();
         this.entityData.define(HEAL_COOLDOWN, -1);
-        this.entityData.define(ELEMENT, Elements.FIRE.getLocation().toString());
+        this.entityData.define(ELEMENT, "");
         this.entityData.define(CONTINUOUS_SPELL, Spells.NONE.getLocation().toString());
         this.entityData.define(SPELL_COUNTER, 0);
         this.entityData.define(TEXTURE_INDEX, 0);

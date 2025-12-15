@@ -12,10 +12,7 @@ import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
-import com.electroblob.wizardry.setup.registries.EBItems;
-import com.electroblob.wizardry.setup.registries.EBSounds;
-import com.electroblob.wizardry.setup.registries.SpellTiers;
+import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -71,36 +68,31 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         if (this.level().isClientSide || this.ambientSoundTime <= -this.getAmbientSoundInterval() + 20) return;
 
         this.ambientSoundTime = -this.getAmbientSoundInterval();
-        SoundEvent sound = stack.isEmpty() ? EBSounds.ENTITY_WIZARD_NO.get()
-                : (WizardryMainMod.IS_THE_SEASON ? EBSounds.ENTITY_WIZARD_HOHOHO.get() : EBSounds.ENTITY_WIZARD_YES.get());
+        SoundEvent sound = stack.isEmpty() ? EBSounds.ENTITY_WIZARD_NO.get() : (WizardryMainMod.IS_THE_SEASON ? EBSounds.ENTITY_WIZARD_HOHOHO.get() : EBSounds.ENTITY_WIZARD_YES.get());
         this.playSound(sound, this.getSoundVolume(), this.getVoicePitch());
     }
 
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
+        if (this.isTrading() || this.timeUntilReset < 0) return;
+        --this.timeUntilReset;
 
-        if (!this.isTrading() && this.timeUntilReset >= 0) {
-            --this.timeUntilReset;
-
-            if (this.timeUntilReset <= 0 && this.updateRecipes) {
-                this.trades.forEach(offer -> {
-                    if (offer.isOutOfStock()) {
-                        offer.addToSpecialPriceDiff(this.random.nextInt(6) + this.random.nextInt(6) + 2);
-                    }
+        if (this.timeUntilReset > 0 || !this.updateRecipes) return;
+        this.trades.stream().filter(MerchantOffer::isOutOfStock)
+                .forEach((o) -> {
+                    o.resetUses();
+                    o.addToSpecialPriceDiff(this.random.nextInt(6) + this.random.nextInt(6) + 2);
                 });
+        if (this.trades.size() < MAX_TRADES) this.addRandomRecipes(1);
 
-                if (this.trades.size() < MAX_TRADES) this.addRandomRecipes(1);
-
-                this.updateRecipes = false;
-                this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
-            }
-        }
+        this.updateRecipes = false;
+        this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
     }
 
 
     @Override
-    public @NotNull InteractionResult mobInteract(Player player, @NotNull InteractionHand hand) {
+    public @NotNull InteractionResult mobInteract(@NotNull Player player, @NotNull InteractionHand hand) {
         if (this.isAlive() && !this.isTrading() && !this.isBaby() && !player.isShiftKeyDown() && this.getTarget() != player) {
             if (!this.level().isClientSide) {
                 this.setTradingPlayer(player);
@@ -139,21 +131,20 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         if (this.getTradingPlayer() == null) return;
         EBAdvancementTriggers.WIZARD_TRADE.triggerFor(this.getTradingPlayer());
 
-        if (merchantOffer.getResult().getItem() instanceof SpellBookItem) {
-            Spell spell = SpellUtil.getSpell(merchantOffer.getResult());
+        if (!(merchantOffer.getResult().getItem() instanceof SpellBookItem)) return;
+        Spell spell = SpellUtil.getSpell(merchantOffer.getResult());
 
-            if (spell.getTier() == SpellTiers.MASTER)
-                EBAdvancementTriggers.BUY_MASTER_SPELL.triggerFor(this.getTradingPlayer());
+        if (spell.getTier() == SpellTiers.MASTER)
+            EBAdvancementTriggers.BUY_MASTER_SPELL.triggerFor(this.getTradingPlayer());
 
-            SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(this.getTradingPlayer());
-            // Todo if canceled discovery event
-            WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(this.getTradingPlayer(), spell, EBDiscoverSpellEvent.Source.PURCHASE));
-            data.discoverSpell(spell);
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(this.getTradingPlayer());
 
-            if (!level().isClientSide && !this.getTradingPlayer().isCreative() && EBConfig.discoveryMode) {
-                EntityUtil.playSoundAtPlayer(this.getTradingPlayer(), EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
-                this.getTradingPlayer().sendSystemMessage(Component.translatable("spell.discover", spell.getDescriptionFormatted()));
-            }
+        if (WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(this.getTradingPlayer(), spell, EBDiscoverSpellEvent.Source.PURCHASE)))
+            return;
+        data.discoverSpell(spell);
+        if (!level().isClientSide && !this.getTradingPlayer().isCreative() && EBConfig.discoveryMode) {
+            EntityUtil.playSoundAtPlayer(this.getTradingPlayer(), EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
+            this.getTradingPlayer().sendSystemMessage(Component.translatable("spell.discover", spell.getDescriptionFormatted()));
         }
     }
 
@@ -161,11 +152,12 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     public @NotNull MerchantOffers getOffers() {
         if (this.trades == null) {
             this.trades = new MerchantOffers();
-            ItemStack anySpellBook = new ItemStack(EBItems.SPELL_BOOK.get(), 1);
-            ItemStack crystalStack = new ItemStack(EBItems.MAGIC_CRYSTAL.get(), 5);
+            ItemStack book = new ItemStack(EBItems.SPELL_BOOK.get(), 1);
+            SpellUtil.setSpell(book, Spells.MAGIC_MISSILE);
+            ItemStack crystal = new ItemStack(EBItems.MAGIC_CRYSTAL.get(), 5);
 
-            this.trades.add(new MerchantOffer(anySpellBook, crystalStack, 7, 0, 0));
-            this.addRandomRecipes(3);
+            this.trades.add(new MerchantOffer(book, crystal, 7, 0, 0));
+            this.addRandomRecipes(5);
         }
 
         return this.trades;
@@ -179,11 +171,11 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     private void addRandomRecipes(int count) {
         if (this.trades == null) return;
 
-        MerchantOffers newOffers = new MerchantOffers();
+        MerchantOffers offer = new MerchantOffers();
 
         for (int i = 0; i < count; i++) {
             SpellTier tier = selectRandomTier();
-            ItemStack itemToSell = findUniqueItemOfTier(tier, newOffers);
+            ItemStack itemToSell = findUniqueItemOfTier(tier, offer);
 
             if (itemToSell.isEmpty()) continue;
 
@@ -191,11 +183,11 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
                     ? new ItemStack(EBItems.ASTRAL_DIAMOND.get())
                     : new ItemStack(EBItems.MAGIC_CRYSTAL.get(), (tier.level + 1) * 3 + 1 + random.nextInt(4));
 
-            newOffers.add(new MerchantOffer(getRandomPrice(tier), secondItemToBuy, itemToSell, BASE_TRADE_USES, 0, 0));
+            offer.add(new MerchantOffer(getRandomPrice(tier), secondItemToBuy, itemToSell, BASE_TRADE_USES, 0, 0));
         }
 
-        Collections.shuffle(newOffers);
-        this.trades.addAll(newOffers);
+        Collections.shuffle(offer);
+        this.trades.addAll(offer);
     }
 
     /**
