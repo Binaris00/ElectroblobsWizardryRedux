@@ -5,15 +5,6 @@
     {
       "weight": 1,
       "element": {
-        "location": "ebwizardry:wizard_tower_0",
-        "processors": "minecraft:empty",
-        "projection": "rigid",
-        "element_type": "minecraft:single_pool_element"
-      }
-    },
-    {
-      "weight": 1,
-      "element": {
         "location": "ebwizardry:wizard_tower_1",
         "processors": "minecraft:empty",
         "projection": "rigid",

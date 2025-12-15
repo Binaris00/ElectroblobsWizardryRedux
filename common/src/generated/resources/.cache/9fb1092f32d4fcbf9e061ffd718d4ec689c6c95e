@@ -1,4 +1,4 @@
-// 1.20.1	2025-10-27T08:58:59.969603283	Recipes
+// 1.20.1	2025-12-15T10:49:04.384856668	Recipes
 23224d9c2388596456501eb97ac5786a18708661 data/ebwizardry/advancements/recipes/combat/wizard_boots.json
 99840a57e228f6d0418bbb03201affc92c9d9cc2 data/ebwizardry/advancements/recipes/combat/wizard_hat.json
 531fe30778d81f93ed57c8cc29a1793bc2da68a1 data/ebwizardry/advancements/recipes/combat/wizard_leggings.json
@@ -46,9 +46,9 @@ d9fcc05e8102c496ecea14c914e987a9ed609ab8 data/ebwizardry/advancements/recipes/mi
 1211d9573577a923d730c1b03d09a24be6650245 data/ebwizardry/advancements/recipes/misc/sorcery_runestone.json
 9e7e9cbf7878704b8292937d736e79a2ff49743e data/ebwizardry/advancements/recipes/misc/sorcery_runestone_pedestal.json
 88eeb52ce336f367672abe0466eec42e2d374978 data/ebwizardry/advancements/recipes/misc/spark_bomb.json
+a48b688a64e32974d43040edd0c8155725008b1c data/ebwizardry/advancements/recipes/misc/spell_book.json
 7b31a9a2e48a7ce7ab529765e605ad4dca6014a6 data/ebwizardry/advancements/recipes/misc/spruce_bookshelf.json
 61fd52162581f123a4c4bdf62351128953c225ca data/ebwizardry/advancements/recipes/misc/spruce_lectern.json
-28ec6b949961b0d6d6edad8781c5caa20650e4b8 data/ebwizardry/advancements/recipes/tools/transportation_stone.json
 56e501f7c5acaeea96dc4a62614fad9f7e9b4af5 data/ebwizardry/advancements/recipes/tools/wand_novice.json
 ccf0d78d42c89192a42c894e4979b05204ee4af9 data/ebwizardry/advancements/recipes/tools/wand_novice_earth.json
 ff993f38e2207dfba8ffbb7ea744d4dcf1b8c134 data/ebwizardry/advancements/recipes/tools/wand_novice_fire.json
@@ -226,9 +226,9 @@ a3371ddc5771598f202f937b6737db1fe8fcfe67 data/ebwizardry/recipes/poison_bomb.jso
 a25dea97ba5740c157630a13d15b796082485630 data/ebwizardry/recipes/sorcery_runestone.json
 1dac1a7e97a8965b14b4204de5dedc71106befee data/ebwizardry/recipes/sorcery_runestone_pedestal.json
 793757d0280f14afaac8c7f282f266aba7f46530 data/ebwizardry/recipes/spark_bomb.json
+9a1a7ced82043e74770f4154c277d6ee945ad544 data/ebwizardry/recipes/spell_book.json
 f19685910f87e200b975c5ca612a13e14ff9037f data/ebwizardry/recipes/spruce_bookshelf.json
 ccb09812e1ed37232ee3b5928c287a033f0675a4 data/ebwizardry/recipes/spruce_lectern.json
-b45c13b0fd93c7f4fd05d30a0f408b6152493632 data/ebwizardry/recipes/transportation_stone.json
 721486460369c878cd973f2be802b1f33f4a49a6 data/ebwizardry/recipes/wand_novice.json
 57386b01e587b502ad6e512c8663bceb258d6e6a data/ebwizardry/recipes/wand_novice_earth.json
 f744cf1d8a82aad4149a7ab90945a0022b2fd25f data/ebwizardry/recipes/wand_novice_fire.json

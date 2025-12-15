@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.api.client.util;
 
-import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.client.gui.screens.SpellBookScreen;
@@ -9,6 +8,7 @@ import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.mixin.accessor.MerchantMenuAccessor;
 import com.electroblob.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
@@ -77,15 +77,16 @@ public class ClientUtils {
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, scroll);
         Component name = discovered ? spell.getDescriptionFormatted() :
                 SpellGlyphData.getGlyphNameFormatted(spell, GlyphClientHandler.INSTANCE.getGlyphData());
-        return Component.translatable("item." + WizardryMainMod.MOD_ID + ".scroll", name);
+        return Component.translatable("item.ebwizardry.scroll", name);
     }
 
     public static Component getBookDisplayName(ItemStack book) {
         Spell spell = SpellUtil.getSpell(book);
+        if (spell == Spells.NONE) return Component.translatable("item.ebwizardry.spell_book.empty");
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, book);
         Component name = discovered ? spell.getDescriptionFormatted() :
                 SpellGlyphData.getGlyphNameFormatted(spell, GlyphClientHandler.INSTANCE.getGlyphData());
-        return Component.translatable("item." + WizardryMainMod.MOD_ID + ".spell_book", name);
+        return Component.translatable("item.ebwizardry.spell_book", name);
     }
 
     public static void openSpellBook(ItemStack stack) {

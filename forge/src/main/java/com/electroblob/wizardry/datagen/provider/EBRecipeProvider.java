@@ -1,12 +1,14 @@
 package com.electroblob.wizardry.datagen.provider;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.ImbuementAltarRecipeBuilder;
 import com.electroblob.wizardry.datagen.help.ArmorData;
 import com.electroblob.wizardry.datagen.help.ElementData;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBTags;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.*;
@@ -14,8 +16,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -98,15 +102,6 @@ public final class EBRecipeProvider extends RecipeProvider {
         nineBlockStorageRecipesRecipesWithCustomUnpacking(consumer, RecipeCategory.MISC, EBItems.MAGIC_CRYSTAL_NECROMANCY.get(),
                 RecipeCategory.BUILDING_BLOCKS, EBBlocks.NECROMANCY_CRYSTAL_BLOCK.get(), "magic_crystal_necromancy_from_magic_crystal_necromancy_block", "magic_crystal_necromancy");
 
-        ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, EBBlocks.TRANSPORTATION_STONE.get())
-                .define('x', EBTags.MAGIC_CRYSTAL_ITEM)
-                .define('y', Blocks.STONE)
-                .pattern(" x ")
-                .pattern("xyx")
-                .pattern(" x ")
-                .unlockedBy("has_magic_crystal", has(EBTags.MAGIC_CRYSTAL_ITEM))
-                .save(consumer);
-
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EBBlocks.ARCANE_WORKBENCH.get())
                 .define('v', Items.GOLD_NUGGET)
                 .define('w', ItemTags.WOOL_CARPETS)
@@ -166,14 +161,14 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_magic_crystal", has(EBTags.MAGIC_CRYSTAL_ITEM))
                 .save(consumer);
 
-//        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, spellBook())
-//                .pattern(" x ")
-//                .pattern("xyx")
-//                .pattern(" x ")
-//                .define('x', EBItems.MAGIC_CRYSTAL.get())
-//                .define('y', Items.BOOK)
-//                .unlockedBy("has_magic_crystal", has(EBItems.MAGIC_CRYSTAL.get()))
-//                .save(consumer);
+        ShapedRecipeBuilder.shaped(RecipeCategory.MISC, spellBook())
+                .pattern(" x ")
+                .pattern("xyx")
+                .pattern(" x ")
+                .define('x', EBItems.MAGIC_CRYSTAL.get())
+                .define('y', Items.BOOK)
+                .unlockedBy("has_magic_crystal", has(EBItems.MAGIC_CRYSTAL.get()))
+                .save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EBItems.LARGE_MANA_FLASK.get())
                 .pattern(" y ")
@@ -292,6 +287,10 @@ public final class EBRecipeProvider extends RecipeProvider {
                 imbuementArmor(armorData.defaultBoots(), datum.dust(), armorData.boots(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.boots()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.boots()).getPath()), consumer);
             }
         }
+    }
+
+    private ItemLike spellBook() {
+        return SpellUtil.setSpell(EBItems.SPELL_BOOK.get().getDefaultInstance(), Spells.MAGIC_MISSILE).getItem();
     }
 
 

@@ -1,8 +1,10 @@
 package com.electroblob.wizardry.content.item;
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.util.ClientUtils;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -26,8 +28,19 @@ public class SpellBookItem extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
+        if (SpellUtil.getSpell(stack) == Spells.NONE) {
+            SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
+            EBLogger.warn("SpellBookItem has no spell assigned to it! Defaulting to Magic Missile, where did this item come from?");
+        }
         if (level.isClientSide) ClientUtils.openSpellBook(stack);
         return super.use(level, player, interactionHand);
+    }
+
+    @Override
+    public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
+        super.onCraftedBy(stack, level, player);
+        Spell spell = SpellUtil.getSpell(stack);
+        if (spell == Spells.NONE) SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
     }
 
     @Override
@@ -39,6 +52,7 @@ public class SpellBookItem extends Item {
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
         if (level == null) return;
         Spell spell = SpellUtil.getSpell(stack);
+        if (spell == Spells.NONE) return;
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
         list.add(spell.getTier().getDescriptionFormatted());
 
@@ -46,6 +60,11 @@ public class SpellBookItem extends Item {
             list.add(Component.translatable(spell.getElement().getDescriptionId()).withStyle(ChatFormatting.GRAY));
             list.add(Component.translatable(spell.getType().getDisplayName()).withStyle(ChatFormatting.GRAY));
         }
+    }
+
+    @Override
+    public boolean isFoil(@NotNull ItemStack stack) {
+        return true;
     }
 
     public ResourceLocation getGuiTexture(Spell spell) {

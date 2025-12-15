@@ -5,7 +5,9 @@
       "conditions": {
         "items": [
           {
-            "tag": "ebwizardry:magic_crystal"
+            "items": [
+              "ebwizardry:magic_crystal"
+            ]
           }
         ]
       },
@@ -13,7 +15,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "ebwizardry:transportation_stone"
+        "recipe": "ebwizardry:spell_book"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
@@ -26,7 +28,7 @@
   ],
   "rewards": {
     "recipes": [
-      "ebwizardry:transportation_stone"
+      "ebwizardry:spell_book"
     ]
   },
   "sends_telemetry_event": false

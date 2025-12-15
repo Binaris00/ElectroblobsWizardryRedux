@@ -1,12 +1,12 @@
 {
   "type": "minecraft:crafting_shaped",
-  "category": "equipment",
+  "category": "misc",
   "key": {
     "x": {
-      "tag": "ebwizardry:magic_crystal"
+      "item": "ebwizardry:magic_crystal"
     },
     "y": {
-      "item": "minecraft:stone"
+      "item": "minecraft:book"
     }
   },
   "pattern": [
@@ -15,7 +15,7 @@
     " x "
   ],
   "result": {
-    "item": "ebwizardry:transportation_stone"
+    "item": "ebwizardry:spell_book"
   },
   "show_notification": true
 }

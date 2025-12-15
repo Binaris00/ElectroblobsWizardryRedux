@@ -71,7 +71,6 @@ public final class EBBlocks {
     public static final DeferredObject<Block> EARTH_RUNESTONE_PEDESTAL = block("earth_runestone_pedestal", () -> new RunestonePedestalBlock(Elements.EARTH), false, true, true);
     public static final DeferredObject<Block> SORCERY_RUNESTONE_PEDESTAL = block("sorcery_runestone_pedestal", () -> new RunestonePedestalBlock(Elements.SORCERY), false, true, true);
     public static final DeferredObject<Block> HEALING_RUNESTONE_PEDESTAL = block("healing_runestone_pedestal", () -> new RunestonePedestalBlock(Elements.HEALING), false, true, true);
-    public static final DeferredObject<Block> TRANSPORTATION_STONE = block("transportation_stone", () -> new Block(BlockBehaviour.Properties.copy(Blocks.STONE).noCollission().strength(4)), false, true, true);
     public static final DeferredObject<Block> RECEPTACLE = block("receptacle", ReceptacleBlock::new, false, true, true);
     public static final DeferredObject<Block> IMBUEMENT_ALTAR = block("imbuement_altar", ImbuementAltarBlock::new, false, true, true);
     private EBBlocks() {
