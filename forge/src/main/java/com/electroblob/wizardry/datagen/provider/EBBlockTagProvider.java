@@ -21,6 +21,8 @@ public final class EBBlockTagProvider extends BlockTagsProvider {
     @Override
     protected void addTags(HolderLookup.@NotNull Provider provider) {
         this.tag(BlockTags.NEEDS_STONE_TOOL)
+                .add(EBBlocks.RECEPTACLE.get())
+                .add(EBBlocks.WALL_RECEPTACLE.get())
                 .add(EBBlocks.EARTH_RUNESTONE_PEDESTAL.get())
                 .add(EBBlocks.FIRE_RUNESTONE_PEDESTAL.get())
                 .add(EBBlocks.HEALING_RUNESTONE_PEDESTAL.get())
@@ -49,6 +51,8 @@ public final class EBBlockTagProvider extends BlockTagsProvider {
                 .add(EBBlocks.HEALING_CRYSTAL_BLOCK.get());
 
         this.tag(BlockTags.MINEABLE_WITH_PICKAXE)
+                .add(EBBlocks.RECEPTACLE.get())
+                .add(EBBlocks.WALL_RECEPTACLE.get())
                 .add(EBBlocks.CRYSTAL_ORE.get())
                 .add(EBBlocks.DEEPSLATE_CRYSTAL_ORE.get())
                 .add(EBBlocks.MAGIC_CRYSTAL_BLOCK.get())

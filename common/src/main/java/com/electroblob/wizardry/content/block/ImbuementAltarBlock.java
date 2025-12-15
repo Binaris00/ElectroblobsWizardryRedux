@@ -86,8 +86,8 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
     @Override
     public void neighborChanged(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Block neighborBlock, @NotNull BlockPos neighborPos, boolean movedByPiston) {
         boolean shouldBeActive = Arrays.stream(BlockUtil.getHorizontals())
-                .allMatch(s -> level.getBlockState(pos.relative(s)).getBlock() == EBBlocks.RECEPTACLE.get()
-                        && level.getBlockState(pos.relative(s)).getValue(ReceptacleBlock.FACING) == s);
+                .allMatch(s -> level.getBlockState(pos.relative(s)).getBlock() == EBBlocks.WALL_RECEPTACLE.get()
+                        && level.getBlockState(pos.relative(s)).getValue(WallReceptacleBlock.FACING) == s);
 
         if (level.getBlockState(pos).getValue(ACTIVE) != shouldBeActive) {
             BlockEntity te = level.getBlockEntity(pos);

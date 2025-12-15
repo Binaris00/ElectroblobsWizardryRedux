@@ -22,13 +22,14 @@ public final class EBCreativeTabs {
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBItems.MAGIC_CRYSTAL.get()))
                     .title(Component.translatable("creativetab.ebwizardry"))
-                    .displayItems((parameters, output) -> EBItems.GENERAL_ITEMS.forEach((item) -> {
-                        if (item.equals(EBItems.ARCANE_TOME)) {
-                            createTomes().forEach(output::accept);
-                        } else {
-                            output.accept(item.get());
-                        }
-                    }))
+                    .displayItems((parameters, output) ->
+                            EBItems.GENERAL_ITEMS.forEach((item) -> {
+                                if (item.equals(EBItems.ARCANE_TOME)) {
+                                    createTomes().forEach(output::accept);
+                                } else {
+                                    output.accept(item.get());
+                                }
+                            }))
                     .build()
     );
     // All Wands
@@ -70,7 +71,11 @@ public final class EBCreativeTabs {
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBBlocks.EARTH_CRYSTAL_BLOCK.get().asItem()))
                     .title(Component.translatable("creativetab.ebwizardry_blocks"))
-                    .displayItems((parameters, output) -> EBBlocks.BLOCK_ITEMS.forEach((name, block) -> output.accept(block.get())))
+                    .displayItems((parameters, output) -> {
+                                EBBlocks.BLOCK_ITEMS.forEach((name, block) -> output.accept(block.get()));
+                                output.accept(EBItems.RECEPTACLE.get());
+                            }
+                    )
                     .build()
     );
 

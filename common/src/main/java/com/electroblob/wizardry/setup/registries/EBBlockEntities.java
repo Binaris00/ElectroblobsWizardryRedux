@@ -44,7 +44,7 @@ public final class EBBlockEntities {
     );
 
     public static final DeferredObject<BlockEntityType<ReceptacleBlockEntity>> RECEPTACLE = blockEntity(
-            "receptacle", () -> BlockEntityType.Builder.of(ReceptacleBlockEntity::new, EBBlocks.RECEPTACLE.get()).build(null)
+            "receptacle", () -> BlockEntityType.Builder.of(ReceptacleBlockEntity::new, EBBlocks.RECEPTACLE.get(), EBBlocks.WALL_RECEPTACLE.get()).build(null)
     );
 
     public static final DeferredObject<BlockEntityType<ImbuementAltarBlockEntity>> IMBUEMENT_ALTAR = blockEntity(

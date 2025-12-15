@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.api.content.spell.properties;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.nbt.CompoundTag;
@@ -136,9 +135,6 @@ public final class PropertyTypes {
      * @param <T>      The type of the property value.
      */
     private static <T> void serializeJson(JsonObject json, SpellProperty<T> property, BiConsumer<JsonObject, T> setter) {
-        if (property.type.equals(PropertyTypes.STRING)) {
-            EBLogger.warn("Serializing property {%s} with value {%s}-{%s}".formatted(property.identifier, property.value, property.defaultValue));
-        }
         setter.accept(json, property.value);
     }
 

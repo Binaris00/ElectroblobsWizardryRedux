@@ -30,6 +30,9 @@ public final class EBBlockLootTables extends BlockLootSubProvider {
         this.dropSelf(EBBlocks.CRYSTAL_FLOWER.get());
         this.add(EBBlocks.POTTED_CRYSTAL_FLOWER.get(), createPotFlowerItemTable(EBBlocks.CRYSTAL_FLOWER.get()));
 
+        this.add(EBBlocks.RECEPTACLE.get(), createSingleItemTable(EBItems.RECEPTACLE.get()));
+        this.add(EBBlocks.WALL_RECEPTACLE.get(), createSingleItemTable(EBItems.RECEPTACLE.get()));
+
         // No drop ones
         this.add(EBBlocks.PERMAFROST.get(), noDrop());
         this.add(EBBlocks.VANISHING_COBWEB.get(), noDrop());

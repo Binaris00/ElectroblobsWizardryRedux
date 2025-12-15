@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-15T10:49:04.382746917	Loot Tables
+// 1.20.1	2025-12-15T15:05:23.485092236	Loot Tables
 3770f93b9b53f0fd4b09297525301407e419141c data/ebwizardry/loot_tables/blocks/acacia_bookshelf.json
 88143e64aad1aa93d3e22696c4f728e9442b9b1b data/ebwizardry/loot_tables/blocks/acacia_lectern.json
 bf581132b9cc6376faa77b60bdaade7f6a19df65 data/ebwizardry/loot_tables/blocks/arcane_workbench.json
@@ -48,6 +48,7 @@ a11de89dba2209090c985ab3ee12eae4fb0a5a7e data/ebwizardry/loot_tables/blocks/sorc
 7813fe299a5f4a8197078eea3831c8a1fe9a4998 data/ebwizardry/loot_tables/blocks/spruce_bookshelf.json
 abed7b8e39204b84319a7edb30e856cbb76d4191 data/ebwizardry/loot_tables/blocks/spruce_lectern.json
 2f0f82a58c90a1aa840bf8a97d8dceda3f05d502 data/ebwizardry/loot_tables/blocks/vanishing_cobweb.json
+75c4be7daf243e91a48593d4ca96042ec0231061 data/ebwizardry/loot_tables/blocks/wall_receptacle.json
 9a6e4857172aed8a9dad3418e38a7caebf6b1c55 data/ebwizardry/loot_tables/subsets/arcane_tomes.json
 5121c2d75ee99e7cf2654c0fe04b6e18024e31d8 data/ebwizardry/loot_tables/subsets/armor_upgrades.json
 b303daec93dbb66697df23fbd8e7869bb4b9f95e data/ebwizardry/loot_tables/subsets/elemental_crystals.json
