@@ -9,6 +9,7 @@ import com.electroblob.wizardry.api.content.item.IWizardryItem;
 import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellContext;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
@@ -327,8 +328,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
             Spell spell = SpellUtil.getSpell(spellBooks[i].getItem());
 
-            // todo spell.isEnabled(SpellProperties.Context.WANDS)
-            if (!(spell.getTier().level > this.tier.level) && spells.get(i) != spell) {
+            if (!(spell.getTier().level > this.tier.level) && spells.get(i) != spell && spell.isEnabled(SpellContext.WANDS)) {
                 if (EBConfig.preventBindingSameSpellTwiceToWands && spells.stream().anyMatch(s -> s == spell)) {
                     continue;
                 }

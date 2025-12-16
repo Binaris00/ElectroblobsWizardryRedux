@@ -30,7 +30,8 @@ public final class EBCommands {
             WandSelectCommand::register,
             PacketTestCommand::register,
             CastCommand::register,
-            ForfeitTestCommand::register
+            ForfeitTestCommand::register,
+            SpellContextCommand::register
     );
 
     private EBCommands() {

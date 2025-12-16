@@ -1,5 +1,6 @@
 {
   "spell.discover": "Discovered the spell %s!",
+  "spell.disabled": "%s has been disabled in the config",
   "spell.resist": "%s resisted %s",
   "ebwizardry.raw_line": "========================================================",
   "ebwizardry.creativetab.desc": "EBWIZARDRY TABS",

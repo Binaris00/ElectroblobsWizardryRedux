@@ -259,9 +259,8 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
     private ItemStack getRandomItemOfTier(SpellTier tier) {
-        List<Spell> spells = SpellUtil.getSpells((s) -> true);
-        List<Spell> specialismSpells = SpellUtil.getSpells((s) -> s.getElement() == this.getElement());
-
+        List<Spell> spells = SpellUtil.getSpells((s) -> s.getTier() == tier);
+        List<Spell> specialismSpells = SpellUtil.getSpells((s) -> s.getElement() == this.getElement() && s.getTier() == tier);
         return tier.getTradeItem(this.getElement(), random, (ArrayList<Spell>) spells, (ArrayList<Spell>) specialismSpells);
     }
 

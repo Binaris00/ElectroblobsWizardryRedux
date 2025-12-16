@@ -1,9 +1,20 @@
 {
-  "charge": 0,
+  "type": "utility",
+  "chargeup": 0,
   "cooldown": 40,
   "cost": 30,
   "element": "ebwizardry:sorcery",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point_up",
-  "spell_type": "utility",
   "tier": "ebwizardry:apprentice"
 }

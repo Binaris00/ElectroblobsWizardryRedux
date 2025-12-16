@@ -3,6 +3,7 @@ package com.electroblob.wizardry.api.content.spell.properties;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -92,6 +93,10 @@ public class SpellProperty<T> {
 
     public static SpellProperty<String> stringProperty(String id, String value) {
         return createProperty(id, value, PropertyTypes.STRING);
+    }
+
+    public static SpellProperty<Map<String, Boolean>> contextMapProperty(String id, Map<String, Boolean> value) {
+        return createProperty(id, value, PropertyTypes.CONTEXT_MAP);
     }
 
     protected static <T> SpellProperty<T> createProperty(String identifier, T defaultValue, IPropertyType<T> type) {

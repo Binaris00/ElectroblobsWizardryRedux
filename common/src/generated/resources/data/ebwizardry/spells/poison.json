@@ -1,15 +1,26 @@
 {
+  "type": "attack",
   "base_properties": {
     "damage": 1.0,
     "effect_duration": 200,
     "effect_strength": 1,
     "range": 10.0
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 20,
   "cost": 10,
   "element": "ebwizardry:earth",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "attack",
   "tier": "ebwizardry:apprentice"
 }

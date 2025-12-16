@@ -1,13 +1,24 @@
 {
+  "type": "defence",
   "base_properties": {
     "range": 10.0,
     "speed": 1.5
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 15,
   "cost": 10,
   "element": "ebwizardry:earth",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "defence",
   "tier": "ebwizardry:apprentice"
 }

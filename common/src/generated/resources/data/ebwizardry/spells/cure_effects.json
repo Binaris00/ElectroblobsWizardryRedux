@@ -1,9 +1,20 @@
 {
-  "charge": 10,
+  "type": "defence",
+  "chargeup": 10,
   "cooldown": 40,
   "cost": 25,
   "element": "ebwizardry:healing",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point_up",
-  "spell_type": "defence",
   "tier": "ebwizardry:apprentice"
 }

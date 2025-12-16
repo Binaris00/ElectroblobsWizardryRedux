@@ -1,14 +1,25 @@
 {
+  "type": "construct",
   "base_properties": {
     "duration": 600,
     "effect_radius": 3,
     "range": 20.0
   },
-  "charge": 10,
+  "chargeup": 10,
   "cooldown": 100,
   "cost": 40,
   "element": "ebwizardry:ice",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "construct",
   "tier": "ebwizardry:advanced"
 }

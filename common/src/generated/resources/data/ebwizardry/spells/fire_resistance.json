@@ -1,13 +1,24 @@
 {
+  "type": "defence",
   "base_properties": {
     "effect.minecraft.fire_resistance_duration": 600,
     "effect.minecraft.fire_resistance_strength": 0
   },
-  "charge": 15,
+  "chargeup": 15,
   "cooldown": 80,
   "cost": 20,
   "element": "ebwizardry:fire",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point_up",
-  "spell_type": "defence",
   "tier": "ebwizardry:advanced"
 }

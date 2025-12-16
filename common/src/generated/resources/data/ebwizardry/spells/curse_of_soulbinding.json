@@ -1,12 +1,23 @@
 {
+  "type": "alteration",
   "base_properties": {
     "range": 10.0
   },
-  "charge": 10,
+  "chargeup": 10,
   "cooldown": 100,
   "cost": 35,
   "element": "ebwizardry:necromancy",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "alteration",
   "tier": "ebwizardry:advanced"
 }

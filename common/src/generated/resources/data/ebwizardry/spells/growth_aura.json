@@ -1,12 +1,23 @@
 {
+  "type": "utility",
   "base_properties": {
     "effect_radius": 2
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 50,
   "cost": 20,
   "element": "ebwizardry:earth",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point_up",
-  "spell_type": "utility",
   "tier": "ebwizardry:apprentice"
 }

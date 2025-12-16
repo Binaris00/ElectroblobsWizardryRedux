@@ -4,10 +4,10 @@ import com.electroblob.wizardry.api.content.entity.living.ISpellCaster;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellContext;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
-import com.electroblob.wizardry.setup.registries.Spells;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -40,12 +40,12 @@ public final class EntityUtil {
     private EntityUtil() {
     }
 
-    public static void undoGravity(Entity entity){
-        if(!entity.isNoGravity()){
+    public static void undoGravity(Entity entity) {
+        if (!entity.isNoGravity()) {
             double gravity = 0.04;
-            if(entity instanceof ThrowableProjectile) gravity = 0.03;
-            else if(entity instanceof Arrow) gravity = 0.05;
-            else if(entity instanceof LivingEntity) gravity = 0.08;
+            if (entity instanceof ThrowableProjectile) gravity = 0.03;
+            else if (entity instanceof Arrow) gravity = 0.05;
+            else if (entity instanceof LivingEntity) gravity = 0.08;
             entity.setDeltaMovement(entity.getDeltaMovement().add(0, gravity, 0));
         }
     }
@@ -262,8 +262,8 @@ public final class EntityUtil {
             else tier = SpellTiers.MASTER;
             if (tier.level > maxTier.level) maxTier = tier;
 
-            // TODO: Add a filter for NPC spells
-            List<Spell> list = SpellUtil.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element);
+            List<Spell> list = SpellUtil.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element
+                    && spell.canCastByEntity() && spell.isEnabled(SpellContext.NPCS));
 
             list.retainAll(npcSpells);
             list.removeAll(spells);

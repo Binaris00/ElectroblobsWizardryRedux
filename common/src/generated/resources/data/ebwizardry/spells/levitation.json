@@ -1,13 +1,24 @@
 {
+  "type": "utility",
   "base_properties": {
     "acceleration": 0.1,
     "speed": 0.5
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 0,
   "cost": 10,
   "element": "ebwizardry:sorcery",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:none",
-  "spell_type": "utility",
   "tier": "ebwizardry:advanced"
 }

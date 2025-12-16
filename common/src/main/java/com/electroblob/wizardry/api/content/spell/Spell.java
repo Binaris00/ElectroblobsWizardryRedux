@@ -192,7 +192,7 @@ public abstract class Spell {
     }
 
     public int getCharge() {
-        return properties.getCharge();
+        return properties.getChargeup();
     }
 
     public SpellType getType() {
@@ -217,6 +217,10 @@ public abstract class Spell {
 
     public int getCooldown() {
         return properties.getCooldown();
+    }
+
+    public boolean isEnabled(SpellContext context) {
+        return properties.isEnabledInContext(context);
     }
 
     // ===================================================

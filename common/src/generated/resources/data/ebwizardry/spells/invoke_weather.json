@@ -1,12 +1,23 @@
 {
+  "type": "utility",
   "base_properties": {
     "thunderstorm_chance": 0.2
   },
-  "charge": 15,
+  "chargeup": 15,
   "cooldown": 100,
   "cost": 30,
   "element": "ebwizardry:lightning",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point_up",
-  "spell_type": "utility",
   "tier": "ebwizardry:advanced"
 }

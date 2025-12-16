@@ -2,6 +2,7 @@ package com.electroblob.wizardry;
 
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.event.*;
+import com.electroblob.wizardry.api.content.spell.SpellContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.ArtefactItem;
 import com.electroblob.wizardry.content.ForfeitRegistry;
@@ -19,6 +20,7 @@ import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.DataEvents;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 
@@ -105,6 +107,7 @@ public final class EBEventHelper {
         bus.register(SpellCastEvent.Pre.class, WizardArmorItem::onSpellPreCast);
         bus.register(SpellCastEvent.Pre.class, ForfeitRegistry::onSpellCastPreEvent);
         bus.register(SpellCastEvent.Pre.class, ArtefactItem::onArtifactPreCast);
+        bus.register(SpellCastEvent.Pre.class, EBEventHelper::castContextCheck);
     }
 
     private static void onSpellPostCast(WizardryEventBus bus) {
@@ -126,5 +129,23 @@ public final class EBEventHelper {
 
     private static void onPlayerBreakBlock(WizardryEventBus bus) {
         bus.register(EBPlayerBreakBlockEvent.class, ArcaneLockSpell::onPlayerBreakBlock);
+    }
+
+    private static void castContextCheck(SpellCastEvent.Pre event) {
+        boolean enabled = switch (event.getSource()) {
+            case WAND -> event.getSpell().isEnabled(SpellContext.WANDS);
+            case SCROLL -> event.getSpell().isEnabled(SpellContext.SCROLL);
+            case COMMAND -> event.getSpell().isEnabled(SpellContext.COMMANDS);
+            case NPC -> event.getSpell().isEnabled(SpellContext.NPCS);
+            case DISPENSER -> event.getSpell().isEnabled(SpellContext.DISPENSERS);
+            default -> true;
+        };
+
+        // If a spell is disabled in the config, it will not work.
+        if (!enabled) {
+            if (event.getCaster() != null && !event.getCaster().level().isClientSide)
+                event.getCaster().sendSystemMessage(Component.translatable("spell.disabled", event.getSpell().getDescriptionFormatted()));
+            event.setCanceled(true);
+        }
     }
 }

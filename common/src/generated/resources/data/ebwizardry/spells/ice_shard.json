@@ -1,15 +1,26 @@
 {
+  "type": "projectile",
   "base_properties": {
     "damage": 6.0,
     "effect_duration": 200,
     "effect_strength": 0,
     "range": 15.0
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 10,
   "cost": 10,
   "element": "ebwizardry:ice",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "projectile",
   "tier": "ebwizardry:apprentice"
 }

@@ -1,14 +1,25 @@
 {
+  "type": "attack",
   "base_properties": {
     "duration": 120,
     "effect_radius": 2,
     "range": 20.0
   },
-  "charge": 20,
+  "chargeup": 20,
   "cooldown": 300,
   "cost": 75,
   "element": "ebwizardry:sorcery",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "attack",
   "tier": "ebwizardry:master"
 }

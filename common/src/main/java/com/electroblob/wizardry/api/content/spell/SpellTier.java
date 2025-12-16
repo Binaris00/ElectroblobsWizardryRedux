@@ -32,10 +32,14 @@ public class SpellTier {
         this.progression = progression;
     }
 
+    /**
+     * Returns a trade item appropriate for this tier. By default, this is a spell book containing a random spell from
+     * the given lists that is enabled in the TRADES and BOOK contexts. If you override this method be sure to respect
+     * those contexts.
+     */
     public ItemStack getTradeItem(Element element, RandomSource random, ArrayList<Spell> spells, ArrayList<Spell> specializedSpells) {
-        // TODO, this should be: "if the spell is available in trades"
-        // TODO, the same than before, but checking if the spell is of this tier
-        // TODO, remove spells if not available in books
+        spells.removeIf(spell -> !spell.isEnabled(SpellContext.TRADES) || !spell.isEnabled(SpellContext.BOOK));
+        specializedSpells.removeIf(spell -> !spell.isEnabled(SpellContext.TRADES) || !spell.isEnabled(SpellContext.BOOK));
         return SpellUtil.spellBookItem(spells.get(random.nextInt(spells.size())));
     }
 

@@ -1,4 +1,5 @@
 {
+  "type": "construct",
   "base_properties": {
     "damage": 8.0,
     "effect_duration": 200,
@@ -6,11 +7,21 @@
     "effect_strength": 1,
     "range": 10.0
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 40,
   "cost": 20,
   "element": "ebwizardry:ice",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "construct",
   "tier": "ebwizardry:apprentice"
 }

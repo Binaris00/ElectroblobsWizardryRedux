@@ -107,8 +107,8 @@ public class SpellProperties {
         return get(DefaultProperties.COST);
     }
 
-    public int getCharge() {
-        return get(DefaultProperties.CHARGE);
+    public int getChargeup() {
+        return get(DefaultProperties.CHARGEUP);
     }
 
     public SpellType getType() {
@@ -140,15 +140,21 @@ public class SpellProperties {
         return spellAction != null ? spellAction : SpellAction.NONE;
     }
 
+    public boolean isEnabledInContext(SpellContext context) {
+        Map<String, Boolean> enabled = get(DefaultProperties.ENABLED);
+        return enabled.getOrDefault(context.getKey(), true);
+    }
+
     public JsonObject toJson() {
         JsonObject json = new JsonObject();
         JsonObject baseProps = new JsonObject();
+        addProperty(json, DefaultProperties.ENABLED);
         addProperty(json, DefaultProperties.TIER);
         addProperty(json, DefaultProperties.ELEMENT);
         addProperty(json, DefaultProperties.SPELL_TYPE);
         addProperty(json, DefaultProperties.COST);
         addProperty(json, DefaultProperties.COOLDOWN);
-        addProperty(json, DefaultProperties.CHARGE);
+        addProperty(json, DefaultProperties.CHARGEUP);
         addProperty(json, DefaultProperties.SPELL_ACTION);
         properties.stream().filter(p -> !isBaseProperty(p)).forEach(p -> addProperty(baseProps, p));
         if (baseProps.size() > 0) json.add("base_properties", baseProps);
@@ -158,12 +164,13 @@ public class SpellProperties {
     public CompoundTag toNbt() {
         CompoundTag tag = new CompoundTag();
         CompoundTag baseProps = new CompoundTag();
+        addProperty(tag, DefaultProperties.ENABLED);
         addProperty(tag, DefaultProperties.TIER);
         addProperty(tag, DefaultProperties.ELEMENT);
         addProperty(tag, DefaultProperties.SPELL_TYPE);
         addProperty(tag, DefaultProperties.COST);
         addProperty(tag, DefaultProperties.COOLDOWN);
-        addProperty(tag, DefaultProperties.CHARGE);
+        addProperty(tag, DefaultProperties.CHARGEUP);
         addProperty(tag, DefaultProperties.SPELL_ACTION);
         properties.stream().filter(p -> !isBaseProperty(p)).forEach(p -> addProperty(baseProps, p));
         if (!baseProps.isEmpty()) tag.put("base_properties", baseProps);
@@ -186,12 +193,13 @@ public class SpellProperties {
 
     // I'm not proud of this method
     private boolean isBaseProperty(@NotNull SpellProperty<?> prop) {
-        return prop.identifier.equals(DefaultProperties.TIER.identifier)
+        return prop.identifier.equals(DefaultProperties.ENABLED.identifier)
+                || prop.identifier.equals(DefaultProperties.TIER.identifier)
                 || prop.identifier.equals(DefaultProperties.ELEMENT.identifier)
                 || prop.identifier.equals(DefaultProperties.SPELL_TYPE.identifier)
                 || prop.identifier.equals(DefaultProperties.COST.identifier)
                 || prop.identifier.equals(DefaultProperties.COOLDOWN.identifier)
-                || prop.identifier.equals(DefaultProperties.CHARGE.identifier)
+                || prop.identifier.equals(DefaultProperties.CHARGEUP.identifier)
                 || prop.identifier.equals(DefaultProperties.SPELL_ACTION.identifier);
     }
 
@@ -202,14 +210,14 @@ public class SpellProperties {
         }
 
         public Builder assignBaseProperties(SpellTier tier, Element element, SpellType type, SpellAction action, int cost, int charge, int cooldown) {
+            add(DefaultProperties.ENABLED);
             add(DefaultProperties.ELEMENT, element.getLocation().toString());
             add(DefaultProperties.SPELL_TYPE, type.getUnlocalisedName());
             add(DefaultProperties.TIER, tier.getOrCreateLocation().toString());
             add(DefaultProperties.SPELL_ACTION, action.location.toString());
             add(DefaultProperties.COST, cost);
             add(DefaultProperties.COOLDOWN, cooldown);
-            add(DefaultProperties.CHARGE, charge);
-
+            add(DefaultProperties.CHARGEUP, charge);
             return this;
         }
 

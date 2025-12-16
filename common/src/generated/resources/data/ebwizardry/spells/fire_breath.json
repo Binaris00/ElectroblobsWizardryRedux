@@ -1,14 +1,25 @@
 {
+  "type": "attack",
   "base_properties": {
     "damage": 6.0,
     "effect_duration": 10,
     "range": 10.0
   },
-  "charge": 15,
+  "chargeup": 15,
   "cooldown": 70,
   "cost": 15,
   "element": "ebwizardry:fire",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "attack",
   "tier": "ebwizardry:master"
 }

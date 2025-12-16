@@ -1,14 +1,25 @@
 {
+  "type": "minion",
   "base_properties": {
     "minion_count": 1,
     "minion_lifetime": 600,
     "summon_radius": 2
   },
-  "charge": 10,
+  "chargeup": 10,
   "cooldown": 200,
   "cost": 40,
   "element": "ebwizardry:fire",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:summon",
-  "spell_type": "minion",
   "tier": "ebwizardry:advanced"
 }

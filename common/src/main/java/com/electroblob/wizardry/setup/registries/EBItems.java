@@ -94,7 +94,7 @@ public final class EBItems {
     static final Map<String, DeferredObject<? extends Item>> ITEMS_REGISTER = new HashMap<>(); // For register function
     //General Items
     public static final DeferredObject<Item> ARCANE_TOME = item("arcane_tome", ArcaneTomeItem::new, true, true);
-    public static final DeferredObject<Item> BLANK_SCROLL = item("blank_scroll");
+    public static final DeferredObject<Item> BLANK_SCROLL = item("blank_scroll", () -> new BlankScrollItem(new Item.Properties().stacksTo(64)), true, true);
     public static final DeferredObject<Item> RUINED_SPELL_BOOK = item("ruined_spell_book");
     public static final DeferredObject<Item> SCROLL = item("scroll", () -> new ScrollItem(new Item.Properties().stacksTo(16)));
     public static final DeferredObject<Item> SPELL_BOOK = item("spell_book", () -> new SpellBookItem(new Item.Properties().stacksTo(16)));

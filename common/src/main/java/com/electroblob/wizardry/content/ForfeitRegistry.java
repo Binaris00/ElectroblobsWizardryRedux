@@ -8,6 +8,7 @@ import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;
 import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Element;
+import com.electroblob.wizardry.api.content.spell.SpellContext;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
@@ -231,8 +232,7 @@ public class ForfeitRegistry {
         });
 
         create("storm", SpellTiers.APPRENTICE, Elements.LIGHTNING, (w, p) -> {
-            // TODO
-            //if(!Spells.INVOKE_WEATHER.isEnabled(Context.WANDS)) return;
+            if (!Spells.INVOKE_WEATHER.isEnabled(SpellContext.WANDS)) return;
             int shortWeatherTime = (100 + (new Random()).nextInt(200)) * 20;
             if (!w.isClientSide) ((ServerLevel) w).setWeatherParameters(0, shortWeatherTime, true, true);
         });

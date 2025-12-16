@@ -1,15 +1,26 @@
 {
+  "type": "projectile",
   "base_properties": {
     "damage": 8.0,
     "effect_duration": 150,
     "effect_strength": 1,
     "range": 30.0
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 20,
   "cost": 20,
   "element": "ebwizardry:necromancy",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "projectile",
   "tier": "ebwizardry:advanced"
 }

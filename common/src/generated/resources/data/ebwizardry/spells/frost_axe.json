@@ -1,14 +1,25 @@
 {
+  "type": "utility",
   "base_properties": {
     "effect_duration": 160,
     "effect_strength": 1,
     "item_lifetime": 1200
   },
-  "charge": 10,
+  "chargeup": 10,
   "cooldown": 50,
   "cost": 45,
   "element": "ebwizardry:ice",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:summon",
-  "spell_type": "utility",
   "tier": "ebwizardry:advanced"
 }

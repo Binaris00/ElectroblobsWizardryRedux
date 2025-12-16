@@ -1,12 +1,23 @@
 {
+  "type": "utility",
   "base_properties": {
     "effect_duration": 900
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 70,
   "cost": 35,
   "element": "ebwizardry:fire",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:imbue",
-  "spell_type": "utility",
   "tier": "ebwizardry:advanced"
 }

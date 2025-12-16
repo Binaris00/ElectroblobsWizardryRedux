@@ -1,15 +1,26 @@
 {
+  "type": "construct",
   "base_properties": {
     "damage": 1.0,
     "duration": 600,
     "effect_radius": 3,
     "health": 1.0
   },
-  "charge": 15,
+  "chargeup": 15,
   "cooldown": 150,
   "cost": 35,
   "element": "ebwizardry:healing",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point_down",
-  "spell_type": "construct",
   "tier": "ebwizardry:advanced"
 }

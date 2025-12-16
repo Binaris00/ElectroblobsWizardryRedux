@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellContext;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.content.item.ScrollItem;
@@ -64,52 +65,41 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
     }
 
     @Override
-    protected @NotNull ItemStack run(ItemStack stack, @NotNull LootContext context) {
+    protected @NotNull ItemStack run(ItemStack stack, @NotNull LootContext lootContext) {
         if (!(stack.getItem() instanceof SpellBookItem) && !(stack.getItem() instanceof ScrollItem))
             EBLogger.warn("Applying the random_spell loot function to an item that isn't a spell book or scroll.");
 
-        Player player = context.getParamOrNull(LootContextParams.LAST_DAMAGE_PLAYER);
-        Spell spell = pickRandomSpell(stack, context.getRandom(), player);
+        SpellContext context = !lootContext.hasParam(LootContextParams.THIS_ENTITY) ? SpellContext.TREASURE : SpellContext.LOOTING;
 
-        if (spell == Spells.NONE) {
-            EBLogger.debug("Tried to apply the random_spell loot function to an item, but no enabled spells matched the criteria specified. Using Magic Missile as a fallback.");
-            return SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
-        }
+        Player player = lootContext.getParamOrNull(LootContextParams.LAST_DAMAGE_PLAYER);
+        Spell spell = pickRandomSpell(stack, lootContext.getRandom(), context, player);
 
+        if (spell == Spells.NONE) return SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
         return SpellUtil.setSpell(stack, spell);
     }
 
-    private Spell pickRandomSpell(ItemStack stack, RandomSource random, Player player) {
+    private Spell pickRandomSpell(ItemStack stack, RandomSource random, SpellContext context, Player player) {
         ArrayList<Spell> possibleSpells = new ArrayList<>(Services.REGISTRY_UTIL.getSpells());
-
-        EBLogger.debug("Picking random spell for loot with {} possible spells before filtering.", possibleSpells.size());
 
         // Checking spells, if the spells list is specified
         if (spells != null && !spells.isEmpty()) possibleSpells.retainAll(spells);
 
-        EBLogger.debug("{} possible spells after spell filtering.", possibleSpells.size());
+        possibleSpells.removeIf(possibleSpell -> !possibleSpell.isEnabled(context));
 
         // Checking tiers, if the tiers list is specified
         if (tiers != null && !tiers.isEmpty()) {
-            EBLogger.debug("Filtering by tiers: {}", tiers);
-            EBLogger.debug("Sample spell tiers before filtering: {}",
-                    possibleSpells.stream().limit(5).map(s -> s.getLocation() + "=" + s.getTier()).collect(Collectors.toList()));
             possibleSpells.removeIf(possibleSpell -> !tiers.contains(possibleSpell.getTier()));
         }
 
-        EBLogger.debug("{} possible spells after tier filtering.", possibleSpells.size());
-
         // Checking elements, if the elements list is specified
         if (elements != null && !elements.isEmpty()) {
-            EBLogger.debug("Filtering by elements: {}", elements);
-            if (!possibleSpells.isEmpty()) {
-                EBLogger.debug("Sample spell elements before filtering: {}",
-                        possibleSpells.stream().limit(5).map(s -> s.getLocation() + "=" + s.getElement()).collect(Collectors.toList()));
-            }
             possibleSpells.removeIf(possibleSpell -> !elements.contains(possibleSpell.getElement()));
         }
 
-        EBLogger.debug("{} possible spells after element filtering.", possibleSpells.size());
+        if (stack.getItem() instanceof SpellBookItem)
+            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContext.BOOK));
+        if (stack.getItem() instanceof ScrollItem)
+            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContext.SCROLL));
 
         if (player != null && undiscoveredBias > 0) {
             float bias = undiscoveredBias;
@@ -125,11 +115,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
             }
         }
 
-        if (possibleSpells.isEmpty()) {
-            EBLogger.debug("No spells matched the loot criteria after filtering.");
-            return Spells.NONE; // don't worry, this is converted to Magic Missile in run();
-        }
-
+        if (possibleSpells.isEmpty()) return Spells.NONE; // don't worry, this is converted to Magic Missile in run();
         return possibleSpells.get(random.nextInt(possibleSpells.size()));
     }
 

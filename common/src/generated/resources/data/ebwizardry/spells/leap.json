@@ -1,13 +1,24 @@
 {
+  "type": "utility",
   "base_properties": {
     "horizontal_speed": 0.3,
     "vertical_speed": 0.65
   },
-  "charge": 0,
+  "chargeup": 0,
   "cooldown": 20,
   "cost": 10,
   "element": "ebwizardry:earth",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
   "spell_action": "ebwizardry:point",
-  "spell_type": "utility",
   "tier": "ebwizardry:novice"
 }
