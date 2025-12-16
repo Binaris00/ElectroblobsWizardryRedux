@@ -21,8 +21,14 @@ import org.lwjgl.opengl.GL11;
 
 import static com.electroblob.wizardry.WizardryMainMod.MOD_ID;
 
+/**
+ * Particle Buff is the only particle in Electroblob's Wizardry (at least on Alpha release) that's using the linking
+ * mechanism from ParticleWizardry to follow an entity. It represents the buff effect visually by floating upwards
+ * from the entity it's linked to. The particle uses a custom texture and rendering method to achieve its appearance.
+ */
+// This render logic is one of the worst I've ever written. So any improvements would be greatly appreciated, specially
+// regarding how to handle the linked entity position better, because I'm sure that part can be improved.
 public class ParticleBuff extends ParticleWizardry {
-
     private static final ResourceLocation TEXTURE = new ResourceLocation(MOD_ID, "textures/particle/buff.png");
     private final boolean mirror;
 
@@ -67,9 +73,19 @@ public class ParticleBuff extends ParticleWizardry {
         RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
 
         Vec3 cameraPos = camera.getPosition();
-        float x = (float) (Mth.lerp(partialTicks, this.xo, this.x) - cameraPos.x);
-        float y = (float) (Mth.lerp(partialTicks, this.yo, this.y) - cameraPos.y);
-        float z = (float) (Mth.lerp(partialTicks, this.zo, this.z) - cameraPos.z);
+        float x, y, z;
+
+        // This is the part that could probably be improved
+        if (entity != null) {
+            Vec3 entityPos = entity.getPosition(partialTicks);
+            x = (float) (entityPos.x + relativeX - cameraPos.x);
+            y = (float) (entityPos.y + relativeY - cameraPos.y);
+            z = (float) (entityPos.z + relativeZ - cameraPos.z);
+        } else {
+            x = (float) (Mth.lerp(partialTicks, this.xo, this.x) - cameraPos.x);
+            y = (float) (Mth.lerp(partialTicks, this.yo, this.y) - cameraPos.y);
+            z = (float) (Mth.lerp(partialTicks, this.zo, this.z) - cameraPos.z);
+        }
 
         float ageProgress = (float) this.age / (float) this.lifetime;
         float f = 0.875f - 0.125f * Mth.floor(ageProgress * 8 - 0.000001f);
