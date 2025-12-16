@@ -16,6 +16,7 @@ import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -234,6 +235,12 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         return super.hurt(source, damage);
     }
 
+    @Override
+    public @NotNull Component getDisplayName() {
+        if (this.hasCustomName() || this.getElement() == null) return super.getDisplayName();
+        return this.getElement().getWizardName();
+    }
+
     public static AttributeSupplier.Builder createAttributes() {
         return PathfinderMob.createMobAttributes().add(Attributes.MOVEMENT_SPEED, 0.5F).add(Attributes.MAX_HEALTH, 30);
     }
@@ -254,7 +261,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
     public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         Element element = this.getElement();
-        nbt.putString("element", element == null ? Elements.FIRE.getLocation().toString() : element.getLocation().toString());
+        if (element != null) nbt.putString("element", element.getLocation().toString());
         nbt.putInt("skin", this.getTextureIndex());
         NBTExtras.storeTagSafely(nbt, "spells", NBTExtras.listToTag(spells, spell -> StringTag.valueOf(spell.getLocation().toString())));
     }
@@ -263,7 +270,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
     public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         Element element = Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(nbt.getString("element")));
-        this.setElement(element == null ? Elements.FIRE : element);
+        if (element != null) this.setElement(element);
         this.setTextureIndex(nbt.getInt("skin"));
         this.spells = (List<Spell>) NBTExtras.tagToList(nbt.getList("spells", Tag.TAG_STRING), (StringTag tag) -> Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getAsString())));
     }
@@ -276,7 +283,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         this.entityData.set(HEAL_COOLDOWN, cooldown);
     }
 
-    public Element getElement() {
+    public @Nullable Element getElement() {
         return Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(this.entityData.get(ELEMENT)));
     }
 

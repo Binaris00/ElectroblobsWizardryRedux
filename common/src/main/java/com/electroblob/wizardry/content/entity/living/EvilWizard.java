@@ -6,7 +6,6 @@ import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtUtils;
-import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
@@ -72,12 +71,6 @@ public class EvilWizard extends AbstractWizard implements Enemy {
         } else {
             this.shrinePosition = null;
         }
-    }
-
-    @Override
-    public @NotNull Component getDisplayName() {
-        if (this.hasCustomName()) return super.getDisplayName();
-        return this.getElement().getWizardName();
     }
 
     public static boolean checkEvilWizardSpawnRules(EntityType<? extends AbstractWizard> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {

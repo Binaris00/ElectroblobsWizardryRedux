@@ -5,6 +5,7 @@ import com.electroblob.wizardry.api.content.event.EBDiscoverSpellEvent;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonSyntaxException;
 import net.minecraft.advancements.CriterionTrigger;
@@ -87,6 +88,8 @@ public class SpellDiscoveryTrigger implements CriterionTrigger<SpellDiscoveryTri
         public @NotNull JsonObject serializeToJson(@NotNull SerializationContext conditions) {
             JsonObject jsonobject = super.serializeToJson(conditions);
             jsonobject.addProperty("source", this.source.name().toLowerCase());
+            JsonElement spellJson = this.spell.serialize();
+            if (spellJson != null) jsonobject.add("spell", spellJson);
             return jsonobject;
         }
     }

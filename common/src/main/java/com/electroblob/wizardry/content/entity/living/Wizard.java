@@ -266,12 +266,6 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
     @Override
-    public @NotNull Component getDisplayName() {
-        if (this.hasCustomName()) return super.getDisplayName();
-        return this.getElement().getWizardName();
-    }
-
-    @Override
     protected SoundEvent getAmbientSound() {
         if (WizardryMainMod.IS_THE_SEASON) return EBSounds.ENTITY_WIZARD_HOHOHO.get();
         return this.isTrading() ? EBSounds.ENTITY_WIZARD_TRADING.get() : EBSounds.ENTITY_WIZARD_AMBIENT.get();

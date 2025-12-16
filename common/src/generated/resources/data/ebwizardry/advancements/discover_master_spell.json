@@ -3,7 +3,12 @@
   "criteria": {
     "criterion": {
       "conditions": {
-        "source": "casting"
+        "source": "casting",
+        "spell": {
+          "tiers": [
+            "ebwizardry:master"
+          ]
+        }
       },
       "trigger": "ebwizardry:discover_spell"
     }

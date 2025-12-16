@@ -26,11 +26,11 @@ public final class EBEntities {
     static Map<String, DeferredObject<EntityType<? extends Entity>>> ENTITY_TYPES = new HashMap<>();
     public static final DeferredObject<EntityType<DartEntity>> DART = entity(DartEntity::new, "dart", MobCategory.MISC, 0.5F, 0.5F, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<ConjuredArrowEntity>> CONJURED_ARROW = entity(ConjuredArrowEntity::new, "conjured_arrow", MobCategory.MISC, 0.5F, 0.5F, MagicType.PROJECTILE);
-    public static final DeferredObject<EntityType<FireBoltEntity>> FIRE_BOLT = entity(FireBoltEntity::new, "fire_bolt", MobCategory.MISC, 0.25f, 0.25f, MagicType.PROJECTILE);
-    public static final DeferredObject<EntityType<FireBombEntity>> FIRE_BOMB = entity(FireBombEntity::new, "fire_bomb", MobCategory.MISC, 0.25f, 0.25f, MagicType.PROJECTILE);
+    public static final DeferredObject<EntityType<FireBoltEntity>> FIRE_BOLT = entity(FireBoltEntity::new, "firebolt", MobCategory.MISC, 0.25f, 0.25f, MagicType.PROJECTILE);
+    public static final DeferredObject<EntityType<FireBombEntity>> FIRE_BOMB = entity(FireBombEntity::new, "firebomb", MobCategory.MISC, 0.25f, 0.25f, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<FlamecatcherArrow>> FLAME_CATCHER_ARROW = entity(FlamecatcherArrow::new, "flamecatcher_arrow", MobCategory.MISC, 0.5f, 0.5f, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<ForceArrow>> FORCE_ARROW = entity(ForceArrow::new, "force_arrow", MobCategory.MISC, 0.5f, 0.5f, MagicType.PROJECTILE);
-    public static final DeferredObject<EntityType<IceBall>> ICE_BALL = entity(IceBall::new, "ice_ball", MobCategory.MISC, 0.5F, 0.5F, MagicType.PROJECTILE);
+    public static final DeferredObject<EntityType<IceBall>> ICE_BALL = entity(IceBall::new, "iceball", MobCategory.MISC, 0.5F, 0.5F, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<IceLanceEntity>> ICE_LANCE = entity(IceLanceEntity::new, "ice_lance", MobCategory.MISC, 0.5f, 0.5f, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<IceShardEntity>> ICE_SHARD = entity(IceShardEntity::new, "ice_shard", MobCategory.MISC, 0.5f, 0.5f, MagicType.PROJECTILE);
     public static final DeferredObject<EntityType<LightningArrow>> LIGHTNING_ARROW = entity(LightningArrow::new, "lightning_arrow", MobCategory.MISC, 0.5f, 0.5f, MagicType.PROJECTILE);
