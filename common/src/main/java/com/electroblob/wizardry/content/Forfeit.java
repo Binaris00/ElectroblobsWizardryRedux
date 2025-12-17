@@ -47,11 +47,11 @@ public class Forfeit {
     }
 
     public Component getMessageForWand() {
-        return getMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".wand.generic"));
+        return getMessage(Component.translatable("item.ebwizardry.wand.generic"));
     }
 
     public Component getMessageForScroll() {
-        return getMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".scroll.generic"));
+        return getMessage(Component.translatable("item.ebwizardry.scroll.generic"));
     }
 
     public ResourceLocation getName() {

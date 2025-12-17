@@ -56,7 +56,7 @@ import java.util.function.BiConsumer;
 import java.util.stream.IntStream;
 
 public class ForfeitRegistry {
-    private static final Set<Forfeit> forfeitsSet = new HashSet<>();
+    private static final Set<Forfeit> FORFEITS = new HashSet<>();
 
     public static void create(String name, SpellTier tier, Element element, BiConsumer<Level, Player> effect) {
         create(new Forfeit(name, element, tier, effect));
@@ -67,15 +67,15 @@ public class ForfeitRegistry {
     }
 
     public static void create(Forfeit forfeit) {
-        forfeitsSet.add(forfeit);
+        FORFEITS.add(forfeit);
     }
 
-    public static Set<Forfeit> getForfeitsSet() {
-        return forfeitsSet;
+    public static Set<Forfeit> getForfeits() {
+        return FORFEITS;
     }
 
     public static Forfeit getRandomForfeit(Random random, SpellTier tier, Element element) {
-        List<Forfeit> forfeits = forfeitsSet.stream().filter(forfeit ->
+        List<Forfeit> forfeits = FORFEITS.stream().filter(forfeit ->
                 forfeit.getSpellTier() == tier && forfeit.getElement() == element).toList();
 
         if (forfeits.isEmpty()) {
@@ -87,20 +87,23 @@ public class ForfeitRegistry {
 
     public static void onSpellCastPreEvent(SpellCastEvent.Pre event) {
         if (!EBConfig.discoveryMode) return;
+        // Only the server should do the random roll to avoid desynchronization
+        if (event.getLevel().isClientSide) return;
 
-        if (event.getCaster() instanceof Player player && !player.isCreative()
-                && (event.getSource() == SpellCastEvent.Source.WAND || event.getSource() == SpellCastEvent.Source.SCROLL)) {
+        if (event.getCaster() instanceof Player player && !player.isCreative() && (event.getSource() == SpellCastEvent.Source.WAND || event.getSource() == SpellCastEvent.Source.SCROLL)) {
 
             SpellManagerData spellData = Services.OBJECT_DATA.getSpellManagerData(player);
             WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
 
-            // Only the server should do the random roll to avoid desynchronization
-            if (event.getLevel().isClientSide) return;
-
             float chance = (float) EBConfig.forfeitChance;
             if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WISDOM.get())) chance *= 0.5F;
 
-            if (wizardData.getRandom().nextFloat() < chance && !spellData.hasSpellBeenDiscovered(event.getSpell())) {
+            boolean discover = !spellData.hasSpellBeenDiscovered(event.getSpell());
+            float r = wizardData.getRandom().nextFloat();
+            boolean trigger = r < chance && discover;
+            EBLogger.warn("Forfeit roll: random={} chance={} discover={} trigger={}", r, chance, discover, trigger);
+
+            if (trigger) {
                 event.setCanceled(true);
 
                 Forfeit forfeit = getRandomForfeit(wizardData.getRandom(), event.getSpell().getTier(), event.getSpell().getElement());
@@ -110,6 +113,7 @@ public class ForfeitRegistry {
                     return;
                 }
 
+                EBLogger.warn("Applying forfeit {} to player {}", forfeit.getName(), player.getScoreboardName());
                 forfeit.apply(event.getLevel(), player);
 
                 ItemStack stack = player.getMainHandItem();

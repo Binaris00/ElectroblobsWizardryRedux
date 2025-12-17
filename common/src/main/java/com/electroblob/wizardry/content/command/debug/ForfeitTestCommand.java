@@ -29,7 +29,7 @@ public final class ForfeitTestCommand {
             return 0;
         }
 
-        for (Forfeit forfeit : ForfeitRegistry.getForfeitsSet()) {
+        for (Forfeit forfeit : ForfeitRegistry.getForfeits()) {
             if (forfeit.getName().getPath().equalsIgnoreCase(s)) {
                 forfeit.apply(source.getLevel(), source.getPlayer());
                 source.sendSystemMessage(Component.literal("Applied forfeit: " + s).withStyle(ChatFormatting.GREEN));
