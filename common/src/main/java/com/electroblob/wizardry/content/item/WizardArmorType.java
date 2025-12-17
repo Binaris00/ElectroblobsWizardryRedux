@@ -89,8 +89,8 @@ public enum WizardArmorType implements ArmorMaterial {
 
     // We don't want to allow repairing of wizard armor in an anvil, so we return null here.
     @Override
-    public Ingredient getRepairIngredient() {
-        return null;
+    public @NotNull Ingredient getRepairIngredient() {
+        return Ingredient.EMPTY;
     }
 
     @Override

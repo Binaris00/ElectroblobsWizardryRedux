@@ -22,7 +22,7 @@
           },
           "input_predicate": {
             "predicate_type": "minecraft:random_block_match",
-            "block": "minecraft:bee_nest",
+            "block": "minecraft:spawner",
             "probability": 1.0
           },
           "output_state": {

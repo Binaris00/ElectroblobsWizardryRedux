@@ -199,4 +199,9 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
             }
         }
     }
+
+    @Override
+    public boolean isValidRepairItem(@NotNull ItemStack toRepair, @NotNull ItemStack repair) {
+        return false;
+    }
 }

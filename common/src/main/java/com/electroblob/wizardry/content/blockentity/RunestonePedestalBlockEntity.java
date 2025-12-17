@@ -37,12 +37,14 @@ import java.util.List;
 import java.util.UUID;
 
 public class RunestonePedestalBlockEntity extends BlockEntity {
-    // If there's a player within this radius, the pedestal activates its event
+    /** Radius around the pedestal to check for nearby players to activate the event */
     private static final double ACTIVATION_RADIUS = 7;
-    // Number of evil wizards to spawn
+    /** Number of evil wizards to spawn when the pedestal event is activated */
     private static final int WIZARD_SPAWN_COUNT = 4;
-    // Radius around the pedestal to spawn evil wizards
+    /** Radius around the pedestal to spawn evil wizards */
     private static final int WIZARD_SPAWN_RADIUS = 5;
+    /** Delay before the pedestal regenerates after being conquered (in ticks) */
+    private static final int REGENERATION_DELAY_TICKS = 72000; // 1 hour in ticks
 
     /**
      * BlockPos of the linked container (chest, barrel, etc.) above the pedestal, this could be null if the logic didn't
@@ -235,7 +237,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         Services.OBJECT_DATA.getArcaneLockData(level.getBlockEntity(linkedPos)).clearArcaneLockOwner();
 
         conquered = true;
-        regenerationTime = level.getGameTime() + 36000;
+        regenerationTime = level.getGameTime() + REGENERATION_DELAY_TICKS;
         sync();
     }
 
