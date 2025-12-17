@@ -3,24 +3,17 @@ package com.electroblob.wizardry.client;
 import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.client.effect.ArcaneLockRender;
 import com.electroblob.wizardry.client.effect.ContainmentFieldRender;
-import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
-import com.electroblob.wizardry.client.gui.screens.BookshelfScreen;
-import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
-import com.electroblob.wizardry.client.renderer.blockentity.BookshelfRenderer;
-import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRenderer;
 import com.electroblob.wizardry.network.EBFabricClientNetwork;
-import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
-import com.electroblob.wizardry.setup.registries.EBMenus;
 import com.electroblob.wizardry.setup.registries.client.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
-import net.fabricmc.fabric.api.client.rendereregistry.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.core.Registry;
 import net.minecraft.world.entity.Entity;
@@ -53,13 +46,11 @@ public final class WizardryFabricClient implements ClientModInitializer {
             KeyBindingHelper.registerKeyBinding(EBKeyBinding.SPELL_QUICK_ACCESS[i]);
         }
 
-        MenuScreens.register(EBMenus.ARCANE_WORKBENCH_MENU.get(), ArcaneWorkbenchScreen::new);
-        MenuScreens.register(EBMenus.BOOKSHELF_MENU.get(), BookshelfScreen::new);
+        EBMenuScreens.init();
+        EBMenuScreens.register((menuType, screenFactory) -> MenuScreens.register(menuType, screenFactory::create));
 
-        // TODO
-        BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.ARCANE_WORKBENCH.get(), ArcaneWorkbenchRender::new);
-        BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRenderer::new);
-        BlockEntityRendererRegistry.INSTANCE.register(EBBlockEntities.BOOKSHELF.get(), BookshelfRenderer::new);
+        EBBlockEntityRenderers.init();
+        EBBlockEntityRenderers.register(BlockEntityRenderers::register);
 
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.CRYSTAL_FLOWER.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.POTTED_CRYSTAL_FLOWER.get(), RenderType.cutout());

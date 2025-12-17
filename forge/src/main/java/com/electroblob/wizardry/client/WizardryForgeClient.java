@@ -1,14 +1,9 @@
 package com.electroblob.wizardry.client;
 
 import com.electroblob.wizardry.api.content.spell.SpellAction;
-import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
-import com.electroblob.wizardry.client.gui.screens.BookshelfScreen;
-import com.electroblob.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
-import com.electroblob.wizardry.client.renderer.blockentity.BookshelfRenderer;
-import com.electroblob.wizardry.client.renderer.blockentity.ImbuementAltarRenderer;
-import com.electroblob.wizardry.setup.registries.EBBlockEntities;
-import com.electroblob.wizardry.setup.registries.EBMenus;
+import com.electroblob.wizardry.setup.registries.client.EBBlockEntityRenderers;
 import com.electroblob.wizardry.setup.registries.client.EBItemProperties;
+import com.electroblob.wizardry.setup.registries.client.EBMenuScreens;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
@@ -29,11 +24,13 @@ public class WizardryForgeClient {
         );
         EBItemProperties.register();
 
-        MenuScreens.register(EBMenus.ARCANE_WORKBENCH_MENU.get(), ArcaneWorkbenchScreen::new);
-        MenuScreens.register(EBMenus.BOOKSHELF_MENU.get(), BookshelfScreen::new);
+        EBMenuScreens.init();
+        EBMenuScreens.register((menuType, screenFactory) ->
+                MenuScreens.register(menuType, screenFactory::create)
+        );
 
-        BlockEntityRenderers.register(EBBlockEntities.ARCANE_WORKBENCH.get(), ArcaneWorkbenchRender::new);
-        BlockEntityRenderers.register(EBBlockEntities.IMBUEMENT_ALTAR.get(), ImbuementAltarRenderer::new);
-        BlockEntityRenderers.register(EBBlockEntities.BOOKSHELF.get(), BookshelfRenderer::new);
+        EBBlockEntityRenderers.init();
+        EBBlockEntityRenderers.register(BlockEntityRenderers::register
+        );
     }
 }
