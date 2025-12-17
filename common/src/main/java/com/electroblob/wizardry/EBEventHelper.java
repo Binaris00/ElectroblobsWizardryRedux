@@ -5,7 +5,7 @@ import com.electroblob.wizardry.api.content.event.*;
 import com.electroblob.wizardry.api.content.spell.SpellContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.item.ArtefactItem;
-import com.electroblob.wizardry.content.ForfeitRegistry;
+import com.electroblob.wizardry.content.Forfeit;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.content.effect.ContainmentEffect;
 import com.electroblob.wizardry.content.effect.FireSkinMobEffect;
@@ -105,13 +105,13 @@ public final class EBEventHelper {
 
     private static void onSpellPreCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Pre.class, WizardArmorItem::onSpellPreCast);
-        bus.register(SpellCastEvent.Pre.class, ForfeitRegistry::onSpellCastPreEvent);
+        bus.register(SpellCastEvent.Pre.class, Forfeit::onSpellCastPreEvent);
         bus.register(SpellCastEvent.Pre.class, ArtefactItem::onArtifactPreCast);
         bus.register(SpellCastEvent.Pre.class, EBEventHelper::castContextCheck);
     }
 
     private static void onSpellPostCast(WizardryEventBus bus) {
-        bus.register(SpellCastEvent.Post.class, ForfeitRegistry::onSpellCastPostEvent);
+        bus.register(SpellCastEvent.Post.class, Forfeit::onSpellCastPostEvent);
         bus.register(SpellCastEvent.Post.class, ArtefactItem::onArtifactPostCast);
     }
 

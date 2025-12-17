@@ -39,6 +39,7 @@ import java.util.List;
  */
 public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchItem {
     public static final int CASTING_TIME = 120;
+    public static final int COOLDOWN_FORFEIT_TICKS = 140;
 
     public ScrollItem(Properties properties) {
         super(properties);
@@ -93,13 +94,13 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         if (ctx.castingTicks() == 0) {
             if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers()))) {
                 // We want to add a short cooldown if the spell is cancelled at the start
-                ctx.caster().getCooldowns().addCooldown(this, 40);
+                ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
                 return false;
             }
         } else {
             if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks()))) {
                 // We want to add a short cooldown if the spell is cancelled at the start
-                ctx.caster().getCooldowns().addCooldown(this, 40);
+                ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
                 return false;
             }
         }

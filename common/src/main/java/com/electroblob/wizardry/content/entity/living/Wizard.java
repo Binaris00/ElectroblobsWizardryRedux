@@ -142,7 +142,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         if (WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(this.getTradingPlayer(), spell, EBDiscoverSpellEvent.Source.PURCHASE)))
             return;
         data.discoverSpell(spell);
-        if (!level().isClientSide && !this.getTradingPlayer().isCreative() && EBConfig.discoveryMode) {
+        if (!level().isClientSide && !this.getTradingPlayer().isCreative()) {
             EntityUtil.playSoundAtPlayer(this.getTradingPlayer(), EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
             this.getTradingPlayer().sendSystemMessage(Component.translatable("spell.discover", spell.getDescriptionFormatted()));
         }

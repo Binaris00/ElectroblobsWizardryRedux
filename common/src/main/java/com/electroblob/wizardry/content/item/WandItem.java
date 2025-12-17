@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.content.item;
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
@@ -56,6 +57,7 @@ import java.util.List;
  */
 public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, IWizardryItem {
     public static final int BASE_SPELL_SLOTS = 5;
+    public static final int COOLDOWN_FORFEIT_TICKS = 140;
     public SpellTier tier;
     public Element element;
 
@@ -121,13 +123,14 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (ctx.castingTicks() == 0) {
             if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers()))) {
                 // We want to add a short cooldown if the spell is cancelled at the start
-                ctx.caster().getCooldowns().addCooldown(this, 40);
+                EBLogger.warn("Spell casting cancelled at Pre event for spell {}", Services.REGISTRY_UTIL.getSpell(spell));
+                ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
                 return false;
             }
         } else {
             if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks()))) {
                 // We want to add a short cooldown if the spell is cancelled at the start
-                ctx.caster().getCooldowns().addCooldown(this, 40);
+                ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
                 return false;
             }
         }

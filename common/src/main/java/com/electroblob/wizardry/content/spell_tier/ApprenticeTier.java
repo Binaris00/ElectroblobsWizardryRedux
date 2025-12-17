@@ -27,7 +27,7 @@ public class ApprenticeTier extends SpellTier {
         super.getTradeItem(element, random, spells, specializedSpells);
         boolean prob = element != Elements.MAGIC && random.nextInt(4) > 0;
 
-        int randomizer = random.nextInt(EBConfig.discoveryMode ? 12 : 10);
+        int randomizer = random.nextInt(12);
 
         // 50% chance for spell book (37.5% specialized, 12.5% general)
         if (randomizer < 5 && !spells.isEmpty()) {

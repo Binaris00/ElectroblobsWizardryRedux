@@ -48,7 +48,6 @@ public class ClientUtils {
             }
         }
 
-        if (!EBConfig.discoveryMode) return true;
         if (player.isCreative()) return true;
         return Services.OBJECT_DATA.getSpellManagerData(player).hasSpellBeenDiscovered(spell);
     }

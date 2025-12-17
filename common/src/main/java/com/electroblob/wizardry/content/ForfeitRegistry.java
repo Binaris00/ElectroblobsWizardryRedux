@@ -1,16 +1,9 @@
 package com.electroblob.wizardry.content;
 
 import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.content.data.SpellManagerData;
-import com.electroblob.wizardry.api.content.data.WizardData;
-import com.electroblob.wizardry.api.content.event.EBDiscoverSpellEvent;
-import com.electroblob.wizardry.api.content.event.SpellCastEvent;
-import com.electroblob.wizardry.api.content.item.IManaStoringItem;
-import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.SpellContext;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
-import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.entity.ArrowRainConstruct;
@@ -22,18 +15,12 @@ import com.electroblob.wizardry.content.entity.construct.LightningSigilConstruct
 import com.electroblob.wizardry.content.entity.living.*;
 import com.electroblob.wizardry.content.entity.projectile.FireBombEntity;
 import com.electroblob.wizardry.content.spell.necromancy.Banish;
-import com.electroblob.wizardry.core.EBConfig;
-import com.electroblob.wizardry.core.event.WizardryEventBus;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.mixin.accessor.FallingBlockEntityAccessor;
-import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -83,84 +70,6 @@ public class ForfeitRegistry {
             return null;
         }
         return forfeits.get(random.nextInt(forfeits.size()));
-    }
-
-    public static void onSpellCastPreEvent(SpellCastEvent.Pre event) {
-        if (!EBConfig.discoveryMode) return;
-        // Only the server should do the random roll to avoid desynchronization
-        if (event.getLevel().isClientSide) return;
-
-        if (event.getCaster() instanceof Player player && !player.isCreative() && (event.getSource() == SpellCastEvent.Source.WAND || event.getSource() == SpellCastEvent.Source.SCROLL)) {
-
-            SpellManagerData spellData = Services.OBJECT_DATA.getSpellManagerData(player);
-            WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
-
-            float chance = (float) EBConfig.forfeitChance;
-            if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WISDOM.get())) chance *= 0.5F;
-
-            boolean discover = !spellData.hasSpellBeenDiscovered(event.getSpell());
-            float r = wizardData.getRandom().nextFloat();
-            boolean trigger = r < chance && discover;
-            EBLogger.warn("Forfeit roll: random={} chance={} discover={} trigger={}", r, chance, discover, trigger);
-
-            if (trigger) {
-                event.setCanceled(true);
-
-                Forfeit forfeit = getRandomForfeit(wizardData.getRandom(), event.getSpell().getTier(), event.getSpell().getElement());
-
-                if (forfeit == null) { // Should never happen, but just in case...
-                    player.sendSystemMessage(Component.translatable("forfeit.ebwizardry.do_nothing"));
-                    return;
-                }
-
-                EBLogger.warn("Applying forfeit {} to player {}", forfeit.getName(), player.getScoreboardName());
-                forfeit.apply(event.getLevel(), player);
-
-                ItemStack stack = player.getMainHandItem();
-
-                if (!(stack.getItem() instanceof ISpellCastingItem)) {
-                    stack = player.getOffhandItem();
-                    if (!(stack.getItem() instanceof ISpellCastingItem)) stack = ItemStack.EMPTY;
-                }
-
-                if (!stack.isEmpty()) {
-                    // Still need to charge the player mana or consume the scroll
-                    if (event.getSource() == SpellCastEvent.Source.SCROLL) {
-                        if (!player.isCreative()) stack.shrink(1);
-                    } else if (stack.getItem() instanceof IManaStoringItem) {
-                        int cost = (int) (event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST) + 0.1f); // Weird floaty rounding
-                        ((IManaStoringItem) stack.getItem()).consumeMana(stack, cost, player);
-                    }
-                }
-
-                EBAdvancementTriggers.SPELL_FAILURE.triggerFor(player);
-
-                EntityUtil.playSoundAtPlayer(player, forfeit.getSound(), 1, 1);
-
-                player.displayClientMessage(
-                        event.getSource() == SpellCastEvent.Source.WAND ? forfeit.getMessageForWand() : forfeit.getMessageForScroll()
-                        , true);
-            }
-        }
-    }
-
-    public static void onSpellCastPostEvent(SpellCastEvent.Post event) {
-        if (event.getCaster() instanceof Player player) {
-
-            if (player instanceof ServerPlayer serverPlayer)
-                EBAdvancementTriggers.CAST_SPELL.trigger(serverPlayer, event.getSpell(), player.getItemInHand(player.getUsedItemHand()));
-
-            SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
-            if (!WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, event.getSpell(), EBDiscoverSpellEvent.Source.CASTING))
-                    && data.discoverSpell(event.getSpell())) {
-                if (!event.getCaster().level().isClientSide && !player.isCreative() && EBConfig.discoveryMode) {
-                    EntityUtil.playSoundAtPlayer(player, EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
-                    Component message = Component.translatable("spell.discover", event.getSpell().getDescriptionFormatted());
-                    player.sendSystemMessage(message);
-
-                }
-            }
-        }
     }
 
     public static void register() {
