@@ -5,8 +5,8 @@ import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
-import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
@@ -45,7 +45,7 @@ public class AdvancedTier extends SpellTier {
 
 
         // 33.33% chance for special upgrades (random)
-        List<DeferredObject<Item>> upgrades = new ArrayList<>(WandHelper.getSpecialUpgrades());
+        List<DeferredObject<Item>> upgrades = new ArrayList<>(WandUpgrades.getSpecialUpgrades());
         return new ItemStack(upgrades.get(random.nextInt(upgrades.size())).get());
 
     }

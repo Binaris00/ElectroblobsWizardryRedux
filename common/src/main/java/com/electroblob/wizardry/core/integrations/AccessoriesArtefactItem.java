@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.core.integrations;
 
-import com.electroblob.wizardry.api.content.util.ArtefactItem;
+import com.electroblob.wizardry.api.content.item.ArtefactItem;
 import com.electroblob.wizardry.core.IArtefactEffect;
 import net.minecraft.world.item.Rarity;
 

@@ -12,74 +12,109 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 
-public class RayTracer {
+/**
+ * Utility class for performing ray trace operations in the world, including both block and entity detection.
+ * Provides methods for tracing rays with aim assist and custom entity filtering.
+ */
+public final class RayTracer {
 
+    /**
+     * Performs a ray trace from origin to endpoint, detecting both blocks and entities.
+     *
+     * @param world      The world to perform the ray trace in.
+     * @param caster     The entity performing the ray trace.
+     * @param origin     The starting position of the ray.
+     * @param endpoint   The ending position of the ray.
+     * @param aimAssist  Additional size to inflate entity hitboxes for easier targeting.
+     * @param hitLiquids Whether the ray should collide with liquid blocks.
+     * @param entityType The class of entities to detect.
+     * @param filter     A predicate to filter out entities from the results.
+     * @return The hit result, or null if nothing was hit.
+     */
     @Nullable
-    public static HitResult rayTrace(Level world, Entity caster, Vec3 origin, Vec3 endpoint, float aimAssist,
-                                     boolean hitLiquids, Class<? extends Entity> entityType, Predicate<? super Entity> filter) {
-        HitResult result = world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, caster));
+    public static HitResult rayTrace(Level world, Entity caster, Vec3 origin, Vec3 endpoint, float aimAssist, boolean hitLiquids, Class<? extends Entity> entityType, Predicate<? super Entity> filter) {
+        ClipContext.Fluid fluidMode = hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE;
+        HitResult blockHit = world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, fluidMode, caster));
 
-        endpoint = result.getLocation();
-        float borderSize = 1 + aimAssist;
-        AABB searchVolume = new AABB(origin.x, origin.y, origin.z, endpoint.x, endpoint.y, endpoint.z).inflate(borderSize, borderSize, borderSize);
+        Vec3 traceEnd = blockHit.getLocation();
+        float searchRadius = 1 + aimAssist;
+        AABB searchVolume = new AABB(origin.x, origin.y, origin.z, traceEnd.x, traceEnd.y, traceEnd.z).inflate(searchRadius, searchRadius, searchRadius);
+
         List<? extends Entity> entities = world.getEntitiesOfClass(entityType, searchVolume);
         entities.removeIf(filter);
 
-        Entity closestHitEntity = null;
-        Vec3 closestHitPosition = endpoint;
-        AABB entityBounds;
-        Vec3 intercept = null;
+        Entity closestEntity = null;
+        double closestDistance = origin.distanceTo(traceEnd);
 
         for (Entity entity : entities) {
-            float fuzziness = EntityUtil.isLiving(entity) ? aimAssist : 0;
+            Vec3 intercept = calculateIntercept(entity, origin, traceEnd, aimAssist);
+            if (intercept == null) continue;
 
-            if (entity instanceof ICustomHitbox) {
-                intercept = ((ICustomHitbox) entity).calculateIntercept(origin, endpoint, fuzziness);
-            } else {
-                entityBounds = entity.getBoundingBox();
-
-                if (entityBounds != null) {
-                    float entityBorderSize = entity.getPickRadius();
-                    if (entityBorderSize != 0)
-                        entityBounds = entityBounds.inflate(entityBorderSize, entityBorderSize, entityBorderSize);
-
-                    if (fuzziness != 0) entityBounds = entityBounds.inflate(fuzziness, fuzziness, fuzziness);
-
-                    Optional<Vec3> hit = entityBounds.clip(origin, endpoint);
-                    if (hit.isPresent()) {
-                        intercept = hit.get();
-                    }
-                }
-            }
-
-            if (intercept != null) {
-                float currentHitDistance = (float) intercept.distanceTo(origin);
-                float closestHitDistance = (float) closestHitPosition.distanceTo(origin);
-                if (currentHitDistance < closestHitDistance) {
-                    closestHitEntity = entity;
-                    closestHitPosition = intercept;
-                }
+            double distance = origin.distanceTo(intercept);
+            if (distance < closestDistance) {
+                closestEntity = entity;
+                closestDistance = distance;
             }
         }
 
-        if (closestHitEntity != null) {
-            result = new EntityHitResult(closestHitEntity, closestHitPosition);
-        }
-
-        return result;
+        return closestEntity != null ? new EntityHitResult(closestEntity) : blockHit;
     }
 
+    /**
+     * Calculates the intercept point between a ray and an entity's hitbox.
+     *
+     * @param entity    The entity to check collision with.
+     * @param origin    The ray's starting position.
+     * @param endpoint  The ray's ending position.
+     * @param aimAssist Additional inflation for living entities' hitboxes.
+     * @return The intercept point, or null if no collision occurs.
+     */
+    @Nullable
+    private static Vec3 calculateIntercept(Entity entity, Vec3 origin, Vec3 endpoint, float aimAssist) {
+        if (entity instanceof ICustomHitbox customHitbox) {
+            float fuzziness = EntityUtil.isLiving(entity) ? aimAssist : 0;
+            return customHitbox.calculateIntercept(origin, endpoint, fuzziness);
+        }
+
+        AABB bounds = entity.getBoundingBox();
+        float pickRadius = entity.getPickRadius();
+        if (pickRadius != 0) bounds = bounds.inflate(pickRadius);
+
+        if (EntityUtil.isLiving(entity) && aimAssist != 0) {
+            bounds = bounds.inflate(aimAssist);
+        }
+
+        return bounds.clip(origin, endpoint).orElse(null);
+    }
+
+    /**
+     * Performs a standard block ray trace from the entity's eye position in the direction they are looking.
+     *
+     * @param world                  The world to perform the ray trace in.
+     * @param entity                 The entity performing the ray trace.
+     * @param range                  The maximum distance to trace.
+     * @param hitLiquids             Whether the ray should collide with liquid blocks.
+     * @param ignoreUncollidables    Unused parameter (kept for API compatibility).
+     * @param returnLastUncollidable Unused parameter (kept for API compatibility).
+     * @return The hit result, or null if nothing was hit.
+     */
     @Nullable
     public static HitResult standardBlockRayTrace(Level world, LivingEntity entity, double range, boolean hitLiquids, boolean ignoreUncollidables, boolean returnLastUncollidable) {
         Vec3 origin = entity.getEyePosition(1);
         Vec3 endpoint = origin.add(entity.getLookAngle().scale(range));
-        return world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, entity));
+        ClipContext.Fluid fluidMode = hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE;
+        return world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, fluidMode, entity));
     }
 
+    /**
+     * Creates a predicate that filters out the specified entity and dead living entities.
+     *
+     * @param entity The entity to ignore, or null to only filter dead entities.
+     * @return A predicate for filtering entities.
+     */
     public static Predicate<Entity> ignoreEntityFilter(@Nullable Entity entity) {
-        return e -> e == entity || (e instanceof LivingEntity && ((LivingEntity) e).deathTime > 0);
+        return e -> e == entity || (e instanceof LivingEntity living && living.deathTime > 0);
     }
 }

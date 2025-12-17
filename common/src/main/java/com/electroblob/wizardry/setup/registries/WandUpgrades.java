@@ -3,8 +3,10 @@ package com.electroblob.wizardry.setup.registries;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import net.minecraft.world.item.Item;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * TODO: This is just a quick implementation for wand upgrades, needs to be improved
@@ -44,5 +46,13 @@ public final class WandUpgrades {
 
     public static HashMap<DeferredObject<Item>, String> getWandUpgrades() {
         return UPGRADES;
+    }
+
+    public static Set<DeferredObject<Item>> getSpecialUpgrades() {
+        return Collections.unmodifiableSet(getWandUpgrades().keySet());
+    }
+
+    public static boolean isWandUpgrade(Item upgrade) {
+        return getWandUpgrades().keySet().stream().anyMatch(itemDeferred -> itemDeferred.get().equals(upgrade));
     }
 }

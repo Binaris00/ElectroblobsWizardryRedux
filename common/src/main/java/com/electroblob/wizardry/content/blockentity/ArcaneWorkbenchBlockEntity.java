@@ -11,6 +11,7 @@ import com.electroblob.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
+import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -189,7 +190,7 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
         } else if (slotNumber == ArcaneWorkbenchMenu.CENTRE_SLOT) {
             return itemstack.getItem() instanceof IWorkbenchItem;
         } else if (slotNumber == ArcaneWorkbenchMenu.UPGRADE_SLOT) {
-            Set<DeferredObject<Item>> upgrades = new HashSet<>(WandHelper.getSpecialUpgrades());
+            Set<DeferredObject<Item>> upgrades = new HashSet<>(WandUpgrades.getSpecialUpgrades());
             upgrades.add(EBItems.ARCANE_TOME);
             upgrades.add(EBItems.RESPLENDENT_THREAD);
             upgrades.add(EBItems.CRYSTAL_SILVER_PLATING);

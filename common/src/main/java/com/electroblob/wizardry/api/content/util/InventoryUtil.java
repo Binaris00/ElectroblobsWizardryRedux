@@ -17,6 +17,7 @@ import javax.annotation.Nullable;
 import java.util.*;
 
 public final class InventoryUtil {
+    /* Array of all armor equipment slots for convenience. */
     public static final EquipmentSlot[] ARMOR_SLOTS;
 
     static {
@@ -25,6 +26,7 @@ public final class InventoryUtil {
         ARMOR_SLOTS = slots.toArray(new EquipmentSlot[0]);
     }
 
+    // This could also be {@code Player#compartments}!! But its private :(
     public static Collection<ItemStack> getAllItems(Player player) {
         List<ItemStack> items = new ArrayList<>();
         items.addAll(player.getInventory().items);
@@ -42,24 +44,9 @@ public final class InventoryUtil {
     }
 
     public static boolean doesPlayerHaveItem(Player player, Item item) {
-        for (ItemStack stack : player.getInventory().items) {
-            if (stack.getItem() == item) {
-                return true;
-            }
+        for (ItemStack stack : getAllItems(player)) {
+            if (stack != null && stack.is(item)) return true;
         }
-
-        for (ItemStack stack : player.getInventory().armor) {
-            if (stack.getItem() == item) {
-                return true;
-            }
-        }
-
-        for (ItemStack stack : player.getInventory().offhand) {
-            if (stack.getItem() == item) {
-                return true;
-            }
-        }
-
         return false;
     }
 
@@ -84,20 +71,5 @@ public final class InventoryUtil {
     public static boolean doAllArmourPiecesHaveMana(LivingEntity entity) {
         return Arrays.stream(ARMOR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaStoringItem manaStoringItem
                 && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
-    }
-
-    // There's no method available to remove the enchantments, so I will just ask for the tag,
-    // take the enchantments, remove the wanted one and then put the tag again in the item
-    public static void removeEnchant(ItemStack stack, Enchantment enchantment) {
-        Map<Enchantment, Integer> map = EnchantmentHelper.getEnchantments(stack);
-        map.remove(enchantment);
-        EnchantmentHelper.setEnchantments(map, stack);
-    }
-
-    public static boolean canMerge(ItemStack stack1, ItemStack stack2) {
-        return !stack1.isEmpty() && !stack2.isEmpty()
-                && stack1.isStackable() && stack2.isStackable()
-                && stack1.getItem() == stack2.getItem()
-                && ItemStack.isSameItemSameTags(stack1, stack2);
     }
 }

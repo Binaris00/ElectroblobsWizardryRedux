@@ -57,7 +57,7 @@ public class SpellArgument implements ArgumentType<Spell> {
     @Override
     public <S> CompletableFuture<Suggestions> listSuggestions(CommandContext<S> context, SuggestionsBuilder builder) {
         return SharedSuggestionProvider.suggest(
-                SpellUtil.getSpellNames(),
+                Services.REGISTRY_UTIL.getSpells().stream().map(Spell::getLocation).map(ResourceLocation::toString).toList(),
                 builder,
                 value -> value,
                 Component::literal

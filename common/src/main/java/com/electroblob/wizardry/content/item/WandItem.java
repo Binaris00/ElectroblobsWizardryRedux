@@ -419,7 +419,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
                 return newWand;
             }
-        } else if (WandHelper.isWandUpgrade(upgrade.getItem())) {
+        } else if (WandUpgrades.isWandUpgrade(upgrade.getItem())) {
             Item specialUpgrade = upgrade.getItem();
 
             int maxUpgrades = this.tier.upgradeLimit;

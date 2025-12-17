@@ -2,7 +2,6 @@ package com.electroblob.wizardry.content.menu;
 
 import com.electroblob.wizardry.api.content.event.SpellBindEvent;
 import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
-import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.client.EBClientConstants;
 import com.electroblob.wizardry.content.item.SpellBookItem;
 import com.electroblob.wizardry.content.menu.slot.SlotItemClassList;
@@ -13,6 +12,7 @@ import com.electroblob.wizardry.core.mixin.accessor.SlotAccessor;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBMenus;
+import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
@@ -66,7 +66,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 
         // Upgrade Slot
         Set<Item> upgrades = new HashSet<>();
-        WandHelper.getSpecialUpgrades().forEach(d -> upgrades.add(d.get()));
+        WandUpgrades.getSpecialUpgrades().forEach(d -> upgrades.add(d.get()));
         upgrades.add(EBItems.ARCANE_TOME.get());
         upgrades.add(EBItems.RESPLENDENT_THREAD.get());
         upgrades.add(EBItems.CRYSTAL_SILVER_PLATING.get());

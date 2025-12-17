@@ -51,11 +51,7 @@ public final class DataEvents {
     public static void onConjureEntityDeath(EBLivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) return; // only players can conjure items so...
 
-        player.getInventory().armor.stream().filter(ConjureItemSpell::isSummoned)
-                .forEach(stack -> stack.shrink(stack.getCount()));
-        player.getInventory().offhand.stream().filter(ConjureItemSpell::isSummoned)
-                .forEach(stack -> stack.shrink(stack.getCount()));
-        player.getInventory().items.stream().filter(ConjureItemSpell::isSummoned)
+        InventoryUtil.getAllItems(player).stream().filter(ConjureItemSpell::isSummoned)
                 .forEach(stack -> stack.shrink(stack.getCount()));
     }
 
@@ -139,14 +135,7 @@ public final class DataEvents {
         if (player.tickCount % CONJURE_CHECK_INTERVAL != 0) return;
 
         long currentGameTime = player.level().getGameTime();
-
-        player.getInventory().offhand.stream()
-                .filter(ConjureItemSpell::isSummoned)
-                .forEach(stack -> checkAndExpireItem(stack, currentGameTime));
-        player.getInventory().items.stream()
-                .filter(ConjureItemSpell::isSummoned)
-                .forEach(stack -> checkAndExpireItem(stack, currentGameTime));
-        player.getInventory().armor.stream()
+        InventoryUtil.getAllItems(player).stream()
                 .filter(ConjureItemSpell::isSummoned)
                 .forEach(stack -> checkAndExpireItem(stack, currentGameTime));
     }

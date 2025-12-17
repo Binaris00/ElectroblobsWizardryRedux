@@ -3,6 +3,7 @@ package com.electroblob.wizardry.client.gui.elements;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
+import com.electroblob.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.Item;
@@ -36,7 +37,7 @@ class TooltipElementUpgrades extends TooltipElement {
     protected void drawBackground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, float partialTicks, int mouseX, int mouseY) {
         int x1 = 0;
 
-        for (DeferredObject<Item> item : WandHelper.getSpecialUpgrades()) {
+        for (DeferredObject<Item> item : WandUpgrades.getSpecialUpgrades()) {
             int upgradeLevel = WandHelper.getUpgradeLevel(stack, item.get());
 
             if (upgradeLevel > 0) {
@@ -58,7 +59,7 @@ class TooltipElementUpgrades extends TooltipElement {
     protected void drawForeground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, int mouseX, int mouseY) {
         int x1 = 0;
 
-        for (DeferredObject<Item> item : WandHelper.getSpecialUpgrades()) {
+        for (DeferredObject<Item> item : WandUpgrades.getSpecialUpgrades()) {
             int level = WandHelper.getUpgradeLevel(stack, item);
             if (level < 0) continue;
 

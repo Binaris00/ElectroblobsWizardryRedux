@@ -1,6 +1,5 @@
 package com.electroblob.wizardry.api.content.util;
 
-import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
@@ -18,23 +17,34 @@ import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * General utility methods used for Spell related functionality, normally being used for item creation, retrieval, etc.
+ */
 public final class SpellUtil {
+    /** The NBT key used to store spells on items. */
     public static String SPELL_KEY = "Spell";
 
-    private SpellUtil() {
-    }
-
+    /**
+     * Returns a list of all spells that match the given filter.
+     *
+     * @param filter The filter to apply to the spells.
+     * @return A list of spells that match the filter.
+     */
     public static List<Spell> getSpells(Predicate<Spell> filter) {
         return Services.REGISTRY_UTIL.getSpells().stream().filter(filter.and(s -> s != Spells.NONE)).collect(Collectors.toList());
     }
 
+    /**
+     * Returns a random element from all the elements registered.
+     *
+     * @param random The RandomSource to use for selecting the element.
+     * @return A random Element.
+     */
     public static Element getRandomElement(RandomSource random) {
         return Services.REGISTRY_UTIL.getElements().stream().toList().get(random.nextInt(Services.REGISTRY_UTIL.getElements().size()));
     }
@@ -108,36 +118,39 @@ public final class SpellUtil {
         return byId == null ? Spells.NONE : byId;
     }
 
-    public static String getSpellNameTranslationComponent(@Nullable ItemStack stack) {
-        return (stack == null || stack.getTag() == null) ? "spell.ebwizardry.none" : "spell." + stack.getTag().getString(SPELL_KEY).replace(":", ".");
-    }
-
+    /**
+     * Gets a wizard armor item based on the given parameters, searching for its implementation in the item registry
+     * by constructing its registry name accordingly.
+     *
+     * @param wizardArmorType The type of wizard armor.
+     * @param element         The element of the armor. If null, defaults to magic.
+     * @param slot            The equipment slot for the armor piece.
+     * @return The corresponding wizard armor item.
+     * @throws IllegalArgumentException if the slot is null or not an armor slot. (this should never happen if used correctly)
+     */
     public static Item getArmor(WizardArmorType wizardArmorType, Element element, EquipmentSlot slot) {
         if (slot == null || slot.getType() != EquipmentSlot.Type.ARMOR)
             throw new IllegalArgumentException("Must be a valid armour slot");
         if (element == null) element = Elements.MAGIC;
+
         String registryName = wizardArmorType.getName() + "_" + wizardArmorType.getArmourPieceNames().get(slot);
-        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
-        return BuiltInRegistries.ITEM.get(new ResourceLocation(WizardryMainMod.MOD_ID, registryName));
+        if (element != Elements.MAGIC)
+            registryName = registryName + "_" + element.getLocation().getPath();
+
+        // Each mod should be responsible for ensuring their items are registered with the correct names
+        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
     }
-
-    public static Collection<String> getSpellNames() {
-        return Services.REGISTRY_UTIL.getSpells().stream().map(Spell::getLocation).map(ResourceLocation::toString).toList();
-    }
-
-
-    // -------------------------------- NBT --------------------------------
-    // All the methods below are used to store the spell in the item's NBT.
-    // ---------------------------------------------------------------------
 
     /**
-     * Gets a spell from the given id.
+     * Gets a spell from the given id (ResourceLocation string).
      *
      * @param id The id of the spell.
      * @return The spell with the given id.
-     *
      */
     private static Spell byId(String id) {
         return Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(id));
+    }
+
+    private SpellUtil() {
     }
 }

@@ -4,7 +4,7 @@ import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.event.*;
 import com.electroblob.wizardry.api.content.spell.SpellContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.api.content.util.ArtefactItem;
+import com.electroblob.wizardry.api.content.item.ArtefactItem;
 import com.electroblob.wizardry.content.ForfeitRegistry;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.content.effect.ContainmentEffect;

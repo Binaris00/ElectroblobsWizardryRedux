@@ -3,7 +3,7 @@ package com.electroblob.wizardry.core;
 import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
-import com.electroblob.wizardry.api.content.util.ArtefactItem;
+import com.electroblob.wizardry.api.content.item.ArtefactItem;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
