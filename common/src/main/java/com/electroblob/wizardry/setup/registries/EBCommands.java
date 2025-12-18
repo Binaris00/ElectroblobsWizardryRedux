@@ -31,7 +31,8 @@ public final class EBCommands {
             PacketTestCommand::register,
             CastCommand::register,
             ForfeitTestCommand::register,
-            SpellContextCommand::register
+            SpellContextCommand::register,
+            UnDiscoverSpellCommand::register
     );
 
     private EBCommands() {

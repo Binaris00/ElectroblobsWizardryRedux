@@ -51,6 +51,14 @@ public interface SpellManagerData {
      * @return true if the spell was not already discovered, false otherwise
      */
     boolean discoverSpell(Spell spell);
+
+    /**
+     * Deletes the given spell from the player's discovered spells.
+     *
+     * @param spell the Spell to mark as undiscovered
+     * @return true if the spell was previously discovered, false otherwise
+     */
+    boolean undiscoverSpell(Spell spell);
 }
 
 

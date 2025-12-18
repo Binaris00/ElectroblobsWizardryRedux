@@ -84,6 +84,11 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
     }
 
     @Override
+    public boolean undiscoverSpell(Spell spell) {
+        return spellsDiscovered.remove(spell);
+    }
+
+    @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         ListTag spellsDiscoveredTag = new ListTag();

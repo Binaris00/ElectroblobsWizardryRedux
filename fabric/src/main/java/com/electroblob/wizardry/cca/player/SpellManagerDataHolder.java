@@ -68,6 +68,13 @@ public class SpellManagerDataHolder implements SpellManagerData, ComponentV3, Au
     }
 
     @Override
+    public boolean undiscoverSpell(Spell spell) {
+        boolean result = spellsDiscovered.remove(spell);
+        if (result) sync();
+        return result;
+    }
+
+    @Override
     public void readFromNbt(@NotNull CompoundTag tag) {
         spellsDiscovered.clear();
         if (tag.contains("spellsDiscovered", Tag.TAG_LIST)) {
