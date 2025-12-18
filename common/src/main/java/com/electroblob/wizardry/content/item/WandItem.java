@@ -58,6 +58,8 @@ import java.util.List;
 public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, IWizardryItem {
     public static final int BASE_SPELL_SLOTS = 5;
     public static final int COOLDOWN_FORFEIT_TICKS = 140;
+    public static final int MAX_USE_DURATION = 72000;
+
     public SpellTier tier;
     public Element element;
 
@@ -193,17 +195,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         return InteractionResult.FAIL;
     }
 
-    // ==================================
-    // Spell Casting methods - Handle spells
-    // This is where you can see how the item
-    // saves and loads the spells
-    // ==================================
-
-    @Override
-    public int getUseDuration(@NotNull ItemStack stack) {
-        return 72000;
-    }
-
     @Override
     public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity, int timeCharged) {
         if (!(livingEntity instanceof Player player)) return;
@@ -217,99 +208,10 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
         if (!spell.isInstantCast() && spell.getTier().level <= this.tier.level && cost <= this.getMana(stack)) {
             WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.WAND, spell, livingEntity, modifiers, castingTick));
-            // TODO: Whats this bin????
-            spell.endCast(new CastContext(livingEntity.level(), castingTick, modifiers) {
-                @Override
-                public LivingEntity caster() {
-                    return null;
-                }
-            });
-
+            spell.endCast(new CastContext(player.level(), player, castingTick, modifiers));
             if (!player.isCreative())
                 WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())));
         }
-    }
-
-    @NotNull
-    @Override
-    public Spell getCurrentSpell(ItemStack stack) {
-        return WandHelper.getCurrentSpell(stack);
-    }
-
-    @Override
-    public @NotNull Spell getNextSpell(ItemStack stack) {
-        return WandHelper.getNextSpell(stack);
-    }
-
-    @Override
-    public @NotNull Spell getPreviousSpell(ItemStack stack) {
-        return WandHelper.getPreviousSpell(stack);
-    }
-
-    @Override
-    public Spell[] getSpells(ItemStack stack) {
-        return WandHelper.getSpells(stack).toArray(new Spell[0]);
-    }
-
-    @Override
-    public void selectNextSpell(ItemStack stack) {
-        Spell nextSpell = WandHelper.getNextSpell(stack);
-        WandHelper.setCurrentSpell(stack, nextSpell);
-    }
-
-    @Override
-    public void selectPreviousSpell(ItemStack stack) {
-        Spell previousSpell = WandHelper.getPreviousSpell(stack);
-        WandHelper.setCurrentSpell(stack, previousSpell);
-    }
-
-    @Override
-    public boolean selectSpell(ItemStack stack, int index) {
-        return WandHelper.selectSpell(stack, index);
-    }
-
-    @Override
-    public int getCurrentCooldown(ItemStack stack) {
-        return WandHelper.getCurrentCooldown(stack);
-    }
-
-    @Override
-    public int getCurrentMaxCooldown(ItemStack stack) {
-        return WandHelper.getCurrentMaxCooldown(stack);
-    }
-
-    @Override
-    public boolean showSpellHUD(Player player, ItemStack stack) {
-        return true;
-    }
-
-    // ==================================
-    // Mana Storing Item Methods
-    // How the wand stores mana and recharges
-    // ==================================
-    @Override
-    public int getMana(ItemStack stack) {
-        return getManaCapacity(stack) - stack.getDamageValue();
-    }
-
-    @Override
-    public int getManaCapacity(ItemStack stack) {
-        return stack.getMaxDamage();
-    }
-
-    @Override
-    public void setMana(ItemStack stack, int mana) {
-        stack.setDamageValue(getManaCapacity(stack) - mana);
-    }
-
-    // ==================================
-    // Workbench Item Methods
-    // This is how you modify how the wands
-    // are used on the workbench
-    // ==================================
-    @Override
-    public int getSpellSlotCount(ItemStack stack) {
-        return BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE);
     }
 
     @Override
@@ -379,11 +281,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     }
 
     @Override
-    public boolean showTooltip(ItemStack stack) {
-        return true;
-    }
-
-    @Override
     public void onClearButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks) {
         ItemStack stack = centre.getItem();
         if (stack.getOrCreateTag().contains(WandHelper.SPELL_ARRAY_KEY)) {
@@ -393,11 +290,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
             WandHelper.setSpells(stack, spells);
         }
-    }
-
-    @Override
-    public boolean isClearable() {
-        return true;
     }
 
     @Override
@@ -460,10 +352,10 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 upgrade.shrink(1);
 
                 if (player != null) {
-                    //WizardryAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
+                    EBAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
 
                     if (WandHelper.getTotalUpgrades(wand) == SpellTiers.MASTER.upgradeLimit) {
-                        //WizardryAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
+                        EBAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
                     }
                 }
             }
@@ -488,23 +380,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConfig.CONDENSER_TICK_INTERVAL == 0) {
             this.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
         }
-    }
-
-    @Override
-    public int getMaxDamage(ItemStack stack) {
-        return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL * WandHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE)) + 0.5f);
-    }
-
-    @Override
-    public void setDamage(ItemStack stack, int damage) {
-        if (stack.getDamageValue() < damage) {
-            stack.getOrCreateTag().putInt("Damage", Math.min(damage, stack.getMaxDamage()));
-        }
-    }
-
-    @Override
-    public int getBarColor(ItemStack stack) {
-        return DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getDamageValue());
     }
 
     public SpellModifiers calculateModifiers(ItemStack stack, Player player, Spell spell) {
@@ -548,9 +423,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         return modifiers;
     }
 
-    // =====================================
-    // Utils
-    // =====================================
     public static Item getWand(SpellTier tier, Element element) {
         if (tier == null) throw new NullPointerException("The given tier cannot be null.");
         if (element == null) element = Elements.MAGIC;
@@ -573,4 +445,111 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
         return partialCost;
     }
+
+    @Override
+    public void selectNextSpell(ItemStack stack) {
+        Spell nextSpell = WandHelper.getNextSpell(stack);
+        WandHelper.setCurrentSpell(stack, nextSpell);
+    }
+
+    @Override
+    public void selectPreviousSpell(ItemStack stack) {
+        Spell previousSpell = WandHelper.getPreviousSpell(stack);
+        WandHelper.setCurrentSpell(stack, previousSpell);
+    }
+
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL * WandHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE)) + 0.5f);
+    }
+
+    @Override
+    public void setDamage(ItemStack stack, int damage) {
+        if (stack.getDamageValue() < damage) {
+            stack.getOrCreateTag().putInt("Damage", Math.min(damage, stack.getMaxDamage()));
+        }
+    }
+
+    @Override
+    public int getBarColor(ItemStack stack) {
+        return DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getDamageValue());
+    }
+
+    @Override
+    public int getUseDuration(@NotNull ItemStack stack) {
+        return MAX_USE_DURATION;
+    }
+
+
+    @Override
+    public boolean isClearable() {
+        return true;
+    }
+
+    @Override
+    public boolean showTooltip(ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public boolean selectSpell(ItemStack stack, int index) {
+        return WandHelper.selectSpell(stack, index);
+    }
+
+    @Override
+    public int getCurrentCooldown(ItemStack stack) {
+        return WandHelper.getCurrentCooldown(stack);
+    }
+
+    @Override
+    public int getCurrentMaxCooldown(ItemStack stack) {
+        return WandHelper.getCurrentMaxCooldown(stack);
+    }
+
+    @Override
+    public boolean showSpellHUD(Player player, ItemStack stack) {
+        return true;
+    }
+
+    @Override
+    public int getMana(ItemStack stack) {
+        return getManaCapacity(stack) - stack.getDamageValue();
+    }
+
+    @Override
+    public int getManaCapacity(ItemStack stack) {
+        return stack.getMaxDamage();
+    }
+
+    @Override
+    public void setMana(ItemStack stack, int mana) {
+        stack.setDamageValue(getManaCapacity(stack) - mana);
+    }
+
+    @Override
+    public int getSpellSlotCount(ItemStack stack) {
+        return BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE);
+    }
+
+    @NotNull
+    @Override
+    public Spell getCurrentSpell(ItemStack stack) {
+        return WandHelper.getCurrentSpell(stack);
+    }
+
+    @Override
+    public @NotNull Spell getNextSpell(ItemStack stack) {
+        return WandHelper.getNextSpell(stack);
+    }
+
+    @Override
+    public @NotNull Spell getPreviousSpell(ItemStack stack) {
+        return WandHelper.getPreviousSpell(stack);
+    }
+
+    @Override
+    public Spell[] getSpells(ItemStack stack) {
+        return WandHelper.getSpells(stack).toArray(new Spell[0]);
+    }
+
 }

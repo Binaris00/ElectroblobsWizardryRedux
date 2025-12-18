@@ -12,6 +12,7 @@ import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.networking.s2c.SpellCastS2C;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -29,16 +30,15 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * <b>Scroll Item!! Fast and easy way to use spells</b> <br>
- * This contains some special features comparing it with the wand:
- * <ul>
- *     <li>Not showing an actual spell gui</li>
- *     <li>Saving one spell for scroll (more easy to get the saved spell)</li>
- *     <li>Temporal use item, after release it will disappear</li>
- * </ul>
+ * <b>Scroll Item!! Fast and easy way to use spells</b>
+ * <p>
+ * Compared to wands, scrolls are single use items that allow the player to cast a single spell without any mana/charge
+ * cost. They are consumed upon use. You can think of them as disposable spellcasting items.
  */
 public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchItem {
+    /** The limit time for a continuous spell cast from a scroll. */
     public static final int CASTING_TIME = 120;
+    /** Cooldown applied when a spell cast is cancelled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
     public static final int COOLDOWN_FORFEIT_TICKS = 140;
 
     public ScrollItem(Properties properties) {
@@ -47,40 +47,38 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
-        Spell spell = getCurrentSpell(player.getItemInHand(hand));
-        SpellModifiers modifiers = new SpellModifiers();
+        ItemStack stack = player.getItemInHand(hand);
+        Spell spell = getCurrentSpell(stack);
+        if (spell == Spells.NONE) return InteractionResultHolder.fail(stack);
 
-        PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), 0, modifiers);
-        if (!canCast(player.getItemInHand(hand), spell, ctx))
-            return InteractionResultHolder.fail(player.getItemInHand(hand));
+        PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, new SpellModifiers());
+
+        if (!canCast(stack, spell, ctx)) return InteractionResultHolder.fail(stack);
 
         if (spell.isInstantCast()) {
-            if (cast(player.getItemInHand(hand), spell, ctx)) {
+            if (cast(stack, spell, ctx)) {
                 if (!level.isClientSide && spell.requiresPacket()) {
-                    SpellCastS2C msg = new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers());
-                    Services.NETWORK_HELPER.sendToDimension(level.getServer(), msg, level.dimension());
+                    Services.NETWORK_HELPER.sendToDimension(level.getServer(), new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers()), level.dimension());
                 }
-                return InteractionResultHolder.success(player.getItemInHand(hand));
+                return InteractionResultHolder.success(stack);
             }
         } else {
             if (!player.isUsingItem()) player.startUsingItem(hand);
             Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
-            return InteractionResultHolder.pass(player.getItemInHand(hand));
+            return InteractionResultHolder.pass(stack);
         }
 
-        return InteractionResultHolder.fail(player.getItemInHand(hand));
+        return InteractionResultHolder.fail(stack);
     }
 
     @Override
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
         if (!(livingEntity instanceof Player player)) return;
-        Spell spell = SpellUtil.getSpell(livingEntity.getItemInHand(livingEntity.getUsedItemHand()));
-        SpellModifiers modifiers = new SpellModifiers();
 
+        Spell spell = SpellUtil.getSpell(stack);
         int castingTick = stack.getUseDuration() - timeLeft;
+        PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick, new SpellModifiers());
 
-        // Continuous spells
-        PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick, modifiers);
         if (!spell.isInstantCast() && canCast(stack, spell, ctx)) {
             spell.cast(ctx);
         } else {
@@ -88,21 +86,15 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         }
     }
 
-    // Just checking the spell cast events
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (ctx.castingTicks() == 0) {
-            if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers()))) {
-                // We want to add a short cooldown if the spell is cancelled at the start
-                ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
-                return false;
-            }
-        } else {
-            if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks()))) {
-                // We want to add a short cooldown if the spell is cancelled at the start
-                ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
-                return false;
-            }
+        SpellCastEvent event = ctx.castingTicks() == 0
+                ? new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers())
+                : new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks());
+
+        if (WizardryEventBus.getInstance().fire(event)) {
+            ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
+            return false;
         }
         return true;
     }
@@ -111,18 +103,45 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         if (!spell.cast(ctx)) return false;
 
-        if (ctx.castingTicks() == 0)
+        if (ctx.castingTicks() == 0) {
             WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.SCROLL, spell, ctx.caster(), ctx.modifiers()));
-        if (spell.isInstantCast() && !ctx.caster().isCreative()) stack.shrink(1);
-        if (spell.isInstantCast() && !ctx.caster().isCreative())
+        }
+
+        if (spell.isInstantCast() && !ctx.caster().isCreative()) {
+            stack.shrink(1);
             ctx.caster().getCooldowns().addCooldown(this, spell.getCooldown());
+        }
 
         Services.OBJECT_DATA.getWizardData(ctx.caster()).trackRecentSpell(spell, ctx.caster().level().getGameTime());
         return true;
     }
 
-    // When the player has finished the using time of the scroll, after that the scroll will vanish,
-    // use this if you want to give a temporal spell effect
+    private void finishCast(ItemStack stack, Level world, LivingEntity entity, int timeCharged) {
+        if (!(entity instanceof Player player)) return;
+        Spell spell = SpellUtil.getSpell(stack);
+        if (spell.isInstantCast()) return;
+
+        if (!player.isCreative()) stack.shrink(1);
+
+        int castingTick = stack.getUseDuration() - timeCharged;
+        SpellModifiers modifiers = new SpellModifiers();
+
+        WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, entity, modifiers, castingTick));
+        spell.endCast(new CastContext(world, entity, castingTick, modifiers));
+    }
+
+    @Override
+    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
+        if (level == null) return;
+        Spell spell = SpellUtil.getSpell(stack);
+
+        if (ClientUtils.shouldDisplayDiscovered(spell, stack) && tooltipFlag.isAdvanced()) {
+            list.add(Component.translatable(spell.getTier().getDescriptionId()).withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable(spell.getElement().getDescriptionId()).withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable(spell.getType().getUnlocalisedName()).withStyle(ChatFormatting.GRAY));
+        }
+    }
+
     @Override
     public @NotNull ItemStack finishUsingItem(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity) {
         finishCast(stack, level, livingEntity, 0);
@@ -134,26 +153,6 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         finishCast(stack, level, livingEntity, timeCharged);
     }
 
-    private void finishCast(ItemStack stack, Level world, LivingEntity entity, int timeCharged) {
-        if (!(entity instanceof Player player)) return;
-        Spell spell = SpellUtil.getSpell(stack);
-        if (spell.isInstantCast()) return;
-        if (!player.isCreative()) stack.shrink(1);
-
-        SpellModifiers modifiers = new SpellModifiers();
-        int castingTick = stack.getUseDuration() - timeCharged;
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, entity, modifiers, castingTick));
-
-        // I'm not proud of this
-        spell.endCast(new CastContext(entity.level(), castingTick, modifiers) {
-            @Override
-            public LivingEntity caster() {
-                return entity;
-            }
-        });
-    }
-
-    // This item just saves one spell
     @NotNull
     @Override
     public Spell getCurrentSpell(ItemStack stack) {
@@ -165,9 +164,6 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         return false;
     }
 
-    // =====================================
-    // item util
-    // =====================================
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
         return true;
@@ -179,26 +175,10 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     }
 
     @Override
-    public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
-        if (level == null) return;
-        Spell spell = SpellUtil.getSpell(stack);
-        boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
-
-        if (discovered && tooltipFlag.isAdvanced()) {
-            list.add(Component.translatable(spell.getTier().getDescriptionId()).withStyle(ChatFormatting.GRAY));
-            list.add(Component.translatable(spell.getElement().getDescriptionId()).withStyle(ChatFormatting.GRAY));
-            list.add(Component.translatable(spell.getType().getUnlocalisedName()).withStyle(ChatFormatting.GRAY));
-        }
-    }
-
-    @Override
     public int getUseDuration(@NotNull ItemStack stack) {
         return CASTING_TIME;
     }
 
-    // =====================================
-    // Workbench Item Methods
-    // =====================================
     @Override
     public boolean showTooltip(ItemStack stack) {
         return false;
