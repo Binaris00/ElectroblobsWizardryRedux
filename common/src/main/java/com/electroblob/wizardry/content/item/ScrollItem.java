@@ -39,7 +39,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     /** The limit time for a continuous spell cast from a scroll. */
     public static final int CASTING_TIME = 120;
     /** Cooldown applied when a spell cast is cancelled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
-    public static final int COOLDOWN_FORFEIT_TICKS = 140;
+    public static final int COOLDOWN_FORFEIT_TICKS = 60;
 
     public ScrollItem(Properties properties) {
         super(properties);

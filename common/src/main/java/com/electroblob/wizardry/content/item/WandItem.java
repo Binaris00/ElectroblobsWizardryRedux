@@ -56,8 +56,11 @@ import java.util.List;
  * @see IWizardryItem
  */
 public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, IWizardryItem {
+    /* Base number of spell slots on a wand without upgrades. */
     public static final int BASE_SPELL_SLOTS = 5;
-    public static final int COOLDOWN_FORFEIT_TICKS = 140;
+    /** Cooldown applied when a spell cast is cancelled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
+    public static final int COOLDOWN_FORFEIT_TICKS = 60;
+    /** Maximum use duration for continuous spells. */
     public static final int MAX_USE_DURATION = 72000;
 
     public SpellTier tier;
@@ -76,10 +79,13 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (spell == Spells.NONE) return InteractionResultHolder.pass(stack);
 
         PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), 0, this.calculateModifiers(stack, player, spell));
-        if (!canCast(stack, spell, ctx)) return InteractionResultHolder.fail(stack);
+        if (!canCastRequirements(stack, spell, ctx)) {
+            return InteractionResultHolder.fail(stack);
+        }
 
         int charge = (int) (spell.getCharge() * ctx.modifiers().get(SpellModifiers.CHARGEUP));
         if (!spell.isInstantCast() || charge > 0) {
+            // Start charging continuous spells or spells with a charge time
             if (!player.isUsingItem()) {
                 player.startUsingItem(hand);
                 Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
@@ -87,7 +93,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 return InteractionResultHolder.success(stack);
             }
         } else {
-            if (cast(stack, spell, ctx)) return InteractionResultHolder.success(stack);
+            if (canCast(stack, spell, ctx) && cast(stack, spell, ctx)) return InteractionResultHolder.success(stack);
         }
 
         return InteractionResultHolder.fail(stack);
@@ -103,18 +109,32 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
         int useTick = stack.getUseDuration() - timeLeft;
         int charge = (int) (spell.getCharge() * modifiers.get(SpellModifiers.CHARGEUP));
-        PlayerCastContext ctx = new PlayerCastContext(level, player, user.getUsedItemHand(), useTick, modifiers);
+
+        // For instant spells with charge, castingTick should be 0 when useTick == charge
+        // For continuous spells, castingTick should start at 0 after charge phase ends
+        int castingTick = spell.isInstantCast() ? (useTick == charge ? 0 : -1) : Math.max(0, useTick - charge);
+
+        PlayerCastContext ctx = new PlayerCastContext(level, player, user.getUsedItemHand(), castingTick, modifiers);
 
         if (spell.isInstantCast()) {
-            if (charge > 0 && useTick == charge) cast(stack, spell, ctx);
+            // Only attempt to cast at the exact moment charge completes
+            if (useTick == charge) {
+                if (canCast(stack, spell, ctx)) {
+                    cast(stack, spell, ctx);
+                } else {
+                    // Forfeit or other event cancelled the cast
+                    player.stopUsingItem();
+                }
+            }
             return;
         }
 
+        // For continuous spells, only start casting after charge phase
         if (useTick >= charge) {
-            int castingTick = useTick - charge;
-            if (castingTick == 0 || canCast(stack, spell, ctx)) {
+            if (canCast(stack, spell, ctx)) {
                 cast(stack, spell, ctx);
             } else {
+                // Forfeit or other event cancelled the cast
                 player.stopUsingItem();
             }
         }
@@ -122,26 +142,38 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
+        if (!canCastEvents(spell, ctx)) return false;
+
+        return canCastRequirements(stack, spell, ctx);
+    }
+
+    private boolean canCastEvents(Spell spell, PlayerCastContext ctx) {
         if (ctx.castingTicks() == 0) {
             if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers()))) {
-                // We want to add a short cooldown if the spell is cancelled at the start
-                EBLogger.warn("Spell casting cancelled at Pre event for spell {}", Services.REGISTRY_UTIL.getSpell(spell));
-                ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
+                if (!ctx.world().isClientSide) ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
                 return false;
             }
         } else {
             if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks()))) {
-                // We want to add a short cooldown if the spell is cancelled at the start
-                ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
+                if (!ctx.world().isClientSide) ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
                 return false;
             }
         }
 
-        int cost = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.COST) + 0.1f);
-        if (!spell.isInstantCast()) cost = getDistributedCost(cost, ctx.castingTicks());
-
-        return cost <= this.getMana(stack) && spell.getTier().level <= this.tier.level && (WandHelper.getCurrentCooldown(stack) == 0 || ctx.caster().isCreative());
+        return true;
     }
+
+    private boolean canCastRequirements(ItemStack stack, Spell spell, PlayerCastContext ctx) {
+        int cost = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.COST) + 0.1f);
+        if (!spell.isInstantCast()) {
+            cost = getDistributedCost(cost, ctx.castingTicks());
+        }
+
+        return cost <= this.getMana(stack)
+                && spell.getTier().level <= this.tier.level
+                && (WandHelper.getCurrentCooldown(stack) == 0 || ctx.caster().isCreative());
+    }
+
 
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {

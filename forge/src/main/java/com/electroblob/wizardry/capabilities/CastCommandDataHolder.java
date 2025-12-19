@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.capabilities;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.CastCommandData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
@@ -45,7 +44,7 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
         this.provider = player;
     }
 
-    private void sync(){
+    public void sync(){
         if (!this.provider.level().isClientSide()) {
             CompoundTag tag = this.serializeNBT();
 

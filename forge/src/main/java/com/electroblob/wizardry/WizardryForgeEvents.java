@@ -12,6 +12,7 @@ import com.electroblob.wizardry.core.PropertiesForgeDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.core.registry.EBRegistries;
+import com.electroblob.wizardry.network.ArcaneLockSyncPacketS2C;
 import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticleProviders;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -24,6 +25,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -62,6 +64,12 @@ public class WizardryForgeEvents {
         @SubscribeEvent
         public static void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
             WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(event.getEntity(), event.getEntity().getServer()));
+            Player player = event.getEntity();
+            if (!player.level().isClientSide()) {
+                player.getCapability(WizardDataHolder.INSTANCE).ifPresent(WizardDataHolder::sync);
+                player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
+                player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
+            }
         }
 
         @SubscribeEvent
@@ -99,16 +107,16 @@ public class WizardryForgeEvents {
         @SubscribeEvent
         public static void onChunkWatch(ChunkWatchEvent.Watch event) {
             // Sync ArcaneLock data for all block entities in the chunk when a player starts watching it
-            net.minecraft.server.level.ServerLevel level = event.getLevel();
-            net.minecraft.world.level.chunk.LevelChunk chunk = level.getChunk(event.getPos().x, event.getPos().z);
+            ServerLevel level = event.getLevel();
+            LevelChunk chunk = level.getChunk(event.getPos().x, event.getPos().z);
 
-            for (net.minecraft.world.level.block.entity.BlockEntity blockEntity : chunk.getBlockEntities().values()) {
+            for (BlockEntity blockEntity : chunk.getBlockEntities().values()) {
                 if (blockEntity instanceof BaseContainerBlockEntity) {
-                    blockEntity.getCapability(com.electroblob.wizardry.capabilities.ArcaneLockDataHolder.INSTANCE).ifPresent(data -> {
+                    blockEntity.getCapability(ArcaneLockDataHolder.INSTANCE).ifPresent(data -> {
                         if (data.isArcaneLocked()) {
                             // Send sync packet to the player
-                            com.electroblob.wizardry.network.ArcaneLockSyncPacketS2C packet =
-                                    new com.electroblob.wizardry.network.ArcaneLockSyncPacketS2C(blockEntity.getBlockPos(), data.serializeNBT());
+                            ArcaneLockSyncPacketS2C packet =
+                                    new ArcaneLockSyncPacketS2C(blockEntity.getBlockPos(), data.serializeNBT());
                             Services.NETWORK_HELPER.sendTo(event.getPlayer(), packet);
                         }
                     });

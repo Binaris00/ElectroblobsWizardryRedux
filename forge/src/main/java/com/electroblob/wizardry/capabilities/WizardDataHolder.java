@@ -51,7 +51,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         this.provider = player;
     }
 
-    private void sync(){
+    public void sync(){
         if (!this.provider.level().isClientSide()) {
             CompoundTag tag = this.serializeNBT();
 
