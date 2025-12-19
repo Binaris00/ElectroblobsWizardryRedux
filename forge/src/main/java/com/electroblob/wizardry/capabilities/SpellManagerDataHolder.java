@@ -7,7 +7,6 @@ import com.electroblob.wizardry.api.content.data.IStoredSpellVar;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import net.minecraft.core.Direction;
@@ -18,8 +17,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.common.capabilities.CapabilityToken;
@@ -80,12 +77,16 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
     @Override
     public boolean discoverSpell(Spell spell) {
         if (spell instanceof NoneSpell) return false;
-        return spellsDiscovered.add(spell);
+        boolean result = spellsDiscovered.add(spell);
+        if (result) sync();
+        return result;
     }
 
     @Override
     public boolean undiscoverSpell(Spell spell) {
-        return spellsDiscovered.remove(spell);
+        boolean result = spellsDiscovered.remove(spell);
+        if (result) sync();
+        return result;
     }
 
     @Override

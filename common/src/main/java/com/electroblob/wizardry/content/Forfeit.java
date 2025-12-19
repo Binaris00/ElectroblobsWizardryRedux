@@ -1,7 +1,6 @@
 package com.electroblob.wizardry.content;
 
 import com.electroblob.wizardry.WizardryMainMod;
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.EBDiscoverSpellEvent;
@@ -29,6 +28,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Random;
 import java.util.function.BiConsumer;
 
 /**
@@ -137,8 +137,6 @@ public class Forfeit {
      * @param event The spell cast pre event.
      */
     public static void onSpellCastPreEvent(SpellCastEvent.Pre event) {
-        if (event.getLevel().isClientSide) return;
-
         Player player = event.getCaster() instanceof Player p ? p : null;
         if (player == null || player.isCreative()) return;
         if (event.getSource() != SpellCastEvent.Source.WAND && event.getSource() != SpellCastEvent.Source.SCROLL)
@@ -147,10 +145,69 @@ public class Forfeit {
         SpellManagerData spellData = Services.OBJECT_DATA.getSpellManagerData(player);
         WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
 
-        if (!shouldTriggerForfeit(player, spellData, wizardData, event.getSpell())) return;
+        if (spellData.hasSpellBeenDiscovered(event.getSpell())) return;
 
+        // Calculate forfeit result - ALWAYS consume Random values in the same order on both sides
+        ForfeitResult result = calculateForfeit(player, spellData, wizardData, event.getSpell());
+
+        if (!result.shouldTrigger) return;
         event.setCanceled(true);
-        applyForfeitToPlayer(event, player, wizardData);
+
+        // Apply the pre-calculated forfeit
+        applyForfeitToPlayer(event, player, result.forfeit);
+    }
+
+    /**
+     * Represents the result of a forfeit calculation, including whether it should trigger and which forfeit to apply.
+     */
+    private record ForfeitResult(boolean shouldTrigger, Forfeit forfeit) {
+    }
+
+    /**
+     * Calculates whether a forfeit should trigger and which forfeit to apply.
+     * IMPORTANT: This method ALWAYS consumes the same Random values on both client and server to maintain sync.
+     *
+     * @param player     The player attempting to cast the spell.
+     * @param spellData  The spell manager data of the player.
+     * @param wizardData The wizard data of the player.
+     * @param spell      The spell being cast.
+     * @return A ForfeitResult containing whether to trigger and which forfeit to apply.
+     */
+    private static ForfeitResult calculateForfeit(Player player, SpellManagerData spellData, WizardData wizardData, Spell spell) {
+        float chance = (float) EBConfig.forfeitChance;
+        if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WISDOM.get())) chance *= 0.5F;
+
+        boolean isUndiscovered = !spellData.hasSpellBeenDiscovered(spell);
+
+        Random random = wizardData.getRandom();
+        float roll = random.nextFloat();
+        Forfeit forfeit = ForfeitRegistry.getRandomForfeit(random, spell.getTier(), spell.getElement());
+
+        boolean shouldTrigger = roll < chance && isUndiscovered;
+        return new ForfeitResult(shouldTrigger, forfeit);
+    }
+
+    /**
+     * Applies a random forfeit to the given player based on the spell they attempted to cast.
+     *
+     * @param event   The spell cast event.
+     * @param player  The player to whom the forfeit is applied.
+     * @param forfeit The forfeit to apply (pre-calculated to maintain Random sync).
+     */
+    private static void applyForfeitToPlayer(SpellCastEvent.Pre event, Player player, Forfeit forfeit) {
+        if (forfeit == null) {
+            player.sendSystemMessage(Component.translatable("forfeit.ebwizardry.do_nothing"));
+            return;
+        }
+
+        forfeit.apply(event.getLevel(), player);
+        consumeResourceForForfeit(event, player);
+
+        if (player instanceof ServerPlayer) EBAdvancementTriggers.SPELL_FAILURE.triggerFor(player);
+        EntityUtil.playSoundAtPlayer(player, forfeit.getSound(), 1, 1);
+
+        Component message = event.getSource() == SpellCastEvent.Source.WAND ? forfeit.getMessageForWand() : forfeit.getMessageForScroll();
+        if (!player.level().isClientSide) player.displayClientMessage(message, true);
     }
 
     /**
@@ -165,57 +222,8 @@ public class Forfeit {
             EBAdvancementTriggers.CAST_SPELL.trigger(serverPlayer, event.getSpell(), player.getItemInHand(player.getUsedItemHand()));
         }
 
-        discoverSpell(player, event.getSpell());
-    }
-
-    /**
-     * Determines whether a forfeit should be triggered for the given player when they attempt to cast the given spell.
-     * The chance is determined by the config value {@link EBConfig#forfeitChance}, modified by whether the player
-     * has an Amulet of Wisdom equipped, and only applies if the spell has not yet been discovered by the player.
-     *
-     * @param player     The player attempting to cast the spell.
-     * @param spellData  The spell manager data of the player.
-     * @param wizardData The wizard data of the player.
-     * @param spell      The spell being cast.
-     * @return True if a forfeit should be triggered, false otherwise.
-     */
-    private static boolean shouldTriggerForfeit(Player player, SpellManagerData spellData, WizardData wizardData, Spell spell) {
-        float chance = (float) EBConfig.forfeitChance;
-        if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WISDOM.get())) {
-            chance *= 0.5F;
-        }
-
-        boolean isUndiscovered = !spellData.hasSpellBeenDiscovered(spell);
-        float roll = wizardData.getRandom().nextFloat();
-
-        EBLogger.warn("Forfeit roll: random={} chance={} discover={} trigger={}", roll, chance, isUndiscovered, roll < chance && isUndiscovered);
-        return roll < chance && isUndiscovered;
-    }
-
-    /**
-     * Applies a random forfeit to the given player based on the spell they attempted to cast.
-     *
-     * @param event      The spell cast event.
-     * @param player     The player to whom the forfeit is applied.
-     * @param wizardData The wizard data of the player.
-     */
-    private static void applyForfeitToPlayer(SpellCastEvent.Pre event, Player player, WizardData wizardData) {
-        Forfeit forfeit = ForfeitRegistry.getRandomForfeit(wizardData.getRandom(), event.getSpell().getTier(), event.getSpell().getElement());
-
-        if (forfeit == null) {
-            player.sendSystemMessage(Component.translatable("forfeit.ebwizardry.do_nothing"));
-            return;
-        }
-
-        EBLogger.warn("Applying forfeit {} to player {}", forfeit.getName(), player.getScoreboardName());
-        forfeit.apply(event.getLevel(), player);
-        consumeResourceForForfeit(event, player);
-
-        EBAdvancementTriggers.SPELL_FAILURE.triggerFor(player);
-        EntityUtil.playSoundAtPlayer(player, forfeit.getSound(), 1, 1);
-
-        Component message = event.getSource() == SpellCastEvent.Source.WAND ? forfeit.getMessageForWand() : forfeit.getMessageForScroll();
-        player.displayClientMessage(message, true);
+        // Only discover spell on server side - will sync to client automatically
+        if (!event.getLevel().isClientSide()) discoverSpell(player, event.getSpell());
     }
 
     /**

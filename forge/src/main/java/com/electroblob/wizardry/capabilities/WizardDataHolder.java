@@ -27,6 +27,7 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.electroblob.wizardry.api.EBLogger;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -169,7 +170,12 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
             recentSpellsTag.add(spellEntryTag);
         }
         tag.put("recentSpells", recentSpellsTag);
-        tag.putLong("randomSeed", random.nextLong());
+
+        long seed = random.nextLong();
+        tag.putLong("randomSeed", seed);
+        EBLogger.warn("[Forge] WizardData Random seed saved for player {}: seed={} (side={})",
+            provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
+
         if (containmentPos != null) {
             CompoundTag posTag = new CompoundTag();
             posTag.putInt("x", containmentPos.getX());
@@ -230,6 +236,8 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         if (tag.contains("randomSeed")) {
             long seed = tag.getLong("randomSeed");
             this.random = new Random(seed);
+            EBLogger.warn("[Forge] WizardData Random seed loaded for player {}: seed={} (side={})",
+                provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
         }
 
         if (tag.contains("containmentPos")) {
@@ -257,6 +265,9 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         this.recentSpells.addAll(holder.recentSpells);
 
         this.random = holder.random;
+        EBLogger.warn("[Forge] WizardData copied from holder for player {}: random instance copied (side={})",
+            provider.getScoreboardName(), provider.level().isClientSide() ? "CLIENT" : "SERVER");
+
         this.containmentPos = holder.containmentPos;
         sync();
     }

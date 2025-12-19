@@ -20,6 +20,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import com.electroblob.wizardry.api.EBLogger;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -181,6 +182,8 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         if (tag.contains("randomSeed")) {
             long seed = tag.getLong("randomSeed");
             this.random = new Random(seed);
+            EBLogger.warn("[Fabric] WizardData Random seed loaded for player {}: seed={} (side={})",
+                provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
         }
 
         if (tag.contains("containmentPos")) {
@@ -217,7 +220,10 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         }
         tag.put("recentSpells", recentSpellsTag);
 
-        tag.putLong("randomSeed", this.random.nextLong());
+        long seed = this.random.nextLong();
+        tag.putLong("randomSeed", seed);
+        EBLogger.warn("[Fabric] WizardData Random seed saved for player {}: seed={} (side={})",
+            provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
 
         if (containmentPos != null) {
             CompoundTag posTag = new CompoundTag();

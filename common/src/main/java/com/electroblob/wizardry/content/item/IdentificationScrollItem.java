@@ -40,13 +40,16 @@ public class IdentificationScrollItem extends Item {
             if (stack1.getItem() instanceof IdentificationScrollItem || spell == Spells.NONE) continue;
 
             if ((stack1.getItem() instanceof SpellBookItem || stack1.getItem() instanceof ScrollItem) && !data.hasSpellBeenDiscovered(spell)) {
-                if (!WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL)))
+                if (WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL)))
                     return InteractionResultHolder.fail(stack);
-                data.discoverSpell(spell);
+
+                if (!level.isClientSide) {
+                    data.discoverSpell(spell);
+                    player.sendSystemMessage(Component.translatable("spell.discover", spell.getDescriptionFormatted()));
+                }
+
                 player.playSound(EBSounds.MISC_DISCOVER_SPELL.get(), 1.25f, 1);
                 if (!player.isCreative()) stack.shrink(1);
-                if (!level.isClientSide)
-                    player.sendSystemMessage(Component.translatable("spell.discover", spell.getDescriptionFormatted()));
                 player.getCooldowns().addCooldown(stack.getItem(), 60);
                 return InteractionResultHolder.success(stack);
             }
@@ -55,6 +58,7 @@ public class IdentificationScrollItem extends Item {
         player.getCooldowns().addCooldown(stack.getItem(), 60);
         if (!level.isClientSide)
             player.sendSystemMessage(Component.translatable("item." + WizardryMainMod.MOD_ID + ".identification_scroll.nothing_to_identify"));
+
         return InteractionResultHolder.fail(stack);
     }
 
