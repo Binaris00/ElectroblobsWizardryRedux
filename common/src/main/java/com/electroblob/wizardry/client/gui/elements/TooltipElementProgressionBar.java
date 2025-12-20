@@ -52,7 +52,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
 
     @Override
     protected void drawForeground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, int mouseX, int mouseY) {
-        SpellTier tier = ((WandItem) stack.getItem()).tier;
+        SpellTier tier = ((WandItem) stack.getItem()).getTier(stack);
         guiGraphics.drawString(Minecraft.getInstance().font, tier.getDescriptionFormatted().getString(), x, y,
                 tier.getDescriptionFormatted().getStyle().getColor().getValue(), true);
 
@@ -70,7 +70,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
     }
 
     private @Nullable SpellTier getNextTier(ItemStack stack) {
-        SpellTier tier = ((WandItem) stack.getItem()).tier;
+        SpellTier tier = ((WandItem) stack.getItem()).getTier(stack);
 
         if (tier != SpellTiers.MASTER) {
             return SpellTiers.getNextByLevel(tier.level + 1);

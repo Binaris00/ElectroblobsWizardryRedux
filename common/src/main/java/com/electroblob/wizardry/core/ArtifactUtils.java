@@ -42,7 +42,7 @@ public final class ArtifactUtils {
      * logic is shared for a lot of artifacts
      */
     public static boolean meleeRing(DamageSource source, Element element) {
-        return !source.isIndirect() && source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof WandItem wand && wand.element == element;
+        return !source.isIndirect() && source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof WandItem wand && wand.getElement() == element;
     }
 
     /**

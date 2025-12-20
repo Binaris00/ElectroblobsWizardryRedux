@@ -8,6 +8,7 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
+import com.electroblob.wizardry.api.content.util.CastUtils;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.networking.s2c.SpellCastS2C;
@@ -88,12 +89,8 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        SpellCastEvent event = ctx.castingTicks() == 0
-                ? new SpellCastEvent.Pre(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers())
-                : new SpellCastEvent.Tick(SpellCastEvent.Source.WAND, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks());
-
-        if (WizardryEventBus.getInstance().fire(event)) {
-            ctx.caster().getCooldowns().addCooldown(this, COOLDOWN_FORFEIT_TICKS);
+        if (CastUtils.fireSpellCastEvent(SpellCastEvent.Source.SCROLL, spell, ctx)) {
+            CastUtils.applyCooldownForfeit(ctx.caster(), COOLDOWN_FORFEIT_TICKS);
             return false;
         }
         return true;
@@ -101,21 +98,16 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (!spell.cast(ctx)) return false;
-
-        if (ctx.castingTicks() == 0) {
-            WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.SCROLL, spell, ctx.caster(), ctx.modifiers()));
-        }
+        if (!CastUtils.executeSpellCast(SpellCastEvent.Source.SCROLL, spell, ctx)) return false;
 
         if (spell.isInstantCast() && !ctx.caster().isCreative()) {
             stack.shrink(1);
             ctx.caster().getCooldowns().addCooldown(this, spell.getCooldown());
         }
 
-        Services.OBJECT_DATA.getWizardData(ctx.caster()).trackRecentSpell(spell, ctx.caster().level().getGameTime());
+        CastUtils.trackSpellUsage(ctx.caster(), spell);
         return true;
     }
-
     private void finishCast(ItemStack stack, Level world, LivingEntity entity, int timeCharged) {
         if (!(entity instanceof Player player)) return;
         Spell spell = SpellUtil.getSpell(stack);

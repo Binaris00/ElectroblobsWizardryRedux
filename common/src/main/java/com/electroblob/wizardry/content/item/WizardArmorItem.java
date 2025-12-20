@@ -10,6 +10,7 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.util.DrawingUtils;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
+import com.electroblob.wizardry.api.content.util.WorkbenchUtils;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.ChatFormatting;
@@ -131,26 +132,7 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
             changed = !ItemStack.isSameItem(centre.getItem(), original);
         }
 
-        if (crystals.getItem() != ItemStack.EMPTY && !this.isManaFull(centre.getItem())) {
-            int chargeDepleted = this.getManaCapacity(centre.getItem()) - this.getMana(centre.getItem());
-
-            int manaPerItem = crystals.getItem().getItem() instanceof IManaStoringItem ? ((IManaStoringItem) crystals.getItem().getItem()).getMana(crystals.getItem()) : crystals.getItem().getItem() instanceof CrystalItem ? EBConfig.MANA_PER_CRYSTAL : EBConfig.MANA_PER_SHARD;
-
-            if (crystals.getItem().getItem() == EBItems.MAGIC_CRYSTAL_SHARD.get())
-                manaPerItem = EBConfig.MANA_PER_SHARD;
-            if (crystals.getItem().getItem() == EBItems.MAGIC_CRYSTAL_GRAND.get())
-                manaPerItem = EBConfig.GRAND_CRYSTAL_MANA;
-
-            if (crystals.getItem().getCount() * manaPerItem < chargeDepleted) {
-                this.rechargeMana(centre.getItem(), crystals.getItem().getCount() * EBConfig.MANA_PER_CRYSTAL);
-                crystals.remove(crystals.getItem().getCount());
-            } else {
-                this.setMana(centre.getItem(), this.getManaCapacity(centre.getItem()));
-                crystals.remove((int) Math.ceil(((double) chargeDepleted) / EBConfig.MANA_PER_CRYSTAL));
-            }
-
-            changed = true;
-        }
+        changed |= WorkbenchUtils.rechargeManaFromCrystals(centre, crystals);
 
         return changed;
     }

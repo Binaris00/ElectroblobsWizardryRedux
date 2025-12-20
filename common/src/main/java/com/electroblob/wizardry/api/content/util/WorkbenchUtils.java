@@ -1,0 +1,94 @@
+package com.electroblob.wizardry.api.content.util;
+
+import com.electroblob.wizardry.api.content.item.IManaStoringItem;
+import com.electroblob.wizardry.api.content.item.ITierValue;
+import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellContext;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
+import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
+import net.minecraft.world.inventory.Slot;
+import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
+
+public final class WorkbenchUtils {
+    /**
+     * Recharges the mana of the item in the centre slot using the crystals in the crystals slot.
+     *
+     * @param centre   The slot containing the item to be recharged
+     * @param crystals The slot containing the mana crystals
+     * @return True if the item was recharged, false otherwise
+     */
+    public static boolean rechargeManaFromCrystals(Slot centre, Slot crystals) {
+        ItemStack stack = centre.getItem();
+        if (!(stack.getItem() instanceof IManaStoringItem manaItem)) return false;
+        if (!crystals.hasItem() || manaItem.isManaFull(centre.getItem())) return false;
+
+        int chargeDepleted = manaItem.getManaCapacity(centre.getItem()) - manaItem.getMana(centre.getItem());
+        int manaPerItem = getManaValuePerCrystal(crystals.getItem());
+        int totalAvailableMana = crystals.getItem().getCount() * manaPerItem;
+
+        if (totalAvailableMana < chargeDepleted) {
+            manaItem.rechargeMana(centre.getItem(), totalAvailableMana);
+            crystals.remove(crystals.getItem().getCount());
+        } else {
+            manaItem.setMana(centre.getItem(), manaItem.getManaCapacity(centre.getItem()));
+            crystals.remove((int) Math.ceil((double) chargeDepleted / manaPerItem));
+        }
+
+        return true;
+    }
+
+    /**
+     * Returns the amount of mana contained in a single crystal item.
+     *
+     * @param crystal The crystal item stack
+     * @return The amount of mana contained in a single crystal item
+     */
+    public static int getManaValuePerCrystal(ItemStack crystal) {
+        if (crystal.getItem() instanceof IManaStoringItem manaItem) return manaItem.getMana(crystal);
+        return 0;
+    }
+
+    public static boolean applySpellBooks(Slot centre, Slot[] spellBooks, SpellContext ctx) {
+        List<Spell> spells = WandHelper.getSpells(centre.getItem());
+        boolean changed = false;
+        SpellTier origin = centre.getItem().getItem() instanceof ITierValue tierItem
+                ? tierItem.getTier(centre.getItem())
+                : SpellTiers.NOVICE;
+
+        for (int i = 0; i < spells.size(); i++) {
+            if (!spellBooks[i].hasItem()) continue;
+
+            Spell spell = SpellUtil.getSpell(spellBooks[i].getItem());
+            if (!canBindSpell(spell, spells, origin, i, ctx)) continue;
+
+            updateSpellSlot(centre.getItem(), spells, i, spell);
+            if (EBConfig.singleUseSpellBooks) {
+                spellBooks[i].getItem().shrink(1);
+            }
+            changed = true;
+        }
+
+        if (changed) WandHelper.setSpells(centre.getItem(), spells);
+        return changed;
+    }
+
+    public static boolean canBindSpell(Spell spell, List<Spell> spells, SpellTier origin, int slot, SpellContext ctx) {
+        return spell.getTier().level <= origin.level
+                && spells.get(slot) != spell
+                && spell.isEnabled(ctx)
+                && (!EBConfig.preventBindingSameSpellTwiceToWands || spells.stream().noneMatch(s -> s == spell));
+    }
+
+
+    public static void updateSpellSlot(ItemStack wand, List<Spell> spells, int slot, Spell spell) {
+        int currentSelectedIndex = spells.indexOf(WandHelper.getCurrentSpell(wand));
+        if (currentSelectedIndex == slot) WandHelper.setCurrentSpell(wand, spell);
+        spells.set(slot, spell);
+    }
+
+    private WorkbenchUtils() {
+    }
+}
