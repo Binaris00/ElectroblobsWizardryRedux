@@ -27,7 +27,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
 
     @Override
     protected boolean isVisible(ItemStack stack) {
-        return stack.getItem() instanceof WandItem && !EBConfig.legacyWandLevelling;
+        return stack.getItem() instanceof WandItem;
     }
 
     @Override

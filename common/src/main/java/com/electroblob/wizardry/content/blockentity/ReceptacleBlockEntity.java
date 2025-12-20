@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.blockentity;
 
 import com.electroblob.wizardry.api.content.spell.Element;
-import com.electroblob.wizardry.content.item.ReceptacleItemValue;
+import com.electroblob.wizardry.api.content.item.IElementValue;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -31,7 +31,7 @@ public class ReceptacleBlockEntity extends BlockEntity {
     }
 
     public Element getElement() {
-        return stack.getItem() instanceof ReceptacleItemValue receptacleItem ? receptacleItem.getElement() : null;
+        return stack.getItem() instanceof IElementValue receptacleItem ? receptacleItem.getElement() : null;
     }
 
     @Override

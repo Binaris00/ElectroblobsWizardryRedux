@@ -3,7 +3,6 @@ package com.electroblob.wizardry.api.content.util;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
-import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.item.WizardArmorType;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
@@ -81,7 +80,7 @@ public final class SpellUtil {
      * @return The wand ItemStack.
      */
     public static ItemStack wandItem(SpellTier tier, Element element) {
-        return new ItemStack(WandItem.getWand(tier, element));
+        return new ItemStack(WandHelper.getWand(tier, element));
     }
 
     /**

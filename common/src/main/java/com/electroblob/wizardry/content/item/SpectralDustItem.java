@@ -1,9 +1,10 @@
 package com.electroblob.wizardry.content.item;
 
+import com.electroblob.wizardry.api.content.item.IElementValue;
 import com.electroblob.wizardry.api.content.spell.Element;
 import net.minecraft.world.item.Item;
 
-public class SpectralDustItem extends Item implements ReceptacleItemValue {
+public class SpectralDustItem extends Item implements IElementValue {
     private final Element element;
 
     public SpectralDustItem(Element element) {
@@ -15,5 +16,10 @@ public class SpectralDustItem extends Item implements ReceptacleItemValue {
     @Override
     public Element getElement() {
         return element;
+    }
+
+    @Override
+    public boolean validForReceptacle() {
+        return true;
     }
 }

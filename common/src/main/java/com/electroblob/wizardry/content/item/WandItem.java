@@ -1,13 +1,8 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.api.EBLogger;
-import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
-import com.electroblob.wizardry.api.content.item.IManaStoringItem;
-import com.electroblob.wizardry.api.content.item.ISpellCastingItem;
-import com.electroblob.wizardry.api.content.item.IWizardryItem;
-import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
+import com.electroblob.wizardry.api.content.item.*;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellContext;
@@ -24,9 +19,7 @@ import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.networking.s2c.SpellCastS2C;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
@@ -55,7 +48,7 @@ import java.util.List;
  * @see ISpellCastingItem
  * @see IWizardryItem
  */
-public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, IWizardryItem {
+public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, IWizardryItem, ITierValue,IElementValue {
     /* Base number of spell slots on a wand without upgrades. */
     public static final int BASE_SPELL_SLOTS = 5;
     /** Cooldown applied when a spell cast is cancelled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
@@ -78,7 +71,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         Spell spell = WandHelper.getCurrentSpell(stack);
         if (spell == Spells.NONE) return InteractionResultHolder.pass(stack);
 
-        PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), 0, this.calculateModifiers(stack, player, spell));
+        PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), 0, WandHelper.calculateModifiers(stack, player, spell));
         if (!canCastRequirements(stack, spell, ctx)) {
             return InteractionResultHolder.fail(stack);
         }
@@ -110,40 +103,41 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         int useTick = stack.getUseDuration() - timeLeft;
         int charge = (int) (spell.getCharge() * modifiers.get(SpellModifiers.CHARGEUP));
 
-        // For instant spells with charge, castingTick should be 0 when useTick == charge
-        // For continuous spells, castingTick should start at 0 after charge phase ends
         int castingTick = spell.isInstantCast() ? (useTick == charge ? 0 : -1) : Math.max(0, useTick - charge);
 
         PlayerCastContext ctx = new PlayerCastContext(level, player, user.getUsedItemHand(), castingTick, modifiers);
 
         if (spell.isInstantCast()) {
-            // Only attempt to cast at the exact moment charge completes
             if (useTick == charge) {
                 if (canCast(stack, spell, ctx)) {
+                    // For instant spells, consume mana and set cooldown here
+                    if (!level.isClientSide) {
+                        int cost = (int) (spell.getCost() * modifiers.get(SpellModifiers.COST) + 0.1f);
+                        this.consumeMana(stack, cost, player);
+
+                        if (!player.isCreative())
+                            WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())));
+                    }
+
                     cast(stack, spell, ctx);
+                    player.stopUsingItem();
                 } else {
-                    // Forfeit or other event cancelled the cast
                     player.stopUsingItem();
                 }
             }
             return;
         }
 
-        // For continuous spells, only start casting after charge phase
+        // For continuous spells
         if (useTick >= charge) {
-            if (canCast(stack, spell, ctx)) {
-                cast(stack, spell, ctx);
-            } else {
-                // Forfeit or other event cancelled the cast
-                player.stopUsingItem();
-            }
+            if (canCast(stack, spell, ctx)) cast(stack, spell, ctx);
+            else player.stopUsingItem();
         }
     }
 
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         if (!canCastEvents(spell, ctx)) return false;
-
         return canCastRequirements(stack, spell, ctx);
     }
 
@@ -166,7 +160,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     private boolean canCastRequirements(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         int cost = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.COST) + 0.1f);
         if (!spell.isInstantCast()) {
-            cost = getDistributedCost(cost, ctx.castingTicks());
+            cost = WandHelper.getDistributedCost(cost, ctx.castingTicks());
         }
 
         return cost <= this.getMana(stack)
@@ -188,26 +182,23 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 SpellCastS2C msg = new SpellCastS2C(ctx.caster().getId(), ctx.hand(), spell, ctx.modifiers());
                 Services.NETWORK_HELPER.sendToDimension(ctx.world().getServer(), msg, ctx.world().dimension());
             }
-
-            int cost = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.COST) + 0.1f);
-            if (!spell.isInstantCast()) cost = getDistributedCost(cost, ctx.castingTicks());
-            if (cost > 0) this.consumeMana(stack, cost, ctx.caster());
         }
 
-        ctx.caster().startUsingItem(ctx.hand());
-        if (spell.isInstantCast() && !ctx.caster().isCreative())
-            WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * ctx.modifiers().get(EBItems.COOLDOWN_UPGRADE.get())));
-        if (!(this.tier.level < SpellTiers.MASTER.level && ctx.castingTicks() % 20 == 0)) return false;
+        if (!spell.isInstantCast()) {
+            ctx.caster().startUsingItem(ctx.hand());
+        }
 
-        int progression = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.PROGRESSION));
-        WandHelper.addProgression(stack, progression);
-        SpellTier nextTier = tier.next();
-        int excess = WandHelper.getProgression(stack) - nextTier.getProgression();
+        if (this.tier.level < SpellTiers.MASTER.level && !spell.isInstantCast() && ctx.castingTicks() % 20 == 0) {
+            int progression = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.PROGRESSION));
+            WandHelper.addProgression(stack, progression);
+            SpellTier nextTier = tier.next();
+            int excess = WandHelper.getProgression(stack) - nextTier.getProgression();
 
-        if (excess >= 0 && excess < progression) {
-            ctx.caster().playSound(EBSounds.ITEM_WAND_LEVELUP.get(), 1.25f, 1);
-            if (!ctx.world().isClientSide)
-                ctx.caster().sendSystemMessage(Component.translatable("item.ebwizardry.wand.levelup", this.getName(stack), nextTier.getDescriptionFormatted()));
+            if (excess >= 0 && excess < progression) {
+                ctx.caster().playSound(EBSounds.ITEM_WAND_LEVELUP.get(), 1.25f, 1);
+                if (!ctx.world().isClientSide)
+                    ctx.caster().sendSystemMessage(Component.translatable("item.ebwizardry.wand.levelup", this.getName(stack), nextTier.getDescriptionFormatted()));
+            }
         }
 
         Services.OBJECT_DATA.getWizardData(ctx.caster()).trackRecentSpell(spell, ctx.caster().level().getGameTime());
@@ -236,15 +227,54 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         modifiers = wizardData.getSpellModifiers();
 
         int castingTick = stack.getUseDuration() - timeCharged;
-        int cost = getDistributedCost((int) (spell.getCost() * modifiers.get(SpellModifiers.COST) + 0.1f), castingTick);
+        int totalCost = (int) (spell.getCost() * modifiers.get(SpellModifiers.COST) + 0.1f);
 
-        if (!spell.isInstantCast() && spell.getTier().level <= this.tier.level && cost <= this.getMana(stack)) {
+        // Calculate accumulated mana cost for continuous spells
+        // Cost distribution per cycle (20 ticks):
+        //   - Tick 0: cost/2 + cost%2 (ceiling of half cost)
+        //   - Tick 10: cost/2 (floor of half cost)
+        //   - Total per complete cycle: cost (applied twice per cycle)
+        int accumulatedCost = getAccumulatedCost(spell, castingTick, totalCost);
+
+        if (!spell.isInstantCast() && spell.getTier().level <= this.tier.level) {
             WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.WAND, spell, livingEntity, modifiers, castingTick));
             spell.endCast(new CastContext(player.level(), player, castingTick, modifiers));
-            if (!player.isCreative())
-                WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())));
+
+            if (!level.isClientSide) {
+                this.consumeMana(stack, accumulatedCost, player);
+
+                if (!player.isCreative()) {
+                    WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())));
+                }
+            }
         }
     }
+
+    private static int getAccumulatedCost(Spell spell, int castingTick, int totalCost) {
+        int accumulatedCost = 0;
+        if (!spell.isInstantCast() && castingTick > 0) {
+            int completeCycles = castingTick / 20;  // Number of complete 20-tick cycles
+            int remainingTicks = castingTick % 20;  // Ticks in the partial cycle (0-19)
+
+            // Each complete cycle applies cost twice: at tick 0 and tick 10
+            // This equals totalCost per cycle (cost/2 + cost%2 + cost/2 = cost)
+            accumulatedCost = completeCycles * totalCost;
+
+            // Only add partial cycle costs if there are remaining ticks
+            // (remainingTicks == 0 means we completed exactly at a cycle boundary)
+            if (remainingTicks > 0) {
+                // Tick 0 of current cycle (always applied for partial cycles)
+                accumulatedCost += totalCost / 2 + totalCost % 2;
+
+                // Tick 10 of current cycle (only if we reached it)
+                if (remainingTicks >= 10) {
+                    accumulatedCost += totalCost / 2;
+                }
+            }
+        }
+        return accumulatedCost;
+    }
+
 
     @Override
     public boolean onApplyButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks) {
@@ -269,7 +299,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 if (EBConfig.preventBindingSameSpellTwiceToWands && spells.stream().anyMatch(s -> s == spell)) {
                     continue;
                 }
-
 
                 // Fix to ""sync"" the selected spell with the rest of the spells
                 int currentSelectedIndex = spells.indexOf(WandHelper.getCurrentSpell(centre.getItem()));
@@ -327,75 +356,82 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public ItemStack applyUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
         if (upgrade.getItem() == EBItems.ARCANE_TOME.get()) {
-            String tierKey = upgrade.getOrCreateTag().getString("Tier");
-            SpellTier nextTier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
-
-            if (nextTier == null || this.tier == SpellTiers.MASTER) return wand;
-            if (this.tier == nextTier) return wand; // Don't do anything if the tome tier is equals with the wand tier
-
-            if (player == null || player.isCreative() || EBConfig.legacyWandLevelling || WandHelper.getProgression(wand) >= nextTier.getProgression()) {
-                int newProgression = EBConfig.legacyWandLevelling ? 0 : Math.max(0, WandHelper.getProgression(wand) - nextTier.getProgression());
-                WandHelper.setProgression(wand, newProgression);
-
-                if (player != null) Services.OBJECT_DATA.getWizardData(player).setTierReached(tier);
-
-                ItemStack newWand = new ItemStack(getWand(nextTier, this.element));
-                newWand.setTag(wand.getTag());
-                ((IManaStoringItem) newWand.getItem()).setMana(newWand, this.getMana(wand));
-                upgrade.shrink(1);
-
-                return newWand;
-            }
+            return applyTierUpgrade(player, wand, upgrade);
         } else if (WandUpgrades.isWandUpgrade(upgrade.getItem())) {
-            Item specialUpgrade = upgrade.getItem();
-
-            int maxUpgrades = this.tier.upgradeLimit;
-            if (this.element == Elements.MAGIC) maxUpgrades += EBConfig.NON_ELEMENTAL_UPGRADE_BONUS;
-
-            if (WandHelper.getTotalUpgrades(wand) < maxUpgrades && WandHelper.getUpgradeLevel(wand, specialUpgrade) < EBConfig.UPGRADE_STACK_LIMIT) {
-                int prevMana = this.getMana(wand);
-
-                WandHelper.applyUpgrade(wand, specialUpgrade);
-
-                if (specialUpgrade == EBItems.STORAGE_UPGRADE.get()) {
-                    this.setMana(wand, prevMana);
-                } else if (specialUpgrade == EBItems.ATTUNEMENT_UPGRADE.get()) {
-                    int newSlotCount = BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(wand, EBItems.ATTUNEMENT_UPGRADE.get());
-
-                    List<Spell> spells = WandHelper.getSpells(wand);
-                    Spell[] newSpells = new Spell[newSlotCount];
-
-                    for (int i = 0; i < newSpells.length; i++) {
-                        newSpells[i] = i < spells.size() && spells.get(i) != null ? spells.get(i) : Spells.NONE;
-                    }
-
-                    WandHelper.setSpells(wand, List.of(newSpells));
-
-                    int[] cooldowns = WandHelper.getCooldowns(wand);
-                    int[] newCooldowns = new int[newSlotCount];
-
-                    if (cooldowns.length > 0) {
-                        System.arraycopy(cooldowns, 0, newCooldowns, 0, cooldowns.length);
-                    }
-
-                    WandHelper.setCooldowns(wand, newCooldowns);
-                }
-
-                upgrade.shrink(1);
-
-                if (player != null) {
-                    EBAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
-
-                    if (WandHelper.getTotalUpgrades(wand) == SpellTiers.MASTER.upgradeLimit) {
-                        EBAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
-                    }
-                }
-            }
+            applySpecialUpgrade(player, wand, upgrade);
         }
-
         return wand;
     }
 
+    private ItemStack applyTierUpgrade(@Nullable Player player, ItemStack wand, ItemStack tomeStack) {
+        if (tier == SpellTiers.MASTER) return wand;
+        if (!(tomeStack.getItem() instanceof ArcaneTomeItem tomeItem)) return wand;
+
+        SpellTier nextTier = tomeItem.getTier(tomeStack);
+        if (tier == nextTier) return wand;
+
+        if (player == null || player.isCreative() || WandHelper.getProgression(wand) >= nextTier.getProgression()) {
+            int newProgression = Math.max(0, WandHelper.getProgression(wand) - nextTier.getProgression());
+            WandHelper.setProgression(wand, newProgression);
+
+            if (player != null) {
+                Services.OBJECT_DATA.getWizardData(player).setTierReached(tier);
+            }
+
+            ItemStack newWand = new ItemStack(WandHelper.getWand(nextTier, element));
+            newWand.setTag(wand.getTag());
+            ((IManaStoringItem) newWand.getItem()).setMana(newWand, getMana(wand));
+            tomeStack.shrink(1);
+            return newWand;
+        }
+        return wand;
+    }
+
+    private void applySpecialUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
+        Item specialUpgrade = upgrade.getItem();
+        int maxUpgrades = tier.upgradeLimit + (element == Elements.MAGIC ? EBConfig.NON_ELEMENTAL_UPGRADE_BONUS : 0);
+
+        if (WandHelper.getTotalUpgrades(wand) >= maxUpgrades || WandHelper.getUpgradeLevel(wand, specialUpgrade) >= EBConfig.UPGRADE_STACK_LIMIT) {
+            return;
+        }
+
+        int prevMana = getMana(wand);
+        WandHelper.applyUpgrade(wand, specialUpgrade);
+
+        if (specialUpgrade == EBItems.STORAGE_UPGRADE.get()) {
+            setMana(wand, prevMana);
+        } else if (specialUpgrade == EBItems.ATTUNEMENT_UPGRADE.get()) {
+            expandSpellSlots(wand);
+        }
+
+        upgrade.shrink(1);
+        if (player == null) return;
+
+        EBAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
+        if (WandHelper.getTotalUpgrades(wand) == SpellTiers.MASTER.upgradeLimit) {
+            EBAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
+        }
+    }
+
+    private void expandSpellSlots(ItemStack wand) {
+        int newSlotCount = BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(wand, EBItems.ATTUNEMENT_UPGRADE.get());
+        List<Spell> spells = WandHelper.getSpells(wand);
+
+        Spell[] newSpells = new Spell[newSlotCount];
+        for (int i = 0; i < newSpells.length; i++) {
+            newSpells[i] = i < spells.size() && spells.get(i) != null ? spells.get(i) : Spells.NONE;
+        }
+        WandHelper.setSpells(wand, List.of(newSpells));
+
+        int[] cooldowns = WandHelper.getCooldowns(wand);
+        int[] newCooldowns = new int[newSlotCount];
+        if (cooldowns.length > 0) {
+            System.arraycopy(cooldowns, 0, newCooldowns, 0, Math.min(cooldowns.length, newSlotCount));
+        }
+        WandHelper.setCooldowns(wand, newCooldowns);
+    }
+
+    // Interface implementations and simple getters
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         return (this.element == null ? super.getName(stack) : Component.literal(super.getName(stack).getString()).withStyle(this.element.getColor()));
@@ -412,70 +448,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConfig.CONDENSER_TICK_INTERVAL == 0) {
             this.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
         }
-    }
-
-    public SpellModifiers calculateModifiers(ItemStack stack, Player player, Spell spell) {
-        SpellModifiers modifiers = new SpellModifiers();
-
-        int level = WandHelper.getUpgradeLevel(stack, EBItems.RANGE_UPGRADE);
-        if (level > 0)
-            modifiers.set(EBItems.RANGE_UPGRADE.get(), 1.0f + level * EBConfig.RANGE_INCREASE_PER_LEVEL, true);
-
-        level = WandHelper.getUpgradeLevel(stack, EBItems.DURATION_UPGRADE);
-        if (level > 0)
-            modifiers.set(EBItems.DURATION_UPGRADE.get(), 1.0f + level * EBConfig.DURATION_INCREASE_PER_LEVEL, false);
-
-        level = WandHelper.getUpgradeLevel(stack, EBItems.BLAST_UPGRADE);
-        if (level > 0)
-            modifiers.set(EBItems.BLAST_UPGRADE.get(), 1.0f + level * EBConfig.BLAST_RADIUS_INCREASE_PER_LEVEL, true);
-
-        level = WandHelper.getUpgradeLevel(stack, EBItems.COOLDOWN_UPGRADE);
-        if (level > 0)
-            modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), 1.0f - level * EBConfig.COOLDOWN_REDUCTION_PER_LEVEL, true);
-
-        float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConfig.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION;
-        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
-
-        if (this.element == spell.getElement()) {
-            modifiers.set(SpellModifiers.POTENCY, 1.0f + (this.tier.level + 1) * EBConfig.POTENCY_INCREASE_PER_TIER, true);
-            progressionModifier *= 1.2f;
-        }
-
-        if (!data.hasSpellBeenDiscovered(spell)) {
-            progressionModifier *= 5f;
-        }
-
-        // TODO DATA TIER
-//        if (!data.hasReachedTier(this.tier.next())) {
-//            progressionModifier *= SECOND_TIME_PROGRESSION_MODIFIER;
-//        }
-
-
-        modifiers.set(SpellModifiers.PROGRESSION, progressionModifier, false);
-        return modifiers;
-    }
-
-    public static Item getWand(SpellTier tier, Element element) {
-        if (tier == null) throw new NullPointerException("The given tier cannot be null.");
-        if (element == null) element = Elements.MAGIC;
-        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "novice" : tier.getOrCreateLocation().getPath();
-        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
-        registryName = "wand_" + registryName;
-        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
-    }
-
-    protected static int getDistributedCost(int cost, int castingTick) {
-        int partialCost;
-
-        if (castingTick % 20 == 0) {
-            partialCost = cost / 2 + cost % 2;
-        } else if (castingTick % 10 == 0) {
-            partialCost = cost / 2;
-        } else {
-            partialCost = 0;
-        }
-
-        return partialCost;
     }
 
     @Override
@@ -584,4 +556,18 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         return WandHelper.getSpells(stack).toArray(new Spell[0]);
     }
 
+    @Override
+    public Element getElement() {
+        return this.element;
+    }
+
+    @Override
+    public boolean validForReceptacle() {
+        return false;
+    }
+
+    @Override
+    public SpellTier getTier(ItemStack stack) {
+        return this.tier;
+    }
 }

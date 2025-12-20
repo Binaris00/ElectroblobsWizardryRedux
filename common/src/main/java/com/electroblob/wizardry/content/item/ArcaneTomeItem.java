@@ -1,7 +1,9 @@
 package com.electroblob.wizardry.content.item;
 
+import com.electroblob.wizardry.api.content.item.ITierValue;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -14,16 +16,14 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class ArcaneTomeItem extends Item {
+public class ArcaneTomeItem extends Item implements ITierValue {
     public ArcaneTomeItem() {
         super(new Properties().stacksTo(1));
     }
 
     @Override
     public @NotNull Rarity getRarity(@NotNull ItemStack stack) {
-        String tierKey = stack.getOrCreateTag().getString("Tier");
-        SpellTier tier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
-        if (tier == null) return Rarity.COMMON;
+        SpellTier tier = getTier(stack);
         return switch (tier.level) {
             case 1 -> Rarity.UNCOMMON;
             case 2 -> Rarity.RARE;
@@ -33,11 +33,8 @@ public class ArcaneTomeItem extends Item {
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
-        String tierKey = stack.getOrCreateTag().getString("Tier");
-        SpellTier tier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
-        if (tier == null || tier.level <= 0) return;
-
+    public void appendHoverText(@NotNull ItemStack stack, Level level, @NotNull List<Component> tooltip, @NotNull TooltipFlag flag) {
+        SpellTier tier = getTier(stack);
         List<SpellTier> tiers = Services.REGISTRY_UTIL.getTiers().stream().toList();
         int index = tiers.indexOf(tier);
 
@@ -56,5 +53,12 @@ public class ArcaneTomeItem extends Item {
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
         return true;
+    }
+
+    @Override
+    public SpellTier getTier(ItemStack stack) {
+        String tierKey = stack.getOrCreateTag().getString("Tier");
+        SpellTier tier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
+        return tier != null ? tier : SpellTiers.NOVICE;
     }
 }

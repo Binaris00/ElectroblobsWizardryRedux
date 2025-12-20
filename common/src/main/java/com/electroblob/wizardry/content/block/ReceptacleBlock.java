@@ -4,7 +4,7 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.blockentity.ReceptacleBlockEntity;
-import com.electroblob.wizardry.content.item.ReceptacleItemValue;
+import com.electroblob.wizardry.api.content.item.IElementValue;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -63,7 +63,7 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         ItemStack stack = blockEntity.getStack();
 
         // If wanting to add an item to an empty receptacle
-        if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof ReceptacleItemValue) {
+        if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof IElementValue value && value.validForReceptacle()) {
             ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
             blockEntity.setStack(receptacleItem.split(1));
         }

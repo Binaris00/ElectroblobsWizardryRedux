@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.blockentity;
 
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
-import com.electroblob.wizardry.content.item.ReceptacleItemValue;
+import com.electroblob.wizardry.api.content.item.IElementValue;
 import com.electroblob.wizardry.content.recipe.ImbuementAltarRecipe;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBAdvancementTriggers;
@@ -193,7 +193,7 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
 
         // Select the element randomly from the receptacles
         ItemStack item = receptacleItems[level.random.nextInt(receptacleItems.length)];
-        if (item.getItem() instanceof ReceptacleItemValue receptacleItem) {
+        if (item.getItem() instanceof IElementValue receptacleItem) {
             element = receptacleItem.getElement();
         }
     }

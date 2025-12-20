@@ -1,16 +1,24 @@
 package com.electroblob.wizardry.api.content.util;
 
 import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.api.content.data.SpellManagerData;
+import com.electroblob.wizardry.api.content.item.IElementValue;
+import com.electroblob.wizardry.api.content.item.ITierValue;
+import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
+import com.electroblob.wizardry.api.content.spell.SpellTier;
+import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.content.item.WandItem;
+import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.platform.Services;
-import com.electroblob.wizardry.setup.registries.Spells;
-import com.electroblob.wizardry.setup.registries.WandUpgrades;
+import com.electroblob.wizardry.setup.registries.*;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
@@ -355,5 +363,93 @@ public final class WandHelper {
      */
     public static void addProgression(ItemStack wand, int progression) {
         setProgression(wand, getProgression(wand) + progression);
+    }
+
+    /**
+     * Returns the wand Item corresponding to the given tier and element.
+     *
+     * @param tier    The tier of the wand.
+     * @param element The element of the wand. If null, defaults to {@link Elements#MAGIC}.
+     * @return The wand Item.
+     * @throws NullPointerException if the given tier is null.
+     */
+    public static Item getWand(SpellTier tier, Element element) {
+        if (tier == null) throw new NullPointerException("The given tier cannot be null.");
+        if (element == null) element = Elements.MAGIC;
+        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "novice" : tier.getOrCreateLocation().getPath();
+        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
+        registryName = "wand_" + registryName;
+        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
+    }
+
+    /**
+     * Calculates the distributed cost of a spell being cast over multiple ticks.
+     * <p>
+     * The cost is halved at 10 ticks and again at 20 ticks, with any remainder added to the first half.
+     *
+     * @param cost        The total cost of the spell.
+     * @param castingTick The current tick of casting.
+     * @return The distributed cost for the current tick.
+     */
+    public static int getDistributedCost(int cost, int castingTick) {
+        int partialCost;
+
+        if (castingTick % 20 == 0) partialCost = cost / 2 + cost % 2;
+        else if (castingTick % 10 == 0) partialCost = cost / 2;
+        else partialCost = 0;
+
+        return partialCost;
+    }
+
+    /**
+     * Calculates the spell modifiers provided by the wand for the given spell and player.
+     *
+     * @param stack  The wand ItemStack.
+     * @param player The player casting the spell.
+     * @param spell  The spell being cast.
+     * @return The calculated spell modifiers.
+     */
+    public static SpellModifiers calculateModifiers(ItemStack stack, Player player, Spell spell) {
+        SpellModifiers modifiers = new SpellModifiers();
+
+        int level = getUpgradeLevel(stack, EBItems.RANGE_UPGRADE);
+        if (level > 0)
+            modifiers.set(EBItems.RANGE_UPGRADE.get(), 1.0f + level * EBConfig.RANGE_INCREASE_PER_LEVEL, true);
+
+        level = getUpgradeLevel(stack, EBItems.DURATION_UPGRADE);
+        if (level > 0)
+            modifiers.set(EBItems.DURATION_UPGRADE.get(), 1.0f + level * EBConfig.DURATION_INCREASE_PER_LEVEL, false);
+
+        level = getUpgradeLevel(stack, EBItems.BLAST_UPGRADE);
+        if (level > 0)
+            modifiers.set(EBItems.BLAST_UPGRADE.get(), 1.0f + level * EBConfig.BLAST_RADIUS_INCREASE_PER_LEVEL, true);
+
+        level = getUpgradeLevel(stack, EBItems.COOLDOWN_UPGRADE);
+        if (level > 0)
+            modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), 1.0f - level * EBConfig.COOLDOWN_REDUCTION_PER_LEVEL, true);
+
+        float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConfig.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION;
+        SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
+
+
+        if (stack.getItem() instanceof IElementValue elementValue && stack.getItem() instanceof ITierValue tierValue) {
+            if (elementValue.getElement() == spell.getElement()) {
+                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).level + 1) * EBConfig.POTENCY_INCREASE_PER_TIER, true);
+                progressionModifier *= 1.2f;
+            }
+        }
+
+        if (!data.hasSpellBeenDiscovered(spell)) {
+            progressionModifier *= 5f;
+        }
+
+        // TODO DATA TIER
+//        if (!data.hasReachedTier(this.tier.next())) {
+//            progressionModifier *= SECOND_TIME_PROGRESSION_MODIFIER;
+//        }
+
+
+        modifiers.set(SpellModifiers.PROGRESSION, progressionModifier, false);
+        return modifiers;
     }
 }

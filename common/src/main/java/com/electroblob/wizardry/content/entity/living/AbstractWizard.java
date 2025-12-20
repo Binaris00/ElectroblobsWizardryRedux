@@ -217,7 +217,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         ArrayList<Spell> list = new ArrayList<>(spells);
         list.add(Spells.HEAL);
 
-        Item item = WandItem.getWand(maxTier, element);
+        Item item = WandHelper.getWand(maxTier, element);
         if (item == null || item == Items.AIR || !(item instanceof WandItem)) {
             EBLogger.warn("Failed to create wand for wizard with element {} and max tier {}. Defaulting to apprentice wand.", element.getName(), maxTier);
             item = EBItems.APPRENTICE_WAND.get();
