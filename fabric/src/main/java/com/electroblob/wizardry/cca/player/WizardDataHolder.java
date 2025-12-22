@@ -11,7 +11,6 @@ import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.EvictingQueue;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -19,7 +18,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import com.electroblob.wizardry.api.EBLogger;
 
 import java.util.*;
@@ -169,8 +167,6 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         if (tag.contains("randomSeed")) {
             long seed = tag.getLong("randomSeed");
             this.random = new Random(seed);
-            EBLogger.warn("[Fabric] WizardData Random seed loaded for player {}: seed={} (side={})",
-                provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
         }
     }
 
@@ -199,7 +195,5 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
 
         long seed = this.random.nextLong();
         tag.putLong("randomSeed", seed);
-        EBLogger.warn("[Fabric] WizardData Random seed saved for player {}: seed={} (side={})",
-            provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
     }
 }

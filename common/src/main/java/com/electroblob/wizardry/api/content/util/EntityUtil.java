@@ -75,19 +75,16 @@ public final class EntityUtil {
         Predicate<T> alwaysTrue = entity -> true;
 
         List<T> entities = world.getEntitiesOfClass(entityClass, boundingBox, alwaysTrue);
-        entities.removeIf(livingEntity -> livingEntity.distanceToSqr(x, y, z) > range);
+        double rangeSq = range * range;
+        entities.removeIf(entity -> entity.distanceToSqr(x, y, z) > rangeSq);
         return entities;
     }
 
     public static <T extends Entity> List<T> getEntitiesWithinRadius(double radius, double x, double y, double z, Level world, Class<T> entityType) {
         AABB box = new AABB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
         List<T> entityList = world.getEntitiesOfClass(entityType, box);
-        for (int i = 0; i < entityList.size(); i++) {
-            if (entityList.get(i).distanceToSqr(x, y, z) > radius) {
-                entityList.remove(i);
-                break;
-            }
-        }
+        double radiusSq = radius * radius;
+        entityList.removeIf(entity -> entity.distanceToSqr(x, y, z) > radiusSq);
         return entityList;
     }
 
@@ -180,12 +177,8 @@ public final class EntityUtil {
     public static <T extends Entity> List<T> getEntitiesWithinCylinder(double radius, double x, double y, double z, double height, Level world, Class<T> entityType) {
         AABB aabb = new AABB(x - radius, y, z - radius, x + radius, y + height, z + radius);
         List<T> entityList = world.getEntitiesOfClass(entityType, aabb);
-        for (T entity : entityList) {
-            if (entity.distanceToSqr(x, entity.yo, z) > radius) {
-                entityList.remove(entity);
-                break;
-            }
-        }
+        double radiusSq = radius * radius;
+        entityList.removeIf(entity -> entity.distanceToSqr(x, entity.yo, z) > radiusSq);
         return entityList;
     }
 

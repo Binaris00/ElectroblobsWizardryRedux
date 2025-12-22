@@ -83,7 +83,7 @@ public final class EBConfig {
             new ResourceLocation("minecraft:giant"),
             new ResourceLocation("minecraft:shulker")
     ).toArray(new ResourceLocation[0]);
-    public static boolean passiveMobsAreAllies = true;
+    public static boolean passiveMobsAreAllies = false;
     public static boolean shiftScrolling = true;
     public static boolean reverseScrollDirection = false;
     public static boolean shrineRegenerationEnabled = true;

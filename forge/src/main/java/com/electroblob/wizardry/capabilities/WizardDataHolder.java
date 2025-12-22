@@ -10,7 +10,6 @@ import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.EvictingQueue;
-import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -27,7 +26,6 @@ import net.minecraftforge.common.util.INBTSerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import com.electroblob.wizardry.api.EBLogger;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -160,9 +158,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
 
         long seed = random.nextLong();
         tag.putLong("randomSeed", seed);
-        EBLogger.warn("[Forge] WizardData Random seed saved for player {}: seed={} (side={})",
-            provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
-
         return tag;
     }
 
@@ -216,8 +211,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         if (tag.contains("randomSeed")) {
             long seed = tag.getLong("randomSeed");
             this.random = new Random(seed);
-            EBLogger.warn("[Forge] WizardData Random seed loaded for player {}: seed={} (side={})",
-                provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
         }
     }
 
@@ -235,8 +228,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         this.recentSpells.addAll(holder.recentSpells);
 
         this.random = holder.random;
-        EBLogger.warn("[Forge] WizardData copied from holder for player {}: random instance copied (side={})",
-            provider.getScoreboardName(), provider.level().isClientSide() ? "CLIENT" : "SERVER");
     }
 
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {

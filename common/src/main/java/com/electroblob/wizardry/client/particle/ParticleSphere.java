@@ -96,7 +96,7 @@ public class ParticleSphere extends ParticleWizardry {
         RenderSystem.disableCull();
         RenderSystem.disableBlend();
 
-        stack.pushPose();
+        stack.popPose();
     }
 
     public static class SphereProvider implements ParticleProvider<SimpleParticleType> {
