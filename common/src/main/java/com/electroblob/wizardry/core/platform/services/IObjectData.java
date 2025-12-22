@@ -2,6 +2,7 @@ package com.electroblob.wizardry.core.platform.services;
 
 import com.electroblob.wizardry.api.content.data.*;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -68,6 +69,14 @@ public interface IObjectData {
      * @return The MinionDataHolder associated with the mob.
      */
     MinionData getMinionData(Mob mob);
+
+    /**
+     * Gets the containment data for the given living entity.
+     *
+     * @param entity The living entity whose containment data is to be retrieved.
+     * @return The ContainmentData associated with the living entity.
+     */
+    ContainmentData getContainmentData(LivingEntity entity);
 
     /**
      * Checks if the given entity is a minion.

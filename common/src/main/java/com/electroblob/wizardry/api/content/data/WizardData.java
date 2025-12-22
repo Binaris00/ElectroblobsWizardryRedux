@@ -3,9 +3,7 @@ package com.electroblob.wizardry.api.content.data;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
-import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.player.Player;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.AbstractMap;
 import java.util.Random;
@@ -94,18 +92,4 @@ public interface WizardData {
      * @return A Random instance.
      */
     Random getRandom();
-
-    /**
-     * Gets the containment position for the containment effect, used for the Shrine structure and Containment spell.
-     *
-     * @return The BlockPos representing the containment position.
-     */
-    @Nullable BlockPos getContainmentPos();
-
-    /**
-     * Sets the containment position for the containment effect, used for the Shrine structure and Containment spell.
-     *
-     * @param pos The BlockPos to set as the containment position.
-     */
-    void setContainmentPos(BlockPos pos);
 }

@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.content.effect;
 
-import com.electroblob.wizardry.api.content.data.WizardData;
+import com.electroblob.wizardry.api.content.data.ContainmentData;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
@@ -11,12 +11,9 @@ import com.electroblob.wizardry.setup.registries.EBSounds;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.apache.http.util.EntityUtils;
 import org.jetbrains.annotations.NotNull;
-import org.joml.GeometryUtils;
 
 public class ContainmentEffect extends MagicMobEffect {
     public ContainmentEffect() {
@@ -29,11 +26,9 @@ public class ContainmentEffect extends MagicMobEffect {
 
     @Override
     public void applyEffectTick(@NotNull LivingEntity target, int amplifier) {
-        if (!(target instanceof Player player)) return;
-
         float maxDistance = getContainmentDistance(amplifier);
 
-        WizardData data = Services.OBJECT_DATA.getWizardData(player);
+        ContainmentData data = Services.OBJECT_DATA.getContainmentData(target);
         if (data.getContainmentPos() == null) {
             data.setContainmentPos(target.blockPosition().offset(-1, -1, -1));
         }
@@ -57,7 +52,7 @@ public class ContainmentEffect extends MagicMobEffect {
             target.addDeltaMovement(new Vec3(0.15 * Math.signum(x - target.xo), 0.15 * Math.signum(y - target.yo), 0.15 * Math.signum(z - target.zo)));
             EntityUtil.undoGravity(target);
             if(target.level().isClientSide){
-                target.level().playSound(player, player.blockPosition(), EBSounds.ENTITY_FORCEFIELD_DEFLECT.get(), SoundSource.HOSTILE,0.3f, 1f);
+                target.level().playSound(null, target.blockPosition(), EBSounds.ENTITY_FORCEFIELD_DEFLECT.get(), SoundSource.HOSTILE, 0.3f, 1f);
             }
         }
 
@@ -68,11 +63,11 @@ public class ContainmentEffect extends MagicMobEffect {
     }
 
     public static void onLivingUpdateEvent(EBLivingTick event){
-        if (!(event.getEntity() instanceof Player player)) return;
-        if (!player.isAlive()) return;
-        WizardData data = Services.OBJECT_DATA.getWizardData(player);
+        LivingEntity entity = event.getEntity();
+        if (!entity.isAlive()) return;
+        ContainmentData data = Services.OBJECT_DATA.getContainmentData(entity);
 
-        if(event.getEntity().tickCount % 20 == 0 && data.getContainmentPos() != null && !player.hasEffect(EBMobEffects.CONTAINMENT.get()))
+        if(entity.tickCount % 20 == 0 && data.getContainmentPos() != null && !entity.hasEffect(EBMobEffects.CONTAINMENT.get()))
             data.setContainmentPos(null);
     }
 

@@ -2,6 +2,7 @@ package com.electroblob.wizardry.cca;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.cca.blockentity.ArcaneLockDataHolder;
+import com.electroblob.wizardry.cca.entity.ContainmentDataHolder;
 import com.electroblob.wizardry.cca.entity.MinionDataHolder;
 import com.electroblob.wizardry.cca.player.CastCommandDataHolder;
 import com.electroblob.wizardry.cca.player.SpellManagerDataHolder;
@@ -18,6 +19,7 @@ import dev.onyxstudios.cca.api.v3.entity.EntityComponentInitializer;
 import dev.onyxstudios.cca.api.v3.entity.RespawnCopyStrategy;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 
@@ -30,6 +32,7 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
     public static final ComponentKey<SpellManagerDataHolder> SPELL_MANAGER_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("spell_manager_data"), SpellManagerDataHolder.class);
 
     public static final ComponentKey<MinionDataHolder> MINION_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("minion_data"), MinionDataHolder.class);
+    public static final ComponentKey<ContainmentDataHolder> CONTAINMENT_DATA = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("containment_data"), ContainmentDataHolder.class);
     public static final ComponentKey<ConjureDataHolder> CONJURE = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("conjure"), ConjureDataHolder.class);
     public static final ComponentKey<ImbuementEnchantDataHolder> IMBUEMENT_ENCHANTS = ComponentRegistryV3.INSTANCE.getOrCreate(WizardryMainMod.location("imbuement_enchants"), ImbuementEnchantDataHolder.class);
 
@@ -41,7 +44,7 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
         registry.registerForPlayers(CAST_COMMAND_DATA, CastCommandDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerForPlayers(SPELL_MANAGER_DATA, SpellManagerDataHolder::new, RespawnCopyStrategy.ALWAYS_COPY);
         registry.registerFor(Mob.class, MINION_DATA, MinionDataHolder::new);
-
+        registry.registerFor(LivingEntity.class, CONTAINMENT_DATA, ContainmentDataHolder::new);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.electroblob.wizardry.cca.player.SpellManagerDataHolder;
 import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.core.platform.services.IObjectData;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -23,6 +24,11 @@ public class FabricObjectData implements IObjectData {
     @Override
     public MinionData getMinionData(Mob mob) {
         return EBComponents.MINION_DATA.get(mob);
+    }
+
+    @Override
+    public ContainmentData getContainmentData(LivingEntity entity) {
+        return EBComponents.CONTAINMENT_DATA.get(entity);
     }
 
     @Override

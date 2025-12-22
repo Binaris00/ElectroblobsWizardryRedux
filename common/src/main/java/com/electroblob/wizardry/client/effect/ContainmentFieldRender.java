@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.client.effect;
 
 import com.electroblob.wizardry.WizardryMainMod;
+import com.electroblob.wizardry.api.content.data.ContainmentData;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.effect.ContainmentEffect;
@@ -44,7 +45,7 @@ public final class ContainmentFieldRender {
         MobEffectInstance effect = player.getEffect(EBMobEffects.CONTAINMENT.get());
         if (effect == null) return;
 
-        WizardData data = Services.OBJECT_DATA.getWizardData(player);
+        ContainmentData data = Services.OBJECT_DATA.getContainmentData(player);
         if (data.getContainmentPos() == null) return;
 
         Vec3 centre = GeometryUtil.getCentre(data.getContainmentPos());

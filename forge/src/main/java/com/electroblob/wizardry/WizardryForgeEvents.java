@@ -21,6 +21,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
@@ -135,6 +136,10 @@ public class WizardryForgeEvents {
             if (event.getObject() instanceof Mob mob) {
                 event.addCapability(MinionDataHolder.LOCATION, new MinionDataHolder.Provider(mob));
             }
+
+            if (event.getObject() instanceof LivingEntity livingEntity) {
+                event.addCapability(ContainmentDataHolder.LOCATION, new ContainmentDataHolder.Provider(livingEntity));
+            }
         }
 
         @SubscribeEvent
@@ -187,6 +192,7 @@ public class WizardryForgeEvents {
             event.register(SpellManagerDataHolder.class);
             event.register(CastCommandDataHolder.class);
             event.register(MinionDataHolder.class);
+            event.register(ContainmentDataHolder.class);
             event.register(ConjureDataHolder.class);
             event.register(ImbuementEnchantDataHolder.class);
             event.register(ArcaneLockDataHolder.class);

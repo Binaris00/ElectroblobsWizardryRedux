@@ -38,6 +38,18 @@ public final class ClientMessageHandlerForge {
                 minionData.deserializeNBT(m.getData()));
     }
 
+    public static void containmentSync(ContainmentSyncPacketS2C m) {
+        Minecraft minecraft = Minecraft.getInstance();
+        Level level = minecraft.level;
+        if (level == null) return;
+
+        var entity = level.getEntity(m.getEntityId());
+        if(entity == null) return;
+
+        entity.getCapability(ContainmentDataHolder.INSTANCE).ifPresent(containmentData ->
+                containmentData.deserializeNBT(m.getData()));
+    }
+
     public static void playerCapabilitySync(PlayerCapabilitySyncPacketS2C m) {
         Minecraft minecraft = Minecraft.getInstance();
         Player player = minecraft.player;

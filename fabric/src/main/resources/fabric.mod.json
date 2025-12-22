@@ -39,7 +39,8 @@
             "ebwizardry:cast_command_data",
             "ebwizardry:spell_manager_data",
             "ebwizardry:imbuement_enchants",
-            "ebwizardry:arcane_lock"
+            "ebwizardry:arcane_lock",
+            "ebwizardry:containment_data"
         ]
     },
     "depends": {

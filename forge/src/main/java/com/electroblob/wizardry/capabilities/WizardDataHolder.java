@@ -43,7 +43,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     private SpellTier maxTierReached = SpellTiers.NOVICE;
     private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
     private Random random = new Random();
-    private BlockPos containmentPos = null;
 
     private final Player provider;
 
@@ -136,18 +135,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     }
 
     @Override
-    public @Nullable BlockPos getContainmentPos() {
-        return containmentPos;
-    }
-
-    @Override
-    public void setContainmentPos(BlockPos pos) {
-        this.containmentPos = pos;
-        sync();
-    }
-
-
-    @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         tag.putString("maxTier", maxTierReached.getOrCreateLocation().toString());
@@ -176,13 +163,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         EBLogger.warn("[Forge] WizardData Random seed saved for player {}: seed={} (side={})",
             provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
 
-        if (containmentPos != null) {
-            CompoundTag posTag = new CompoundTag();
-            posTag.putInt("x", containmentPos.getX());
-            posTag.putInt("y", containmentPos.getY());
-            posTag.putInt("z", containmentPos.getZ());
-            tag.put("containmentPos", posTag);
-        }
         return tag;
     }
 
@@ -239,16 +219,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
             EBLogger.warn("[Forge] WizardData Random seed loaded for player {}: seed={} (side={})",
                 provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
         }
-
-        if (tag.contains("containmentPos")) {
-            CompoundTag posTag = tag.getCompound("containmentPos");
-            int x = posTag.getInt("x");
-            int y = posTag.getInt("y");
-            int z = posTag.getInt("z");
-            this.containmentPos = new BlockPos(x, y, z);
-        } else {
-            this.containmentPos = null;
-        }
     }
 
     public void copyFrom(@NotNull WizardDataHolder holder) {
@@ -267,9 +237,6 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         this.random = holder.random;
         EBLogger.warn("[Forge] WizardData copied from holder for player {}: random instance copied (side={})",
             provider.getScoreboardName(), provider.level().isClientSide() ? "CLIENT" : "SERVER");
-
-        this.containmentPos = holder.containmentPos;
-        sync();
     }
 
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {

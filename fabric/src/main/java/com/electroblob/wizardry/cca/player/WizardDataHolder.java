@@ -34,7 +34,6 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     private SpellTier maxTierReached = SpellTiers.NOVICE;
     private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
     private Random random = new Random();
-    private @Nullable BlockPos containmentPos = null;
 
     public WizardDataHolder(Player provider) {
         this.provider = provider;
@@ -120,18 +119,6 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     }
 
     @Override
-    public @Nullable BlockPos getContainmentPos() {
-        return this.containmentPos;
-    }
-
-    @Override
-    public void setContainmentPos(BlockPos pos) {
-        this.containmentPos = pos;
-        sync();
-    }
-
-
-    @Override
     public void readFromNbt(@NotNull CompoundTag tag) {
         ResourceLocation tierLocation = ResourceLocation.tryParse(tag.getString("maxTier"));
         if (tierLocation != null) {
@@ -185,16 +172,6 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
             EBLogger.warn("[Fabric] WizardData Random seed loaded for player {}: seed={} (side={})",
                 provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
         }
-
-        if (tag.contains("containmentPos")) {
-            CompoundTag posTag = tag.getCompound("containmentPos");
-            int x = posTag.getInt("x");
-            int y = posTag.getInt("y");
-            int z = posTag.getInt("z");
-            this.containmentPos = new BlockPos(x, y, z);
-        } else {
-            this.containmentPos = null;
-        }
     }
 
     @Override
@@ -224,13 +201,5 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         tag.putLong("randomSeed", seed);
         EBLogger.warn("[Fabric] WizardData Random seed saved for player {}: seed={} (side={})",
             provider.getScoreboardName(), seed, provider.level().isClientSide() ? "CLIENT" : "SERVER");
-
-        if (containmentPos != null) {
-            CompoundTag posTag = new CompoundTag();
-            posTag.putInt("x", containmentPos.getX());
-            posTag.putInt("y", containmentPos.getY());
-            posTag.putInt("z", containmentPos.getZ());
-            tag.put("containmentPos", posTag);
-        }
     }
 }

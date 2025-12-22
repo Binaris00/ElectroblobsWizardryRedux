@@ -4,6 +4,7 @@ import com.electroblob.wizardry.api.content.data.*;
 import com.electroblob.wizardry.capabilities.*;
 import com.electroblob.wizardry.core.platform.services.IObjectData;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -52,6 +53,13 @@ public class ForgeObjectData implements IObjectData {
     public MinionData getMinionData(Mob mob) {
         return mob.getCapability(MinionDataHolder.INSTANCE).orElseThrow(
                 () -> new IllegalStateException("MinionData capability not present on mob " + mob)
+        );
+    }
+
+    @Override
+    public ContainmentData getContainmentData(LivingEntity entity) {
+        return entity.getCapability(ContainmentDataHolder.INSTANCE).orElseThrow(
+                () -> new IllegalStateException("ContainmentData capability not present on entity " + entity)
         );
     }
 

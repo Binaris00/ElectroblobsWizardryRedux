@@ -3,6 +3,7 @@ package com.electroblob.wizardry.content.blockentity;
 import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.data.ArcaneLockData;
+import com.electroblob.wizardry.api.content.data.ContainmentData;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.block.RunestonePedestalBlock;
 import com.electroblob.wizardry.content.entity.living.EvilWizard;
@@ -20,6 +21,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -186,21 +188,31 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
             BlockPos spawnPos = findSpawnPositionWizard(level.random.nextFloat() * 2 * (float) Math.PI);
             wizard.setPos(spawnPos.getX() + 0.5, spawnPos.getY(), spawnPos.getZ() + 0.5);
             wizard.setElement(getBlockState().getBlock() instanceof RunestonePedestalBlock runestone ? runestone.getElement() : Elements.FIRE);
-            wizard.setShrinePosition(getBlockPos());
             wizard.finalizeSpawn((ServerLevelAccessor) level, level.getCurrentDifficultyAt(getBlockPos()), MobSpawnType.STRUCTURE, null, null);
             level.addFreshEntity(wizard);
             spawnedWizards.add(wizard.getUUID());
         }
     }
 
-    /** Applies the containment effect to all players currently in the containment list, refreshing the effect duration. */
+    /** Applies the containment effect to all players and wizards within the containment area. */
     private void containmentEffect() {
         if (!(level instanceof ServerLevel serverLevel)) return;
 
         playersInContainment.removeIf(uuid -> {
             Player player = serverLevel.getPlayerByUUID(uuid);
             if (player == null || !player.isAlive()) return true;
-            player.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 80));
+            setContainmentPos(player);
+            player.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 100, 0, false, false, true));
+            return false;
+        });
+
+        spawnedWizards.removeIf(uuid -> {
+            var entity = serverLevel.getEntity(uuid);
+            if (entity == null || !entity.isAlive()) return true;
+            if (entity instanceof LivingEntity livingEntity) {
+                setContainmentPos(livingEntity);
+                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 80, 0, false, false, true));
+            }
             return false;
         });
     }
@@ -321,6 +333,16 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         CompoundTag tag = super.getUpdateTag();
         saveAdditional(tag);
         return tag;
+    }
+
+    /**
+     * All players and wizards affected by the containment effect have their containment position set to this pedestal's
+     * position, avoiding the problem of them having different containment origins depending on where they were when the
+     * effect was applied.
+     */
+    private void setContainmentPos(LivingEntity entity) {
+        ContainmentData data = Services.OBJECT_DATA.getContainmentData(entity);
+        data.setContainmentPos(this.worldPosition);
     }
 
     private void sync() {
