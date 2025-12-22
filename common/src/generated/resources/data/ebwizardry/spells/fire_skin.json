@@ -1,8 +1,8 @@
 {
   "type": "defence",
   "base_properties": {
-    "effect.ebwizardry.fire_skin_duration": 600,
-    "effect.ebwizardry.fire_skin_strength": 0,
+    "effect.ebwizardry.fireskin_duration": 600,
+    "effect.ebwizardry.fireskin_strength": 0,
     "effect_duration": 5
   },
   "chargeup": 0,

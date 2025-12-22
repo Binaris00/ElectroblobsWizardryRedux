@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-16T11:49:03.939502084	Spell Data Provider: ebwizardry
+// 1.20.1	2025-12-22T11:27:15.941354777	Spell Data Provider: ebwizardry
 59709226fef8219dd2c5cd41cb6bb719de55c656 data/ebwizardry/spells/agility.json
 12e12c73b30c50363edbf0bbe8132934b20111d1 data/ebwizardry/spells/arc.json
 34ede34dc275e94721ac699f01685084738cbd27 data/ebwizardry/spells/arcane_lock.json
@@ -10,9 +10,9 @@ bcdfec1ed6026b7ccda593d35bf7c00b9f59c468 data/ebwizardry/spells/bubble.json
 9cfddbfbb3950c1b6495e1acec9903e93092528c data/ebwizardry/spells/charge.json
 d5b1731efaa04f19fcf347612e7f2ad66d7a2244 data/ebwizardry/spells/combustion_rune.json
 542227e3a23326b64a30ae5a82665badba6e40e2 data/ebwizardry/spells/conjure_armor.json
-6f7e1c014f7e815943968ede173b0c30e89560b3 data/ebwizardry/spells/conjure_bow.json
-6f7e1c014f7e815943968ede173b0c30e89560b3 data/ebwizardry/spells/conjure_pickaxe.json
-6f7e1c014f7e815943968ede173b0c30e89560b3 data/ebwizardry/spells/conjure_sword.json
+76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_bow.json
+76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_pickaxe.json
+76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_sword.json
 e966e28a981b29ef76ac99c89473df4a13368f6d data/ebwizardry/spells/cure_effects.json
 9811f2a544a1863c96ae324d8d0d5ed67e63da71 data/ebwizardry/spells/curse_of_enfeeblement.json
 aa0e35a91777491e280fdfe4074ed269f884a2ca data/ebwizardry/spells/curse_of_soulbinding.json
@@ -30,7 +30,7 @@ bac21b784e9f58e2f8e4675e35e8218f75a7c860 data/ebwizardry/spells/evade.json
 9bd26f71530f336c3734b8e0cff020ae41be22ed data/ebwizardry/spells/fire_breath.json
 31968c10236a6b44c70ed216d9a9b0f3309d1bde data/ebwizardry/spells/fire_resistance.json
 4227ff65ec096d225701b25fb229f43fbfd1c1b2 data/ebwizardry/spells/fire_sigil.json
-ebf3ecc345b316bd1eb4f1112151d217eb55c9bc data/ebwizardry/spells/fire_skin.json
+dcb545721019968703d8f4437948f0cd2bd53cc8 data/ebwizardry/spells/fire_skin.json
 a2165b103e62eea79342a29c3413d15025fd2f52 data/ebwizardry/spells/fireball.json
 c3d8c5322d16501e74bb9c19f3bea48d3195abfc data/ebwizardry/spells/firebolt.json
 28ec04eb5db96f98f6d8ddf008bde3628bdbff76 data/ebwizardry/spells/firebomb.json

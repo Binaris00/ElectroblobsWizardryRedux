@@ -24,14 +24,17 @@ public class ConjuredArrowEntity extends AbstractArrow {
 
     @Override
     public void tick() {
-        if (this.inGroundTime > 400) {
-            this.discard();
-        }
+        if (this.inGroundTime > 60) this.discard();
         super.tick();
     }
 
     @Override
     protected @NotNull ItemStack getPickupItem() {
         return ItemStack.EMPTY;
+    }
+
+    @Override
+    public boolean isPickable() {
+        return false;
     }
 }

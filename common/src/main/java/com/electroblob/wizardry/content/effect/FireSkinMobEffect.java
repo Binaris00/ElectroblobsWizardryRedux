@@ -24,7 +24,7 @@ public class FireSkinMobEffect extends MagicMobEffect {
         Entity attacker = event.getSource().getEntity();
         if (attacker == null) return;
 
-        if (event.getDamagedEntity().hasEffect(EBMobEffects.FIRE_SKIN.get()) &&
+        if (event.getDamagedEntity().hasEffect(EBMobEffects.FIRESKIN.get()) &&
                 !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, event.getDamagedEntity())) {
             attacker.setSecondsOnFire(Spells.FIRE_BREATH.property(DefaultProperties.EFFECT_DURATION) * 20);
         }

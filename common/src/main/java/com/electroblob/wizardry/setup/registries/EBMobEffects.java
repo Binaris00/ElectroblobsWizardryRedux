@@ -21,7 +21,7 @@ public final class EBMobEffects {
     public static final DeferredObject<MobEffect> PARALYSIS = mobEffect("paralysis", ParalysisMobEffect::new);
     public static final DeferredObject<MobEffect> STATIC_AURA = mobEffect("static_aura", StaticAuraMobEffect::new);
     public static final DeferredObject<MobEffect> WARD = mobEffect("ward", WardMobEffect::new);
-    public static final DeferredObject<MobEffect> FIRE_SKIN = mobEffect("fire_skin", FireSkinMobEffect::new);
+    public static final DeferredObject<MobEffect> FIRESKIN = mobEffect("fireskin", FireSkinMobEffect::new);
     public static final DeferredObject<MobEffect> OAKFLESH = mobEffect("oakflesh", OakFleshMobEffect::new);
     public static final DeferredObject<MobEffect> CURSE_OF_ENFEEBLEMENT = mobEffect("curse_of_enfeeblement", EnfeeblementCurse::new);
     public static final DeferredObject<MobEffect> CURSE_OF_UNDEATH = mobEffect("curse_of_undeath", UndeathCurse::new);

@@ -370,11 +370,11 @@ public final class Spells {
                         .build()
         ));
 
-        FIRE_SKIN = spell("fire_skin", () -> new BuffSpell(1, 0.3f, 0, EBMobEffects.FIRE_SKIN).assignProperties(
+        FIRE_SKIN = spell("fire_skin", () -> new BuffSpell(1, 0.3f, 0, EBMobEffects.FIRESKIN).assignProperties(
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.DEFENCE, SpellAction.POINT_UP, 40, 0, 250)
-                        .add(BuffSpell.getEffectDurationProperty(EBMobEffects.FIRE_SKIN.get()), 600)
-                        .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.FIRE_SKIN.get()), 0)
+                        .add(BuffSpell.getEffectDurationProperty(EBMobEffects.FIRESKIN.get()), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.FIRESKIN.get()), 0)
                         .add(DefaultProperties.EFFECT_DURATION, 5)
                         .build()
         ));
@@ -646,21 +646,21 @@ public final class Spells {
 
         CONJURE_SWORD = spell("conjure_sword", () -> new ConjureItemSpell(EBItems.SPECTRAL_SWORD.get()).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.MAGIC, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .build()
         ));
 
         CONJURE_PICKAXE = spell("conjure_pickaxe", () -> new ConjureItemSpell(EBItems.SPECTRAL_PICKAXE.get()).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.MAGIC, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .build()
         ));
 
         CONJURE_BOW = spell("conjure_bow", () -> new ConjureItemSpell(EBItems.SPECTRAL_BOW.get()).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.MAGIC, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .build()
         ));

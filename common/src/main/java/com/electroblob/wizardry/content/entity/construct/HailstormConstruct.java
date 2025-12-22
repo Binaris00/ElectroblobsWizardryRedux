@@ -37,12 +37,9 @@ public class HailstormConstruct extends ScaledConstructEntity {
             IceShardEntity iceshard = new IceShardEntity(level());
             iceshard.setPos(x, y, z);
 
-            iceshard.setDeltaMovement(Mth.cos((float) Math.toRadians(this.getYRot() + 90)), -0.6,
-                    Mth.sin((float) Math.toRadians(this.getYRot() + 90)));
-
-            // TODO OWNER STUFF
-            //iceshard.setCaster(this.getCaster());
-            //iceshard.damageMultiplier = this.damageMultiplier;
+            iceshard.setDeltaMovement(Mth.cos((float) Math.toRadians(this.getYRot() + 90)), -0.6, Mth.sin((float) Math.toRadians(this.getYRot() + 90)));
+            iceshard.setOwner(this.getCaster());
+            iceshard.damageMultiplier = this.damageMultiplier;
 
             this.level().addFreshEntity(iceshard);
         }
