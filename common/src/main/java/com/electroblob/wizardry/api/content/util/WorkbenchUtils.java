@@ -51,6 +51,14 @@ public final class WorkbenchUtils {
         return 0;
     }
 
+    /**
+     * Applies the spell books in the given slots to the wand in the centre slot.
+     *
+     * @param centre     The slot containing the wand
+     * @param spellBooks The slots containing the spell books
+     * @param ctx        The spell context
+     * @return True if any spells were bound, false otherwise
+     */
     public static boolean applySpellBooks(Slot centre, Slot[] spellBooks, SpellContext ctx) {
         List<Spell> spells = WandHelper.getSpells(centre.getItem());
         boolean changed = false;
@@ -75,6 +83,16 @@ public final class WorkbenchUtils {
         return changed;
     }
 
+    /**
+     * Determines whether the given spell can be bound to the specified slot on a wand of the given tier.
+     *
+     * @param spell   The spell to check
+     * @param spells  The list of spells currently bound to the wand
+     * @param origin  The tier of the wand
+     * @param slot    The slot to which the spell would be bound
+     * @param ctx     The spell context
+     * @return True if the spell can be bound, false otherwise
+     */
     public static boolean canBindSpell(Spell spell, List<Spell> spells, SpellTier origin, int slot, SpellContext ctx) {
         return spell.getTier().level <= origin.level
                 && spells.get(slot) != spell
@@ -83,6 +101,14 @@ public final class WorkbenchUtils {
     }
 
 
+    /**
+     * Updates the spell in the given slot, taking care to preserve the currently selected spell if necessary.
+     *
+     * @param wand   The wand item stack
+     * @param spells The list of spells on the wand
+     * @param slot   The slot to update
+     * @param spell  The new spell to set
+     */
     public static void updateSpellSlot(ItemStack wand, List<Spell> spells, int slot, Spell spell) {
         int currentSelectedIndex = spells.indexOf(WandHelper.getCurrentSpell(wand));
         if (currentSelectedIndex == slot) WandHelper.setCurrentSpell(wand, spell);

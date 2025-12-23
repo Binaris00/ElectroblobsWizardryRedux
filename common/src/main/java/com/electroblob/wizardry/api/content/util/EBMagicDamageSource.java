@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.api.content.util;
 
+import com.electroblob.wizardry.content.entity.living.*;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.core.Holder;
@@ -39,17 +40,12 @@ public class EBMagicDamageSource extends DamageSource {
         setEntityImmunities(CaveSpider.class, EBDamageSources.POISON);
         setEntityImmunities(Zombie.class, EBDamageSources.POISON);
         setEntityImmunities(Skeleton.class, EBDamageSources.POISON);
-
         //setEntityImmunities(Phoenix.class, DamageType.FIRE);
-        //setEntityImmunities(ZombieMinion.class, DamageType.POISON);
-        //setEntityImmunities(EntitySkeletonMinion.class, DamageType.POISON);
-        //setEntityImmunities(EntitySpiderMinion.class, DamageType.POISON);
-        //setEntityImmunities(IceWraith.class, DamageType.FROST);
-        //setEntityImmunities(EntityIceGiant.class, DamageType.FROST);
-        //setEntityImmunities(EntityLightningWraith.class, DamageType.SHOCK);
-        //setEntityImmunities(EntityShadowWraith.class, DamageType.WITHER);
-        //setEntityImmunities(StormElemental.class, DamageType.FIRE, DamageType.SHOCK);
-        //setEntityImmunities(BlazeMinion.class, DamageType.FIRE);
+        setEntityImmunities(IceWraith.class, EBDamageSources.FROST);
+        setEntityImmunities(IceGiant.class, EBDamageSources.FROST);
+        setEntityImmunities(LightningWraith.class, EBDamageSources.SHOCK);
+        setEntityImmunities(ShadowWraith.class, EBDamageSources.WITHER);
+        setEntityImmunities(StormElemental.class, EBDamageSources.FIRE, EBDamageSources.SHOCK);
     }
 
     private final boolean isRetaliatory;
@@ -58,8 +54,6 @@ public class EBMagicDamageSource extends DamageSource {
     public EBMagicDamageSource(Holder<DamageType> damageTypeHolder, @Nullable Entity directEntity, @Nullable Entity causingEntity, boolean isRetaliatory) {
         super(damageTypeHolder, directEntity, causingEntity);
         this.isRetaliatory = isRetaliatory;
-//        if (type == DamageType.FIRE) this.setIsFire();
-//        if (type == DamageType.BLAST) this.setExplosion();
     }
 
     @SafeVarargs

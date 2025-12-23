@@ -2,6 +2,7 @@ package com.electroblob.wizardry.api.content.util;
 
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.data.SpellManagerData;
+import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.item.IElementValue;
 import com.electroblob.wizardry.api.content.item.ITierValue;
 import com.electroblob.wizardry.api.content.spell.Element;
@@ -58,6 +59,9 @@ public final class WandHelper {
 
     /** The NBT key used to store the wand progression level. */
     public static final String PROGRESSION_KEY = "progression";
+
+    /** Modifier applied to progression for second time tier unlocks. */
+    private static final float SECOND_TIME_PROGRESSION_MODIFIER = 1.5f;
 
     /**
      * Returns the list of spells stored on the wand. If there are fewer spells stored than the wand's maximum spell slots,
@@ -430,12 +434,16 @@ public final class WandHelper {
 
         float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConfig.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION;
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
-
+        WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
 
         if (stack.getItem() instanceof IElementValue elementValue && stack.getItem() instanceof ITierValue tierValue) {
             if (elementValue.getElement() == spell.getElement()) {
                 modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).level + 1) * EBConfig.POTENCY_INCREASE_PER_TIER, true);
                 progressionModifier *= 1.2f;
+            }
+
+            if (!wizardData.hasReachedTier(tierValue.getTier(stack).next())) {
+                progressionModifier *= SECOND_TIME_PROGRESSION_MODIFIER;
             }
         }
 
@@ -443,13 +451,11 @@ public final class WandHelper {
             progressionModifier *= 5f;
         }
 
-        // TODO DATA TIER
-//        if (!data.hasReachedTier(this.tier.next())) {
-//            progressionModifier *= SECOND_TIME_PROGRESSION_MODIFIER;
-//        }
-
 
         modifiers.set(SpellModifiers.PROGRESSION, progressionModifier, false);
         return modifiers;
+    }
+
+    private WandHelper() {
     }
 }
