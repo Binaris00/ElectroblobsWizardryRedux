@@ -484,14 +484,14 @@ public final class EBItems {
     }
 
     static DeferredObject<Item> artifact(String name, Rarity rarity, IArtefactEffect effect) {
-        return artifact(name, () -> EBAccessoriesIntegration.getSafeArtifact(rarity, effect));
+        return artifact(name, () -> EBAccessoriesIntegration.getArtifact(rarity, effect));
     }
 
     /**
      * Add artifacts with a default model and with a safe-dependency check
      */
     static DeferredObject<Item> artifact(String name, Rarity rarity) {
-        return artifact(name, () -> EBAccessoriesIntegration.getSafeArtifact(rarity, null));
+        return artifact(name, () -> EBAccessoriesIntegration.getArtifact(rarity, null));
     }
 
     /**

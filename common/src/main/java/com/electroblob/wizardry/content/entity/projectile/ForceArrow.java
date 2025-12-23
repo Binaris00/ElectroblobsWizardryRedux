@@ -84,7 +84,7 @@ public class ForceArrow extends MagicArrowEntity {
         if (mana <= 0 || !(getOwner() instanceof Player player)) return;
 
         if (!player.isCreative() && EBAccessoriesIntegration.isEquipped(player, EBItems.RING_MANA_RETURN.get())) {
-            InventoryUtil.getPrioritisedHotBarAndOffhand(player)
+            InventoryUtil.getHotBarAndOffhand(player)
                     .stream().filter(st -> st.getItem() instanceof IManaStoringItem)
                     .findAny()
                     .ifPresent(st -> ((IManaStoringItem) st.getItem()).rechargeMana(st, mana));

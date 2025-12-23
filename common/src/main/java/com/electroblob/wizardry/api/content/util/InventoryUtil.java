@@ -10,8 +10,6 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.Enchantment;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import javax.annotation.Nullable;
 import java.util.*;
@@ -35,7 +33,7 @@ public final class InventoryUtil {
         return items;
     }
 
-    public static List<ItemStack> getPrioritisedHotBarAndOffhand(Player player) {
+    public static List<ItemStack> getHotBarAndOffhand(Player player) {
         List<ItemStack> hotbar = getHotbar(player);
         hotbar.add(0, player.getOffhandItem());
         hotbar.remove(player.getMainHandItem());

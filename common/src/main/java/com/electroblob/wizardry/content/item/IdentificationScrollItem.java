@@ -34,7 +34,7 @@ public class IdentificationScrollItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
 
-        for (ItemStack stack1 : InventoryUtil.getPrioritisedHotBarAndOffhand(player)) {
+        for (ItemStack stack1 : InventoryUtil.getHotBarAndOffhand(player)) {
             if (stack1.isEmpty()) continue;
             Spell spell = SpellUtil.getSpell(stack1);
             if (stack1.getItem() instanceof IdentificationScrollItem || spell == Spells.NONE) continue;

@@ -14,7 +14,7 @@ public class ExtractionRingEffect implements IArtefactEffect {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         if (!(event.getSource().is(EBDamageSources.SORCERY))) return;
 
-        InventoryUtil.getPrioritisedHotBarAndOffhand(player).stream()
+        InventoryUtil.getHotBarAndOffhand(player).stream()
                 .filter(s -> s.getItem() instanceof IManaStoringItem && !((IManaStoringItem) s.getItem()).isManaFull(s))
                 .findFirst()
                 .ifPresent(s -> ((IManaStoringItem) s.getItem()).rechargeMana(s, 4 + player.level().random.nextInt(3)));

@@ -29,7 +29,7 @@ public class WandUpgradeItem extends Item {
         if (!(event.getEntity() instanceof Player player)) return;
 
         // Need to be a ManaStoringItem and without full mana
-        InventoryUtil.getPrioritisedHotBarAndOffhand(player).stream()
+        InventoryUtil.getHotBarAndOffhand(player).stream()
                 .filter(stack -> stack.getItem() instanceof IManaStoringItem manaItem && !manaItem.isManaFull(stack))
                 .filter(stack -> WandHelper.getUpgradeLevel(stack, EBItems.SIPHON_UPGRADE) > 0)
                 .findFirst() // only can recharge 1 item for death

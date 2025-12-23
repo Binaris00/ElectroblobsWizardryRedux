@@ -63,7 +63,7 @@ public final class ArtifactUtils {
      * if any of them have the given spell bound to them. This is a useful code pattern for artefact effects.
      */
     public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action) {
-        List<ItemStack> hotbar = InventoryUtil.getPrioritisedHotBarAndOffhand(player);
+        List<ItemStack> hotbar = InventoryUtil.getHotBarAndOffhand(player);
 
         Optional<ItemStack> stack = hotbar.stream().filter(s -> s.getItem() instanceof ISpellCastingItem && Arrays.asList(((ISpellCastingItem) s.getItem()).getSpells(s)).contains(spell)).findFirst();
 

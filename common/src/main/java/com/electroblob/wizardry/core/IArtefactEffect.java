@@ -15,7 +15,7 @@ import net.minecraft.world.level.Level;
  * This provides methods that can be overridden to define custom behaviour for artefacts based on events. These methods
  * are loaded by the {@link ArtefactItem ArtefactItem} class to register the effects
  * inside the event bus.
- * <br><br>
+ * <p>
  * You have all the freedom to add a custom implementation of this interface for your own artefacts, but if you do so,
  * you must ensure to load the events yourself.
  */

@@ -26,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 public class FlamingWeapon extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        for (ItemStack stack : InventoryUtil.getPrioritisedHotBarAndOffhand(ctx.caster())) {
+        for (ItemStack stack : InventoryUtil.getHotBarAndOffhand(ctx.caster())) {
             // If the item isn't a sword or a bow, or if it already has Fire Aspect or Flaming Arrows, skip it
             if ((!ImbueWeapon.isSword(stack) && !ImbueWeapon.isBow(stack)) ||
                     EnchantmentHelper.getEnchantments(stack).containsKey(Enchantments.FLAMING_ARROWS) ||
