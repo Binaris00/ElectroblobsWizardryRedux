@@ -2,7 +2,6 @@ package com.electroblob.wizardry.client.effect;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.data.ContainmentData;
-import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.effect.ContainmentEffect;
 import com.electroblob.wizardry.core.platform.Services;
@@ -40,7 +39,7 @@ public final class ContainmentFieldRender {
 
     public static void render(Camera camera, PoseStack poseStack, float partialTicks) {
         LocalPlayer player = Minecraft.getInstance().player;
-        if (player == null) return;
+        if (player == null || !player.isAlive()) return;
 
         MobEffectInstance effect = player.getEffect(EBMobEffects.CONTAINMENT.get());
         if (effect == null) return;

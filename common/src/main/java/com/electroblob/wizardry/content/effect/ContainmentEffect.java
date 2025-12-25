@@ -26,9 +26,10 @@ public class ContainmentEffect extends MagicMobEffect {
 
     @Override
     public void applyEffectTick(@NotNull LivingEntity target, int amplifier) {
+        if (!target.isAlive()) return;
         float maxDistance = getContainmentDistance(amplifier);
-
         ContainmentData data = Services.OBJECT_DATA.getContainmentData(target);
+
         if (data.getContainmentPos() == null) {
             data.setContainmentPos(target.blockPosition().offset(-1, -1, -1));
         }

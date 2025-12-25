@@ -71,7 +71,8 @@ public interface IObjectData {
     MinionData getMinionData(Mob mob);
 
     /**
-     * Gets the containment data for the given living entity.
+     * Gets the containment data for the given living entity, this could be null in some cases like entity dying or
+     * not being affected by containment effect.
      *
      * @param entity The living entity whose containment data is to be retrieved.
      * @return The ContainmentData associated with the living entity.

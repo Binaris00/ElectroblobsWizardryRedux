@@ -159,6 +159,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
 
     private void checkEvent(BlockPos pos) {
         List<Player> nearbyPlayers = level.getEntitiesOfClass(Player.class, new AABB(pos).inflate(ACTIVATION_RADIUS));
+        nearbyPlayers.removeIf(player -> player.isSpectator() || !player.isAlive());
         if (nearbyPlayers.isEmpty()) return;
 
         double x = pos.getX() + 0.5;
@@ -202,7 +203,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
             Player player = serverLevel.getPlayerByUUID(uuid);
             if (player == null || !player.isAlive()) return true;
             setContainmentPos(player);
-            player.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 100, 0, false, false, true));
+            player.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 200, 0, false, false, true));
             return false;
         });
 
@@ -211,7 +212,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
             if (entity == null || !entity.isAlive()) return true;
             if (entity instanceof LivingEntity livingEntity) {
                 setContainmentPos(livingEntity);
-                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 80, 0, false, false, true));
+                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 200, 0, false, false, true));
             }
             return false;
         });

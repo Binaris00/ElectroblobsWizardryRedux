@@ -8,6 +8,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.capabilities.Capability;
 import net.minecraftforge.common.capabilities.CapabilityManager;
@@ -20,7 +21,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class ContainmentDataHolder implements INBTSerializable<CompoundTag>, ContainmentData {
     public static final ResourceLocation LOCATION = WizardryMainMod.location("containment_data");
-    public static final Capability<ContainmentDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {});
+    public static final Capability<ContainmentDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {
+    });
 
     private final LivingEntity provider;
     private BlockPos containmentPos = null;
@@ -33,7 +35,11 @@ public class ContainmentDataHolder implements INBTSerializable<CompoundTag>, Con
         if (!this.provider.level().isClientSide()) {
             CompoundTag tag = this.serializeNBT();
             ContainmentSyncPacketS2C packet = new ContainmentSyncPacketS2C(this.provider.getId(), tag);
-            Services.NETWORK_HELPER.sendToTracking(this.provider, packet);
+            if (this.provider instanceof ServerPlayer serverPlayer) {
+                Services.NETWORK_HELPER.sendTo(serverPlayer, packet);
+            } else {
+                Services.NETWORK_HELPER.sendToTracking(this.provider, packet);
+            }
         }
     }
 
@@ -79,11 +85,6 @@ public class ContainmentDataHolder implements INBTSerializable<CompoundTag>, Con
         }
     }
 
-    public void copyFrom(@NotNull ContainmentDataHolder holder) {
-        this.containmentPos = holder.containmentPos;
-        sync();
-    }
-
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<ContainmentDataHolder> dataHolder;
 
@@ -107,4 +108,3 @@ public class ContainmentDataHolder implements INBTSerializable<CompoundTag>, Con
         }
     }
 }
-
