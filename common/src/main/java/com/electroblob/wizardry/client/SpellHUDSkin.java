@@ -85,9 +85,6 @@ public class SpellHUDSkin {
         description = GsonHelper.getAsString(json, "description");
 
         width = GsonHelper.getAsInt(json, "width");
-        // TODO
-//            if (width > 128)
-//                Wizardry.logger.warn("The width of the spell HUD skin " + name + " exceeds 128, this may cause it to render strangely.");
         height = GsonHelper.getAsInt(json, "height");
 
         JsonObject mirror = GsonHelper.getAsJsonObject(json, "mirror");

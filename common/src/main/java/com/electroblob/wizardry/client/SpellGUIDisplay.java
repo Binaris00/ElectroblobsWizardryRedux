@@ -11,6 +11,7 @@ import com.electroblob.wizardry.api.content.util.DrawingUtils;
 import com.electroblob.wizardry.content.data.SpellGlyphData;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.platform.Services;
+import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
@@ -109,12 +110,12 @@ public final class SpellGUIDisplay {
         if (!(wand.getItem() instanceof ISpellCastingItem))
             throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
 
-        boolean flipX = false;
-        boolean flipY = false;
+        boolean flipX = EBConfig.spellHUDFlipX;
+        boolean flipY = EBConfig.spellHUDFlipY;
 
-//        if (Wizardry.settings.spellHUDPosition.dynamic) {
-//            flipX = flipX == ((mainHand ? player.getMainArm() : player.getMainArm().getOpposite()) == HumanoidArm.LEFT);
-//        }
+        if (EBConfig.spellHUDDynamicPositioning) {
+            flipX = flipX == ((mainHand ? player.getMainArm() : player.getMainArm().getOpposite()) == HumanoidArm.LEFT);
+        }
 
         SpellHUDSkin skin = getSkin("default");
         if (skin == null) return;
@@ -123,18 +124,6 @@ public final class SpellGUIDisplay {
 
         int x = flipX ? width : 0;
         int y = flipY ? 0 : height;
-
-        float xSpace = (float) (width / 2 - HALF_HOTBAR_WIDTH);
-        if (!player.getOffhandItem().isEmpty() && (player.getMainArm() == HumanoidArm.LEFT) == flipX) {
-            xSpace -= OFFHAND_SLOT_WIDTH;
-        }
-
-        if (!flipY && skin.getWidth() > xSpace) {
-            float scale = xSpace / skin.getWidth();
-            stack.scale(scale, scale, 1);
-            x = Mth.ceil(x / scale);
-            y = Mth.ceil(y / scale);
-        }
 
         Spell spell = ((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand);
         int cooldown = ((ISpellCastingItem) wand.getItem()).getCurrentCooldown(wand);
@@ -162,19 +151,16 @@ public final class SpellGUIDisplay {
                 progress = maxCooldown == 0 ? 1 : (maxCooldown - (float) cooldown + partialTicks) / maxCooldown;
             }
 
-            // TODO ARCANE JAMMER
-            // player.hasEffect(EBMobEffects.ARCANE_JAMMER.get())
-            skin.drawBackground(stack, x, y, flipX, flipY, icon, progress, player.isCreative(), false);
+            skin.drawBackground(stack, x, y, flipX, flipY, icon, progress, player.isCreative(), player.hasEffect(EBMobEffects.ARCANE_JAMMER.get()));
         }
 
         stack.popPose();
     }
-
     public static void renderChargeMeter(PoseStack stack, Player player, ItemStack wand, int width, int height, float partialTicks) {
         if (player.isSpectator()) return;
         stack.pushPose();
 
-        //if (!Wizardry.settings.showChargeMeter) return;
+        if (!EBConfig.showChargeMeter) return;
         if (mc.options.renderDebug) return;
         if (mc.options.getCameraType() != CameraType.FIRST_PERSON) return;
         if (wand != player.getUseItem()) return;
@@ -218,7 +204,7 @@ public final class SpellGUIDisplay {
         if (!discovered)
             format = Style.EMPTY.withColor(ChatFormatting.BLUE).withFont(new ResourceLocation("minecraft", "alt"));
 
-        //if (player.hasEffect(WizardryPotions.ARCANE_JAMMER.get())) format = Style.EMPTY.withObfuscated(true);
+        if (player.hasEffect(EBMobEffects.ARCANE_JAMMER.get())) format = Style.EMPTY.withObfuscated(true);
 
         Component name = discovered ? Component.translatable(spell.getDescriptionId().toString()) :
                 Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData()));
