@@ -1,0 +1,25 @@
+{
+  "type": "construct",
+  "base_properties": {
+    "duration": 500,
+    "minion_lifetime": 600,
+    "minion_spawn_interval": 20
+  },
+  "chargeup": 25,
+  "cooldown": 300,
+  "cost": 150,
+  "element": "ebwizardry:necromancy",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
+  "spell_action": "ebwizardry:summon",
+  "tier": "ebwizardry:master"
+}

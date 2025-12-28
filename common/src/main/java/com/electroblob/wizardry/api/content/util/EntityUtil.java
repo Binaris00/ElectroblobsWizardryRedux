@@ -281,4 +281,14 @@ public final class EntityUtil {
 
         return wand;
     }
+
+    public static void applyStandardKnockback(Entity attacker, LivingEntity target, float strength) {
+        double dx = attacker.getX() - target.getX();
+        double dz;
+        for (dz = attacker.getZ() - target.getZ(); dx * dx + dz * dz < 1.0E-4D; dz = (Math.random() - Math.random()) * 0.01D) {
+            dx = (Math.random() - Math.random()) * 0.01D;
+        }
+        target.knockback(strength, dx, dz);
+    }
+
 }

@@ -58,6 +58,7 @@ public final class Spells {
     public static final Spell FIRE_RESISTANCE;
     public static final Spell DARK_VISION;
     public static final Spell FONT_OF_VITALITY;
+    public static final Spell FONT_OF_MANA;
     public static final Spell INVISIBILITY;
     public static final Spell WATER_BREATHING;
     public static final Spell HEAL;
@@ -149,6 +150,10 @@ public final class Spells {
     public static final Spell SUMMON_ICE_GIANT;
     public static final Spell RAY_OF_PURIFICATION;
     public static final Spell ARCANE_LOCK;
+    public static final Spell BOULDER;
+    public static final Spell SPEED_TIME;
+    public static final Spell COBWEBS;
+    public static final Spell ZOMBIE_APOCALYPSE;
 
     public static final Spell OJOSPOCOS;
     public static final Spell FLAME_FLAME;
@@ -342,6 +347,8 @@ public final class Spells {
                         .add(BuffSpell.getEffectStrengthProperty(MobEffects.REGENERATION), 1)
                         .build()
         ));
+
+        FONT_OF_MANA = spell("font_of_mana", FontOfMana::new);
 
         INVISIBILITY = spell("invisibility", () -> new BuffSpell(0, 0.5f, 0.5f, () -> MobEffects.INVISIBILITY).assignProperties(
                 SpellProperties.builder()
@@ -759,6 +766,14 @@ public final class Spells {
         RAY_OF_PURIFICATION = spell("ray_of_purification", RayOfPurification::new);
 
         ARCANE_LOCK = spell("arcane_lock", ArcaneLockSpell::new);
+
+        BOULDER = spell("boulder", Boulder::new);
+
+        SPEED_TIME = spell("speed_time", SpeedTime::new);
+
+        COBWEBS = spell("cobwebs", Cobwebs::new);
+
+        ZOMBIE_APOCALYPSE = spell("zombie_apocalypse", ZombieApocalypse::new);
     }
 
     private Spells() {

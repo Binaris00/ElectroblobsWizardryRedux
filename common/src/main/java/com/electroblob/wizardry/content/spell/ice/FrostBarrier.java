@@ -13,7 +13,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
@@ -99,7 +98,7 @@ public class FrostBarrier extends Spell {
 
         IceBarrierConstruct barrier = new IceBarrierConstruct(EBEntities.ICE_BARRIER.get(), world);
         barrier.setPos(position.x, position.y - yOffset, position.z);
-        barrier.setCaster((Player) caster);
+        barrier.setCaster(caster);
         barrier.lifetime = 400;
         barrier.damageMultiplier = 1;
         barrier.setRot((float) Math.toDegrees(Mth.atan2(-direction.x, direction.z)), barrier.getXRot());

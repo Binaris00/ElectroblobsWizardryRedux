@@ -16,14 +16,15 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
+@SuppressWarnings("deprecation")
 public class VanishingCobwebBlock extends BaseEntityBlock {
-    public VanishingCobwebBlock(Properties p_49795_) {
-        super(p_49795_);
+    public VanishingCobwebBlock(Properties properties) {
+        super(properties);
     }
 
     @Nullable
-    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level p_151988_, BlockEntityType<T> p_151989_, BlockEntityType<VanishingCobwebBlockEntity> p_151990_) {
-        return createTickerHelper(p_151989_, p_151990_, VanishingCobwebBlockEntity::update);
+    protected static <T extends BlockEntity> BlockEntityTicker<T> createTicker(Level level, BlockEntityType<T> type, BlockEntityType<VanishingCobwebBlockEntity> entityType) {
+        return createTickerHelper(type, entityType, VanishingCobwebBlockEntity::update);
     }
 
     @Override

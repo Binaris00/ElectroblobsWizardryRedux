@@ -1,0 +1,25 @@
+{
+  "type": "utility",
+  "base_properties": {
+    "effect_radius": 0,
+    "extra_ticks": 1,
+    "time_increment": 30.0
+  },
+  "chargeup": 0,
+  "cooldown": 0,
+  "cost": 15,
+  "element": "ebwizardry:sorcery",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
+  "spell_action": "ebwizardry:point_up",
+  "tier": "ebwizardry:master"
+}

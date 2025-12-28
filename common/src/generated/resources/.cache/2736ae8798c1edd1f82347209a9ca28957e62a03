@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-22T11:27:15.941354777	Spell Data Provider: ebwizardry
+// 1.20.1	2025-12-28T16:20:11.316960761	Spell Data Provider: ebwizardry
 59709226fef8219dd2c5cd41cb6bb719de55c656 data/ebwizardry/spells/agility.json
 12e12c73b30c50363edbf0bbe8132934b20111d1 data/ebwizardry/spells/arc.json
 34ede34dc275e94721ac699f01685084738cbd27 data/ebwizardry/spells/arcane_lock.json
@@ -6,8 +6,10 @@ e11cad8049f551f1dd69b0deb78e7ddfa7a0a087 data/ebwizardry/spells/arrow_rain.json
 fa3b79b45e7911dbd33a2070d91bca700f247e68 data/ebwizardry/spells/banish.json
 16d76d05587c6bbacd811fed8d1394e3e338127c data/ebwizardry/spells/blinding_flash.json
 18c953887248c22eb0da3e7322d9fbc5880eea47 data/ebwizardry/spells/blizzard.json
+c110d50f1e5e83b6b0051598f249638e80e4100a data/ebwizardry/spells/boulder.json
 bcdfec1ed6026b7ccda593d35bf7c00b9f59c468 data/ebwizardry/spells/bubble.json
 9cfddbfbb3950c1b6495e1acec9903e93092528c data/ebwizardry/spells/charge.json
+8795dea33f50284113bf7e583c512033caf0a686 data/ebwizardry/spells/cobwebs.json
 d5b1731efaa04f19fcf347612e7f2ad66d7a2244 data/ebwizardry/spells/combustion_rune.json
 542227e3a23326b64a30ae5a82665badba6e40e2 data/ebwizardry/spells/conjure_armor.json
 76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_bow.json
@@ -40,6 +42,7 @@ ce4f215b45eda18b02ee9109d2328d1d61b6b92e data/ebwizardry/spells/flamecatcher.jso
 0841ecefd05480a63e80770aea61bc7c492c0a32 data/ebwizardry/spells/flaming_axe.json
 ae6c50c35bf5886522821c16693c877a23a441e7 data/ebwizardry/spells/flaming_weapon.json
 a255f93b22d5b1abaadf9d7dc8e8a6c4c81b4441 data/ebwizardry/spells/flight.json
+72f9ad9fce937d9b88a8f1e18ca208b4ba3b6fb9 data/ebwizardry/spells/font_of_mana.json
 ac4bc22b076bba86df4ae974e77509eebc8efae4 data/ebwizardry/spells/font_of_vitality.json
 963775141342c444a16500826ef5ede9b91ec393 data/ebwizardry/spells/force_arrow.json
 69b0fbe48a4ee569ec8edc566e021362f330a95a data/ebwizardry/spells/force_orb.json
@@ -92,6 +95,7 @@ f662d6da129710323fbac51d5760dfc65f2a8635 data/ebwizardry/spells/satiety.json
 569de7630cabe5ef69d685249abd74eed6481525 data/ebwizardry/spells/shulker_bullet.json
 4dfa9284ae5464f06e8ebb0a84c05ef67e1198f6 data/ebwizardry/spells/slime.json
 d126beffd96ef8d80eda831cae2df4a49738bee0 data/ebwizardry/spells/smoke_bomb.json
+8e70e1d1bf2bf09d27f5affed4764d0f2d0c43e6 data/ebwizardry/spells/speed_time.json
 38cd383fe392675eb1d0e1ea004d8820053b175c data/ebwizardry/spells/spider_swarm.json
 eb7c6ce2ab40c74f936d246299768bb1aee4a298 data/ebwizardry/spells/static_aura.json
 c32882214361ba8f6158042b76c4d7fc4a3d7f0f data/ebwizardry/spells/summon_blaze.json
@@ -108,3 +112,4 @@ cc40fb3baed6dac638336137ce8472cdc09be6b5 data/ebwizardry/spells/thunderbolt.json
 aee441e978c2712f83bca1ac86d0d3ec1f4acc83 data/ebwizardry/spells/whirlwind.json
 67e9b19438ebc3b0e63ba5dd47abaa699b28f684 data/ebwizardry/spells/wither.json
 89f4d3b4ad942b62998cda054b9621bc22915705 data/ebwizardry/spells/wither_skull.json
+d10c6d114158fc6c21d1a78ddaaf1d9a7020378f data/ebwizardry/spells/zombie_apocalypse.json

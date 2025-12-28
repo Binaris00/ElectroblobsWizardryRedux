@@ -2,6 +2,7 @@ package com.electroblob.wizardry.setup.registries.client;
 
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.content.DeferredObject;
+import com.electroblob.wizardry.client.model.BoulderModel;
 import com.electroblob.wizardry.client.model.IceGiantModel;
 import com.electroblob.wizardry.client.model.RemnantModel;
 import com.electroblob.wizardry.client.model.WizardModel;
@@ -39,6 +40,7 @@ public final class EBRenderers {
         consumer.accept(RemnantModel.LAYER_LOCATION, RemnantModel::createBodyLayer);
         consumer.accept(WizardModel.LAYER_LOCATION, WizardModel::createBodyLayer);
         consumer.accept(IceGiantModel.LAYER_LOCATION, IceGiantModel::createBodyLayer);
+        consumer.accept(BoulderModel.LAYER_LOCATION, BoulderModel::createBodyLayer);
     }
 
     public static void registerRenderers() {
@@ -107,6 +109,8 @@ public final class EBRenderers {
 
         registerEntityRender(EBEntities.SHADOW_WRAITH, BlankRenderer::new);
         registerEntityRender(EBEntities.STORM_ELEMENTAL, BlankRenderer::new);
+        registerEntityRender(EBEntities.BOULDER, BoulderRenderer::new);
+        registerEntityRender(EBEntities.ZOMBIE_SPAWNER, ZombieSpawnerRenderer::new);
 
     }
 

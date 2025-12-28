@@ -1,0 +1,26 @@
+{
+  "type": "attack",
+  "base_properties": {
+    "damage": 10.0,
+    "duration": 200,
+    "knockback_strength": 1,
+    "speed": 0.44
+  },
+  "chargeup": 25,
+  "cooldown": 350,
+  "cost": 125,
+  "element": "ebwizardry:earth",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
+  "spell_action": "ebwizardry:summon",
+  "tier": "ebwizardry:master"
+}

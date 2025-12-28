@@ -16,6 +16,7 @@ import com.electroblob.wizardry.content.item.WizardArmorItem;
 import com.electroblob.wizardry.content.spell.lightning.Charge;
 import com.electroblob.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.electroblob.wizardry.content.spell.sorcery.ArcaneLockSpell;
+import com.electroblob.wizardry.content.spell.healing.FontOfMana;
 import com.electroblob.wizardry.core.AllyDesignation;
 import com.electroblob.wizardry.core.DataEvents;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
@@ -108,6 +109,7 @@ public final class EBEventHelper {
         bus.register(SpellCastEvent.Pre.class, Forfeit::onSpellCastPreEvent);
         bus.register(SpellCastEvent.Pre.class, ArtefactItem::onArtifactPreCast);
         bus.register(SpellCastEvent.Pre.class, EBEventHelper::castContextCheck);
+        bus.register(SpellCastEvent.Pre.class, FontOfMana::onSpellCastPreEvent);
     }
 
     private static void onSpellPostCast(WizardryEventBus bus) {
