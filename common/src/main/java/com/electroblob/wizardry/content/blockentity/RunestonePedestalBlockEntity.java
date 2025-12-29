@@ -118,7 +118,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
 
         long gameTime = level.getGameTime();
         if (!pedestal.activated && gameTime % 20 == 0) pedestal.checkEvent(pos);
-        if (pedestal.activated && gameTime % 40 == 0) pedestal.containmentEffect();
+        if (pedestal.activated) pedestal.containmentEffect();
         if (pedestal.activated && !pedestal.playersInContainment.isEmpty()) pedestal.checkWizardsAlive();
     }
 
@@ -230,7 +230,14 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
             return entity == null || !entity.isAlive();
         });
 
-        if (spawnedWizards.isEmpty() && !playersInContainment.isEmpty()) conquered();
+
+        if (spawnedWizards.isEmpty()) {
+            boolean playersEmpty = playersInContainment.isEmpty();
+            conquered();
+            // After conquering, if there are no players left in containment, regenerate immediately
+            // this happens if all players disconnect or die during the event, for example
+            if (playersEmpty) regenerate(this, getBlockPos());
+        }
     }
 
     /**

@@ -38,6 +38,7 @@ public class FrostSigilConstruct extends ScaledConstructEntity {
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, this.getX(), this.getY(), this.getZ(), this.level());
 
+        if (this.level().isClientSide) return;
         for (LivingEntity target : targets) {
             if (!this.isValidTarget(target)) continue;
             EntityUtil.attackEntityWithoutKnockback(target, this.getCaster() != null ?

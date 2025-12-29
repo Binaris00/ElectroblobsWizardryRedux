@@ -39,6 +39,7 @@ public class FireSigilConstruct extends ScaledConstructEntity {
                     * Mth.cos(angle), this.getY() + 0.1, this.getZ() + radius * Mth.sin(angle), 0, 0, 0);
         }
 
+        if (this.level().isClientSide) return;
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, getX(), getY(), getZ(), level());
 
         for (LivingEntity target : targets) {

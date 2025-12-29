@@ -36,48 +36,57 @@ public class LightningSigilConstruct extends ScaledConstructEntity {
     @Override
     public void tick() {
         super.tick();
-        if (this.tickCount > 600 && this.getCaster() == null && !this.level().isClientSide) this.discard();
 
-        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, this.getX(), this.getY(), this.getZ(), this.level());
+        if (this.tickCount > 600 && this.getCaster() == null && !this.level().isClientSide) {
+            this.discard();
+        }
+
+        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, getX(), getY(), getZ(), level());
         for (LivingEntity target : targets) {
-            if (!this.isValidTarget(target)) continue;
+            if (!isValidTarget(target)) continue;
 
             Vec3 originalVec = target.getDeltaMovement();
 
-            boolean damageResult = MagicDamageSource.causeMagicDamage(this, target,
-                    Spells.LIGHTNING_SIGIL.property(DefaultProperties.DAMAGE) * this.damageMultiplier,
-                    EBDamageSources.SHOCK);
-            if (!damageResult) continue;
+            // Inline damage check to avoid extra local variable
+            if (!MagicDamageSource.causeMagicDamage(this, target,
+                    Spells.LIGHTNING_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier,
+                    EBDamageSources.SHOCK)) continue;
 
-
-            this.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
+            playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
             target.setDeltaMovement(originalVec);
 
             double seekerRange = Spells.LIGHTNING_SIGIL.property(DefaultProperties.RANGE);
             List<LivingEntity> secondaryTargets = EntityUtil.getLivingWithinRadius(seekerRange, target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ(), level());
-            for (int j = 0; j < Math.min(secondaryTargets.size(), Spells.LIGHTNING_SIGIL.property(DefaultProperties.MAX_TARGETS)); j++) {
-                LivingEntity secondaryTarget = secondaryTargets.get(j);
-                if (secondaryTarget != target && this.isValidTarget(secondaryTarget)) {
-                    if (level().isClientSide) {
-                        ParticleBuilder.create(EBParticles.LIGHTNING).entity(target)
-                                .pos(0, target.getBbHeight() / 2, 0).target(secondaryTarget).spawn(level());
+            int maxTargets = Spells.LIGHTNING_SIGIL.property(DefaultProperties.MAX_TARGETS);
+            int hitCount = 0;
+            for (LivingEntity secondary : secondaryTargets) {
+                if (hitCount >= maxTargets) break;
+                if (secondary == target || !isValidTarget(secondary)) continue;
+                hitCount++;
 
-                        ParticleBuilder.spawnShockParticles(level(), secondaryTarget.getX(), secondaryTarget.getY() + secondaryTarget.getBbHeight() / 2, secondaryTarget.getZ());
-                    }
+                if (level().isClientSide) {
+                    ParticleBuilder.create(EBParticles.LIGHTNING).entity(target)
+                            .pos(0, target.getBbHeight() / 2, 0).target(secondary)
+                            .spawn(level());
+                    ParticleBuilder.spawnShockParticles(level(),
+                            secondary.getX(), secondary.getY() + secondary.getBbHeight() / 2, secondary.getZ());
+                } else {
+                    secondary.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(),
+                            1.0F, level().random.nextFloat() * 0.4F + 1.5F);
 
-                    secondaryTarget.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0F, level().random.nextFloat() * 0.4F + 1.5F);
-                    secondaryTarget.hurt(MagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SHOCK),
+                    secondary.hurt(MagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SHOCK),
                             Spells.LIGHTNING_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier);
                 }
             }
-            this.discard();
+
+            if (!level().isClientSide) this.discard();
         }
 
-        if (this.level().isClientSide && this.random.nextInt(15) == 0) {
+        if (level().isClientSide && random.nextInt(15) == 0) {
             double radius = (0.5 + random.nextDouble() * 0.3) * getBbWidth() / 2;
             float angle = random.nextFloat() * (float) Math.PI * 2;
             ParticleBuilder.create(EBParticles.SPARK)
-                    .pos(this.getX() + radius * Mth.cos(angle), this.getY() + 0.1, this.getZ() + radius * Mth.sin(angle))
+                    .pos(getX() + radius * Mth.cos(angle), getY() + 0.1, getZ() + radius * Mth.sin(angle))
                     .spawn(level());
         }
     }

@@ -37,22 +37,14 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
     }
 
     @Override
-    public boolean canCastByLocation() {
-        return true;
-    }
-
-    @Override
-    public boolean canCastByEntity() {
-        return true;
-    }
-
-    @Override
     public boolean cast(PlayerCastContext ctx) {
         double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
         HitResult rayTrace = RayTracer.standardBlockRayTrace(ctx.world(), ctx.caster(), range, hitLiquids, ignoreUncollidables, false);
 
         if (rayTrace instanceof BlockHitResult blockTrace) {
             Direction direction = blockTrace.getDirection();
+            if (requiresFloor && !ctx.caster().onGround()) return false;
+
             if (!ctx.world().isClientSide && (direction == Direction.UP || !requiresFloor)) {
                 if (!spawnConstruct(ctx, blockTrace.getLocation(), direction)) return false;
             } else {
@@ -76,7 +68,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
     public boolean cast(EntityCastContext ctx) {
         double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
         if (ctx.target() == null) return false;
-        if (ctx.caster().distanceTo(ctx.target()) >= range || !ctx.world().isClientSide) return false;
+        if (ctx.caster().distanceTo(ctx.target()) >= range || ctx.world().isClientSide) return false;
 
         Vec3 origin = ctx.caster().getEyePosition(1);
         HitResult hit = ctx.world().clip(new ClipContext(origin, ctx.target().position(),
