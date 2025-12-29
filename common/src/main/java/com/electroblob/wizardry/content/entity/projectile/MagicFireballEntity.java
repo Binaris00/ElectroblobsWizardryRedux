@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
@@ -59,8 +59,8 @@ public class MagicFireballEntity extends MagicProjectileEntity {
         if (level().isClientSide) return;
 
         Entity entity = result.getEntity();
-        EBMagicDamageSource.causeMagicDamage(this, entity, (float) getDamage(), EBDamageSources.FIRE, false);
-        if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
+        MagicDamageSource.causeMagicDamage(this, entity, (float) getDamage(), EBDamageSources.FIRE);
+        if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
             entity.setSecondsOnFire(getBurnDuration());
         this.discard();
     }

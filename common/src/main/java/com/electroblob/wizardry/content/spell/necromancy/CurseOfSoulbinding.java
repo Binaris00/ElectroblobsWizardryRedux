@@ -9,7 +9,7 @@ import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.NBTExtras;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
@@ -61,7 +61,7 @@ public class CurseOfSoulbinding extends RaySpell {
                 if (entity == null || (entity instanceof LivingEntity && !((LivingEntity) entity).hasEffect(EBMobEffects.CURSE_OF_SOULBINDING.get()))) {
                     iterator.remove();
                 } else if (entity instanceof LivingEntity) {
-                    if (entity.hurt(EBMagicDamageSource.causeDirectMagicDamage(playerDamaged, EBDamageSources.SORCERY), event.getAmount())) {
+                    if (entity.hurt(MagicDamageSource.causeDirectMagicDamage(playerDamaged, EBDamageSources.SORCERY), event.getAmount())) {
                         entity.playSound(EBSounds.SPELL_CURSE_OF_SOULBINDING_RETALIATE.get(), 1.0F, playerDamaged.level().random.nextFloat() * 0.2F + 1.0F);
                     }
                 }

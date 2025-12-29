@@ -12,7 +12,7 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.core.platform.Services;
@@ -61,7 +61,7 @@ public class Charge extends Spell {
             float damage = Spells.CHARGE.property(DefaultProperties.DAMAGE) * modifiers.get(SpellModifiers.POTENCY);
             float knockback = Spells.CHARGE.property(DefaultProperties.KNOCKBACK);
 
-            collided.forEach(e -> e.hurt(EBMagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), damage));
+            collided.forEach(e -> e.hurt(MagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), damage));
             collided.forEach(e -> e.push(player.getDeltaMovement().x * knockback, player.getDeltaMovement().y * knockback + 0.3f, player.getDeltaMovement().z * knockback));
 
             if (player.level().isClientSide)

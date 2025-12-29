@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.effect;
 
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
@@ -25,7 +25,7 @@ public class FireSkinMobEffect extends MagicMobEffect {
         if (attacker == null) return;
 
         if (event.getDamagedEntity().hasEffect(EBMobEffects.FIRESKIN.get()) &&
-                !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, event.getDamagedEntity())) {
+                !MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, event.getDamagedEntity())) {
             attacker.setSecondsOnFire(Spells.FIRE_BREATH.property(DefaultProperties.EFFECT_DURATION) * 20);
         }
     }

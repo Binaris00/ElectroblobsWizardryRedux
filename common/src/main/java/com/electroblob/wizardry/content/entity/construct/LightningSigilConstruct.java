@@ -3,7 +3,7 @@ package com.electroblob.wizardry.content.entity.construct;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -44,9 +44,9 @@ public class LightningSigilConstruct extends ScaledConstructEntity {
 
             Vec3 originalVec = target.getDeltaMovement();
 
-            boolean damageResult = EBMagicDamageSource.causeMagicDamage(this, target,
+            boolean damageResult = MagicDamageSource.causeMagicDamage(this, target,
                     Spells.LIGHTNING_SIGIL.property(DefaultProperties.DAMAGE) * this.damageMultiplier,
-                    EBDamageSources.SHOCK, false);
+                    EBDamageSources.SHOCK);
             if (!damageResult) continue;
 
 
@@ -66,7 +66,7 @@ public class LightningSigilConstruct extends ScaledConstructEntity {
                     }
 
                     secondaryTarget.playSound(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER.get(), 1.0F, level().random.nextFloat() * 0.4F + 1.5F);
-                    secondaryTarget.hurt(EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SHOCK),
+                    secondaryTarget.hurt(MagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SHOCK),
                             Spells.LIGHTNING_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier);
                 }
             }

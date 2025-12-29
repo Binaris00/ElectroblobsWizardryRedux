@@ -7,7 +7,7 @@ import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
@@ -49,10 +49,10 @@ public class FireBreath extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (entityHit.getEntity() instanceof LivingEntity target && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
+        if (entityHit.getEntity() instanceof LivingEntity target && !MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
             if (ctx.castingTicks() % target.invulnerableDuration == 1) {
                 target.setSecondsOnFire((int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
-                DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FIRE)
+                DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FIRE)
                         : target.damageSources().magic();
                 EntityUtil.attackEntityWithoutKnockback(target, source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
             }

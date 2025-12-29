@@ -5,7 +5,7 @@ import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
@@ -38,7 +38,7 @@ public class Detonate extends RaySpell {
                 blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY(), blockHit.getBlockPos().getZ(), ctx.world());
 
         for (LivingEntity target : targets) {
-            DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.BLAST)
+            DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.BLAST)
                     : target.damageSources().magic();
 
             target.hurt(source, Math.max(property(DefaultProperties.DAMAGE) -

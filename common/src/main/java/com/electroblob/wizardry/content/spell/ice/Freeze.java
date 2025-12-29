@@ -7,7 +7,7 @@ import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.*;
@@ -41,10 +41,10 @@ public class Freeze extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (!(entityHit.getEntity() instanceof LivingEntity target)
-                || EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, target)) return false;
+                || MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target)) return false;
 
         if (target instanceof Blaze || target instanceof MagmaCube) {
-            DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST) : target.damageSources().magic();
+            DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST) : target.damageSources().magic();
             target.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
         }
 

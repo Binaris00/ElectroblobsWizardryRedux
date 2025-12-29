@@ -6,7 +6,7 @@ import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
@@ -30,12 +30,12 @@ public class CurseOfEnfeeblement extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (entityHit.getEntity() instanceof LivingEntity target && !EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
+        if (entityHit.getEntity() instanceof LivingEntity target && !MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
             target.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_ENFEEBLEMENT.get(),
                     Integer.MAX_VALUE, this.property(DefaultProperties.EFFECT_STRENGTH)
                     * BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY))));
 
-            DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.WITHER)
+            DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.WITHER)
                     : target.damageSources().wither();
             if (target.getHealth() > target.getMaxHealth())
                 target.hurt(source, target.getHealth() - target.getMaxHealth());

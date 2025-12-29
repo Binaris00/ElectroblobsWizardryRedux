@@ -7,7 +7,7 @@ import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
@@ -77,7 +77,7 @@ public final class ArtifactUtils {
             ParticleBuilder.spawnShockParticles(player.level(), target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ());
         }
 
-        target.hurt(EBMagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), Spells.STATIC_AURA.property(DefaultProperties.DAMAGE));
+        target.hurt(MagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), Spells.STATIC_AURA.property(DefaultProperties.DAMAGE));
         target.playSound(EBSounds.SPELL_STATIC_AURA_RETALIATE.get(), 1.0F, player.level().random.nextFloat() * 0.4F + 1.5F);
     }
 }

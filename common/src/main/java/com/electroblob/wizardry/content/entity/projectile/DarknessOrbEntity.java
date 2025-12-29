@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
@@ -35,10 +35,10 @@ public class DarknessOrbEntity extends MagicProjectileEntity {
         super.onHitEntity(result);
 
         if (!(result.getEntity() instanceof LivingEntity livingEntity)
-                || EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity)) return;
+                || MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity)) return;
 
         float damage = Spells.DARKNESS_ORB.property(DefaultProperties.DAMAGE) * damageMultiplier;
-        EBMagicDamageSource.causeMagicDamage(this, livingEntity, damage, EBDamageSources.WITHER, false);
+        MagicDamageSource.causeMagicDamage(this, livingEntity, damage, EBDamageSources.WITHER);
 
         livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER,
                 Spells.DARKNESS_ORB.property(DefaultProperties.EFFECT_DURATION),

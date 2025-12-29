@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.BombEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -66,7 +66,7 @@ public class ForceOrbEntity extends BombEntity {
 
                 float damage = Spells.FORCE_ORB.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
-                target.hurt(EBMagicDamageSource.causeIndirectMagicDamage(this, getOwner(), EBDamageSources.BLAST), damage);
+                target.hurt(MagicDamageSource.causeIndirectMagicDamage(this, getOwner(), EBDamageSources.BLAST), damage);
                 target.setDeltaMovement(dx, velY + 0.4, dz);
             }
         }

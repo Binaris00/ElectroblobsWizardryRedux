@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.BombEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.*;
@@ -48,7 +48,7 @@ public class PoisonBombEntity extends BombEntity {
 
         if (hitResult instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
-            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.POISON, false);
+            MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.POISON);
         }
 
         if (hitResult instanceof BlockHitResult) {
@@ -56,8 +56,8 @@ public class PoisonBombEntity extends BombEntity {
             List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(this.level(), this.getX(), this.getY(), this.getZ(), range);
             for (LivingEntity entity : livingEntities) {
                 if (entity != null && entity != this.getOwner()) {
-                    EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
-                    if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, entity))
+                    MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE);
+                    if (!MagicDamageSource.isEntityImmune(EBDamageSources.POISON, entity))
                         entity.addEffect(new MobEffectInstance(MobEffects.POISON,
                                 Spells.POISON_BOMB.property(DefaultProperties.EFFECT_DURATION),
                                 Spells.POISON_BOMB.property(DefaultProperties.EFFECT_STRENGTH)));

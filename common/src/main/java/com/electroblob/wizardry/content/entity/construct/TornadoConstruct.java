@@ -4,7 +4,7 @@ import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.DeferredObject;
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.client.particle.ParticleTornado;
 import com.electroblob.wizardry.core.ClientSpellSoundManager;
@@ -97,7 +97,7 @@ public class TornadoConstruct extends ScaledConstructEntity {
         if (this.isOnFire()) target.setSecondsOnFire(4);
 
         float damage = 1 * damageMultiplier;
-        EBMagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.SORCERY, false);
+        MagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.SORCERY);
         target.setDeltaMovement(dx, velY + 0.2, dz);
 
         if (target instanceof ServerPlayer sp)

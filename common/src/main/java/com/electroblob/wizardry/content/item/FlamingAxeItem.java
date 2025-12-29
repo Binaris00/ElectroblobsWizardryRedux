@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBItems;
@@ -19,7 +19,7 @@ public class FlamingAxeItem extends AxeItem {
 
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity entity) {
-        if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
+        if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
             target.setSecondsOnFire(Spells.FLAMING_AXE.property(DefaultProperties.EFFECT_DURATION).intValue());
         return false;
     }

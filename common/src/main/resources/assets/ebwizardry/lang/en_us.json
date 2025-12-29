@@ -1158,5 +1158,16 @@
   "key.ebwizardry.spell_5": "Spell Slot 5",
   "key.ebwizardry.spell_6": "Spell Slot 6",
   "key.ebwizardry.spell_7": "Spell Slot 7",
-  "key.ebwizardry.spell_8": "Spell Slot 8"
+  "key.ebwizardry.spell_8": "Spell Slot 8",
+  "ebwizardry.raw_line_28": "========================================================",
+  "ebwizardry.deaths.desc": "EBWIZARDRY DEATH MESSAGES",
+  "ebwizardry.raw_line_29": "========================================================",
+  "death.attack.wizardry_fire": "%1$s was burned to a crisp by %2$s's fire magic",
+  "death.attack.wizardry_frost": "%1$s was frozen solid by %2$s's frost magic",
+  "death.attack.wizardry_shock": "%1$s was electrocuted by %2$s's shock magic",
+  "death.attack.wizardry_wither": "%1$s was withered away by %2$s's withering magic",
+  "death.attack.wizardry_poison": "%1$s was poisoned by %2$s's poison magic",
+  "death.attack.wizardry_force": "%1$s was blasted away by %2$s's magical force",
+  "death.attack.wizardry_blast": "%1$s was blown to bits by %2$s's magical blast",
+  "death.attack.wizardry_radiant": "%1$s was incinerated by %2$s's radiant magic"
 }

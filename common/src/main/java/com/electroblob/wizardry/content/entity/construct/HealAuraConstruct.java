@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -60,8 +60,8 @@ public class HealAuraConstruct extends ScaledConstructEntity {
 
             if (target.getMobType() == MobType.UNDEAD && this.tickCount % 10 == 1) {
                 EntityUtil.attackEntityWithoutKnockback(target, this.getCaster() != null ?
-                                EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.RADIANT) :
-                                EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY),
+                                MagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.RADIANT) :
+                                MagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY),
                         Spells.HEALING_AURA.property(DefaultProperties.DAMAGE) * damageMultiplier);
             }
         }

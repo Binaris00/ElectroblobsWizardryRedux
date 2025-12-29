@@ -3,7 +3,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
@@ -40,8 +40,8 @@ public class FireBoltEntity extends MagicProjectileEntity {
 
             float damage = Spells.FIREBOLT.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
-            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) {
-                EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
+            if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) {
+                MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE);
                 entity.setSecondsOnFire(Spells.FIREBOLT.property(DefaultProperties.EFFECT_DURATION));
             }
         }

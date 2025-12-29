@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.effect;
 
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.entity.construct.DecayConstruct;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
@@ -39,7 +39,7 @@ public class DecayMobEffect extends MagicMobEffect {
             decay.setPos(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
             livingEntity.level().addFreshEntity(decay);
 
-            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity))
+            if (!MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity))
                 livingEntity.hurt(livingEntity.damageSources().wither(), 1);
         }
     }

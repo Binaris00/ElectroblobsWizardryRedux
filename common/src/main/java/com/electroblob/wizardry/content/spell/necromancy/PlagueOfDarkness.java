@@ -6,7 +6,7 @@ import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.AreaEffectSpell;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
@@ -29,7 +29,7 @@ import org.jetbrains.annotations.NotNull;
 public class PlagueOfDarkness extends AreaEffectSpell {
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
+        if (!MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
 
             target.hurt(target.damageSources().wither(), property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
             target.addEffect(new MobEffectInstance(MobEffects.WITHER,

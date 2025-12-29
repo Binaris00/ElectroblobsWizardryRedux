@@ -3,7 +3,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -33,7 +33,7 @@ public class IceShardEntity extends MagicArrowEntity {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         if (hitResult.getEntity() instanceof LivingEntity livingEntity) {
-            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, livingEntity))
+            if (!MagicDamageSource.isEntityImmune(EBDamageSources.FROST, livingEntity))
                 livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                         Spells.ICE_SHARD.property(DefaultProperties.EFFECT_DURATION),
                         Spells.ICE_SHARD.property(DefaultProperties.EFFECT_STRENGTH), false, false));

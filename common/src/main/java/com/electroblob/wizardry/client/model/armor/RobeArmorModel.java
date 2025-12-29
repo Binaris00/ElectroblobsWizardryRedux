@@ -87,15 +87,4 @@ public class RobeArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
         rightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         leftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
-
-
-    public void copyBody(HumanoidModel<LivingEntity> humanoidModel) {
-        this.hat.copyFrom(humanoidModel.getHead());
-        this.right_arm.copyFrom(humanoidModel.rightArm);
-        this.left_arm.copyFrom(humanoidModel.leftArm);
-        this.left_shoe.copyFrom(humanoidModel.leftLeg);
-        this.right_shoe.copyFrom(humanoidModel.rightLeg);
-        this.armorBody.copyFrom(humanoidModel.body);
-        //this.robe.copyFrom(humanoidModel.body);
-    }
 }

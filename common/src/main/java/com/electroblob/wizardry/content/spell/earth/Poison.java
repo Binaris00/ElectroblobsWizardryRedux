@@ -6,7 +6,7 @@ import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
@@ -32,8 +32,8 @@ public class Poison extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (entityHit.getEntity() instanceof LivingEntity livingTarget && !EBMagicDamageSource.isEntityImmune(EBDamageSources.POISON, livingTarget)) {
-            DamageSource source = ctx.caster() != null ? EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.POISON)
+        if (entityHit.getEntity() instanceof LivingEntity livingTarget && !MagicDamageSource.isEntityImmune(EBDamageSources.POISON, livingTarget)) {
+            DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.POISON)
                     : livingTarget.damageSources().magic();
 
             livingTarget.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));

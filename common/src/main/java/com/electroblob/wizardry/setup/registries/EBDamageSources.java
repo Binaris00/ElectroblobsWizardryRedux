@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 public final class EBDamageSources {
     public static ArrayList<ResourceKey<DamageType>> TYPES = new ArrayList<>();
+    public static final ResourceKey<DamageType> MAGIC = createType("magic");
     public static final ResourceKey<DamageType> SORCERY = createType("sorcery");
     public static final ResourceKey<DamageType> FIRE = createType("fire");
     public static final ResourceKey<DamageType> FROST = createType("frost");

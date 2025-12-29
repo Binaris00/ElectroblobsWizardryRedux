@@ -3,7 +3,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.*;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -43,7 +43,7 @@ public class IceBall extends MagicProjectileEntity {
             Entity entity = entityHitResult.getEntity();
             float damage = Spells.ICE_BALL.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
-            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FROST, false);
+            MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FROST);
 
             if (entity instanceof LivingEntity livingEntity)
                 livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),

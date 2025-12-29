@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.*;
@@ -45,7 +45,7 @@ public class IceSpikeConstruct extends ScaledConstructEntity {
 
         for (Object entity : this.level().getEntities(this, this.getBoundingBox())) {
             if (entity instanceof LivingEntity livingEntity && this.isValidTarget(livingEntity)) {
-                if (EBMagicDamageSource.causeMagicDamage(this, livingEntity, 5 * this.damageMultiplier, EBDamageSources.FROST, false))
+                if (MagicDamageSource.causeMagicDamage(this, livingEntity, 5 * this.damageMultiplier, EBDamageSources.FROST))
                     livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                             Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_DURATION),
                             Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_STRENGTH)));

@@ -3,7 +3,7 @@ package com.electroblob.wizardry.content.effect;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.effect.MagicMobEffect;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import com.electroblob.wizardry.setup.registries.EBSounds;
@@ -22,7 +22,7 @@ public class StaticAuraMobEffect extends MagicMobEffect {
         DamageSource source = event.getSource();
 
         if (source.getEntity() != null && event.getDamagedEntity().hasEffect(EBMobEffects.STATIC_AURA.get())) {
-            source.getEntity().hurt(EBMagicDamageSource.causeDirectMagicDamage(event.getDamagedEntity(), EBDamageSources.SHOCK),
+            source.getEntity().hurt(MagicDamageSource.causeDirectMagicDamage(event.getDamagedEntity(), EBDamageSources.SHOCK),
                     event.getAmount() / 2);
             source.getEntity().playSound(EBSounds.SPELL_STATIC_AURA_RETALIATE.get(), 1.0F,
                     event.getDamagedEntity().level().random.nextFloat() * 0.4F + 1.5F);

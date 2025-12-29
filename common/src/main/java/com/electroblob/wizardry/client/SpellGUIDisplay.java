@@ -40,8 +40,6 @@ public final class SpellGUIDisplay {
     private static final ResourceLocation CHARGE_METER = WizardryMainMod.location("textures/gui/spell_charge_meter.png");
     private static final Map<String, SpellHUDSkin> SKINS = new LinkedHashMap<>(14);
     private static final int SPELL_SWITCH_TIME = 4;
-    private static final int HALF_HOTBAR_WIDTH = 97;
-    private static final int OFFHAND_SLOT_WIDTH = 29;
     private static final Minecraft mc = Minecraft.getInstance();
     private static int switchTimer = 0;
     public SpellGUIDisplay() {
@@ -182,8 +180,9 @@ public final class SpellGUIDisplay {
 
         RenderSystem.setShaderTexture(0, CHARGE_METER);
 
-        int x1 = width / 2 - CHARGE_METER_WIDTH / 2;
-        int y = height / 2 - CHARGE_METER_HEIGHT / 2;
+        // -1 to make it more centered...
+        int x1 = width / 2 - CHARGE_METER_WIDTH / 2 - 1;
+        int y = height / 2 - CHARGE_METER_HEIGHT / 2 - 1;
         int w = (int) ((float) CHARGE_METER_WIDTH / 2 * charge);
         int u = CHARGE_METER_WIDTH - w;
 

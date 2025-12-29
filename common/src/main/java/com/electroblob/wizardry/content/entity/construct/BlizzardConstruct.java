@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.*;
@@ -40,8 +40,8 @@ public class BlizzardConstruct extends ScaledConstructEntity {
 
             for (LivingEntity target : targets) {
                 if (this.isValidTarget(target)) {
-                    EntityUtil.attackEntityWithoutKnockback(target, getCaster() != null ? EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.FROST)
-                                    : EBMagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY),
+                    EntityUtil.attackEntityWithoutKnockback(target, getCaster() != null ? MagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.FROST)
+                                    : MagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY),
                             1 * damageMultiplier);
                 }
                 target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 20));

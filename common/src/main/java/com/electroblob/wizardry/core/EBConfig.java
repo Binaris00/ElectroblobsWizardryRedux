@@ -47,7 +47,6 @@ public final class EBConfig {
             "minecraft:chests/stronghold_corridor", "minecraft:chests/stronghold_crossing",
             "minecraft:chests/stronghold_library", "minecraft:chests/igloo_chest", "minecraft:chests/woodland_mansion",
             "minecraft:chests/end_city_treasure"};
-    public static boolean damageTypePerElement = false;
     public static boolean playersMoveEachOther = true;
     public static boolean replaceVanillaFallDamage = true;
     public static boolean showSpellHUD = true;

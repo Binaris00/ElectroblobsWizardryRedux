@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.earth.Boulder;
@@ -82,7 +82,7 @@ public class BoulderConstruct extends ScaledConstructEntity {
                     && entity.getBoundingBox().minZ > this.getBoundingBox().minZ
                     && entity.getBoundingBox().maxZ < this.getBoundingBox().maxZ;
 
-            if (EntityUtil.attackEntityWithoutKnockback(entity, EBMagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SORCERY), crushBonus ? damage * 1.5f : damage) && !crushBonus) {
+            if (EntityUtil.attackEntityWithoutKnockback(entity, MagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SORCERY), crushBonus ? damage * 1.5f : damage) && !crushBonus) {
                 EntityUtil.applyStandardKnockback(this, entity, knockback);
                 entity.setDeltaMovement(entity.getDeltaMovement().add(motion.x, 0, motion.z));
             }

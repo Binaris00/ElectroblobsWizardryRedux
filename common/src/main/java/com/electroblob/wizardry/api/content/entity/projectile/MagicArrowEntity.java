@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.api.content.entity.projectile;
 
 
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.RayTracer;
 import com.electroblob.wizardry.client.renderer.entity.MagicArrowRenderer;
 import com.electroblob.wizardry.content.spell.abstr.ArrowSpell;
@@ -103,14 +103,14 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         if (!(hitResult.getEntity() instanceof LivingEntity target)) return;
-        if (EBMagicDamageSource.isEntityImmune(getDamageType(), target)) {
+        if (MagicDamageSource.isEntityImmune(getDamageType(), target)) {
             this.discard();
             return;
         }
 
         // Damage stuff
-        DamageSource damageSource = getOwner() == null ? EBMagicDamageSource.causeDirectMagicDamage(this, getDamageType())
-                : EBMagicDamageSource.causeIndirectMagicDamage(this, this.getOwner(), getDamageType());
+        DamageSource damageSource = getOwner() == null ? MagicDamageSource.causeDirectMagicDamage(this, getDamageType())
+                : MagicDamageSource.causeIndirectMagicDamage(this, this.getOwner(), getDamageType());
 
         target.hurt(damageSource, (float) getDamage() * this.damageMultiplier);
 

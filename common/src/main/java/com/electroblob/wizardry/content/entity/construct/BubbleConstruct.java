@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.content.entity.construct.MagicConstructEntity;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.necromancy.Entrapment;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -61,7 +61,7 @@ public class BubbleConstruct extends MagicConstructEntity {
         if (isDarkOrb) {
             if (EntityUtil.getRider(this) != null && EntityUtil.getRider(this).tickCount
                     % Spells.ENTRAPMENT.property(Entrapment.DAMAGE_INTERVAL) == 0) {
-                EBMagicDamageSource.causeMagicDamage(this, EntityUtil.getRider(this), 1 * damageMultiplier, EBDamageSources.SORCERY, false);
+                MagicDamageSource.causeMagicDamage(this, EntityUtil.getRider(this), 1 * damageMultiplier, EBDamageSources.SORCERY);
             }
 
             for (int i = 0; i < 5; i++) {

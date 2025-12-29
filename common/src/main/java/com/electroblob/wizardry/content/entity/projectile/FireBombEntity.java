@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.BombEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.*;
@@ -41,13 +41,13 @@ public class FireBombEntity extends BombEntity {
             Entity entity = entityHitResult.getEntity();
 
             float damage = Spells.FIREBOMB.property(DefaultProperties.DAMAGE);
-            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE, false);
+            MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE);
         } else if (hitResult instanceof BlockHitResult) {
             List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), Spells.FIREBOMB.property(DefaultProperties.EFFECT_RADIUS));
 
             for (LivingEntity entity : livingEntities) {
-                EBMagicDamageSource.causeMagicDamage(this, entity, Spells.FIREBOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE, false);
-                if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
+                MagicDamageSource.causeMagicDamage(this, entity, Spells.FIREBOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE);
+                if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
                     entity.setSecondsOnFire(Spells.FIREBOMB.property(DefaultProperties.EFFECT_DURATION));
             }
         }

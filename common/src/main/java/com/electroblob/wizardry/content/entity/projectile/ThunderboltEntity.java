@@ -2,7 +2,7 @@ package com.electroblob.wizardry.content.entity.projectile;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicProjectileEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
@@ -35,7 +35,7 @@ public class ThunderboltEntity extends MagicProjectileEntity {
         if (hitResult instanceof EntityHitResult entityHitResult) {
             Entity entity = entityHitResult.getEntity();
             float damage = Spells.THUNDERBOLT.property(DefaultProperties.DAMAGE) * damageMultiplier;
-            EBMagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.SHOCK, false);
+            MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.SHOCK);
 
             if (entity instanceof LivingEntity livingEntity)
                 livingEntity.knockback(Spells.THUNDERBOLT.property(DefaultProperties.KNOCKBACK) * 0.5F,

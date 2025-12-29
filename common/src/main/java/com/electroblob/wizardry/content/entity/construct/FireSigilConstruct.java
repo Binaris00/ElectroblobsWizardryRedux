@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -44,10 +44,10 @@ public class FireSigilConstruct extends ScaledConstructEntity {
         for (LivingEntity target : targets) {
             if (!this.isValidTarget(target)) continue;
             Vec3 originalVec = target.getDeltaMovement();
-            EBMagicDamageSource.causeMagicDamage(this, target, Spells.FIRE_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier, EBDamageSources.FIRE, false);
+            MagicDamageSource.causeMagicDamage(this, target, Spells.FIRE_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier, EBDamageSources.FIRE);
 
             target.setDeltaMovement(originalVec);
-            if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
+            if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
                 target.setSecondsOnFire(Spells.FIRE_SIGIL.property(DefaultProperties.EFFECT_DURATION));
 
             this.playSound(EBSounds.ENTITY_FIRE_SIGIL_TRIGGER.get(), 1, 1);

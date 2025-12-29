@@ -6,7 +6,7 @@ import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -40,11 +40,11 @@ public class Arc extends RaySpell {
             ParticleBuilder.spawnShockParticles(ctx.world(), target.xo, target.yo + target.getBbHeight() / 2, target.zo);
         }
 
-        if (EBMagicDamageSource.isEntityImmune(EBDamageSources.SHOCK, target)) {
+        if (MagicDamageSource.isEntityImmune(EBDamageSources.SHOCK, target)) {
             if (!ctx.world().isClientSide && ctx.caster() instanceof Player player)
                 player.displayClientMessage(Component.translatable("spell.resist", target.getName(), this.getDescriptionFormatted()), true);
         } else {
-            target.hurt(EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
+            target.hurt(MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
                     property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
         }
 

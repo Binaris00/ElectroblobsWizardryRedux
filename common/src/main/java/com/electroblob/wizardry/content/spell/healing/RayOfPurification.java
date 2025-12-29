@@ -8,7 +8,7 @@ import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
@@ -33,7 +33,7 @@ public class RayOfPurification extends RaySpell {
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (!(entityHit.getEntity() instanceof LivingEntity target)) return false;
 
-        if (EBMagicDamageSource.isEntityImmune(EBDamageSources.RADIANT, target)) {
+        if (MagicDamageSource.isEntityImmune(EBDamageSources.RADIANT, target)) {
             if (!ctx.world().isClientSide() && ctx.castingTicks() == 1)
                 ctx.caster().sendSystemMessage(Component.translatable("spell.resist", target.getName(),
                         this.getDescriptionFormatted())
@@ -45,7 +45,7 @@ public class RayOfPurification extends RaySpell {
         if (target.isInvertedHealAndHarm()) damage *= property(UNDEAD_DAMAGE_MULTIPLIER);
 
         EntityUtil.attackEntityWithoutKnockback(target,
-                EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.RADIANT), damage);
+                MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.RADIANT), damage);
 
         target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,
                 (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()))));

@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.content.entity.construct;
 
 import com.electroblob.wizardry.api.content.entity.construct.ScaledConstructEntity;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -37,12 +37,12 @@ public class FireRingConstruct extends ScaledConstructEntity {
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, this.getX(), this.getY(), this.getZ(), this.level());
 
         for (LivingEntity target : targets) {
-            if (this.isValidTarget(target) && !EBMagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
+            if (this.isValidTarget(target) && !MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
                 Vec3 originalVec = target.getDeltaMovement();
                 target.setSecondsOnFire(Spells.RING_OF_FIRE.property(DefaultProperties.EFFECT_DURATION));
 
                 float damage = Spells.RING_OF_FIRE.property(DefaultProperties.DAMAGE) * damageMultiplier;
-                EBMagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.FIRE, false);
+                MagicDamageSource.causeMagicDamage(this, target, damage, EBDamageSources.FIRE);
                 target.setDeltaMovement(originalVec);
             }
         }

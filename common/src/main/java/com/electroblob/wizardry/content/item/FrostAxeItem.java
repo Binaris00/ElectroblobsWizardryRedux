@@ -1,6 +1,6 @@
 package com.electroblob.wizardry.content.item;
 
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBItems;
@@ -21,7 +21,7 @@ public class FrostAxeItem extends AxeItem {
 
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity entity) {
-        if (!EBMagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
+        if (!MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
             target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), Spells.FROST_AXE.property(DefaultProperties.EFFECT_DURATION), Spells.FROST_AXE.property(DefaultProperties.EFFECT_STRENGTH)));
         return false;
     }

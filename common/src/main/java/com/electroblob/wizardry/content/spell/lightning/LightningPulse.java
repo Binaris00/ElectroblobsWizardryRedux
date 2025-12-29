@@ -8,7 +8,7 @@ import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
-import com.electroblob.wizardry.api.content.util.EBMagicDamageSource;
+import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
@@ -37,7 +37,7 @@ public class LightningPulse extends Spell {
         targets.removeIf(t -> !AllyDesignation.isValidTarget(ctx.caster(), t));
         for (LivingEntity target : targets) {
             target.hurt(
-                    EBMagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
+                    MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
                     property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY)
             );
 
