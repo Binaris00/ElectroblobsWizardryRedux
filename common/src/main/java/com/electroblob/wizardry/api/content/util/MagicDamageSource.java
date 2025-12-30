@@ -26,8 +26,6 @@ import java.util.*;
  * for creating magic damage sources (both direct and indirect). It also keeps
  * a simple static mapping of entity classes to {@link DamageType} resource keys
  * that represent immunities; this mapping is consulted by {@link #isEntityImmune}.
- * </p>
- *
  * <p>
  * Typical usage:
  * <ul>
@@ -35,7 +33,6 @@ import java.util.*;
  *     <li>{@link #causeDirectMagicDamage(Entity, ResourceKey)} - build a direct damage source.</li>
  *     <li>{@link #causeIndirectMagicDamage(Entity, Entity, ResourceKey)} - build an indirect damage source (projectile caused by an owner).</li>
  * </ul>
- * </p>
  */
 public class MagicDamageSource extends DamageSource {
 

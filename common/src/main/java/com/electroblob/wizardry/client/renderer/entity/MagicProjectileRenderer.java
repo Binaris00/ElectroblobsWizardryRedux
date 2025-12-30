@@ -13,17 +13,23 @@ import net.minecraft.resources.ResourceLocation;
 import org.jetbrains.annotations.NotNull;
 
 public class MagicProjectileRenderer<T extends MagicProjectileEntity> extends EntityRenderer<T> {
-    private final float scale = 0.7f;
-    private final boolean blend = false;
+    private final boolean blend;
     private final ResourceLocation texture;
 
     public MagicProjectileRenderer(EntityRendererProvider.Context context, ResourceLocation texture) {
         super(context);
         this.texture = texture;
+        this.blend = false;
+    }
+
+    public MagicProjectileRenderer(EntityRendererProvider.Context context, ResourceLocation texture, boolean blend) {
+        super(context);
+        this.texture = texture;
+        this.blend = blend;
     }
 
     @Override
-    public void render(T entity, float f, float g, PoseStack poseStack, MultiBufferSource multiBufferSource, int i) {
+    public void render(@NotNull T entity, float f, float g, PoseStack poseStack, @NotNull MultiBufferSource multiBufferSource, int i) {
         poseStack.pushPose();
         RenderSystem.enableDepthTest();
         RenderSystem.setShaderTexture(0, this.getTextureLocation(entity));
@@ -33,11 +39,11 @@ public class MagicProjectileRenderer<T extends MagicProjectileEntity> extends En
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
         }
 
-        float f2 = this.scale;
+        float f2 = 0.7f;
         poseStack.scale(f2, f2, f2);
 
-        Tesselator tessellator = Tesselator.getInstance();
-        BufferBuilder buffer = tessellator.getBuilder();
+        Tesselator tesselator = Tesselator.getInstance();
+        BufferBuilder buffer = tesselator.getBuilder();
 
         float f3 = 0.0f;
         float f4 = 1.0f;
@@ -56,7 +62,7 @@ public class MagicProjectileRenderer<T extends MagicProjectileEntity> extends En
         buffer.vertex(poseStack.last().pose(), (f7 - f8), (0.0F - f9), 0.0F).uv(f4, f6).endVertex();
         buffer.vertex(poseStack.last().pose(), (f7 - f8), (1.0F - f9), 0.0F).uv(f4, f5).endVertex();
         buffer.vertex(poseStack.last().pose(), (0.0F - f8), (1.0F - f9), 0.0F).uv(f3, f5).endVertex();
-        tessellator.end();
+        tesselator.end();
 
         if (blend) {
             RenderSystem.disableBlend();
@@ -65,7 +71,7 @@ public class MagicProjectileRenderer<T extends MagicProjectileEntity> extends En
     }
 
     @Override
-    public @NotNull ResourceLocation getTextureLocation(T entity) {
+    public @NotNull ResourceLocation getTextureLocation(@NotNull T entity) {
         return texture;
     }
 }

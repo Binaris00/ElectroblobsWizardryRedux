@@ -9,6 +9,7 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.content.util.MagicDamageSource;
 import com.electroblob.wizardry.content.entity.construct.BubbleConstruct;
+import com.electroblob.wizardry.content.entity.living.AbstractWizard;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
@@ -17,6 +18,7 @@ import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.BlockHitResult;
@@ -34,22 +36,28 @@ public class Entrapment extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (ctx.world().isClientSide) return true;
+        if (!(entityHit.getEntity() instanceof LivingEntity target)) return true;
 
-        if (entityHit.getEntity() instanceof LivingEntity target) {
-            DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SORCERY)
-                    : target.damageSources().magic();
-            target.hurt(source, 1);
+        DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SORCERY)
+                : target.damageSources().magic();
+        target.hurt(source, 1);
 
-            BubbleConstruct bubble = new BubbleConstruct(ctx.world());
-            bubble.setPos(target.getX(), target.getY(), target.getZ());
-            bubble.setCaster(ctx.caster());
-            bubble.lifetime = ((int) (property(DefaultProperties.EFFECT_DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
-            bubble.isDarkOrb = true;
-            bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
-
-            ctx.world().addFreshEntity(bubble);
-            target.startRiding(bubble);
+        // Wizards have a weird bug related to armors, so, avoiding a big render problem we're having them resist this spell
+        // entirely for now.
+        if (target instanceof AbstractWizard) {
+            ctx.caster().sendSystemMessage(Component.translatable("spell.resist", target.getName(), this.getDescriptionFormatted()));
+            return true;
         }
+
+        BubbleConstruct bubble = new BubbleConstruct(ctx.world());
+        bubble.setPos(target.getX(), target.getY(), target.getZ());
+        bubble.setCaster(ctx.caster());
+        bubble.lifetime = ((int) (property(DefaultProperties.EFFECT_DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+        bubble.setDarkOrb(true);
+        bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+
+        ctx.world().addFreshEntity(bubble);
+        target.startRiding(bubble);
 
         return true;
     }

@@ -11,6 +11,9 @@ import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
@@ -22,7 +25,10 @@ import org.jetbrains.annotations.NotNull;
 import java.lang.ref.WeakReference;
 
 public class BubbleConstruct extends MagicConstructEntity {
-    public boolean isDarkOrb;
+
+    private static final EntityDataAccessor<Boolean> IS_DARK_ORB =
+            SynchedEntityData.defineId(BubbleConstruct.class, EntityDataSerializers.BOOLEAN);
+
     private WeakReference<LivingEntity> rider;
 
     public BubbleConstruct(EntityType<?> type, Level world) {
@@ -33,78 +39,98 @@ public class BubbleConstruct extends MagicConstructEntity {
         super(EBEntities.BUBBLE.get(), world);
     }
 
-    public static void onLivingHurt(EBLivingHurtEvent event) {
-        if (event.isCanceled()) return;
-
-        LivingEntity entity = event.getDamagedEntity();
-        if (entity.getVehicle() instanceof BubbleConstruct bubble && !bubble.isDarkOrb) {
-            entity.getVehicle().playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
-            entity.getVehicle().discard();
-        }
-    }
-
+    @Override
     public void tick() {
         super.tick();
 
-        if ((this.rider == null || this.rider.get() == null) && EntityUtil.getRider(this) instanceof LivingEntity && EntityUtil.getRider(this).isAlive()) {
-            this.rider = new WeakReference<>((LivingEntity) EntityUtil.getRider(this));
+        Entity currentRider = EntityUtil.getRider(this);
+
+        // Maintain weak reference to rider
+        if ((rider == null || rider.get() == null) && currentRider instanceof LivingEntity living && living.isAlive()) {
+            rider = new WeakReference<>(living);
         }
 
-        if (EntityUtil.getRider(this) == null && this.rider != null && this.rider.get() != null && this.rider.get().isAlive()) {
-            this.rider.get().startRiding(this);
+        // If rider disappeared but weak ref still points to a living entity, reattach it
+        if (currentRider == null && rider != null) {
+            LivingEntity ref = rider.get();
+            if (ref != null && ref.isAlive()) ref.startRiding(this);
         }
 
-        if (this.tickCount < 1 && !isDarkOrb) ((LivingEntity) EntityUtil.getRider(this)).hurtTime = 0;
+        // Prevent initial hurt animation for non-dark bubbles
+        if (this.tickCount < 1 && !isDarkOrb() && currentRider instanceof LivingEntity) {
+            ((LivingEntity) currentRider).hurtTime = 0;
+        }
 
+        // Float upward slowly
         this.move(MoverType.SELF, new Vec3(0, 0.03, 0));
 
-        if (isDarkOrb) {
-            if (EntityUtil.getRider(this) != null && EntityUtil.getRider(this).tickCount
-                    % Spells.ENTRAPMENT.property(Entrapment.DAMAGE_INTERVAL) == 0) {
-                MagicDamageSource.causeMagicDamage(this, EntityUtil.getRider(this), 1 * damageMultiplier, EBDamageSources.SORCERY);
+        if (isDarkOrb()) {
+            if (currentRider != null && currentRider.tickCount % Spells.ENTRAPMENT.property(Entrapment.DAMAGE_INTERVAL) == 0) {
+                MagicDamageSource.causeMagicDamage(this, currentRider, 1 * damageMultiplier, EBDamageSources.SORCERY);
             }
 
             for (int i = 0; i < 5; i++) {
                 this.level().addParticle(ParticleTypes.PORTAL,
-                        this.getX() + (this.random.nextDouble() - 0.5D) * (double) this.getBbWidth(),
-                        this.getY() + this.random.nextDouble() * (double) this.getBbHeight() + 0.5d,
-                        this.getZ() + (this.random.nextDouble() - 0.5D) * (double) this.getBbWidth(),
+                        this.getX() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(),
+                        this.getY() + this.random.nextDouble() * this.getBbHeight() + 0.5d,
+                        this.getZ() + (this.random.nextDouble() - 0.5D) * this.getBbWidth(),
                         (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(),
                         (this.random.nextDouble() - 0.5D) * 2.0D);
             }
 
-            if (lifetime - this.tickCount == 75) {
-                this.playSound(EBSounds.ENTITY_ENTRAPMENT_VANISH.get(), 1.5f, 1.0f);
-            } else if (this.tickCount % 100 == 1 && this.tickCount < 150) {
+            if (lifetime - this.tickCount == 75 || (this.tickCount % 100 == 1 && this.tickCount < 150)) {
                 this.playSound(EBSounds.ENTITY_ENTRAPMENT_VANISH.get(), 1.5f, 1.0f);
             }
         }
 
-        if (EntityUtil.getRider(this) == null && this.tickCount > 1) {
-            if (!this.isDarkOrb) this.playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
+        if (currentRider == null && this.tickCount > 1) {
+            if (!isDarkOrb()) this.playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
             this.discard();
         }
     }
 
     @Override
-    public void despawn() {
-        if (EntityUtil.getRider(this) != null) {
-            EntityUtil.getRider(this).stopRiding();
+    protected void defineSynchedData() {
+        super.defineSynchedData();
+        this.entityData.define(IS_DARK_ORB, false);
+    }
+
+    public boolean isDarkOrb() {
+        return this.entityData.get(IS_DARK_ORB);
+    }
+
+    public void setDarkOrb(boolean isDarkOrb) {
+        this.entityData.set(IS_DARK_ORB, isDarkOrb);
+    }
+
+    public static void onLivingHurt(EBLivingHurtEvent event) {
+        if (event.isCanceled()) return;
+
+        LivingEntity entity = event.getDamagedEntity();
+        if (entity.getVehicle() instanceof BubbleConstruct bubble && !bubble.isDarkOrb()) {
+            bubble.playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
+            bubble.discard();
         }
-        if (!this.isDarkOrb) this.playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
+    }
+
+    @Override
+    public void despawn() {
+        Entity rider = EntityUtil.getRider(this);
+        if (rider instanceof LivingEntity) rider.stopRiding();
+        if (!isDarkOrb()) this.playSound(EBSounds.ENTITY_BUBBLE_POP.get(), 1.5f, 1.0f);
         super.despawn();
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag tag) {
         super.readAdditionalSaveData(tag);
-        isDarkOrb = tag.getBoolean("isDarkOrb");
+        setDarkOrb(tag.getBoolean("isDarkOrb"));
     }
 
     @Override
     protected void addAdditionalSaveData(CompoundTag tag) {
         super.addAdditionalSaveData(tag);
-        tag.putBoolean("isDarkOrb", isDarkOrb);
+        tag.putBoolean("isDarkOrb", isDarkOrb());
     }
 
     @Override
