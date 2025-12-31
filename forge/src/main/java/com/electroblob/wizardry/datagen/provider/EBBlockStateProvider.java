@@ -9,7 +9,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ItemModelBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.HORIZONTAL_FACING;
@@ -114,8 +113,7 @@ public final class EBBlockStateProvider extends BlockStateProvider {
         models().withExistingParent(name, "ebwizardry:block/runestone_pedestal")
                 .texture("side", "ebwizardry:block/%s".formatted(textureName))
                 .texture("top", "ebwizardry:block/%s_0".formatted(topBottomTexture))
-                .texture("bottom", "ebwizardry:block/%s_0".formatted(topBottomTexture))
-                .texture("overlay", "ebwizardry:block/%s_overlay".formatted(textureName));
+                .texture("bottom", "ebwizardry:block/%s_0".formatted(topBottomTexture));
 
         itemModels().getBuilder(name).parent(this.itemModels().getExistingFile(new ResourceLocation(WizardryMainMod.MOD_ID, "item/runestone_pedestal_item")))
                 .texture("side", "ebwizardry:block/%s".formatted(textureName))
@@ -144,8 +142,7 @@ public final class EBBlockStateProvider extends BlockStateProvider {
 
             models().withExistingParent(modelName, "ebwizardry:block/runestone")
                     .texture("side", "ebwizardry:block/%s_0".formatted(textureName))
-                    .texture("rune", "ebwizardry:block/%s_%d".formatted(textureName, i))
-                    .texture("overlay", "ebwizardry:block/%s_%d_overlay".formatted(textureName, i));
+                    .texture("rune", "ebwizardry:block/%s_%d".formatted(textureName, i));
 
             // Y rotations
             for (int y = 0; y < 360; y += 90) {

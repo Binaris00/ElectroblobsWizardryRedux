@@ -1,7 +1,6 @@
 {
   "parent": "ebwizardry:block/runestone",
   "textures": {
-    "overlay": "ebwizardry:block/runestone_ice_4_overlay",
     "rune": "ebwizardry:block/runestone_ice_4",
     "side": "ebwizardry:block/runestone_ice_0"
   }
