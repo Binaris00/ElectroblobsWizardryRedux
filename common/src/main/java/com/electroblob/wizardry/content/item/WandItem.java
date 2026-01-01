@@ -134,7 +134,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
         return cost <= this.getMana(stack)
                 && spell.getTier().level <= this.tier.level
-                && (WandHelper.getCurrentCooldown(stack) == 0 || ctx.caster().isCreative());
+                && (WandHelper.getCurrentCooldown(stack, ctx.world().getGameTime()) == 0 || ctx.caster().isCreative());
     }
 
     @Override
@@ -183,7 +183,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 this.consumeMana(stack, accumulatedCost, player);
 
                 if (!player.isCreative()) {
-                    WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())));
+                    WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())), level.getGameTime());
                 }
             }
         }
@@ -211,11 +211,8 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level world, @NotNull Entity entity, int slot, boolean isHeldInMainhand) {
-        boolean isHeld = isHeldInMainhand || entity instanceof LivingEntity && ItemStack.isSameItem(stack, ((LivingEntity) entity).getOffhandItem());
-
-        if (!EBConfig.wandsMustBeHeldToDecrementCooldown || isHeld) {
-            WandHelper.decrementCooldowns(stack);
-        }
+        // Cooldowns are now handled via gametime comparison, no need to decrement every tick!
+        // This significantly improves performance by avoiding constant NBT modifications.
 
         if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConfig.CONDENSER_TICK_INTERVAL == 0) {
             this.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
@@ -357,7 +354,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         consumeMana(stack, cost, player);
 
         if (!player.isCreative()) {
-            WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())));
+            WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())), player.level().getGameTime());
         }
     }
 
@@ -494,7 +491,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     /**
      * Expands the spell slots on the wand when an attunement upgrade is applied. This method adjusts the spell list
-     * and cooldowns to accommodate the new slot count.
+     * to accommodate the new slot count.
      *
      * @param wand The wand item stack to expand spell slots for
      */
@@ -507,13 +504,6 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
             newSpells[i] = i < spells.size() && spells.get(i) != null ? spells.get(i) : Spells.NONE;
         }
         WandHelper.setSpells(wand, List.of(newSpells));
-
-        int[] cooldowns = WandHelper.getCooldowns(wand);
-        int[] newCooldowns = new int[newSlotCount];
-        if (cooldowns.length > 0) {
-            System.arraycopy(cooldowns, 0, newCooldowns, 0, Math.min(cooldowns.length, newSlotCount));
-        }
-        WandHelper.setCooldowns(wand, newCooldowns);
     }
 
     /**
@@ -611,8 +601,8 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     }
 
     @Override
-    public int getCurrentCooldown(ItemStack stack) {
-        return WandHelper.getCurrentCooldown(stack);
+    public int getCurrentCooldown(ItemStack stack, Level level) {
+        return WandHelper.getCurrentCooldown(stack, level.getGameTime());
     }
 
     @Override

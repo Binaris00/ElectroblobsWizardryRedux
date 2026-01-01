@@ -97,7 +97,7 @@ public interface ISpellCastingItem {
     /**
      * Returns the current cooldown to display on the spell HUD for the given ItemStack.
      */
-    default int getCurrentCooldown(ItemStack stack) {
+    default int getCurrentCooldown(ItemStack stack, Level level) {
         return 0;
     }
 

@@ -35,7 +35,7 @@ import java.util.List;
  * <ul>
  *     <li>A list of spells under the key {@link #SPELL_ARRAY_KEY}, stored as a list of string ResourceLocations.</li>
  *     <li>The currently selected spell under the key {@link #SELECTED_SPELL_KEY}, stored as a string ResourceLocation.</li>
- *     <li>An array of integers under the key {@link #COOLDOWN_ARRAY_KEY}, storing the current cooldown for each spell slot.</li>
+ *     <li>An array of longs under the key {@link #COOLDOWN_END_TIME_ARRAY_KEY}, storing the gametime when each spell's cooldown ends.</li>
  *     <li>An array of integers under the key {@link #MAX_COOLDOWN_ARRAY_KEY}, storing the maximum cooldown for each spell slot.</li>
  *     <li>A compound tag under the key {@link #UPGRADES_KEY}, storing the levels of each upgrade.</li>
  *     <li>An integer under the key {@link #PROGRESSION_KEY}, storing the wand's progression level.</li>
@@ -48,8 +48,8 @@ public final class WandHelper {
     /** The NBT key used to store the currently selected spell on the wand. */
     public static final String SELECTED_SPELL_KEY = "selectedSpell";
 
-    /** The NBT key used to store the array of cooldowns for each spell on the wand. */
-    public static final String COOLDOWN_ARRAY_KEY = "cooldown";
+    /** The NBT key used to store the array of cooldown end times (gametime) for each spell on the wand. */
+    public static final String COOLDOWN_END_TIME_ARRAY_KEY = "cooldownEndTime";
 
     /** The NBT key used to store the array of maximum cooldowns for each spell on the wand. */
     public static final String MAX_COOLDOWN_ARRAY_KEY = "maxCooldown";
@@ -173,70 +173,63 @@ public final class WandHelper {
     }
 
     /**
-     * Returns the array of cooldowns for each spell on the wand.
+     * Returns the array of cooldown end times (gametime) for each spell on the wand.
      *
      * @param wand The wand ItemStack.
-     * @return An array of cooldowns.
+     * @return An array of cooldown end times.
      */
-    public static int[] getCooldowns(ItemStack wand) {
-        return wand.getOrCreateTag().getIntArray(COOLDOWN_ARRAY_KEY);
+    public static long[] getCooldownEndTimes(ItemStack wand) {
+        return wand.getOrCreateTag().getLongArray(COOLDOWN_END_TIME_ARRAY_KEY);
     }
 
     /**
-     * Sets the array of cooldowns for each spell on the wand.
+     * Sets the array of cooldown end times (gametime) for each spell on the wand.
      *
      * @param wand The wand ItemStack.
-     * @param cooldowns The array of cooldowns to set.
+     * @param cooldownEndTimes The array of cooldown end times to set.
      */
-    public static void setCooldowns(ItemStack wand, int[] cooldowns) {
-        wand.getOrCreateTag().putIntArray(COOLDOWN_ARRAY_KEY, cooldowns);
+    public static void setCooldownEndTimes(ItemStack wand, long[] cooldownEndTimes) {
+        wand.getOrCreateTag().putLongArray(COOLDOWN_END_TIME_ARRAY_KEY, cooldownEndTimes);
     }
 
     /**
-     * Decrements the cooldowns for all spells on the wand by 1, ensuring they do not go below 0.
+     * Returns the current cooldown for the currently selected spell on the wand based on gametime.
      *
      * @param wand The wand ItemStack.
+     * @param currentGameTime The current game time from the world.
+     * @return The current cooldown remaining for the selected spell.
      */
-    public static void decrementCooldowns(ItemStack wand) {
-        int[] cooldowns = getCooldowns(wand);
-        if (cooldowns.length == 0) return;
-
-        for (int i = 0; i < cooldowns.length; i++) {
-            cooldowns[i] = Math.max(0, cooldowns[i] - 1);
-        }
-        setCooldowns(wand, cooldowns);
-    }
-
-    /**
-     * Returns the current cooldown for the currently selected spell on the wand.
-     *
-     * @param wand The wand ItemStack.
-     * @return The current cooldown for the selected spell.
-     */
-    public static int getCurrentCooldown(ItemStack wand) {
-        int[] cooldowns = getCooldowns(wand);
+    public static int getCurrentCooldown(ItemStack wand, long currentGameTime) {
+        long[] endTimes = getCooldownEndTimes(wand);
         int selectedSpellIndex = getSpells(wand).indexOf(getCurrentSpell(wand));
 
-        return (selectedSpellIndex >= 0 && selectedSpellIndex < cooldowns.length) ? cooldowns[selectedSpellIndex] : 0;
+        if (selectedSpellIndex >= 0 && selectedSpellIndex < endTimes.length) {
+            long endTime = endTimes[selectedSpellIndex];
+            if (endTime > currentGameTime) {
+                return (int) (endTime - currentGameTime);
+            }
+        }
+        return 0;
     }
 
     /**
-     * Sets the cooldown for the currently selected spell on the wand.
+     * Sets the cooldown for the currently selected spell on the wand using gametime.
      *
      * @param wand The wand ItemStack.
-     * @param cooldown The cooldown to set.
+     * @param cooldown The cooldown duration in ticks.
+     * @param currentGameTime The current game time from the world.
      */
-    public static void setCurrentCooldown(ItemStack wand, int cooldown) {
+    public static void setCurrentCooldown(ItemStack wand, int cooldown, long currentGameTime) {
         int selectedSpell = getSpells(wand).indexOf(getCurrentSpell(wand));
         int spellCount = getSpells(wand).size();
 
         if (selectedSpell >= spellCount) return;
 
-        int[] cooldowns = getCooldowns(wand);
-        if (cooldowns.length <= selectedSpell) cooldowns = new int[spellCount];
+        long[] endTimes = getCooldownEndTimes(wand);
+        if (endTimes.length <= selectedSpell) endTimes = new long[spellCount];
 
-        cooldowns[selectedSpell] = Math.max(1, cooldown);
-        setCooldowns(wand, cooldowns);
+        endTimes[selectedSpell] = currentGameTime + Math.max(1, cooldown);
+        setCooldownEndTimes(wand, endTimes);
 
         int[] maxCooldowns = getMaxCooldowns(wand);
         if (maxCooldowns.length <= selectedSpell) maxCooldowns = new int[spellCount];
