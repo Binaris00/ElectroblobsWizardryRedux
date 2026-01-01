@@ -30,7 +30,7 @@ public class PlagueOfDarkness extends AreaEffectSpell {
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (!MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
-
+            if (ctx.world().isClientSide) return true;
             target.hurt(target.damageSources().wither(), property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
             target.addEffect(new MobEffectInstance(MobEffects.WITHER,
                     (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),

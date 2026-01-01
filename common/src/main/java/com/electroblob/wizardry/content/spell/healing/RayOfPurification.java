@@ -47,8 +47,10 @@ public class RayOfPurification extends RaySpell {
         EntityUtil.attackEntityWithoutKnockback(target,
                 MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.RADIANT), damage);
 
-        target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,
-                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()))));
+        if (!ctx.world().isClientSide) {
+            target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,
+                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()))));
+        }
 
         return true;
     }

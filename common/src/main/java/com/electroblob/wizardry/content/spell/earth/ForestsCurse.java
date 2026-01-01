@@ -31,7 +31,7 @@ public class ForestsCurse extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        if (!MagicDamageSource.isEntityImmune(EBDamageSources.POISON, target)) {
+        if (!MagicDamageSource.isEntityImmune(EBDamageSources.POISON, target) && !ctx.world().isClientSide) {
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.POISON)
                     : target.damageSources().magic();
             target.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));

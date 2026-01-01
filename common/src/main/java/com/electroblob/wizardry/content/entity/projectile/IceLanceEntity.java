@@ -33,7 +33,7 @@ public class IceLanceEntity extends MagicArrowEntity {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         Entity entity = hitResult.getEntity();
-        if (entity instanceof LivingEntity livingEntity) {
+        if (entity instanceof LivingEntity livingEntity && !level().isClientSide) {
             livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                     Spells.ICE_LANCE.property(DefaultProperties.EFFECT_DURATION),
                     0));

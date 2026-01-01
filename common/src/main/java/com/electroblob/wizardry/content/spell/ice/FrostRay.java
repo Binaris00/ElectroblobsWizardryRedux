@@ -37,6 +37,7 @@ public class FrostRay extends RaySpell {
         if (!(entityHit.getEntity() instanceof LivingEntity target) || MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
             return false;
         if (target.isOnFire()) target.clearFire();
+        if (ctx.world().isClientSide) return true;
 
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                 property(DefaultProperties.EFFECT_DURATION),

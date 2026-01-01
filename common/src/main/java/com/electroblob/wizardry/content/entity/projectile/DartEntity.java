@@ -54,8 +54,7 @@ public class DartEntity extends MagicArrowEntity {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         Entity entity = hitResult.getEntity();
-        if (entity instanceof LivingEntity livingEntity) {
-
+        if (entity instanceof LivingEntity livingEntity && !level().isClientSide) {
             livingEntity.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, Spells.DART.property(DefaultProperties.EFFECT_DURATION),
                     Spells.DART.property(DefaultProperties.EFFECT_STRENGTH), false, false));
         }

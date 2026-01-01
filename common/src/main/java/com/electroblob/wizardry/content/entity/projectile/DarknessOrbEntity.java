@@ -33,6 +33,7 @@ public class DarknessOrbEntity extends MagicProjectileEntity {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
+        if (level().isClientSide) return;
 
         if (!(result.getEntity() instanceof LivingEntity livingEntity)
                 || MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity)) return;

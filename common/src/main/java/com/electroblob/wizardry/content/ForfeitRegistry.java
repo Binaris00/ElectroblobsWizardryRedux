@@ -16,7 +16,10 @@ import com.electroblob.wizardry.content.entity.living.*;
 import com.electroblob.wizardry.content.entity.projectile.FireBombEntity;
 import com.electroblob.wizardry.content.spell.necromancy.Banish;
 import com.electroblob.wizardry.core.mixin.accessor.FallingBlockEntityAccessor;
-import com.electroblob.wizardry.setup.registries.*;
+import com.electroblob.wizardry.setup.registries.EBMobEffects;
+import com.electroblob.wizardry.setup.registries.Elements;
+import com.electroblob.wizardry.setup.registries.SpellTiers;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -100,11 +103,15 @@ public class ForfeitRegistry {
                         1, EntityUtil.canDamageBlocks(p, w)));
         });
 
-        create("freeze_self", SpellTiers.NOVICE, Elements.ICE, (w, p) ->
-                p.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200)));
+        create("freeze_self", SpellTiers.NOVICE, Elements.ICE, (w, p) -> {
+                    if (!w.isClientSide) p.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200));
+                }
+        );
 
-        create("freeze_self_2", SpellTiers.NOVICE, Elements.ICE, (w, p) ->
-                p.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 300, 1)));
+        create("freeze_self_2", SpellTiers.NOVICE, Elements.ICE, (w, p) -> {
+                    if (!w.isClientSide) p.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 300, 1));
+                }
+        );
 
         create("ice_spikes", SpellTiers.APPRENTICE, Elements.ICE, (w, p) -> {
             if (w.isClientSide) return;
@@ -175,8 +182,9 @@ public class ForfeitRegistry {
                     summon(w, p.blockPosition().relative(direction, 3), new StormElemental(w), 0.5, 0, 0.5));
         });
 
-        create("nausea", SpellTiers.NOVICE, Elements.NECROMANCY, (w, p) ->
-                p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 400)));
+        create("nausea", SpellTiers.NOVICE, Elements.NECROMANCY, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 400));
+        });
 
         create("zombie_horde", SpellTiers.APPRENTICE, Elements.NECROMANCY, (w, p) -> {
             IntStream.range(0, 3).forEach(i ->
@@ -184,11 +192,13 @@ public class ForfeitRegistry {
                             new Zombie(EntityType.ZOMBIE, w), 0.5, 0, 0.5));
         });
 
-        create("wither_self", SpellTiers.ADVANCED, Elements.NECROMANCY, (w, p) ->
-                p.addEffect(new MobEffectInstance(MobEffects.WITHER, 400)));
+        create("wither_self", SpellTiers.ADVANCED, Elements.NECROMANCY, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(MobEffects.WITHER, 400));
+        });
 
-        create("cripple_self", SpellTiers.ADVANCED, Elements.NECROMANCY, (w, p) ->
-                p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 2)));
+        create("cripple_self", SpellTiers.ADVANCED, Elements.NECROMANCY, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 400, 2));
+        });
 
         create("shadow_wraiths", SpellTiers.MASTER, Elements.NECROMANCY, (w, p) -> {
             IntStream.range(0, 3).forEach(i ->
@@ -208,8 +218,9 @@ public class ForfeitRegistry {
             }
         });
 
-        create("poison_self", SpellTiers.APPRENTICE, Elements.EARTH, (w, p) ->
-                p.addEffect(new MobEffectInstance(MobEffects.POISON, 400, 1)));
+        create("poison_self", SpellTiers.APPRENTICE, Elements.EARTH, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(MobEffects.POISON, 400, 1));
+        });
 
         create("flood", SpellTiers.ADVANCED, Elements.EARTH, (w, p) -> {
             if (!w.isClientSide && BlockUtil.canDamageBlocks(p, w)) {
@@ -242,8 +253,9 @@ public class ForfeitRegistry {
         create("teleport_self", SpellTiers.APPRENTICE, Elements.SORCERY, (w, p) ->
                 ((Banish) Spells.BANISH).teleport(p, w, 8 + w.random.nextDouble() * 8));
 
-        create("levitate_self", SpellTiers.ADVANCED, Elements.SORCERY, (w, p) ->
-                p.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 200)));
+        create("levitate_self", SpellTiers.ADVANCED, Elements.SORCERY, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(MobEffects.LEVITATION, 200));
+        });
 
         create("vex_horde", SpellTiers.ADVANCED, Elements.SORCERY, (w, p) -> {
             IntStream.range(0, 4).forEach(i ->
@@ -267,20 +279,25 @@ public class ForfeitRegistry {
             });
         });
 
-        create("hunger", SpellTiers.APPRENTICE, Elements.HEALING, (w, p) ->
-                p.addEffect(new MobEffectInstance(MobEffects.HUNGER, 400, 4)));
+        create("hunger", SpellTiers.APPRENTICE, Elements.HEALING, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(MobEffects.HUNGER, 400, 4));
+        });
 
-        create("blind_self", SpellTiers.APPRENTICE, Elements.HEALING, (w, p) ->
-                p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200)));
+        create("blind_self", SpellTiers.APPRENTICE, Elements.HEALING, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, 200));
+        });
 
-        create("weaken_self", SpellTiers.ADVANCED, Elements.HEALING, (w, p) ->
-                p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 3)));
+        create("weaken_self", SpellTiers.ADVANCED, Elements.HEALING, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 600, 3));
+        });
 
-        create("jam_self", SpellTiers.ADVANCED, Elements.HEALING, (w, p) ->
-                p.addEffect(new MobEffectInstance(EBMobEffects.ARCANE_JAMMER.get(), 300)));
+        create("jam_self", SpellTiers.ADVANCED, Elements.HEALING, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(EBMobEffects.ARCANE_JAMMER.get(), 300));
+        });
 
-        create("curse_self", SpellTiers.MASTER, Elements.HEALING, (w, p) ->
-                p.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_UNDEATH.get(), Integer.MAX_VALUE)));
+        create("curse_self", SpellTiers.MASTER, Elements.HEALING, (w, p) -> {
+            if (!w.isClientSide) p.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_UNDEATH.get(), Integer.MAX_VALUE));
+        });
 
         //        add(SpellTiers.NOVICE, Elements.EARTH, create("snares", (w, p) -> {
 //            if (!w.isClientSide && EntityUtil.canDamageBlocks(p, w)) {

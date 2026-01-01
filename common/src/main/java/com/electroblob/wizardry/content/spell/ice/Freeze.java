@@ -48,6 +48,7 @@ public class Freeze extends RaySpell {
             target.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
         }
 
+        if (ctx.world().isClientSide) return true;
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                 (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
                 property(DefaultProperties.EFFECT_STRENGTH)));

@@ -26,6 +26,10 @@ public class FrostMobEffect extends MagicMobEffect {
 
         livingEntity.setIsInPowderSnow(true);
 
+        // need to check the -1, being the infinite duration case
+        if(livingEntity.hasEffect(this) && livingEntity.getEffect(this).getDuration() <= 1 && livingEntity.getEffect(this).getDuration() != -1) {
+            livingEntity.setIsInPowderSnow(false);
+        }
         super.applyEffectTick(livingEntity, i);
     }
 

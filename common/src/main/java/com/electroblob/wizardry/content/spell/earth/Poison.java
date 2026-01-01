@@ -32,7 +32,8 @@ public class Poison extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (entityHit.getEntity() instanceof LivingEntity livingTarget && !MagicDamageSource.isEntityImmune(EBDamageSources.POISON, livingTarget)) {
+        if (entityHit.getEntity() instanceof LivingEntity livingTarget &&
+                !MagicDamageSource.isEntityImmune(EBDamageSources.POISON, livingTarget) && !ctx.world().isClientSide) {
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.POISON)
                     : livingTarget.damageSources().magic();
 

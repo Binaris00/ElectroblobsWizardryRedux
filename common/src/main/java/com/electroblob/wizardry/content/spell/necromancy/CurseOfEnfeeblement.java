@@ -31,6 +31,7 @@ public class CurseOfEnfeeblement extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (entityHit.getEntity() instanceof LivingEntity target && !MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {
+            if (ctx.world().isClientSide) return true;
             target.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_ENFEEBLEMENT.get(),
                     Integer.MAX_VALUE, this.property(DefaultProperties.EFFECT_STRENGTH)
                     * BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY))));

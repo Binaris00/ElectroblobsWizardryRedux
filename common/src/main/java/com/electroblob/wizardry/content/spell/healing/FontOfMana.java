@@ -2,6 +2,7 @@ package com.electroblob.wizardry.content.spell.healing;
 
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.event.SpellCastEvent;
+import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
@@ -28,7 +29,7 @@ public class FontOfMana extends AreaEffectSpell {
     }
 
     @Override
-    protected boolean affectEntity(com.electroblob.wizardry.api.content.spell.internal.CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
+    protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (!(target instanceof Player)) return true;
 
         int duration = (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
@@ -36,7 +37,7 @@ public class FontOfMana extends AreaEffectSpell {
 
         // Apply the new Font of Mana mob effect
         if (EBMobEffects.FONT_OF_MANA.get() != null) {
-            target.addEffect(new MobEffectInstance(EBMobEffects.FONT_OF_MANA.get(), duration, strength));
+            if (!ctx.world().isClientSide) target.addEffect(new MobEffectInstance(EBMobEffects.FONT_OF_MANA.get(), duration, strength));
         }
         return true;
     }

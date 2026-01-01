@@ -48,7 +48,7 @@ public class IceChargeEntity extends BombEntity {
             float damage = Spells.ICE_CHARGE.property(DefaultProperties.DAMAGE) * damageMultiplier;
             MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FROST);
 
-            if (entity instanceof LivingEntity livingEntity)
+            if (entity instanceof LivingEntity livingEntity && !level().isClientSide)
                 livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                         Spells.ICE_CHARGE.property(DefaultProperties.EFFECT_DURATION),
                         Spells.ICE_CHARGE.property(DefaultProperties.EFFECT_STRENGTH)));
@@ -66,7 +66,7 @@ public class IceChargeEntity extends BombEntity {
         List<LivingEntity> targets = EntityUtil.getLivingEntitiesInRange(level(), this.getX(), this.getY(), this.getZ(), radius);
 
         for (LivingEntity target : targets) {
-            if (target != entity && target != this.getOwner()) {
+            if (target != entity && target != this.getOwner() && !level().isClientSide) {
                 target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                         Spells.ICE_CHARGE.property(DefaultProperties.EFFECT_DURATION),
                         Spells.ICE_CHARGE.property(DefaultProperties.EFFECT_STRENGTH)));

@@ -47,7 +47,7 @@ public class PermafrostBlock extends DryFrostedIceBlock {
 
             int duration = Spells.PERMAFROST.property(DefaultProperties.EFFECT_DURATION);
             int amplifier = Spells.PERMAFROST.property(DefaultProperties.EFFECT_STRENGTH);
-            livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), duration, amplifier));
+            if (!level.isClientSide) livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), duration, amplifier));
         }
     }
 }

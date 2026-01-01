@@ -12,6 +12,7 @@ import net.minecraft.world.item.ItemStack;
 public class SoulBindingRingEffect implements IArtefactEffect {
     @Override
     public void onHurtEntity(EBLivingHurtEvent e, ItemStack s) {
+        if (!e.getDamagedEntity().level().isClientSide) return;
         e.getDamagedEntity().addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_SOULBINDING.get(), 400));
         CurseOfSoulbinding.getSoulboundCreatures(Services.OBJECT_DATA.getSpellManagerData((Player) e.getSource().getEntity())).add(e.getDamagedEntity().getUUID());
     }

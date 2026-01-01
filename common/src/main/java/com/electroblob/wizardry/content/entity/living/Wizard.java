@@ -87,7 +87,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         if (this.trades.size() < MAX_TRADES) this.addRandomRecipes(1);
 
         this.updateRecipes = false;
-        this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
+        if (!level().isClientSide) this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
     }
 
 

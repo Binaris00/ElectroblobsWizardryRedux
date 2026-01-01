@@ -44,7 +44,7 @@ public class MagicSlime extends Slime {
             if (this.tickCount % 16 == 1) {
                 this.getVehicle().hurt(damageSources().magic(), 1);
                 if (this.getVehicle() != null) { // Some mobs force-dismount when attacked (normally when dying)
-                    livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
+                    if (!level().isClientSide) livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 2));
                 }
                 this.playSound(EBSounds.ENTITY_MAGIC_SLIME_ATTACK.get(), 1.0f, 1.0f);
             }

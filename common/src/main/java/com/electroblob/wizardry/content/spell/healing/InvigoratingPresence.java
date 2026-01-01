@@ -31,9 +31,11 @@ public class InvigoratingPresence extends AreaEffectSpell {
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
 
-        target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,
-                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
-                property(DefaultProperties.EFFECT_STRENGTH) + bonusAmplifier));
+        if (!ctx.world().isClientSide) {
+            target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,
+                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
+                    property(DefaultProperties.EFFECT_STRENGTH) + bonusAmplifier));
+        }
 
         return false;
     }

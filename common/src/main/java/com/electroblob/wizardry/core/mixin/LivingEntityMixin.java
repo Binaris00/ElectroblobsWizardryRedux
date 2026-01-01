@@ -12,11 +12,13 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
@@ -66,15 +68,23 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "shouldDropLoot", at = @At(value = "RETURN"), cancellable = true)
     public void EBWIZARDRY$dropLoot(CallbackInfoReturnable<Boolean> cir) {
-        if (Services.OBJECT_DATA.isMinion(livingEntity)) {
-            cir.setReturnValue(false);
+        if (livingEntity instanceof Mob mob) {
+            if (Services.OBJECT_DATA.isMinion(mob)) cir.setReturnValue(false);
         }
     }
 
     @Inject(method = "shouldDropExperience", at = @At(value = "RETURN"), cancellable = true)
     public void EBWIZARDRY$dropExperience(CallbackInfoReturnable<Boolean> cir) {
-        if (Services.OBJECT_DATA.isMinion(livingEntity)) {
-            cir.setReturnValue(false);
+        if (livingEntity instanceof Mob mob) {
+            if (Services.OBJECT_DATA.isMinion(mob)) cir.setReturnValue(false);
         }
+    }
+
+    @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))
+    public boolean EBWIZARDRY$avoidDamageOnFrost(LivingEntity living, DamageSource entity, float ev) {
+        if (living.hasEffect(EBMobEffects.FROST.get())) {
+            return false;
+        }
+        return living.hurt(entity, ev);
     }
 }

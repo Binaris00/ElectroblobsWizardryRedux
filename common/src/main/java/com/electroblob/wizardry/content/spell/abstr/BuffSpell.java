@@ -116,11 +116,12 @@ public class BuffSpell extends Spell {
         int bonusAmplifier = getBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
 
         for (MobEffect effect : potionSet) {
-
-            caster.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? 1 :
-                    (int) (this.property(getEffectDurationProperty(effect)) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
-                    this.property(getEffectStrengthProperty(effect)) + bonusAmplifier,
-                    false, true));
+            if (!ctx.world().isClientSide) {
+                caster.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? 1 :
+                        (int) (this.property(getEffectDurationProperty(effect)) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
+                        this.property(getEffectStrengthProperty(effect)) + bonusAmplifier,
+                        false, true));
+            }
         }
 
         return true;
