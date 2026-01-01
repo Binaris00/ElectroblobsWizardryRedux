@@ -51,8 +51,10 @@ public class RobeArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
                 .texOffs(0, 37).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2501F)).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
         partdefinition.addOrReplaceChild("right_arm", CubeListBuilder.create().texOffs(40, 16).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.75F))
                 .texOffs(0, 37).addBox(-3.0F, -2.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.2501F)), PartPose.offset(-5.0F, 2.0F, 0.0F));
-        partdefinition.addOrReplaceChild("head", CubeListBuilder.create().texOffs(0, 0).addBox(-4.0F, -7.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.501F))
-                .texOffs(32, 0).addBox(-4.0F, -7.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(1.0F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        partdefinition.addOrReplaceChild("head", CubeListBuilder.create()
+                        .texOffs(0, 0).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.501F))
+                        .texOffs(32, 0).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(1.0F)),
+                PartPose.offset(0.0F, 0.0F, 0.0F));
         partdefinition.addOrReplaceChild("robe", CubeListBuilder.create().texOffs(16, 34).addBox(-4.0F, -12.5F, -2.0F, 8.0F, 7.0F, 4.0F, new CubeDeformation(0.75F)), PartPose.offset(0.0F, 24.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);

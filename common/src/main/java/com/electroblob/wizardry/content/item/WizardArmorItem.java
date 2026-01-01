@@ -13,8 +13,12 @@ import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.api.content.util.WorkbenchUtils;
 import com.electroblob.wizardry.setup.registries.EBItems;
+import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -99,7 +103,26 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
             if (this.wizardArmorType == WizardArmorType.WARLOCK) args = new Object[]{(int) (WARLOCK_SPEED_BOOST * 100)};
 
             tooltip.add(Component.translatable("item.%s.%s_armor.full_set_bonus"
-                    .formatted(WizardryMainMod.MOD_ID, wizardArmorType.name()), args).withStyle(ChatFormatting.AQUA));
+                    .formatted(WizardryMainMod.MOD_ID, wizardArmorType.name().toLowerCase()), args).withStyle(ChatFormatting.AQUA));
+        }
+    }
+
+    @Override
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
+        if (level.isClientSide) return;
+        if (level.getGameTime() % 40 != 0) return;
+
+        if (entity instanceof LivingEntity livingEntity && getEquipmentSlot() == EquipmentSlot.HEAD
+                && InventoryUtil.isWearingFullSet(livingEntity, element, getWizardArmorType()) && InventoryUtil.doAllArmourPiecesHaveMana(livingEntity)) {
+
+            if (getWizardArmorType() == WizardArmorType.WARLOCK) {
+                livingEntity.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, 80, 0, false, false, false));
+                return;
+            }
+
+            if (getWizardArmorType() == WizardArmorType.BATTLEMAGE) {
+                livingEntity.addEffect(new MobEffectInstance(EBMobEffects.WARD.get(), 80, 0, false, false, false));
+            }
         }
     }
 
