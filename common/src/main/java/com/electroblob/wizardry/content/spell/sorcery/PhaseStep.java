@@ -5,10 +5,12 @@ import com.electroblob.wizardry.api.content.spell.SpellAction;
 import com.electroblob.wizardry.api.content.spell.SpellType;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
+import com.electroblob.wizardry.api.content.spell.properties.SpellProperty;
 import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.api.content.util.EntityUtil;
 import com.electroblob.wizardry.api.content.util.GeometryUtil;
 import com.electroblob.wizardry.api.content.util.RayTracer;
+import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
@@ -16,6 +18,7 @@ import com.electroblob.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.vehicle.Boat;
@@ -26,79 +29,81 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class PhaseStep extends Spell {
+    public static final SpellProperty<Integer> WALL_THICKNESS = SpellProperty.intProperty("wall_thickness", 1);
+
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        boolean teleportMount = ctx.caster().getVehicle() != null && EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.CHARM_MOUNT_TELEPORTING.get());
-        boolean hitLiquids = teleportMount && ctx.caster().getVehicle() instanceof Boat;
-        double range = 8;
+        Player caster = ctx.caster();
+        Level world = ctx.world();
 
-        HitResult rayTrace = RayTracer.standardBlockRayTrace(ctx.world(), ctx.caster(),
-                range, hitLiquids, !hitLiquids, false);
+        boolean teleportMount = caster.getVehicle() != null
+                && EBAccessoriesIntegration.isEquipped(caster, EBItems.CHARM_MOUNT_TELEPORTING.get());
+        boolean hitLiquids = teleportMount && caster.getVehicle() instanceof Boat;
+        double range = property(DefaultProperties.RANGE);
 
-        if (ctx.world().isClientSide) {
+        HitResult trace = RayTracer.standardBlockRayTrace(world, caster, range, hitLiquids, !hitLiquids, false);
+
+        if (world.isClientSide) {
             for (int i = 0; i < 10; i++) {
-                double dx1 = ctx.caster().xo;
-                double dy1 = ctx.caster().yo + 2 * ctx.world().random.nextFloat();
-                double dz1 = ctx.caster().zo;
-                ctx.world().addParticle(ParticleTypes.PORTAL, dx1, dy1, dz1, ctx.world().random.nextDouble() - 0.5,
-                        ctx.world().random.nextDouble() - 0.5, ctx.world().random.nextDouble() - 0.5);
+                double x = caster.getX();
+                double y = caster.getY() + 2 * world.random.nextFloat();
+                double z = caster.getZ();
+                world.addParticle(ParticleTypes.PORTAL, x, y, z,
+                        world.random.nextDouble() - 0.5,
+                        world.random.nextDouble() - 0.5,
+                        world.random.nextDouble() - 0.5);
             }
-
-            // TODO BIN BLINK EFFECT
-            //Wizardry.proxy.playBlinkEffect(caster);
         }
 
-        Entity toTeleport = teleportMount ? ctx.caster().getVehicle() : ctx.caster();
+        Entity subject = teleportMount ? caster.getVehicle() : caster;
 
-        if (rayTrace instanceof BlockHitResult blockHitResult) {
-            BlockPos pos = blockHitResult.getBlockPos();
-            int maxThickness = 1;
-
-            if (blockHitResult.getDirection() == Direction.UP) maxThickness++;
-
-            for (int i = 0; i <= maxThickness; i++) {
-                BlockPos pos1 = BlockPos.of(BlockPos.offset(i, blockHitResult.getDirection().getOpposite()));
-
-                if ((BlockUtil.isBlockUnbreakable(ctx.world(), pos1) || BlockUtil.isBlockUnbreakable(ctx.world(), pos1.relative(Direction.UP)))) {
-                    break;
-                }
-
-                Vec3 vec = GeometryUtil.getFaceCentre(pos1, Direction.DOWN);
-                attemptTeleport(ctx.world(), toTeleport, vec, teleportMount, ctx.caster(), ctx.castingTicks());
-            }
-
-            // If no suitable position was found on the other side of the wall, works like blink instead
-            pos = pos.offset(blockHitResult.getDirection().getNormal());
-
-            Vec3 vec = GeometryUtil.getFaceCentre(pos, Direction.DOWN);
-            return attemptTeleport(ctx.world(), toTeleport, vec, teleportMount, ctx.caster(), 1);
-
-        } else { // The ray trace missed
-            Vec3 vec = ctx.caster().position().add(ctx.caster().getLookAngle().scale(range));
-            return attemptTeleport(ctx.world(), toTeleport, vec, teleportMount, ctx.caster(), 1);
+        if (!(trace instanceof BlockHitResult hit)) {
+            Vec3 dest = caster.position().add(caster.getLookAngle().scale(range));
+            return attemptTeleport(world, subject, dest, teleportMount, caster);
         }
+
+        BlockPos hitPos = hit.getBlockPos();
+        int maxThickness = property(WALL_THICKNESS);
+        if (hit.getDirection() == Direction.UP) maxThickness++;
+
+        Direction face = hit.getDirection();
+        for (int i = 1; i <= maxThickness; i++) {
+            BlockPos tryPos = hitPos.relative(face, i);
+            if (BlockUtil.isBlockUnbreakable(world, tryPos) ||
+                    BlockUtil.isBlockUnbreakable(world, tryPos.relative(Direction.UP))) {
+                break;
+            }
+            Vec3 dest = GeometryUtil.getFaceCentre(tryPos, Direction.UP);
+            if (attemptTeleport(world, subject, dest, teleportMount, caster)) return true;
+        }
+
+        Vec3 fallback = GeometryUtil.getFaceCentre(hitPos.relative(face), Direction.UP);
+        return attemptTeleport(world, subject, fallback, teleportMount, caster);
     }
 
-    protected boolean attemptTeleport(Level world, Entity toTeleport, Vec3 destination, boolean teleportMount, Player caster, int ticksInUse) {
-        destination = EntityUtil.findSpaceForTeleport(toTeleport, destination, teleportMount);
+    protected boolean attemptTeleport(Level world, Entity toTeleport, Vec3 destination, boolean teleportMount, Player caster) {
+        Vec3 resolved = EntityUtil.findSpaceForTeleport(toTeleport, destination, teleportMount);
+        if (resolved == null) return false;
 
-        if (destination != null) {
-            this.playSound(world, caster, 0, -1);
+        playSound(world, caster, 0, -1);
 
-            if (!teleportMount && caster.getVehicle() != null) caster.stopRiding();
-            if (!world.isClientSide) toTeleport.setPos(destination.x, destination.y, destination.z);
+        if (!teleportMount && caster.getVehicle() != null) caster.stopRiding();
 
-            this.playSound(world, caster, 0, -1);
-            return true;
+        if (!world.isClientSide) {
+            if (toTeleport instanceof ServerPlayer sp) sp.teleportTo(resolved.x, resolved.y, resolved.z);
+            else toTeleport.setPos(resolved.x, resolved.y, resolved.z);
         }
-        return false;
+
+        playSound(world, caster, 0, -1);
+        return true;
     }
 
-    // TODO PROPERTIES
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT, 35, 0, 40)
+                .add(WALL_THICKNESS)
+                .add(DefaultProperties.RANGE, 8F)
                 .build();
     }
 }
