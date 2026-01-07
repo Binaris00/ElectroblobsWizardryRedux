@@ -11,12 +11,14 @@ import com.electroblob.wizardry.core.networking.c2s.ControlInputPacketC2S;
 import com.electroblob.wizardry.core.networking.c2s.SpellAccessPacketC2S;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBSounds;
+import com.electroblob.wizardry.setup.registries.Spells;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.stream.IntStream;
 
@@ -33,7 +35,7 @@ public final class EBKeyBinding {
 
     static {
         IntStream.range(0, SPELL_QUICK_ACCESS.length).forEach(i -> SPELL_QUICK_ACCESS[i]
-                = new KeyMapping("key." + WizardryMainMod.MOD_ID + ".spell_" + (i + 1), InputConstants.Type.KEYSYM, InputConstants.KEY_1 + i, CATEGORY));
+                = new KeyMapping("key." + WizardryMainMod.MOD_ID + ".spell_" + (i + 1), InputConstants.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, CATEGORY));
     }
 
     private EBKeyBinding() {
@@ -77,25 +79,34 @@ public final class EBKeyBinding {
     }
 
     public static void selectNextSpell(ItemStack wand) {
+        ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
+        if (item.getCurrentSpell(wand) == Spells.NONE && item.getNextSpell(wand) == Spells.NONE) return;
+
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.NEXT_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
-        ((ISpellCastingItem) wand.getItem()).selectNextSpell(wand);
+        item.selectNextSpell(wand);
         SpellGUIDisplay.playSpellSwitchAnimation(true);
 
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
     }
 
     public static void selectPreviousSpell(ItemStack wand) {
+        ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
+        if (item.getCurrentSpell(wand) == Spells.NONE && item.getPreviousSpell(wand) == Spells.NONE) return;
+
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.PREVIOUS_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
-        ((ISpellCastingItem) wand.getItem()).selectPreviousSpell(wand);
+        item.selectPreviousSpell(wand);
         SpellGUIDisplay.playSpellSwitchAnimation(false);
 
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
     }
 
     private static void selectSpell(ItemStack wand, int index) {
-        if (((ISpellCastingItem) wand.getItem()).selectSpell(wand, index)) {
+        ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
+        if (item.getCurrentSpell(wand) == Spells.NONE && item.getSpells(wand).length == 0) return;
+
+        if (item.selectSpell(wand, index)) {
             SpellAccessPacketC2S msg = new SpellAccessPacketC2S(index);
             Services.NETWORK_HELPER.sendToServer(msg);
 

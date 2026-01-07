@@ -515,7 +515,16 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
      * @param stack The wand item stack
      */
     protected void handleProgression(PlayerCastContext ctx, Spell spell, ItemStack stack) {
-        if (tier.level >= SpellTiers.MASTER.level || spell.isInstantCast() || ctx.castingTicks() % 20 != 0) return;
+        if (tier.level >= SpellTiers.MASTER.level) return;
+
+        // For instant spells, add progression at tick 0
+        // For continuous spells, add progression every 20 ticks
+        boolean shouldAddProgression = spell.isInstantCast()
+            ? ctx.castingTicks() == 0
+            : ctx.castingTicks() % 20 == 0;
+
+        if (!shouldAddProgression) return;
+
         int progression = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.PROGRESSION));
         WandHelper.addProgression(stack, progression);
 

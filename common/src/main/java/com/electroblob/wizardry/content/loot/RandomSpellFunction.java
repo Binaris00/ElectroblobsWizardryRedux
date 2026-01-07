@@ -61,7 +61,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
 
     @Override
     public @NotNull LootItemFunctionType getType() {
-        return EBLootFunctions.RANDOM_SPELL.get();
+        return EBLootFunctions.RANDOM_SPELL;
     }
 
     @Override

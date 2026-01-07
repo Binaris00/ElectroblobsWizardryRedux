@@ -28,7 +28,7 @@ public class WizardSpellFunction extends LootItemConditionalFunction {
 
     @Override
     public @NotNull LootItemFunctionType getType() {
-        return EBLootFunctions.WIZARD_SPELL.get();
+        return EBLootFunctions.WIZARD_SPELL;
     }
 
     @Override

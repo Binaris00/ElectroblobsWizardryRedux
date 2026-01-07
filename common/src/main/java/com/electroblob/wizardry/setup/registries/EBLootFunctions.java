@@ -6,26 +6,26 @@ import com.electroblob.wizardry.content.loot.RandomSpellFunction;
 import com.electroblob.wizardry.content.loot.WizardSpellFunction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.storage.loot.functions.LootItemFunctionType;
-
-import java.util.HashMap;
+import net.minecraft.resources.ResourceLocation;
+import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.Supplier;
 
 public final class EBLootFunctions {
-    static Map<String, Supplier<LootItemFunctionType>> LOOT_FUNCTIONS = new HashMap<>();
-    public static final Supplier<LootItemFunctionType> RANDOM_SPELL = lootFunction("random_spell", () -> new LootItemFunctionType(new RandomSpellFunction.Serializer()));
-    public static final Supplier<LootItemFunctionType> WIZARD_SPELL = lootFunction("wizard_spell", () -> new LootItemFunctionType(new WizardSpellFunction.Serializer()));
-    private EBLootFunctions() {
+
+    private static final Map<ResourceLocation, LootItemFunctionType> FUNCTIONS_TO_REGISTER = new LinkedHashMap<>();
+
+    public static final LootItemFunctionType RANDOM_SPELL = register("random_spell", new LootItemFunctionType(new RandomSpellFunction.Serializer()));
+    public static final LootItemFunctionType WIZARD_SPELL = register("wizard_spell", new LootItemFunctionType(new WizardSpellFunction.Serializer()));
+
+    private EBLootFunctions() {}
+
+    private static LootItemFunctionType register(String name, LootItemFunctionType type) {
+        FUNCTIONS_TO_REGISTER.put(WizardryMainMod.location(name), type);
+        return type;
     }
 
-    // ======= Registry =======
     public static void register(RegisterFunction<LootItemFunctionType> function) {
-        LOOT_FUNCTIONS.forEach(((id, loot_function) ->
-                function.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, WizardryMainMod.location(id), loot_function.get())));
-    }
-
-    static Supplier<LootItemFunctionType> lootFunction(String name, Supplier<LootItemFunctionType> loot_function) {
-        LOOT_FUNCTIONS.put(name, loot_function);
-        return loot_function;
+        FUNCTIONS_TO_REGISTER.forEach(((id, loot_function) ->
+                function.register(BuiltInRegistries.LOOT_FUNCTION_TYPE, id, loot_function)));
     }
 }

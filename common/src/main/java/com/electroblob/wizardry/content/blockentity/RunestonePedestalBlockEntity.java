@@ -42,7 +42,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
     /** Radius around the pedestal to check for nearby players to activate the event */
     private static final double ACTIVATION_RADIUS = 7;
     /** Number of evil wizards to spawn when the pedestal event is activated */
-    private static final int WIZARD_SPAWN_COUNT = 4;
+    private static final int WIZARD_SPAWN_COUNT = 3;
     /** Radius around the pedestal to spawn evil wizards */
     private static final int WIZARD_SPAWN_RADIUS = 5;
     /** Delay before the pedestal regenerates after being conquered (in ticks) */
@@ -167,7 +167,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         double z = pos.getZ() + 0.5;
 
         ParticleBuilder.create(EBParticles.SPHERE).pos(x, y + 1, z).color(0xf06495).scale(5).time(12).allowServer(true).spawn(level);
-        level.playLocalSound(x, y, z, EBSounds.BLOCK_PEDESTAL_ACTIVATE.get(), SoundSource.BLOCKS, 1.5f, 1, false);
+        level.playSound(null, x, y, z, EBSounds.BLOCK_PEDESTAL_ACTIVATE.get(), SoundSource.BLOCKS, 1.5f, 1);
 
         this.activated = true;
         this.spawnedWizards.clear();
@@ -246,6 +246,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
      */
     private void conquered() {
         if (!(level instanceof ServerLevel serverLevel)) return;
+        serverLevel.playSound(null, getBlockPos(), EBSounds.BLOCK_PEDESTAL_CONQUER.get(), SoundSource.BLOCKS, 1.5f, 1);
 
         playersInContainment.forEach(uuid -> {
             var player = serverLevel.getPlayerByUUID(uuid);
