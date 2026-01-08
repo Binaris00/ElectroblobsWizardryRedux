@@ -10,7 +10,7 @@ import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.content.item.SpellBookItem;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.registries.BuiltInRegistries;

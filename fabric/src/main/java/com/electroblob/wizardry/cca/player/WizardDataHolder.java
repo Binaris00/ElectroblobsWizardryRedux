@@ -5,7 +5,7 @@ import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.cca.EBComponents;
-import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.EvictingQueue;
@@ -18,7 +18,6 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
-import com.electroblob.wizardry.api.EBLogger;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -30,7 +29,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     public Set<String> allyNames = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
-    private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
+    private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConstants.MAX_RECENT_SPELLS);
     private Random random = new Random();
 
     public WizardDataHolder(Player provider) {

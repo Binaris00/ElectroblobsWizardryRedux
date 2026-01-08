@@ -104,9 +104,4 @@ public abstract class SpellInfoScreen extends Screen {
         this.clearWidgets();
         this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.MISC_BOOK_OPEN.get(), 1));
     }
-
-    @Override
-    public boolean isPauseScreen() {
-        return EBConfig.booksPauseGame;
-    }
 }

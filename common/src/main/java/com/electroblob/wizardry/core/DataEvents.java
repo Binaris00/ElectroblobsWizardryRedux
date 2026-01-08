@@ -14,7 +14,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
-import java.util.Iterator;
 import java.util.Map;
 
 /**
@@ -152,7 +151,7 @@ public final class DataEvents {
         WizardData data = Services.OBJECT_DATA.getWizardData(player);
         if (player.tickCount % 60 == 0) {
             long currentTime = player.level().getGameTime();
-            data.removeRecentCasts((entry) -> currentTime - entry.getValue() >= EBConfig.RECENT_SPELL_EXPIRY_TICKS);
+            data.removeRecentCasts((entry) -> currentTime - entry.getValue() >= EBConstants.RECENT_SPELL_EXPIRY_TICKS);
         }
     }
 }

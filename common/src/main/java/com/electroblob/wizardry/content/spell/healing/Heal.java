@@ -7,7 +7,7 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.BuffSpell;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;

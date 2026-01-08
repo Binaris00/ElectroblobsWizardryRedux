@@ -8,7 +8,7 @@ import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
@@ -39,7 +39,7 @@ public class Reversal extends RaySpell {
 
         if (negativePotions.isEmpty()) return false;
 
-        int bonusEffects = (int) (ctx.modifiers().get(SpellModifiers.POTENCY) - 1 / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5F) - 1;
+        int bonusEffects = (int) (ctx.modifiers().get(SpellModifiers.POTENCY) - 1 / EBConstants.POTENCY_INCREASE_PER_TIER + 0.5F) - 1;
         int n = property(DefaultProperties.EFFECT_STRENGTH) + bonusEffects;
 
         Collections.shuffle(negativePotions);

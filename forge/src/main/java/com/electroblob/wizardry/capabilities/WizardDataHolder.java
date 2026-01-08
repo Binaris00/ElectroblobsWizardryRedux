@@ -5,7 +5,7 @@ import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
-import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
 import com.electroblob.wizardry.setup.registries.SpellTiers;
@@ -39,7 +39,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     public Set<String> allyNames = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
-    private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConfig.MAX_RECENT_SPELLS);
+    private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConstants.MAX_RECENT_SPELLS);
     private Random random = new Random();
 
     private final Player provider;

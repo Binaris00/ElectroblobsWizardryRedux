@@ -16,6 +16,7 @@ import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.api.content.util.WorkbenchUtils;
 import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
@@ -214,7 +215,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         // Cooldowns are now handled via gametime comparison, no need to decrement every tick!
         // This significantly improves performance by avoiding constant NBT modifications.
 
-        if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConfig.CONDENSER_TICK_INTERVAL == 0) {
+        if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
             this.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
         }
     }

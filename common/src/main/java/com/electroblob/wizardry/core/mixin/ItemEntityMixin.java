@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.core.mixin;
 
 import com.electroblob.wizardry.content.item.RandomSpellBookItem;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.stats.Stats;

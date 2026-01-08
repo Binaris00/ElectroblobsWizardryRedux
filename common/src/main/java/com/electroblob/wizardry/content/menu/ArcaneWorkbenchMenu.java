@@ -299,7 +299,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
      * @return An array of two integers, the first is the index of the first valid slot, the second is the index of
      * the last valid slot (inclusive). Or null if there are no valid slots.
      */
-    private int @Nullable [] findSlotRangeForItem(ItemStack stack) {
+    public int @Nullable [] findSlotRangeForItem(ItemStack stack) {
         if (getSlot(0).mayPlace(stack)) {
             ItemStack centreStack = getSlot(CENTRE_SLOT).getItem();
             if (centreStack.getItem() instanceof IWorkbenchItem) {

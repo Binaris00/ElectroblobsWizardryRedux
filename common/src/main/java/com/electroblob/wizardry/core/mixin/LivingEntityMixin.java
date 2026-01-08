@@ -4,7 +4,7 @@ import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingHurtEvent;
 import com.electroblob.wizardry.api.content.event.EBLivingTick;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;

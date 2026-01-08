@@ -8,7 +8,7 @@ import com.electroblob.wizardry.api.content.util.BlockUtil;
 import com.electroblob.wizardry.content.blockentity.BlockEntityTimer;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.abstr.RaySpell;
-import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.setup.registries.EBBlocks;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
@@ -28,7 +28,7 @@ public class Cobwebs extends RaySpell {
         boolean flag = false;
         BlockPos pos = blockHit.getBlockPos().relative(blockHit.getDirection());
 
-        int blastUpgradeCount = (int) ((ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1) / EBConfig.RANGE_INCREASE_PER_LEVEL + 0.5f);
+        int blastUpgradeCount = (int) ((ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1) / EBConstants.RANGE_INCREASE_PER_LEVEL + 0.5f);
 
         float radius = property(DefaultProperties.BLAST_RADIUS) + 0.73f * blastUpgradeCount;
 

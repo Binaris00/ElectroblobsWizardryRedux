@@ -15,7 +15,7 @@ import com.electroblob.wizardry.content.spell.sorcery.ImbueWeapon;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.IArtefactEffect;
 import com.electroblob.wizardry.core.QuickArtefactEffect;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.Direction;

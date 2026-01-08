@@ -8,7 +8,7 @@ import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.content.item.CrystalItem;
 import com.electroblob.wizardry.content.item.SpellBookItem;
 import com.electroblob.wizardry.content.menu.ArcaneWorkbenchMenu;
-import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.setup.registries.EBBlockEntities;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.WandUpgrades;
@@ -52,7 +52,7 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
 
     public static void serverTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
         ItemStack stack = entity.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
-        if (stack.getItem() instanceof IManaStoringItem manaItem && !level.isClientSide && !manaItem.isManaFull(stack) && level.getGameTime() % EBConfig.CONDENSER_TICK_INTERVAL == 0) {
+        if (stack.getItem() instanceof IManaStoringItem manaItem && !level.isClientSide && !manaItem.isManaFull(stack) && level.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
             manaItem.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
         }
 

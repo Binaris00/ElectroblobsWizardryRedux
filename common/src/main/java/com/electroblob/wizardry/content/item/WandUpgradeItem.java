@@ -4,8 +4,8 @@ import com.electroblob.wizardry.api.content.event.EBLivingDeathEvent;
 import com.electroblob.wizardry.api.content.item.IManaStoringItem;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.api.content.util.WandHelper;
-import com.electroblob.wizardry.core.EBConfig;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.EBConstants;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -34,9 +34,9 @@ public class WandUpgradeItem extends Item {
                 .filter(stack -> WandHelper.getUpgradeLevel(stack, EBItems.SIPHON_UPGRADE) > 0)
                 .findFirst() // only can recharge 1 item for death
                 .ifPresent(stack -> {
-                    float mana = EBConfig.SIPHON_MANA_PER_LEVEL
+                    float mana = EBConstants.SIPHON_MANA_PER_LEVEL
                             * WandHelper.getUpgradeLevel(stack, EBItems.SIPHON_UPGRADE)
-                            + player.level().random.nextInt(EBConfig.SIPHON_MANA_PER_LEVEL);
+                            + player.level().random.nextInt(EBConstants.SIPHON_MANA_PER_LEVEL);
                     if (EBAccessoriesIntegration.isEquipped(player, EBItems.RING_SIPHONING.get())) mana *= 1.3f;
                     ((IManaStoringItem) stack.getItem()).rechargeMana(stack, (int) mana);
                 });

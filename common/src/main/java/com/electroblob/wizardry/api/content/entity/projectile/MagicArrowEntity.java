@@ -6,7 +6,7 @@ import com.electroblob.wizardry.api.content.util.RayTracer;
 import com.electroblob.wizardry.client.renderer.entity.MagicArrowRenderer;
 import com.electroblob.wizardry.content.spell.abstr.ArrowSpell;
 import com.electroblob.wizardry.core.AllyDesignation;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.nbt.CompoundTag;

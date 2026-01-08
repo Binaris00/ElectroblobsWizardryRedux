@@ -11,7 +11,7 @@ import com.electroblob.wizardry.api.content.spell.properties.SpellProperties;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
 import com.electroblob.wizardry.content.spell.sorcery.ImbueWeapon;
-import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
@@ -35,7 +35,7 @@ public class FlamingWeapon extends Spell {
 
             ImbuementEnchantData data = Services.OBJECT_DATA.getImbuementData(stack);
             if (data == null) continue;
-            int level = ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1 : (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConfig.POTENCY_INCREASE_PER_TIER + 0.5f);
+            int level = ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1 : (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConstants.POTENCY_INCREASE_PER_TIER + 0.5f);
             long duration = (long) (ctx.world().getGameTime() + (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
 
             if (stack.getItem() instanceof SwordItem) {

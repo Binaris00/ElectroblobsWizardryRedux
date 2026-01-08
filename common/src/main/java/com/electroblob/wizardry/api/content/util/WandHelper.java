@@ -11,6 +11,7 @@ import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.core.EBConfig;
+import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -411,27 +412,27 @@ public final class WandHelper {
 
         int level = getUpgradeLevel(stack, EBItems.RANGE_UPGRADE);
         if (level > 0)
-            modifiers.set(EBItems.RANGE_UPGRADE.get(), 1.0f + level * EBConfig.RANGE_INCREASE_PER_LEVEL, true);
+            modifiers.set(EBItems.RANGE_UPGRADE.get(), 1.0f + level * EBConstants.RANGE_INCREASE_PER_LEVEL, true);
 
         level = getUpgradeLevel(stack, EBItems.DURATION_UPGRADE);
         if (level > 0)
-            modifiers.set(EBItems.DURATION_UPGRADE.get(), 1.0f + level * EBConfig.DURATION_INCREASE_PER_LEVEL, false);
+            modifiers.set(EBItems.DURATION_UPGRADE.get(), 1.0f + level * EBConstants.DURATION_INCREASE_PER_LEVEL, false);
 
         level = getUpgradeLevel(stack, EBItems.BLAST_UPGRADE);
         if (level > 0)
-            modifiers.set(EBItems.BLAST_UPGRADE.get(), 1.0f + level * EBConfig.BLAST_RADIUS_INCREASE_PER_LEVEL, true);
+            modifiers.set(EBItems.BLAST_UPGRADE.get(), 1.0f + level * EBConstants.BLAST_RADIUS_INCREASE_PER_LEVEL, true);
 
         level = getUpgradeLevel(stack, EBItems.COOLDOWN_UPGRADE);
         if (level > 0)
-            modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), 1.0f - level * EBConfig.COOLDOWN_REDUCTION_PER_LEVEL, true);
+            modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), 1.0f - level * EBConstants.COOLDOWN_REDUCTION_PER_LEVEL, true);
 
-        float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConfig.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION;
+        float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConstants.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION;
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
         WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
 
         if (stack.getItem() instanceof IElementValue elementValue && stack.getItem() instanceof ITierValue tierValue) {
             if (elementValue.getElement() == spell.getElement()) {
-                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).level + 1) * EBConfig.POTENCY_INCREASE_PER_TIER, true);
+                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).level + 1) * EBConstants.POTENCY_INCREASE_PER_TIER, true);
                 progressionModifier *= 1.2f;
             }
 

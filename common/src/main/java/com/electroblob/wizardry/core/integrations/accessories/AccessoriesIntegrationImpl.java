@@ -1,4 +1,4 @@
-package com.electroblob.wizardry.core.integrations;
+package com.electroblob.wizardry.core.integrations.accessories;
 
 import com.electroblob.wizardry.core.IArtefactEffect;
 import io.wispforest.accessories.api.AccessoriesCapability;

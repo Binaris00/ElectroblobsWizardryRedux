@@ -2,7 +2,7 @@ package com.electroblob.wizardry.api.content.entity.projectile;
 
 import com.electroblob.wizardry.api.content.util.RayTracer;
 import com.electroblob.wizardry.core.AllyDesignation;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Mth;

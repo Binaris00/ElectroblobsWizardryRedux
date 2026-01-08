@@ -1,7 +1,7 @@
 package com.electroblob.wizardry.core.mixin.client;
 
 import com.electroblob.wizardry.content.item.WandItem;
-import com.electroblob.wizardry.core.integrations.EBAccessoriesIntegration;
+import com.electroblob.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.client.player.Input;
