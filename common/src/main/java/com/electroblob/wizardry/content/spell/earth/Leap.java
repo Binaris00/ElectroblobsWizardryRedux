@@ -32,6 +32,7 @@ public class Leap extends Spell {
             ctx.world().addParticle(ParticleTypes.CLOUD, x, y, z, 0, 0, 0);
         }
 
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 

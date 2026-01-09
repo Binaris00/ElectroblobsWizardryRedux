@@ -17,6 +17,15 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class Enrage extends AreaEffectSpell {
+    public Enrage() {
+        this.alwaysSucceed(true);
+    }
+
+    @Override
+    public boolean canCastByLocation() {
+        return false;
+    }
+
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (ctx.caster() instanceof Player player && target instanceof PathfinderMob) {

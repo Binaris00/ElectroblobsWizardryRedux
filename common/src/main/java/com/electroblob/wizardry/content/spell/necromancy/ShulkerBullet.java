@@ -47,13 +47,13 @@ public class ShulkerBullet extends Spell {
 
             possibleTargets.remove(caster);
             possibleTargets.removeIf(t -> t instanceof ArmorStand);
-
-            if (possibleTargets.isEmpty()) return true;
+            if (possibleTargets.isEmpty()) return false;
 
             possibleTargets.sort(Comparator.comparingDouble(t -> t.distanceToSqr(x, y, z)));
 
             Entity target = possibleTargets.get(0);
             world.addFreshEntity(new net.minecraft.world.entity.projectile.ShulkerBullet(world, caster, target, Direction.UP.getAxis()));
+            return true;
         }
 
         return false;

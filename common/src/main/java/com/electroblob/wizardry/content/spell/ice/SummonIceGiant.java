@@ -34,6 +34,7 @@ public class SummonIceGiant extends MinionSpell<IceGiant> {
                 .add(DefaultProperties.MINION_COUNT, 1)
                 .add(DefaultProperties.MINION_LIFETIME, 600)
                 .add(DefaultProperties.SUMMON_RADIUS, 2)
+                .add(DefaultProperties.SENSIBLE, true) // TODO: sadly we need to change the texture
                 .build();
     }
 }

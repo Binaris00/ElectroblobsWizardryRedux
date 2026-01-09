@@ -19,6 +19,7 @@ public class PocketWorkbench extends Spell {
         ctx.caster().openMenu(new SimpleMenuProvider((dat, inventory, container) ->
                 new CraftingMenu(dat, inventory), Component.translatable("container.crafting")));
         ctx.caster().awardStat(Stats.OPEN_ENDERCHEST);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 

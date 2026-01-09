@@ -70,7 +70,7 @@ public class BuffSpell extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if (!this.applyEffects(ctx, ctx.caster()) && !ctx.world().isClientSide) return false;
+        if (!this.applyEffects(ctx, ctx.caster())) return false;
         if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), ctx.caster());
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
@@ -101,7 +101,6 @@ public class BuffSpell extends Spell {
         }
 
         if (nearestEntity == null) return false;
-
         if (!this.applyEffects(ctx, nearestEntity) && !ctx.world().isClientSide) return false;
         if (ctx.world().isClientSide) this.spawnParticles(ctx.world(), nearestEntity);
 

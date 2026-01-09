@@ -30,6 +30,7 @@ public class Evade extends Spell {
 
         evadeDirection = evadeDirection.scale(this.property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY));
         ctx.caster().addDeltaMovement(new Vec3(evadeDirection.x, 0.25f, evadeDirection.z));
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 

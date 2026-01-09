@@ -21,6 +21,7 @@ public class VanishingBox extends Spell {
         ctx.caster().openMenu(new SimpleMenuProvider((dat, inventory, container) ->
                 ChestMenu.threeRows(dat, inventory, enderChestInventory), Component.translatable("container.enderchest")));
         ctx.caster().awardStat(Stats.OPEN_ENDERCHEST);
+        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
     }
 

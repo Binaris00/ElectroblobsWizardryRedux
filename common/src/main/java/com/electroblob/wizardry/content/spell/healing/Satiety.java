@@ -15,6 +15,17 @@ import org.jetbrains.annotations.NotNull;
 public class Satiety extends BuffSpell {
     public Satiety() {
         super(1, 0.7f, 0.3f);
+        this.soundValues(0.7f, 1.2f, 0.4f);
+    }
+
+    @Override
+    public boolean canCastByEntity() {
+        return false;
+    }
+
+    @Override
+    public boolean canCastByLocation() {
+        return false;
     }
 
     @Override

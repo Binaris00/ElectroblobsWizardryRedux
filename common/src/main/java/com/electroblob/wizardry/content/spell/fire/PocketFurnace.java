@@ -26,6 +26,10 @@ import java.util.Optional;
 public class PocketFurnace extends Spell {
     public static final SpellProperty<Integer> ITEMS_SMELTED = SpellProperty.intProperty("items_smelted");
 
+    public PocketFurnace() {
+        this.soundValues(1, 1.0f, 0.2f);
+    }
+
     @Override
     public boolean cast(PlayerCastContext ctx) {
         int usesLeft = (int) (property(ITEMS_SMELTED) * ctx.modifiers().get(SpellModifiers.POTENCY));

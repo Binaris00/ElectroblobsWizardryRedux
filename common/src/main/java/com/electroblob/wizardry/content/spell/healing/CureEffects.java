@@ -12,27 +12,32 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class CureEffects extends BuffSpell {
     public CureEffects() {
         super(0.8f, 0.8f, 1);
+        this.soundValues(0.7f, 1.2f, 0.4f);
     }
 
     @Override
     protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
-        if (!caster.getActiveEffects().isEmpty()) {
-            boolean flag = false;
+        if (caster.getActiveEffects().isEmpty()) return false;
 
-            for (MobEffectInstance effect : caster.getActiveEffects()) {
-                if (!(effect.getEffect() instanceof CurseMobEffect)) {
-                    caster.removeEffect(effect.getEffect());
-                    flag = true;
-                }
+        boolean flag = false;
+        // Iterate over a copy to avoid ConcurrentModificationException when removing effects
+        List<MobEffectInstance> effectsCopy = new ArrayList<>(caster.getActiveEffects());
+
+        for (MobEffectInstance effect : effectsCopy) {
+            if (!(effect.getEffect() instanceof CurseMobEffect)) {
+                caster.removeEffect(effect.getEffect());
+                flag = true;
             }
-
-            return flag;
         }
 
-        return false;
+        return flag;
+
     }
 
     @Override

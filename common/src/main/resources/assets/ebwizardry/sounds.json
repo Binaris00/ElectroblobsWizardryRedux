@@ -965,21 +965,11 @@
       "mob/evocation_illager/prepare_attack2"
     ]
   },
-  "spell.bubble.shoot": {
+  "spell.bubble": {
     "category": "spells",
     "sounds": [
       "ebwizardry:ice"
     ]
-  },
-  "spell.bubble.splash": {
-    "category": "spells",
-    "sounds": [
-      "liquid/swim1",
-      "liquid/swim2",
-      "liquid/swim3",
-      "liquid/swim4"
-    ],
-    "volume": 2
   },
   "spell.celestial_smite": {
     "category": "spells",
@@ -1025,7 +1015,7 @@
       "mob/guardian/curse"
     ]
   },
-  "spell.conjure_armour": {
+  "spell.conjure_armor": {
     "category": "spells",
     "sounds": [
       "ebwizardry:conjure"
@@ -1094,7 +1084,7 @@
       "mob/wither/shoot"
     ]
   },
-  "spell.darkvision": {
+  "spell.dark_vision": {
     "category": "spells",
     "sounds": [
       "ebwizardry:heal"
@@ -1223,7 +1213,7 @@
       "fire/ignite"
     ]
   },
-  "spell.fireskin": {
+  "spell.fire_skin": {
     "category": "spells",
     "sounds": [
       "ebwizardry:buff"
@@ -2016,19 +2006,11 @@
       "mob/wither/shoot"
     ]
   },
-  "spell.slime.shoot": {
+  "spell.slime": {
     "category": "spells",
     "sounds": [
       "ebwizardry:ice"
     ]
-  },
-  "spell.slime.squelch": {
-    "category": "spells",
-    "sounds": [
-      "mob/slime/attack1",
-      "mob/slime/attack2"
-    ],
-    "pitch": 0.5
   },
   "spell.slow_time": {
     "category": "spells",
@@ -2342,22 +2324,10 @@
       "ebwizardry:beam_start"
     ]
   },
-  "spell.zombie_apocalypse.start": {
+  "spell.zombie_apocalypse": {
     "category": "spells",
     "sounds": [
       "ebwizardry:dark_aura_start"
-    ]
-  },
-  "spell.zombie_apocalypse.loop": {
-    "category": "spells",
-    "sounds": [
-      "ebwizardry:dark_aura_loop"
-    ]
-  },
-  "spell.zombie_apocalypse.end": {
-    "category": "spells",
-    "sounds": [
-      "ebwizardry:dark_aura_end"
     ]
   },
   "spell.mirage": {

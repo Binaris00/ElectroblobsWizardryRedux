@@ -27,6 +27,12 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class PlagueOfDarkness extends AreaEffectSpell {
+
+    public PlagueOfDarkness() {
+        this.alwaysSucceed(true);
+        this.soundValues(1, 1.1f, 0.2f);
+    }
+
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (!MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, target)) {

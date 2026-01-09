@@ -22,22 +22,7 @@ public class Hailstorm extends ConstructRangedSpell<HailstormConstruct> {
 
     @Override
     protected boolean spawnConstruct(CastContext ctx, Vec3 vec3, @Nullable Direction side) {
-        double dx = ctx.caster() == null ? side.step().x() : ctx.caster().getX() - vec3.x;
-        double dz = ctx.caster() == null ? side.step().z() : ctx.caster().getZ() - vec3.z;
-        double dist = Math.sqrt(dx * dx + dz * dz);
-
-        double x = vec3.x;
-        double y = vec3.y;
-        double z = vec3.z;
-        if (dist != 0) {
-            double distRatio = 3 / dist;
-            x += dx * distRatio;
-            z = dz * distRatio;
-        }
-        y += 5;
-
-        Vec3 betVec3 = new Vec3(x, y, z);
-        return super.spawnConstruct(ctx, betVec3, side);
+        return super.spawnConstruct(ctx, vec3.add(0, 5, 0), side);
     }
 
     @Override
