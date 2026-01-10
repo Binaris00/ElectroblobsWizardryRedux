@@ -205,21 +205,30 @@ public final class EntityUtil {
     }
 
     public static boolean isCasting(LivingEntity caster, Spell spell) {
-        if (spell.isInstantCast()) return false;
+        if(spell.isInstantCast()) return false;
 
         if (caster instanceof Player) {
-            // TODO WIZARD DATA CURRENT SPELL
-//            WizardData data = WizardData.get((Player) caster);
+//            // TODO WIZARD DATA
+//            WizardData data = Services.OBJECT_DATA.getWizardData((Player) caster);
 //            if (data != null && data.currentlyCasting() == spell) return true;
 
-            // TODO Something weird here
-            // Normal to return negative ticks?? anyway, I convert
-            // the ticks to positive to it can be compared correctly with the charge time
-            if (caster.isUsingItem() && Math.abs(caster.getUseItemRemainingTicks()) >= spell.getCharge()) {
-                ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
-                return stack.getItem() instanceof ISpellCastingItem && ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack) == spell;
+            // Check if the player is using an item and has passed the charge time
+            if (caster.isUsingItem()) {
+                int remainingTicks = caster.getUseItemRemainingTicks();
+                int useDuration = caster.getUseItem().getUseDuration();
+                int ticksInUse = useDuration - remainingTicks;
+
+                // Check if the charge time has been met
+                if (ticksInUse >= spell.getCharge()) {
+                    ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
+                    boolean isSpellCastingItem = stack.getItem() instanceof ISpellCastingItem;
+                    Spell currentSpell = isSpellCastingItem ? ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack) : null;
+                    return isSpellCastingItem && currentSpell == spell;
+                }
             }
-        } else if (caster instanceof ISpellCaster spellCaster) {
+        }
+
+        else if (caster instanceof ISpellCaster spellCaster) {
             return spellCaster.getContinuousSpell() == spell;
         }
 

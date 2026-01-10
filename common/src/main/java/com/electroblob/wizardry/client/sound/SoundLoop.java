@@ -1,5 +1,6 @@
 package com.electroblob.wizardry.client.sound;
 
+import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.event.EBClientTickEvent;
 import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import net.minecraft.client.Minecraft;
@@ -10,6 +11,7 @@ import net.minecraft.sounds.SoundSource;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  * Handle all the active sound loops with the {@link SoundLoop#onClientTick(EBClientTickEvent)}
@@ -45,6 +47,13 @@ public abstract class SoundLoop extends AbstractTickableSoundInstance {
         Minecraft.getInstance().getSoundManager().playDelayed(loop.start, 2);
     }
 
+    /**
+     * Checks if there's an active loop matching the given predicate
+     */
+    protected static boolean hasActiveLoopMatching(Predicate<SoundLoop> predicate) {
+        return activeLoops.stream().anyMatch(predicate);
+    }
+
     public static void onClientTick(EBClientTickEvent event) {
         activeLoops.stream().filter(s -> s.needsRemoving).forEach(SoundLoop::stopStartAndLoop);
         activeLoops.removeIf(s -> s.needsRemoving);
@@ -59,6 +68,7 @@ public abstract class SoundLoop extends AbstractTickableSoundInstance {
     @Override
     public void tick() {
         if (!looping && !Minecraft.getInstance().getSoundManager().isActive(startPrimer)) {
+            EBLogger.warn("SoundLoop: Starting loop sound.");
             Minecraft.getInstance().getSoundManager().play(loop);
             looping = true;
         }

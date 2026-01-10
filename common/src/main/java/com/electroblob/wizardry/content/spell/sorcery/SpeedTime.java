@@ -18,6 +18,7 @@ import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -29,6 +30,11 @@ public class SpeedTime extends Spell {
 
     public static final SpellProperty<Float> TIME_INCREMENT = SpellProperty.floatProperty("time_increment", 30f);
     public static final SpellProperty<Integer> EXTRA_TICKS = SpellProperty.intProperty("extra_ticks", 1);
+
+    public SpeedTime() {
+        super();
+        this.soundValues(0.4f, 1, 0);
+    }
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
@@ -91,8 +97,18 @@ public class SpeedTime extends Spell {
             }
         }
 
-        if (didAnything) this.playSound(world, caster, ctx.castingTicks(), -1);
+        this.playSound(world, caster, ctx.castingTicks(), -1);
         return didAnything;
+    }
+
+    @Override
+    protected void playSound(Level world, LivingEntity entity, int castTicks, int duration) {
+        this.playSoundLoop(world, entity, castTicks);
+    }
+
+    @Override
+    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration) {
+        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
     }
 
     @Override

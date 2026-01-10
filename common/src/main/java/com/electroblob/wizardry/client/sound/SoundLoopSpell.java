@@ -15,10 +15,9 @@ import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 /**
  * Encapsulate all the work and info needed to cast spells in the mod, this contains 3 subclasses
  * that are used depending on how you're casting a spell
- *
  */
 public abstract class SoundLoopSpell extends SoundLoop {
-    private final Spell spell;
+    final Spell spell;
 
     public SoundLoopSpell(SoundEvent start, SoundEvent loop, SoundEvent end, float volume, ISoundFactory factory, Spell spell) {
         super(start, loop, end, SoundSource.PLAYERS, volume, factory);
@@ -34,6 +33,17 @@ public abstract class SoundLoopSpell extends SoundLoop {
         } else {
             endLoop();
         }
+    }
+
+    /**
+     * Checks if a sound loop for the given entity and spell already exists
+     */
+    public static boolean hasActiveLoop(LivingEntity entity, Spell spell) {
+        return SoundLoop.hasActiveLoopMatching(loop ->
+            loop instanceof SoundLoopSpellEntity spellLoop &&
+            spellLoop.source == entity &&
+            spellLoop.spell == spell
+        );
     }
 
     /**

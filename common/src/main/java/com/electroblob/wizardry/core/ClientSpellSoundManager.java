@@ -21,7 +21,9 @@ public final class ClientSpellSoundManager {
     }
 
     public static void playSpellSoundLoop(LivingEntity entity, Spell spell, SoundEvent start, SoundEvent loop, SoundEvent end, float volume, float pitch) {
-        SoundLoop.addLoop(new SoundLoopSpell.SoundLoopSpellEntity(start, loop, end, spell, entity, volume, pitch));
+        if (!SoundLoopSpell.hasActiveLoop(entity, spell)) {
+            SoundLoop.addLoop(new SoundLoopSpell.SoundLoopSpellEntity(start, loop, end, spell, entity, volume, pitch));
+        }
     }
 
     public static void playSpellSoundLoop(Level world, double x, double y, double z, Spell spell, SoundEvent[] sounds, float volume, float pitch, int duration) {

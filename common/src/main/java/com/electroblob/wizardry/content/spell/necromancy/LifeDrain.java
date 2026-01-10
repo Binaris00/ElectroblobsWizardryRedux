@@ -16,6 +16,7 @@ import com.electroblob.wizardry.setup.registries.SpellTiers;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -62,6 +63,16 @@ public class LifeDrain extends RaySpell {
     @Override
     public boolean isInstantCast() {
         return false;
+    }
+
+    @Override
+    protected void playSound(Level world, LivingEntity entity, int castTicks, int duration) {
+        this.playSoundLoop(world, entity, castTicks);
+    }
+
+    @Override
+    protected void playSound(Level world, double x, double y, double z, int ticksInUse, int duration) {
+        this.playSoundLoop(world, x, y, z, ticksInUse, duration);
     }
 
     @Override
