@@ -43,6 +43,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractWizard extends PathfinderMob implements ISpellCaster {
@@ -200,7 +201,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
      */
     private void equipArmorAndDisableDrops(Element element) {
         for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) {
-            this.setItemSlot(slot, new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, element, slot)));
+            this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, element, slot)));
         }
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             this.setDropChance(slot, 0.0f);
@@ -217,14 +218,14 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         ArrayList<Spell> list = new ArrayList<>(spells);
         list.add(Spells.HEAL);
 
-        Item item = WandHelper.getWand(maxTier, element);
-        if (item == null || item == Items.AIR || !(item instanceof WandItem)) {
+        Item item = RegistryUtils.getWand(maxTier, element);
+        if (item == Items.AIR || !(item instanceof WandItem)) {
             EBLogger.warn("Failed to create wand for wizard with element {} and max tier {}. Defaulting to apprentice wand.", element.getName(), maxTier);
             item = EBItems.APPRENTICE_WAND.get();
         }
         ItemStack wand = new ItemStack(item);
         Spell[] spellsArray = list.toArray(new Spell[0]);
-        WandHelper.setSpells(wand, java.util.Arrays.asList(spellsArray));
+        WandHelper.setSpells(wand, Arrays.asList(spellsArray));
         this.setItemSlot(EquipmentSlot.MAINHAND, wand);
     }
 

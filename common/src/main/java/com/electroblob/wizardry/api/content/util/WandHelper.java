@@ -5,16 +5,13 @@ import com.electroblob.wizardry.api.content.data.SpellManagerData;
 import com.electroblob.wizardry.api.content.data.WizardData;
 import com.electroblob.wizardry.api.content.item.IElementValue;
 import com.electroblob.wizardry.api.content.item.ITierValue;
-import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
-import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
 import com.electroblob.wizardry.content.item.WandItem;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.EBConstants;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.*;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
@@ -361,23 +358,6 @@ public final class WandHelper {
      */
     public static void addProgression(ItemStack wand, int progression) {
         setProgression(wand, getProgression(wand) + progression);
-    }
-
-    /**
-     * Returns the wand Item corresponding to the given tier and element.
-     *
-     * @param tier    The tier of the wand.
-     * @param element The element of the wand. If null, defaults to {@link Elements#MAGIC}.
-     * @return The wand Item.
-     * @throws NullPointerException if the given tier is null.
-     */
-    public static Item getWand(SpellTier tier, Element element) {
-        if (tier == null) throw new NullPointerException("The given tier cannot be null.");
-        if (element == null) element = Elements.MAGIC;
-        String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "novice" : tier.getOrCreateLocation().getPath();
-        if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
-        registryName = "wand_" + registryName;
-        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
     }
 
     /**

@@ -4,9 +4,9 @@ import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.util.InventoryUtil;
+import com.electroblob.wizardry.api.content.util.RegistryUtils;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
 import com.electroblob.wizardry.content.item.WizardArmorType;
-import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.Elements;
 import net.minecraft.ChatFormatting;
@@ -50,7 +50,7 @@ public class ApprenticeTier extends SpellTier {
         if (randomizer < 10) {
             EquipmentSlot slot = InventoryUtil.ARMOR_SLOTS[random.nextInt(InventoryUtil.ARMOR_SLOTS.length)];
             Element armorElement = prob ? element : SpellUtil.getRandomElement(random);
-            return new ItemStack(SpellUtil.getArmor(WizardArmorType.WIZARD, armorElement, slot));
+            return new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, armorElement, slot));
         }
 
         // 16.67% chance for identification scroll (only in discovery mode)

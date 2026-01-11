@@ -33,7 +33,6 @@ public class ControlInputPacketC2S implements Message {
         return ID;
     }
 
-    // TODO MISSING SOME KEYS...
     @Override
     public void handleServer(MinecraftServer server, ServerPlayer player) {
         if (player == null) return;
@@ -75,44 +74,6 @@ public class ControlInputPacketC2S implements Message {
     public enum ControlType {
         APPLY_BUTTON, NEXT_SPELL_KEY,
         PREVIOUS_SPELL_KEY, RESURRECT_BUTTON,
-        CANCEL_RESURRECT, POSSESSION_PROJECTILE,
         CLEAR_BUTTON
     }
 }
-
-                /*case RESURRECT_BUTTON:
-                    if(!player.isAlive() && Resurrection.getRemainingWaitTime(player.deathTime) == 0)
-                    {
-                        ItemStack stack = InventoryUtils.getHotbar(player).stream().filter(s -> Resurrection.canStackResurrect(s, player)).findFirst().orElse(null);
-
-                        if(stack != null)
-                        {
-                            if(MinecraftForge.EVENT_BUS.post(new ResurrectionEvent(player, player))) break;
-                            ((ISpellCastingItem)stack.getItem()).cast(stack, Spells.resurrection, player, InteractionHand.MAIN_HAND, 0, new SpellModifiers());
-                            break;
-                        }
-                    }
-                    Wizardry.logger.warn("Received a resurrect button packet, but the player that sent it was not" + " currently able to resurrect. This should not happen!");
-                    break;
-                case CANCEL_RESURRECT:
-                    if(player.level.getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY)) break;
-                    if(!player.isAlive())
-                    {
-                        ItemStack stack = InventoryUtils.getHotbar(player).stream().filter(s -> Resurrection.canStackResurrect(s, player)).findFirst().orElse(null);
-                        if(stack != null)
-                        {
-                            player.drop(stack, true, false);
-                            player.getInventory().removeItem(stack);
-                            break;
-                        }
-                        Wizardry.logger.warn("Received a cancel resurrect packet, but the player that sent it was not" + " holding a wand with the resurrection spell. This should not happen!");
-                    }
-
-                    Wizardry.logger.warn("Received a cancel resurrect packet, but the player that sent it was not" + " currently dead. This should not happen!");
-                    break;*/
-//            case POSSESSION_PROJECTILE:
-//                if (!Possession.isPossessing(player))
-//                    Wizardry.logger.warn("Received a possession projectile packet, " + "but the player that sent it is not currently possessing anything!");
-//                Possession.shootProjectile(player);
-//                break;
-//                break;

@@ -10,10 +10,7 @@ import com.electroblob.wizardry.api.content.spell.SpellTier;
 import com.electroblob.wizardry.api.content.spell.internal.CastContext;
 import com.electroblob.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
-import com.electroblob.wizardry.api.content.util.CastUtils;
-import com.electroblob.wizardry.api.content.util.DrawingUtils;
-import com.electroblob.wizardry.api.content.util.WandHelper;
-import com.electroblob.wizardry.api.content.util.WorkbenchUtils;
+import com.electroblob.wizardry.api.content.util.*;
 import com.electroblob.wizardry.core.ClientSpellSoundManager;
 import com.electroblob.wizardry.core.EBConfig;
 import com.electroblob.wizardry.core.EBConstants;
@@ -448,7 +445,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 Services.OBJECT_DATA.getWizardData(player).setTierReached(tier);
             }
 
-            ItemStack newWand = new ItemStack(WandHelper.getWand(nextTier, element));
+            ItemStack newWand = new ItemStack(RegistryUtils.getWand(nextTier, element));
             newWand.setTag(wand.getTag());
             ((IManaStoringItem) newWand.getItem()).setMana(newWand, getMana(wand));
             tomeStack.shrink(1);

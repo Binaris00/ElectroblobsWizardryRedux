@@ -230,7 +230,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
      * @param player The player using the workbench.
      */
     public void onApplyButtonPressed(Player player) {
-        if (!(player instanceof ServerPlayer serverPlayer)) return;
+        if (player.level().isClientSide) return;
         if (WizardryEventBus.getInstance().fire(new SpellBindEvent(player, this))) return;
         Slot centre = this.getSlot(CENTRE_SLOT);
 
@@ -238,7 +238,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             Slot[] spellBooks = this.slots.subList(0, 8).toArray(new Slot[8]);
 
             if (workbenchItem.onApplyButtonPressed(player, centre, this.getSlot(CRYSTAL_SLOT), this.getSlot(UPGRADE_SLOT), spellBooks)) {
-                EBAdvancementTriggers.ARCANE_WORKBENCH.trigger(serverPlayer, centre.getItem());
+                if (player instanceof ServerPlayer serverPlayer) EBAdvancementTriggers.ARCANE_WORKBENCH.trigger(serverPlayer, centre.getItem());
             }
         }
     }

@@ -3,17 +3,12 @@ package com.electroblob.wizardry.api.content.util;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
-import com.electroblob.wizardry.content.item.WizardArmorType;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.setup.registries.EBItems;
-import com.electroblob.wizardry.setup.registries.Elements;
 import com.electroblob.wizardry.setup.registries.Spells;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.entity.EquipmentSlot;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -80,7 +75,7 @@ public final class SpellUtil {
      * @return The wand ItemStack.
      */
     public static ItemStack wandItem(SpellTier tier, Element element) {
-        return new ItemStack(WandHelper.getWand(tier, element));
+        return new ItemStack(RegistryUtils.getWand(tier, element));
     }
 
     /**
@@ -115,29 +110,6 @@ public final class SpellUtil {
     private static Spell getSpellFromNbt(CompoundTag tag) {
         Spell byId = byId(tag.getString(SPELL_KEY));
         return byId == null ? Spells.NONE : byId;
-    }
-
-    /**
-     * Gets a wizard armor item based on the given parameters, searching for its implementation in the item registry
-     * by constructing its registry name accordingly.
-     *
-     * @param wizardArmorType The type of wizard armor.
-     * @param element         The element of the armor. If null, defaults to magic.
-     * @param slot            The equipment slot for the armor piece.
-     * @return The corresponding wizard armor item.
-     * @throws IllegalArgumentException if the slot is null or not an armor slot. (this should never happen if used correctly)
-     */
-    public static Item getArmor(WizardArmorType wizardArmorType, Element element, EquipmentSlot slot) {
-        if (slot == null || slot.getType() != EquipmentSlot.Type.ARMOR)
-            throw new IllegalArgumentException("Must be a valid armour slot");
-        if (element == null) element = Elements.MAGIC;
-
-        String registryName = wizardArmorType.getName() + "_" + wizardArmorType.getArmourPieceNames().get(slot);
-        if (element != Elements.MAGIC)
-            registryName = registryName + "_" + element.getLocation().getPath();
-
-        // Each mod should be responsible for ensuring their items are registered with the correct names
-        return BuiltInRegistries.ITEM.get(new ResourceLocation(element.getLocation().getNamespace(), registryName));
     }
 
     /**

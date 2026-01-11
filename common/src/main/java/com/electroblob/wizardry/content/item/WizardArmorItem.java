@@ -8,10 +8,7 @@ import com.electroblob.wizardry.api.content.item.IWorkbenchItem;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.internal.SpellModifiers;
-import com.electroblob.wizardry.api.content.util.DrawingUtils;
-import com.electroblob.wizardry.api.content.util.InventoryUtil;
-import com.electroblob.wizardry.api.content.util.SpellUtil;
-import com.electroblob.wizardry.api.content.util.WorkbenchUtils;
+import com.electroblob.wizardry.api.content.util.*;
 import com.electroblob.wizardry.setup.registries.EBItems;
 import com.electroblob.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.ChatFormatting;
@@ -53,7 +50,7 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
         for (WizardArmorType armourClass : WizardArmorType.values()) {
             if (upgrade.getItem() != armourClass.upgradeItem.get()) continue;
 
-            Item newItem = SpellUtil.getArmor(armourClass, this.element, getEquipmentSlot());
+            Item newItem = RegistryUtils.getArmor(armourClass, this.element, getEquipmentSlot());
             ItemStack newStack = new ItemStack(newItem);
             ((WizardArmorItem) newItem).setMana(newStack, this.getMana(stack));
             newStack.setTag(stack.getTag());

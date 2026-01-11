@@ -3,8 +3,8 @@ package com.electroblob.wizardry.content.spell_tier;
 import com.electroblob.wizardry.api.content.spell.Element;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.api.content.spell.SpellTier;
+import com.electroblob.wizardry.api.content.util.RegistryUtils;
 import com.electroblob.wizardry.api.content.util.SpellUtil;
-import com.electroblob.wizardry.api.content.util.WandHelper;
 import com.electroblob.wizardry.setup.registries.Elements;
 import net.minecraft.ChatFormatting;
 import net.minecraft.util.RandomSource;
@@ -29,7 +29,7 @@ public class NoviceTier extends SpellTier {
             return SpellUtil.spellBookItem(spellList.get(random.nextInt(spellList.size())));
         } else {
             Element wandElement = prob ? element : SpellUtil.getRandomElement(random);
-            return new ItemStack(WandHelper.getWand(this, wandElement));
+            return new ItemStack(RegistryUtils.getWand(this, wandElement));
         }
     }
 }

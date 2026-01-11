@@ -1,6 +1,7 @@
 package com.electroblob.wizardry.setup.registries;
 
 import com.electroblob.wizardry.api.content.DeferredObject;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
 
 import java.util.Collections;
@@ -11,7 +12,6 @@ import java.util.Set;
 /**
  * TODO: This is just a quick implementation for wand upgrades, needs to be improved
  * This just saves all the wand upgrades for quick use.
- *
  */
 public final class WandUpgrades {
     private static final HashMap<DeferredObject<Item>, String> UPGRADES = new HashMap<>();
@@ -50,6 +50,11 @@ public final class WandUpgrades {
 
     public static Set<DeferredObject<Item>> getSpecialUpgrades() {
         return Collections.unmodifiableSet(getWandUpgrades().keySet());
+    }
+
+    public static Item getRandomUpgrade(RandomSource random) {
+        int index = random.nextInt(UPGRADES.size());
+        return getSpecialUpgrades().stream().toList().get(index).get();
     }
 
     public static boolean isWandUpgrade(Item upgrade) {
