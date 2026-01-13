@@ -4,7 +4,7 @@ import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Functional interface used by [BIN] Electroblob's Wizardry registration helpers to perform actual registrations
+ * Functional interface used by Electroblob's Wizardry Redux registration helpers to perform actual registrations
  * into the different loaders' registries (Forge, Fabric).
  * <p>
  * We use this inside our registration helpers to abstract away the differences between platforms while still

@@ -7,7 +7,7 @@ modId = "${mod_id}"
 version = "${version}"
 displayName = "${mod_name}"
 logoFile = "${mod_id}.png"
-credits = "Thanks for this example mod goes to Java"
+credits = "${credits}"
 authors = "${mod_author}"
 description = '''${description}'''
 
