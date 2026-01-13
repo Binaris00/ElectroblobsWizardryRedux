@@ -38,6 +38,10 @@ legacyForge {
         server {
             server()
         }
+
+        gameTestServer {
+            type = "gameTestServer"
+        }
     }
 
     mods {

@@ -440,7 +440,7 @@ public final class EBItems {
      * Add armor upgrades with a default model and inside the item creative tab
      */
     static DeferredObject<Item> armorUpgrade(String name) {
-        return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(16)), true, true);
+        return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(1)), true, true);
     }
 
     /**

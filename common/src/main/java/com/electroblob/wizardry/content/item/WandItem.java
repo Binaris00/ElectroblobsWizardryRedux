@@ -437,7 +437,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         SpellTier nextTier = tomeItem.getTier(tomeStack);
         if (tier == nextTier) return wand;
 
-        if (player == null || player.isCreative() || WandHelper.getProgression(wand) >= nextTier.getProgression()) {
+        if (player == null || WandHelper.getProgression(wand) >= nextTier.getProgression()) {
             int newProgression = Math.max(0, WandHelper.getProgression(wand) - nextTier.getProgression());
             WandHelper.setProgression(wand, newProgression);
 

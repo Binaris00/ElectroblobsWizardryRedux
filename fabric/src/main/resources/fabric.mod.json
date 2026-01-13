@@ -1,56 +1,59 @@
 {
-    "schemaVersion": 1,
-    "id": "ebwizardry",
-    "version": "${version}",
-    "name": "${mod_name}",
-    "description": "${description}",
-    "authors": [
-        "${mod_author}"
+  "schemaVersion": 1,
+  "id": "ebwizardry",
+  "version": "${version}",
+  "name": "${mod_name}",
+  "description": "${description}",
+  "authors": [
+    "${mod_author}"
+  ],
+  "contact": {
+    "homepage": "https://fabricmc.net/"
+  },
+  "accessWidener": "ebwizardry.accesswidener",
+  "license": "${license}",
+  "icon": "assets/ebwizardry/ebwizardry.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.electroblob.wizardry.WizardryFabricMod"
     ],
-    "contact": {
-        "homepage": "https://fabricmc.net/"
-    },
-    "accessWidener" : "ebwizardry.accesswidener",
-    "license": "${license}",
-    "icon": "assets/ebwizardry/ebwizardry.png",
-    "environment": "*",
-    "entrypoints": {
-        "main": [
-            "com.electroblob.wizardry.WizardryFabricMod"
-        ],
-        "client": [
-            "com.electroblob.wizardry.client.WizardryFabricClient"
-        ],
-        "cardinal-components": [
-          "com.electroblob.wizardry.cca.EBComponents"
-        ]
-    },
-    "mixins": [
-        "ebwizardry.mixins.json",
-        "ebwizardry.fabric.mixins.json"
+    "client": [
+      "com.electroblob.wizardry.client.WizardryFabricClient"
     ],
-    "custom": {
-        "cardinal-components": [
-            "ebwizardry:wizard_data",
-            "ebwizardry:summoned_entity_data",
-            "ebwizardry:minion_data",
-            "ebwizardry:conjure_item",
-            "ebwizardry:conjure",
-            "ebwizardry:cast_command_data",
-            "ebwizardry:spell_manager_data",
-            "ebwizardry:imbuement_enchants",
-            "ebwizardry:arcane_lock",
-            "ebwizardry:containment_data"
-        ]
-    },
-    "depends": {
-        "fabricloader": ">=0.14",
-        "fabric": "*",
-        "minecraft": "${minecraft_version}",
-        "java": ">=17"
-    },
-    "recommends": {
-        "accessories": "*"
-    }
+    "cardinal-components": [
+      "com.electroblob.wizardry.cca.EBComponents"
+    ],
+    "fabric-gametest": [
+      "com.electroblob.wizardry.core.gametest.ArcaneWorkbenchTest"
+    ]
+  },
+  "mixins": [
+    "ebwizardry.mixins.json",
+    "ebwizardry.fabric.mixins.json"
+  ],
+  "custom": {
+    "cardinal-components": [
+      "ebwizardry:wizard_data",
+      "ebwizardry:summoned_entity_data",
+      "ebwizardry:minion_data",
+      "ebwizardry:conjure_item",
+      "ebwizardry:conjure",
+      "ebwizardry:cast_command_data",
+      "ebwizardry:spell_manager_data",
+      "ebwizardry:imbuement_enchants",
+      "ebwizardry:arcane_lock",
+      "ebwizardry:containment_data"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=0.14",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}",
+    "java": ">=17"
+  },
+  "recommends": {
+    "accessories": "*"
+  }
 }
   

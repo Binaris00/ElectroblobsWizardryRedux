@@ -1,6 +1,5 @@
 package com.electroblob.wizardry;
 
-import com.electroblob.wizardry.api.EBLogger;
 import com.electroblob.wizardry.api.content.event.EBPlayerInteractEntityEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.electroblob.wizardry.api.content.event.EBPlayerUseBlockEvent;
@@ -11,7 +10,6 @@ import com.electroblob.wizardry.capabilities.*;
 import com.electroblob.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.electroblob.wizardry.core.PropertiesForgeDataManager;
 import com.electroblob.wizardry.core.event.WizardryEventBus;
-import com.electroblob.wizardry.core.gametest.EBGameTest;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.core.registry.EBRegistries;
 import com.electroblob.wizardry.network.ArcaneLockSyncPacketS2C;
@@ -20,8 +18,6 @@ import com.electroblob.wizardry.setup.registries.client.EBParticleProviders;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
 import com.electroblob.wizardry.setup.registries.client.EBRenderers;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.gametest.framework.GameTestGenerator;
-import net.minecraft.gametest.framework.TestFunction;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Mob;
@@ -49,8 +45,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.function.Consumer;
 
 /**
@@ -247,8 +241,6 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void registerTests(RegisterGameTestsEvent event) {
-            EBLogger.warn("Registering game tests...");
-            event.register(EBGameTest.class);
         }
     }
 

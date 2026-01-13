@@ -15,7 +15,7 @@
         {pos: [0, 1, 1], state: "minecraft:air"},
         {pos: [0, 1, 2], state: "minecraft:air"},
         {pos: [1, 1, 0], state: "minecraft:air"},
-        {pos: [1, 1, 1], state: "minecraft:oak_log{axis:y}"},
+        {pos: [1, 1, 1], state: "ebwizardry:arcane_workbench", nbt: {ForgeCaps: {"ebwizardry:arcane_lock_data": {}}, Items: [], id: "ebwizardry:arcane_workbench"}},
         {pos: [1, 1, 2], state: "minecraft:air"},
         {pos: [2, 1, 0], state: "minecraft:air"},
         {pos: [2, 1, 1], state: "minecraft:air"},
@@ -33,7 +33,7 @@
     entities: [],
     palette: [
         "minecraft:polished_andesite",
-        "minecraft:oak_log{axis:y}",
-        "minecraft:air"
+        "minecraft:air",
+        "ebwizardry:arcane_workbench"
     ]
 }

@@ -61,7 +61,11 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
 
         // Crystal and Workbench Slots
         addSlot(new SlotItemList(container, CRYSTAL_SLOT, 13, 101, 64, EBClientConstants.ARCANE_WORKBENCH_EMPTY_SLOT_CRYSTAL,
-                EBItems.MAGIC_CRYSTAL.get(), EBItems.MAGIC_CRYSTAL_SHARD.get(), EBItems.MAGIC_CRYSTAL_GRAND.get()));
+                EBItems.MAGIC_CRYSTAL.get(), EBItems.MAGIC_CRYSTAL_SHARD.get(), EBItems.MAGIC_CRYSTAL_GRAND.get(),
+                EBItems.MAGIC_CRYSTAL_EARTH.get(), EBItems.MAGIC_CRYSTAL_FIRE.get(), EBItems.MAGIC_CRYSTAL_HEALING.get(),
+                EBItems.MAGIC_CRYSTAL_ICE.get(), EBItems.MAGIC_CRYSTAL_LIGHTNING.get(), EBItems.MAGIC_CRYSTAL_NECROMANCY.get(),
+                EBItems.MAGIC_CRYSTAL_SORCERY.get()
+        ));
         addSlot(new SlotWorkbenchItem(container, CENTRE_SLOT, 80, 64, this));
 
         // Upgrade Slot
