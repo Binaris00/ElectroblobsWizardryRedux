@@ -69,8 +69,8 @@ public class ArtefactItem extends Item {
     }
 
     /**
-     * Called when the player is hurt (if player carries the artefact in their hotbar or accessories) to apply the
-     * artefact's effect. This method helps to check all equipped artefacts and call their respective effects
+     * Called when the player is responsible for hurting an entity (if player carries the artefact in their hotbar or accessories)
+     * to apply the artefact's effect. This method helps to check all equipped artefacts and call their respective effects
      * {@code onHurtEntity} method, so we don't have to register each artefact individually.
      * <p>
      * This event won't be calling artefacts that doesn't have any effect associated with them.
@@ -78,7 +78,7 @@ public class ArtefactItem extends Item {
      * @param event The living hurt event.
      */
     public static void onArtifactHurt(EBLivingHurtEvent event) {
-        if (!(event.getSource().getDirectEntity() instanceof Player player)) return;
+        if (!(event.getSource().getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
                 .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onHurtEntity(event, stack));

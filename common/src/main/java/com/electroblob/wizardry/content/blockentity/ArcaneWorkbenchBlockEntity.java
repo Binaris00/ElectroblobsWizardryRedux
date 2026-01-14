@@ -55,10 +55,6 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
         if (stack.getItem() instanceof IManaStoringItem manaItem && !level.isClientSide && !manaItem.isManaFull(stack) && level.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
             manaItem.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
         }
-
-//        if (stack.isEmpty()) {
-//            EBLogger.warn("Wand charging attempted with no item in centre slot of Arcane Workbench at %s".formatted(pos));
-//        }
     }
 
     public static void clientTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
@@ -134,7 +130,7 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
             stack.setCount(getMaxStackSize());
         }
 
-        this.sync(); // temp
+        this.sync();
     }
 
     @Override

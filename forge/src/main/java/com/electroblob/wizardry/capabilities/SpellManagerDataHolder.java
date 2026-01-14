@@ -9,6 +9,7 @@ import com.electroblob.wizardry.api.content.spell.NoneSpell;
 import com.electroblob.wizardry.api.content.spell.Spell;
 import com.electroblob.wizardry.core.platform.Services;
 import com.electroblob.wizardry.network.PlayerCapabilitySyncPacketS2C;
+import com.electroblob.wizardry.setup.registries.Spells;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
@@ -41,6 +42,8 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
 
     public SpellManagerDataHolder(Player player) {
         this.provider = player;
+        spellsDiscovered.add(Spells.NONE);
+        spellsDiscovered.add(Spells.MAGIC_MISSILE);
     }
 
     @Override

@@ -4,11 +4,14 @@ import com.electroblob.wizardry.WizardryMainMod;
 import com.electroblob.wizardry.api.client.ParticleBuilder;
 import com.electroblob.wizardry.api.content.entity.projectile.MagicArrowEntity;
 import com.electroblob.wizardry.content.spell.DefaultProperties;
+import com.electroblob.wizardry.setup.registries.EBDamageSources;
 import com.electroblob.wizardry.setup.registries.EBEntities;
 import com.electroblob.wizardry.setup.registries.EBSounds;
 import com.electroblob.wizardry.setup.registries.Spells;
 import com.electroblob.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
@@ -50,6 +53,10 @@ public class DartEntity extends MagicArrowEntity {
         return true;
     }
 
+    @Override
+    public ResourceKey<DamageType> getDamageType() {
+        return EBDamageSources.POISON;
+    }
 
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {

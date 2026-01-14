@@ -378,7 +378,7 @@ public final class EBItems {
     public static final DeferredObject<Item> RING_MIND_CONTROL = artifact("ring_mind_control", Rarity.RARE);
     public static final DeferredObject<Item> RING_NECROMANCY_MELEE = artifact("ring_necromancy_melee", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.NECROMANCY), (e, s) -> e.getDamagedEntity().addEffect(new MobEffectInstance(MobEffects.WITHER, 200))));
     public static final DeferredObject<Item> RING_PALADIN = artifact("ring_paladin", Rarity.UNCOMMON, new PaladinRingEffect());
-    public static final DeferredObject<Item> RING_POISON = artifact("ring_poison", Rarity.RARE, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && e.getSource().is(EBDamageSources.POISON), (e, s) -> e.getDamagedEntity().addEffect(new MobEffectInstance(MobEffects.POISON, 200, 0))));
+    public static final DeferredObject<Item> RING_POISON = artifact("ring_poison", Rarity.RARE, new PoisonRingEffect());
     public static final DeferredObject<Item> RING_SEEKING = artifact("ring_seeking", Rarity.EPIC);
     public static final DeferredObject<Item> RING_SHATTERING = artifact("ring_shattering", Rarity.RARE, new ShatteringRingEffect());
     public static final DeferredObject<Item> RING_SIPHONING = artifact("ring_siphoning", Rarity.UNCOMMON);

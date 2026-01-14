@@ -31,6 +31,7 @@ public class SpellManagerDataHolder implements SpellManagerData, ComponentV3, Au
     public SpellManagerDataHolder(Player provider) {
         this.provider = provider;
         spellsDiscovered.add(Spells.NONE);
+        spellsDiscovered.add(Spells.MAGIC_MISSILE);
     }
 
     @Override
