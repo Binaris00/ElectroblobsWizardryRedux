@@ -5,7 +5,7 @@ plugins {
 
 legacyForge {
     mcpVersion = minecraft_version
-    if(file("src/main/resources/${mod_id}.cfg").exists()){
+    if (file("src/main/resources/${mod_id}.cfg").exists()) {
         accessTransformers = ["src/main/resources/${mod_id}.cfg"]
     }
     parchment {

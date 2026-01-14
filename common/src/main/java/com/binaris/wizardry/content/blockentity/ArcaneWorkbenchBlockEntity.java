@@ -1,0 +1,252 @@
+package com.binaris.wizardry.content.blockentity;
+
+import com.binaris.wizardry.WizardryMainMod;
+import com.binaris.wizardry.api.content.DeferredObject;
+import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IWorkbenchItem;
+import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.content.item.CrystalItem;
+import com.binaris.wizardry.content.item.SpellBookItem;
+import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
+import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.setup.registries.EBBlockEntities;
+import com.binaris.wizardry.setup.registries.EBItems;
+import com.binaris.wizardry.setup.registries.WandUpgrades;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.NonNullList;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.world.ContainerHelper;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
+    public float timer = 0;
+    public float rot;
+    public float oRot;
+    public float tRot;
+    private NonNullList<ItemStack> inventory;
+
+    public ArcaneWorkbenchBlockEntity(BlockPos blockPos, BlockState blockState) {
+        super(EBBlockEntities.ARCANE_WORKBENCH.get(), blockPos, blockState);
+        inventory = NonNullList.withSize(ArcaneWorkbenchMenu.UPGRADE_SLOT + 1, ItemStack.EMPTY);
+    }
+
+    // ===============================
+    // Sync and tickers
+    // ===============================
+
+    public static void serverTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
+        ItemStack stack = entity.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
+        if (stack.getItem() instanceof IManaStoringItem manaItem && !level.isClientSide && !manaItem.isManaFull(stack) && level.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
+            manaItem.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
+        }
+    }
+
+    public static void clientTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
+        if (!level.isClientSide) return;
+
+        entity.timer++;
+
+        entity.oRot = entity.rot;
+        Player player = level.getNearestPlayer((double) pos.getX() + 0.5D, (double) pos.getY() + 0.5D, (double) pos.getZ() + 0.5D,
+                3.0D,
+                false
+        );
+
+        if (player != null) {
+            double dx = player.getX() - ((double) pos.getX() + 0.5D);
+            double dz = player.getZ() - ((double) pos.getZ() + 0.5D);
+            entity.tRot = (float) Math.atan2(dz, dx);
+        } else {
+            entity.tRot += 0.02F;
+        }
+
+        // Normalize angles
+        while (entity.rot >= (float) Math.PI) {
+            entity.rot -= ((float) Math.PI * 2F);
+        }
+        while (entity.rot < -(float) Math.PI) {
+            entity.rot += ((float) Math.PI * 2F);
+        }
+        while (entity.tRot >= (float) Math.PI) {
+            entity.tRot -= ((float) Math.PI * 2F);
+        }
+        while (entity.tRot < -(float) Math.PI) {
+            entity.tRot += ((float) Math.PI * 2F);
+        }
+
+        // Smooth rotation
+        float rotDiff = entity.tRot - entity.rot;
+        while (rotDiff >= (float) Math.PI) {
+            rotDiff -= ((float) Math.PI * 2F);
+        }
+        while (rotDiff < -(float) Math.PI) {
+            rotDiff += ((float) Math.PI * 2F);
+        }
+
+        entity.rot += rotDiff * 0.4F;
+
+    }
+
+    public void sync() {
+        setChanged();
+        level.sendBlockUpdated(this.worldPosition, this.getBlockState(), this.getBlockState(), 3);
+    }
+
+
+    // ===============================
+    // Inventory stuff
+    // ===============================
+
+    @Override
+    public int getContainerSize() {
+        return inventory.size();
+    }
+
+    @Override
+    public @NotNull ItemStack getItem(int slot) {
+        return inventory.get(slot);
+    }
+
+    @Override
+    public void setItem(int slot, @NotNull ItemStack stack) {
+        inventory.set(slot, stack);
+        if (!stack.isEmpty() && stack.getCount() > getMaxStackSize()) {
+            stack.setCount(getMaxStackSize());
+        }
+
+        this.sync();
+    }
+
+    @Override
+    public @NotNull ItemStack removeItem(int slot, int amount) {
+        ItemStack stack = ContainerHelper.removeItem(this.inventory, slot, amount);
+        this.sync();
+        return stack;
+    }
+
+    @Override
+    public @NotNull ItemStack removeItemNoUpdate(int slot) {
+        ItemStack stack = ContainerHelper.takeItem(this.inventory, slot);
+        sync();
+        return stack;
+    }
+
+    @Override
+    public boolean hasCustomName() {
+        return false;
+    }
+
+    @Override
+    public boolean stillValid(@NotNull Player player) {
+        return level.getBlockEntity(worldPosition) == this && player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) < 64;
+    }
+
+    @Override
+    public @NotNull CompoundTag getUpdateTag() {
+        CompoundTag tag = new CompoundTag();
+        saveAdditional(tag);
+        return tag;
+    }
+
+    @Override
+    public boolean canPlaceItem(int slotNumber, @NotNull ItemStack itemstack) {
+        if (itemstack == ItemStack.EMPTY) return true;
+
+        this.setChanged();
+        if (slotNumber >= 0 && slotNumber < ArcaneWorkbenchMenu.CRYSTAL_SLOT) {
+            if (!(itemstack.getItem() instanceof SpellBookItem)) return false;
+
+            ItemStack centreStack = getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
+
+            if (centreStack.getItem() instanceof IWorkbenchItem workbenchItem) {
+                int spellSlots = workbenchItem.getSpellSlotCount(centreStack);
+                return slotNumber < spellSlots;
+            }
+
+            return false;
+
+        } else if (slotNumber == ArcaneWorkbenchMenu.CRYSTAL_SLOT) {
+            return itemstack.getItem() instanceof CrystalItem;
+        } else if (slotNumber == ArcaneWorkbenchMenu.CENTRE_SLOT) {
+            return itemstack.getItem() instanceof IWorkbenchItem;
+        } else if (slotNumber == ArcaneWorkbenchMenu.UPGRADE_SLOT) {
+            Set<DeferredObject<Item>> upgrades = new HashSet<>(WandUpgrades.getSpecialUpgrades());
+            upgrades.add(EBItems.ARCANE_TOME);
+            upgrades.add(EBItems.RESPLENDENT_THREAD);
+            upgrades.add(EBItems.CRYSTAL_SILVER_PLATING);
+            upgrades.add(EBItems.ETHEREAL_CRYSTAL_WEAVE);
+            return upgrades.contains(new DeferredObject<>(itemstack::getItem));
+        }
+
+        return true;
+    }
+
+    // ===============================
+    // NBT
+    // ===============================
+    @Override
+    public void load(@NotNull CompoundTag tag) {
+        super.load(tag);
+        if (inventory == null) this.inventory = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
+        this.inventory.clear();
+        ContainerHelper.loadAllItems(tag, this.inventory);
+    }
+
+    @Override
+    public void saveAdditional(@NotNull CompoundTag tag) {
+        super.saveAdditional(tag);
+        ContainerHelper.saveAllItems(tag, this.inventory);
+    }
+
+    // ===============================
+
+    @Override
+    protected @NotNull AbstractContainerMenu createMenu(int containerId, @NotNull Inventory inventory) {
+        return new ArcaneWorkbenchMenu(containerId, inventory, this);
+    }
+
+    @Override
+    public void clearContent() {
+        for (int i = 0; i < getContainerSize(); i++) {
+            setItem(i, ItemStack.EMPTY);
+        }
+        this.setChanged();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        for (int i = 0; i < getContainerSize(); i++) {
+            if (!getItem(i).isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    protected @NotNull Component getDefaultName() {
+        return Component.translatable("container.%s.arcane_workbench".formatted(WizardryMainMod.MOD_ID));
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+}

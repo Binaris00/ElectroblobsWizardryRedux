@@ -16,16 +16,16 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "com.electroblob.wizardry.WizardryFabricMod"
+      "com.binaris.wizardry.WizardryFabricMod"
     ],
     "client": [
-      "com.electroblob.wizardry.client.WizardryFabricClient"
+      "com.binaris.wizardry.client.WizardryFabricClient"
     ],
     "cardinal-components": [
-      "com.electroblob.wizardry.cca.EBComponents"
+      "com.binaris.wizardry.cca.EBComponents"
     ],
     "fabric-gametest": [
-      "com.electroblob.wizardry.core.gametest.ArcaneWorkbenchTest"
+      "com.binaris.wizardry.core.gametest.ArcaneWorkbenchTest"
     ]
   },
   "mixins": [

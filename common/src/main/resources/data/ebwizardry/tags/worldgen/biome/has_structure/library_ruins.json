@@ -1,11 +1,10 @@
 {
-  "replace":  false,
+  "replace": false,
   "values": [
     "#minecraft:is_jungle",
     "#minecraft:is_forest",
     "minecraft:swamp",
     "minecraft:mangrove_swamp",
-
     "#minecraft:is_taiga",
     "minecraft:desert",
     "minecraft:plains",
