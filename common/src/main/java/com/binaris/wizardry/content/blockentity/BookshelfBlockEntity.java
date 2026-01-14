@@ -31,31 +31,28 @@ public class BookshelfBlockEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
+    protected @NotNull Component getDefaultName() {
+        return Component.translatable("container." + WizardryMainMod.MOD_ID + ".bookshelf");
+    }
+
+    @Override
+    protected @NotNull NonNullList<ItemStack> getItems() {
+        return inventory;
+    }
+
+    @Override
+    protected void setItems(@NotNull NonNullList<ItemStack> stacks) {
+        this.inventory = stacks;
+    }
+
+    @Override
+    protected @NotNull AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory) {
+        return new BookshelfMenu(i, inventory, this);
+    }
+
+    @Override
     public int getContainerSize() {
         return inventory.size();
-    }
-
-    @Override
-    public @NotNull ItemStack removeItem(int slot, int amount) {
-        ItemStack stack = getItem(slot);
-        if (stack.isEmpty()) return stack;
-
-        if (stack.getCount() <= amount) {
-            setItem(slot, ItemStack.EMPTY);
-        } else {
-            stack = stack.split(amount);
-            if (stack.getCount() == 0) setItem(slot, ItemStack.EMPTY);
-        }
-        this.setChanged();
-
-        return stack;
-    }
-
-    @Override
-    public @NotNull ItemStack removeItemNoUpdate(int slot) {
-        ItemStack stack = getItem(slot);
-        if (!stack.isEmpty()) setItem(slot, ItemStack.EMPTY);
-        return stack;
     }
 
     @Override
@@ -73,36 +70,8 @@ public class BookshelfBlockEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    public @NotNull Component getDefaultName() {
-        return Component.translatable("container." + WizardryMainMod.MOD_ID + ".bookshelf");
-    }
-
-    @Override
-    public boolean hasCustomName() {
-        return false;
-    }
-
-    @Override
-    public @NotNull Component getDisplayName() {
-        return this.getName();
-    }
-
-    @Override
-    public int getMaxStackSize() {
-        return 64;
-    }
-
-    @Override
     public boolean stillValid(@NotNull Player player) {
         return level.getBlockEntity(worldPosition) == this && player.distanceToSqr(this.worldPosition.getX() + 0.5, this.worldPosition.getY() + 0.5, this.worldPosition.getZ() + 0.5) <= 64;
-    }
-
-    @Override
-    public void startOpen(@NotNull Player player) {
-    }
-
-    @Override
-    public void stopOpen(@NotNull Player player) {
     }
 
     @Override
@@ -114,48 +83,20 @@ public class BookshelfBlockEntity extends RandomizableContainerBlockEntity {
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
         if (inventory == null) this.inventory = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
-        ContainerHelper.loadAllItems(tag, this.inventory);
+        if (!this.tryLoadLootTable(tag)) {
+            ContainerHelper.loadAllItems(tag, this.inventory);
+        }
         if (tag.contains("CustomName", Tag.TAG_STRING))
             this.setCustomName(Component.literal(tag.getString("CustomName")));
     }
 
     @Override
-    public void saveAdditional(@NotNull CompoundTag tag) {
+    protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
-        ContainerHelper.saveAllItems(tag, this.inventory);
+        if (!this.trySaveLootTable(tag)) {
+            ContainerHelper.saveAllItems(tag, this.inventory);
+        }
         if (this.hasCustomName()) tag.putString("CustomName", this.getCustomName().getString());
-    }
-
-    @Override
-    public void clearContent() {
-        for (int i = 0; i < getContainerSize(); i++) {
-            setItem(i, ItemStack.EMPTY);
-        }
-    }
-
-    @Override
-    public boolean isEmpty() {
-        for (int i = 0; i < getContainerSize(); i++) {
-            if (!getItem(i).isEmpty()) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    protected @NotNull NonNullList<ItemStack> getItems() {
-        return inventory;
-    }
-
-    @Override
-    protected void setItems(@NotNull NonNullList<ItemStack> stacks) {
-        this.inventory = stacks;
-    }
-
-    @Override
-    protected @NotNull AbstractContainerMenu createMenu(int i, @NotNull Inventory inventory) {
-        return new BookshelfMenu(i, inventory, this);
     }
 
     @Override
