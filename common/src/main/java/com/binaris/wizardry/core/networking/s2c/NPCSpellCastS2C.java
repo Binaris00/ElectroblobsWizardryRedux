@@ -31,7 +31,7 @@ public class NPCSpellCastS2C implements Message {
         this.targetID = pBuf.readInt();
         this.hand = pBuf.readBoolean() ? InteractionHand.MAIN_HAND : InteractionHand.OFF_HAND;
         this.spell = Services.REGISTRY_UTIL.getSpell(pBuf.readResourceLocation());
-        this.modifiers = SpellModifiers.fromNBT(pBuf.readNbt());
+        this.modifiers = SpellModifiers.fromTag(pBuf.readNbt());
     }
 
     @Override
@@ -45,7 +45,7 @@ public class NPCSpellCastS2C implements Message {
         pBuf.writeInt(targetID);
         pBuf.writeBoolean(hand == InteractionHand.MAIN_HAND);
         pBuf.writeResourceLocation(spell.getLocation());
-        pBuf.writeNbt(modifiers.toNBT());
+        pBuf.writeNbt(modifiers.toTag());
     }
 
     @Override

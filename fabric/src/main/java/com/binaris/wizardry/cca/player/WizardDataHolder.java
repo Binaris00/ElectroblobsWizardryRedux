@@ -144,7 +144,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         }
 
         if (tag.contains("itemModifiers")) {
-            this.itemModifiers = SpellModifiers.fromNBT(tag.getCompound("itemModifiers"));
+            this.itemModifiers = SpellModifiers.fromTag(tag.getCompound("itemModifiers"));
         }
 
 
@@ -180,7 +180,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         allyNames.forEach(name -> allyNamesTag.add(StringTag.valueOf(name)));
         tag.put("allyNames", allyNamesTag);
 
-        tag.put("itemModifiers", itemModifiers.toNBT());
+        tag.put("itemModifiers", itemModifiers.toTag());
 
         ListTag recentSpellsTag = new ListTag();
         for (AbstractMap.SimpleEntry<Spell, Long> entry : recentSpells) {

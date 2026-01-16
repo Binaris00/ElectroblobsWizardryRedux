@@ -37,11 +37,11 @@ class TooltipElementUpgrades extends TooltipElement {
     protected void drawBackground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, float partialTicks, int mouseX, int mouseY) {
         int x1 = 0;
 
-        for (DeferredObject<Item> item : WandUpgrades.getSpecialUpgrades()) {
-            int upgradeLevel = WandHelper.getUpgradeLevel(stack, item.get());
+        for (Item item : WandUpgrades.getSpecialUpgrades()) {
+            int upgradeLevel = WandHelper.getUpgradeLevel(stack, item);
 
             if (upgradeLevel > 0) {
-                ItemStack upgrade = new ItemStack(item.get(), upgradeLevel);
+                ItemStack upgrade = new ItemStack(item, upgradeLevel);
                 guiGraphics.renderFakeItem(upgrade, x + x1, y);
                 guiGraphics.renderItemDecorations(Minecraft.getInstance().font, upgrade, x + x1, y);
 
@@ -59,7 +59,7 @@ class TooltipElementUpgrades extends TooltipElement {
     protected void drawForeground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, int mouseX, int mouseY) {
         int x1 = 0;
 
-        for (DeferredObject<Item> item : WandUpgrades.getSpecialUpgrades()) {
+        for (Item item : WandUpgrades.getSpecialUpgrades()) {
             int level = WandHelper.getUpgradeLevel(stack, item);
             if (level < 0) continue;
 

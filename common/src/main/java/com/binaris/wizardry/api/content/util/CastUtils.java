@@ -10,12 +10,10 @@ import net.minecraft.world.entity.player.Player;
 
 /**
  * A utility class for handling various aspects of spell casting, including event firing, cooldown application,
- * spell tracking, and network packet sending.
+ * spell tracking, and network packet sending. This class is created from {@code WandItem} and {@code ScrollItem} shared
+ * casting logic to avoid code duplication.
  */
 public final class CastUtils {
-    private CastUtils() {
-    }
-
     /**
      * Fires the appropriate spell cast event based on casting ticks.
      *
@@ -82,5 +80,8 @@ public final class CastUtils {
             SpellCastS2C msg = new SpellCastS2C(caster.getId(), ctx.hand(), spell, ctx.modifiers());
             Services.NETWORK_HELPER.sendToDimension(ctx.world().getServer(), msg, ctx.world().dimension());
         }
+    }
+
+    private CastUtils() {
     }
 }

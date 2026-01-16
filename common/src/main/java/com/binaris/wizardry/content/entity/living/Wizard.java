@@ -20,6 +20,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
+import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -29,6 +30,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.Merchant;
@@ -260,7 +262,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         possibleTrades.add(createTrade(
                 new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
                 new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
-                new ItemStack(WandUpgrades.getRandomUpgrade(this.random)),
+                new ItemStack(getRandomUpgrade(this.random)),
                 12, 10, 0.2f
         ));
 
@@ -293,7 +295,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         possibleTrades.add(createTrade(
                 new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
                 new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
-                new ItemStack(WandUpgrades.getRandomUpgrade(this.random)),
+                new ItemStack(getRandomUpgrade(this.random)),
                 12, 15, 0.2f
         ));
 
@@ -334,7 +336,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         possibleTrades.add(createTrade(
                 new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
                 new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
-                new ItemStack(WandUpgrades.getRandomUpgrade(this.random)),
+                new ItemStack(getRandomUpgrade(this.random)),
                 12, 20, 0.2f
         ));
 
@@ -376,11 +378,16 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
      * @param possibleTrades List of all possible trades for this level
      */
     private void addRandomTrades(List<MerchantOffer> possibleTrades) {
-
         Collections.shuffle(possibleTrades);
         int tradesToAdd = Math.min(MAX_TRADES, possibleTrades.size());
         this.trades.addAll(possibleTrades.subList(0, tradesToAdd));
     }
+
+    public static Item getRandomUpgrade(RandomSource random) {
+        int index = random.nextInt(WandUpgrades.getSpecialUpgrades().size());
+        return WandUpgrades.getSpecialUpgrades().stream().toList().get(index);
+    }
+
 
     private MerchantOffer createTrade(ItemStack cost1, ItemStack cost2, ItemStack result, int maxUses, int xp, float priceMultiplier) {
         return new MerchantOffer(cost1, cost2, result, maxUses, xp, priceMultiplier);

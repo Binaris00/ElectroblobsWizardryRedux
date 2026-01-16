@@ -4,7 +4,6 @@ import com.binaris.wizardry.api.EBLogger;
 import com.binaris.wizardry.content.ForfeitRegistry;
 import com.binaris.wizardry.setup.registries.EBAdvancementTriggers;
 import com.binaris.wizardry.setup.registries.EBArgumentTypeRegistry;
-import com.binaris.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.resources.ResourceLocation;
 
 public final class WizardryMainMod {
@@ -17,7 +16,6 @@ public final class WizardryMainMod {
 
     public static void init() {
         EBEventHelper.register();
-        WandUpgrades.initUpgrades();
         ForfeitRegistry.register();
         EBAdvancementTriggers.register();
         EBArgumentTypeRegistry.init();

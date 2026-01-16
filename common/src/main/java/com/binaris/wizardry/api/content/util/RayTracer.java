@@ -9,6 +9,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -31,10 +32,9 @@ public final class RayTracer {
      * @param hitLiquids Whether the ray should collide with liquid blocks.
      * @param entityType The class of entities to detect.
      * @param filter     A predicate to filter out entities from the results.
-     * @return The hit result, or null if nothing was hit.
+     * @return The hit result of the ray trace, either a block hit or an entity hit.
      */
-    @Nullable
-    public static HitResult rayTrace(Level world, Entity caster, Vec3 origin, Vec3 endpoint, float aimAssist, boolean hitLiquids, Class<? extends Entity> entityType, Predicate<? super Entity> filter) {
+    public static @NotNull HitResult rayTrace(Level world, Entity caster, Vec3 origin, Vec3 endpoint, float aimAssist, boolean hitLiquids, Class<? extends Entity> entityType, Predicate<? super Entity> filter) {
         ClipContext.Fluid fluidMode = hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE;
         HitResult blockHit = world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, fluidMode, caster));
 
@@ -98,10 +98,9 @@ public final class RayTracer {
      * @param hitLiquids             Whether the ray should collide with liquid blocks.
      * @param ignoreUncollidables    Unused parameter (kept for API compatibility).
      * @param returnLastUncollidable Unused parameter (kept for API compatibility).
-     * @return The hit result, or null if nothing was hit.
+     * @return The hit result of the ray trace.
      */
-    @Nullable
-    public static HitResult standardBlockRayTrace(Level world, LivingEntity entity, double range, boolean hitLiquids, boolean ignoreUncollidables, boolean returnLastUncollidable) {
+    public static @NotNull HitResult standardBlockRayTrace(Level world, LivingEntity entity, double range, boolean hitLiquids, boolean ignoreUncollidables, boolean returnLastUncollidable) {
         Vec3 origin = entity.getEyePosition(1);
         Vec3 endpoint = origin.add(entity.getLookAngle().scale(range));
         ClipContext.Fluid fluidMode = hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE;

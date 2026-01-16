@@ -59,7 +59,6 @@ public class MagicDamageSource extends DamageSource {
         setEntityImmunities(CaveSpider.class, EBDamageSources.POISON);
         setEntityImmunities(Zombie.class, EBDamageSources.POISON);
         setEntityImmunities(Skeleton.class, EBDamageSources.POISON);
-        // setEntityImmunities(Phoenix.class, DamageType.FIRE);
         setEntityImmunities(IceWraith.class, EBDamageSources.FROST);
         setEntityImmunities(IceGiant.class, EBDamageSources.FROST);
         setEntityImmunities(LightningWraith.class, EBDamageSources.SHOCK);

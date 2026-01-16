@@ -1,7 +1,6 @@
 package com.binaris.wizardry.content.blockentity;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.DeferredObject;
 import com.binaris.wizardry.api.content.item.IManaStoringItem;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.api.content.util.WandHelper;
@@ -53,7 +52,7 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
     public static void serverTick(Level level, BlockPos pos, BlockState state, ArcaneWorkbenchBlockEntity entity) {
         ItemStack stack = entity.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
         if (stack.getItem() instanceof IManaStoringItem manaItem && !level.isClientSide && !manaItem.isManaFull(stack) && level.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
-            manaItem.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
+            manaItem.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE.get()));
         }
     }
 
@@ -186,12 +185,12 @@ public class ArcaneWorkbenchBlockEntity extends BaseContainerBlockEntity {
         } else if (slotNumber == ArcaneWorkbenchMenu.CENTRE_SLOT) {
             return itemstack.getItem() instanceof IWorkbenchItem;
         } else if (slotNumber == ArcaneWorkbenchMenu.UPGRADE_SLOT) {
-            Set<DeferredObject<Item>> upgrades = new HashSet<>(WandUpgrades.getSpecialUpgrades());
-            upgrades.add(EBItems.ARCANE_TOME);
-            upgrades.add(EBItems.RESPLENDENT_THREAD);
-            upgrades.add(EBItems.CRYSTAL_SILVER_PLATING);
-            upgrades.add(EBItems.ETHEREAL_CRYSTAL_WEAVE);
-            return upgrades.contains(new DeferredObject<>(itemstack::getItem));
+            Set<Item> upgrades = new HashSet<>(WandUpgrades.getSpecialUpgrades());
+            upgrades.add(EBItems.ARCANE_TOME.get());
+            upgrades.add(EBItems.RESPLENDENT_THREAD.get());
+            upgrades.add(EBItems.CRYSTAL_SILVER_PLATING.get());
+            upgrades.add(EBItems.ETHEREAL_CRYSTAL_WEAVE.get());
+            return upgrades.contains(itemstack.getItem());
         }
 
         return true;

@@ -105,7 +105,7 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
         tag.put("castCommandSpell", StringTag.valueOf(castCommandSpell.getLocation().toString()));
         tag.putInt("castCommandDuration", castCommandDuration);
         tag.putInt("castCommandTick", castCommandTick);
-        tag.put("castCommandModifiers", castCommandModifiers.toNBT());
+        tag.put("castCommandModifiers", castCommandModifiers.toTag());
         return tag;
     }
 
@@ -122,7 +122,7 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
         this.castCommandTick = tag.getInt("castCommandTick");
         Tag modifiersTag = tag.get("castCommandModifiers");
         if (modifiersTag instanceof CompoundTag) {
-            this.castCommandModifiers = SpellModifiers.fromNBT((CompoundTag) modifiersTag);
+            this.castCommandModifiers = SpellModifiers.fromTag((CompoundTag) modifiersTag);
         } else {
             this.castCommandModifiers = new SpellModifiers();
         }

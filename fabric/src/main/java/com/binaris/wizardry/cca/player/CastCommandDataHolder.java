@@ -98,7 +98,7 @@ public class CastCommandDataHolder implements CastCommandData, ComponentV3, Auto
         this.castCommandTick = tag.getInt("castCommandTick");
         Tag modifiersTag = tag.get("castCommandModifiers");
         if (modifiersTag instanceof CompoundTag) {
-            this.castCommandModifiers = SpellModifiers.fromNBT((CompoundTag) modifiersTag);
+            this.castCommandModifiers = SpellModifiers.fromTag((CompoundTag) modifiersTag);
         } else {
             this.castCommandModifiers = new SpellModifiers();
         }
@@ -109,6 +109,6 @@ public class CastCommandDataHolder implements CastCommandData, ComponentV3, Auto
         tag.put("castCommandSpell", StringTag.valueOf(castCommandSpell.getLocation().toString()));
         tag.putInt("castCommandDuration", castCommandDuration);
         tag.putInt("castCommandTick", castCommandTick);
-        tag.put("castCommandModifiers", castCommandModifiers.toNBT());
+        tag.put("castCommandModifiers", castCommandModifiers.toTag());
     }
 }

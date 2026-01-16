@@ -5,6 +5,7 @@ import com.binaris.wizardry.content.menu.BookshelfMenu;
 import com.binaris.wizardry.network.EBForgeNetwork;
 import com.binaris.wizardry.registry.EBArgumentTypesForge;
 import com.binaris.wizardry.registry.EBRegistriesForge;
+import com.binaris.wizardry.setup.registries.WandUpgrades;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -34,5 +35,6 @@ public final class WizardryForgeMod {
     public static void commonSetup(final FMLCommonSetupEvent event) {
         EBForgeNetwork.registerMessages();
         BookshelfMenu.initBookItems();
+        WandUpgrades.initUpgrades();
     }
 }

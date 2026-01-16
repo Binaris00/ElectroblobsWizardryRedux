@@ -83,11 +83,10 @@ public final class WizardryFabricMod implements ModInitializer {
             return InteractionResult.PASS;
         });
 
-        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> {
-            return !WizardryEventBus.getInstance().fire(new EBPlayerBreakBlockEvent(player, world, pos));
-        });
+        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> !WizardryEventBus.getInstance().fire(new EBPlayerBreakBlockEvent(player, world, pos)));
 
         EBFabricServerNetwork.registerC2SMessages();
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new PropertiesFabricDataManager());
+        WandUpgrades.initUpgrades();
     }
 }

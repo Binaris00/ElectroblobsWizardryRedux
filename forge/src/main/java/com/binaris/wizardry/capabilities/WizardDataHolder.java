@@ -41,7 +41,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
     public Set<String> allyNames = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
-    private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConstants.MAX_RECENT_SPELLS);
+    private final Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConstants.MAX_RECENT_SPELLS);
     private Random random = new Random();
 
     public WizardDataHolder(Player player) {
@@ -145,7 +145,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         allyNames.forEach(name -> allyNamesTag.add(StringTag.valueOf(name)));
         tag.put("allyNames", allyNamesTag);
 
-        tag.put("itemModifiers", itemModifiers.toNBT());
+        tag.put("itemModifiers", itemModifiers.toTag());
 
         ListTag recentSpellsTag = new ListTag();
         for (AbstractMap.SimpleEntry<Spell, Long> entry : recentSpells) {
@@ -191,7 +191,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
         }
 
         if (tag.contains("itemModifiers")) {
-            this.itemModifiers = SpellModifiers.fromNBT(tag.getCompound("itemModifiers"));
+            this.itemModifiers = SpellModifiers.fromTag(tag.getCompound("itemModifiers"));
         }
 
         ListTag recentSpellsTag = tag.getList("recentSpells", Tag.TAG_COMPOUND);

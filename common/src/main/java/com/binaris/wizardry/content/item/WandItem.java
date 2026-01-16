@@ -240,7 +240,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         // This significantly improves performance by avoiding constant NBT modifications.
 
         if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
-            this.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE));
+            this.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE.get()));
         }
     }
 
@@ -252,7 +252,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         ItemStack stack = centre.getItem();
         if (!stack.getOrCreateTag().contains(WandHelper.SPELL_ARRAY_KEY)) return;
         List<Spell> spells = WandHelper.getSpells(stack);
-        int expectedSlotCount = BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE);
+        int expectedSlotCount = BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE.get());
         if (spells.size() < expectedSlotCount) spells = new ArrayList<>();
 
         WandHelper.setSpells(stack, spells);
@@ -570,7 +570,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL * WandHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE)) + 0.5f);
+        return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL * WandHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE.get())) + 0.5f);
     }
 
     @Override
@@ -637,7 +637,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public int getSpellSlotCount(ItemStack stack) {
-        return BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE);
+        return BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE.get());
     }
 
     @NotNull

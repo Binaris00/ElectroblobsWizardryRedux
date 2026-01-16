@@ -1,13 +1,11 @@
 package com.binaris.wizardry.api.content.spell;
 
-import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.ChatFormatting;
 import net.minecraft.Util;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
-import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -56,17 +54,6 @@ public class SpellTier {
 
         // This will never happen, but it might as well be a sensible result.
         return tiers[tiers.length - 1];
-    }
-
-    /**
-     * Returns a trade item appropriate for this tier. By default, this is a spell book containing a random spell from
-     * the given lists that is enabled in the TRADES and BOOK contexts. If you override this method be sure to respect
-     * those contexts.
-     */
-    public ItemStack getTradeItem(Element element, RandomSource random, ArrayList<Spell> spells, ArrayList<Spell> specializedSpells) {
-        spells.removeIf(spell -> !spell.isEnabled(SpellContext.TRADES) || !spell.isEnabled(SpellContext.BOOK));
-        specializedSpells.removeIf(spell -> !spell.isEnabled(SpellContext.TRADES) || !spell.isEnabled(SpellContext.BOOK));
-        return SpellUtil.spellBookItem(spells.get(random.nextInt(spells.size())));
     }
 
     /**

@@ -12,9 +12,12 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
+/**
+ * Utility class for workbench-related operations, such as recharging mana and applying spell books to wands. This is
+ * saved as a separate class to have a clear separation between workbench logic and actual workbench block/menu implementations
+ * and also give the possibility for other workbench-like blocks/menus to reuse this logic on addons/mods.
+ */
 public final class WorkbenchUtils {
-    private WorkbenchUtils() {
-    }
 
     /**
      * Recharges the mana of the item in the centre slot using the crystals in the crystals slot.
@@ -115,5 +118,8 @@ public final class WorkbenchUtils {
         int currentSelectedIndex = spells.indexOf(WandHelper.getCurrentSpell(wand));
         if (currentSelectedIndex == slot) WandHelper.setCurrentSpell(wand, spell);
         spells.set(slot, spell);
+    }
+
+    private WorkbenchUtils() {
     }
 }

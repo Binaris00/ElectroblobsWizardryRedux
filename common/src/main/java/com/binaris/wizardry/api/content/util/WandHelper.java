@@ -1,6 +1,5 @@
 package com.binaris.wizardry.api.content.util;
 
-import com.binaris.wizardry.api.content.DeferredObject;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.item.IElementValue;
@@ -280,21 +279,9 @@ public final class WandHelper {
      * @param upgrade The upgrade item.
      * @return The level of the upgrade, or 0 if the upgrade is not found.
      */
-    public static int getUpgradeLevel(ItemStack wand, DeferredObject<Item> upgrade) {
-        String key = WandUpgrades.getWandUpgrades().get(upgrade);
-        return key != null ? wand.getOrCreateTag().getCompound(UPGRADES_KEY).getInt(key) : 0;
-    }
-
-    /**
-     * Returns the level of the specified upgrade on the wand.
-     *
-     * @param wand    The wand ItemStack.
-     * @param upgrade The upgrade item.
-     * @return The level of the upgrade, or 0 if the upgrade is not found.
-     */
     public static int getUpgradeLevel(ItemStack wand, Item upgrade) {
         for (var entry : WandUpgrades.getWandUpgrades().entrySet()) {
-            if (entry.getKey().get().equals(upgrade)) {
+            if (entry.getKey().equals(upgrade)) {
                 return wand.getOrCreateTag().getCompound(UPGRADES_KEY).getInt(entry.getValue());
             }
         }
@@ -326,7 +313,7 @@ public final class WandHelper {
         }
 
         for (var entry : WandUpgrades.getWandUpgrades().entrySet()) {
-            if (entry.getKey().get().equals(upgrade)) {
+            if (entry.getKey().equals(upgrade)) {
                 String key = entry.getValue();
                 upgrades.putInt(key, upgrades.getInt(key) + 1);
                 wand.getOrCreateTag().put(UPGRADES_KEY, upgrades);
@@ -395,19 +382,19 @@ public final class WandHelper {
     public static SpellModifiers calculateModifiers(ItemStack stack, Player player, Spell spell) {
         SpellModifiers modifiers = new SpellModifiers();
 
-        int level = getUpgradeLevel(stack, EBItems.RANGE_UPGRADE);
+        int level = getUpgradeLevel(stack, EBItems.RANGE_UPGRADE.get());
         if (level > 0)
             modifiers.set(EBItems.RANGE_UPGRADE.get(), 1.0f + level * EBConstants.RANGE_INCREASE_PER_LEVEL, true);
 
-        level = getUpgradeLevel(stack, EBItems.DURATION_UPGRADE);
+        level = getUpgradeLevel(stack, EBItems.DURATION_UPGRADE.get());
         if (level > 0)
             modifiers.set(EBItems.DURATION_UPGRADE.get(), 1.0f + level * EBConstants.DURATION_INCREASE_PER_LEVEL, false);
 
-        level = getUpgradeLevel(stack, EBItems.BLAST_UPGRADE);
+        level = getUpgradeLevel(stack, EBItems.BLAST_UPGRADE.get());
         if (level > 0)
             modifiers.set(EBItems.BLAST_UPGRADE.get(), 1.0f + level * EBConstants.BLAST_RADIUS_INCREASE_PER_LEVEL, true);
 
-        level = getUpgradeLevel(stack, EBItems.COOLDOWN_UPGRADE);
+        level = getUpgradeLevel(stack, EBItems.COOLDOWN_UPGRADE.get());
         if (level > 0)
             modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), 1.0f - level * EBConstants.COOLDOWN_REDUCTION_PER_LEVEL, true);
 
