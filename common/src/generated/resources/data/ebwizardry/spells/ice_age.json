@@ -1,13 +1,14 @@
 {
-  "type": "minion",
+  "type": "attack",
   "base_properties": {
-    "minion_count": 1,
-    "minion_lifetime": 600,
-    "summon_radius": 2
+    "effect_duration": 400,
+    "effect_radius": 7,
+    "effect_strength": 1,
+    "freeze_duration": 1200
   },
   "chargeup": 20,
-  "cooldown": 400,
-  "cost": 100,
+  "cooldown": 250,
+  "cost": 70,
   "element": "ebwizardry:ice",
   "enabled": {
     "book": true,
@@ -20,6 +21,6 @@
     "treasure": true,
     "wands": true
   },
-  "spell_action": "ebwizardry:summon",
+  "spell_action": "ebwizardry:point_down",
   "tier": "ebwizardry:master"
 }

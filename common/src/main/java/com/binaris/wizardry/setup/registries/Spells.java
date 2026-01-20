@@ -10,7 +10,7 @@ import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.content.entity.construct.*;
 import com.binaris.wizardry.content.entity.living.LightningWraith;
 import com.binaris.wizardry.content.entity.projectile.*;
-import com.binaris.wizardry.content.spell.BlockWithSurprise;
+import com.binaris.wizardry.content.spell.necromancy.BlockWithSurprise;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.*;
 import com.binaris.wizardry.content.spell.earth.*;
@@ -152,10 +152,15 @@ public final class Spells {
     public static final Spell SPEED_TIME;
     public static final Spell COBWEBS;
     public static final Spell ZOMBIE_APOCALYPSE;
+    public static final Spell ICE_AGE;
+
     public static final Spell OJOSPOCOS;
     public static final Spell FLAME_FLAME;
     public static final Spell SUMMON_RICH;
     public static final Spell BLOCK_SURPRISE;
+    public static final Spell PLAYER_HAND;
+    public static final Spell WIZARD_HAND;
+
     public static Map<String, Spell> SPELLS = new HashMap<>();
 
     static {
@@ -772,6 +777,12 @@ public final class Spells {
         COBWEBS = spell("cobwebs", Cobwebs::new);
 
         ZOMBIE_APOCALYPSE = spell("zombie_apocalypse", ZombieApocalypse::new);
+
+        ICE_AGE = spell("ice_age", IceAge::new);
+
+        PLAYER_HAND = spell("player_hand", PlayerHand::new);
+
+        WIZARD_HAND = spell("wizard_hand", WizardHand::new);
     }
 
     private Spells() {

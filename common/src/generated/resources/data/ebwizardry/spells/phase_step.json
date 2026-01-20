@@ -1,5 +1,9 @@
 {
   "type": "utility",
+  "base_properties": {
+    "range": 8.0,
+    "wall_thickness": 1
+  },
   "chargeup": 0,
   "cooldown": 40,
   "cost": 35,
