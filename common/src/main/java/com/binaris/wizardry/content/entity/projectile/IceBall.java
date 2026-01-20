@@ -60,7 +60,7 @@ public class IceBall extends MagicProjectileEntity {
         BlockPos pos = blockHitResult.getBlockPos();
 
         if (blockHitResult.getDirection() == Direction.UP && !level().isClientSide() && level().getBlockState(pos).isFaceSturdy(level(), pos, Direction.UP)
-                && BlockUtil.canBlockBeReplaced(level(), pos.above()) && BlockUtil.canPlaceBlock(getOwner(), level(), pos)) {
+                && BlockUtil.canBlockBeReplaced(level(), pos.above()) && BlockUtil.canPlaceBlock((LivingEntity) getOwner(), level(), pos)) {
             level().setBlock(pos.above(), Blocks.SNOW.defaultBlockState(), 3);
         }
 

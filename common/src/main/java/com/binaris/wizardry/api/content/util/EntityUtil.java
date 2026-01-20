@@ -6,6 +6,7 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.spell.SpellTier;
+import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.Streams;
@@ -20,6 +21,7 @@ import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
@@ -182,13 +184,25 @@ public final class EntityUtil {
         return entityList;
     }
 
+    /**
+     * Determines whether the given entity is allowed to damage blocks in the given world, this doesn't check specific
+     * block properties, just whether the entity in general can damage blocks.
+     *
+     * @param entity The entity to check.
+     * @param world  The world in which the entity is attempting to damage blocks.
+     * @return True if the entity can damage blocks, false otherwise.
+     */
+    public static boolean canDamageBlocks(LivingEntity entity, Level world) {
+        if (entity instanceof Player player) {
+            return player.mayBuild() && !player.isSpectator();
+        }
 
-    public static boolean canDamageBlocks(@Nullable Entity entity, Level world) {
-//        if (entity == null) return WizardryConfig.dispenserBlockDamage;
-//        else if (entity instanceof PlayerEntity) return ((PlayerEntity) entity).canModifyBlocks() && WizardryConfig.playerBlockDamage;
-//        // TODO: Forge Event Factory
-//        //return ForgeEventFactory.getMobGriefingEvent(world, entity);
-        return true;
+        if (entity instanceof Mob mob) {
+            return !Services.PLATFORM.fireMobBlockBreakEvent(world, null, mob);
+        }
+
+        // Non-player / non-mob entities cannot damage blocks
+        return false;
     }
 
     public static int getDefaultAimingError(Difficulty difficulty) {

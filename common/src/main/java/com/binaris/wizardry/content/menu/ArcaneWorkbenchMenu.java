@@ -139,7 +139,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             }
         }
         // If shift-clicking from player inventory
-        else if (index >= 11 && index < 11 + PLAYER_INVENTORY_SIZE) {
+        else if (index < 11 + PLAYER_INVENTORY_SIZE) {
             int[] slotRange = findSlotRangeForItem(itemstack1);
 
             if (slotRange != null) {
@@ -153,15 +153,6 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
                     } else if (!this.moveItemStackTo(itemstack1, 11, 38, false)) {
                         return ItemStack.EMPTY;
                     }
-                }
-            } else {
-                // No valid workbench slot, move between hotbar and main inventory
-                if (index < 38) {
-                    if (!this.moveItemStackTo(itemstack1, 38, 47, false)) {
-                        return ItemStack.EMPTY;
-                    }
-                } else if (!this.moveItemStackTo(itemstack1, 11, 38, false)) {
-                    return ItemStack.EMPTY;
                 }
             }
         }

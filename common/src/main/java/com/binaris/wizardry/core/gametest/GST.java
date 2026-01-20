@@ -1,8 +1,12 @@
 package com.binaris.wizardry.core.gametest;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -81,5 +85,18 @@ public class GST {
         if (stack.isEmpty()) {
             helper.fail(message + " Expected non-empty ItemStack, but was empty");
         }
+    }
+
+    /**
+     * Places a block at the given position in the GameTest world.
+     */
+    public static void placeBlock(GameTestHelper helper, Vec3 blockPos, Block block) {
+        helper.setBlock(helper.absolutePos(BlockPos.containing(blockPos)), block.defaultBlockState());
+    }
+
+    public static Entity mockEntity(GameTestHelper helper, Vec3 playerPos, EntityType<?> type) {
+        Entity entity = helper.spawn(type, BlockPos.containing(helper.absoluteVec(playerPos)));
+        GST.assertNotNull(helper, "Entity is null!", entity);
+        return entity;
     }
 }

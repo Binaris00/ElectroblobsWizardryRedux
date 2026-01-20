@@ -7,7 +7,6 @@ import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
-import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
 import com.binaris.wizardry.core.platform.Services;
@@ -15,8 +14,11 @@ import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.ChestBlock;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.BlockHitResult;
@@ -82,7 +84,7 @@ public class ArcaneLockSpell extends RaySpell {
 
             if (toggleLock(ctx, pos, player)) {
                 // Handle double chests
-                BlockPos otherHalf = BlockUtil.getConnectedChest(ctx.world(), pos);
+                BlockPos otherHalf = getConnectedChest(ctx.world(), pos);
                 if (otherHalf != null) {
                     toggleLock(ctx, otherHalf, player);
                 }
@@ -129,6 +131,17 @@ public class ArcaneLockSpell extends RaySpell {
                     .withStyle(ChatFormatting.LIGHT_PURPLE), true);
             return true;
         }
+    }
+
+    private static BlockPos getConnectedChest(Level level, BlockPos pos) {
+        if (!(level.getBlockState(pos).getBlock() instanceof ChestBlock chest)) return null;
+
+        for (Direction direction : Direction.Plane.HORIZONTAL) {
+            BlockPos pos1 = pos.offset(direction.getNormal());
+            if (level.getBlockState(pos1).getBlock() == chest) return pos1;
+        }
+
+        return null;
     }
 
     @Override

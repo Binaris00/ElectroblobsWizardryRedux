@@ -84,10 +84,9 @@ public class ForfeitRegistry {
         create("explode", SpellTiers.ADVANCED, Elements.FIRE, (w, p) ->
                 w.explode(null, p.getX(), p.getY(), p.getZ(), 2, Level.ExplosionInteraction.NONE));
 
-        create("blazes", SpellTiers.ADVANCED, Elements.FIRE, (w, p) -> {
-            IntStream.range(0, 3).forEach(i -> summon(w, BlockUtil.findNearbyFloorSpace(p, 4, 2),
-                    new Blaze(EntityType.BLAZE, w), 0.5F, 0, 0.5F));
-        });
+        create("blazes", SpellTiers.ADVANCED, Elements.FIRE, (w, p) ->
+                IntStream.range(0, 3).forEach(i -> summon(w, BlockUtil.findNearbyFloorSpace(p, 4, 2),
+                new Blaze(EntityType.BLAZE, w), 0.5F, 0, 0.5F)));
 
         create("burn_surroundings", SpellTiers.MASTER, Elements.FIRE, (w, p) -> {
             if (w.isClientSide || !EntityUtil.canDamageBlocks(p, w)) return;
@@ -211,11 +210,10 @@ public class ForfeitRegistry {
         });
 
         create("uproot_plants", SpellTiers.APPRENTICE, Elements.EARTH, (w, p) -> {
-            if (!w.isClientSide && BlockUtil.canDamageBlocks(p, w)) {
-                List<BlockPos> sphere = BlockUtil.getBlockSphere(p.blockPosition(), 5);
-                sphere.removeIf(pos -> !BlockUtil.canBreakBlock(p, w, pos));
-                sphere.forEach(pos -> w.destroyBlock(pos, true));
-            }
+            if (w.isClientSide()) return;
+            List<BlockPos> sphere = BlockUtil.getBlockSphere(p.blockPosition(), 5);
+            sphere.removeIf(pos -> !BlockUtil.canBreak(p, w, pos, false));
+            sphere.forEach(pos -> w.destroyBlock(pos, true));
         });
 
         create("poison_self", SpellTiers.APPRENTICE, Elements.EARTH, (w, p) -> {
@@ -223,11 +221,10 @@ public class ForfeitRegistry {
         });
 
         create("flood", SpellTiers.ADVANCED, Elements.EARTH, (w, p) -> {
-            if (!w.isClientSide && BlockUtil.canDamageBlocks(p, w)) {
-                List<BlockPos> sphere = BlockUtil.getBlockSphere(p.blockPosition().above(), 2);
-                sphere.removeIf(pos -> !BlockUtil.canBlockBeReplaced(w, pos, true) || !BlockUtil.canPlaceBlock(p, w, pos));
-                sphere.forEach(pos -> w.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState()));
-            }
+            if (w.isClientSide()) return;
+            List<BlockPos> sphere = BlockUtil.getBlockSphere(p.blockPosition().above(), 2);
+            sphere.removeIf(pos -> !BlockUtil.canBlockBeReplaced(w, pos, true) || !BlockUtil.canPlaceBlock(p, w, pos));
+            sphere.forEach(pos -> w.setBlockAndUpdate(pos, Blocks.WATER.defaultBlockState()));
         });
 
         create("bury_self", SpellTiers.MASTER, Elements.EARTH, (w, p) -> {

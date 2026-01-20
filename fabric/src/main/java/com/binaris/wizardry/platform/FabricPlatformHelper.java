@@ -4,12 +4,20 @@ import com.binaris.wizardry.core.platform.services.IPlatformHelper;
 import com.mojang.brigadier.arguments.ArgumentType;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.fabric.api.command.v2.ArgumentTypeRegistry;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.tag.convention.v1.ConventionalBiomeTags;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.GameRules;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class FabricPlatformHelper implements IPlatformHelper {
 
@@ -53,5 +61,15 @@ public class FabricPlatformHelper implements IPlatformHelper {
         ArgumentTypeRegistry.registerArgumentType(id, clazz, serializer);
     }
 
+    @Override
+    public boolean firePlayerBlockBreakEvent(Level level, BlockPos pos, Player player) {
+        BlockState state = level.getBlockState(pos);
+        BlockEntity entity = level.getBlockEntity(pos);
+        return !PlayerBlockBreakEvents.BEFORE.invoker().beforeBlockBreak(level, player, pos, state, entity);
+    }
 
+    @Override
+    public boolean fireMobBlockBreakEvent(Level level, BlockPos pos, Mob mob) {
+        return !level.getGameRules().getBoolean(GameRules.RULE_MOBGRIEFING);
+    }
 }
