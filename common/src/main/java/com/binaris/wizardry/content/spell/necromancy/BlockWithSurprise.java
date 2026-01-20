@@ -1,10 +1,11 @@
-package com.binaris.wizardry.content.spell;
+package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
+import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.networking.c2s.BlockUsePacketC2S;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;

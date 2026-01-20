@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-28T16:20:11.316960761	Spell Data Provider: ebwizardry
+// 1.20.1	2026-01-20T12:05:44.890569	Spell Data Provider: ebwizardry
 59709226fef8219dd2c5cd41cb6bb719de55c656 data/ebwizardry/spells/agility.json
 12e12c73b30c50363edbf0bbe8132934b20111d1 data/ebwizardry/spells/arc.json
 34ede34dc275e94721ac699f01685084738cbd27 data/ebwizardry/spells/arcane_lock.json
@@ -60,6 +60,7 @@ ddd1e114d9c8bc4ca5085cc65db0cb01ab55267a data/ebwizardry/spells/hailstorm.json
 505f2a436ea1d1c2cba77d555e6b1d5956938051 data/ebwizardry/spells/heal_ally.json
 cafcff6cb8e6e5a59ec8ee9514dbab658dc100f2 data/ebwizardry/spells/healing_aura.json
 e4ba074352bc91317e4d2cb2d261212794a986b6 data/ebwizardry/spells/homing_spark.json
+b54be727da701facac8c8147eb7a08fdf86fd7c0 data/ebwizardry/spells/ice_age.json
 0da801527f9b688a37bdf9b5333dc2b84554963b data/ebwizardry/spells/ice_charge.json
 1e0408a7cb68a9f4411c65f2fa4d81a3d0eba903 data/ebwizardry/spells/ice_lance.json
 5752627f3113531cedfcd784a48f67db646e537c data/ebwizardry/spells/ice_shard.json
@@ -80,7 +81,7 @@ b60b5e60540d3d43e038eb409ca16e10b0980196 data/ebwizardry/spells/meteor.json
 34c973549cc170d396f33518fb558bfa9799020d data/ebwizardry/spells/none.json
 5fbd8ded49c16c96be8b7c13cd4f65309dcf8d32 data/ebwizardry/spells/oakflesh.json
 1851903e4c177bc5be16844af26a105945e0611e data/ebwizardry/spells/permafrost.json
-468ab6ee6ab1301b257519436cafcf5525cd6147 data/ebwizardry/spells/phase_step.json
+c3282cb1337c01b4cddbab647b57f38881e1f31d data/ebwizardry/spells/phase_step.json
 4d58151ff760e2bde48f778b574f8d81ea8ee4c5 data/ebwizardry/spells/plague_of_darkness.json
 24b306610639524574d9f15c8147f19455f1044e data/ebwizardry/spells/pocket_furnace.json
 4561cf43c89a684092909a4990e59475960f7b8e data/ebwizardry/spells/pocket_workbench.json
@@ -99,7 +100,6 @@ d126beffd96ef8d80eda831cae2df4a49738bee0 data/ebwizardry/spells/smoke_bomb.json
 38cd383fe392675eb1d0e1ea004d8820053b175c data/ebwizardry/spells/spider_swarm.json
 eb7c6ce2ab40c74f936d246299768bb1aee4a298 data/ebwizardry/spells/static_aura.json
 c32882214361ba8f6158042b76c4d7fc4a3d7f0f data/ebwizardry/spells/summon_blaze.json
-812ac38221cff5bb8c751260fd8687bbe5d0ea44 data/ebwizardry/spells/summon_ice_giant.json
 3493c5a3a9e4e21130b55c872c4c0071a6ba3e69 data/ebwizardry/spells/summon_lightning_wraith.json
 5b66a3a53a02c08a77dbbfb98b8363c52f6dca76 data/ebwizardry/spells/summon_skeleton.json
 1a59c2c695866e8eeb9b55ba1a04ff8edbe6a5b4 data/ebwizardry/spells/summon_snow_golem.json
