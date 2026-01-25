@@ -224,6 +224,11 @@ public abstract class Spell {
         return properties.isEnabledInContext(context);
     }
 
+    @Override
+    public String toString() {
+        return getLocation().toString();
+    }
+
     // ===================================================
     // SOUND SYSTEM
     // ===================================================

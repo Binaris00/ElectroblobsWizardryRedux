@@ -170,10 +170,7 @@ public final class EBItems {
     public static final DeferredObject<Item> BLAST_UPGRADE = wandUpgrade("blast_upgrade");
     public static final DeferredObject<Item> CONDENSER_UPGRADE = wandUpgrade("condenser_upgrade");
     public static final DeferredObject<Item> COOLDOWN_UPGRADE = wandUpgrade("cooldown_upgrade");
-    public static final DeferredObject<Item> RING_FULL_MOON = artifact("ring_full_moon", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.EARTH && !e.getCaster().level().isDay() && e.getCaster().level().getMoonPhase() == 0, (e, s) -> e.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), e.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false)));
-    public static final DeferredObject<Item> RING_STORM = artifact("ring_storm", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.LIGHTNING && e.getLevel().isThundering(), (e, s) -> e.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), e.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false)));
     public static final DeferredObject<Item> DURATION_UPGRADE = wandUpgrade("duration_upgrade");
-    public static final DeferredObject<Item> RING_CONJURER = artifact("ring_conjurer", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell() instanceof ConjureItemSpell, (e, s) -> e.getModifiers().set(EBItems.DURATION_UPGRADE.get(), e.getModifiers().get(EBItems.DURATION_UPGRADE.get()) * 2, false)));
     public static final DeferredObject<Item> MELEE_UPGRADE = wandUpgrade("melee_upgrade");
     public static final DeferredObject<Item> RANGE_UPGRADE = wandUpgrade("range_upgrade");
     public static final DeferredObject<Item> SIPHON_UPGRADE = wandUpgrade("siphon_upgrade");
@@ -354,6 +351,9 @@ public final class EBItems {
     public static final DeferredObject<Item> AMULET_WISDOM = artifact("amulet_wisdom", Rarity.RARE);
     public static final DeferredObject<Item> AMULET_WITHER_IMMUNITY = artifact("amulet_wither_immunity", Rarity.EPIC);
     // Rings
+    public static final DeferredObject<Item> RING_FULL_MOON = artifact("ring_full_moon", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.EARTH && !e.getCaster().level().isDay() && e.getCaster().level().getMoonPhase() == 0, (e, s) -> e.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), e.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false)));
+    public static final DeferredObject<Item> RING_STORM = artifact("ring_storm", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.LIGHTNING && e.getLevel().isThundering(), (e, s) -> e.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), e.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false)));
+    public static final DeferredObject<Item> RING_CONJURER = artifact("ring_conjurer", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell() instanceof ConjureItemSpell, (e, s) -> e.getModifiers().set(EBItems.DURATION_UPGRADE.get(), e.getModifiers().get(EBItems.DURATION_UPGRADE.get()) * 2, false)));
     public static final DeferredObject<Item> RING_ARCANE_FROST = artifact("ring_arcane_frost", Rarity.EPIC, new ArcaneFrostRingEffect());
     public static final DeferredObject<Item> RING_BATTLEMAGE = artifact("ring_battlemage", Rarity.UNCOMMON, QuickArtefactEffect.spellPreCast((e, s) -> e.getCaster() instanceof Player player && player.getOffhandItem().getItem() instanceof ISpellCastingItem && ImbueWeapon.isSword(player.getMainHandItem()), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.1f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
     public static final DeferredObject<Item> RING_BLOCKWRANGLER = artifact("ring_blockwrangler", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell() == Spells.GREATER_TELEKINESIS, (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, e.getModifiers().get(SpellModifiers.POTENCY) * 2, false)));

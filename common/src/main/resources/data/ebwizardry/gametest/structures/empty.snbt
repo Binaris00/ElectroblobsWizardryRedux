@@ -1,0 +1,11 @@
+{
+    DataVersion: 3465,
+    size: [1, 1, 1],
+    data: [
+        {pos: [0, 0, 0], state: "minecraft:polished_andesite"}
+    ],
+    entities: [],
+    palette: [
+        "minecraft:polished_andesite"
+    ]
+}

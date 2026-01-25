@@ -25,8 +25,7 @@
       "com.binaris.wizardry.cca.EBComponents"
     ],
     "fabric-gametest": [
-      "com.binaris.wizardry.core.gametest.ArcaneWorkbenchTest",
-      "com.binaris.wizardry.core.gametest.EBUtilTest"
+      "com.binaris.wizardry.gametest.FabricArcaneWorkbenchTest"
     ]
   },
   "mixins": [

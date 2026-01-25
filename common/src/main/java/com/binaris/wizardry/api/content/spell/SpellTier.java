@@ -8,7 +8,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SpellTier {
@@ -137,6 +136,11 @@ public class SpellTier {
      */
     public final boolean is(ResourceLocation location) {
         return location.equals(getLocation());
+    }
+
+    @Override
+    public String toString() {
+        return getLocation().toString();
     }
 
     // ===================================================
