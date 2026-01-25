@@ -45,11 +45,11 @@ public class ArtefactItem extends Item {
     }
 
     /**
-     * Called every tick (if player carries the artefact in their hotbar or accessories) to apply the artefact's effect.
-     * This method helps to check all equipped artefacts and call their respective effects {@code onTick} method, so
-     * we don't have to register each artefact individually.
+     * Called every tick (if player carries the artifact in their hotbar or accessories) to apply the artifact's effect.
+     * This method helps to check all equipped artifacts and call their respective effects {@code onTick} method, so
+     * we don't have to register each artifact individually.
      * <p>
-     * This event won't be calling artefacts that doesn't have any effect associated with them.
+     * This event won't be calling artifacts that doesn't have any effect associated with them.
      *
      * @param event The living tick event.
      */
@@ -61,11 +61,11 @@ public class ArtefactItem extends Item {
     }
 
     /**
-     * Called when the player is responsible for hurting an entity (if player carries the artefact in their hotbar or accessories)
-     * to apply the artefact's effect. This method helps to check all equipped artefacts and call their respective effects
-     * {@code onHurtEntity} method, so we don't have to register each artefact individually.
+     * Called when the player is responsible for hurting an entity (if player carries the artifact in their hotbar or accessories)
+     * to apply the artifact's effect. This method helps to check all equipped artifacts and call their respective effects
+     * {@code onHurtEntity} method, so we don't have to register each artifact individually.
      * <p>
-     * This event won't be calling artefacts that doesn't have any effect associated with them.
+     * This event won't be calling artifacts that doesn't have any effect associated with them.
      *
      * @param event The living hurt event.
      */

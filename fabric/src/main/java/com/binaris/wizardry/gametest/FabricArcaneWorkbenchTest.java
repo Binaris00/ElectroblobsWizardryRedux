@@ -72,4 +72,11 @@ public class FabricArcaneWorkbenchTest {
                         ArcaneWorkbenchTest.cannotUpgradeMaxedArmor(helper, armor, upgrade)));
         helper.succeed();
     }
+
+    @GameTest(template = "ebwizardry:arcane_workbench_3x3x3")
+    public static void repairWand(GameTestHelper helper) {
+        EBDataGenProcessor.wandItems().values().forEach(wand ->
+                ArcaneWorkbenchTest.repairWand(helper, wand.get(), EBItems.MAGIC_CRYSTAL.get()));
+        helper.succeed();
+    }
 }

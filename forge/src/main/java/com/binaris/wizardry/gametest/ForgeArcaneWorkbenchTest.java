@@ -77,4 +77,11 @@ public class ForgeArcaneWorkbenchTest {
                         ArcaneWorkbenchTest.cannotUpgradeMaxedArmor(helper, armor, upgrade)));
         helper.succeed();
     }
+
+    @GameTest(template = "arcane_workbench_3x3x3")
+    public static void repairWand(GameTestHelper helper) {
+        EBDataGenProcessor.wandItems().values().forEach(wand ->
+                ArcaneWorkbenchTest.repairWand(helper, wand.get(), EBItems.MAGIC_CRYSTAL.get()));
+        helper.succeed();
+    }
 }

@@ -575,9 +575,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public void setDamage(ItemStack stack, int damage) {
-        if (stack.getDamageValue() < damage) {
-            stack.getOrCreateTag().putInt("Damage", Math.min(damage, stack.getMaxDamage()));
-        }
+        stack.getOrCreateTag().putInt("Damage", Math.max(0, Math.min(damage, stack.getMaxDamage())));
     }
 
     @Override

@@ -5,10 +5,7 @@ import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.api.content.util.WandHelper;
 import com.binaris.wizardry.content.blockentity.ArcaneWorkbenchBlockEntity;
-import com.binaris.wizardry.content.item.BlankScrollItem;
-import com.binaris.wizardry.content.item.WandItem;
-import com.binaris.wizardry.content.item.WizardArmorItem;
-import com.binaris.wizardry.content.item.WizardArmorType;
+import com.binaris.wizardry.content.item.*;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -152,6 +149,28 @@ public final class ArcaneWorkbenchTest {
                 upgradedArmor.getWizardArmorType() == wizardArmorItem.getWizardArmorType());
         GST.assertNotEmpty(helper, "Upgrade item should not be consumed.",
                 ctx.workbench.getItem(ArcaneWorkbenchMenu.UPGRADE_SLOT));
+    }
+
+    public static void repairWand(GameTestHelper helper, Item wand, Item crystal) {
+        if (!(wand instanceof WandItem) || !(crystal instanceof CrystalItem)) {
+            helper.fail("Invalid parameters for repairWand test.");
+            return;
+        }
+
+        ItemStack wandStack = wand.getDefaultInstance();
+        wandStack.setDamageValue(120);
+
+        TestContext ctx = setupTest(helper, wandStack);
+        ctx.workbench.setItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT, crystal.getDefaultInstance());
+        ctx.menu.onApplyButtonPressed(ctx.player);
+
+        wandStack = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
+        GST.assertTrue(helper, "Wand %s should be repaired after applying crystal %s."
+                        .formatted(wand, crystal),
+                wandStack.getDamageValue() < 120);
+        GST.assertTrue(helper, "Crystal %s should be consumed after repairing wand %s."
+                .formatted(crystal, wand),
+                ctx.workbench.getItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT).isEmpty());
     }
 
     private static TestContext setupTest(GameTestHelper helper, ItemStack centerItem) {
