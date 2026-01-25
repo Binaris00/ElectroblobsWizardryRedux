@@ -10,13 +10,14 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+@SuppressWarnings("unused")
 public final class EBCreativeTabs {
-    static Map<String, Supplier<CreativeModeTab>> CREATIVE_MODE_TABS = new HashMap<>();
+    static Map<String, Supplier<CreativeModeTab>> CREATIVE_MODE_TABS = new LinkedHashMap<>();
     // All EBWizardry Items
     public static final Supplier<CreativeModeTab> ITEMS = creativeTab("ebwizardry",
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
@@ -72,7 +73,7 @@ public final class EBCreativeTabs {
                     .icon(() -> new ItemStack(EBBlocks.EARTH_CRYSTAL_BLOCK.get().asItem()))
                     .title(Component.translatable("creativetab.ebwizardry_blocks"))
                     .displayItems((parameters, output) -> {
-                                EBBlocks.BLOCK_ITEMS.forEach((name, block) -> output.accept(block.get()));
+                                EBBlocks.BLOCK_ITEMS.forEach((name, block) -> output.accept(block.get().asItem()));
                                 output.accept(EBItems.RECEPTACLE.get());
                             }
                     )

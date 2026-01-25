@@ -15,15 +15,15 @@ import net.minecraft.world.level.material.MapColor;
 import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 public final class EBBlocks {
-    public static final Map<String, DeferredObject<Block>> BLOCKS = new HashMap<>();
-    public static final Map<String, DeferredObject<Block>> BLOCK_ITEMS = new HashMap<>();
+    public static final Map<String, DeferredObject<Block>> BLOCKS = new LinkedHashMap<>();
+    public static final Map<String, DeferredObject<Block>> BLOCK_ITEMS = new LinkedHashMap<>();
     public static final DeferredObject<Block> MAGIC_CRYSTAL_BLOCK = crystalBlock("magic", MapColor.COLOR_PINK);
     public static final DeferredObject<Block> FIRE_CRYSTAL_BLOCK = crystalBlock("fire", MapColor.TERRACOTTA_ORANGE);
     public static final DeferredObject<Block> ICE_CRYSTAL_BLOCK = crystalBlock("ice", MapColor.COLOR_LIGHT_BLUE);

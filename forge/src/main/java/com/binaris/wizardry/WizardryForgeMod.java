@@ -1,5 +1,6 @@
 package com.binaris.wizardry;
 
+import com.binaris.wizardry.client.NotImplementedItems;
 import com.binaris.wizardry.client.WizardryForgeClient;
 import com.binaris.wizardry.content.menu.BookshelfMenu;
 import com.binaris.wizardry.network.EBForgeNetwork;
@@ -36,5 +37,6 @@ public final class WizardryForgeMod {
         EBForgeNetwork.registerMessages();
         BookshelfMenu.initBookItems();
         WandUpgrades.initUpgrades();
+        NotImplementedItems.init();
     }
 }

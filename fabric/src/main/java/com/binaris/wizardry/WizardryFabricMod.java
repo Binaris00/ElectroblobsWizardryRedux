@@ -1,6 +1,7 @@
 package com.binaris.wizardry;
 
 import com.binaris.wizardry.api.content.event.*;
+import com.binaris.wizardry.client.NotImplementedItems;
 import com.binaris.wizardry.content.menu.BookshelfMenu;
 import com.binaris.wizardry.core.PropertiesFabricDataManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
@@ -88,5 +89,6 @@ public final class WizardryFabricMod implements ModInitializer {
         EBFabricServerNetwork.registerC2SMessages();
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new PropertiesFabricDataManager());
         WandUpgrades.initUpgrades();
+        NotImplementedItems.init();
     }
 }

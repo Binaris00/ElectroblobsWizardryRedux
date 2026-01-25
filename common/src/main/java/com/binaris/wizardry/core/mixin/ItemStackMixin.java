@@ -1,6 +1,7 @@
 package com.binaris.wizardry.core.mixin;
 
 import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.client.NotImplementedItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -22,10 +23,17 @@ public abstract class ItemStackMixin {
 
     @Inject(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z",
             ordinal = 15, shift = At.Shift.AFTER), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void EBWIZARDRY$getTooltipLines(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, List<Component> list) {
+    public void EBWIZARDRY$getTooltipLinesMana(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, List<Component> list) {
         if (stack.getItem() instanceof IManaStoringItem) {
             list.remove(list.size() - 1); // Removing "Durability %s/%s"
             list.add(Component.translatable("item.ebwizardry.wand.damage_desc", stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()).withStyle(ChatFormatting.BLUE));
+        }
+    }
+
+    @Inject(method = "getTooltipLines", at = @At("RETURN"))
+    public void EBWIZARDRY$getTooltipLinesEvent(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir){
+        if (NotImplementedItems.notImplemented(stack.getItem())) {
+            cir.getReturnValue().add(Component.literal("Not Implemented").withStyle(ChatFormatting.RED));
         }
     }
 }
