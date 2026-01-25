@@ -87,10 +87,6 @@ public class BubbleConstruct extends MagicConstructEntity {
                         (this.random.nextDouble() - 0.5D) * 2.0D, -this.random.nextDouble(),
                         (this.random.nextDouble() - 0.5D) * 2.0D);
             }
-
-            if (lifetime - this.tickCount == 75 || (this.tickCount % 100 == 1 && this.tickCount < 150)) {
-                this.playSound(EBSounds.ENTITY_ENTRAPMENT_VANISH.get(), 1.5f, 1.0f);
-            }
         }
 
         if (currentRider == null && this.tickCount > 1) {

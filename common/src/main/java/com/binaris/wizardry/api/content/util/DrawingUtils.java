@@ -72,7 +72,7 @@ public class DrawingUtils {
         }
     }
 
-    public static void drawTexturedFlippedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight, boolean flipX, boolean flipY) {
+    public static void drawTexturedFlippedRect(float x, float y, int u, int v, int width, int height, int textureWidth, int textureHeight, boolean flipX, boolean flipY) {
         PoseStack stack = new PoseStack();
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
 
@@ -89,19 +89,19 @@ public class DrawingUtils {
 
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
 
-        buffer.vertex(stack.last().pose(), (float) (x), (float) (y + height), 0).uv(((float) (u1) * f), ((float) (v2) * f1)).endVertex();
-        buffer.vertex(stack.last().pose(), (float) (x + width), (float) (y + height), 0).uv(((float) (u2) * f), ((float) (v2) * f1)).endVertex();
-        buffer.vertex(stack.last().pose(), (float) (x + width), (float) (y), 0).uv(((float) (u2) * f), ((float) (v1) * f1)).endVertex();
-        buffer.vertex(stack.last().pose(), (float) (x), (float) (y), 0).uv(((float) (u1) * f), ((float) (v1) * f1)).endVertex();
+        buffer.vertex(stack.last().pose(), x, y + height, 0).uv(((float) (u1) * f), ((float) (v2) * f1)).endVertex();
+        buffer.vertex(stack.last().pose(), x + width, y + height, 0).uv(((float) (u2) * f), ((float) (v2) * f1)).endVertex();
+        buffer.vertex(stack.last().pose(), x + width, y, 0).uv(((float) (u2) * f), ((float) (v1) * f1)).endVertex();
+        buffer.vertex(stack.last().pose(), x, y, 0).uv(((float) (u1) * f), ((float) (v1) * f1)).endVertex();
 
         BufferUploader.drawWithShader(buffer.end());
     }
 
-    public static void drawTexturedRect(int x, int y, int width, int height) {
+    public static void drawTexturedRect(float x, float y, int width, int height) {
         drawTexturedRect(x, y, 0, 0, width, height, width, height);
     }
 
-    public static void drawTexturedRect(int x, int y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
+    public static void drawTexturedRect(float x, float y, int u, int v, int width, int height, int textureWidth, int textureHeight) {
         DrawingUtils.drawTexturedFlippedRect(x, y, u, v, width, height, textureWidth, textureHeight, false, false);
     }
 

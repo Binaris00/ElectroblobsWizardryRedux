@@ -183,7 +183,7 @@ public final class SpellGUIDisplay {
 
         // -1 to make it more centered...
         int x1 = width / 2 - CHARGE_METER_WIDTH / 2 - 1;
-        int y = height / 2 - CHARGE_METER_HEIGHT / 2 - 1;
+        float y = height / 2F - CHARGE_METER_HEIGHT / 2F - 0.5F;
         int w = (int) ((float) CHARGE_METER_WIDTH / 2 * charge);
         int u = CHARGE_METER_WIDTH - w;
 
@@ -206,7 +206,7 @@ public final class SpellGUIDisplay {
 
         if (player.hasEffect(EBMobEffects.ARCANE_JAMMER.get())) format = Style.EMPTY.withObfuscated(true);
 
-        Component name = discovered ? Component.translatable(spell.getDescriptionId().toString()) :
+        Component name = discovered ? Component.translatable(spell.getDescriptionId()) :
                 Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData()));
         ((MutableComponent) name).withStyle(format);
         return name;

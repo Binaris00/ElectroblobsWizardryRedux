@@ -32,7 +32,7 @@ public final class EBConfig {
     };
 
     public static ResourceLocation[] lootInjectionLocations = toResourceLocations(DEFAULT_LOOT_INJECTION_LOCATIONS);
-    public static ResourceLocation[] meltItemsBlackList = {new ResourceLocation("minecraft:potato")};
+    public static ResourceLocation[] meltItemsBlackList = {new ResourceLocation("minecraft:tropical_fish")};
 
     // Mob lists
     public static ResourceLocation[] modifiableMobs = new ResourceLocation[]{};

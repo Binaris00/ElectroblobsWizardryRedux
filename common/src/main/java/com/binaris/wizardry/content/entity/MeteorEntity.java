@@ -73,7 +73,7 @@ public class MeteorEntity extends FallingBlockEntity {
         if (!this.level().isClientSide) {
             this.setDeltaMovement(this.getDeltaMovement().multiply(0.699999988079071D, -0.5D, 0.699999988079071D));
 
-            this.level().explode(this, this.getX(), this.getEyeY(), this.getZ(), 7.0F, false, Level.ExplosionInteraction.MOB);
+            this.level().explode(this, this.getX(), this.getEyeY(), this.getZ(), 3.0F, false, Level.ExplosionInteraction.MOB);
             this.level().explode(this, this.getX(), this.getY(), this.getZ(),
                     Spells.METEOR.property(DefaultProperties.DAMAGE) * blastMultiplier,
                     damageBlocks, damageBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE);

@@ -1,7 +1,13 @@
 package com.binaris.wizardry.core.mixin;
 
 import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.spell.Spell;
+import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.client.NotImplementedItems;
+import com.binaris.wizardry.content.item.ScrollItem;
+import com.binaris.wizardry.content.item.SpellBookItem;
+import com.binaris.wizardry.content.spell.DefaultProperties;
+import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -34,6 +40,13 @@ public abstract class ItemStackMixin {
     public void EBWIZARDRY$getTooltipLinesEvent(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir){
         if (NotImplementedItems.notImplemented(stack.getItem())) {
             cir.getReturnValue().add(Component.literal("Not Implemented").withStyle(ChatFormatting.RED));
+        }
+
+        if (stack.getItem() instanceof SpellBookItem || stack.getItem() instanceof ScrollItem) {
+            Spell spell = SpellUtil.getSpell(stack);
+            if (spell != Spells.NONE && spell.property(DefaultProperties.SENSIBLE)) {
+                cir.getReturnValue().add(Component.literal("Sensible Spell (Only for testing)").withStyle(ChatFormatting.RED));
+            }
         }
     }
 }

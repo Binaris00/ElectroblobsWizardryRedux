@@ -163,6 +163,12 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     }
 
     @Override
+    public boolean isFoil(@NotNull ItemStack stack) {
+        if (tier == SpellTiers.MASTER) return false;
+        return WandHelper.getProgression(stack) >= tier.getProgression();
+    }
+
+    @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         if (ctx.world().isClientSide && spell.isInstantCast() && spell.requiresPacket()) return false;
         if (!CastUtils.executeSpellCast(SpellCastEvent.Source.WAND, spell, ctx)) return false;

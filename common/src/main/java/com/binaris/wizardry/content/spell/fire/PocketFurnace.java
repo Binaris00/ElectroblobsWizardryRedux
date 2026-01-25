@@ -59,7 +59,7 @@ public class PocketFurnace extends Spell {
             result = optionalSmeltingRecipe.get().getResultItem(null);
             if (result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem)
                 continue;
-            if (!EBConfig.isOnList(EBConfig.meltItemsBlackList, stack)) continue;
+            if (EBConfig.isOnList(EBConfig.meltItemsBlackList, stack)) continue;
 
             if (stack.getCount() <= usesLeft) {
                 ItemStack stack2 = new ItemStack(result.getItem(), stack.getCount());
