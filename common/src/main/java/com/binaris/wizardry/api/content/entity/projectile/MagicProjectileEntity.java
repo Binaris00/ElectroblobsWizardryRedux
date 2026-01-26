@@ -18,7 +18,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class MagicProjectileEntity extends ThrowableItemProjectile {
-    public static final double LAUNCH_Y_OFFSET = 0.1;
+    public static final double LAUNCH_Y_OFFSET = 0.3;
+    public static final float FORWARD_OFFSET = 0.1f;
     public static final int SEEKING_TIME = 15;
     public float damageMultiplier = 1.0f;
 
@@ -54,7 +55,13 @@ public abstract class MagicProjectileEntity extends ThrowableItemProjectile {
      * aims it in the direction they are looking with the given speed.
      */
     public void aim(LivingEntity caster, float speed) {
-        this.setPos(caster.xo, caster.yo + (double) caster.getEyeHeight() - LAUNCH_Y_OFFSET, caster.zo);
+        Vec3 lookVector = caster.getLookAngle();
+
+        this.setPos(
+                caster.xo + lookVector.x * FORWARD_OFFSET,
+                caster.yo + (double) caster.getEyeHeight() - LAUNCH_Y_OFFSET,
+                caster.zo + lookVector.z * FORWARD_OFFSET
+        );
         this.shootFromRotation(caster, caster.getXRot(), caster.getYRot(), 0.0f, speed, 1.0f);
         this.setOwner(caster);
     }

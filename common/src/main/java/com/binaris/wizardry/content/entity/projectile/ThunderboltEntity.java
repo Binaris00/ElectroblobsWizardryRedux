@@ -56,6 +56,10 @@ public class ThunderboltEntity extends MagicProjectileEntity {
     public void tick() {
         super.tick();
 
+        if (this.tickCount < 3) {
+            return;
+        }
+
         if (!this.level().isClientSide()) {
             this.level().broadcastEntityEvent(this, (byte) 3);
         }

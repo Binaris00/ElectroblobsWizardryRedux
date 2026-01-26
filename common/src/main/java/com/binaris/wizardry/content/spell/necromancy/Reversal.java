@@ -21,32 +21,29 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class Reversal extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (ctx.caster() == null || !(entityHit.getEntity() instanceof LivingEntity target)) return true;
-
-        List<MobEffectInstance> negativePotions = new ArrayList<>(ctx.caster().getActiveEffects());
-        negativePotions.removeIf(p -> !p.getEffect().getCategory().equals(MobEffectCategory.HARMFUL));
-
-        if (ctx.world().isClientSide) {
-            ParticleBuilder.create(EBParticles.BUFF).entity(ctx.caster()).color(1, 1, 0.3f).spawn(ctx.world());
+        if (ctx.caster() == null || !(entityHit.getEntity() instanceof LivingEntity target) || ctx.world().isClientSide) {
             return true;
         }
 
-        if (negativePotions.isEmpty()) return false;
+        List<MobEffectInstance> harmfulEffects = new ArrayList<>(ctx.caster().getActiveEffects().stream()
+                .filter(effect -> effect.getEffect().getCategory() == MobEffectCategory.HARMFUL)
+                .toList());
 
         int bonusEffects = (int) (ctx.modifiers().get(SpellModifiers.POTENCY) - 1 / EBConstants.POTENCY_INCREASE_PER_TIER + 0.5F) - 1;
         int n = property(DefaultProperties.EFFECT_STRENGTH) + bonusEffects;
 
-        Collections.shuffle(negativePotions);
-        negativePotions = negativePotions.subList(0, Math.min(negativePotions.size(), n));
-
-        negativePotions.forEach(p -> ctx.caster().removeEffect(p.getEffect()));
-        negativePotions.forEach(((LivingEntity) target)::addEffect);
+        for (int i = 0; i < n; i++) {
+            if (harmfulEffects.isEmpty()) break;
+            MobEffectInstance effectToTransfer = harmfulEffects.get(ctx.world().random.nextInt(harmfulEffects.size()));
+            ctx.caster().removeEffect(effectToTransfer.getEffect());
+            target.addEffect(effectToTransfer);
+            harmfulEffects.remove(effectToTransfer);
+        }
 
         return true;
     }

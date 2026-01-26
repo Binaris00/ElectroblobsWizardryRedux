@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.entity.ArrowRainConstruct;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.content.spell.abstr.ConstructRangedSpell;
+import com.binaris.wizardry.content.spell.abstr.ConstructSpell;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.Direction;
@@ -15,7 +15,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class ArrowRain extends ConstructRangedSpell<ArrowRainConstruct> {
+public class ArrowRain extends ConstructSpell<ArrowRainConstruct> {
     public ArrowRain() {
         super(ArrowRainConstruct::new, false);
         this.floor(true);

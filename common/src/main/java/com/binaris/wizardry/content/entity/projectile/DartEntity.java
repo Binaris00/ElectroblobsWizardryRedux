@@ -77,7 +77,7 @@ public class DartEntity extends MagicArrowEntity {
 
     @Override
     public void ticksInAir() {
-        if (this.level().isClientSide()) {
+        if (this.level().isClientSide() && tickCount > 1) {
             ParticleBuilder.create(EBParticles.LEAF, this).time(10 + random.nextInt(5)).spawn(level());
         }
     }

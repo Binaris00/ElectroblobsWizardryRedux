@@ -58,13 +58,13 @@ public class DarknessOrbEntity extends MagicProjectileEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) {
+        this.setDeltaMovement(this.getDeltaMovement().x / 0.99, this.getDeltaMovement().y / 0.99, this.getDeltaMovement().z / 0.99);
+
+        if (level().isClientSide && tickCount > 2) {
             float brightness = random.nextFloat() * 0.2f;
             ParticleBuilder.create(EBParticles.SPARKLE, this).time(20 + random.nextInt(10)).color(brightness, 0.0f, brightness).spawn(level());
             ParticleBuilder.create(EBParticles.DARK_MAGIC, this).color(0.1f, 0.0f, 0.0f).spawn(level());
         }
-
-        this.setDeltaMovement(this.getDeltaMovement().x / 0.99, this.getDeltaMovement().y / 0.99, this.getDeltaMovement().z / 0.99);
     }
 
     @Override

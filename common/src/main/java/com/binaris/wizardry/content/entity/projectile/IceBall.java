@@ -74,7 +74,7 @@ public class IceBall extends MagicProjectileEntity {
     public void tick() {
         super.tick();
 
-        if (!level().isClientSide()) {
+        if (!level().isClientSide() && this.tickCount > 3) {
             this.level().broadcastEntityEvent(this, (byte) 3);
         }
     }

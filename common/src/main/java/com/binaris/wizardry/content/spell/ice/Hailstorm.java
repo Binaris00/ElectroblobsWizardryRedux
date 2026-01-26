@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.entity.construct.HailstormConstruct;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.content.spell.abstr.ConstructRangedSpell;
+import com.binaris.wizardry.content.spell.abstr.ConstructSpell;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.Direction;
@@ -15,9 +15,10 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public class Hailstorm extends ConstructRangedSpell<HailstormConstruct> {
+public class Hailstorm extends ConstructSpell<HailstormConstruct> {
     public Hailstorm() {
         super(HailstormConstruct::new, false);
+        this.floor(true);
     }
 
     @Override
@@ -38,7 +39,6 @@ public class Hailstorm extends ConstructRangedSpell<HailstormConstruct> {
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.MASTER, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 75, 20, 300)
-                .add(DefaultProperties.RANGE, 20F)
                 .add(DefaultProperties.DURATION, 120)
                 .add(DefaultProperties.EFFECT_RADIUS, 2)
                 .build();

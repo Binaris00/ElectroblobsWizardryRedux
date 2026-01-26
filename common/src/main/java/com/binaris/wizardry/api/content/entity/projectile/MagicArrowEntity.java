@@ -40,7 +40,8 @@ import org.jetbrains.annotations.NotNull;
  * have to handle the texture yourself.
  */
 public abstract class MagicArrowEntity extends AbstractArrow {
-    public static final double LAUNCH_Y_OFFSET = 0.1;
+    public static final double LAUNCH_Y_OFFSET = 0.3;
+    public static final float FORWARD_OFFSET = 0.1f;
     public static final int SEEKING_TIME = 15;
     public float damageMultiplier = 1.0f;
     protected int ticksInGround;
@@ -57,7 +58,12 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     public void aim(LivingEntity caster, float speed) {
         if (getOwner() == null) this.setOwner(caster);
 
-        this.absMoveTo(caster.getX(), caster.getY() + caster.getDimensions(caster.getPose()).height - LAUNCH_Y_OFFSET, caster.getZ()
+        Vec3 lookVector = caster.getLookAngle();
+
+        this.absMoveTo(
+                caster.xo + lookVector.x * FORWARD_OFFSET,
+                caster.getY() + caster.getDimensions(caster.getPose()).height - LAUNCH_Y_OFFSET,
+                caster.zo + lookVector.z * FORWARD_OFFSET
                 , caster.getYRot(), caster.getXRot());
 
         this.xo -= Mth.cos(this.getYRot() / 180.0F * (float) Math.PI) * 0.16F;

@@ -58,7 +58,7 @@ public class FireBoltEntity extends MagicProjectileEntity {
     @Override
     public void tick() {
         super.tick();
-        if (level().isClientSide) {
+        if (level().isClientSide && this.tickCount > 2) {
             ParticleBuilder.create(EBParticles.MAGIC_FIRE, this).time(14).spawn(level());
 
             if (this.tickCount > 1) {
