@@ -6,6 +6,7 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.spell.SpellTier;
+import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -132,7 +133,7 @@ public final class EntityUtil {
         Iterable<BlockPos> cuboid = BlockPos.betweenClosed(Mth.floor(box.minX), Mth.floor(box.minY),
                 Mth.floor(box.minZ), Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ));
 
-        if (Streams.stream(cuboid).noneMatch(b -> !world.noCollision(new AABB(b)))) {
+        if (Streams.stream(cuboid).allMatch(b -> world.noCollision(new AABB(b)))) {
             return destination;
 
         } else {
@@ -222,22 +223,22 @@ public final class EntityUtil {
         if (spell.isInstantCast()) return false;
 
         if (caster instanceof Player) {
-//            // TODO WIZARD DATA
-//            WizardData data = Services.OBJECT_DATA.getWizardData((Player) caster);
-//            if (data != null && data.currentlyCasting() == spell) return true;
-
-            // Check if the player is using an item and has passed the charge time
             if (caster.isUsingItem()) {
-                int remainingTicks = caster.getUseItemRemainingTicks();
-                int useDuration = caster.getUseItem().getUseDuration();
-                int ticksInUse = useDuration - remainingTicks;
+                ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
+                boolean isSpellCastingItem = stack.getItem() instanceof ISpellCastingItem;
 
-                // Check if the charge time has been met
+                if (!isSpellCastingItem) return false;
+
+                Spell currentSpell = ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack);
+
+                if (stack.getItem() instanceof ScrollItem) {
+                    return currentSpell == spell;
+                }
+
+                int ticksInUse = caster.getUseItem().getUseDuration() - caster.getUseItemRemainingTicks();
+
                 if (ticksInUse >= spell.getCharge()) {
-                    ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
-                    boolean isSpellCastingItem = stack.getItem() instanceof ISpellCastingItem;
-                    Spell currentSpell = isSpellCastingItem ? ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack) : null;
-                    return isSpellCastingItem && currentSpell == spell;
+                    return currentSpell == spell;
                 }
             }
         } else if (caster instanceof ISpellCaster spellCaster) {
@@ -246,6 +247,7 @@ public final class EntityUtil {
 
         return false;
     }
+
 
     /**
      * Adds n random spells to the given list. The spells will be of the given element if possible. Extracted as a

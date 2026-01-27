@@ -56,17 +56,17 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
         if (!canCast(stack, spell, ctx)) return InteractionResultHolder.fail(stack);
 
-        if (spell.isInstantCast()) {
-            if (cast(stack, spell, ctx)) {
-                if (!level.isClientSide && spell.requiresPacket()) {
-                    Services.NETWORK_HELPER.sendToDimension(level.getServer(), new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers()), level.dimension());
-                }
-                return InteractionResultHolder.success(stack);
-            }
-        } else {
-            if (!player.isUsingItem()) player.startUsingItem(hand);
+        if (!spell.isInstantCast()) {
+            player.startUsingItem(hand);
             Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
-            return InteractionResultHolder.pass(stack);
+            return InteractionResultHolder.consume(stack);
+        }
+
+        if (cast(stack, spell, ctx)) {
+            if (!level.isClientSide && spell.requiresPacket()) {
+                Services.NETWORK_HELPER.sendToDimension(level.getServer(), new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers()), level.dimension());
+            }
+            return InteractionResultHolder.success(stack);
         }
 
         return InteractionResultHolder.fail(stack);
@@ -78,7 +78,9 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
         Spell spell = SpellUtil.getSpell(stack);
         int castingTick = stack.getUseDuration() - timeLeft;
-        PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick, new SpellModifiers());
+
+        PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick,
+                Services.OBJECT_DATA.getWizardData(player).getSpellModifiers());
 
         if (!spell.isInstantCast() && canCast(stack, spell, ctx)) {
             spell.cast(ctx);
@@ -114,7 +116,10 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         Spell spell = SpellUtil.getSpell(stack);
         if (spell.isInstantCast()) return;
 
-        if (!player.isCreative()) stack.shrink(1);
+        if (!player.isCreative()) {
+            stack.shrink(1);
+            player.getCooldowns().addCooldown(this, spell.getCooldown());
+        }
 
         int castingTick = stack.getUseDuration() - timeCharged;
         SpellModifiers modifiers = new SpellModifiers();
