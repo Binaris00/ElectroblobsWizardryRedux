@@ -79,4 +79,29 @@ public class FabricArcaneWorkbenchTest {
                 ArcaneWorkbenchTest.repairWand(helper, wand.get(), EBItems.MAGIC_CRYSTAL.get()));
         helper.succeed();
     }
+
+    @GameTest(template = "ebwizardry:arcane_workbench_3x3x3")
+    public static void cannotExceedBlankScrollLimit(GameTestHelper helper) {
+        ArcaneWorkbenchTest.cannotExceedBlankScrollLimit(helper);
+    }
+
+    @GameTest(template = "ebwizardry:arcane_workbench_3x3x3")
+    public static void cannotExceedSpellBookLimit(GameTestHelper helper) {
+        ArcaneWorkbenchTest.cannotExceedSpellBookLimit(helper, Spells.FIREBALL);
+        helper.succeed();
+    }
+
+    @GameTest(template = "ebwizardry:arcane_workbench_3x3x3")
+    public static void cannotExceedUpgradeLimit(GameTestHelper helper) {
+        List<Item> upgrades = List.of(
+                EBItems.ARCANE_TOME.get(),
+                EBItems.CRYSTAL_SILVER_PLATING.get(),
+                EBItems.ETHEREAL_CRYSTAL_WEAVE.get(),
+                EBItems.RESPLENDENT_THREAD.get()
+        );
+
+        upgrades.forEach(upgrade ->
+                ArcaneWorkbenchTest.cannotExceedUpgradeLimit(helper, upgrade));
+        helper.succeed();
+    }
 }

@@ -1,5 +1,6 @@
 package com.binaris.wizardry.content.menu.slot;
 
+import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.world.Container;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.Item;
@@ -28,6 +29,10 @@ public class SlotItemClassList extends Slot {
 
     @Override
     public boolean mayPlace(@NotNull ItemStack stack) {
+        if (stackLimit > 0 && stack.getCount() > stackLimit && Services.PLATFORM.getPlatformName().equals("Fabric")) {
+            return false;
+        }
+
         for (Class<? extends Item> itemClass : itemClasses) {
             if (itemClass.isAssignableFrom(stack.getItem().getClass())) {
                 return true;

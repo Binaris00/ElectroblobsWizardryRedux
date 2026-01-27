@@ -145,14 +145,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             if (slotRange != null) {
                 // Try to move to the appropriate workbench slot(s)
                 if (!this.moveItemStackTo(itemstack1, slotRange[0], slotRange[1] + 1, false)) {
-                    // If that fails, try moving between hotbar and main inventory
-                    if (index < 38) {
-                        if (!this.moveItemStackTo(itemstack1, 38, 47, false)) {
-                            return ItemStack.EMPTY;
-                        }
-                    } else if (!this.moveItemStackTo(itemstack1, 11, 38, false)) {
-                        return ItemStack.EMPTY;
-                    }
+                    return ItemStack.EMPTY;
                 }
             }
         }

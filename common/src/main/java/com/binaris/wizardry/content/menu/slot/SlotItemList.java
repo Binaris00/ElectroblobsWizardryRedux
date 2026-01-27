@@ -1,5 +1,6 @@
 package com.binaris.wizardry.content.menu.slot;
 
+import com.binaris.wizardry.core.platform.Services;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.Container;
@@ -34,6 +35,10 @@ public class SlotItemList extends Slot {
 
     @Override
     public boolean mayPlace(@NotNull ItemStack stack) {
+        if (stackLimit > 0 && stack.getCount() > stackLimit && Services.PLATFORM.getPlatformName().equals("Fabric")) {
+            return false;
+        }
+
         return Arrays.stream(items).anyMatch(item -> stack.getItem() == item);
     }
 
