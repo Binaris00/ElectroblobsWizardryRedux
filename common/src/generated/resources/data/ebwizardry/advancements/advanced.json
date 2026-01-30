@@ -106,7 +106,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "ebwizardry:wand_advanced"
+      "item": "ebwizardry:wand_advanced",
+      "nbt": "{Damage:0}"
     },
     "show_toast": true,
     "title": {

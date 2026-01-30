@@ -68,6 +68,7 @@ public class Arc extends RaySpell {
                 .assignBaseProperties(SpellTiers.NOVICE, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT, 5, 0, 15)
                 .add(DefaultProperties.RANGE, 3F)
                 .add(DefaultProperties.DAMAGE, 8F)
+                .add(DefaultProperties.SENSIBLE, true)
                 .build();
     }
 }

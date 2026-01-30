@@ -361,6 +361,17 @@ public final class BlockUtil {
         return true;
     }
 
+    /**
+     * Checks whether a block at the given position in the given level is passable (i.e. can be moved through).
+     *
+     * @param world    The level
+     * @param checkPos The position to check
+     * @return True if the block is passable, false otherwise
+     */
+    public static boolean isBlockPassable(Level world, BlockPos checkPos) {
+        return world.isEmptyBlock(checkPos) || world.getBlockState(checkPos).canBeReplaced();
+    }
+
 
     /**
      * A {@code SurfaceCriteria} object is used to define a 'surface', a boundary between two blocks which differ in

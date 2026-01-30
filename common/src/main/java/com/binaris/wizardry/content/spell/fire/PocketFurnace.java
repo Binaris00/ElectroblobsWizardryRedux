@@ -34,6 +34,31 @@ public class PocketFurnace extends Spell {
     public boolean cast(PlayerCastContext ctx) {
         int usesLeft = (int) (property(ITEMS_SMELTED) * ctx.modifiers().get(SpellModifiers.POTENCY));
         ItemStack stack, result;
+        boolean itemsSmelted = false;
+
+        // First check if there are any smeltable items
+        boolean hasSmeltableItems = false;
+        for (int i = 0; i < ctx.caster().getInventory().getContainerSize(); i++) {
+            stack = ctx.caster().getInventory().getItem(i);
+            if (stack.isEmpty()) continue;
+
+            Container dummyInv = new SimpleContainer(1);
+            dummyInv.setItem(0, stack);
+            Optional<SmeltingRecipe> optionalSmeltingRecipe = ctx.world().getRecipeManager().getRecipeFor(RecipeType.SMELTING, dummyInv, ctx.caster().level());
+            if (optionalSmeltingRecipe.isEmpty()) continue;
+
+            result = optionalSmeltingRecipe.get().getResultItem(null);
+            if (result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem)
+                continue;
+            if (EBConfig.isOnList(EBConfig.meltItemsBlackList, stack)) continue;
+
+            hasSmeltableItems = true;
+            break;
+        }
+
+        if (!hasSmeltableItems) {
+            return false;
+        }
 
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
@@ -44,42 +69,45 @@ public class PocketFurnace extends Spell {
                 double z1 = (float) ctx.caster().position().z + ctx.world().random.nextFloat() * 2 - 1.0F;
                 ctx.world().addParticle(ParticleTypes.FLAME, x1, y1, z1, 0, 0.01F, 0);
             }
-        }
+        } else {
+            for (int i = 0; i < ctx.caster().getInventory().getContainerSize() && usesLeft > 0; i++) {
+                stack = ctx.caster().getInventory().getItem(i);
+                if (stack.isEmpty()) continue;
 
-        for (int i = 0; i < ctx.caster().getInventory().getContainerSize() && usesLeft > 0; i++) {
-            stack = ctx.caster().getInventory().getItem(i);
-            if (stack.isEmpty() || ctx.world().isClientSide) continue;
+                Container dummyInv = new SimpleContainer(1);
+                dummyInv.setItem(0, stack);
+                Optional<SmeltingRecipe> optionalSmeltingRecipe = ctx.world().getRecipeManager().getRecipeFor(RecipeType.SMELTING, dummyInv, ctx.caster().level());
+                if (optionalSmeltingRecipe.isEmpty()) continue;
 
-            Container dummyInv = new SimpleContainer(1);
-            dummyInv.setItem(0, stack);
-            Optional<SmeltingRecipe> optionalSmeltingRecipe = ctx.world().getRecipeManager().getRecipeFor(RecipeType.SMELTING, dummyInv, ctx.caster().level());
-            if (optionalSmeltingRecipe.isEmpty()) continue;
+                optionalSmeltingRecipe.get().assemble(dummyInv, null);
+                result = optionalSmeltingRecipe.get().getResultItem(null);
+                if (result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem)
+                    continue;
+                if (EBConfig.isOnList(EBConfig.meltItemsBlackList, stack)) continue;
 
-            optionalSmeltingRecipe.get().assemble(dummyInv, null);
-            result = optionalSmeltingRecipe.get().getResultItem(null);
-            if (result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem)
-                continue;
-            if (EBConfig.isOnList(EBConfig.meltItemsBlackList, stack)) continue;
-
-            if (stack.getCount() <= usesLeft) {
-                ItemStack stack2 = new ItemStack(result.getItem(), stack.getCount());
-                if (InventoryUtil.doesPlayerHaveItem(ctx.caster(), result.getItem())) {
-                    ctx.caster().addItem(stack2);
-                    ctx.caster().getInventory().setItem(i, ItemStack.EMPTY);
+                if (stack.getCount() <= usesLeft) {
+                    ItemStack stack2 = new ItemStack(result.getItem(), stack.getCount());
+                    if (InventoryUtil.doesPlayerHaveItem(ctx.caster(), result.getItem())) {
+                        ctx.caster().addItem(stack2);
+                        ctx.caster().getInventory().setItem(i, ItemStack.EMPTY);
+                    } else {
+                        ctx.caster().getInventory().setItem(i, stack2);
+                    }
+                    usesLeft -= stack.getCount();
+                    itemsSmelted = true;
                 } else {
-                    ctx.caster().getInventory().setItem(i, stack2);
+                    ItemStack copy = ctx.caster().getInventory().getItem(i).copy();
+                    copy.shrink(usesLeft);
+                    ctx.caster().getInventory().setItem(i, copy);
+                    ctx.caster().getInventory().add(new ItemStack(result.getItem(), usesLeft));
+                    usesLeft = 0;
+                    itemsSmelted = true;
                 }
-                usesLeft -= stack.getCount();
-            } else {
-                ItemStack copy = ctx.caster().getInventory().getItem(i).copy();
-                copy.shrink(usesLeft);
-                ctx.caster().getInventory().setItem(i, copy);
-                ctx.caster().getInventory().add(new ItemStack(result.getItem(), usesLeft));
-                usesLeft = 0;
             }
         }
-        return true;
+        return itemsSmelted;
     }
+
 
     @Override
     protected @NotNull SpellProperties properties() {

@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public final class Elements {
     static Map<String, Element> ELEMENTS = new HashMap<>();
     public static final Element MAGIC = element("magic", () -> new Element(ChatFormatting.GRAY, 0xe4c7cd, 0xfeffbe, 0x9d2cf3));
-    public static final Element FIRE = element("fire", () -> new Element(ChatFormatting.RED, 0xff9600, 0xfffe67, 0xd02700));
+    public static final Element FIRE = element("fire", () -> new Element(ChatFormatting.DARK_RED, 0xff9600, 0xfffe67, 0xd02700));
     public static final Element LIGHTNING = element("lightning", () -> new Element(ChatFormatting.DARK_AQUA, 0x409ee1, 0xf5f0ff, 0x225474));
     public static final Element NECROMANCY = element("necromancy", () -> new Element(ChatFormatting.DARK_PURPLE, 0xa811ce, 0xf575f5, 0x382366));
     public static final Element EARTH = element("earth", () -> new Element(ChatFormatting.DARK_GREEN, 0xa8f408, 0xc8ffb2, 0x795c28));

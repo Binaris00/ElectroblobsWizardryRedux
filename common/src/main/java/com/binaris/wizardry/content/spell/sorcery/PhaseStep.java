@@ -8,23 +8,17 @@ import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
-import com.binaris.wizardry.api.content.util.RayTracer;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.vehicle.Boat;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
-import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
@@ -36,12 +30,12 @@ public class PhaseStep extends Spell {
         Player caster = ctx.caster();
         Level world = ctx.world();
 
-        boolean teleportMount = caster.getVehicle() != null
-                && EBAccessoriesIntegration.isEquipped(caster, EBItems.CHARM_MOUNT_TELEPORTING.get());
-        boolean hitLiquids = teleportMount && caster.getVehicle() instanceof Boat;
+        boolean teleportMount = caster.getVehicle() != null && EBAccessoriesIntegration.isEquipped(caster, EBItems.CHARM_MOUNT_TELEPORTING.get());
         double range = property(DefaultProperties.RANGE);
+        int maxThickness = property(WALL_THICKNESS);
 
-        HitResult trace = RayTracer.standardBlockRayTrace(world, caster, range, hitLiquids, !hitLiquids, false);
+        Vec3 start = caster.getEyePosition();
+        Vec3 direction = caster.getLookAngle();
 
         if (world.isClientSide) {
             for (int i = 0; i < 10; i++) {
@@ -57,29 +51,45 @@ public class PhaseStep extends Spell {
 
         Entity subject = teleportMount ? caster.getVehicle() : caster;
 
-        if (!(trace instanceof BlockHitResult hit)) {
-            Vec3 dest = caster.position().add(caster.getLookAngle().scale(range));
-            return attemptTeleport(world, subject, dest, teleportMount, caster);
-        }
+        // Check for direct line of sight first
+        BlockPos lastChecked = null;
+        int wallThickness = 0;
+        boolean inWall = false;
 
-        BlockPos hitPos = hit.getBlockPos();
-        int maxThickness = property(WALL_THICKNESS);
-        if (hit.getDirection() == Direction.UP) maxThickness++;
+        for (double dist = 1.0; dist <= range; dist += 0.5) {
+            Vec3 checkPoint = start.add(direction.scale(dist));
+            BlockPos checkPos = BlockPos.containing(checkPoint);
 
-        Direction face = hit.getDirection();
-        for (int i = 1; i <= maxThickness; i++) {
-            BlockPos tryPos = hitPos.relative(face, i);
-            if (BlockUtil.isBlockUnbreakable(world, tryPos) ||
-                    BlockUtil.isBlockUnbreakable(world, tryPos.relative(Direction.UP))) {
-                break;
+            if (lastChecked != null && lastChecked.equals(checkPos)) continue;
+            lastChecked = checkPos;
+
+            boolean isBlocked = !BlockUtil.isBlockPassable(world, checkPos) || !BlockUtil.isBlockPassable(world, checkPos.above());
+
+            if (isBlocked) {
+                if (!inWall) {
+                    inWall = true;
+                    wallThickness = 1;
+                } else {
+                    wallThickness++;
+                }
+
+                if (wallThickness > maxThickness) break;
+            } else if (inWall) {
+                // Exited the wall
+                Vec3 dest = new Vec3(checkPos.getX() + 0.5, checkPos.getY(), checkPos.getZ() + 0.5);
+                if (attemptTeleport(world, subject, dest, teleportMount, caster)) return true;
+                inWall = false;
+                wallThickness = 0;
+            } else if (dist >= range - 0.5) {
+                // Reached max range in open space
+                Vec3 destination = new Vec3(checkPos.getX() + 0.5, checkPos.getY(), checkPos.getZ() + 0.5);
+                return attemptTeleport(world, subject, destination, teleportMount, caster);
             }
-            Vec3 dest = GeometryUtil.getFaceCentre(tryPos, Direction.UP);
-            if (attemptTeleport(world, subject, dest, teleportMount, caster)) return true;
         }
 
-        Vec3 fallback = GeometryUtil.getFaceCentre(hitPos.relative(face), Direction.UP);
-        return attemptTeleport(world, subject, fallback, teleportMount, caster);
+        return false;
     }
+
 
     protected boolean attemptTeleport(Level world, Entity toTeleport, Vec3 destination, boolean teleportMount, Player caster) {
         Vec3 resolved = EntityUtil.findSpaceForTeleport(toTeleport, destination, teleportMount);

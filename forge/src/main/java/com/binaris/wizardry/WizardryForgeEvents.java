@@ -147,14 +147,12 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void attachCapabilityItem(final AttachCapabilitiesEvent<ItemStack> event) {
-            ItemStack stack = event.getObject();
-
             if (ConjureItemSpell.isSummonableItem(event.getObject().getItem())) {
                 final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(event.getObject());
                 event.addCapability(ConjureDataHolder.LOCATION, provider);
             }
 
-            if (stack.hasTag() && stack.getOrCreateTag().contains("imbuements")) {
+            if (event.getObject().hasTag()) {
                 event.addCapability(ImbuementEnchantDataHolder.LOCATION, new ImbuementEnchantDataHolder.Provider(event.getObject()));
             }
         }

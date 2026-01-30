@@ -78,6 +78,7 @@ public class LightningPulse extends Spell {
                 .add(DefaultProperties.DAMAGE, 8.0F)
                 .add(DefaultProperties.EFFECT_RADIUS, 3)
                 .add(REPULSION_VELOCITY)
+                .add(DefaultProperties.SENSIBLE, true)
                 .build();
     }
 }

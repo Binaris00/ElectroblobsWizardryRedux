@@ -76,7 +76,13 @@ public class ZombieSpawnerConstruct extends MagicConstructEntity {
             spawnTimer += Spells.ZOMBIE_APOCALYPSE.property(ZombieApocalypse.MINION_SPAWN_INTERVAL) + random.nextInt(20);
         }
 
-        if (level().isClientSide) {
+        this.level().broadcastEntityEvent(this, (byte) 3);
+    }
+
+    @Override
+    public void handleEntityEvent(byte id) {
+        super.handleEntityEvent(id);
+        if (id == 3) {
             float colorFactor = 0.15f;
             for (double r = 1.5; r < 4; r += 0.2) {
                 colorFactor -= 0.02F;

@@ -22,7 +22,8 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "ebwizardry:wand_novice"
+      "item": "ebwizardry:wand_novice",
+      "nbt": "{Damage:0}"
     },
     "show_toast": true,
     "title": {

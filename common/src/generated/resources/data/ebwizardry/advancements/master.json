@@ -106,7 +106,8 @@
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "ebwizardry:wand_master"
+      "item": "ebwizardry:wand_master",
+      "nbt": "{Damage:0}"
     },
     "show_toast": true,
     "title": {

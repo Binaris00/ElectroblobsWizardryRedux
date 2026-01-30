@@ -30,10 +30,15 @@ public class TrapSlime extends RaySpell {
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (!(entityHit.getEntity() instanceof LivingEntity target) || target instanceof MagicSlime) return true;
 
-        // Resist if target is a slime (it would be weird to summon a slime onto another slime)
+        // Resist if target is a slime (it would be weird to summon a slime into another slime)
         if (target instanceof Slime) {
             if (!ctx.world().isClientSide && ctx.caster() instanceof Player player) player.displayClientMessage(
                     Component.translatable("spell.resist", target.getName(), this.getDescriptionFormatted()), true);
+            return true;
+        }
+
+        if (!target.getPassengers().isEmpty()) {
+            // Don't summon into entities that have passengers
             return true;
         }
 

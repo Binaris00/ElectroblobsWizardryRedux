@@ -679,6 +679,7 @@ public final class Spells {
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.DEFENCE, SpellAction.SUMMON, 45, 10, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1800)
+                        .add(DefaultProperties.SENSIBLE, true)
                         .build()
         ));
 

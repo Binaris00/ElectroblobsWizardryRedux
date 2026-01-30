@@ -57,16 +57,17 @@ public class MagicSlime extends Slime {
     @Override
     public void kill() {
         this.setHealth(0);
+        this.setSize(1, false); // avoid duplication!!
         // Bursting effect
-        for (int i = 0; i < 30; i++) {
+        for (int i = 0; i < 5; i++) {
             double x = this.xo - 0.5 + random.nextDouble();
             double y = this.yo - 0.5 + random.nextDouble();
             double z = this.zo - 0.5 + random.nextDouble();
             this.level().addParticle(ParticleTypes.ITEM_SLIME, x, y, z, (x - this.xo) * 2, (y - this.yo) * 2,
                     (z - this.zo) * 2);
         }
-        this.playSound(EBSounds.ENTITY_MAGIC_SLIME_SPLAT.get(), 2.5f, 0.6f);
-        this.playSound(EBSounds.ENTITY_MAGIC_SLIME_EXPLODE.get(), 1.0f, 0.5f);
+        this.playSound(EBSounds.ENTITY_MAGIC_SLIME_SPLAT.get(), 0.5f, 0.6f);
+        this.playSound(EBSounds.ENTITY_MAGIC_SLIME_EXPLODE.get(), 0.5f, 0.5f);
 
         super.kill();
     }

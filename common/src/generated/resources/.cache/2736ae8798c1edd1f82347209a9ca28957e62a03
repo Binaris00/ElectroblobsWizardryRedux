@@ -1,6 +1,5 @@
-// 1.20.1	2026-01-20T12:05:44.890569	Spell Data Provider: ebwizardry
+// 1.20.1	2026-01-30T11:11:15.40265014	Spell Data Provider: ebwizardry
 59709226fef8219dd2c5cd41cb6bb719de55c656 data/ebwizardry/spells/agility.json
-12e12c73b30c50363edbf0bbe8132934b20111d1 data/ebwizardry/spells/arc.json
 34ede34dc275e94721ac699f01685084738cbd27 data/ebwizardry/spells/arcane_lock.json
 e11cad8049f551f1dd69b0deb78e7ddfa7a0a087 data/ebwizardry/spells/arrow_rain.json
 fa3b79b45e7911dbd33a2070d91bca700f247e68 data/ebwizardry/spells/banish.json
@@ -11,7 +10,6 @@ bcdfec1ed6026b7ccda593d35bf7c00b9f59c468 data/ebwizardry/spells/bubble.json
 9cfddbfbb3950c1b6495e1acec9903e93092528c data/ebwizardry/spells/charge.json
 8795dea33f50284113bf7e583c512033caf0a686 data/ebwizardry/spells/cobwebs.json
 d5b1731efaa04f19fcf347612e7f2ad66d7a2244 data/ebwizardry/spells/combustion_rune.json
-542227e3a23326b64a30ae5a82665badba6e40e2 data/ebwizardry/spells/conjure_armor.json
 76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_bow.json
 76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_pickaxe.json
 76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_sword.json
@@ -55,7 +53,7 @@ d60779173abcfc7bdaa6cb56efb9b2d5ccd126df data/ebwizardry/spells/frost_sigil.json
 3f8c2f22014c6039908078ac8142ce03dbf2233b data/ebwizardry/spells/greater_ward.json
 6be845f4a0765df0f5ed28a7fb12799a92403386 data/ebwizardry/spells/group_heal.json
 ff9965b81c05c23362a9924e25beb7263d76cf54 data/ebwizardry/spells/growth_aura.json
-ddd1e114d9c8bc4ca5085cc65db0cb01ab55267a data/ebwizardry/spells/hailstorm.json
+fbe08224470238abea82b2f6e8eed1cb867cd499 data/ebwizardry/spells/hailstorm.json
 7f7ead767efb56d5e90438f32184f06e8dded021 data/ebwizardry/spells/heal.json
 505f2a436ea1d1c2cba77d555e6b1d5956938051 data/ebwizardry/spells/heal_ally.json
 cafcff6cb8e6e5a59ec8ee9514dbab658dc100f2 data/ebwizardry/spells/healing_aura.json
@@ -74,7 +72,6 @@ d585de831b1b8f0a0fc5b32ef33aab55e6f9844b data/ebwizardry/spells/leap.json
 61cedb2f9b4f0f8fc536d1caef664bb5d61c591e data/ebwizardry/spells/levitation.json
 be49b1c47810e0f69141dae93a0fb6c7fe271325 data/ebwizardry/spells/life_drain.json
 bc67ad9a998334b455df2db39022dc256b12aa65 data/ebwizardry/spells/lightning_arrow.json
-63d7e9cae2788f8c80e58a013781c0c42361112a data/ebwizardry/spells/lightning_pulse.json
 3adeec9f790b85043f5c9edf7a999e5254390367 data/ebwizardry/spells/lightning_sigil.json
 8834ad95d56e247d9640ccb081e1ad3ec7748897 data/ebwizardry/spells/magic_missile.json
 b60b5e60540d3d43e038eb409ca16e10b0980196 data/ebwizardry/spells/meteor.json

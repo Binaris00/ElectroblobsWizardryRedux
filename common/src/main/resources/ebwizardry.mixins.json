@@ -10,6 +10,7 @@
     "ClipContextMixin",
     "CommandsMixin",
     "ConjureMixin",
+    "EnchantmentHelperMixin",
     "ExplosionMixin",
     "ItemEntityMixin",
     "ItemStackMixin",
