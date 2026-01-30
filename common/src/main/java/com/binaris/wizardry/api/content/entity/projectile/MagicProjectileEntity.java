@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 public abstract class MagicProjectileEntity extends ThrowableItemProjectile {
     public static final double LAUNCH_Y_OFFSET = 0.3;
-    public static final float FORWARD_OFFSET = 0.1f;
+    public static final float FORWARD_OFFSET = 0.8f;
     public static final int SEEKING_TIME = 15;
     public float damageMultiplier = 1.0f;
 

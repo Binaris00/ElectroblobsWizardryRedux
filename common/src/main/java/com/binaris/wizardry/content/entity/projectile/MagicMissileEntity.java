@@ -83,6 +83,11 @@ public class MagicMissileEntity extends MagicArrowEntity {
     }
 
     @Override
+    public boolean isNoGravity() {
+        return true;
+    }
+
+    @Override
     public int getLifetime() {
         return 12;
     }

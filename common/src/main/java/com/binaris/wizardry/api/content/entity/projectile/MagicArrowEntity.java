@@ -12,6 +12,8 @@ import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
@@ -247,5 +249,10 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     @Override
     protected boolean tryPickup(@NotNull Player player) {
         return false;
+    }
+
+    @Override
+    protected @NotNull SoundEvent getDefaultHitGroundSoundEvent() {
+        return SoundEvents.EMPTY;
     }
 }

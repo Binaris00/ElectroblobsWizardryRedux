@@ -67,7 +67,7 @@ public class ForceArrow extends MagicArrowEntity {
             Vec3 pos = blockHitResult.getLocation().add(Vec3.atLowerCornerOf(blockHitResult.getDirection().getNormal()).scale(0.15));
             ParticleBuilder.create(EBParticles.FLASH)
                     .pos(pos)
-                    .scale(1.3f)
+                    .scale(1.6f)
                     .color(0.75f, 1.0f, 0.85f)
                     .spawn(level());
         }
@@ -110,6 +110,11 @@ public class ForceArrow extends MagicArrowEntity {
     @Override
     public int getLifetime() {
         return 20;
+    }
+
+    @Override
+    public boolean isNoGravity() {
+        return true;
     }
 
     @Override

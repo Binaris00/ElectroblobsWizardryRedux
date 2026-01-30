@@ -25,21 +25,26 @@ import java.util.List;
 public class ShulkerBullet extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if (shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.modifiers()))
-            return false;
-        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
-        return true;
+        return shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.castingTicks(), ctx.modifiers());
     }
 
     @Override
     public boolean cast(EntityCastContext ctx) {
-        if (shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.modifiers()))
-            return false;
-        this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
-        return true;
+        return shoot(ctx.world(), ctx.caster(), ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.castingTicks(), ctx.modifiers());
     }
 
-    private boolean shoot(Level world, LivingEntity caster, double x, double y, double z, SpellModifiers modifiers) {
+    /**
+     * Shoots a shulker bullet from the caster towards the nearest valid target within range.
+     *
+     * @param world     The level in which the spell is cast.
+     * @param caster    The entity casting the spell.
+     * @param x         The x-coordinate of the caster's position.
+     * @param y         The y-coordinate of the caster's position.
+     * @param z         The z-coordinate of the caster's position.
+     * @param modifiers The spell modifiers affecting the spell's properties.
+     * @return true if the spell was successfully cast, false otherwise.
+     */
+    private boolean shoot(Level world, LivingEntity caster, double x, double y, double z, int castingTicks, SpellModifiers modifiers) {
         if (!world.isClientSide) {
             double range = property(DefaultProperties.RANGE) * modifiers.get(EBItems.RANGE_UPGRADE.get());
 
@@ -47,12 +52,15 @@ public class ShulkerBullet extends Spell {
 
             possibleTargets.remove(caster);
             possibleTargets.removeIf(t -> t instanceof ArmorStand);
-            if (possibleTargets.isEmpty()) return false;
+            if (possibleTargets.isEmpty()) {
+                return false;
+            }
 
             possibleTargets.sort(Comparator.comparingDouble(t -> t.distanceToSqr(x, y, z)));
 
             Entity target = possibleTargets.get(0);
             world.addFreshEntity(new net.minecraft.world.entity.projectile.ShulkerBullet(world, caster, target, Direction.UP.getAxis()));
+            this.playSound(world, caster, castingTicks, -1);
             return true;
         }
 

@@ -1,7 +1,6 @@
 package com.binaris.wizardry.content.spell.abstr;
 
 import com.binaris.wizardry.api.content.entity.projectile.MagicArrowEntity;
-import com.binaris.wizardry.api.content.entity.projectile.MagicProjectileEntity;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -70,7 +69,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         if (!ctx.world().isClientSide) {
             T arrow = arrowFactory.apply(ctx.world());
             int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
-            arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET), aimingError);
+            arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight() - (float) MagicArrowEntity.LAUNCH_Y_OFFSET), aimingError);
             arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
             addArrowExtras(arrow, ctx.caster());
             ctx.world().addFreshEntity(arrow);

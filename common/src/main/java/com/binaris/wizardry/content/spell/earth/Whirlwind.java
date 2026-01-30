@@ -48,13 +48,14 @@ public class Whirlwind extends RaySpell {
                 ((ServerPlayer) target).connection.send(new ClientboundSetEntityMotionPacket(target));
             }
         } else {
-            double distance = target.distanceToSqr(origin.x, origin.y, origin.z);
+            double distance = Math.sqrt(target.distanceToSqr(origin.x, origin.y, origin.z));
 
             for (int i = 0; i < 10; i++) {
-                double x = origin.x + ctx.world().random.nextDouble() - 0.5 + vec.x * distance * 0.5;
-                double y = origin.y + ctx.world().random.nextDouble() - 0.5 + vec.y * distance * 0.5;
-                double z = origin.z + ctx.world().random.nextDouble() - 0.5 + vec.z * distance * 0.5;
-                ctx.world().addParticle(ParticleTypes.CLOUD, x, y, z, vec.x, vec.y, vec.z);
+                double t = ctx.world().random.nextDouble();
+                double x = origin.x + vec.x * distance * t + (ctx.world().random.nextDouble() - 0.5) * 0.3;
+                double y = origin.y + vec.y * distance * t + (ctx.world().random.nextDouble() - 0.5) * 0.3;
+                double z = origin.z + vec.z * distance * t + (ctx.world().random.nextDouble() - 0.5) * 0.3;
+                ctx.world().addParticle(ParticleTypes.CLOUD, x, y, z, vec.x * 0.3, vec.y * 0.3, vec.z * 0.3);
             }
         }
 

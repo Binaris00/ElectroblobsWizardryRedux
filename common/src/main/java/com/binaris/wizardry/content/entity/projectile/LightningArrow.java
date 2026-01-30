@@ -42,9 +42,9 @@ public class LightningArrow extends MagicArrowEntity {
     }
 
     @Override
-    public void tickInGround() {
-        if (this.tickCount > 1 && level().isClientSide)
-            ParticleBuilder.create(EBParticles.SPARK).pos(this.xo, this.yo, this.zo).spawn(this.level());
+    public void ticksInAir() {
+        if (!this.level().isClientSide) return;
+        ParticleBuilder.create(EBParticles.SPARK).pos(this.xo, this.yo, this.zo).spawn(this.level());
     }
 
     @Override
@@ -60,6 +60,11 @@ public class LightningArrow extends MagicArrowEntity {
     @Override
     public int getLifetime() {
         return 20;
+    }
+
+    @Override
+    public boolean isNoGravity() {
+        return true;
     }
 
     @Override
