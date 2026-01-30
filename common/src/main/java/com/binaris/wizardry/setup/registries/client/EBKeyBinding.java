@@ -84,7 +84,7 @@ public final class EBKeyBinding {
 
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.NEXT_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
-        item.selectNextSpell(wand);
+        if (Services.PLATFORM.getPlatformName().equals("Fabric")) item.selectNextSpell(wand);
         SpellGUIDisplay.playSpellSwitchAnimation(true);
 
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
@@ -96,7 +96,7 @@ public final class EBKeyBinding {
 
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.PREVIOUS_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
-        item.selectPreviousSpell(wand);
+        if (Services.PLATFORM.getPlatformName().equals("Fabric")) item.selectPreviousSpell(wand);
         SpellGUIDisplay.playSpellSwitchAnimation(false);
 
         Minecraft.getInstance().getSoundManager().play(SimpleSoundInstance.forUI(EBSounds.ITEM_WAND_SWITCH_SPELL.get(), 1));
