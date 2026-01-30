@@ -10,10 +10,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "ebwizardry:ring_disintegration"
-        },
-        {
-          "type": "minecraft:item",
           "name": "ebwizardry:ring_shattering"
         },
         {
@@ -23,10 +19,6 @@
         {
           "type": "minecraft:item",
           "name": "ebwizardry:ring_leeching"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:ring_mind_control"
         },
         {
           "type": "minecraft:item",
@@ -50,10 +42,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "ebwizardry:ring_defender"
-        },
-        {
-          "type": "minecraft:item",
           "name": "ebwizardry:amulet_arcane_defence"
         },
         {
@@ -62,23 +50,11 @@
         },
         {
           "type": "minecraft:item",
-          "name": "ebwizardry:amulet_fire_cloaking"
-        },
-        {
-          "type": "minecraft:item",
           "name": "ebwizardry:amulet_potential"
         },
         {
           "type": "minecraft:item",
-          "name": "ebwizardry:amulet_anchoring"
-        },
-        {
-          "type": "minecraft:item",
           "name": "ebwizardry:amulet_transience"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:amulet_auto_shield"
         },
         {
           "type": "minecraft:item",
@@ -90,35 +66,11 @@
         },
         {
           "type": "minecraft:item",
-          "name": "ebwizardry:charm_auto_smelt"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:charm_storm"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:charm_undead_helmets"
-        },
-        {
-          "type": "minecraft:item",
           "name": "ebwizardry:charm_hunger_casting"
         },
         {
           "type": "minecraft:item",
           "name": "ebwizardry:charm_flight"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:charm_abseiling"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:charm_light"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:charm_transportation"
         },
         {
           "type": "minecraft:item",

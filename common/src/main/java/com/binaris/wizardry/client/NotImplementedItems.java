@@ -28,7 +28,11 @@ public final class NotImplementedItems {
             EBItems.RING_MIND_CONTROL.get(),
             EBItems.RING_STORMCLOUD.get(),
             EBItems.WIZARD_HANDBOOK.get(),
-            EBItems.LIGHTNING_HAMMER.get()
+            EBItems.LIGHTNING_HAMMER.get(),
+            EBItems.AMULET_FIRE_CLOAKING.get(),
+            EBItems.AMULET_BANISHING.get(),
+            EBItems.CHARM_AUTO_SMELT.get(),
+            EBItems.RING_SOULBINDING.get()
     );
 
     public static void init() {

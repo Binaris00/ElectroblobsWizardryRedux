@@ -9,26 +9,17 @@ import com.binaris.wizardry.setup.registries.EBEntities;
 import com.binaris.wizardry.setup.registries.Spells;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
-import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class MagicFireballEntity extends MagicProjectileEntity {
-    protected float damage = -1;
-    protected int burnDuration = -1;
-    protected int lifetime = 16;
-
     public MagicFireballEntity(EntityType<MagicFireballEntity> entityMagicMissileEntityType, Level world) {
         super(entityMagicMissileEntityType, world);
     }
@@ -37,31 +28,15 @@ public class MagicFireballEntity extends MagicProjectileEntity {
         super(EBEntities.MAGIC_FIREBALL.get(), world);
     }
 
-    public double getDamage() {
-        return damage == -1 ? Spells.FIREBALL.property(DefaultProperties.DAMAGE) : damage;
-    }
-
-    public void setDamage(float damage) {
-        this.damage = damage;
-    }
-
-    public int getBurnDuration() {
-        return burnDuration == -1 ? Spells.FIREBALL.property(DefaultProperties.DAMAGE).intValue() : burnDuration;
-    }
-
-    public void setBurnDuration(int burnDuration) {
-        this.burnDuration = burnDuration;
-    }
-
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
         super.onHitEntity(result);
         if (level().isClientSide) return;
 
         Entity entity = result.getEntity();
-        MagicDamageSource.causeMagicDamage(this, entity, (float) getDamage(), EBDamageSources.FIRE);
+        MagicDamageSource.causeMagicDamage(this, entity, Spells.FIREBALL.property(DefaultProperties.DAMAGE), EBDamageSources.FIRE);
         if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
-            entity.setSecondsOnFire(getBurnDuration());
+            entity.setSecondsOnFire(Spells.FIREBALL.property(DefaultProperties.DAMAGE).intValue());
         this.discard();
     }
 
@@ -106,44 +81,14 @@ public class MagicFireballEntity extends MagicProjectileEntity {
             }
         }
 
-        if (this.lifetime >= 140) {
+        if (this.tickCount >= 60) {
             this.discard();
         }
     }
 
     @Override
-    public boolean canCollideWith(Entity entity) {
+    public boolean canCollideWith(@NotNull Entity entity) {
         return true;
-    }
-
-    @Override
-    public float getPickRadius() {
-        return 1.0F;
-    }
-
-    @Override
-    public boolean hurt(DamageSource source, float amount) {
-        if (this.isInvulnerableTo(source)) {
-            return false;
-        } else {
-            this.markHurt();
-            if (source.getEntity() != null) {
-                Vec3 vec3d = source.getEntity().position();
-                double speed = Mth.sqrt((float) (getDeltaMovement().x * getDeltaMovement().x + getDeltaMovement().y * getDeltaMovement().y + getDeltaMovement().z * getDeltaMovement().z));
-                this.setDeltaMovement(vec3d.scale(speed));
-                this.lifetime = 160;
-                if (source.getEntity() instanceof LivingEntity livingEntity) {
-                    this.setOwner(livingEntity);
-                }
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
-
-    public void setLifetime(int lifetime) {
-        this.lifetime = lifetime;
     }
 
     @Override
@@ -154,18 +99,6 @@ public class MagicFireballEntity extends MagicProjectileEntity {
     @Override
     public boolean displayFireAnimation() {
         return false;
-    }
-
-    @Override
-    public boolean save(CompoundTag tag) {
-        tag.putInt("lifetime", lifetime);
-        return super.save(tag);
-    }
-
-    @Override
-    public void load(@NotNull CompoundTag tag) {
-        lifetime = tag.getInt("lifetime");
-        super.load(tag);
     }
 
     @Override

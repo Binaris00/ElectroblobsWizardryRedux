@@ -3,6 +3,7 @@ package com.binaris.wizardry.setup.registries;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.client.NotImplementedItems;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -54,7 +55,9 @@ public final class EBCreativeTabs {
             () -> CreativeModeTab.builder(CreativeModeTab.Row.TOP, 0)
                     .icon(() -> new ItemStack(EBItems.AMULET_RESURRECTION.get()))
                     .title(Component.translatable("creativetab.ebwizardry_artifacts"))
-                    .displayItems((parameters, output) -> EBItems.ARTIFACTS.forEach(i -> output.accept(i.get())))
+                    .displayItems((parameters, output) -> EBItems.ARTIFACTS.forEach(i -> {
+                        if (!NotImplementedItems.notImplemented(i.get())) output.accept(i.get());
+                    }))
                     .build()
     );
     // All Spell Books and scrolls

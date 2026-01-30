@@ -74,19 +74,7 @@
         },
         {
           "type": "minecraft:item",
-          "name": "ebwizardry:amulet_banishing"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:amulet_recovery"
-        },
-        {
-          "type": "minecraft:item",
           "name": "ebwizardry:charm_spell_discovery"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "ebwizardry:charm_minion_health"
         },
         {
           "type": "minecraft:item",
