@@ -132,7 +132,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
 
         container.setLootTable(EBLootTables.SHRINE, pedestal.level.getRandom().nextLong());
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(container);
-        data.setArcaneLockOwner(UUID.randomUUID().toString());
+        if (data != null) data.setArcaneLockOwner(UUID.randomUUID().toString());
         pedestal.sync();
     }
 
@@ -146,7 +146,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         }
 
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(container);
-        data.setArcaneLockOwner(UUID.randomUUID().toString());
+        if (data != null) data.setArcaneLockOwner(UUID.randomUUID().toString());
         setLinkedPos(pos.above());
     }
 
@@ -248,7 +248,8 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         playersInContainment.clear();
 
         spawnConqueredParticles();
-        Services.OBJECT_DATA.getArcaneLockData(level.getBlockEntity(linkedPos)).clearArcaneLockOwner();
+        ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(level.getBlockEntity(linkedPos));
+        if (data != null) data.clearArcaneLockOwner();
 
         conquered = true;
         regenerationTime = level.getGameTime() + REGENERATION_DELAY_TICKS;

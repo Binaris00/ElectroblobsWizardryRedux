@@ -40,6 +40,7 @@ public class ArcaneLockSpell extends RaySpell {
         if (!(blockEntity instanceof BaseContainerBlockEntity containerBlock)) return;
 
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
+        if (data == null) return;
 
         if (data.isArcaneLocked()) {
             // Check if the player is the owner
@@ -64,6 +65,7 @@ public class ArcaneLockSpell extends RaySpell {
         if (!(blockEntity instanceof BaseContainerBlockEntity containerBlock)) return;
 
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
+        if (data == null) return;
 
         if (data.isArcaneLocked()) {
             // Check if the player is the owner
@@ -110,6 +112,7 @@ public class ArcaneLockSpell extends RaySpell {
         if (!(blockEntity instanceof BaseContainerBlockEntity containerBlock)) return false;
 
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
+        if (data == null) return false;
 
         if (data.isArcaneLocked()) {
             if (data.getArcaneLockOwnerUUID().equals(player.getUUID())) {

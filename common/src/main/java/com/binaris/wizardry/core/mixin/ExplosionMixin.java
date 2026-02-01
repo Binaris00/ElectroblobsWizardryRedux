@@ -35,6 +35,7 @@ public abstract class ExplosionMixin {
             BlockEntity blockEntity = level.getBlockEntity(pos);
             if (blockEntity instanceof BaseContainerBlockEntity containerBlock) {
                 ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
+                if (data == null) return false;
                 return data.isArcaneLocked();
             }
             return false;

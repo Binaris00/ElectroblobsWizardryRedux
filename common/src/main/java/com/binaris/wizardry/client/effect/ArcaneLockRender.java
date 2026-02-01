@@ -74,7 +74,8 @@ public final class ArcaneLockRender {
                     if (distSq > MAX_RENDER_DISTANCE_SQ) continue; // 64 blocks squared
 
                     ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
-                    if (data == null || !data.isArcaneLocked()) continue;
+                    if (data == null) continue;
+                    if (!data.isArcaneLocked()) continue;
 
                     // Initialize rendering on first locked block
                     if (!renderStarted) {

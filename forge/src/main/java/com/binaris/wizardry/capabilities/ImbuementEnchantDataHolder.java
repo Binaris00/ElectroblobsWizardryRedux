@@ -24,32 +24,28 @@ public class ImbuementEnchantDataHolder implements INBTSerializable<CompoundTag>
     public static final Capability<ImbuementEnchantDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    private final ItemStack stack;
+    private CompoundTag tag = new CompoundTag();
 
-    public ImbuementEnchantDataHolder(ItemStack stack) {
-        this.stack = stack;
+    public ImbuementEnchantDataHolder() {
     }
 
     @Override
     public void addImbuement(Enchantment enchant, long expireTime) {
-        String enchantId = ForgeRegistries.ENCHANTMENTS.getKey(enchant).toString();
+        ResourceLocation enchantKey = ForgeRegistries.ENCHANTMENTS.getKey(enchant);
+        if (enchantKey == null) return;
+        String enchantId = enchantKey.toString();
 
-        if (!getOrCreateRootTag().contains(enchantId))
-            getOrCreateRootTag().putLong(enchantId, expireTime);
+        if (!tag.contains(enchantId)) tag.putLong(enchantId, expireTime);
     }
 
     @Override
     public Map<ResourceLocation, Long> getImbuements() {
         Map<ResourceLocation, Long> result = new HashMap<>();
 
-        // If there is no root tag, this means there are no temporary enchantments, so we can return an empty map
-        if (getRootTag() == null) return result;
-
-
-        this.getRootTag().getAllKeys().forEach(key -> {
+        tag.getAllKeys().forEach(key -> {
             try {
                 ResourceLocation enchantId = ResourceLocation.tryParse(key);
-                long expireTime = this.getRootTag().getLong(key);
+                long expireTime = tag.getLong(key);
                 result.put(enchantId, expireTime);
             } catch (Exception e) {
                 // Ignore invalid keys
@@ -61,61 +57,52 @@ public class ImbuementEnchantDataHolder implements INBTSerializable<CompoundTag>
 
     @Override
     public void removeImbuement(Enchantment enchant) {
-        String enchantId = ForgeRegistries.ENCHANTMENTS.getKey(enchant).toString();
+        ResourceLocation enchantKey = ForgeRegistries.ENCHANTMENTS.getKey(enchant);
+        if (enchantKey == null) return;
+        String enchantId = enchantKey.toString();
 
-        if (getOrCreateRootTag().contains(enchantId)) getOrCreateRootTag().remove(enchantId);
+        if (tag.contains(enchantId))
+            tag.remove(enchantId);
     }
 
     @Override
     public boolean isImbuement(Enchantment enchant) {
         ResourceLocation enchantId = ForgeRegistries.ENCHANTMENTS.getKey(enchant);
         if (enchantId == null) return false;
-        return this.getRootTag() != null && this.getRootTag().contains(enchantId.toString());
+        return tag.contains(enchantId.toString());
     }
 
     @Override
     public long getExpirationTime(Enchantment enchantment) {
         ResourceLocation enchantId = ForgeRegistries.ENCHANTMENTS.getKey(enchantment);
         if (enchantId == null) return -1;
-        if (getOrCreateRootTag().contains(enchantId.toString()))
-            return getOrCreateRootTag().getLong(enchantId.toString());
+        if (tag.contains(enchantId.toString()))
+            return tag.getLong(enchantId.toString());
         return -1;
-    }
-
-    private CompoundTag getOrCreateRootTag() {
-        CompoundTag tag = stack.getOrCreateTag();
-        if (tag.contains("imbuements")) {
-            return tag.getCompound("imbuements");
-        }
-
-        CompoundTag imbueTag = new CompoundTag();
-        tag.put("imbuements", imbueTag);
-        return imbueTag;
-    }
-
-    private CompoundTag getRootTag() {
-        CompoundTag tag = stack.getTag();
-        if (tag != null && tag.contains("imbuements")) {
-            return tag.getCompound("imbuements");
-        }
-        return null;
     }
 
     @Override
     public CompoundTag serializeNBT() {
-        return stack.getOrCreateTag();
+        CompoundTag tag = new CompoundTag();
+        tag.put("imbuements", this.tag);
+        return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        stack.setTag(tag);
+        if (tag.contains("imbuements")) {
+            this.tag = tag.getCompound("imbuements");
+        } else {
+            this.tag = new CompoundTag();
+        }
     }
 
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<ImbuementEnchantDataHolder> dataHolder;
 
+        @SuppressWarnings("unused")
         public Provider(ItemStack stack) {
-            this.dataHolder = LazyOptional.of(() -> new ImbuementEnchantDataHolder(stack));
+            this.dataHolder = LazyOptional.of(ImbuementEnchantDataHolder::new);
         }
 
         @Override

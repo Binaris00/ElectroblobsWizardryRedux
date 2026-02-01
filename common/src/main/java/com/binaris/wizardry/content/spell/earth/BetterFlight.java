@@ -15,7 +15,7 @@ import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public class Flight extends Spell {
+public class BetterFlight extends Spell {
     private static final double Y_NUDGE_ACCELERATION = 0.075;
 
     @Override
@@ -38,55 +38,18 @@ public class Flight extends Spell {
 
         if (ctx.castingTicks() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
-        float potencyModifier = ctx.modifiers().get(SpellModifiers.POTENCY);
-        float speed = property(DefaultProperties.SPEED) * potencyModifier;
-        float acceleration = property(DefaultProperties.ACCELERATION) * potencyModifier;
+        float speed = property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY);
+        float acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(SpellModifiers.POTENCY);
 
-        // setting limits
-        speed = Math.min(speed, 0.7f);
-        acceleration = Math.min(acceleration, 0.1f);
-
-        Vec3 currentVelocity = ctx.caster().getDeltaMovement();
-        Vec3 lookAngle = ctx.caster().getLookAngle();
-
-        double newVelX = currentVelocity.x;
-        double newVelY = currentVelocity.y;
-        double newVelZ = currentVelocity.z;
-
-        if (Math.abs(lookAngle.x) > 0.01) {
-            double targetVelX = lookAngle.x * speed;
-            if (Math.abs(currentVelocity.x) < Math.abs(targetVelX)) {
-                newVelX = Math.min(Math.max(currentVelocity.x + lookAngle.x * acceleration, -speed), speed);
-            }
+        if ((Math.abs(ctx.caster().getDeltaMovement().x) < speed || ctx.caster().getDeltaMovement().x / ctx.caster().getLookAngle().x < 0)
+                && (Math.abs(ctx.caster().getDeltaMovement().z) < speed || ctx.caster().getDeltaMovement().z / ctx.caster().getLookAngle().z < 0)) {
+            ctx.caster().addDeltaMovement(new Vec3(ctx.caster().getLookAngle().x * acceleration, 0, ctx.caster().getLookAngle().z * acceleration));
         }
 
-        if (Math.abs(lookAngle.z) > 0.01) {
-            double targetVelZ = lookAngle.z * speed;
-            if (Math.abs(currentVelocity.z) < Math.abs(targetVelZ)) {
-                newVelZ = Math.min(Math.max(currentVelocity.z + lookAngle.z * acceleration, -speed), speed);
-            }
+        if (Math.abs(ctx.caster().getDeltaMovement().y) < speed || ctx.caster().getDeltaMovement().y / ctx.caster().getLookAngle().y < 0) {
+            ctx.caster().setDeltaMovement(ctx.caster().getDeltaMovement().x, ctx.caster().getDeltaMovement().y +
+                    ctx.caster().getLookAngle().y * acceleration + Y_NUDGE_ACCELERATION, ctx.caster().getDeltaMovement().z);
         }
-
-        if (Math.abs(lookAngle.y) > 0.01) {
-            double targetVelY = lookAngle.y * speed;
-            if (Math.abs(currentVelocity.y) < Math.abs(targetVelY)) {
-                double yAcceleration = lookAngle.y * acceleration;
-
-                if (lookAngle.y < 0) {
-                    yAcceleration += 0.10;
-                } else {
-                    yAcceleration += Y_NUDGE_ACCELERATION;
-                }
-
-                newVelY = currentVelocity.y + yAcceleration;
-                newVelY = Math.min(Math.max(newVelY, -speed), speed);
-            }
-        } else {
-            newVelY = Math.min(currentVelocity.y + Y_NUDGE_ACCELERATION, speed * 0.5);
-        }
-
-        ctx.caster().setDeltaMovement(newVelX, newVelY, newVelZ);
-
         if (!EBConfig.replaceVanillaFallDamage) ctx.caster().fallDistance = 0.0f;
 
         return true;

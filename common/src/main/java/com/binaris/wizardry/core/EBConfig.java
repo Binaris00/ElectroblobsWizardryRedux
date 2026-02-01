@@ -45,7 +45,7 @@ public final class EBConfig {
 
     // Feature toggles
     public static boolean playersMoveEachOther = true;
-    public static boolean replaceVanillaFallDamage = true;
+    public static boolean replaceVanillaFallDamage = false;
     public static boolean showSpellHUD = true;
     public static boolean showChargeMeter = true;
     public static boolean preventBindingSameSpellTwiceToWands = false;
