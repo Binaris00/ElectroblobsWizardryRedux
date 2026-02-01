@@ -180,6 +180,17 @@ public class WizardryForgeEvents {
             event.getOriginal().invalidateCaps();
         }
 
+        @SubscribeEvent
+        public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
+            // Sync all capabilities to client after respawn to ensure the client has the correct data
+            Player player = event.getEntity();
+            if (!player.level().isClientSide()) {
+                player.getCapability(WizardDataHolder.INSTANCE).ifPresent(WizardDataHolder::sync);
+                player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
+                player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
+            }
+        }
+
 
         @SubscribeEvent
         public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {

@@ -1,1 +1,1 @@
-- Bump
+- Fixed [Forge] Client-side spell data not syncing after player death/respawn, causing learned spells to appear as not learned in wand UI
