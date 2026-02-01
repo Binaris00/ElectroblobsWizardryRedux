@@ -1,6 +1,7 @@
 plugins {
     id 'multiloader-loader'
     id 'net.neoforged.moddev.legacyforge'
+    id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
 mixin {
@@ -85,4 +86,28 @@ jar {
 
 test {
     useJUnitPlatform()
+}
+
+publishMods {
+    file = tasks.named("reobfJar").flatMap { it.archiveFile }
+    changelog = rootProject.file("CHANGELOG.md").text
+    type = STABLE
+    displayName = "${mod_name} Forge ${minecraft_version} - ${project.version}"
+    modLoaders.add("forge")
+
+    curseforge {
+        accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")
+        projectId = "1405790"
+        minecraftVersions.add("1.20.1")
+
+        optional { slug = "accessories" }
+    }
+
+    modrinth {
+        accessToken = providers.environmentVariable("MODRINTH_TOKEN")
+        projectId = "s5qOekOc"
+        minecraftVersions.add("1.20.1")
+
+        optional { slug = "accessories" }
+    }
 }
