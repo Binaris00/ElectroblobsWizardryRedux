@@ -40,19 +40,25 @@ public class PropertiesDataManager extends SimpleJsonResourceReloadListener {
             ResourceLocation location = entry.getKey();
 
             try {
+                // Check if the spell exists BEFORE attempting to parse properties
+                // This prevents crashes when loading properties for spells from other mods
+                Spell spell = Services.REGISTRY_UTIL.getSpell(location);
+                if (spell == null) {
+                    LOGGER.warn("No spell found with ID {}, skipping loading of its properties", location);
+                    continue;
+                }
+
                 SpellProperties properties = SpellProperties.fromJson(GsonHelper.convertToJsonObject(entry.getValue(), location.toString()));
                 if (properties == null) {
                     LOGGER.info("Skipping loading spell properties {} as it's serializer returned null", location);
                     continue;
                 }
-                Spell spell = Services.REGISTRY_UTIL.getSpell(location);
-                if (spell == null) {
-                    LOGGER.error("No spell found with ID {}, skipping loading of its properties", location);
-                    continue;
-                }
+
                 spell.setProperties(properties);
             } catch (IllegalArgumentException | JsonParseException jsonParseException) {
                 LOGGER.error("Parsing error loading spell properties {}", location, jsonParseException);
+            } catch (Exception exception) {
+                LOGGER.error("Unexpected error loading spell properties {}", location, exception);
             }
         }
     }

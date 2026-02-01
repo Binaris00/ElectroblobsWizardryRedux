@@ -46,7 +46,7 @@ public class ConjureMixin {
     }
 
     @Inject(method = "getTooltipLines", at = @At("RETURN"))
-    public void EBWIZARDRY$conjureGetTooltipLines(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local(name = "list") List<Component> list) {
+    public void EBWIZARDRY$conjureGetTooltipLines(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if (data == null || !data.isSummoned()) return;
 

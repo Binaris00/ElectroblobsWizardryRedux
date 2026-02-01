@@ -122,14 +122,18 @@ public final class PropertyTypes {
      * @param getter   Function to extract the property value from the JSON element.
      * @param <T>      The type of the property value.
      * @return The deserialized spell property.
-     * @throws IllegalArgumentException if no property is found with the given identifier.
+     * @throws IllegalArgumentException if no property is found with the given identifier or if the JSON type is incompatible.
      */
     private static <T> SpellProperty<T> deserializeJson(JsonElement json, String location, Function<JsonElement, T> getter) {
         SpellProperty<T> base = (SpellProperty<T>) SpellProperty.fromID(location);
         if (base == null) throw new IllegalArgumentException("No property found with identifier: " + location);
 
         SpellProperty<T> property = base.copyOf();
-        property.value = getter.apply(json);
+        try {
+            property.value = getter.apply(json);
+        } catch (UnsupportedOperationException | IllegalStateException e) {
+            throw new IllegalArgumentException("Invalid JSON type for property '" + location + "'. Expected a primitive value but got: " + json, e);
+        }
         return property;
     }
 
