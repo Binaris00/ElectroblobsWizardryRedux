@@ -3,6 +3,7 @@ package com.binaris.wizardry.core.mixin;
 import com.binaris.wizardry.api.content.data.ConjureData;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.core.platform.Services;
+import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -15,7 +16,6 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.util.List;
 
@@ -23,7 +23,6 @@ import java.util.List;
  * We need to modify the way that the items load the durability bar, with this we check for the ConjureData
  * if the item isn't a conjure item it just continues with the normal behavior, if the item is a conjure item and is
  * summoned the mod will load the remaining lifetime based on gameTime and expireTime.
- *
  */
 @Mixin(ItemStack.class)
 public class ConjureMixin {
@@ -46,8 +45,8 @@ public class ConjureMixin {
         cir.setReturnValue(DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getBarWidth()));
     }
 
-    @Inject(method = "getTooltipLines", at = @At("RETURN"), locals = LocalCapture.CAPTURE_FAILHARD)
-    public void EBWIZARDDRY$conjureGetTooltipLines(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, List<Component> list) {
+    @Inject(method = "getTooltipLines", at = @At("RETURN"))
+    public void EBWIZARDRY$conjureGetTooltipLines(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local(name = "list") List<Component> list) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if (data == null || !data.isSummoned()) return;
 

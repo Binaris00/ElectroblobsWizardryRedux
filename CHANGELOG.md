@@ -1,1 +1,2 @@
 - Fixed [Forge] Client-side spell data not syncing after player death/respawn, causing learned spells to appear as not learned in wand UI
+- Added MixinExtras on common/forge code and removed LocalCaptures to @Local injections for better compatibility with other mods

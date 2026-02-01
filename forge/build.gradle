@@ -64,6 +64,9 @@ repositories {
 dependencies {
     compileOnly project(":common")
     compileOnly 'org.jetbrains:annotations:23.0.0'
+    compileOnly "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:${mixinextras_version}"))
+    annotationProcessor "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 
     modImplementation "io.wispforest:accessories-neoforge:${project.accessories_version}"
