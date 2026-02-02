@@ -82,7 +82,7 @@ public final class EBEntities {
     }
 
     public static void registerAttributes(BiConsumer<EntityType<? extends LivingEntity>, AttributeSupplier> consumer) {
-        consumer.accept(REMNANT.get(), Remnant.createMobAttributes().build());
+        consumer.accept(REMNANT.get(), Remnant.createAttributes().build());
         consumer.accept(WIZARD.get(), AbstractWizard.createAttributes().build());
         consumer.accept(EVIL_WIZARD.get(), AbstractWizard.createAttributes().build());
         consumer.accept(MAGIC_SLIME.get(), Monster.createMonsterAttributes().build());

@@ -95,7 +95,7 @@ publishMods {
     file = tasks.named("reobfJar").flatMap { it.archiveFile }
     changelog = rootProject.file("CHANGELOG.md").text
     type = STABLE
-    displayName = "${mod_name} Forge ${minecraft_version} - ${project.version}"
+    displayName = "[Forge] EbWizardry-Redux ${project.version} for ${minecraft_version}"
     modLoaders.add("forge")
 
     curseforge {

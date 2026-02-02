@@ -191,6 +191,17 @@ public class WizardryForgeEvents {
             }
         }
 
+        @SubscribeEvent
+        public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
+            // Sync all capabilities to client after dimension change to ensure the client has the correct data
+            Player player = event.getEntity();
+            if (!player.level().isClientSide()) {
+                player.getCapability(WizardDataHolder.INSTANCE).ifPresent(WizardDataHolder::sync);
+                player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
+                player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
+            }
+        }
+
 
         @SubscribeEvent
         public static void onRegisterCapabilities(RegisterCapabilitiesEvent event) {

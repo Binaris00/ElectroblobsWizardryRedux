@@ -1,3 +1,2 @@
-- Fixed [Forge] Client-side spell data not syncing after player death/respawn, causing learned spells to appear as not learned in wand UI
-- Fixed crash when loading spell properties from other mods (e.g., spell_engine) - now properly validates spell existence before parsing properties
-- Added MixinExtras on common/forge code and removed LocalCaptures to @Local injections for better compatibility with other mods
+- [Forge] added capability sync when player cross dimensions
+- Added missing remnants attributes to avoid crashes
