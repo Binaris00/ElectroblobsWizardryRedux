@@ -37,6 +37,17 @@ public class WizardryForgeClient {
         );
 
         // Set render types for blocks that need transparency/cutout
-        event.enqueueWork(() -> ItemBlockRenderTypes.setRenderLayer(EBBlocks.VANISHING_COBWEB.get(), RenderType.cutout()));
+        event.enqueueWork(() -> {
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.VANISHING_COBWEB.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.CRYSTAL_FLOWER.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.POTTED_CRYSTAL_FLOWER.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.OAK_LECTERN.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.SPRUCE_LECTERN.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.BIRCH_LECTERN.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.JUNGLE_LECTERN.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.ACACIA_LECTERN.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.DARK_OAK_LECTERN.get(), RenderType.cutout());
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.IMBUEMENT_ALTAR.get(), RenderType.cutoutMipped());
+        });
     }
 }
