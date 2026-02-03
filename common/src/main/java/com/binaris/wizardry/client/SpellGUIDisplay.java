@@ -134,6 +134,10 @@ public final class SpellGUIDisplay {
             Component spellName = getFormattedSpellName(((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand), player, cooldown);
             Component nextSpellName = getFormattedSpellName(((ISpellCastingItem) wand.getItem()).getNextSpell(wand), player, 0);
 
+            Spell prevSpell = ((ISpellCastingItem) wand.getItem()).getPreviousSpell(wand);
+            Spell nextSpell = ((ISpellCastingItem) wand.getItem()).getNextSpell(wand);
+            Spell currentSpell = ((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand);
+
             skin.drawText(guiGraphics, x, y, flipX, flipY, prevSpellName, spellName, nextSpellName, animationProgress);
         } else {
             boolean discovered = true;

@@ -26,7 +26,8 @@
     ],
     "fabric-gametest": [
       "com.binaris.wizardry.gametest.FabricArcaneWorkbenchTest",
-      "com.binaris.wizardry.gametest.FabricArtifactTest"
+      "com.binaris.wizardry.gametest.FabricArtifactTest",
+      "com.binaris.wizardry.gametest.FabricWandTest"
     ]
   },
   "mixins": [

@@ -277,7 +277,7 @@ public final class ArcaneWorkbenchTest {
         helper.succeed();
     }
 
-    private static TestContext setupTest(GameTestHelper helper, ItemStack centerItem) {
+    static TestContext setupTest(GameTestHelper helper, ItemStack centerItem) {
         ArcaneWorkbenchBlockEntity workbench = (ArcaneWorkbenchBlockEntity) helper.getBlockEntity(WORKBENCH_POS);
         GST.assertNotNull(helper, "Arcane Workbench BlockEntity is null", workbench);
 
@@ -290,7 +290,7 @@ public final class ArcaneWorkbenchTest {
         return new TestContext(workbench, player, menu);
     }
 
-    private record TestContext(ArcaneWorkbenchBlockEntity workbench, Player player, ArcaneWorkbenchMenu menu) {}
+    record TestContext(ArcaneWorkbenchBlockEntity workbench, Player player, ArcaneWorkbenchMenu menu) {}
 
     private ArcaneWorkbenchTest() {}
 }

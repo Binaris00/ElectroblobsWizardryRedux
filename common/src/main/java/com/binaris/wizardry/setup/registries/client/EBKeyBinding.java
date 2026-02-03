@@ -80,7 +80,7 @@ public final class EBKeyBinding {
 
     public static void selectNextSpell(ItemStack wand) {
         ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
-        if (item.getCurrentSpell(wand) == Spells.NONE && item.getNextSpell(wand) == Spells.NONE) return;
+//        if (item.getCurrentSpell(wand) == Spells.NONE && item.getNextSpell(wand) == Spells.NONE) return;
 
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.NEXT_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
@@ -92,7 +92,7 @@ public final class EBKeyBinding {
 
     public static void selectPreviousSpell(ItemStack wand) {
         ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
-        if (item.getCurrentSpell(wand) == Spells.NONE && item.getPreviousSpell(wand) == Spells.NONE) return;
+//        if (item.getCurrentSpell(wand) == Spells.NONE && item.getPreviousSpell(wand) == Spells.NONE) return;
 
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.PREVIOUS_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);

@@ -33,7 +33,7 @@ import java.util.List;
  * Wand data is stored in the wand's NBT as follows:
  * <ul>
  *     <li>A list of spells under the key {@link #SPELL_ARRAY_KEY}, stored as a list of string ResourceLocations.</li>
- *     <li>The currently selected spell under the key {@link #SELECTED_SPELL_KEY}, stored as a string ResourceLocation.</li>
+ *     <li>The currently selected spell index under the key {@link #SELECTED_SPELL_KEY}, stored as an integer.</li>
  *     <li>An array of longs under the key {@link #COOLDOWN_END_TIME_ARRAY_KEY}, storing the gametime when each spell's cooldown ends.</li>
  *     <li>An array of integers under the key {@link #MAX_COOLDOWN_ARRAY_KEY}, storing the maximum cooldown for each spell slot.</li>
  *     <li>A compound tag under the key {@link #UPGRADES_KEY}, storing the levels of each upgrade.</li>
@@ -44,7 +44,7 @@ public final class WandHelper {
     /** The NBT key used to store the array of spells on the wand. */
     public static final String SPELL_ARRAY_KEY = "spells";
 
-    /** The NBT key used to store the currently selected spell on the wand. */
+    /** The NBT key used to store the currently selected spell index on the wand. */
     public static final String SELECTED_SPELL_KEY = "selectedSpell";
 
     /** The NBT key used to store the array of cooldown end times (gametime) for each spell on the wand. */
@@ -113,19 +113,30 @@ public final class WandHelper {
      * @return The currently selected spell.
      */
     public static Spell getCurrentSpell(ItemStack wand) {
-        String tag = wand.getOrCreateTag().getString(SELECTED_SPELL_KEY);
-        Spell spell = Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag));
-        return spell != null ? spell : Spells.NONE;
+        List<Spell> spells = getSpells(wand);
+        if (spells.isEmpty()) return Spells.NONE;
+
+        int selectedIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+
+        // Bounds check
+        if (selectedIndex >= 0 && selectedIndex < spells.size()) {
+            return spells.get(selectedIndex);
+        }
+
+        return spells.get(0);
     }
 
     /**
-     * Sets the currently selected spell on the wand.
+     * Sets the currently selected spell on the wand by finding its index.
      *
      * @param wand  The wand ItemStack.
      * @param spell The spell to set as currently selected.
      */
     public static void setCurrentSpell(ItemStack wand, Spell spell) {
-        wand.getOrCreateTag().putString(SELECTED_SPELL_KEY, spell.getLocation().toString());
+        List<Spell> spells = getSpells(wand);
+        int index = spells.indexOf(spell);
+        if (index == -1) index = 0;
+        wand.getOrCreateTag().putInt(SELECTED_SPELL_KEY, index);
     }
 
     /**
@@ -148,12 +159,58 @@ public final class WandHelper {
         return getAdjacentSpell(wand, -1);
     }
 
+    /**
+     * Selects the next spell on the wand by incrementing the index, wrapping around if necessary.
+     * This method directly manipulates indices to avoid issues with duplicate spells (e.g., multiple NONE spells).
+     *
+     * @param wand The wand ItemStack.
+     */
+    public static void selectNextSpell(ItemStack wand) {
+        List<Spell> spells = getSpells(wand);
+        if (spells.isEmpty()) return;
+
+        int currentIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+
+        // Bounds check
+        if (currentIndex < 0 || currentIndex >= spells.size()) {
+            currentIndex = 0;
+        }
+
+        int newIndex = (currentIndex + 1) % spells.size();
+        wand.getOrCreateTag().putInt(SELECTED_SPELL_KEY, newIndex);
+    }
+
+    /**
+     * Selects the previous spell on the wand by decrementing the index, wrapping around if necessary.
+     * This method directly manipulates indices to avoid issues with duplicate spells (e.g., multiple NONE spells).
+     *
+     * @param wand The wand ItemStack.
+     */
+    public static void selectPreviousSpell(ItemStack wand) {
+        List<Spell> spells = getSpells(wand);
+        if (spells.isEmpty()) return;
+
+        int currentIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+
+        // Bounds check
+        if (currentIndex < 0 || currentIndex >= spells.size()) {
+            currentIndex = 0;
+        }
+
+        int newIndex = (currentIndex - 1 + spells.size()) % spells.size();
+        wand.getOrCreateTag().putInt(SELECTED_SPELL_KEY, newIndex);
+    }
+
     private static Spell getAdjacentSpell(ItemStack wand, int offset) {
         List<Spell> spells = getSpells(wand);
         if (spells.isEmpty()) return Spells.NONE;
 
-        int currentIndex = spells.indexOf(getCurrentSpell(wand));
-        if (currentIndex == -1) return spells.get(0);
+        int currentIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+
+        // Bounds check
+        if (currentIndex < 0 || currentIndex >= spells.size()) {
+            currentIndex = 0;
+        }
 
         int newIndex = (currentIndex + offset + spells.size()) % spells.size();
         return spells.get(newIndex);
@@ -203,7 +260,7 @@ public final class WandHelper {
      */
     public static int getCurrentCooldown(ItemStack wand, long currentGameTime) {
         long[] endTimes = getCooldownEndTimes(wand);
-        int selectedSpellIndex = getSpells(wand).indexOf(getCurrentSpell(wand));
+        int selectedSpellIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
 
         if (selectedSpellIndex >= 0 && selectedSpellIndex < endTimes.length) {
             long endTime = endTimes[selectedSpellIndex];
@@ -222,7 +279,7 @@ public final class WandHelper {
      * @param currentGameTime The current game time from the world.
      */
     public static void setCurrentCooldown(ItemStack wand, int cooldown, long currentGameTime) {
-        int selectedSpell = getSpells(wand).indexOf(getCurrentSpell(wand));
+        int selectedSpell = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
         int spellCount = getSpells(wand).size();
 
         if (selectedSpell >= spellCount) return;
@@ -267,7 +324,7 @@ public final class WandHelper {
      */
     public static int getCurrentMaxCooldown(ItemStack wand) {
         int[] cooldowns = getMaxCooldowns(wand);
-        int selectedSpell = getSpells(wand).indexOf(getCurrentSpell(wand));
+        int selectedSpell = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
 
         return (selectedSpell >= 0 && selectedSpell < cooldowns.length) ? cooldowns[selectedSpell] : 0;
     }

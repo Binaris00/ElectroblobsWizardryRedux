@@ -4,6 +4,7 @@ import com.binaris.wizardry.core.gametest.ArtifactTest;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 
+@SuppressWarnings("unused")
 public class FabricArtifactTest {
 
     @GameTest(template = "ebwizardry:empty")
