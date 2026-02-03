@@ -126,6 +126,10 @@ public final class WandHelper {
         return spells.get(0);
     }
 
+    public static int getCurrentSpellIndex(ItemStack wand) {
+        return wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+    }
+
     /**
      * Sets the currently selected spell on the wand by finding its index.
      *
@@ -137,6 +141,22 @@ public final class WandHelper {
         int index = spells.indexOf(spell);
         if (index == -1) index = 0;
         wand.getOrCreateTag().putInt(SELECTED_SPELL_KEY, index);
+    }
+
+    /**
+     * Sets the currently selected spell on the wand by index.
+     *
+     * @param wand  The wand ItemStack.
+     * @param index The index of the spell to set as currently selected.
+     * @return True if the index was valid and the spell was set, false otherwise.
+     */
+    public static boolean setCurrentSpell(ItemStack wand, int index) {
+        List<Spell> spells = getSpells(wand);
+        if (index < 0 || index >= spells.size()) {
+            return false;
+        }
+        wand.getOrCreateTag().putInt(SELECTED_SPELL_KEY, index);
+        return true;
     }
 
     /**
@@ -214,21 +234,6 @@ public final class WandHelper {
 
         int newIndex = (currentIndex + offset + spells.size()) % spells.size();
         return spells.get(newIndex);
-    }
-
-    /**
-     * Selects the spell at the given index on the wand.
-     *
-     * @param wand  The wand ItemStack.
-     * @param index The index of the spell to select.
-     * @return True if the spell was successfully selected, false otherwise.
-     */
-    public static boolean selectSpell(ItemStack wand, int index) {
-        List<Spell> spells = getSpells(wand);
-        if (spells.isEmpty()) return false;
-
-        setCurrentSpell(wand, spells.get(index));
-        return true;
     }
 
     /**

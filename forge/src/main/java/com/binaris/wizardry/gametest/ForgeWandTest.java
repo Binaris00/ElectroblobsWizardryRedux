@@ -29,4 +29,18 @@ public class ForgeWandTest {
         WandTest.wandCircularSelection(helper);
         helper.succeed();
     }
+
+
+    @GameTest(template = "arcane_workbench_3x3x3")
+    public static void wandLiteralIndex(GameTestHelper helper) {
+        WandTest.wandLiteralIndex(helper);
+        helper.succeed();
+    }
+
+
+    @GameTest(template = "arcane_workbench_3x3x3")
+    public static void wandLiteralIndexPartiallyEmpty(GameTestHelper helper) {
+        WandTest.wandLiteralIndexPartiallyEmpty(helper);
+        helper.succeed();
+    }
 }

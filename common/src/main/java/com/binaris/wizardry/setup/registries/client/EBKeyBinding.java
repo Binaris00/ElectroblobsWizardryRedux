@@ -4,6 +4,7 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.event.EBClientTickEvent;
 import com.binaris.wizardry.api.content.item.ISpellCastingItem;
 import com.binaris.wizardry.api.content.util.EntityUtil;
+import com.binaris.wizardry.api.content.util.WandHelper;
 import com.binaris.wizardry.client.SpellGUIDisplay;
 import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.core.EBConfig;
@@ -11,7 +12,6 @@ import com.binaris.wizardry.core.networking.c2s.ControlInputPacketC2S;
 import com.binaris.wizardry.core.networking.c2s.SpellAccessPacketC2S;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBSounds;
-import com.binaris.wizardry.setup.registries.Spells;
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -80,7 +80,6 @@ public final class EBKeyBinding {
 
     public static void selectNextSpell(ItemStack wand) {
         ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
-//        if (item.getCurrentSpell(wand) == Spells.NONE && item.getNextSpell(wand) == Spells.NONE) return;
 
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.NEXT_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
@@ -92,7 +91,6 @@ public final class EBKeyBinding {
 
     public static void selectPreviousSpell(ItemStack wand) {
         ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
-//        if (item.getCurrentSpell(wand) == Spells.NONE && item.getPreviousSpell(wand) == Spells.NONE) return;
 
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.PREVIOUS_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
@@ -104,7 +102,8 @@ public final class EBKeyBinding {
 
     private static void selectSpell(ItemStack wand, int index) {
         ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
-        if (item.getCurrentSpell(wand) == Spells.NONE && item.getSpells(wand).length == 0) return;
+        int currentIndex = WandHelper.getCurrentSpellIndex(wand);
+        if (index == currentIndex) return;
 
         if (item.selectSpell(wand, index)) {
             SpellAccessPacketC2S msg = new SpellAccessPacketC2S(index);

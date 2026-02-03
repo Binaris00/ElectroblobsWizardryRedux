@@ -1,2 +1,4 @@
 - [Forge] added capability sync when player cross dimensions
 - Added missing remnants attributes to avoid crashes
+- Previous/Next spell keybinds/system works better, allowing smoother spell cycling
+- Selecting specific spells with specific indexes works better now

@@ -604,7 +604,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public boolean selectSpell(ItemStack stack, int index) {
-        return WandHelper.selectSpell(stack, index);
+        return WandHelper.setCurrentSpell(stack, index);
     }
 
     @Override

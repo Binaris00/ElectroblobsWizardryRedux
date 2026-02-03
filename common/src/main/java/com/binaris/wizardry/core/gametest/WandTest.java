@@ -128,6 +128,78 @@ public final class WandTest {
                 selectedSpell);
     }
 
+    public static void wandLiteralIndex(GameTestHelper helper) {
+        ItemStack wand = EBItems.MASTER_WAND.get().getDefaultInstance();
+        List<Spell> spells = List.of(
+                Spells.FIREBALL,
+                Spells.ICE_SHARD,
+                Spells.HEAL,
+                Spells.LIFE_DRAIN,
+                Spells.EVADE
+        );
+
+        ArcaneWorkbenchTest.TestContext ctx = ArcaneWorkbenchTest.setupTest(helper, wand);
+        for (int i = 0; i < spells.size(); i++) {
+            ctx.workbench().setItem(i, SpellUtil.spellBookItem(spells.get(i)));
+        }
+
+        ctx.menu().onApplyButtonPressed(ctx.player());
+
+        wand = ctx.workbench().getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
+        List<Spell> wandSpells = WandHelper.getSpells(wand);
+        ItemStack finalWand = wand;
+        spells.forEach(spell -> GST.assertTrue(helper,
+                "Wand %s should contain %s spell after applying.".formatted(finalWand, spell),
+                wandSpells.contains(spell)));
+
+        ((ISpellCastingItem) wand.getItem()).selectSpell(wand, 2);
+        Spell selectedSpell = WandHelper.getCurrentSpell(wand);
+        GST.assertEquals(helper,
+                "Selected spell should be 'Heal' after selecting index 2.",
+                Spells.HEAL,
+                selectedSpell);
+
+        ((ISpellCastingItem) wand.getItem()).selectSpell(wand, 4);
+        selectedSpell = WandHelper.getCurrentSpell(wand);
+        GST.assertEquals(helper,
+                "Selected spell should be 'Evade' after selecting index 4.",
+                Spells.EVADE,
+                selectedSpell);
+
+        ((ISpellCastingItem) wand.getItem()).selectSpell(wand, 0);
+        selectedSpell = WandHelper.getCurrentSpell(wand);
+        GST.assertEquals(helper,
+                "Selected spell should be 'Fireball' after selecting index 0.",
+                Spells.FIREBALL,
+                selectedSpell);
+    }
+
+    public static void wandLiteralIndexPartiallyEmpty(GameTestHelper helper) {
+        ItemStack wand = EBItems.MASTER_WAND.get().getDefaultInstance();
+        Spell spell = Spells.ICE_SHARD;
+
+        ArcaneWorkbenchTest.TestContext ctx = ArcaneWorkbenchTest.setupTest(helper, wand);
+        ctx.workbench().setItem(0, SpellUtil.spellBookItem(spell));
+        ctx.menu().onApplyButtonPressed(ctx.player());
+
+        wand = ctx.workbench().getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
+        ((ISpellCastingItem) wand.getItem()).selectSpell(wand, 3);
+
+        int selectedIndex = WandHelper.getCurrentSpellIndex(wand);
+        // should be 3, even though only index 0 is filled
+        GST.assertEquals(helper,
+                "Selected spell index should be 3 after selecting index 3 on a partially empty wand.",
+                3,
+                selectedIndex);
+
+        ((ISpellCastingItem) wand.getItem()).selectSpell(wand, 2);
+        selectedIndex = WandHelper.getCurrentSpellIndex(wand);
+        GST.assertEquals(helper,
+                "Selected spell index should be 2 after selecting index 2 on a partially empty wand.",
+                2,
+                selectedIndex);
+    }
+
     private WandTest() {
     }
 }
