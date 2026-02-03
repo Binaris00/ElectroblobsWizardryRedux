@@ -24,18 +24,23 @@ Start by mining Magic Crystals (though there are "easier" ways to find them if y
 
 **Required:** Fabric Loader 0.16.9+ (for Minecraft 1.20.1)
 
-**Required:** Fabric API 0.92.2+
+**Required:** [Fabric API 0.92.2+](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 
-**Optional (Recommended):** Accessories for better trinket experience.
+**Optional (Recommended):** [Accessories](https://www.curseforge.com/minecraft/mc-mods/accessories) for better trinket experience.
 
-**Important:** If you use the Trinkets mod, you must download the Accessories Compatibility Layer.
+**Important:** If any other mods in your modpack list use 'Trinkets' as a dependency for trinkets, download
+[Accessories Compatibility Layer](https://www.curseforge.com/minecraft/mc-mods/accessories-tc-layer)
+**instead** of Trinkets itself (this mod acts as a bridge to help mods with Accessories and Trinkets work together).
 
 ### Forge
+
 **Required:** Forge Loader 47.2.30+ (for Minecraft 1.20.1)
 
-**Optional (Recommended):** Accessories for better trinket experience.
+**Optional (Recommended):** [Accessories](https://www.curseforge.com/minecraft/mc-mods/accessories) for better trinket experience.
 
-**Important:** If you use the Curios mod, you must download the Accessories Compatibility Layer.
+**Important:** If any other mods in your modpack list use 'Curios' as a dependency for trinkets, download 
+[Accessories Compatibility Layer](https://www.curseforge.com/minecraft/mc-mods/accessories-cc-layer) 
+**instead** of Curios itself (this mod acts as a bridge to help mods with Accessories and Curios work together).
 
 ## Credits
 
