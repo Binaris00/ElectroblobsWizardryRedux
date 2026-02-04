@@ -15,7 +15,6 @@ import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderers;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.core.Registry;
 import net.minecraft.world.entity.Entity;
 
 public final class WizardryFabricClient implements ClientModInitializer {
@@ -27,7 +26,6 @@ public final class WizardryFabricClient implements ClientModInitializer {
         SpellAction.register();
         EBRenderers.registerRenderers();
         EBRenderers.getRenderers().forEach((entity, renderer) -> EntityRendererRegistry.register(entity.get(), (EntityRendererProvider<Entity>) renderer));
-        EBParticles.registerType(Registry::register);
 
         EBParticleProviders.registerProvider((p, f) -> {
             var reg = ParticleFactoryRegistry.getInstance();

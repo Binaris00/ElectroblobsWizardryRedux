@@ -7,6 +7,7 @@ import com.binaris.wizardry.core.PropertiesFabricDataManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.network.EBFabricServerNetwork;
 import com.binaris.wizardry.setup.registries.*;
+import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -90,5 +91,6 @@ public final class WizardryFabricMod implements ModInitializer {
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new PropertiesFabricDataManager());
         WandUpgrades.initUpgrades();
         NotImplementedItems.init();
+        EBParticles.registerType(Registry::register);
     }
 }

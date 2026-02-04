@@ -31,7 +31,6 @@ public final class EBParticles {
     public static final DeferredObject<SimpleParticleType> LIGHTNING_PULSE = particle("lightning_pulse");
     public static final DeferredObject<SimpleParticleType> SPHERE = particle("sphere");
     public static final DeferredObject<SimpleParticleType> FLASH = particle("flash");
-
     @Deprecated
     public static final DeferredObject<SimpleParticleType> SCORCH = particle("scorch");
     @Deprecated

@@ -1,2 +1,4 @@
 - Fixed incompatibility with Inventory profiles next ([#2](https://github.com/Binaris00/ElectroblobsWizardryRedux/issues/2))
 - Updated spectral pickaxe model to show handheld correctly
+- Avoid duplicated trades on wizards
+- [Fabric] Fixed server crash when fighting inside a shrine (particle types were not registered on server side) ([#8](https://github.com/Binaris00/ElectroblobsWizardryRedux/issues/8) [#9](https://github.com/Binaris00/ElectroblobsWizardryRedux/issues/9))

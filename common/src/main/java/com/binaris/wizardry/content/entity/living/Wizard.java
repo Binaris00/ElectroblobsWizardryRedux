@@ -45,7 +45,7 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * This Wizard class is only concerned with trading behaviour. Spell casting or other AI is handled in the
+ * This Wizard class is only concerned with trading behavior. Spell casting or other AI is handled in the
  * AbstractWizard superclass.
  */
 public class Wizard extends AbstractWizard implements Npc, Merchant {
@@ -201,15 +201,19 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     private void updateTrades() {
         if (this.trades == null) this.trades = new MerchantOffers();
 
+        // Track already offered items to avoid duplicates
+        List<Spell> usedSpells = new ArrayList<>();
+        List<Item> usedItems = new ArrayList<>();
+
         switch (this.wizardLevel) {
-            case 1 -> addNoviceTrades();
-            case 2 -> addApprenticeTrades();
-            case 3 -> addAdvancedTrades();
-            case 4, 5 -> addMasterTrades();
+            case 1 -> addNoviceTrades(usedSpells, usedItems);
+            case 2 -> addApprenticeTrades(usedSpells, usedItems);
+            case 3 -> addAdvancedTrades(usedSpells, usedItems);
+            case 4, 5 -> addMasterTrades(usedSpells, usedItems);
         }
     }
 
-    private void addNoviceTrades() {
+    private void addNoviceTrades(List<Spell> usedSpells, List<Item> usedItems) {
         List<MerchantOffer> possibleTrades = new ArrayList<>();
 
         // Always available: Spell book → 4 crystals
@@ -239,15 +243,17 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         ));
 
         // 1-4 gold ingots + 2-3 crystals → Novice spell
-        possibleTrades.add(createSpellTrade(SpellTiers.NOVICE, 1 + random.nextInt(4), 2 + random.nextInt(2)));
+        MerchantOffer spell1 = createSpellTrade(SpellTiers.NOVICE, 1 + random.nextInt(4), 2 + random.nextInt(2), usedSpells);
+        if (spell1 != null) possibleTrades.add(spell1);
 
-        // 1-4 gold ingots + 2-3 crystals → Novice spell (second one)
-        possibleTrades.add(createSpellTrade(SpellTiers.NOVICE, 1 + random.nextInt(4), 2 + random.nextInt(2)));
+        // 1-4 gold ingots + 2-3 crystals → Novice spell (second one, different from first)
+        MerchantOffer spell2 = createSpellTrade(SpellTiers.NOVICE, 1 + random.nextInt(4), 2 + random.nextInt(2), usedSpells);
+        if (spell2 != null) possibleTrades.add(spell2);
 
         addRandomTrades(possibleTrades);
     }
 
-    private void addApprenticeTrades() {
+    private void addApprenticeTrades(List<Spell> usedSpells, List<Item> usedItems) {
         List<MerchantOffer> possibleTrades = new ArrayList<>();
 
         // 13-18 gold ingots + 6-10 crystals → apprentice wand
@@ -259,15 +265,19 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         ));
 
         // 14-19 gold ingots + 4-5 paper → random wand upgrade
-        possibleTrades.add(createTrade(
-                new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
-                new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
-                new ItemStack(getRandomUpgrade(this.random)),
-                12, 10, 0.2f
-        ));
+        Item upgrade = getRandomUpgrade(this.random, usedItems);
+        if (upgrade != null) {
+            possibleTrades.add(createTrade(
+                    new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
+                    new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
+                    new ItemStack(upgrade),
+                    12, 10, 0.2f
+            ));
+        }
 
         // 7-10 gold ingots + 6-10 crystals → apprentice spell
-        possibleTrades.add(createSpellTrade(SpellTiers.APPRENTICE, 7 + random.nextInt(4), 6 + random.nextInt(5)));
+        MerchantOffer spell = createSpellTrade(SpellTiers.APPRENTICE, 7 + random.nextInt(4), 6 + random.nextInt(5), usedSpells);
+        if (spell != null) possibleTrades.add(spell);
 
         // 3-4 gold ingots + 3-4 crystals → magic silk
         possibleTrades.add(createTrade(
@@ -288,19 +298,23 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         addRandomTrades(possibleTrades);
     }
 
-    private void addAdvancedTrades() {
+    private void addAdvancedTrades(List<Spell> usedSpells, List<Item> usedItems) {
         List<MerchantOffer> possibleTrades = new ArrayList<>();
 
         // 14-19 gold ingots + 4-5 paper → random wand upgrade
-        possibleTrades.add(createTrade(
-                new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
-                new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
-                new ItemStack(getRandomUpgrade(this.random)),
-                12, 15, 0.2f
-        ));
+        Item upgrade = getRandomUpgrade(this.random, usedItems);
+        if (upgrade != null) {
+            possibleTrades.add(createTrade(
+                    new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
+                    new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
+                    new ItemStack(upgrade),
+                    12, 15, 0.2f
+            ));
+        }
 
         // 12-16 gold ingots + 8-15 crystals → advanced spell
-        possibleTrades.add(createSpellTrade(SpellTiers.ADVANCED, 12 + random.nextInt(5), 8 + random.nextInt(8)));
+        MerchantOffer spell = createSpellTrade(SpellTiers.ADVANCED, 12 + random.nextInt(5), 8 + random.nextInt(8), usedSpells);
+        if (spell != null) possibleTrades.add(spell);
 
         // 14-16 gold ingots + 1 book → Tome of Arcana (Apprentice to advanced)
         possibleTrades.add(createTrade(
@@ -329,19 +343,23 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         addRandomTrades(possibleTrades);
     }
 
-    private void addMasterTrades() {
+    private void addMasterTrades(List<Spell> usedSpells, List<Item> usedItems) {
         List<MerchantOffer> possibleTrades = new ArrayList<>();
 
         // 14-19 gold ingots + 4-5 paper → random wand upgrade
-        possibleTrades.add(createTrade(
-                new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
-                new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
-                new ItemStack(getRandomUpgrade(this.random)),
-                12, 20, 0.2f
-        ));
+        Item upgrade = getRandomUpgrade(this.random, usedItems);
+        if (upgrade != null) {
+            possibleTrades.add(createTrade(
+                    new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(6)),
+                    new ItemStack(Items.PAPER, 4 + random.nextInt(2)),
+                    new ItemStack(upgrade),
+                    12, 20, 0.2f
+            ));
+        }
 
         // 20-25 gold ingots + 15-20 crystals → master spell
-        possibleTrades.add(createSpellTrade(SpellTiers.MASTER, 20 + random.nextInt(6), 15 + random.nextInt(6)));
+        MerchantOffer spell = createSpellTrade(SpellTiers.MASTER, 20 + random.nextInt(6), 15 + random.nextInt(6), usedSpells);
+        if (spell != null) possibleTrades.add(spell);
 
         // 20-25 gold ingots + 1 astral diamond → Tome of Arcana (advanced to master)
         possibleTrades.add(createTrade(
@@ -354,11 +372,13 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         addRandomTrades(possibleTrades);
     }
 
-    private MerchantOffer createSpellTrade(SpellTier tier, int goldAmount, int crystalAmount) {
-        List<Spell> spells = SpellUtil.getSpells((s) -> s.getTier() == tier);
+    private MerchantOffer createSpellTrade(SpellTier tier, int goldAmount, int crystalAmount, List<Spell> usedSpells) {
+        List<Spell> spells = SpellUtil.getSpells((s) -> s.getTier() == tier && !usedSpells.contains(s));
         if (spells.isEmpty()) return null;
 
         Spell spell = spells.get(random.nextInt(spells.size()));
+        usedSpells.add(spell); // Mark this spell as used
+
         ItemStack spellBook = new ItemStack(EBItems.SPELL_BOOK.get());
         SpellUtil.setSpell(spellBook, spell);
 
@@ -383,9 +403,16 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         this.trades.addAll(possibleTrades.subList(0, tradesToAdd));
     }
 
-    public static Item getRandomUpgrade(RandomSource random) {
-        int index = random.nextInt(WandUpgrades.getSpecialUpgrades().size());
-        return WandUpgrades.getSpecialUpgrades().stream().toList().get(index);
+    public static Item getRandomUpgrade(RandomSource random, List<Item> usedItems) {
+        List<Item> availableUpgrades = WandUpgrades.getSpecialUpgrades().stream()
+                .filter(item -> !usedItems.contains(item))
+                .toList();
+
+        if (availableUpgrades.isEmpty()) return null;
+
+        Item upgrade = availableUpgrades.get(random.nextInt(availableUpgrades.size()));
+        usedItems.add(upgrade); // Mark this item as used
+        return upgrade;
     }
 
 
