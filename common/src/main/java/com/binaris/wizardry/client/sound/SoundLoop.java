@@ -1,6 +1,5 @@
 package com.binaris.wizardry.client.sound;
 
-import com.binaris.wizardry.api.EBLogger;
 import com.binaris.wizardry.api.content.event.EBClientTickEvent;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
 import net.minecraft.client.Minecraft;
@@ -68,7 +67,6 @@ public abstract class SoundLoop extends AbstractTickableSoundInstance {
     @Override
     public void tick() {
         if (!looping && !Minecraft.getInstance().getSoundManager().isActive(startPrimer)) {
-            EBLogger.warn("SoundLoop: Starting loop sound.");
             Minecraft.getInstance().getSoundManager().play(loop);
             looping = true;
         }

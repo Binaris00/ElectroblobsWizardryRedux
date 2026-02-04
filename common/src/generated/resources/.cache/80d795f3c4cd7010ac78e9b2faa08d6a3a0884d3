@@ -1,4 +1,4 @@
-// 1.20.1	2025-12-14T08:11:16.923370527	Item Models: ebwizardry
+// 1.20.1	2026-02-03T13:16:00.387243752	Item Models: ebwizardry
 89bb34411d51f6f233bba5222d0f678fb09f0db7 assets/ebwizardry/models/item/amulet_absorption.json
 5d768537586b85e2822265776cd201221e20ad88 assets/ebwizardry/models/item/amulet_anchoring.json
 0580922d9a4bededf0168a7c330267c6c36f48e8 assets/ebwizardry/models/item/amulet_arcane_defence.json
@@ -189,7 +189,6 @@ fbc328a2514c1e7b9e7c6b9b87952c0877c848de assets/ebwizardry/models/item/spectral_
 9ffe1f60d9eec6f457cba5412bbd521e6e8cf9e0 assets/ebwizardry/models/item/spectral_dust_sorcery.json
 713d8460f64e47a8360f8c4901224982c9b2d866 assets/ebwizardry/models/item/spectral_helmet.json
 8e463ca3e8515d7c2ec7dcbf326bd9e3baeab679 assets/ebwizardry/models/item/spectral_leggings.json
-40dc198dc6075073954b2c1c5279dc80814a5b2d assets/ebwizardry/models/item/spectral_pickaxe.json
 cfd3fa29c916453848a76476c63b459d2962dab3 assets/ebwizardry/models/item/spell_book.json
 70d44aa2cbedccff80734e2e60853d15981df394 assets/ebwizardry/models/item/storage_upgrade.json
 31a6da6fb38701cbc627816c220c077346f910a4 assets/ebwizardry/models/item/wand_advanced.json

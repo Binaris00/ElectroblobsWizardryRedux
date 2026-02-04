@@ -23,6 +23,8 @@ public final class EBItemProperties {
         conjureItem(EBItems.FROST_AXE.get());
         conjureItem(EBItems.FLAMING_AXE.get());
 
+        conjureItem(EBItems.SPECTRAL_PICKAXE.get());
+
         pullingItem(EBItems.SPECTRAL_BOW.get());
         conjureItem(EBItems.SPECTRAL_BOW.get());
     }

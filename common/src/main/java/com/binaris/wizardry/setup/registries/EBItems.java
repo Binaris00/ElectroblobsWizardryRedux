@@ -392,7 +392,7 @@ public final class EBItems {
     //Spectral
     public static final DeferredObject<Item> SPECTRAL_SWORD = item("spectral_sword", SpectralSwordItem::new, false, true);
     public static final DeferredObject<Item> SPECTRAL_BOW = item("spectral_bow", SpectralBowItem::new, false, true);
-    public static final DeferredObject<Item> SPECTRAL_PICKAXE = item("spectral_pickaxe", SpectralPickaxeItem::new);
+    public static final DeferredObject<Item> SPECTRAL_PICKAXE = item("spectral_pickaxe", SpectralPickaxeItem::new, false, true);
     //Cast Items
     public static final DeferredObject<Item> FLAMECATCHER = item("flamecatcher", FlameCatcherItem::new, false, true);
     public static final DeferredObject<Item> FLAMING_AXE = item("flaming_axe", FlamingAxeItem::new, false, true);

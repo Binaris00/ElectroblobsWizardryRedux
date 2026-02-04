@@ -1,0 +1,2 @@
+- Fixed incompatibility with Inventory profiles next ([#2](https://github.com/Binaris00/ElectroblobsWizardryRedux/issues/2))
+- Updated spectral pickaxe model to show handheld correctly
