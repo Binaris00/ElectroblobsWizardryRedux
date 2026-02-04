@@ -2,3 +2,4 @@
 - Updated spectral pickaxe model to show handheld correctly
 - Avoid duplicated trades on wizards
 - [Fabric] Fixed server crash when fighting inside a shrine (particle types were not registered on server side) ([#8](https://github.com/Binaris00/ElectroblobsWizardryRedux/issues/8) [#9](https://github.com/Binaris00/ElectroblobsWizardryRedux/issues/9))
+- Fixed exponential spell modifier potency due to redundant application on spell-cast-tick inside armor class

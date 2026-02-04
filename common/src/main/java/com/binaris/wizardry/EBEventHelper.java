@@ -118,7 +118,6 @@ public final class EBEventHelper {
     }
 
     private static void onSpellTickCast(WizardryEventBus bus) {
-        bus.register(SpellCastEvent.Tick.class, WizardArmorItem::onSpellTickCast);
     }
 
     private static void onPlayerInteractEntity(WizardryEventBus bus) {

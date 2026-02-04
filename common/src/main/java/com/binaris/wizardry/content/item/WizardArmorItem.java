@@ -53,13 +53,6 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
         event.getModifiers().combine(armourModifiers);
     }
 
-    public static void onSpellTickCast(SpellCastEvent.Tick event) {
-        if (event.getCaster() == null || !(event.getCaster() instanceof Player player)) return;
-        SpellModifiers armourModifiers = new SpellModifiers();
-        collectArmorModifiers(player, event.getSpell(), armourModifiers);
-        event.getModifiers().combine(armourModifiers);
-    }
-
     // Shared helper used by both pre- and tick-cast events to collect modifiers from worn armor.
     private static void collectArmorModifiers(Player caster, Spell spell, SpellModifiers out) {
         Arrays.stream(InventoryUtil.ARMOR_SLOTS)
