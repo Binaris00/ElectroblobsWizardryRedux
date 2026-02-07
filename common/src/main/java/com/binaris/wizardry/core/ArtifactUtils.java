@@ -24,11 +24,10 @@ import net.minecraft.world.item.ItemStack;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 /**
- * Various utility methods for use by artefacts. These are all static methods, so there is no need to ever instantiate
+ * Various utility methods for use by artifacts. These are all static methods, so there is no need to ever instantiate
  * this class. Normally we use these methods to make more good-looking {@link QuickArtefactEffect} lambdas and avoid
  * creating loads of classes with the same logic (specially referred to predicates and similar).
  */
@@ -47,28 +46,33 @@ public final class ArtifactUtils {
 
     /**
      * Helper method that scans through all wands on the given player's hotbar and offhand and casts the given spell if
-     * it is bound to any of them. This is a useful code pattern for artefact effects.
+     * it is bound to any of them. This is a useful code pattern for artifact effects.
      */
     public static boolean findMatchingWandAndCast(Player player, Spell spell) {
         return findMatchingWandAndExecute(player, spell, wand -> {
+            ISpellCastingItem spellCastItem = (ISpellCastingItem) wand.getItem();
             SpellModifiers modifiers = new SpellModifiers();
-            if (((ISpellCastingItem) wand.getItem()).canCast(wand, spell, new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers))) {
-                ((ISpellCastingItem) wand.getItem()).cast(wand, spell, new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers));
+            PlayerCastContext context = new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers);
+            if (spellCastItem.canCast(wand, spell, context)) {
+                spellCastItem.cast(wand, spell, context);
             }
         });
     }
 
     /**
      * Helper method that scans through all wands on the given player's hotbar and offhand and executes the given action
-     * if any of them have the given spell bound to them. This is a useful code pattern for artefact effects.
+     * if any of them have the given spell bound to them. This is a useful code pattern for artifact effects.
      */
     public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action) {
         List<ItemStack> hotbar = InventoryUtil.getHotBarAndOffhand(player);
+        for (ItemStack stack : hotbar) {
+            if (stack.getItem() instanceof ISpellCastingItem spellCastingItem && Arrays.asList(spellCastingItem.getSpells(stack)).contains(spell)) {
+                action.accept(stack);
+                return true;
+            }
+        }
 
-        Optional<ItemStack> stack = hotbar.stream().filter(s -> s.getItem() instanceof ISpellCastingItem && Arrays.asList(((ISpellCastingItem) s.getItem()).getSpells(s)).contains(spell)).findFirst();
-
-        stack.ifPresent(action);
-        return stack.isPresent();
+        return false;
     }
 
     public static void handleLightningEffect(Entity player, LivingEntity target, EBLivingHurtEvent event) {

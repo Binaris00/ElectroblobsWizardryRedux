@@ -59,7 +59,8 @@ public final class EBEventHelper {
         bus.register(EBLivingHurtEvent.class, CurseOfSoulbinding::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, WardMobEffect::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, BubbleConstruct::onLivingHurt);
-        bus.register(EBLivingHurtEvent.class, ArtefactItem::onArtifactHurt);
+        bus.register(EBLivingHurtEvent.class, ArtefactItem::onArtifactLivingHurt);
+        bus.register(EBLivingHurtEvent.class, ArtefactItem::onArtifactPlayerHurt);
         bus.register(EBLivingHurtEvent.class, AllyDesignation::onLivingHurt);
     }
 

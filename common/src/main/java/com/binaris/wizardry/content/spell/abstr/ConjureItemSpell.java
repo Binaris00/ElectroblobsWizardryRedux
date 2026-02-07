@@ -7,6 +7,7 @@ import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.platform.Services;
+import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -83,10 +84,11 @@ public class ConjureItemSpell extends Spell {
 
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         int duration = property(DefaultProperties.ITEM_LIFETIME);
+        float durationMultiplier = ctx.modifiers().get(EBItems.DURATION_UPGRADE.get());
         long currentGameTime = ctx.world().getGameTime();
 
-        data.setExpireTime(currentGameTime + duration);
-        data.setDuration(duration);
+        data.setExpireTime((long) (currentGameTime + (duration * durationMultiplier)));
+        data.setDuration((int) (duration * durationMultiplier));
         data.setSummoned(true);
 
         if (!ctx.caster().addItem(stack)) {

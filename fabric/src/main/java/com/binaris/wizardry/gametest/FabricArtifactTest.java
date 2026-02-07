@@ -8,22 +8,14 @@ import net.minecraft.gametest.framework.GameTestHelper;
 public class FabricArtifactTest {
 
     @GameTest(template = "ebwizardry:empty")
-    public static void condensingRingRechargesManaAt150(GameTestHelper helper) {
-        ArtifactTest.condensingRingRecharge(helper); // success on helper
+    public static void condensingRingRecharge(GameTestHelper helper) {
+        ArtifactTest.condensingRingRecharge(helper);
+        helper.succeed();
     }
 
     @GameTest(template = "ebwizardry:empty")
-    public static void condensingRingRechargeMultipleItems(GameTestHelper helper) {
-        ArtifactTest.condensingRingRechargeMultipleItems(helper); // success on helper
-    }
-
-    @GameTest(template = "ebwizardry:empty")
-    public static void amuletArcaneDefenseRecharge(GameTestHelper helper) {
-        ArtifactTest.arcaneDefenseAmuletRecharge(helper); // success on helper
-    }
-
-    @GameTest(template = "ebwizardry:empty")
-    public static void arcaneDefenseAmuletRechargesMultipleArmor(GameTestHelper helper) {
-        ArtifactTest.arcaneDefenseAmuletRechargesMultipleArmor(helper); // success on helper
+    public static void arcaneDefenseAmuletRecharge(GameTestHelper helper) {
+        ArtifactTest.arcaneDefenseAmuletRecharge(helper);
+        helper.succeed();
     }
 }

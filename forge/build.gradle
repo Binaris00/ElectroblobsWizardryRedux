@@ -69,7 +69,7 @@ dependencies {
     annotationProcessor "io.github.llamalad7:mixinextras-common:${mixinextras_version}"
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
 
-    modImplementation "io.wispforest:accessories-neoforge:${project.accessories_version}"
+    modCompileOnly "io.wispforest:accessories-neoforge:${project.accessories_version}"
     modImplementation("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}") {
         exclude group: 'net.fabricmc', module: 'fabric-loader'
     }

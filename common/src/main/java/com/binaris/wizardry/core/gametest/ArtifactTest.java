@@ -17,27 +17,6 @@ public class ArtifactTest {
     public static void condensingRingRecharge(GameTestHelper helper) {
         Player player = GST.mockServerPlayer(helper, PLAYER_POS);
         ItemStack ring = new ItemStack(EBItems.RING_CONDENSING.get());
-        ItemStack wand = new ItemStack(EBItems.NOVICE_WAND.get());
-        IManaStoringItem manaItem = (IManaStoringItem) wand.getItem();
-
-        // Set wand with reduced mana
-        manaItem.setMana(wand, manaItem.getManaCapacity(wand) - 2);
-        player.getInventory().items.set(player.getInventory().selected, wand);
-        player.getInventory().items.set(player.getInventory().selected + 1, ring);
-
-        player.tickCount = CondensingRingEffect.MANA_RECHARGE_INTERVAL_TICKS; // Simulate ticks
-
-        ((ArtefactItem) ring.getItem()).getEffect().onTick(player, player.level(), ring);
-
-        int currentMana = ((IManaStoringItem) player.getInventory().getSelected().getItem()).getMana(player.getInventory().getSelected());
-        int expectedMana = manaItem.getManaCapacity(wand) - 1;
-        GST.assertEquals(helper, "Wand should recharge +1 mana", expectedMana, currentMana);
-        helper.succeed();
-    }
-
-    public static void condensingRingRechargeMultipleItems(GameTestHelper helper) {
-        Player player = GST.mockServerPlayer(helper, PLAYER_POS);
-        ItemStack ring = new ItemStack(EBItems.RING_CONDENSING.get());
         ItemStack wand1 = new ItemStack(EBItems.NOVICE_WAND.get());
         ItemStack wand2 = new ItemStack(EBItems.APPRENTICE_WAND.get());
 
@@ -58,29 +37,9 @@ public class ArtifactTest {
                 manaItem1.getManaCapacity(wand1) - 4, manaItem1.getMana(wand1));
         GST.assertEquals(helper, "Wand 2 should recharge +1",
                 manaItem2.getManaCapacity(wand2) - 4, manaItem2.getMana(wand2));
-        helper.succeed();
     }
 
     public static void arcaneDefenseAmuletRecharge(GameTestHelper helper) {
-        Player player = GST.mockServerPlayer(helper, PLAYER_POS);
-        ItemStack amulet = new ItemStack(EBItems.AMULET_ARCANE_DEFENCE.get());
-        ItemStack wizardHat = new ItemStack(EBItems.WIZARD_HAT.get());
-
-        IManaStoringItem manaArmor = (IManaStoringItem) wizardHat.getItem();
-        manaArmor.setMana(wizardHat, manaArmor.getManaCapacity(wizardHat) - 3);
-
-        player.setItemSlot(EquipmentSlot.HEAD, wizardHat);
-        player.getInventory().items.set(0, amulet);
-
-        player.tickCount = ArcaneDefenseAmuletEffect.MANA_RECHARGE_INTERVAL_TICKS; // Simulate ticks
-        ((ArtefactItem) amulet.getItem()).getEffect().onTick(player, player.level(), amulet);
-
-        GST.assertEquals(helper, "Hat should recharge +1",
-                manaArmor.getManaCapacity(wizardHat) - 2, manaArmor.getMana(wizardHat));
-        helper.succeed();
-    }
-
-    public static void arcaneDefenseAmuletRechargesMultipleArmor(GameTestHelper helper) {
         Player player = GST.mockServerPlayer(helper, PLAYER_POS);
         ItemStack amulet = new ItemStack(EBItems.AMULET_ARCANE_DEFENCE.get());
         ItemStack wizardHat = new ItemStack(EBItems.WIZARD_HAT.get());
@@ -109,6 +68,42 @@ public class ArtifactTest {
                 manaRobe.getManaCapacity(wizardRobe) - 4, manaRobe.getMana(wizardRobe));
         GST.assertEquals(helper, "Boots must recharge +1",
                 manaBoots.getManaCapacity(wizardBoots) - 4, manaBoots.getMana(wizardBoots));
-        helper.succeed();
     }
+
+//    public static void autoSmeltCharmEffect(GameTestHelper helper) {
+//        Player player = GST.mockServerPlayer(helper, PLAYER_POS);
+//        ItemStack charm = new ItemStack(EBItems.CHARM_AUTO_SMELT.get());
+//        ItemStack wand = new ItemStack(EBItems.NOVICE_WAND.get());
+//
+//        // Add charm and wand to player's hotbar
+//        player.getInventory().items.set(0, charm);
+//        player.getInventory().items.set(1, wand);
+//
+//        // Add smeltable items to player's inventory (64+ raw iron to trigger auto-smelt)
+//        ItemStack rawIron = new ItemStack(Items.RAW_IRON, 64);
+//        player.getInventory().items.set(2, rawIron);
+//
+//        // Set full mana on wand for casting
+//        IManaStoringItem manaItem = (IManaStoringItem) wand.getItem();
+//        manaItem.setMana(wand, manaItem.getManaCapacity(wand));
+//
+//        // Create an item entity to pick up
+//        ItemStack pickupItem = new ItemStack(Items.STONE, 1);
+//        ItemEntity itemEntity = new ItemEntity(
+//                player.level(),
+//                player.getX(),
+//                player.getY(),
+//                player.getZ(),
+//                pickupItem
+//        );
+//        player.level().addFreshEntity(itemEntity);
+//
+//        // Simulate player touching the item (triggers playerTouch in mixin)
+//        itemEntity.playerTouch(player);
+//
+//        // Check if the raw iron was smelted
+//        ItemStack result = player.getInventory().items.get(2);
+//        GST.assertEquals(helper, "Raw iron should be auto-smelted when picking up items",
+//                Items.IRON_INGOT, result.getItem());
+//    }
 }

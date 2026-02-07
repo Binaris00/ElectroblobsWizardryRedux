@@ -34,4 +34,7 @@ public interface IArtefactEffect {
 
     default void onHurtEntity(EBLivingHurtEvent event, ItemStack stack) {
     }
+
+    default void onPlayerHurt(EBLivingHurtEvent event, ItemStack stack){
+    }
 }

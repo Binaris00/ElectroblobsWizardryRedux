@@ -34,7 +34,6 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import static com.binaris.wizardry.core.ArtifactUtils.handleLightningEffect;
 import static com.binaris.wizardry.core.ArtifactUtils.meleeRing;
 
 
@@ -343,7 +342,7 @@ public final class EBItems {
     public static final DeferredObject<Item> AMULET_ICE_IMMUNITY = artifact("amulet_ice_immunity", Rarity.EPIC);
     public static final DeferredObject<Item> AMULET_ICE_PROTECTION = artifact("amulet_ice_protection", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && e.getSource().is(EBDamageSources.FROST), (e, s) -> e.setAmount(e.getAmount() * 0.7f)));
     public static final DeferredObject<Item> AMULET_LICH = artifact("amulet_lich", Rarity.UNCOMMON, new LichAmuletEffect());
-    public static final DeferredObject<Item> AMULET_POTENTIAL = artifact("amulet_potential", Rarity.RARE, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.level().random.nextFloat() < 0.2f && !e.getSource().isIndirect() && e.getSource().getDirectEntity() instanceof LivingEntity target, (e, s) -> handleLightningEffect(e.getSource().getEntity(), (LivingEntity) e.getSource().getDirectEntity(), e)));
+    public static final DeferredObject<Item> AMULET_POTENTIAL = artifact("amulet_potential", Rarity.RARE, new AmuletPotentialEffect());
     public static final DeferredObject<Item> AMULET_RECOVERY = artifact("amulet_recovery", Rarity.UNCOMMON);
     public static final DeferredObject<Item> AMULET_RESURRECTION = artifact("amulet_resurrection", Rarity.EPIC); // TODO PlayerDropsEvent
     public static final DeferredObject<Item> AMULET_TRANSIENCE = artifact("amulet_transience", Rarity.EPIC, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.getHealth() <= 6 && player.level().random.nextFloat() < 0.25f, (e, s) -> ((Player) e.getSource().getEntity()).addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 300, 0, false, false))));

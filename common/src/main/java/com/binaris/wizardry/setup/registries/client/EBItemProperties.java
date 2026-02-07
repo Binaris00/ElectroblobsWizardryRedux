@@ -53,8 +53,10 @@ public final class EBItemProperties {
             ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
             if (data != null && data.isSummoned()) {
                 int frames = 8;
-                int damage = data.getRemainingLifetime(clientLevel.getGameTime());
-                return damage < frames ? (float) damage / frames : (float) (stack.getMaxDamage() - damage) / frames;
+                int remaining = data.getRemainingLifetime(clientLevel.getGameTime());
+                int duration = data.getDuration();
+                int elapsed = duration - remaining;
+                return elapsed < frames ? (float) elapsed / frames : (float) remaining / frames;
             }
             return 0.0F;
         });
@@ -63,8 +65,10 @@ public final class EBItemProperties {
             ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
             if (data != null && data.isSummoned()) {
                 int frames = 8;
-                int damage = data.getRemainingLifetime(clientLevel.getGameTime());
-                return damage < frames || damage > stack.getMaxDamage() - frames ? 1.0F : 0.0F;
+                int remaining = data.getRemainingLifetime(clientLevel.getGameTime());
+                int duration = data.getDuration();
+                int elapsed = duration - remaining;
+                return elapsed < frames || remaining < frames ? 1.0F : 0.0F;
             }
             return 0.0F;
         });

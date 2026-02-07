@@ -69,11 +69,27 @@ public class ArtefactItem extends Item {
      *
      * @param event The living hurt event.
      */
-    public static void onArtifactHurt(EBLivingHurtEvent event) {
+    public static void onArtifactLivingHurt(EBLivingHurtEvent event) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
                 .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onHurtEntity(event, stack));
+    }
+
+    /**
+     * Called when the player is hurt (if player carries the artifact in their hotbar or accessories) to apply the artifact's effect.
+     * This method helps to check all equipped artifacts and call their respective effects {@code onPlayerHurt} method, so
+     * we don't have to register each artifact individually.
+     * <p>
+     * This event won't be calling artifacts that don't have any effect associated with them.
+     *
+     * @param event The living hurt event.
+     */
+    public static void onArtifactPlayerHurt(EBLivingHurtEvent event) {
+        if (!(event.getDamagedEntity() instanceof Player player)) return;
+        List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
+        stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
+                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onPlayerHurt(event, stack));
     }
 
     /**
