@@ -1,11 +1,11 @@
 package com.binaris.wizardry.content.item.artifact;
 
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class AutoShieldAmuletEffect implements IArtefactEffect {
+public class AutoShieldAmuletEffect implements IArtifactEffect {
     @Override
     public void onTick(LivingEntity entity, Level level, ItemStack stack) {
         // todo shield spell

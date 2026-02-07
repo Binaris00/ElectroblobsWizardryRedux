@@ -13,8 +13,8 @@ import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.content.spell.necromancy.Banish;
 import com.binaris.wizardry.content.spell.sorcery.ImbueWeapon;
 import com.binaris.wizardry.core.EBConfig;
-import com.binaris.wizardry.core.IArtefactEffect;
-import com.binaris.wizardry.core.QuickArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
+import com.binaris.wizardry.core.QuickArtifactEffect;
 import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.datagen.EBDataGenProcessor;
@@ -310,9 +310,9 @@ public final class EBItems {
     public static final DeferredObject<Item> CHARM_ABSEILING = artifact("charm_abseiling", Rarity.RARE);
     public static final DeferredObject<Item> CHARM_AUTO_SMELT = artifact("charm_auto_smelt", Rarity.RARE);
     public static final DeferredObject<Item> CHARM_BLACK_HOLE = artifact("charm_black_hole", Rarity.EPIC);
-    public static final DeferredObject<Item> CHARM_EXPERIENCE_TOME = artifact("charm_experience_tome", Rarity.EPIC, QuickArtefactEffect.spellPreCast((e, s) -> true, (e, s) -> e.getModifiers().set(SpellModifiers.PROGRESSION, e.getModifiers().get(SpellModifiers.PROGRESSION) * 1.5f, false)));
+    public static final DeferredObject<Item> CHARM_EXPERIENCE_TOME = artifact("charm_experience_tome", Rarity.EPIC, QuickArtifactEffect.spellPreCast((e, s) -> true, (e, s) -> e.getModifiers().set(SpellModifiers.PROGRESSION, e.getModifiers().get(SpellModifiers.PROGRESSION) * 1.5f, false)));
     public static final DeferredObject<Item> CHARM_FEEDING = artifact("charm_feeding", Rarity.UNCOMMON, new FeedingCharmEffect());
-    public static final DeferredObject<Item> CHARM_FLIGHT = artifact("charm_flight", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell() == Spells.FLIGHT, (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.5f * e.getModifiers().get(SpellModifiers.POTENCY), true)));
+    public static final DeferredObject<Item> CHARM_FLIGHT = artifact("charm_flight", Rarity.RARE, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell() == Spells.FLIGHT, (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.5f * e.getModifiers().get(SpellModifiers.POTENCY), true)));
     public static final DeferredObject<Item> CHARM_GROWTH = artifact("charm_growth", Rarity.UNCOMMON);
     public static final DeferredObject<Item> CHARM_HAGGLER = artifact("charm_haggler", Rarity.RARE);
     public static final DeferredObject<Item> CHARM_HUNGER_CASTING = artifact("charm_hunger_casting", Rarity.RARE, new HungerCastingCharmEffect());
@@ -334,48 +334,48 @@ public final class EBItems {
     public static final DeferredObject<Item> AMULET_ANCHORING = artifact("amulet_anchoring", Rarity.RARE);
     public static final DeferredObject<Item> AMULET_ARCANE_DEFENCE = artifact("amulet_arcane_defence", Rarity.RARE, new ArcaneDefenseAmuletEffect());
     public static final DeferredObject<Item> AMULET_AUTO_SHIELD = artifact("amulet_auto_shield", Rarity.RARE, new AutoShieldAmuletEffect());
-    public static final DeferredObject<Item> AMULET_BANISHING = artifact("amulet_banishing", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.level().random.nextFloat() < 0.2f && !e.getSource().isIndirect() && e.getSource().getDirectEntity() instanceof LivingEntity target, (e, s) -> ((Banish) Spells.BANISH).teleport((LivingEntity) e.getSource().getDirectEntity(), e.getSource().getDirectEntity().level(), 8 + e.getSource().getDirectEntity().level().random.nextDouble() * 8)));
-    public static final DeferredObject<Item> AMULET_CHANNELING = artifact("amulet_channeling", Rarity.RARE, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.level().random.nextFloat() < 0.3f && e.getSource().is(EBDamageSources.FROST), (e, s) -> e.setCanceled(true)));
+    public static final DeferredObject<Item> AMULET_BANISHING = artifact("amulet_banishing", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.level().random.nextFloat() < 0.2f && !e.getSource().isIndirect() && e.getSource().getDirectEntity() instanceof LivingEntity target, (e, s) -> ((Banish) Spells.BANISH).teleport((LivingEntity) e.getSource().getDirectEntity(), e.getSource().getDirectEntity().level(), 8 + e.getSource().getDirectEntity().level().random.nextDouble() * 8)));
+    public static final DeferredObject<Item> AMULET_CHANNELING = artifact("amulet_channeling", Rarity.RARE, QuickArtifactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.level().random.nextFloat() < 0.3f && e.getSource().is(EBDamageSources.FROST), (e, s) -> e.setCanceled(true)));
     public static final DeferredObject<Item> AMULET_FIRE_CLOAKING = artifact("amulet_fire_cloaking", Rarity.RARE, new FireCloakingAmuletEffect());
-    public static final DeferredObject<Item> AMULET_FIRE_PROTECTION = artifact("amulet_fire_protection", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().is(EBDamageSources.FIRE), (e, s) -> e.setAmount(e.getAmount() * 0.7f)));
+    public static final DeferredObject<Item> AMULET_FIRE_PROTECTION = artifact("amulet_fire_protection", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> e.getSource().is(EBDamageSources.FIRE), (e, s) -> e.setAmount(e.getAmount() * 0.7f)));
     public static final DeferredObject<Item> AMULET_FROST_WARDING = artifact("amulet_frost_warding", Rarity.RARE, new FrostWardingAmuletEffect());
     public static final DeferredObject<Item> AMULET_ICE_IMMUNITY = artifact("amulet_ice_immunity", Rarity.EPIC);
-    public static final DeferredObject<Item> AMULET_ICE_PROTECTION = artifact("amulet_ice_protection", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && e.getSource().is(EBDamageSources.FROST), (e, s) -> e.setAmount(e.getAmount() * 0.7f)));
+    public static final DeferredObject<Item> AMULET_ICE_PROTECTION = artifact("amulet_ice_protection", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && e.getSource().is(EBDamageSources.FROST), (e, s) -> e.setAmount(e.getAmount() * 0.7f)));
     public static final DeferredObject<Item> AMULET_LICH = artifact("amulet_lich", Rarity.UNCOMMON, new LichAmuletEffect());
     public static final DeferredObject<Item> AMULET_POTENTIAL = artifact("amulet_potential", Rarity.RARE, new AmuletPotentialEffect());
     public static final DeferredObject<Item> AMULET_RECOVERY = artifact("amulet_recovery", Rarity.UNCOMMON);
     public static final DeferredObject<Item> AMULET_RESURRECTION = artifact("amulet_resurrection", Rarity.EPIC); // TODO PlayerDropsEvent
-    public static final DeferredObject<Item> AMULET_TRANSIENCE = artifact("amulet_transience", Rarity.EPIC, QuickArtefactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.getHealth() <= 6 && player.level().random.nextFloat() < 0.25f, (e, s) -> ((Player) e.getSource().getEntity()).addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 300, 0, false, false))));
-    public static final DeferredObject<Item> AMULET_WARDING = artifact("amulet_warding", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> EBDamageSources.isMagic(e.getSource()), (e, s) -> e.setAmount(e.getAmount() * 0.9f)));
+    public static final DeferredObject<Item> AMULET_TRANSIENCE = artifact("amulet_transience", Rarity.EPIC, QuickArtifactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.getHealth() <= 6 && player.level().random.nextFloat() < 0.25f, (e, s) -> ((Player) e.getSource().getEntity()).addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 300, 0, false, false))));
+    public static final DeferredObject<Item> AMULET_WARDING = artifact("amulet_warding", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> EBDamageSources.isMagic(e.getSource()), (e, s) -> e.setAmount(e.getAmount() * 0.9f)));
     public static final DeferredObject<Item> AMULET_WISDOM = artifact("amulet_wisdom", Rarity.RARE);
     public static final DeferredObject<Item> AMULET_WITHER_IMMUNITY = artifact("amulet_wither_immunity", Rarity.EPIC);
     // Rings
-    public static final DeferredObject<Item> RING_FULL_MOON = artifact("ring_full_moon", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.EARTH && !e.getCaster().level().isDay() && e.getCaster().level().getMoonPhase() == 0, (e, s) -> e.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), e.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false)));
-    public static final DeferredObject<Item> RING_STORM = artifact("ring_storm", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.LIGHTNING && e.getLevel().isThundering(), (e, s) -> e.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), e.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false)));
-    public static final DeferredObject<Item> RING_CONJURER = artifact("ring_conjurer", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell() instanceof ConjureItemSpell, (e, s) -> e.getModifiers().set(EBItems.DURATION_UPGRADE.get(), e.getModifiers().get(EBItems.DURATION_UPGRADE.get()) * 2, false)));
+    public static final DeferredObject<Item> RING_FULL_MOON = artifact("ring_full_moon", Rarity.RARE, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.EARTH && !e.getCaster().level().isDay() && e.getCaster().level().getMoonPhase() == 0, (e, s) -> e.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), e.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false)));
+    public static final DeferredObject<Item> RING_STORM = artifact("ring_storm", Rarity.RARE, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.LIGHTNING && e.getLevel().isThundering(), (e, s) -> e.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), e.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get()) * 0.3f, false)));
+    public static final DeferredObject<Item> RING_CONJURER = artifact("ring_conjurer", Rarity.RARE, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell() instanceof ConjureItemSpell, (e, s) -> e.getModifiers().set(EBItems.DURATION_UPGRADE.get(), e.getModifiers().get(EBItems.DURATION_UPGRADE.get()) * 2, false)));
     public static final DeferredObject<Item> RING_ARCANE_FROST = artifact("ring_arcane_frost", Rarity.EPIC, new ArcaneFrostRingEffect());
-    public static final DeferredObject<Item> RING_BATTLEMAGE = artifact("ring_battlemage", Rarity.UNCOMMON, QuickArtefactEffect.spellPreCast((e, s) -> e.getCaster() instanceof Player player && player.getOffhandItem().getItem() instanceof ISpellCastingItem && ImbueWeapon.isSword(player.getMainHandItem()), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.1f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
-    public static final DeferredObject<Item> RING_BLOCKWRANGLER = artifact("ring_blockwrangler", Rarity.RARE, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell() == Spells.GREATER_TELEKINESIS, (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, e.getModifiers().get(SpellModifiers.POTENCY) * 2, false)));
-    public static final DeferredObject<Item> RING_COMBUSTION = artifact("ring_combustion", Rarity.EPIC, QuickArtefactEffect.death((e, s) -> e.getSource().typeHolder().is(EBDamageSources.FIRE.location()), (e, s) -> e.getEntity().level().explode(e.getEntity(), e.getEntity().xo, e.getEntity().yo, e.getEntity().zo, 1.5f, Level.ExplosionInteraction.NONE)));
+    public static final DeferredObject<Item> RING_BATTLEMAGE = artifact("ring_battlemage", Rarity.UNCOMMON, QuickArtifactEffect.spellPreCast((e, s) -> e.getCaster() instanceof Player player && player.getOffhandItem().getItem() instanceof ISpellCastingItem && ImbueWeapon.isSword(player.getMainHandItem()), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.1f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
+    public static final DeferredObject<Item> RING_BLOCKWRANGLER = artifact("ring_blockwrangler", Rarity.RARE, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell() == Spells.GREATER_TELEKINESIS, (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, e.getModifiers().get(SpellModifiers.POTENCY) * 2, false)));
+    public static final DeferredObject<Item> RING_COMBUSTION = artifact("ring_combustion", Rarity.EPIC, QuickArtifactEffect.death((e, s) -> e.getSource().typeHolder().is(EBDamageSources.FIRE.location()), (e, s) -> e.getEntity().level().explode(e.getEntity(), e.getEntity().xo, e.getEntity().yo + 1, e.getEntity().zo, 2.0f, Level.ExplosionInteraction.NONE)));
     public static final DeferredObject<Item> RING_CONDENSING = artifact("ring_condensing", Rarity.RARE, new CondensingRingEffect());
     public static final DeferredObject<Item> RING_DEFENDER = artifact("ring_defender", Rarity.RARE);
     public static final DeferredObject<Item> RING_DISINTEGRATION = artifact("ring_disintegration", Rarity.RARE);
-    public static final DeferredObject<Item> RING_EARTH_BIOME = artifact("ring_earth_biome", Rarity.UNCOMMON, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.EARTH && Services.PLATFORM.inEarthBiomes(e.getCaster().level().getBiome(e.getCaster().blockPosition())), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.3f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
-    public static final DeferredObject<Item> RING_EARTH_MELEE = artifact("ring_earth_melee", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.EARTH), (e, s) -> e.getDamagedEntity().addEffect(new MobEffectInstance(MobEffects.POISON, 200))));
+    public static final DeferredObject<Item> RING_EARTH_BIOME = artifact("ring_earth_biome", Rarity.UNCOMMON, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.EARTH && Services.PLATFORM.inEarthBiomes(e.getCaster().level().getBiome(e.getCaster().blockPosition())), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.3f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
+    public static final DeferredObject<Item> RING_EARTH_MELEE = artifact("ring_earth_melee", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.EARTH), (e, s) -> e.getDamagedEntity().addEffect(new MobEffectInstance(MobEffects.POISON, 200))));
     public static final DeferredObject<Item> RING_EVOKER = artifact("ring_evoker", Rarity.RARE);
     public static final DeferredObject<Item> RING_EXTRACTION = artifact("ring_extraction", Rarity.UNCOMMON, new ExtractionRingEffect());
-    public static final DeferredObject<Item> RING_FIRE_BIOME = artifact("ring_fire_biome", Rarity.UNCOMMON, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.FIRE && Services.PLATFORM.intHotBiomes(e.getCaster().level().getBiome(e.getCaster().blockPosition())), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.3f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
-    public static final DeferredObject<Item> RING_FIRE_MELEE = artifact("ring_fire_melee", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.FIRE), (e, s) -> e.getDamagedEntity().setSecondsOnFire(5)));
+    public static final DeferredObject<Item> RING_FIRE_BIOME = artifact("ring_fire_biome", Rarity.UNCOMMON, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.FIRE && Services.PLATFORM.intHotBiomes(e.getCaster().level().getBiome(e.getCaster().blockPosition())), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.3f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
+    public static final DeferredObject<Item> RING_FIRE_MELEE = artifact("ring_fire_melee", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.FIRE), (e, s) -> e.getDamagedEntity().setSecondsOnFire(5)));
     public static final DeferredObject<Item> RING_HAMMER = artifact("ring_hammer", Rarity.EPIC);
-    public static final DeferredObject<Item> RING_ICE_BIOME = artifact("ring_ice_biome", Rarity.UNCOMMON, QuickArtefactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.ICE && Services.PLATFORM.inIceBiomes(e.getCaster().level().getBiome(e.getCaster().blockPosition())), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.3f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
-    public static final DeferredObject<Item> RING_ICE_MELEE = artifact("ring_ice_melee", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.ICE), (e, s) -> e.getDamagedEntity().addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200))));
+    public static final DeferredObject<Item> RING_ICE_BIOME = artifact("ring_ice_biome", Rarity.UNCOMMON, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell().getElement() == Elements.ICE && Services.PLATFORM.inIceBiomes(e.getCaster().level().getBiome(e.getCaster().blockPosition())), (e, s) -> e.getModifiers().set(SpellModifiers.POTENCY, 1.3f * e.getModifiers().get(SpellModifiers.POTENCY), false)));
+    public static final DeferredObject<Item> RING_ICE_MELEE = artifact("ring_ice_melee", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.ICE), (e, s) -> e.getDamagedEntity().addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), 200))));
     public static final DeferredObject<Item> RING_INTERDICTION = artifact("ring_interdiction", Rarity.EPIC);
     public static final DeferredObject<Item> RING_LEECHING = artifact("ring_leeching", Rarity.RARE, new LeechingRingEffect());
     public static final DeferredObject<Item> RING_LIGHTNING_MELEE = artifact("ring_lightning_melee", Rarity.UNCOMMON, new LightningMeleeEffect());
     public static final DeferredObject<Item> RING_MANA_RETURN = artifact("ring_mana_return", Rarity.EPIC);
     public static final DeferredObject<Item> RING_METEOR = artifact("ring_meteor", Rarity.EPIC);
     public static final DeferredObject<Item> RING_MIND_CONTROL = artifact("ring_mind_control", Rarity.RARE);
-    public static final DeferredObject<Item> RING_NECROMANCY_MELEE = artifact("ring_necromancy_melee", Rarity.UNCOMMON, QuickArtefactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.NECROMANCY), (e, s) -> e.getDamagedEntity().addEffect(new MobEffectInstance(MobEffects.WITHER, 200))));
+    public static final DeferredObject<Item> RING_NECROMANCY_MELEE = artifact("ring_necromancy_melee", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> meleeRing(e.getSource(), Elements.NECROMANCY), (e, s) -> e.getDamagedEntity().addEffect(new MobEffectInstance(MobEffects.WITHER, 200))));
     public static final DeferredObject<Item> RING_PALADIN = artifact("ring_paladin", Rarity.UNCOMMON, new PaladinRingEffect());
     public static final DeferredObject<Item> RING_POISON = artifact("ring_poison", Rarity.RARE, new PoisonRingEffect());
     public static final DeferredObject<Item> RING_SEEKING = artifact("ring_seeking", Rarity.EPIC);
@@ -484,7 +484,7 @@ public final class EBItems {
         return registeredWand;
     }
 
-    static DeferredObject<Item> artifact(String name, Rarity rarity, IArtefactEffect effect) {
+    static DeferredObject<Item> artifact(String name, Rarity rarity, IArtifactEffect effect) {
         return artifact(name, () -> EBAccessoriesIntegration.getArtifact(rarity, effect));
     }
 

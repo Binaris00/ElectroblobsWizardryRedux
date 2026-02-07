@@ -77,9 +77,9 @@
           "name": "ebwizardry:charm_mount_teleporting"
         }
       ],
-      "name": "rare_artefacts",
+      "name": "rare_artifacts",
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ebwizardry:subsets/rare_artefacts"
+  "random_sequence": "ebwizardry:subsets/rare_artifacts"
 }

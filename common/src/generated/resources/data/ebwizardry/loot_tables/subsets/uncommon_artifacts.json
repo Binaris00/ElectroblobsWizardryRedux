@@ -89,9 +89,9 @@
           "name": "ebwizardry:charm_feeding"
         }
       ],
-      "name": "uncommon_artefacts",
+      "name": "uncommon_artifacts",
       "rolls": 1.0
     }
   ],
-  "random_sequence": "ebwizardry:subsets/uncommon_artefacts"
+  "random_sequence": "ebwizardry:subsets/uncommon_artifacts"
 }

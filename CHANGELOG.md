@@ -1,2 +1,5 @@
 - Fixed problem that made diamonds have forge capabilities when they shouldn't.
 - Fixed amulet of potential not working.
+- Renamed most code/data/assets files from "artefact" to "artifact" to match the consistent spelling of the word in the mod.
+- Fixed problem with Ring Lightning Melee not chaining properly.
+- Added unit tests for some of the artifact effects.

@@ -28,7 +28,7 @@ import java.util.function.Consumer;
 
 /**
  * Various utility methods for use by artifacts. These are all static methods, so there is no need to ever instantiate
- * this class. Normally we use these methods to make more good-looking {@link QuickArtefactEffect} lambdas and avoid
+ * this class. Normally we use these methods to make more good-looking {@link QuickArtifactEffect} lambdas and avoid
  * creating loads of classes with the same logic (specially referred to predicates and similar).
  */
 public final class ArtifactUtils {

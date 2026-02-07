@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.content.spell.healing.ReplenishHunger;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -10,7 +10,7 @@ import net.minecraft.world.level.Level;
 
 import static com.binaris.wizardry.core.ArtifactUtils.findMatchingWandAndCast;
 
-public class FeedingCharmEffect implements IArtefactEffect {
+public class FeedingCharmEffect implements IArtifactEffect {
     @Override
     public void onTick(LivingEntity entity, Level level, ItemStack stack) {
         if (!(entity instanceof Player player)) return;

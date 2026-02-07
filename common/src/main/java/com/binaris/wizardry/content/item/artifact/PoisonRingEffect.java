@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.item.ISpellCastingItem;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
 import net.minecraft.world.damagesource.DamageSource;
@@ -14,7 +14,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-public class PoisonRingEffect implements IArtefactEffect {
+public class PoisonRingEffect implements IArtifactEffect {
     private static final int POISON_DURATION = 100; // (5 seconds)
 
     @Override

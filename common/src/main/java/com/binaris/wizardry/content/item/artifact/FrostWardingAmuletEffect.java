@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.content.entity.construct.IceBarrierConstruct;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -11,7 +11,7 @@ import net.minecraft.world.level.Level;
 
 import java.util.List;
 
-public class FrostWardingAmuletEffect implements IArtefactEffect {
+public class FrostWardingAmuletEffect implements IArtifactEffect {
     @Override
     public void onTick(LivingEntity entity, Level level, ItemStack stack) {
         if (!(entity instanceof Player player)) return;

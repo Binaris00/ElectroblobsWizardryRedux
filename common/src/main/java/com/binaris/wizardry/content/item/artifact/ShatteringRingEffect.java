@@ -2,12 +2,12 @@ package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.content.entity.projectile.IceShardEntity;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class ShatteringRingEffect implements IArtefactEffect {
+public class ShatteringRingEffect implements IArtifactEffect {
     @Override
     public void onHurtEntity(EBLivingHurtEvent event, ItemStack stack) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;

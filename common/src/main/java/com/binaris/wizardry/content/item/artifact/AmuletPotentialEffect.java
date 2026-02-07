@@ -2,13 +2,13 @@ package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.core.ArtifactUtils;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class AmuletPotentialEffect implements IArtefactEffect {
+public class AmuletPotentialEffect implements IArtifactEffect {
     public static float PROBABILITY_EFFECT = 0.2F;
 
     @Override

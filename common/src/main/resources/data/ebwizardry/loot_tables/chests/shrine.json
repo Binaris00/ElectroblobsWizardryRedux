@@ -1,22 +1,22 @@
 {
   "pools": [
     {
-      "name": "artefact",
+      "name": "artifact",
       "rolls": 1,
       "entries": [
         {
           "type": "minecraft:loot_table",
-          "name": "ebwizardry:subsets/uncommon_artefacts",
+          "name": "ebwizardry:subsets/uncommon_artifacts",
           "weight": 5
         },
         {
           "type": "minecraft:loot_table",
-          "name": "ebwizardry:subsets/rare_artefacts",
+          "name": "ebwizardry:subsets/rare_artifacts",
           "weight": 3
         },
         {
           "type": "minecraft:loot_table",
-          "name": "ebwizardry:subsets/epic_artefacts",
+          "name": "ebwizardry:subsets/epic_artifacts",
           "weight": 1
         }
       ]

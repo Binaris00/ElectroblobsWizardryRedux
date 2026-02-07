@@ -4,11 +4,11 @@ import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.IManaStoringItem;
 import com.binaris.wizardry.api.content.item.ISpellCastingItem;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class HungerCastingCharmEffect implements IArtefactEffect {
+public class HungerCastingCharmEffect implements IArtifactEffect {
 
     @Override
     public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack stack) {

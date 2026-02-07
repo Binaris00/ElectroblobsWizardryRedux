@@ -1,8 +1,8 @@
 package com.binaris.wizardry.core.integrations.accessories;
 
-import com.binaris.wizardry.api.content.item.ArtefactItem;
+import com.binaris.wizardry.api.content.item.ArtifactItem;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -27,22 +27,22 @@ public final class EBAccessoriesIntegration {
     }
 
     /**
-     * Creates an artefact item, using Accessories integration if available, otherwise defaults to a standard artefact item.
+     * Creates an artifact item, using Accessories integration if available, otherwise defaults to a standard artifact item.
      *
-     * @param rarity the rarity of the artefact
-     * @param effect the artefact effect
-     * @return the created artefact item
+     * @param rarity the rarity of the artifact
+     * @param effect the artifact effect
+     * @return the created artifact item
      */
-    public static Item getArtifact(Rarity rarity, IArtefactEffect effect) {
+    public static Item getArtifact(Rarity rarity, IArtifactEffect effect) {
         if (!isAccessoriesLoaded()) {
-            return new ArtefactItem(rarity, effect);
+            return new ArtifactItem(rarity, effect);
         }
         // Isolate the class loading by calling a separate method
         try {
             return AccessoriesIntegrationImpl.createAccessoryItem(rarity, effect);
         } catch (NoClassDefFoundError e) {
             // Fallback if Accessories classes are not available
-            return new ArtefactItem(rarity, effect);
+            return new ArtifactItem(rarity, effect);
         }
     }
 

@@ -2,14 +2,14 @@ package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.Optional;
 
-public class LeechingRingEffect implements IArtefactEffect {
+public class LeechingRingEffect implements IArtifactEffect {
     @Override
     public void onHurtEntity(EBLivingHurtEvent e, ItemStack s) {
         Player player = (Player) e.getSource().getEntity();

@@ -57,10 +57,10 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
                                 .add(LootItem.lootTableItem(EBItems.MAGIC_CRYSTAL_SORCERY.get()).setWeight(1))
                         ));
 
-        biConsumer.accept(EBLootTables.SUBSET_EPIC_ARTEFACTS,
+        biConsumer.accept(EBLootTables.SUBSET_EPIC_ARTIFACTS,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
-                                .name("epic_artefacts")
+                                .name("epic_artifacts")
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(EBItems.RING_COMBUSTION.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.RING_ARCANE_FROST.get()).setWeight(1))
@@ -73,10 +73,10 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
                                 .add(LootItem.lootTableItem(EBItems.CHARM_STOP_TIME.get()).setWeight(1))
                         ));
 
-        biConsumer.accept(EBLootTables.SUBSET_RARE_ARTEFACTS,
+        biConsumer.accept(EBLootTables.SUBSET_RARE_ARTIFACTS,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
-                                .name("rare_artefacts")
+                                .name("rare_artifacts")
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(EBItems.RING_CONDENSING.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.RING_SHATTERING.get()).setWeight(1))
@@ -99,10 +99,10 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
 
                         ));
 
-        biConsumer.accept(EBLootTables.SUBSET_UNCOMMON_ARTEFACTS,
+        biConsumer.accept(EBLootTables.SUBSET_UNCOMMON_ARTIFACTS,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
-                                .name("uncommon_artefacts")
+                                .name("uncommon_artifacts")
                                 .setRolls(ConstantValue.exactly(1))
                                 .add(LootItem.lootTableItem(EBItems.RING_SIPHONING.get()))
                                 .add(LootItem.lootTableItem(EBItems.RING_BATTLEMAGE.get()))

@@ -9,11 +9,11 @@ import com.binaris.wizardry.content.spell.healing.GreaterHeal;
 import com.binaris.wizardry.content.spell.healing.Heal;
 import com.binaris.wizardry.content.spell.healing.HealAlly;
 import com.binaris.wizardry.core.AllyDesignation;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
-public class PaladinRingEffect implements IArtefactEffect {
+public class PaladinRingEffect implements IArtifactEffect {
 
     @Override
     public void onSpellPostCast(SpellCastEvent.Post event, ItemStack stack) {

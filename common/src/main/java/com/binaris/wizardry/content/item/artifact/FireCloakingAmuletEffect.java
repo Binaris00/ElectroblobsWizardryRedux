@@ -3,13 +3,13 @@ package com.binaris.wizardry.content.item.artifact;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.content.entity.construct.FireRingConstruct;
 import com.binaris.wizardry.core.AllyDesignation;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.List;
 
-public class FireCloakingAmuletEffect implements IArtefactEffect {
+public class FireCloakingAmuletEffect implements IArtifactEffect {
     @Override
     public void onHurtEntity(EBLivingHurtEvent event, ItemStack stack) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;

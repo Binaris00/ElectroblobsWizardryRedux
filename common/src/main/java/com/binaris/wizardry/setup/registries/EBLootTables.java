@@ -26,9 +26,9 @@ public final class EBLootTables {
     public static final ResourceLocation SUBSET_ARCANE_TOMES = register("subsets/arcane_tomes");
     public static final ResourceLocation SUBSET_ARMOR_UPGRADES = register("subsets/armor_upgrades");
     public static final ResourceLocation SUBSET_ELEMENTAL_CRYSTALS = register("subsets/elemental_crystals");
-    public static final ResourceLocation SUBSET_EPIC_ARTEFACTS = register("subsets/epic_artefacts");
-    public static final ResourceLocation SUBSET_RARE_ARTEFACTS = register("subsets/rare_artefacts");
-    public static final ResourceLocation SUBSET_UNCOMMON_ARTEFACTS = register("subsets/uncommon_artefacts");
+    public static final ResourceLocation SUBSET_EPIC_ARTIFACTS = register("subsets/epic_artifacts");
+    public static final ResourceLocation SUBSET_RARE_ARTIFACTS = register("subsets/rare_artifacts");
+    public static final ResourceLocation SUBSET_UNCOMMON_ARTIFACTS = register("subsets/uncommon_artifacts");
     public static final ResourceLocation SUBSET_WIZARD_ARMOR = register("subsets/wizard_armor");
     public static final ResourceLocation SUBSET_WAND_UPGRADES = register("subsets/wand_upgrades");
     public static final ResourceLocation SHRINE = register("chests/shrine");

@@ -1,6 +1,6 @@
 package com.binaris.wizardry.core.integrations.accessories;
 
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import io.wispforest.accessories.api.AccessoriesCapability;
 import io.wispforest.accessories.api.slot.SlotEntryReference;
 import net.minecraft.world.entity.player.Player;
@@ -20,14 +20,14 @@ import java.util.stream.Collectors;
 class AccessoriesIntegrationImpl {
 
     /**
-     * Creates an artefact item that is also an accessory.
+     * Creates an artifact item that is also an accessory.
      *
-     * @param rarity the rarity of the artefact
-     * @param effect the artefact effect
-     * @return the created accessory artefact item
+     * @param rarity the rarity of the artifact
+     * @param effect the artifact effect
+     * @return the created accessory artifact item
      */
-    static Item createAccessoryItem(Rarity rarity, IArtefactEffect effect) {
-        return new AccessoriesArtefactItem(rarity, effect);
+    static Item createAccessoryItem(Rarity rarity, IArtifactEffect effect) {
+        return new AccessoriesArtifactItem(rarity, effect);
     }
 
     /**

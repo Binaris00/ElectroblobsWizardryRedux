@@ -4,7 +4,7 @@ import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
-import com.binaris.wizardry.core.IArtefactEffect;
+import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -20,26 +20,26 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 /**
- * Base class for artefact items. Artefacts are special items that provide passive effects when being on the player's
- * hotbar or in an accessory (check {@code AccessoriesArtefactItem} in the Accessories integration module).
+ * Base class for artifact items. Artifacts are special items that provide passive effects when being on the player's
+ * hotbar or in an accessory (check {@code AccessoriesArtifactItem} in the Accessories integration module).
  * <p>
- * Artefacts can have an associated {@link IArtefactEffect} which defines what effects they provide. These effects
+ * Artifacts can have an associated {@link IArtifactEffect} which defines what effects they provide. These effects
  * are triggered by various events, such as ticking, the player being hurt, or spell casting. Static methods are provided
- * to handle these events and apply the effects of all equipped artefacts. These effects are optional; an artefact can
+ * to handle these events and apply the effects of all equipped artifacts. These effects are optional; an artifact can
  * be created without one.
  *
- * @see IArtefactEffect
+ * @see IArtifactEffect
  */
 @SuppressWarnings("ConstantConditions")
-public class ArtefactItem extends Item {
-    private final @Nullable IArtefactEffect effect;
+public class ArtifactItem extends Item {
+    private final @Nullable IArtifactEffect effect;
 
-    public ArtefactItem(Rarity rarity) {
+    public ArtifactItem(Rarity rarity) {
         super(new Item.Properties().stacksTo(1).rarity(rarity));
         effect = null;
     }
 
-    public ArtefactItem(Rarity rarity, @Nullable IArtefactEffect effect) {
+    public ArtifactItem(Rarity rarity, @Nullable IArtifactEffect effect) {
         super(new Item.Properties().stacksTo(1).rarity(rarity));
         this.effect = effect;
     }
@@ -56,8 +56,8 @@ public class ArtefactItem extends Item {
     public static void onArtifactTick(EBLivingTick event) {
         if (!(event.getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
-        stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onTick(event.getEntity(), event.getLevel(), stack));
+        stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onTick(event.getEntity(), event.getLevel(), stack));
     }
 
     /**
@@ -72,8 +72,8 @@ public class ArtefactItem extends Item {
     public static void onArtifactLivingHurt(EBLivingHurtEvent event) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
-        stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onHurtEntity(event, stack));
+        stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onHurtEntity(event, stack));
     }
 
     /**
@@ -88,56 +88,51 @@ public class ArtefactItem extends Item {
     public static void onArtifactPlayerHurt(EBLivingHurtEvent event) {
         if (!(event.getDamagedEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
-        stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onPlayerHurt(event, stack));
+        stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onPlayerHurt(event, stack));
     }
 
     /**
-     * Called when the player dies (if player carries the artefact in their hotbar or accessories) to apply the
-     * artefact's effect. This method helps to check all equipped artefacts and call their respective effects
-     * {@code onDeath} method, so we don't have to register each artefact individually.
-     * <p>
-     * This event won't be calling artefacts that doesn't have any effect associated with them.
-     *
-     * @param event The living death event.
+     * Called when the player is responsible for killing an entity (if player carries the artifact in their hotbar or accessories)
+     * to apply the artifact's effect.
      */
-    public static void onArtifactDeath(EBLivingDeathEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+    public static void onArtifactPlayerKill(EBLivingDeathEvent event) {
+        if (!(event.getSource().getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
-        stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onDeath(event, stack));
+        stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onPlayerKill(event, stack));
     }
 
     /**
-     * Called before a spell is cast (if player carries the artefact in their hotbar or accessories) to apply the
-     * artefact's effect. This method helps to check all equipped artefacts and call their respective effects
-     * {@code onSpellPreCast} method, so we don't have to register each artefact individually.
+     * Called before a spell is cast (if player carries the artifact in their hotbar or accessories) to apply the
+     * artifact's effect. This method helps to check all equipped artifacts and call their respective effects
+     * {@code onSpellPreCast} method, so we don't have to register each artifact individually.
      * <p>
-     * This event won't be calling artefacts that doesn't have any effect associated with them.
+     * This event won't be calling artifacts that doesn't have any effect associated with them.
      *
      * @param event The spell cast pre-event.
      */
     public static void onArtifactPreCast(SpellCastEvent.Pre event) {
         if (!(event.getCaster() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
-        stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onSpellPreCast(event, stack));
+        stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onSpellPreCast(event, stack));
     }
 
     /**
-     * Called after a spell is cast (if player carries the artefact in their hotbar or accessories) to apply the
-     * artefact's effect. This method helps to check all equipped artefacts and call their respective effects
-     * {@code onSpellPostCast} method, so we don't have to register each artefact individually.
+     * Called after a spell is cast (if player carries the artifact in their hotbar or accessories) to apply the
+     * artifact's effect. This method helps to check all equipped artifacts and call their respective effects
+     * {@code onSpellPostCast} method, so we don't have to register each artifact individually.
      * <p>
-     * This event won't be calling artefacts that don't have any effect associated with them.
+     * This event won't be calling artifacts that don't have any effect associated with them.
      *
      * @param event The spell cast post-event.
      */
     public static void onArtifactPostCast(SpellCastEvent.Post event) {
         if (!(event.getCaster() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
-        stacks.stream().filter(stack -> stack.getItem() instanceof ArtefactItem artefact && artefact.getEffect() != null)
-                .forEach(stack -> ((ArtefactItem) stack.getItem()).getEffect().onSpellPostCast(event, stack));
+        stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onSpellPostCast(event, stack));
     }
 
     @Override
@@ -145,7 +140,7 @@ public class ArtefactItem extends Item {
         list.add(Component.translatable(this.getDescriptionId() + ".desc").withStyle(ChatFormatting.GRAY));
     }
 
-    public @Nullable IArtefactEffect getEffect() {
+    public @Nullable IArtifactEffect getEffect() {
         return effect;
     }
 }
