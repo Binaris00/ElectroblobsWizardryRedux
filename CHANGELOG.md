@@ -3,3 +3,5 @@
 - Renamed most code/data/assets files from "artefact" to "artifact" to match the consistent spelling of the word in the mod.
 - Fixed problem with Ring Lightning Melee not chaining properly.
 - Added unit tests for some of the artifact effects.
+- Fixed bad render of Smoke Bomb and Blizzard (Particle Dust)
+- [Fabric] Fixed evil wizards spawning in mushroom fields.
