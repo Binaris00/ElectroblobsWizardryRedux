@@ -5,6 +5,6 @@ import net.minecraft.ChatFormatting;
 
 public class ApprenticeTier extends SpellTier {
     public ApprenticeTier() {
-        super(1500, 5, 5, 1, ChatFormatting.AQUA, 200);
+        super(1000, 5, 5, 1, ChatFormatting.AQUA, 1500);
     }
 }

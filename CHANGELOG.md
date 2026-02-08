@@ -5,3 +5,5 @@
 - Added unit tests for some of the artifact effects.
 - Fixed bad render of Smoke Bomb and Blizzard (Particle Dust)
 - [Fabric] Fixed evil wizards spawning in mushroom fields.
+- Changed progression for each spell tier to be the same as the original mod
+- Charm hunger casting marked as not implemented yet, as it is not working properly.

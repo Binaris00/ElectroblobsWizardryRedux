@@ -5,7 +5,7 @@ import net.minecraft.ChatFormatting;
 
 public class MasterTier extends SpellTier {
     public MasterTier() {
-        super(6000, 9, 1, 3, ChatFormatting.DARK_PURPLE, 400);
+        super(2500, 9, 1, 3, ChatFormatting.DARK_PURPLE, 6000);
     }
 }
 

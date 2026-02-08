@@ -93,7 +93,6 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
                                 .add(LootItem.lootTableItem(EBItems.AMULET_TRANSIENCE.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_HAGGLER.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_MOVE_SPEED.get()).setWeight(1))
-                                .add(LootItem.lootTableItem(EBItems.CHARM_HUNGER_CASTING.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_FLIGHT.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_MOUNT_TELEPORTING.get()).setWeight(1))
 

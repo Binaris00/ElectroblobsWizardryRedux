@@ -49,7 +49,7 @@ import java.util.List;
 public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, IWizardryItem, ITierValue, IElementValue {
     /* Base number of spell slots on a wand without upgrades. */
     public static final int BASE_SPELL_SLOTS = 5;
-    /** Cooldown applied when a spell cast is cancelled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
+    /** Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
     public static final int COOLDOWN_FORFEIT_TICKS = 60;
     /** Maximum use duration for continuous spells. */
     public static final int MAX_USE_DURATION = 72000;
@@ -165,7 +165,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public boolean isFoil(@NotNull ItemStack stack) {
         if (tier == SpellTiers.MASTER) return false;
-        return WandHelper.getProgression(stack) >= tier.getProgression();
+        return WandHelper.getProgression(stack) >= tier.next().getProgression();
     }
 
     @Override

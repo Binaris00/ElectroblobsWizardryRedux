@@ -5,6 +5,6 @@ import net.minecraft.ChatFormatting;
 
 public class AdvancedTier extends SpellTier {
     public AdvancedTier() {
-        super(3500, 7, 2, 2, ChatFormatting.DARK_BLUE, 300);
+        super(1500, 7, 2, 2, ChatFormatting.DARK_BLUE, 3000);
     }
 }

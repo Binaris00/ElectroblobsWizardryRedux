@@ -32,7 +32,8 @@ public final class NotImplementedItems {
             EBItems.AMULET_FIRE_CLOAKING.get(),
             EBItems.AMULET_BANISHING.get(),
             EBItems.CHARM_AUTO_SMELT.get(),
-            EBItems.RING_SOULBINDING.get()
+            EBItems.RING_SOULBINDING.get(),
+            EBItems.CHARM_HUNGER_CASTING.get()
     );
 
     public static void init() {
