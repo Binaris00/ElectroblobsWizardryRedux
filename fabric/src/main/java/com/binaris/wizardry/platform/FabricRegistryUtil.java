@@ -20,7 +20,7 @@ public class FabricRegistryUtil implements IRegistryUtil {
     @Override
     public Collection<SpellTier> getTiers() {
         return EBRegistriesFabric.TIERS.stream()
-                .sorted(Comparator.comparingInt(t -> t.level))
+                .sorted(Comparator.comparingInt(SpellTier::getLevel))
                 .toList();
     }
 

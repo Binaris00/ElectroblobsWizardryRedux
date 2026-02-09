@@ -47,7 +47,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
 
     @Override
     public boolean hasReachedTier(SpellTier tier) {
-        return tier.level >= maxTierReached.level;
+        return tier.getLevel() >= maxTierReached.getLevel();
     }
 
     @Override

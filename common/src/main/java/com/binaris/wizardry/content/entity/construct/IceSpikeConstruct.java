@@ -47,8 +47,8 @@ public class IceSpikeConstruct extends ScaledConstructEntity {
             if (entity instanceof LivingEntity livingEntity && this.isValidTarget(livingEntity)) {
                 if (MagicDamageSource.causeMagicDamage(this, livingEntity, 5 * this.damageMultiplier, EBDamageSources.FROST))
                     livingEntity.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
-                            Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_DURATION),
-                            Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_STRENGTH)));
+                            Spells.ICE_SPIKES.property(DefaultProperties.EFFECT_DURATION),
+                            Spells.ICE_SPIKES.property(DefaultProperties.EFFECT_STRENGTH)));
             }
         }
     }

@@ -466,7 +466,7 @@ public final class WandHelper {
 
         if (stack.getItem() instanceof IElementValue elementValue && stack.getItem() instanceof ITierValue tierValue) {
             if (elementValue.getElement() == spell.getElement()) {
-                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).level + 1) * EBConstants.POTENCY_INCREASE_PER_TIER, true);
+                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).getLevel() + 1) * EBConstants.POTENCY_INCREASE_PER_TIER, true);
                 progressionModifier *= 1.2f;
             }
 

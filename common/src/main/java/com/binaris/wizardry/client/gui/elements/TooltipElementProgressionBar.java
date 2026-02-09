@@ -72,7 +72,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
         SpellTier tier = ((WandItem) stack.getItem()).getTier(stack);
 
         if (tier != SpellTiers.MASTER) {
-            return SpellTiers.getNextByLevel(tier.level + 1);
+            return SpellTiers.getNextByLevel(tier.getLevel() + 1);
         }
         return null;
     }

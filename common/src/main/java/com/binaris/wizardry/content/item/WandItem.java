@@ -58,7 +58,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     private final Element element;
 
     public WandItem(SpellTier tier, Element element) {
-        super(new Properties().stacksTo(1).durability(tier.maxCharge));
+        super(new Properties().stacksTo(1).durability(tier.getMaxCharge()));
         this.tier = tier;
         this.element = element;
     }
@@ -158,7 +158,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         }
 
         return cost <= this.getMana(stack)
-                && spell.getTier().level <= this.tier.level
+                && spell.getTier().getLevel() <= this.tier.getLevel()
                 && (WandHelper.getCurrentCooldown(stack, ctx.world().getGameTime()) == 0 || ctx.caster().isCreative());
     }
 
@@ -206,7 +206,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         int totalCost = (int) (spell.getCost() * modifiers.get(SpellModifiers.COST) + 0.1f);
         int accumulatedCost = getAccumulatedCost(spell, castingTick, totalCost);
 
-        if (!spell.isInstantCast() && spell.getTier().level <= this.tier.level) {
+        if (!spell.isInstantCast() && spell.getTier().getLevel() <= this.tier.getLevel()) {
             WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.WAND, spell, livingEntity, modifiers, castingTick));
             spell.endCast(new CastContext(player.level(), player, castingTick, modifiers));
 
@@ -468,7 +468,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
      */
     protected void applySpecialUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
         Item specialUpgrade = upgrade.getItem();
-        int maxUpgrades = tier.upgradeLimit + (element == Elements.MAGIC ? EBConfig.NON_ELEMENTAL_UPGRADE_BONUS : 0);
+        int maxUpgrades = tier.getUpgradeLimit() + (element == Elements.MAGIC ? EBConfig.NON_ELEMENTAL_UPGRADE_BONUS : 0);
 
         if (WandHelper.getTotalUpgrades(wand) >= maxUpgrades || WandHelper.getUpgradeLevel(wand, specialUpgrade) >= EBConfig.UPGRADE_STACK_LIMIT) {
             return;
@@ -487,7 +487,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (player == null) return;
 
         EBAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
-        if (WandHelper.getTotalUpgrades(wand) == SpellTiers.MASTER.upgradeLimit)
+        if (WandHelper.getTotalUpgrades(wand) == SpellTiers.MASTER.getUpgradeLimit())
             EBAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
     }
 
@@ -517,7 +517,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
      * @param stack The wand item stack
      */
     protected void handleProgression(PlayerCastContext ctx, Spell spell, ItemStack stack) {
-        if (tier.level >= SpellTiers.MASTER.level) return;
+        if (tier.getLevel() >= SpellTiers.MASTER.getLevel()) return;
 
         // For instant spells, add progression at tick 0
         // For continuous spells, add progression every 20 ticks

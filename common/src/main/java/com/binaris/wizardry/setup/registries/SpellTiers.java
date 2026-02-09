@@ -44,7 +44,7 @@ public final class SpellTiers {
     // TODO Check and rewrite logic for spell tiers in order to allow addon compatibility
     public static SpellTier getNextByLevel(int level) {
         for (SpellTier tier : TIERS.values()) {
-            if (tier.level == level) return tier;
+            if (tier.getLevel() == level) return tier;
         }
         return null;
     }

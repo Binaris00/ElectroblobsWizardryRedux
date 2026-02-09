@@ -100,7 +100,7 @@ public final class WorkbenchUtils {
      * @return True if the spell can be bound, false otherwise
      */
     public static boolean canBindSpell(Spell spell, List<Spell> spells, SpellTier origin, int slot, SpellContext ctx) {
-        return spell.getTier().level <= origin.level
+        return spell.getTier().getLevel() <= origin.getLevel()
                 && spells.get(slot) != spell
                 && spell.isEnabled(ctx)
                 && (!EBConfig.preventBindingSameSpellTwiceToWands || spells.stream().noneMatch(s -> s == spell));

@@ -1,6 +1,8 @@
 package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
+import com.binaris.wizardry.api.content.spell.Element;
+import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.client.NotImplementedItems;
@@ -10,10 +12,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
@@ -88,25 +87,31 @@ public final class EBCreativeTabs {
 
     // ======= Registry =======
     public static void register(RegisterFunction<CreativeModeTab> function) {
-        CREATIVE_MODE_TABS.forEach(((id, creativeModeTabSupplier) -> {
-            function.register(BuiltInRegistries.CREATIVE_MODE_TAB, WizardryMainMod.location(id), creativeModeTabSupplier.get());
-        }));
+        CREATIVE_MODE_TABS.forEach(((id, creativeModeTabSupplier) ->
+                function.register(BuiltInRegistries.CREATIVE_MODE_TAB, WizardryMainMod.location(id), creativeModeTabSupplier.get())));
     }
 
 
     // ======= Helpers =======
     private static List<ItemStack> createSpellBooks() {
         List<ItemStack> list = new ArrayList<>();
+        List<Element> elements = Services.REGISTRY_UTIL.getElements().stream().toList();
         Services.REGISTRY_UTIL.getSpells()
-                .stream().filter(spell -> spell != Spells.NONE)
+                .stream()
+                .filter(spell -> spell != Spells.NONE)
+                .sorted(Comparator.<Spell>comparingInt(s -> s.getTier().getLevel())
+                        .thenComparingInt(s -> elements.indexOf(s.getElement())))
                 .forEach(spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SPELL_BOOK.get()), spell)));
         return list;
     }
 
     private static List<ItemStack> createScrolls() {
         List<ItemStack> list = new ArrayList<>();
+        List<Element> elements = Services.REGISTRY_UTIL.getElements().stream().toList();
         Services.REGISTRY_UTIL.getSpells()
                 .stream().filter(spell -> spell != Spells.NONE)
+                .sorted(Comparator.<Spell>comparingInt(s -> s.getTier().getLevel())
+                        .thenComparingInt(s -> elements.indexOf(s.getElement())))
                 .forEach(spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), spell)));
         return list;
     }

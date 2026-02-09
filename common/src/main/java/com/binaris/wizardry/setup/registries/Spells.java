@@ -28,7 +28,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.animal.SnowGolem;
 import net.minecraft.world.entity.monster.*;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -36,130 +36,201 @@ import java.util.function.Supplier;
 public final class Spells {
     public static final Spell NONE;
     public static final Spell MAGIC_MISSILE;
-    public static final Spell SMOKE_BOMB;
-    public static final Spell POISON_BOMB;
-    public static final Spell FIREBOMB;
-    public static final Spell THUNDERBOLT;
-    public static final Spell DART;
-    public static final Spell LEAP;
-    public static final Spell FORCE_ARROW;
-    public static final Spell WITHER_SKULL;
-    public static final Spell ICE_LANCE;
-    public static final Spell FIREBOLT;
-    public static final Spell ICE_BALL;
-    public static final Spell ICE_SHARD;
-    public static final Spell ICE_CHARGE;
-    public static final Spell FIREBALL;
-    public static final Spell HOMING_SPARK;
-    public static final Spell LIGHTNING_ARROW;
-    public static final Spell FIRE_RESISTANCE;
-    public static final Spell DARK_VISION;
-    public static final Spell FONT_OF_VITALITY;
-    public static final Spell FONT_OF_MANA;
-    public static final Spell INVISIBILITY;
-    public static final Spell WATER_BREATHING;
-    public static final Spell HEAL;
-    public static final Spell SATIETY;
-    public static final Spell REMOVE_CURSE;
-    public static final Spell CURE_EFFECTS;
-    public static final Spell AGILITY;
-    public static final Spell FIRE_SKIN;
-    public static final Spell STATIC_AURA;
-    public static final Spell GREATER_WARD;
-    public static final Spell FLAME_RAY;
     public static final Spell IGNITE;
     public static final Spell FREEZE;
-    public static final Spell LIFE_DRAIN;
+    // snowball
+    public static final Spell ARC;
+    public static final Spell THUNDERBOLT;
+    public static final Spell SUMMON_ZOMBIE;
+    // snare
+    public static final Spell DART;
+    // light
+    // telekinesis
+    public static final Spell HEAL;
+
+    public static final Spell FIREBALL;
+    public static final Spell FLAME_RAY;
+    public static final Spell FIREBOMB;
+    public static final Spell FIRE_SIGIL;
+    public static final Spell FIREBOLT;
     public static final Spell FROST_RAY;
+    public static final Spell SUMMON_SNOW_GOLEM;
+    public static final Spell ICE_SHARD;
+    // ice_statue
+    public static final Spell FROST_SIGIL;
+    //lightning_ray
+    // spark bomb
+    public static final Spell HOMING_SPARK;
+    public static final Spell LIGHTNING_SIGIL;
+    public static final Spell LIGHTNING_ARROW;
+    public static final Spell LIFE_DRAIN;
+    public static final Spell SUMMON_SKELETON;
+    // metamorphosis
     public static final Spell WITHER;
     public static final Spell POISON;
-    public static final Spell HEAL_ALLY;
-    public static final Spell EVADE;
-    public static final Spell FANGS;
-    public static final Spell DRAGON_FIREBALL;
-    public static final Spell FIRE_BREATH;
-    public static final Spell GREATER_HEAL;
-    public static final Spell POCKET_FURNACE;
-    public static final Spell ENRAGE;
-    public static final Spell FIRESTORM;
-    public static final Spell GROUP_HEAL;
-    public static final Spell BLINDING_FLASH;
-    public static final Spell DETONATE;
-    public static final Spell INVOKE_WEATHER;
-    public static final Spell OAKFLESH;
-    public static final Spell PERMAFROST;
     public static final Spell GROWTH_AURA;
-    public static final Spell LEVITATION;
-    public static final Spell WHIRLWIND;
-    public static final Spell POCKET_WORKBENCH;
-    public static final Spell SHULKER_BULLET;
-    public static final Spell VANISHING_BOX;
-    public static final Spell REPLENISH_HUNGER;
-    public static final Spell DARKNESS_ORB;
-    public static final Spell FLIGHT;
-    public static final Spell BANISH;
-    public static final Spell PHASE_STEP;
-    public static final Spell METEOR;
-    public static final Spell ARROW_RAIN;
-    public static final Spell REVERSAL;
-    public static final Spell PLAGUE_DARKNESS;
-    public static final Spell FORCE_ORB;
-    public static final Spell FOREST_CURSE;
-    public static final Spell BLIZZARD;
-    public static final Spell CURSE_OF_ENFEEBLEMENT;
-    public static final Spell CURSE_OF_UNDEATH;
-    public static final Spell FIRE_SIGIL;
-    public static final Spell FROST_SIGIL;
-    public static final Spell LIGHTNING_SIGIL;
-    public static final Spell ICE_SPICKES;
-    public static final Spell INVIGORATING_PRESENCE;
-    public static final Spell RING_OF_FIRE;
-    public static final Spell HEALING_AURA;
-    //public static final Spell FROST_BARRIER;
-    public static final Spell COMBUSTION_RUNE;
     public static final Spell BUBBLE;
-    public static final Spell ENTRAPMENT;
-    public static final Spell HAILSTORM;
-    public static final Spell DECAY;
-    public static final Spell FLAME_WEAPON;
-    public static final Spell CHARGE;
-    public static final Spell CURSE_OF_SOULBINDING;
-    public static final Spell GREATER_TELEKINESIS;
-    public static final Spell LIGHTNING_PULSE;
-    public static final Spell SUMMON_ZOMBIE;
-    public static final Spell SUMMON_SNOW_GOLEM;
-    public static final Spell FLAMECATCHER;
-    public static final Spell FLAMING_AXE;
-    public static final Spell FROST_AXE;
+    public static final Spell WHIRLWIND;
+    public static final Spell POISON_BOMB;
+    //summon spirit wolf
+    // blink
+    public static final Spell AGILITY;
     public static final Spell CONJURE_SWORD;
     public static final Spell CONJURE_PICKAXE;
     public static final Spell CONJURE_BOW;
-    public static final Spell CONJURE_ARMOR;
+    public static final Spell FORCE_ARROW;
+    // shield
+    public static final Spell REPLENISH_HUNGER;
+    public static final Spell CURE_EFFECTS;
+    public static final Spell HEAL_ALLY;
     public static final Spell SUMMON_BLAZE;
-    public static final Spell SPIDER_SWARM;
-    public static final Spell SILVERFISH_SWARM;
-    public static final Spell VEX_SWARM;
-    public static final Spell SUMMON_WITHER_SKELETON;
-    public static final Spell SUMMON_SKELETON;
-    public static final Spell SLIME;
-    public static final Spell ARC;
+    public static final Spell RING_OF_FIRE;
+    public static final Spell DETONATE;
+    public static final Spell FIRE_RESISTANCE;
+    public static final Spell FIRE_SKIN;
+    public static final Spell FLAMING_AXE;
+    public static final Spell BLIZZARD;
+    // summon ice wraith
+    // ice_shroud
+    public static final Spell ICE_CHARGE;
+    public static final Spell FROST_AXE;
+    public static final Spell INVOKE_WEATHER;
+    // chain lightning
+    // lightning bolt
     public static final Spell SUMMON_LIGHTNING_WRAITH;
-    public static final Spell SUMMON_ICE_GIANT;
-    public static final Spell RAY_OF_PURIFICATION;
-    public static final Spell ARCANE_LOCK;
-    public static final Spell BOULDER;
-    public static final Spell SPEED_TIME;
-    public static final Spell COBWEBS;
-    public static final Spell ZOMBIE_APOCALYPSE;
+    public static final Spell STATIC_AURA;
+    // lightning disc
+    // mind control
+    public static final Spell SUMMON_WITHER_SKELETON;
+    public static final Spell ENTRAPMENT;
+    public static final Spell WITHER_SKULL;
+    public static final Spell DARKNESS_ORB;
+    // shadow ward
+    public static final Spell DECAY;
+    public static final Spell WATER_BREATHING;
+    // tornado
+    // glide
+    // summon spirit horse
+    public static final Spell SPIDER_SWARM;
+    public static final Spell SLIME;
+    public static final Spell INVISIBILITY;
+    public static final Spell LEVITATION;
+    public static final Spell FORCE_ORB;
+    // transportation
+    // spectral pathway
+    public static final Spell PHASE_STEP;
+    public static final Spell VANISHING_BOX;
+    public static final Spell GREATER_HEAL;
+    public static final Spell HEALING_AURA;
+    // force field
+    // iron flesh
+    // transience
+    public static final Spell METEOR;
+    public static final Spell FIRE_BREATH;
+    // summon phoenix
     public static final Spell ICE_AGE;
+    // wall of frost
+    public static final Spell SUMMON_ICE_GIANT;
+    // thunderstorm
+    // lightning hammer
+    public static final Spell PLAGUE_DARKNESS;
+    // summon skeleton legion
+    // summon shadow wraith
+    public static final Spell FOREST_CURSE;
+    public static final Spell FLIGHT;
+    public static final Spell SILVERFISH_SWARM;
+    // black hole
+    // shockwave
+    // summon iron golem
+    public static final Spell ARROW_RAIN;
+    // diamond flesh
+    public static final Spell FONT_OF_VITALITY;
+    public static final Spell SMOKE_BOMB;
+    // mind trick
+    public static final Spell LEAP;
+    public static final Spell POCKET_FURNACE;
+    // intimidate
+    public static final Spell BANISH;
+    // sixth sense
+    public static final Spell DARK_VISION;
+    // clairvoyance
+    public static final Spell POCKET_WORKBENCH;
+    // imbue weapon
+    public static final Spell INVIGORATING_PRESENCE;
+    public static final Spell OAK_FLESH;
+    // greater fireball
+    public static final Spell FLAMING_WEAPON;
+    public static final Spell ICE_LANCE;
+    // freezing weapon
+    public static final Spell ICE_SPIKES;
+    public static final Spell LIGHTNING_PULSE;
+    public static final Spell CURSE_OF_SOULBINDING;
+    public static final Spell COBWEBS;
+    // decoy
+    public static final Spell CONJURE_ARMOR;
+    // arcane jammer
+    public static final Spell GROUP_HEAL;
+    public static final Spell HAILSTORM;
+    // lightning web
+    // summon storm elemental
+    // earthquake
+    public static final Spell FONT_OF_MANA;
+    // mine
+    // conjure block
+    // muffle
+    // ward
+    public static final Spell EVADE;
+    public static final Spell ICE_BALL;
+    public static final Spell CHARGE;
+    public static final Spell REVERSAL;
+    // grapple
+    // divination
+    // empowering presence
+    // disintegration
+    public static final Spell COMBUSTION_RUNE;
+    // frost step
+    // paralysis
+    public static final Spell SHULKER_BULLET;
+    public static final Spell CURSE_OF_UNDEATH;
+    public static final Spell DRAGON_FIREBALL;
+    public static final Spell GREATER_TELEKINESIS;
+    public static final Spell VEX_SWARM;
+    public static final Spell ARCANE_LOCK;
+    // containment
+    public static final Spell SATIETY;
+    public static final Spell GREATER_WARD;
+    public static final Spell RAY_OF_PURIFICATION;
+    public static final Spell REMOVE_CURSE;
+    // possession
+    public static final Spell CURSE_OF_ENFEEBLEMENT;
+    // forest_of_thorns
+    public static final Spell SPEED_TIME;
+    // slow time
+    // resurrection
+    // frost barrier
+    public static final Spell BLINDING_FLASH;
+    public static final Spell ENRAGE;
+    // mark sacrifice
+    public static final Spell PERMAFROST;
+    // storm cloud
+    // withering totem
+    public static final Spell FANGS;
+    // guardian beam
+    // radiant totem
+    public static final Spell FIRESTORM;
+    public static final Spell FLAMECATCHER;
+    public static final Spell ZOMBIE_APOCALYPSE;
+    public static final Spell BOULDER;
+    // celestial smite
 
+    // TEST SPELLS (SENSIBLES)
     public static final Spell OJOSPOCOS;
     public static final Spell SUMMON_RICH;
     public static final Spell BLOCK_SURPRISE;
     public static final Spell PLAYER_HAND;
     public static final Spell WIZARD_HAND;
 
-    public static Map<String, Spell> SPELLS = new HashMap<>();
+    public static Map<String, Spell> SPELLS = new LinkedHashMap<>();
 
     static {
         NONE = spell("none", NoneSpell::new);
@@ -453,7 +524,7 @@ public final class Spells {
 
         INVOKE_WEATHER = spell("invoke_weather", InvokeWeather::new);
 
-        OAKFLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH).soundValues(0.7f, 1.2f, 0.4f)
+        OAK_FLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH).soundValues(0.7f, 1.2f, 0.4f)
                 .assignProperties(SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 20, 0, 50)
                         .add(BuffSpell.getEffectDurationProperty(EBMobEffects.OAKFLESH.get()), 600)
@@ -532,7 +603,7 @@ public final class Spells {
                 .add(DefaultProperties.MAX_TARGETS, 3)
                 .build()));
 
-        ICE_SPICKES = spell("ice_spikes", IceSpickes::new);
+        ICE_SPIKES = spell("ice_spikes", IceSpickes::new);
 
         INVIGORATING_PRESENCE = spell("invigorating_presence", InvigoratingPresence::new);
 
@@ -572,7 +643,7 @@ public final class Spells {
 
         DECAY = spell("decay", Decay::new);
 
-        FLAME_WEAPON = spell("flaming_weapon", FlamingWeapon::new);
+        FLAMING_WEAPON = spell("flaming_weapon", FlamingWeapon::new);
 
         CHARGE = spell("charge", Charge::new);
 

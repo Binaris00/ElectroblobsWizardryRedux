@@ -1,9 +1,2 @@
-- Fixed problem that made diamonds have forge capabilities when they shouldn't.
-- Fixed amulet of potential not working.
-- Renamed most code/data/assets files from "artefact" to "artifact" to match the consistent spelling of the word in the mod.
-- Fixed problem with Ring Lightning Melee not chaining properly.
-- Added unit tests for some of the artifact effects.
-- Fixed bad render of Smoke Bomb and Blizzard (Particle Dust)
-- [Fabric] Fixed evil wizards spawning in mushroom fields.
-- Changed progression for each spell tier to be the same as the original mod
-- Charm hunger casting marked as not implemented yet, as it is not working properly.
+- Change to spell tier accessors to use getter methods for better consistency
+- Added spell sorting on creative tab

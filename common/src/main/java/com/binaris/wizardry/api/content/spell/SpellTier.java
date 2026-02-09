@@ -11,12 +11,12 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class SpellTier {
-    public final int maxCharge;
-    public final int level;
-    public final int upgradeLimit;
-    public final int weight;
-    private final int progression;
-    private final ChatFormatting color;
+    final int maxCharge;
+    final int level;
+    final int upgradeLimit;
+    final int weight;
+    final int progression;
+    final ChatFormatting color;
     private String descriptionId;
     private ResourceLocation location;
 
@@ -147,6 +147,22 @@ public class SpellTier {
 
     public ChatFormatting getColor() {
         return color;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public int getMaxCharge() {
+        return maxCharge;
+    }
+
+    public int getUpgradeLimit() {
+        return upgradeLimit;
+    }
+
+    public int getWeight() {
+        return weight;
     }
 
     // TODO EBCONFIG

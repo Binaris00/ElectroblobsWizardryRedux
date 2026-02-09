@@ -276,7 +276,7 @@ public final class EntityUtil {
             else if (randomizer < 16) tier = SpellTiers.APPRENTICE;
             else if (randomizer < 19 || !master) tier = SpellTiers.ADVANCED;
             else tier = SpellTiers.MASTER;
-            if (tier.level > maxTier.level) maxTier = tier;
+            if (tier.getLevel() > maxTier.getLevel()) maxTier = tier;
 
             List<Spell> list = SpellUtil.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element
                     && spell.canCastByEntity() && spell.isEnabled(SpellContext.NPCS));

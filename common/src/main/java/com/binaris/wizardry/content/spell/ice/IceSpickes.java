@@ -38,8 +38,8 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
         Vec3 pos = origin.add(new Vec3(side.getOpposite().step()));
         super.spawnConstruct(ctx, pos, side);
 
-        int quantity = (int) (Spells.ICE_SPICKES.property(DefaultProperties.ENTITIES) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1);
-        float maxRadius = Spells.ICE_SPICKES.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+        int quantity = (int) (Spells.ICE_SPIKES.property(DefaultProperties.ENTITIES) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1);
+        float maxRadius = Spells.ICE_SPIKES.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
 
         for (int i = 0; i < quantity; i++) {
             double radius = 0.5 + ctx.world().random.nextDouble() * (maxRadius - 0.5);

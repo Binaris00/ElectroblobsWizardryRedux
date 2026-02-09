@@ -34,7 +34,7 @@ public final class ArcaneWorkbenchTest {
         ItemStack wandStack = wand.getDefaultInstance();
         ItemStack finalWandStack = wandStack;
         List<Spell> validSpells = Arrays.stream(spells)
-                .filter(s -> wandItem.getTier(finalWandStack).level >= s.getTier().level)
+                .filter(s -> wandItem.getTier(finalWandStack).getLevel() >= s.getTier().getLevel())
                 .toList();
 
         TestContext ctx = setupTest(helper, wandStack);
