@@ -1,2 +1,6 @@
 - Change to spell tier accessors to use getter methods for better consistency
 - Added spell sorting on creative tab
+- Refactor to methods inside artifact classes to make it easier to understand and maintain
+- Deleted artifact testing class as it was no longer needed
+- Refactor to ArrowSpell to give the whole CastContext instead of just the player when adding more data to arrows, allowing for more flexibility in spell casting
+- Fixed ForceArrow return mana logic

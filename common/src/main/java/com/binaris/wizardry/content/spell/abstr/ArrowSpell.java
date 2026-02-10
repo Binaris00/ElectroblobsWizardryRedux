@@ -9,11 +9,9 @@ import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
@@ -54,7 +52,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             T arrow = arrowFactory.apply(ctx.world());
             arrow.aim(ctx.caster(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
             arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
-            addArrowExtras(arrow, ctx.caster());
+            addArrowExtras(arrow, ctx);
             ctx.world().addFreshEntity(arrow);
         }
 
@@ -71,7 +69,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
             arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight() - (float) MagicArrowEntity.LAUNCH_Y_OFFSET), aimingError);
             arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
-            addArrowExtras(arrow, ctx.caster());
+            addArrowExtras(arrow, ctx);
             ctx.world().addFreshEntity(arrow);
         }
 
@@ -89,7 +87,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             Vec3 vec = Vec3.atLowerCornerOf(ctx.direction().getNormal());
             arrow.shoot(vec.x(), vec.y(), vec.z(), calculateVelocity(ctx, arrow, 0.375f), 1);
             arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
-            addArrowExtras(arrow, null);
+            addArrowExtras(arrow, ctx);
             ctx.world().addFreshEntity(arrow);
         }
 
@@ -124,9 +122,9 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
      * Override this is subclasses to apply special effects
      *
      * @param arrow  The arrow instance to modify.
-     * @param caster The entity who cast the spell, may be null in location-based casts.
+     * @param ctx    The context of the spell cast, which may contain useful information for modifying the arrow.
      */
-    protected void addArrowExtras(T arrow, @Nullable LivingEntity caster) {
+    protected void addArrowExtras(T arrow, CastContext ctx) {
         // Meant to be overridden by subclasses or anonymous spells.
     }
 

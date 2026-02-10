@@ -10,7 +10,7 @@ import net.minecraft.world.item.ItemStack;
 
 public class ArcaneFrostRingEffect implements IArtifactEffect {
     @Override
-    public void onPlayerKill(EBLivingDeathEvent event, ItemStack stack) {
+    public void onKillEntity(EBLivingDeathEvent event, ItemStack stack) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         if (!(event.getSource().is(EBDamageSources.FROST))) return;
         LivingEntity deadEntity = event.getEntity();

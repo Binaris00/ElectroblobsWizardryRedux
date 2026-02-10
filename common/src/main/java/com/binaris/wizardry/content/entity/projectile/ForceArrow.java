@@ -75,8 +75,7 @@ public class ForceArrow extends MagicArrowEntity {
 
     @Override
     public void tick() {
-        if (getLifetime() >= 0 && this.tickCount > getLifetime()) returnManaToCaster();
-
+        if (getLifetime() >= 0 && this.tickCount >= getLifetime()) returnManaToCaster();
         super.tick();
     }
 
