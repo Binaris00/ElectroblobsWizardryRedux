@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.EBLogger;
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -45,6 +46,11 @@ public class SpellBookItem extends Item {
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
+        if (Services.PLATFORM.isDedicatedServer()) {
+            Spell spell = SpellUtil.getSpell(stack);
+            if (spell == Spells.NONE) return Component.translatable("item.ebwizardry.spell_book.empty");
+            return Component.translatable("item.ebwizardry.spell_book", spell.getDescriptionFormatted());
+        }
         return ClientUtils.getBookDisplayName(stack);
     }
 
