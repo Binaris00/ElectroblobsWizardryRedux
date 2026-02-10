@@ -389,7 +389,7 @@
   "spell.ebwizardry.heal_ally.desc": "Heals the target by 2 and a half hearts.",
   "spell.ebwizardry.healing_aura.desc": "Creates a zone of healing energy which regenerates the health of any ally inside it. Any undead inside the healing aura will slowly take damage.",
   "spell.ebwizardry.homing_spark.desc": "Creates a floating spark which moves towards enemies.",
-  "spell.ebwizardry.ice_ball.desc": "Launches an ice ball in the direction you are pointing.",
+  "spell.ebwizardry.iceball.desc": "Launches an ice ball in the direction you are pointing.",
   "spell.ebwizardry.ice_age.desc": "You shall be frozen for an eternity!",
   "spell.ebwizardry.ice_charge.desc": "Launches an ice charge which explodes on impact, freezing nearby creatures and releasing shards in all directions.",
   "spell.ebwizardry.ice_lance.desc": "Fires a great spear of ice in the direction you are pointing which overpenetrates targets, damaging and freezing them in the process.",

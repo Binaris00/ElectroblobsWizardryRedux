@@ -1,7 +1,13 @@
 package com.binaris.wizardry.core.gametest;
 
+import com.binaris.wizardry.api.content.spell.Spell;
+import com.binaris.wizardry.api.content.util.WandHelper;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -11,6 +17,7 @@ import net.minecraft.world.phys.Vec3;
 
 /**
  * Why this is called GST...?
+ * <p>
  * General GameTest utility methods.
  */
 public class GST {
@@ -94,9 +101,46 @@ public class GST {
         helper.setBlock(helper.absolutePos(BlockPos.containing(blockPos)), block.defaultBlockState());
     }
 
+    /**
+     * Spawns an entity of the given type at the given position in the GameTest world.
+     */
     public static Entity mockEntity(GameTestHelper helper, Vec3 playerPos, EntityType<?> type) {
         Entity entity = helper.spawn(type, BlockPos.containing(helper.absoluteVec(playerPos)));
         GST.assertNotNull(helper, "Entity is null!", entity);
         return entity;
+    }
+
+    /**
+     * Creates a DamageSource with the given player as the source and the given damage type.
+     */
+    public static DamageSource createDamageSource(Player player, ResourceKey<DamageType> key) {
+        return new DamageSource(
+                player.level().registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(key),
+                player
+        );
+    }
+
+    /**
+     * Asserts that the currently selected spell in the given wand is equal to the expected spell, failing the test with
+     * a message that includes the given action description if they are not.
+     */
+    public static void assertSpellEquals(GameTestHelper helper, ItemStack wand, Spell expected, String action) {
+        Spell selectedSpell = WandHelper.getCurrentSpell(wand);
+        assertEquals(helper,
+                "Selected spell should be '%s' after %s.".formatted(expected, action),
+                expected,
+                selectedSpell);
+    }
+
+    /**
+     * Asserts that the currently selected spell index in the given wand is equal to the expected index, failing the test with
+     * a message that includes the given action description if they are not.
+     */
+    public static void assertIndexEquals(GameTestHelper helper, ItemStack wand, int expected, String action) {
+        int selectedIndex = WandHelper.getCurrentSpellIndex(wand);
+        assertEquals(helper,
+                "Selected spell index should be %d after %s.".formatted(expected, action),
+                expected,
+                selectedIndex);
     }
 }

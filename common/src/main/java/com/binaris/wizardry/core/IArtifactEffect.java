@@ -23,7 +23,7 @@ public interface IArtifactEffect {
     default void onTick(LivingEntity entity, Level level, ItemStack stack) {
     }
 
-    default void onPlayerKill(EBLivingDeathEvent event, ItemStack stack) {
+    default void onKillEntity(EBLivingDeathEvent event, ItemStack stack) {
     }
 
     default void onSpellPreCast(SpellCastEvent.Pre event, ItemStack stack) {

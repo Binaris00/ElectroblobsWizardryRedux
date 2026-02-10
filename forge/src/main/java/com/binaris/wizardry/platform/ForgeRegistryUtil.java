@@ -20,7 +20,7 @@ public class ForgeRegistryUtil implements IRegistryUtil {
     @Override
     public Collection<SpellTier> getTiers() {
         return EBRegistriesForge.TIER.get().getValues().stream()
-                .sorted(Comparator.comparingInt(t -> t.level))
+                .sorted(Comparator.comparingInt(SpellTier::getLevel))
                 .toList();
     }
 

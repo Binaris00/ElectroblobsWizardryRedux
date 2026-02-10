@@ -43,4 +43,10 @@ public class ForgeWandTest {
         WandTest.wandLiteralIndexPartiallyEmpty(helper);
         helper.succeed();
     }
+
+    @GameTest(template = "empty")
+    public static void siphonUpgradePlayerKillMob(GameTestHelper helper) {
+        WandTest.siphonUpgradePlayerKillMob(helper);
+        helper.succeed();
+    }
 }

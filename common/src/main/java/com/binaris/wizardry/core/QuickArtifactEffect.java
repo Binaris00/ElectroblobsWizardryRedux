@@ -48,7 +48,7 @@ public class QuickArtifactEffect implements IArtifactEffect {
     public static IArtifactEffect death(BiPredicate<EBLivingDeathEvent, ItemStack> predicate, BiConsumer<EBLivingDeathEvent, ItemStack> consumer) {
         return new QuickArtifactEffect() {
             @Override
-            public void onPlayerKill(EBLivingDeathEvent event, ItemStack stack) {
+            public void onKillEntity(EBLivingDeathEvent event, ItemStack stack) {
                 if (predicate.test(event, stack)) consumer.accept(event, stack);
             }
         };

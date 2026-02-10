@@ -65,7 +65,7 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
 
     @Override
     public boolean hasReachedTier(SpellTier tier) {
-        return tier.level >= maxTierReached.level;
+        return tier.getLevel() >= maxTierReached.getLevel();
     }
 
     @Override

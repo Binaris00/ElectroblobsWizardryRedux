@@ -21,25 +21,31 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class WandUpgradeItem extends Item {
+    public static final float RING_SIPHONING_BONUS = 1.3f;
+
     public WandUpgradeItem(Properties properties) {
         super(properties);
     }
 
-    public static void onLivingDeath(EBLivingDeathEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return;
+    public static void onPlayerKillMob(EBLivingDeathEvent event) {
+        if (!(event.getSource().getEntity() instanceof Player player)) return;
 
         // Need to be a ManaStoringItem and without full mana
-        InventoryUtil.getHotBarAndOffhand(player).stream()
-                .filter(stack -> stack.getItem() instanceof IManaStoringItem manaItem && !manaItem.isManaFull(stack))
-                .filter(stack -> WandHelper.getUpgradeLevel(stack, EBItems.SIPHON_UPGRADE.get()) > 0)
-                .findFirst() // only can recharge 1 item for death
-                .ifPresent(stack -> {
-                    float mana = EBConstants.SIPHON_MANA_PER_LEVEL
-                            * WandHelper.getUpgradeLevel(stack, EBItems.SIPHON_UPGRADE.get())
-                            + player.level().random.nextInt(EBConstants.SIPHON_MANA_PER_LEVEL);
-                    if (EBAccessoriesIntegration.isEquipped(player, EBItems.RING_SIPHONING.get())) mana *= 1.3f;
-                    ((IManaStoringItem) stack.getItem()).rechargeMana(stack, (int) mana);
-                });
+        // only can recharge 1 item for death
+        for (ItemStack itemStack : InventoryUtil.getHotBarAndOffhand(player)) {
+            if (itemStack.getItem() instanceof IManaStoringItem manaItem && !manaItem.isManaFull(itemStack)) {
+                if (WandHelper.getUpgradeLevel(itemStack, EBItems.SIPHON_UPGRADE.get()) <= 0) continue;
+
+                float mana = EBConstants.SIPHON_MANA_PER_LEVEL
+                        * WandHelper.getUpgradeLevel(itemStack, EBItems.SIPHON_UPGRADE.get())
+                        + player.level().random.nextInt(EBConstants.SIPHON_MANA_PER_LEVEL);
+
+                if (EBAccessoriesIntegration.isEquipped(player, EBItems.RING_SIPHONING.get())) mana *= RING_SIPHONING_BONUS;
+                manaItem.rechargeMana(itemStack, (int) mana);
+                break;
+
+            }
+        }
     }
 
     @Override

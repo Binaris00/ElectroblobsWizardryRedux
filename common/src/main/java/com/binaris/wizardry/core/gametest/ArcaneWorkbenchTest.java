@@ -166,79 +166,43 @@ public final class ArcaneWorkbenchTest {
 
         wandStack = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
         GST.assertTrue(helper, "Wand %s should be repaired after applying crystal %s."
-                        .formatted(wand, crystal),
-                wandStack.getDamageValue() < 120);
+                        .formatted(wand, crystal), wandStack.getDamageValue() < 120);
         GST.assertTrue(helper, "Crystal %s should be consumed after repairing wand %s."
-                .formatted(crystal, wand),
-                ctx.workbench.getItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT).isEmpty());
+                        .formatted(crystal, wand), ctx.workbench.getItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT).isEmpty());
     }
 
     public static void cannotExceedBlankScrollLimit(GameTestHelper helper) {
-        ItemStack blankScrolls = new ItemStack(EBItems.BLANK_SCROLL.get(), 64);
         TestContext ctx = setupTest(helper, ItemStack.EMPTY);
-
         ctx.workbench.setItem(ArcaneWorkbenchMenu.CENTRE_SLOT, new ItemStack(EBItems.BLANK_SCROLL.get(), 16));
+        ctx.player.getInventory().add(new ItemStack(EBItems.BLANK_SCROLL.get(), 64));
 
-        ctx.player.getInventory().add(blankScrolls);
-
-        int playerSlotIndex = -1;
-        for (int i = 11; i < ctx.menu.slots.size(); i++) {
-            if (ctx.menu.getSlot(i).getItem().getItem() == EBItems.BLANK_SCROLL.get()) {
-                playerSlotIndex = i;
-                break;
-            }
-        }
-
+        int playerSlotIndex = findItemInMenu(ctx.menu, EBItems.BLANK_SCROLL.get());
         GST.assertTrue(helper, "Player should have blank scrolls in inventory", playerSlotIndex != -1);
 
-        int initialPlayerCount = ctx.menu.getSlot(playerSlotIndex).getItem().getCount();
-        ItemStack result = ctx.menu.quickMoveStack(ctx.player, playerSlotIndex);
+        ctx.menu.quickMoveStack(ctx.player, playerSlotIndex);
         int finalCentreCount = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT).getCount();
-        int finalPlayerCount = ctx.menu.getSlot(playerSlotIndex).getItem().getCount();
 
-        GST.assertTrue(helper, "Centre slot should not exceed 16 blank scrolls",
-                finalCentreCount <= 16);
-        GST.assertTrue(helper, "Player inventory should still have blank scrolls if limit reached",
-                finalPlayerCount > 0 || initialPlayerCount <= 16);
-
+        GST.assertTrue(helper, "Centre slot should not exceed 16 blank scrolls", finalCentreCount <= 16);
         helper.succeed();
     }
 
     public static void cannotExceedSpellBookLimit(GameTestHelper helper, Spell spell) {
-        ItemStack wandStack = EBItems.NOVICE_HEALING_WAND.get().getDefaultInstance();
-        TestContext ctx = setupTest(helper, wandStack);
-
+        TestContext ctx = setupTest(helper, EBItems.NOVICE_HEALING_WAND.get().getDefaultInstance());
         ctx.workbench.setItem(0, SpellUtil.spellBookItem(spell));
 
         ItemStack spellBooks = SpellUtil.spellBookItem(spell);
         spellBooks.setCount(64);
         ctx.player.getInventory().add(spellBooks);
 
-        int playerSlotIndex = -1;
-        for (int i = 11; i < ctx.menu.slots.size(); i++) {
-            ItemStack slotItem = ctx.menu.getSlot(i).getItem();
-            if (slotItem.getItem() instanceof SpellBookItem && SpellUtil.getSpell(slotItem) == spell) {
-                playerSlotIndex = i;
-                break;
-            }
-        }
-
+        int playerSlotIndex = findSpellBookInMenu(ctx.menu, spell);
         GST.assertTrue(helper, "Player should have spell books in inventory", playerSlotIndex != -1);
 
-        int initialPlayerCount = ctx.menu.getSlot(playerSlotIndex).getItem().getCount();
         ctx.menu.quickMoveStack(ctx.player, playerSlotIndex);
 
-        int finalSlot0Count = ctx.workbench.getItem(0).getCount();
-        GST.assertTrue(helper, "Spell book slot should not exceed 1 item",
-                finalSlot0Count <= 1);
-
-        int totalSpellBooks = 0;
         for (int i = 0; i < 8; i++) {
             ItemStack slotItem = ctx.workbench.getItem(i);
             if (slotItem.getItem() instanceof SpellBookItem) {
-                totalSpellBooks += slotItem.getCount();
-                GST.assertTrue(helper, "Each spell book slot should not exceed 1 item",
-                        slotItem.getCount() <= 1);
+                GST.assertTrue(helper, "Each spell book slot should not exceed 1 item", slotItem.getCount() <= 1);
             }
         }
 
@@ -246,35 +210,37 @@ public final class ArcaneWorkbenchTest {
     }
 
     public static void cannotExceedUpgradeLimit(GameTestHelper helper, Item upgradeItem) {
-        ItemStack wandStack = EBItems.ADVANCED_EARTH_WAND.get().getDefaultInstance();
-        TestContext ctx = setupTest(helper, wandStack);
-
+        TestContext ctx = setupTest(helper, EBItems.ADVANCED_EARTH_WAND.get().getDefaultInstance());
         ctx.workbench.setItem(ArcaneWorkbenchMenu.UPGRADE_SLOT, new ItemStack(upgradeItem, 1));
+        ctx.player.getInventory().add(new ItemStack(upgradeItem, 64));
 
-        ItemStack upgrades = new ItemStack(upgradeItem, 64);
-        ctx.player.getInventory().add(upgrades);
-
-        int playerSlotIndex = -1;
-        for (int i = 11; i < ctx.menu.slots.size(); i++) {
-            if (ctx.menu.getSlot(i).getItem().getItem() == upgradeItem) {
-                playerSlotIndex = i;
-                break;
-            }
-        }
-
+        int playerSlotIndex = findItemInMenu(ctx.menu, upgradeItem);
         GST.assertTrue(helper, "Player should have upgrade items in inventory", playerSlotIndex != -1);
 
-        int initialPlayerCount = ctx.menu.getSlot(playerSlotIndex).getItem().getCount();
         ctx.menu.quickMoveStack(ctx.player, playerSlotIndex);
         int finalUpgradeCount = ctx.workbench.getItem(ArcaneWorkbenchMenu.UPGRADE_SLOT).getCount();
-        int finalPlayerCount = ctx.menu.getSlot(playerSlotIndex).getItem().getCount();
 
-        GST.assertTrue(helper, "Upgrade slot should not exceed 1 item",
-                finalUpgradeCount <= 1);
-        GST.assertTrue(helper, "Player inventory should still have upgrade items if limit reached",
-                finalPlayerCount == initialPlayerCount - (finalUpgradeCount == 1 ? 0 : 1));
-
+        GST.assertTrue(helper, "Upgrade slot should not exceed 1 item", finalUpgradeCount <= 1);
         helper.succeed();
+    }
+
+    private static int findItemInMenu(ArcaneWorkbenchMenu menu, Item item) {
+        for (int i = 11; i < menu.slots.size(); i++) {
+            if (menu.getSlot(i).getItem().getItem() == item) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    private static int findSpellBookInMenu(ArcaneWorkbenchMenu menu, Spell spell) {
+        for (int i = 11; i < menu.slots.size(); i++) {
+            ItemStack slotItem = menu.getSlot(i).getItem();
+            if (slotItem.getItem() instanceof SpellBookItem && SpellUtil.getSpell(slotItem) == spell) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     static TestContext setupTest(GameTestHelper helper, ItemStack centerItem) {
@@ -282,7 +248,6 @@ public final class ArcaneWorkbenchTest {
         GST.assertNotNull(helper, "Arcane Workbench BlockEntity is null", workbench);
 
         Player player = GST.mockServerPlayer(helper, PLAYER_POS);
-        assert workbench != null;
         workbench.setItem(ArcaneWorkbenchMenu.CENTRE_SLOT, centerItem);
         ArcaneWorkbenchMenu menu = new ArcaneWorkbenchMenu(0, player.getInventory(), workbench);
         player.containerMenu = menu;

@@ -53,7 +53,7 @@ public class ArtifactItem extends Item {
      *
      * @param event The living tick event.
      */
-    public static void onArtifactTick(EBLivingTick event) {
+    public static void onTick(EBLivingTick event) {
         if (!(event.getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
@@ -69,7 +69,7 @@ public class ArtifactItem extends Item {
      *
      * @param event The living hurt event.
      */
-    public static void onArtifactLivingHurt(EBLivingHurtEvent event) {
+    public static void onHurtEntity(EBLivingHurtEvent event) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
@@ -85,7 +85,7 @@ public class ArtifactItem extends Item {
      *
      * @param event The living hurt event.
      */
-    public static void onArtifactPlayerHurt(EBLivingHurtEvent event) {
+    public static void onPlayerHurt(EBLivingHurtEvent event) {
         if (!(event.getDamagedEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
@@ -96,11 +96,11 @@ public class ArtifactItem extends Item {
      * Called when the player is responsible for killing an entity (if player carries the artifact in their hotbar or accessories)
      * to apply the artifact's effect.
      */
-    public static void onArtifactPlayerKill(EBLivingDeathEvent event) {
+    public static void onKillEntity(EBLivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
-                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onPlayerKill(event, stack));
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onKillEntity(event, stack));
     }
 
     /**
@@ -112,7 +112,7 @@ public class ArtifactItem extends Item {
      *
      * @param event The spell cast pre-event.
      */
-    public static void onArtifactPreCast(SpellCastEvent.Pre event) {
+    public static void onSpellPreCast(SpellCastEvent.Pre event) {
         if (!(event.getCaster() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
@@ -128,7 +128,7 @@ public class ArtifactItem extends Item {
      *
      * @param event The spell cast post-event.
      */
-    public static void onArtifactPostCast(SpellCastEvent.Post event) {
+    public static void onSpellPostCast(SpellCastEvent.Post event) {
         if (!(event.getCaster() instanceof Player player)) return;
         List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
