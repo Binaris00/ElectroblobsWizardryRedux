@@ -3,4 +3,5 @@
 - Refactor to methods inside artifact classes to make it easier to understand and maintain
 - Deleted artifact testing class as it was no longer needed
 - Refactor to ArrowSpell to give the whole CastContext instead of just the player when adding more data to arrows, allowing for more flexibility in spell casting
-- Fixed ForceArrow return mana logic
+- Fixed ForceArrow return mana logic (using ring mana return)
+- Library ruins, obelisks, shrines, wizard towers are now more common. Increasing the chances of finding them and making exploration more rewarding
