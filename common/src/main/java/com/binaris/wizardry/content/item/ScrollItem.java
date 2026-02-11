@@ -169,6 +169,10 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
+        if (Services.PLATFORM.isDedicatedServer()) {
+            Spell spell = SpellUtil.getSpell(stack);
+            return Component.translatable("item.ebwizardry.scroll", spell.getDescriptionFormatted());
+        }
         return ClientUtils.getScrollDisplayName(stack);
     }
 
