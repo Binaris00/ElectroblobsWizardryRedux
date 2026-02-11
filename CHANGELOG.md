@@ -7,4 +7,6 @@
 - Library ruins, obelisks, shrines, wizard towers are now more common. Increasing the chances of finding them and making exploration more rewarding
 - Recreated logic to avoid evil wizards spawning in mushroom islands ([#11](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/11) by [@sami-hmr](https://github.com/sami-hmr))
 - Fixed server crash related to scrolls/spellbooks using client-only methods ([#11](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/11) by [@sami-hmr](https://github.com/sami-hmr))
-- Fixed crash when wizards used construct spells
+- Fixed crash when wizards used construct range spells
+- Prevent wizards from healing on instant spawn ([#11](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/11) by [@sami-hmr](https://github.com/sami-hmr))
+- Fixed particle buff render that made it look through walls

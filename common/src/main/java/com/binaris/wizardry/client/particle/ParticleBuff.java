@@ -62,7 +62,7 @@ public class ParticleBuff extends ParticleWizardry {
         updateEntityLinking(partialTicks);
 
         RenderSystem.enableBlend();
-        RenderSystem.disableDepthTest();
+        RenderSystem.depthMask(false);
         RenderSystem.disableCull();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
@@ -75,7 +75,6 @@ public class ParticleBuff extends ParticleWizardry {
         Vec3 cameraPos = camera.getPosition();
         float x, y, z;
 
-        // This is the part that could probably be improved
         if (entity != null) {
             Vec3 entityPos = entity.getPosition(partialTicks);
             x = (float) (entityPos.x + relativeX - cameraPos.x);
@@ -96,27 +95,26 @@ public class ParticleBuff extends ParticleWizardry {
         float scale = 0.6f;
         float yScale = 0.7f * scale;
         float dx = mirror ? -scale : scale;
-        float dz = scale;
 
         Tesselator tesselator = Tesselator.getInstance();
         BufferBuilder buffer = tesselator.getBuilder();
 
         buffer.begin(VertexFormat.Mode.TRIANGLE_STRIP, DefaultVertexFormat.POSITION_TEX_COLOR);
 
-        vertex(buffer, x - dx, y - yScale, z - dz, 0 + textureOffset, g);
-        vertex(buffer, x - dx, y + yScale, z - dz, 0 + textureOffset, f);
-        vertex(buffer, x + dx, y - yScale, z - dz, 0.25f + textureOffset, g);
-        vertex(buffer, x + dx, y + yScale, z - dz, 0.25f + textureOffset, f);
-        vertex(buffer, x + dx, y - yScale, z + dz, 0.5f + textureOffset, g);
-        vertex(buffer, x + dx, y + yScale, z + dz, 0.5f + textureOffset, f);
-        vertex(buffer, x - dx, y - yScale, z + dz, 0.75f + textureOffset, g);
-        vertex(buffer, x - dx, y + yScale, z + dz, 0.75f + textureOffset, f);
-        vertex(buffer, x - dx, y - yScale, z - dz, 1.0f + textureOffset, g);
-        vertex(buffer, x - dx, y + yScale, z - dz, 1.0f + textureOffset, f);
+        vertex(buffer, x - dx, y - yScale, z - scale, 0 + textureOffset, g);
+        vertex(buffer, x - dx, y + yScale, z - scale, 0 + textureOffset, f);
+        vertex(buffer, x + dx, y - yScale, z - scale, 0.25f + textureOffset, g);
+        vertex(buffer, x + dx, y + yScale, z - scale, 0.25f + textureOffset, f);
+        vertex(buffer, x + dx, y - yScale, z + scale, 0.5f + textureOffset, g);
+        vertex(buffer, x + dx, y + yScale, z + scale, 0.5f + textureOffset, f);
+        vertex(buffer, x - dx, y - yScale, z + scale, 0.75f + textureOffset, g);
+        vertex(buffer, x - dx, y + yScale, z + scale, 0.75f + textureOffset, f);
+        vertex(buffer, x - dx, y - yScale, z - scale, 1.0f + textureOffset, g);
+        vertex(buffer, x - dx, y + yScale, z - scale, 1.0f + textureOffset, f);
 
         tesselator.end();
 
-        RenderSystem.enableDepthTest();
+        RenderSystem.depthMask(true);
         RenderSystem.enableCull();
         RenderSystem.defaultBlendFunc();
         RenderSystem.disableBlend();
