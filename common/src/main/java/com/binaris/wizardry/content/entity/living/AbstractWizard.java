@@ -251,7 +251,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
     @Override
     protected void defineSynchedData() {
         super.defineSynchedData();
-        this.entityData.define(HEAL_COOLDOWN, -1);
+        this.entityData.define(HEAL_COOLDOWN, 50);
         this.entityData.define(ELEMENT, "");
         this.entityData.define(CONTINUOUS_SPELL, Spells.NONE.getLocation().toString());
         this.entityData.define(SPELL_COUNTER, 0);
