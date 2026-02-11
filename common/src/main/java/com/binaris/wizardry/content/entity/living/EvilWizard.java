@@ -31,9 +31,6 @@ public class EvilWizard extends AbstractWizard implements Enemy {
     }
 
     public static boolean checkEvilWizardSpawnRules(EntityType<? extends AbstractWizard> type, ServerLevelAccessor level, MobSpawnType spawnType, BlockPos pos, RandomSource random) {
-        if (level.getBiome(pos).value().getMobSettings().getMobs(MobCategory.MONSTER).unwrap().isEmpty()) {
-            return false;
-        }
         return level.getDifficulty() != Difficulty.PEACEFUL && isDarkEnoughToSpawn(level, pos, random) && checkMobSpawnRules(type, level, spawnType, pos, random);
     }
 

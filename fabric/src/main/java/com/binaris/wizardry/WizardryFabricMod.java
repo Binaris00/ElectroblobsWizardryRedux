@@ -22,6 +22,7 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -69,9 +70,7 @@ public final class WizardryFabricMod implements ModInitializer {
 
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.UNDERGROUND_ORES, EBWorldGen.CRYSTAL_ORE);
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.VEGETAL_DECORATION, EBWorldGen.CRYSTAL_FLOWER);
-        BiomeModifications.addSpawn(
-                BiomeSelectors.foundInOverworld().and(ctx -> !ctx.getBiome().getMobSettings().getMobs(MobCategory.MONSTER).unwrap().isEmpty()),
-                MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
+        BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.ZOMBIE), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (WizardryEventBus.getInstance().fire(new EBPlayerInteractEntityEvent(player, entity))) {
