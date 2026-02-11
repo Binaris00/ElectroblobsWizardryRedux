@@ -72,7 +72,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
         Vec3 origin = ctx.caster().getEyePosition(1);
         HitResult hit = ctx.world().clip(new ClipContext(origin, ctx.target().position(),
-                ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, null));
+                ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, ctx.target()));
 
         if (hit instanceof BlockHitResult blockHit && !blockHit.getBlockPos().equals(ctx.caster().blockPosition())) {
             return false;

@@ -5,3 +5,6 @@
 - Refactor to ArrowSpell to give the whole CastContext instead of just the player when adding more data to arrows, allowing for more flexibility in spell casting
 - Fixed ForceArrow return mana logic (using ring mana return)
 - Library ruins, obelisks, shrines, wizard towers are now more common. Increasing the chances of finding them and making exploration more rewarding
+- Recreated logic to avoid evil wizards spawning in mushroom islands ([#11](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/11) by [@sami-hmr](https://github.com/sami-hmr))
+- Fixed server crash related to scrolls/spellbooks using client-only methods ([#11](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/11) by [@sami-hmr](https://github.com/sami-hmr))
+- Fixed crash when wizards used construct spells

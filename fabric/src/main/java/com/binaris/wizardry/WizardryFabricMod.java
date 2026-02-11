@@ -70,7 +70,7 @@ public final class WizardryFabricMod implements ModInitializer {
 
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.UNDERGROUND_ORES, EBWorldGen.CRYSTAL_ORE);
         BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.VEGETAL_DECORATION, EBWorldGen.CRYSTAL_FLOWER);
-        BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.ZOMBIE), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
+        BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.CREEPER), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (WizardryEventBus.getInstance().fire(new EBPlayerInteractEntityEvent(player, entity))) {
