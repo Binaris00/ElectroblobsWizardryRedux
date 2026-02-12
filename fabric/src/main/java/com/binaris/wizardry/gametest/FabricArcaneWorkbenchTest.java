@@ -95,6 +95,9 @@ public class FabricArcaneWorkbenchTest {
     public static void cannotExceedUpgradeLimit(GameTestHelper helper) {
         List<Item> upgrades = List.of(
                 EBItems.ARCANE_TOME.get(),
+                EBItems.APPRENTICE_ARCANE_TOME.get(),
+                EBItems.ADVANCED_ARCANE_TOME.get(),
+                EBItems.MASTER_ARCANE_TOME.get(),
                 EBItems.CRYSTAL_SILVER_PLATING.get(),
                 EBItems.ETHEREAL_CRYSTAL_WEAVE.get(),
                 EBItems.RESPLENDENT_THREAD.get()
@@ -102,6 +105,12 @@ public class FabricArcaneWorkbenchTest {
 
         upgrades.forEach(upgrade ->
                 ArcaneWorkbenchTest.cannotExceedUpgradeLimit(helper, upgrade));
+        helper.succeed();
+    }
+
+    @GameTest(template = "ebwizardry:arcane_workbench_3x3x3")
+    public static void upgradeWandNextTierNBT(GameTestHelper helper) {
+        EBDataGenProcessor.wandItems().values().forEach(wand -> ArcaneWorkbenchTest.upgradeWandNextTierNBT(helper, wand.get()));
         helper.succeed();
     }
 }

@@ -64,6 +64,9 @@ public class BookshelfMenu extends AbstractContainerMenu {
         registerBookItem(Items.ENCHANTED_BOOK);
         registerBookItem(EBItems.SPELL_BOOK.get());
         registerBookItem(EBItems.ARCANE_TOME.get());
+        registerBookItem(EBItems.APPRENTICE_ARCANE_TOME.get());
+        registerBookItem(EBItems.ADVANCED_ARCANE_TOME.get());
+        registerBookItem(EBItems.MASTER_ARCANE_TOME.get());
         registerBookItem(EBItems.RUINED_SPELL_BOOK.get());
         registerBookItem(EBItems.SCROLL.get());
         registerBookItem(EBItems.BLANK_SCROLL.get());

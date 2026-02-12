@@ -13,12 +13,30 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * An item that helps you to upgrade wands to new spell tiers. It has no use other than being a crafting ingredient in the
+ * wand upgrade system. The important thing is the possibility of saving the spell tier in the item itself or in the
+ * item's NBT. This allows for more flexible things (like having custom spell tier on server side and using it here without
+ * having to create a new item for each tier).
+ *
+ * @see com.binaris.wizardry.api.content.util.SpellUtil#createArcaneTome(SpellTier) SpellUtil.createArcaneTome(SpellTier)
+ * @see com.binaris.wizardry.api.content.util.SpellUtil#getArcaneTome(SpellTier) SpellUtil.getArcaneTome(SpellTier)
+ */
 public class ArcaneTomeItem extends Item implements ITierValue {
+    @Nullable SpellTier tier;
+
     public ArcaneTomeItem() {
         super(new Properties().stacksTo(1));
+        tier = null;
+    }
+
+    public ArcaneTomeItem(@Nullable SpellTier tier) {
+        this();
+        this.tier = tier;
     }
 
     @Override
@@ -57,6 +75,8 @@ public class ArcaneTomeItem extends Item implements ITierValue {
 
     @Override
     public SpellTier getTier(ItemStack stack) {
+        if (this.tier != null) return tier;
+
         String tierKey = stack.getOrCreateTag().getString("Tier");
         SpellTier tier = Services.REGISTRY_UTIL.getTier(ResourceLocation.tryParse(tierKey));
         return tier != null ? tier : SpellTiers.NOVICE;

@@ -52,6 +52,40 @@ public final class ArcaneWorkbenchTest {
                 wandSpells.contains(spell)));
     }
 
+    /**
+     * Different to {@link #canUpgradeToNextTier}, this test checks the possibility of upgrading a wand to the next tier
+     * using an Arcane Tome that has the tier stored in its NBT data instead of its item instance. This is to ensure
+     * that both methods of storing the tier in the Arcane Tome work correctly and can be used interchangeably in the
+     * upgrade process.
+     */
+    public static void upgradeWandNextTierNBT(GameTestHelper helper, Item wand) {
+        if (!(wand instanceof WandItem wandItem)) {
+            helper.fail("Invalid parameters for canUpgradeToNextTier test.");
+            return;
+        }
+
+        ItemStack wandStack = wand.getDefaultInstance();
+        if (wandItem.getTier(wandStack) == SpellTiers.MASTER) return;
+
+        SpellTier nextTier = wandItem.getTier(wandStack).next();
+        WandHelper.setProgression(wandStack, nextTier.getProgression());
+
+        TestContext ctx = setupTest(helper, wandStack);
+        ctx.workbench.setItem(ArcaneWorkbenchMenu.UPGRADE_SLOT, SpellUtil.createArcaneTome(nextTier));
+        ctx.menu.onApplyButtonPressed(ctx.player);
+
+        wandStack = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
+        GST.assertEquals(helper, "Wand should upgrade to next tier.", nextTier,
+                ((WandItem) wandStack.getItem()).getTier(wandStack));
+        GST.assertEmpty(helper, "Upgrade item should be consumed.",
+                ctx.workbench.getItem(ArcaneWorkbenchMenu.UPGRADE_SLOT));
+    }
+
+    /**
+     * Similar to {@link #upgradeWandNextTierNBT}, but this test uses an Arcane Tome with the tier determined by its
+     * item instance rather than its NBT data. This ensures that the upgrade process correctly recognizes the tier from
+     * the item instance and can successfully upgrade the wand to the next tier using this method as well.
+     */
     public static void canUpgradeToNextTier(GameTestHelper helper, Item wand) {
         if (!(wand instanceof WandItem wandItem)) {
             helper.fail("Invalid parameters for canUpgradeToNextTier test.");
@@ -65,7 +99,7 @@ public final class ArcaneWorkbenchTest {
         WandHelper.setProgression(wandStack, nextTier.getProgression());
 
         TestContext ctx = setupTest(helper, wandStack);
-        ctx.workbench.setItem(ArcaneWorkbenchMenu.UPGRADE_SLOT, SpellUtil.arcaneTomeItem(nextTier));
+        ctx.workbench.setItem(ArcaneWorkbenchMenu.UPGRADE_SLOT, SpellUtil.getArcaneTome(nextTier));
         ctx.menu.onApplyButtonPressed(ctx.player);
 
         wandStack = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
@@ -166,9 +200,9 @@ public final class ArcaneWorkbenchTest {
 
         wandStack = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
         GST.assertTrue(helper, "Wand %s should be repaired after applying crystal %s."
-                        .formatted(wand, crystal), wandStack.getDamageValue() < 120);
+                .formatted(wand, crystal), wandStack.getDamageValue() < 120);
         GST.assertTrue(helper, "Crystal %s should be consumed after repairing wand %s."
-                        .formatted(crystal, wand), ctx.workbench.getItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT).isEmpty());
+                .formatted(crystal, wand), ctx.workbench.getItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT).isEmpty());
     }
 
     public static void cannotExceedBlankScrollLimit(GameTestHelper helper) {
@@ -255,7 +289,9 @@ public final class ArcaneWorkbenchTest {
         return new TestContext(workbench, player, menu);
     }
 
-    record TestContext(ArcaneWorkbenchBlockEntity workbench, Player player, ArcaneWorkbenchMenu menu) {}
+    record TestContext(ArcaneWorkbenchBlockEntity workbench, Player player, ArcaneWorkbenchMenu menu) {
+    }
 
-    private ArcaneWorkbenchTest() {}
+    private ArcaneWorkbenchTest() {
+    }
 }

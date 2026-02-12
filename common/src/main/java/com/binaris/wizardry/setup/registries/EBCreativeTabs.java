@@ -24,13 +24,7 @@ public final class EBCreativeTabs {
                     .icon(() -> new ItemStack(EBItems.MAGIC_CRYSTAL.get()))
                     .title(Component.translatable("creativetab.ebwizardry"))
                     .displayItems((parameters, output) ->
-                            EBItems.GENERAL_ITEMS.forEach((item) -> {
-                                if (item.equals(EBItems.ARCANE_TOME)) {
-                                    createTomes().forEach(output::accept);
-                                } else {
-                                    output.accept(item.get());
-                                }
-                            }))
+                            EBItems.GENERAL_ITEMS.forEach((item) -> output.accept(item.get())))
                     .build()
     );
     // All Wands
@@ -113,14 +107,6 @@ public final class EBCreativeTabs {
                 .sorted(Comparator.<Spell>comparingInt(s -> s.getTier().getLevel())
                         .thenComparingInt(s -> elements.indexOf(s.getElement())))
                 .forEach(spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), spell)));
-        return list;
-    }
-
-    private static List<ItemStack> createTomes() {
-        List<ItemStack> list = new ArrayList<>();
-        Services.REGISTRY_UTIL.getTiers()
-                .stream().filter(tier -> tier != SpellTiers.NOVICE)
-                .forEach(spellTier -> list.add(SpellUtil.arcaneTomeItem(spellTier)));
         return list;
     }
 

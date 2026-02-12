@@ -93,7 +93,11 @@ public final class EBItems {
     static final LinkedList<DeferredObject<? extends Item>> GENERAL_ITEMS = new LinkedList<>(); // For main item tab
     static final Map<String, DeferredObject<? extends Item>> ITEMS_REGISTER = new HashMap<>(); // For register function
     //General Items
-    public static final DeferredObject<Item> ARCANE_TOME = item("arcane_tome", ArcaneTomeItem::new, true, true);
+    public static final DeferredObject<Item> ARCANE_TOME = item("arcane_tome", ArcaneTomeItem::new, true, false);
+    public static final DeferredObject<Item> APPRENTICE_ARCANE_TOME = item("arcane_tome_apprentice", () -> new ArcaneTomeItem(SpellTiers.APPRENTICE), false, true);
+    public static final DeferredObject<Item> ADVANCED_ARCANE_TOME = item("arcane_tome_advanced", () -> new ArcaneTomeItem(SpellTiers.ADVANCED), false, true);
+    public static final DeferredObject<Item> MASTER_ARCANE_TOME = item("arcane_tome_master", () -> new ArcaneTomeItem(SpellTiers.MASTER), false, true);
+
     public static final DeferredObject<Item> BLANK_SCROLL = item("blank_scroll", () -> new BlankScrollItem(new Item.Properties().stacksTo(64)), true, true);
     public static final DeferredObject<Item> RUINED_SPELL_BOOK = item("ruined_spell_book");
     public static final DeferredObject<Item> SCROLL = item("scroll", () -> new ScrollItem(new Item.Properties().stacksTo(16)));

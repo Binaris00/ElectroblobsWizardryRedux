@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-03T13:16:00.387243752	Item Models: ebwizardry
+// 1.20.1	2026-02-12T10:43:11.687968	Item Models: ebwizardry
 89bb34411d51f6f233bba5222d0f678fb09f0db7 assets/ebwizardry/models/item/amulet_absorption.json
 5d768537586b85e2822265776cd201221e20ad88 assets/ebwizardry/models/item/amulet_anchoring.json
 0580922d9a4bededf0168a7c330267c6c36f48e8 assets/ebwizardry/models/item/amulet_arcane_defence.json
@@ -19,6 +19,9 @@ bd2a0a591a18b7232de58004c48882a53da37843 assets/ebwizardry/models/item/amulet_re
 df210abd8df2a3f6f8f6c4bfa948e25c0f0351ae assets/ebwizardry/models/item/amulet_wisdom.json
 1c662e3659682a07b95addd1f0fc66cb3052b975 assets/ebwizardry/models/item/amulet_wither_immunity.json
 3be1dd8086e009e0381f739e25d2a3a70e580e75 assets/ebwizardry/models/item/arcane_tome.json
+3be1dd8086e009e0381f739e25d2a3a70e580e75 assets/ebwizardry/models/item/arcane_tome_advanced.json
+3be1dd8086e009e0381f739e25d2a3a70e580e75 assets/ebwizardry/models/item/arcane_tome_apprentice.json
+3be1dd8086e009e0381f739e25d2a3a70e580e75 assets/ebwizardry/models/item/arcane_tome_master.json
 97782f06eb3c5ab12c03eb9a42723c0b203ed0b0 assets/ebwizardry/models/item/astral_diamond.json
 afbc0cbbef04060c72bf54eb53fff0ddf8335ecb assets/ebwizardry/models/item/attunement_upgrade.json
 2f00ef885fb9af0067044aa8a1333cf7789d713c assets/ebwizardry/models/item/battlemage_boots.json

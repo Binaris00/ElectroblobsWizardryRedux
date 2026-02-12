@@ -232,7 +232,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public ItemStack applyUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
-        if (upgrade.getItem() == EBItems.ARCANE_TOME.get()) {
+        if (upgrade.getItem() instanceof ArcaneTomeItem) {
             return applyTierUpgrade(player, wand, upgrade);
         } else if (WandUpgrades.isWandUpgrade(upgrade.getItem())) {
             applySpecialUpgrade(player, wand, upgrade);

@@ -291,7 +291,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         possibleTrades.add(createTrade(
                 new ItemStack(Items.GOLD_INGOT, 10 + random.nextInt(3)),
                 new ItemStack(Items.BOOK),
-                SpellUtil.arcaneTomeItem(SpellTiers.APPRENTICE),
+                EBItems.APPRENTICE_ARCANE_TOME.get().getDefaultInstance(),
                 3, 30, 0.2f
         ));
 
@@ -320,7 +320,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         possibleTrades.add(createTrade(
                 new ItemStack(Items.GOLD_INGOT, 14 + random.nextInt(3)),
                 new ItemStack(Items.BOOK),
-                SpellUtil.arcaneTomeItem(SpellTiers.ADVANCED),
+                EBItems.ADVANCED_ARCANE_TOME.get().getDefaultInstance(),
                 3, 30, 0.2f
         ));
 
@@ -365,7 +365,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         possibleTrades.add(createTrade(
                 new ItemStack(Items.GOLD_INGOT, 20 + random.nextInt(6)),
                 new ItemStack(EBItems.ASTRAL_DIAMOND.get()),
-                SpellUtil.arcaneTomeItem(SpellTiers.MASTER),
+                EBItems.MASTER_ARCANE_TOME.get().getDefaultInstance(),
                 3, 50, 0.2f
         ));
 

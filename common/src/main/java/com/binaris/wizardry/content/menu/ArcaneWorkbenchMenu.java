@@ -71,6 +71,9 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
         // Upgrade Slot
         Set<Item> upgrades = new HashSet<>(WandUpgrades.getSpecialUpgrades());
         upgrades.add(EBItems.ARCANE_TOME.get());
+        upgrades.add(EBItems.APPRENTICE_ARCANE_TOME.get());
+        upgrades.add(EBItems.ADVANCED_ARCANE_TOME.get());
+        upgrades.add(EBItems.MASTER_ARCANE_TOME.get());
         upgrades.add(EBItems.RESPLENDENT_THREAD.get());
         upgrades.add(EBItems.CRYSTAL_SILVER_PLATING.get());
         upgrades.add(EBItems.ETHEREAL_CRYSTAL_WEAVE.get());

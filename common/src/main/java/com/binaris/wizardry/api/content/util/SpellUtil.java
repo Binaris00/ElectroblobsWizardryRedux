@@ -5,6 +5,7 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
+import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -87,10 +88,25 @@ public final class SpellUtil {
      * @param tier The tier of the arcane tome.
      * @return The arcane tome ItemStack.
      */
-    public static ItemStack arcaneTomeItem(SpellTier tier) {
+    public static ItemStack createArcaneTome(SpellTier tier) {
         ItemStack stack = new ItemStack(EBItems.ARCANE_TOME.get());
         stack.getOrCreateTag().putString("Tier", tier.getOrCreateLocation().toString());
         return stack;
+    }
+
+    /**
+     * Given a spell tier, returns the corresponding arcane tome ItemStack. If the tier is one of the default upgraded tiers
+     * (Apprentice, Advanced, Master), it returns the corresponding predefined arcane tome. Otherwise, it creates a new
+     * arcane tome with the given tier stored in its NBT. {@link #createArcaneTome(SpellTier)}
+     *
+     * @param tier The tier of the arcane tome.
+     * @return The arcane tome ItemStack.
+     */
+    public static ItemStack getArcaneTome(SpellTier tier) {
+        if (tier.equals(SpellTiers.APPRENTICE)) return new ItemStack(EBItems.APPRENTICE_ARCANE_TOME.get());
+        if (tier.equals(SpellTiers.ADVANCED)) return new ItemStack(EBItems.ADVANCED_ARCANE_TOME.get());
+        if (tier.equals(SpellTiers.MASTER)) return new ItemStack(EBItems.MASTER_ARCANE_TOME.get());
+        return createArcaneTome(tier);
     }
 
     /**

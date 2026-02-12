@@ -28,6 +28,10 @@ public final class EBItemModelProvider extends ItemModelProvider {
         EBDataGenProcessor.wandItems().forEach((name, item) -> simpleWand(name));
         simpleBlockItemBlockTexture(EBBlocks.CRYSTAL_FLOWER);
 
+        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.APPRENTICE_ARCANE_TOME.get()).getPath(), "arcane_tome");
+        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.ADVANCED_ARCANE_TOME.get()).getPath(), "arcane_tome");
+        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.MASTER_ARCANE_TOME.get()).getPath(), "arcane_tome");
+
         spawnEgg(EBItems.WIZARD_SPAWN_EGG);
         spawnEgg(EBItems.EVIL_WIZARD_SPAWN_EGG);
         spawnEgg(EBItems.REMNANT_SPAWN_EGG);
@@ -47,10 +51,14 @@ public final class EBItemModelProvider extends ItemModelProvider {
     }
 
     private void simpleItem(String name) {
-        withExistingParent(name,
+        simpleItem(name, name);
+    }
+
+    private void simpleItem(String modelName, String textureName) {
+        withExistingParent(modelName,
                 new ResourceLocation("item/generated")).texture(
                 "layer0",
-                new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + name)
+                new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + textureName)
         );
     }
 

@@ -3,35 +3,27 @@ package com.binaris.wizardry.datagen.provider.loot;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBLootTables;
-import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
-import net.minecraft.world.level.storage.loot.functions.SetNbtFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.BiConsumer;
 
 public final class EBSubsetsLootTables implements LootTableSubProvider {
-    private static CompoundTag tierTag(SpellTier tier) {
-        CompoundTag tag = new CompoundTag();
-        tag.putString("Tier", tier.getOrCreateLocation().toString());
-        return tag;
-    }
-
     @Override
     public void generate(@NotNull BiConsumer<ResourceLocation, LootTable.Builder> biConsumer) {
         biConsumer.accept(EBLootTables.SUBSET_ARCANE_TOMES,
                 LootTable.lootTable()
                         .withPool(LootPool.lootPool()
                                 .setRolls(ConstantValue.exactly(1))
-                                .add(LootItem.lootTableItem(EBItems.ARCANE_TOME.get()).apply(SetNbtFunction.setTag(tierTag(SpellTiers.APPRENTICE))).setWeight(4)).name("apprentice_tome")
-                                .add(LootItem.lootTableItem(EBItems.ARCANE_TOME.get()).apply(SetNbtFunction.setTag(tierTag(SpellTiers.ADVANCED))).setWeight(2)).name("advanced_tome")
-                                .add(LootItem.lootTableItem(EBItems.ARCANE_TOME.get()).apply(SetNbtFunction.setTag(tierTag(SpellTiers.MASTER))).setWeight(1)).name("master_tome")));
+                                .add(LootItem.lootTableItem(EBItems.APPRENTICE_ARCANE_TOME.get()).setWeight(4)).name("apprentice_tome")
+                                .add(LootItem.lootTableItem(EBItems.ADVANCED_ARCANE_TOME.get()).setWeight(2)).name("advanced_tome")
+                                .add(LootItem.lootTableItem(EBItems.MASTER_ARCANE_TOME.get()).setWeight(1)).name("master_tome")));
 
         biConsumer.accept(EBLootTables.SUBSET_ARMOR_UPGRADES,
                 LootTable.lootTable()
