@@ -53,7 +53,6 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
             ParticleBuilder.create(EBParticles.DARK_MAGIC).pos(provider.xo, provider.yo + (provider.level().random.nextDouble() * 1.5 + 1), provider.zo).color(0.1f, 0.0f, 0.0f).spawn(provider.level());
         }
 
-        setLifetime(getLifetime() - 1);
         sync();
     }
 

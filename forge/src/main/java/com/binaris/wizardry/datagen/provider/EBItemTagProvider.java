@@ -53,6 +53,7 @@ public final class EBItemTagProvider extends ItemTagsProvider {
                 .add(EBItems.RING_EARTH_BIOME.get())
                 .add(EBItems.RING_EVOKER.get())
                 .add(EBItems.RING_EXTRACTION.get())
+                .add(EBItems.RING_FIRE_BIOME.get())
                 .add(EBItems.RING_FIRE_MELEE.get())
                 .add(EBItems.RING_FULL_MOON.get())
                 .add(EBItems.RING_HAMMER.get())

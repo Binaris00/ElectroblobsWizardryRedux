@@ -1,12 +1,2 @@
-- Change to spell tier accessors to use getter methods for better consistency
-- Added spell sorting on creative tab
-- Refactor to methods inside artifact classes to make it easier to understand and maintain
-- Deleted artifact testing class as it was no longer needed
-- Refactor to ArrowSpell to give the whole CastContext instead of just the player when adding more data to arrows, allowing for more flexibility in spell casting
-- Fixed ForceArrow return mana logic (using ring mana return)
-- Library ruins, obelisks, shrines, wizard towers are now more common. Increasing the chances of finding them and making exploration more rewarding
-- Recreated logic to avoid evil wizards spawning in mushroom islands ([#11](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/11) by [@sami-hmr](https://github.com/sami-hmr))
-- Fixed server crash related to scrolls/spellbooks using client-only methods ([#11](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/11) by [@sami-hmr](https://github.com/sami-hmr))
-- Fixed crash when wizards used construct range spells
-- Prevent wizards from healing on instant spawn ([#11](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/11) by [@sami-hmr](https://github.com/sami-hmr))
-- Fixed particle buff render that made it look through walls
+- Fixed ring of the Desert Sun wasn't marked as a ring, so you couldn't use it in the ring slot.
+- Fixed that minions only had half of their intended lifetime, so they would die much earlier than intended.

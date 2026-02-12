@@ -84,6 +84,20 @@ public final class EBBlockTagProvider extends BlockTagsProvider {
                 .add(EBBlocks.NECROMANCY_RUNESTONE.get())
                 .add(EBBlocks.SORCERY_RUNESTONE.get());
 
+        this.tag(BlockTags.MINEABLE_WITH_AXE)
+                .add(EBBlocks.GILDED_ACACIA_WOOD.get())
+                .add(EBBlocks.GILDED_BIRCH_WOOD.get())
+                .add(EBBlocks.GILDED_DARK_OAK_WOOD.get())
+                .add(EBBlocks.GILDED_OAK_WOOD.get())
+                .add(EBBlocks.GILDED_JUNGLE_WOOD.get())
+                .add(EBBlocks.GILDED_SPRUCE_WOOD.get())
+                .add(EBBlocks.ACACIA_BOOKSHELF.get())
+                .add(EBBlocks.BIRCH_BOOKSHELF.get())
+                .add(EBBlocks.DARK_OAK_BOOKSHELF.get())
+                .add(EBBlocks.OAK_BOOKSHELF.get())
+                .add(EBBlocks.JUNGLE_BOOKSHELF.get())
+                .add(EBBlocks.SPRUCE_BOOKSHELF.get());
+
         this.tag(EBTags.GILDED_WOOD_BLOCK)
                 .add(EBBlocks.GILDED_ACACIA_WOOD.get())
                 .add(EBBlocks.GILDED_BIRCH_WOOD.get())
