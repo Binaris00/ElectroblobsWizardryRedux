@@ -209,7 +209,8 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
             case 1 -> addNoviceTrades(usedSpells, usedItems);
             case 2 -> addApprenticeTrades(usedSpells, usedItems);
             case 3 -> addAdvancedTrades(usedSpells, usedItems);
-            case 4, 5 -> addMasterTrades(usedSpells, usedItems);
+            case 4 -> addMasterTrades(usedSpells, usedItems, false);
+            case 5 -> addMasterTrades(usedSpells, usedItems, true);
         }
     }
 
@@ -343,7 +344,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         addRandomTrades(possibleTrades);
     }
 
-    private void addMasterTrades(List<Spell> usedSpells, List<Item> usedItems) {
+    private void addMasterTrades(List<Spell> usedSpells, List<Item> usedItems, boolean isMaxLevel) {
         List<MerchantOffer> possibleTrades = new ArrayList<>();
 
         // 14-19 gold ingots + 4-5 paper → random wand upgrade
@@ -361,13 +362,15 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         MerchantOffer spell = createSpellTrade(SpellTiers.MASTER, 20 + random.nextInt(6), 15 + random.nextInt(6), usedSpells);
         if (spell != null) possibleTrades.add(spell);
 
-        // 20-25 gold ingots + 1 astral diamond → Tome of Arcana (advanced to master)
-        possibleTrades.add(createTrade(
-                new ItemStack(Items.GOLD_INGOT, 20 + random.nextInt(6)),
-                new ItemStack(EBItems.ASTRAL_DIAMOND.get()),
-                EBItems.MASTER_ARCANE_TOME.get().getDefaultInstance(),
-                3, 50, 0.2f
-        ));
+        if (isMaxLevel) {
+            // 20-25 gold ingots + 1 astral diamond → Tome of Arcana (advanced to master)
+            possibleTrades.add(createTrade(
+                    new ItemStack(Items.GOLD_INGOT, 20 + random.nextInt(6)),
+                    new ItemStack(EBItems.ASTRAL_DIAMOND.get()),
+                    EBItems.MASTER_ARCANE_TOME.get().getDefaultInstance(),
+                    3, 50, 0.2f
+            ));
+        }
 
         addRandomTrades(possibleTrades);
     }

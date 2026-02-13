@@ -69,12 +69,12 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof IElementValue value && value.validForReceptacle()) {
             ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
             blockEntity.setStack(receptacleItem.split(1));
+            level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f, false);
         }
         // If wanting to take an item out of a filled receptacle
         if (!stack.isEmpty() && !player.getInventory().add(stack)) {
             player.drop(stack, false);
         }
-        level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f, false);
         return InteractionResult.SUCCESS;
     }
 

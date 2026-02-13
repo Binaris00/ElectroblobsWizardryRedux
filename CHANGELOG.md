@@ -2,3 +2,5 @@
 - Fixed that minions only had half of their intended lifetime, so they would die much earlier than intended.
 - Added arcane tomes as individual items and not NBT dependant. Now giving the option to use NBT or just regular arcane tomes with new tiers added by addons.
 - Increased crystal flower/ore spawn rates
+- Fixed issue with receptacles that made them produce sound even when you didn't put the correct item in them
+- Fixed duplicated wizard trade items, again!!
