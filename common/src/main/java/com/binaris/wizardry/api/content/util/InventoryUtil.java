@@ -36,6 +36,19 @@ public final class InventoryUtil {
         return items;
     }
 
+    /**
+     * Gets all items including the carried item (cursor item when inventory is open).
+     * This is important for systems that need to track ALL items a player has access to.
+     */
+    public static Collection<ItemStack> getAllItemsIncludingCarried(Player player) {
+        List<ItemStack> items = new ArrayList<>(getAllItems(player));
+        ItemStack carried = player.containerMenu.getCarried();
+        if (!carried.isEmpty()) {
+            items.add(carried);
+        }
+        return items;
+    }
+
     public static List<ItemStack> getHotBarAndOffhand(Player player) {
         List<ItemStack> hotbar = getHotbar(player);
         hotbar.add(0, player.getOffhandItem());

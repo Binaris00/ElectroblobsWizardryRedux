@@ -50,7 +50,7 @@ public final class DataEvents {
     public static void onConjureEntityDeath(EBLivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) return; // only players can conjure items so...
 
-        InventoryUtil.getAllItems(player).stream().filter(ConjureItemSpell::isSummoned)
+        InventoryUtil.getAllItemsIncludingCarried(player).stream().filter(ConjureItemSpell::isSummoned)
                 .forEach(stack -> stack.shrink(stack.getCount()));
     }
 
@@ -135,9 +135,21 @@ public final class DataEvents {
         if (player.tickCount % CONJURE_CHECK_INTERVAL != 0) return;
 
         long currentGameTime = player.level().getGameTime();
+
+        // Check regular inventory items
         InventoryUtil.getAllItems(player).stream()
                 .filter(ConjureItemSpell::isSummoned)
                 .forEach(stack -> checkAndExpireItem(stack, currentGameTime));
+
+        // Check carried item separately to handle it properly
+        ItemStack carried = player.containerMenu.getCarried();
+        if (!carried.isEmpty() && ConjureItemSpell.isSummoned(carried)) {
+            checkAndExpireItem(carried, currentGameTime);
+            // If the carried item is now empty after expiring, clear it from the menu
+            if (carried.isEmpty()) {
+                player.containerMenu.setCarried(ItemStack.EMPTY);
+            }
+        }
     }
 
     private static void checkAndExpireItem(ItemStack stack, long currentGameTime) {

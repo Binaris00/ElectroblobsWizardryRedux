@@ -1,6 +1,7 @@
 package com.binaris.wizardry.content.block;
 
 import com.binaris.wizardry.api.content.util.BlockUtil;
+import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.binaris.wizardry.content.item.RandomSpellBookItem;
 import com.binaris.wizardry.setup.registries.EBBlockEntities;
@@ -49,6 +50,7 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
+        if (level.isClientSide) return InteractionResult.SUCCESS;
         if (!(level.getBlockEntity(pos) instanceof ImbuementAltarBlockEntity entity) || player.isShiftKeyDown()) {
             return InteractionResult.FAIL;
         }
@@ -62,21 +64,23 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
             entity.setStack(stack, true);
             entity.setLastUser(player);
             if (!player.isCreative()) toInsert.shrink(1);
-
-        } else {
-            if (currentStack.getItem() instanceof RandomSpellBookItem) {
-                RandomSpellBookItem.create(level, player, currentStack);
-            } else {
-                if (toInsert.isEmpty()) {
-                    player.addItem(currentStack);
-                } else if (!player.addItem(currentStack)) {
-                    player.drop(currentStack, false);
-                }
-            }
-
-            entity.setStack(ItemStack.EMPTY, false);
-            entity.setLastUser(null);
+            return InteractionResult.SUCCESS;
         }
+
+        if (currentStack.getItem() instanceof RandomSpellBookItem) {
+            RandomSpellBookItem.create(level, player, currentStack);
+            return InteractionResult.SUCCESS;
+        }
+
+        if (!(player.isCreative() && InventoryUtil.doesPlayerHaveItem(player, currentStack.getItem()))) {
+            if (!player.addItem(currentStack)) {
+                player.drop(currentStack, false);
+            }
+        }
+
+        entity.setStack(ItemStack.EMPTY, false);
+        entity.setLastUser(null);
+
         return InteractionResult.SUCCESS;
     }
 

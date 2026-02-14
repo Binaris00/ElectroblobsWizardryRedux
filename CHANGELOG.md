@@ -7,3 +7,5 @@
 - Wizards can now use summon spells normally 
 - Wizards have better enemy detection, locating ally minions and players more effectively
 - [Internal] Added game testing to how wizards summon minions
+- Fixed duplication of conjured items when putting them in the carried mouse slot
+- Fixed Imbuement altar duplication of items when player being in creative mod + weird item placement on survival
