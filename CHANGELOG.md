@@ -4,3 +4,4 @@
 - Increased crystal flower/ore spawn rates
 - Fixed issue with receptacles that made them produce sound even when you didn't put the correct item in them
 - Fixed duplicated wizard trade items, again!!
+- [Internal] Added game testing to how wizards summon minions

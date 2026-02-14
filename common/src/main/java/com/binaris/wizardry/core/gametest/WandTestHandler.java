@@ -21,7 +21,7 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
 
-public final class WandTest {
+public final class WandTestHandler {
     private static final List<Spell> FULL_SPELL_LIST = List.of(Spells.FIREBALL, Spells.ICE_SHARD, Spells.HEAL, Spells.LIFE_DRAIN, Spells.EVADE);
 
     public static void wandBasicMovement(GameTestHelper helper) {
@@ -116,7 +116,7 @@ public final class WandTest {
 
     private static ItemStack setupWandWithSpells(GameTestHelper helper, List<Spell> spells) {
         ItemStack wand = EBItems.MASTER_WAND.get().getDefaultInstance();
-        ArcaneWorkbenchTest.TestContext ctx = ArcaneWorkbenchTest.setupTest(helper, wand);
+        AWTestHandler.TestContext ctx = AWTestHandler.setupTest(helper, wand);
 
         for (int i = 0; i < spells.size(); i++) {
             ctx.workbench().setItem(i, SpellUtil.spellBookItem(spells.get(i)));
@@ -133,6 +133,6 @@ public final class WandTest {
         return wand;
     }
 
-    private WandTest() {
+    private WandTestHandler() {
     }
 }

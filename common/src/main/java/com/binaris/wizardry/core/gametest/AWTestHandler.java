@@ -21,7 +21,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public final class ArcaneWorkbenchTest {
+public class AWTestHandler {
     private static final BlockPos WORKBENCH_POS = new BlockPos(1, 2, 1);
     private static final Vec3 PLAYER_POS = new Vec3(1.5, 2.0, 1.5);
 
@@ -292,6 +292,6 @@ public final class ArcaneWorkbenchTest {
     record TestContext(ArcaneWorkbenchBlockEntity workbench, Player player, ArcaneWorkbenchMenu menu) {
     }
 
-    private ArcaneWorkbenchTest() {
+    private AWTestHandler() {
     }
 }
