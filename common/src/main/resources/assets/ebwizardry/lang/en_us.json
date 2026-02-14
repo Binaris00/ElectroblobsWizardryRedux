@@ -661,7 +661,7 @@
   "item.ebwizardry.mana_flask_small": "Small Mana Flask",
   "item.ebwizardry.mana_flask_medium": "Medium Mana Flask",
   "item.ebwizardry.mana_flask_large": "Large Mana Flask",
-  "item.ebwizardry.mana_flask.desc": "Craft with a wand or piece of wizard armor to restore %s mana",
+  "item.ebwizardry.mana_flask.desc": "Use this with a wand or piece of wizard armor in your inventory to restore %s mana",
   "item.ebwizardry.ring.generic.desc": "Equip this ring in the Baubles inventory or by placing it on your hotbar. Up to 2 rings may be equipped at once.",
   "item.ebwizardry.amulet.generic.desc": "Equip this amulet in the Baubles inventory or by placing it on your hotbar. Only one amulet may be equipped at a time.",
   "item.ebwizardry.charm.generic.desc": "Equip this charm in the Baubles inventory or by placing it on your hotbar. Only one charm may be equipped at a time.",
