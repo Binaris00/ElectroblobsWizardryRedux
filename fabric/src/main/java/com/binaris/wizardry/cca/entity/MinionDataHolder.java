@@ -7,8 +7,8 @@ import com.binaris.wizardry.setup.registries.client.EBParticles;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -110,8 +110,17 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     }
 
     @Override
-    public @Nullable Player getOwner() {
-        return ownerUUID == null ? null : provider.level().getPlayerByUUID(ownerUUID);
+    public @Nullable LivingEntity getOwner() {
+        if (ownerUUID == null) return null;
+        if (provider.level().isClientSide()) return null;
+
+        return provider.getServer().getLevel(provider.level().dimension()).getEntity(ownerUUID) instanceof LivingEntity livingEntity ? livingEntity : null;
+    }
+
+    @Override
+    public void setOwner(LivingEntity owner) {
+        this.ownerUUID = owner.getUUID();
+        sync();
     }
 
     @Override

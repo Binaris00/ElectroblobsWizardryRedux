@@ -12,6 +12,7 @@ import com.binaris.wizardry.content.entity.goal.WizardLookAtTradePlayer;
 import com.binaris.wizardry.content.entity.goal.WizardTradeGoal;
 import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.content.item.WizardArmorType;
+import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.binaris.wizardry.core.platform.Services;
@@ -27,7 +28,11 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.npc.Npc;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -75,6 +80,17 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         super.registerGoals();
         this.goalSelector.addGoal(1, new WizardTradeGoal(this));
         this.goalSelector.addGoal(1, new WizardLookAtTradePlayer(this));
+        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(Wizard.class));
+        this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, this::checkTarget));
+    }
+
+    private boolean checkTarget(LivingEntity entity) {
+        if (entity instanceof Mob mob) {
+            if (Services.OBJECT_DATA.isMinion(mob)) {
+                return !AllyDesignation.isMinionAlly(this, mob);
+            }
+        }
+        return !AllyDesignation.isAllied(this, entity);
     }
 
     @Override

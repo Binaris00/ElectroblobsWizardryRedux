@@ -33,7 +33,8 @@ public final class EBCommands {
             CastCommand::register,
             ForfeitTestCommand::register,
             SpellContextCommand::register,
-            UnDiscoverSpellCommand::register
+            UnDiscoverSpellCommand::register,
+            WizardSpellTestCommand::register
     );
 
     private EBCommands() {

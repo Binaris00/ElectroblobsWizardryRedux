@@ -1,19 +1,18 @@
 package com.binaris.wizardry.core;
 
+import com.binaris.wizardry.api.content.data.MinionData;
 import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
 public final class AllyDesignation {
-    private AllyDesignation() {
-    }
-
     /**
      * Covers both {@link AllyDesignation#isPlayerAlly(Player, Player)} and {@link AllyDesignation#isOwnerAlly(Player, OwnableEntity)},
      * returning true if the second entity is either owned by the first entity, an ally of the first entity, or owned by
@@ -36,6 +35,23 @@ public final class AllyDesignation {
         }
 
         return false;
+    }
+
+    /**
+     * Checks if the given mob has any minion relation with the given allyOf. Seeing if the mob is actually a minion owned
+     * by the allyOf or if the mob is a minion owned by an ally of the allyOf. All this checks made by the minion data.
+     *
+     * @param allyOf the entity that could be the owner or ally of the owner of the minion
+     * @param possibleAlly mob that could be a minion of the allyOf or an ally of the allyOf
+     * @return true if the mob is a minion of the allyOf or an ally of the allyOf, false otherwise
+     */
+    public static boolean isMinionAlly(LivingEntity allyOf, Mob possibleAlly) {
+        MinionData data = Services.OBJECT_DATA.getMinionData(possibleAlly);
+        if (data == null || data.getOwner() == null) return false;
+
+        LivingEntity owner = data.getOwner();
+        if (owner == allyOf) return true;
+        return isAllied(allyOf, owner);
     }
 
     /**
@@ -101,5 +117,8 @@ public final class AllyDesignation {
         WizardData data = Services.OBJECT_DATA.getWizardData(allyOf);
         Entity owner = ownable.getOwner();
         return owner instanceof Player target ? data.isPlayerAlly(target) : data.isPlayerAlly(ownable.getOwnerUUID());
+    }
+
+    private AllyDesignation() {
     }
 }

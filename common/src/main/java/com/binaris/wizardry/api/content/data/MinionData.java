@@ -1,12 +1,13 @@
 package com.binaris.wizardry.api.content.data;
 
+import com.binaris.wizardry.content.entity.goal.MinionCopyTargetGoal;
 import com.binaris.wizardry.content.entity.goal.MinionFollowOwnerGoal;
 import com.binaris.wizardry.content.entity.goal.MinionOwnerHurtByTargetGoal;
 import com.binaris.wizardry.content.entity.goal.MinionOwnerHurtTargetGoal;
 import com.binaris.wizardry.content.spell.abstr.MinionSpell;
 import com.binaris.wizardry.core.mixin.accessor.MobGoalsAccessor;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,9 +40,10 @@ public interface MinionData {
         if (shouldDeleteGoals()) ((MobGoalsAccessor) getProvider()).getGoalSelector().removeAllGoals((goal) -> true);
 
         ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(1, new MinionOwnerHurtByTargetGoal(getProvider()));
-        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(1, new MinionOwnerHurtTargetGoal(getProvider()));
+        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(2, new MinionCopyTargetGoal(getProvider()));
+        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(2, new MinionOwnerHurtTargetGoal(getProvider()));
         if (shouldFollowOwner())
-            ((MobGoalsAccessor) getProvider()).getGoalSelector().addGoal(2, new MinionFollowOwnerGoal(getProvider()));
+            ((MobGoalsAccessor) getProvider()).getGoalSelector().addGoal(3, new MinionFollowOwnerGoal(getProvider()));
 
     }
 
@@ -123,7 +125,14 @@ public interface MinionData {
      *
      * @return the owner entity
      */
-    Player getOwner();
+    @Nullable LivingEntity getOwner();
+
+    /**
+     * Sets the owner entity of the minion.
+     *
+     * @param owner the owner entity
+     */
+    void setOwner(LivingEntity owner);
 
     /**
      * Sets whether the minion's original goals should be restarted, this is used when the minion's tick method is

@@ -32,9 +32,6 @@ import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
-import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
-import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
-import net.minecraft.world.entity.monster.Enemy;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -89,9 +86,6 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         this.goalSelector.addGoal(7, new LookAtPlayerGoal(this, AbstractWizard.class, 5.0F, 0.02F));
         this.goalSelector.addGoal(7, new RandomStrollGoal(this, 0.6D));
         this.goalSelector.addGoal(8, new LookAtPlayerGoal(this, Mob.class, 8.0F));
-        this.targetSelector.addGoal(1, new HurtByTargetGoal(this).setAlertOthers(AbstractWizard.class));
-        this.targetSelector.addGoal(0, new NearestAttackableTargetGoal<>(this, Mob.class, 0,
-                false, true, (entity) -> entity != null && !entity.isInvisible() && entity instanceof Enemy));
     }
 
     @Override
