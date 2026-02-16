@@ -39,7 +39,7 @@ import java.util.List;
 public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchItem {
     /** The limit time for a continuous spell cast from a scroll. */
     public static final int CASTING_TIME = 120;
-    /** Cooldown applied when a spell cast is cancelled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
+    /** Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
     public static final int COOLDOWN_FORFEIT_TICKS = 60;
 
     public ScrollItem(Properties properties) {
@@ -52,19 +52,21 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         Spell spell = getCurrentSpell(stack);
         if (spell == Spells.NONE) return InteractionResultHolder.fail(stack);
 
-        PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, new SpellModifiers());
+        SpellModifiers modifiers = new SpellModifiers();
+        PlayerCastContext ctx = new PlayerCastContext(level, player, hand, 0, modifiers);
 
         if (!canCast(stack, spell, ctx)) return InteractionResultHolder.fail(stack);
 
         if (!spell.isInstantCast()) {
+            Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(modifiers);
             player.startUsingItem(hand);
-            Services.OBJECT_DATA.getWizardData(player).setSpellModifiers(ctx.modifiers());
             return InteractionResultHolder.consume(stack);
         }
 
+        // For instant spells, cast immediately
         if (cast(stack, spell, ctx)) {
             if (!level.isClientSide && spell.requiresPacket()) {
-                Services.NETWORK_HELPER.sendToDimension(level.getServer(), new SpellCastS2C(player.getId(), hand, spell, ctx.modifiers()), level.dimension());
+                Services.NETWORK_HELPER.sendToDimension(level.getServer(), new SpellCastS2C(player.getId(), hand, spell, modifiers), level.dimension());
             }
             return InteractionResultHolder.success(stack);
         }
@@ -77,15 +79,17 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         if (!(livingEntity instanceof Player player)) return;
 
         Spell spell = SpellUtil.getSpell(stack);
-        int castingTick = stack.getUseDuration() - timeLeft;
+        int castingTick = stack.getUseDuration() - timeLeft - 1;
 
         PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick,
                 Services.OBJECT_DATA.getWizardData(player).getSpellModifiers());
 
-        if (!spell.isInstantCast() && canCast(stack, spell, ctx)) {
-            spell.cast(ctx);
-        } else {
-            livingEntity.stopUsingItem();
+        if (!spell.isInstantCast()) {
+            if (canCast(stack, spell, ctx)) {
+                cast(stack, spell, ctx);
+            } else {
+                livingEntity.stopUsingItem();
+            }
         }
     }
 
@@ -107,7 +111,10 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
             ctx.caster().getCooldowns().addCooldown(this, spell.getCooldown());
         }
 
-        CastUtils.trackSpellUsage(ctx.caster(), spell);
+        if (ctx.castingTicks() == 0) {
+            CastUtils.trackSpellUsage(ctx.caster(), spell);
+        }
+
         return true;
     }
 
@@ -122,7 +129,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         }
 
         int castingTick = stack.getUseDuration() - timeCharged;
-        SpellModifiers modifiers = new SpellModifiers();
+        SpellModifiers modifiers = Services.OBJECT_DATA.getWizardData(player).getSpellModifiers();
 
         WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, entity, modifiers, castingTick));
         spell.endCast(new CastContext(world, entity, castingTick, modifiers));

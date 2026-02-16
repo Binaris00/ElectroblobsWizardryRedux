@@ -10,3 +10,5 @@
 - Fixed duplication of conjured items when putting them in the carried mouse slot
 - Fixed Imbuement altar duplication of items when player being in creative mod + weird item placement on survival
 - Added mana flasks, letting you restore mana on the go 
+- Added 'all' parameter to /discover command, also add the possibility to use the command on specific players
+- Temporal fix to casting problem with scrolls when discovering continuous spells
