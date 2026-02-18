@@ -27,10 +27,7 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.PathfinderMob;
+import net.minecraft.world.entity.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.npc.Npc;
@@ -84,13 +81,20 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, Mob.class, 5, false, false, this::checkTarget));
     }
 
+    /**
+     * Checks if the given entity is a valid target for the wizard to attack. The wizard should attack any non-ally mobs
+     * (not counting friendly mobs, which are checked by the mob type)
+     */
     private boolean checkTarget(LivingEntity entity) {
         if (entity instanceof Mob mob) {
             if (Services.OBJECT_DATA.isMinion(mob)) {
                 return !AllyDesignation.isMinionAlly(this, mob);
             }
         }
-        return !AllyDesignation.isAllied(this, entity);
+
+        boolean isAlly = AllyDesignation.isAllied(this, entity);
+        // sometimes mobs aren't allies (passive mobs) but we still don't want to attack them, so also check if it's a friendly mob type
+        return !isAlly && !(entity.getType().getCategory().isFriendly());
     }
 
     @Override

@@ -69,7 +69,7 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<MagicSlime>> MAGIC_SLIME = entity(MagicSlime::new, "magic_slime", MobCategory.CREATURE, 2.04F, 2.04F, MagicType.LIVING);
     public static final DeferredObject<EntityType<Remnant>> REMNANT = entity(Remnant::new, "remnant", MobCategory.CREATURE, 0.8f, 0.8f, MagicType.LIVING);
     public static final DeferredObject<EntityType<Wizard>> WIZARD = entity(Wizard::new, "wizard", MobCategory.CREATURE, 0.6f, 1.8f, MagicType.LIVING);
-    public static final DeferredObject<EntityType<EvilWizard>> EVIL_WIZARD = entity(EvilWizard::new, "evil_wizard", MobCategory.CREATURE, 0.6f, 1.8f, MagicType.LIVING);
+    public static final DeferredObject<EntityType<EvilWizard>> EVIL_WIZARD = entity(EvilWizard::new, "evil_wizard", MobCategory.MONSTER, 0.6f, 1.8f, MagicType.LIVING);
 
     private EBEntities() {
     }

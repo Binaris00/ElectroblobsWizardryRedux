@@ -26,6 +26,16 @@ public class WizardHand extends RaySpell {
     Random rand = new Random();
 
     @Override
+    public boolean canCastByEntity() {
+        return false;
+    }
+
+    @Override
+    public boolean canCastByLocation() {
+        return false;
+    }
+
+    @Override
     protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
         return false;
     }
