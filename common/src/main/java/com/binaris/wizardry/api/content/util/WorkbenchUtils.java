@@ -5,7 +5,7 @@ import com.binaris.wizardry.api.content.item.ITierValue;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.spell.SpellTier;
-import com.binaris.wizardry.core.EBConfig;
+import com.binaris.wizardry.core.OLDEBCONFIG;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -79,7 +79,7 @@ public final class WorkbenchUtils {
             if (!canBindSpell(spell, spells, origin, i, ctx)) continue;
 
             updateSpellSlot(centre.getItem(), spells, i, spell);
-            if (EBConfig.singleUseSpellBooks) {
+            if (OLDEBCONFIG.singleUseSpellBooks) {
                 spellBooks[i].getItem().shrink(1);
             }
             changed = true;
@@ -103,7 +103,7 @@ public final class WorkbenchUtils {
         return spell.getTier().getLevel() <= origin.getLevel()
                 && spells.get(slot) != spell
                 && spell.isEnabled(ctx)
-                && (!EBConfig.preventBindingSameSpellTwiceToWands || spells.stream().noneMatch(s -> s == spell));
+                && (!OLDEBCONFIG.preventBindingSameSpellTwiceToWands || spells.stream().noneMatch(s -> s == spell));
     }
 
     /**

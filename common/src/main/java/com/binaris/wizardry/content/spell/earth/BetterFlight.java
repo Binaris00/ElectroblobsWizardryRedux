@@ -8,7 +8,7 @@ import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.core.EBConfig;
+import com.binaris.wizardry.core.OLDEBCONFIG;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -50,7 +50,7 @@ public class BetterFlight extends Spell {
             ctx.caster().setDeltaMovement(ctx.caster().getDeltaMovement().x, ctx.caster().getDeltaMovement().y +
                     ctx.caster().getLookAngle().y * acceleration + Y_NUDGE_ACCELERATION, ctx.caster().getDeltaMovement().z);
         }
-        if (!EBConfig.replaceVanillaFallDamage) ctx.caster().fallDistance = 0.0f;
+        if (!OLDEBCONFIG.replaceVanillaFallDamage) ctx.caster().fallDistance = 0.0f;
 
         return true;
     }

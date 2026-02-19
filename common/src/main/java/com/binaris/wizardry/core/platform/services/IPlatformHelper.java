@@ -11,7 +11,11 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.biome.Biome;
 import org.jetbrains.annotations.Nullable;
 
+import java.nio.file.Path;
+
 public interface IPlatformHelper {
+
+    Path getConfigDirectory();
 
     String getPlatformName();
 

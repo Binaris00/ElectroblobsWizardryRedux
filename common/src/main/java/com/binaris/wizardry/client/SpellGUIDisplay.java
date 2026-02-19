@@ -9,7 +9,8 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.content.data.SpellGlyphData;
-import com.binaris.wizardry.core.EBConfig;
+import com.binaris.wizardry.core.OLDEBCONFIG;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -75,7 +76,7 @@ public final class SpellGUIDisplay {
     }
 
     public static void draw(GuiGraphics guiGraphics, PoseStack stack, float partialTicks) {
-        if (!EBConfig.showSpellHUD && !EBConfig.showChargeMeter) return;
+        if (!OLDEBCONFIG.showSpellHUD && !OLDEBCONFIG.showChargeMeter) return;
 
         Player player = mc.player;
         if (player.isSpectator()) return;
@@ -103,15 +104,15 @@ public final class SpellGUIDisplay {
     }
 
     public static void renderSpellHUD(GuiGraphics guiGraphics, PoseStack stack, Player player, ItemStack wand, boolean mainHand, int width, int height, float partialTicks, boolean textLayer) {
-        if (!EBConfig.showSpellHUD) return;
+        if (!OLDEBCONFIG.showSpellHUD) return;
 
         if (!(wand.getItem() instanceof ISpellCastingItem))
             throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
 
-        boolean flipX = EBConfig.spellHUDFlipX;
-        boolean flipY = EBConfig.spellHUDFlipY;
+        boolean flipX = EBConfig.SPELL_HUD_FLIP_X.get();
+        boolean flipY = EBConfig.SPELL_HUD_FLIP_Y.get();
 
-        if (EBConfig.spellHUDDynamicPositioning) {
+        if (OLDEBCONFIG.spellHUDDynamicPositioning) {
             flipX = flipX == ((mainHand ? player.getMainArm() : player.getMainArm().getOpposite()) == HumanoidArm.LEFT);
         }
 
@@ -163,7 +164,7 @@ public final class SpellGUIDisplay {
         if (player.isSpectator()) return;
         stack.pushPose();
 
-        if (!EBConfig.showChargeMeter) return;
+        if (!OLDEBCONFIG.showChargeMeter) return;
         if (mc.options.renderDebug) return;
         if (mc.options.getCameraType() != CameraType.FIRST_PERSON) return;
         if (wand != player.getUseItem()) return;

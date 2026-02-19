@@ -1,7 +1,7 @@
 package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.core.EBConfig;
+import com.binaris.wizardry.core.OLDEBCONFIG;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -58,19 +58,19 @@ public final class EBLootTables {
      */
     public static void initInjections() {
         // Check all the locations from config and add the loot pool to each of them
-        Arrays.stream(EBConfig.lootInjectionLocations).forEach(location -> LOOT_INJECTIONS.add(Pair.of(location, createAdditivePool(DUNGEON_ADDITIONS, 1))));
+        Arrays.stream(OLDEBCONFIG.lootInjectionLocations).forEach(location -> LOOT_INJECTIONS.add(Pair.of(location, createAdditivePool(DUNGEON_ADDITIONS, 1))));
 
         LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/gameplay/fishing/junk"), createAdditivePool(JUNK_FISHING_ADDITIONS, 4)));
         LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/gameplay/fishing/treasure"), createAdditivePool(TREASURE_FISHING_ADDITIONS, 4)));
         LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/jungle_temple_dispenser"), createAdditivePool(DISPENSER_ADDITIONS, 1)));
 
-        if (!EBConfig.injectMobDrops) return;
+        if (!OLDEBCONFIG.injectMobDrops) return;
         // For each entity, if it's in the modifiableMobs or a hostile mob, add the loot pool
         BuiltInRegistries.ENTITY_TYPE.forEach(entityType -> {
             ResourceLocation lootTable = entityType.getDefaultLootTable();
             ResourceLocation entityName = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
             // mobs that aren't a hostile one and normally shouldn't drop anything
-            if (Arrays.asList(EBConfig.modifiableMobs).contains(entityName)) {
+            if (Arrays.asList(OLDEBCONFIG.modifiableMobs).contains(entityName)) {
                 LOOT_INJECTIONS.add(Pair.of(lootTable, createAdditivePool(WizardryMainMod.location("entities/mob_additions"), 1)));
             } else {
                 // if it's a hostile mob

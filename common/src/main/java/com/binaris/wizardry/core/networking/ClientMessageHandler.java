@@ -1,5 +1,6 @@
 package com.binaris.wizardry.core.networking;
 
+import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.EBLogger;
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
@@ -14,9 +15,12 @@ import com.binaris.wizardry.client.ParticleSpawner;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.WandItem;
+import com.binaris.wizardry.core.config.ConfigOption;
+import com.binaris.wizardry.core.config.EBConfigManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.networking.s2c.*;
 import com.binaris.wizardry.core.platform.Services;
+import com.google.gson.JsonElement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -113,5 +117,34 @@ public final class ClientMessageHandler {
     public static void particleBuilder(ParticleBuilderS2C m) {
         // Use ParticleSpawner to avoid loading client classes in ParticleData
         ParticleSpawner.spawnClientParticle(m.getData());
+    }
+
+    public static void configSync(ConfigSyncS2C m) {
+        // Find the config manager for this mod
+        EBConfigManager manager = WizardryMainMod.getConfigManagers().stream()
+                .filter(mgr -> mgr.getModId().equals(m.getModId()))
+                .findFirst()
+                .orElse(null);
+
+        if (manager == null) {
+            EBLogger.warn("Received config sync for unknown mod: {}", m.getModId());
+            return;
+        }
+
+        // Apply the synced config data
+        for (ConfigOption<?> option : manager.getConfigProvider().getOptions()) {
+            if (m.getConfigData().containsKey(option.getKey())) {
+                loadOption(option, m.getConfigData().get(option.getKey()));
+            }
+        }
+
+        EBLogger.info("Synced config for mod: {}", m.getModId());
+    }
+
+    private static <T> void loadOption(ConfigOption<T> option, JsonElement element) {
+        option.getCodec()
+                .parse(com.mojang.serialization.JsonOps.INSTANCE, element)
+                .result()
+                .ifPresent(option::set);
     }
 }

@@ -48,7 +48,7 @@ public final class AllyDesignation {
         if (target == null || target == attacker) return false;
         if (attacker == null) return true;
         if (attacker instanceof OwnableEntity ownable && !isValidTarget(ownable.getOwner(), target)) return false;
-        if (EBConfig.passiveMobsAreAllies && target.getType().getCategory().isFriendly()) return false;
+        if (OLDEBCONFIG.passiveMobsAreAllies && target.getType().getCategory().isFriendly()) return false;
 
         if (target instanceof OwnableEntity ownable) {
             Entity owner = ownable.getOwner();
@@ -79,8 +79,8 @@ public final class AllyDesignation {
 
         Entity damagedEntity = event.getDamagedEntity();
         if (damagedEntity instanceof Player playerSource) {
-            if (EBConfig.blockPlayersAlliesDamage && isPlayerAlly(playerDirect, playerSource)) event.setCanceled(true);
-        } else if (EBConfig.blockOwnedAlliesDamage && isAllied(playerDirect, damagedEntity)) {
+            if (OLDEBCONFIG.blockPlayersAlliesDamage && isPlayerAlly(playerDirect, playerSource)) event.setCanceled(true);
+        } else if (OLDEBCONFIG.blockOwnedAlliesDamage && isAllied(playerDirect, damagedEntity)) {
             event.setCanceled(true);
         }
     }

@@ -8,7 +8,7 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
-import com.binaris.wizardry.core.EBConfig;
+import com.binaris.wizardry.core.OLDEBCONFIG;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.particles.ParticleTypes;
@@ -32,7 +32,7 @@ public class Whirlwind extends RaySpell {
         if (!(ctx instanceof PlayerCastContext playerCtx)) return false;
         if (!(entityHit.getEntity() instanceof LivingEntity target)) return false;
 
-        if (target instanceof Player && !EBConfig.playersMoveEachOther) {
+        if (target instanceof Player && !OLDEBCONFIG.playersMoveEachOther) {
             playerCtx.caster().displayClientMessage(Component.translatable("spell.resist", target.getName(),
                     this.getDescriptionId()), true);
             return false;

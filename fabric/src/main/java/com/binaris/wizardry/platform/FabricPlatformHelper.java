@@ -19,7 +19,14 @@ import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.nio.file.Path;
+
 public class FabricPlatformHelper implements IPlatformHelper {
+
+    @Override
+    public Path getConfigDirectory() {
+        return FabricLoader.getInstance().getConfigDir();
+    }
 
     @Override
     public String getPlatformName() {

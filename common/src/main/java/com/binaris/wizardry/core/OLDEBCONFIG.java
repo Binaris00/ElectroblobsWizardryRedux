@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-public final class EBConfig {
+public final class OLDEBCONFIG {
     // Mana values
     public static final int MANA_PER_SHARD = 10;
     public static final int MANA_PER_CRYSTAL = 100;
@@ -65,7 +65,7 @@ public final class EBConfig {
     // Currency and other maps
     public static Map<Pair<ResourceLocation, Short>, Integer> currencyItems = new HashMap<>();
 
-    private EBConfig() {
+    private OLDEBCONFIG() {
     }
 
     private static ResourceLocation[] toResourceLocations(String... strings) {

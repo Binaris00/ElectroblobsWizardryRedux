@@ -16,6 +16,7 @@ public class EBFabricClientNetwork {
         registerClientMessage(NPCSpellCastS2C.ID, NPCSpellCastS2C::new);
         registerClientMessage(SpellCastS2C.ID, SpellCastS2C::new);
         registerClientMessage(ParticleBuilderS2C.ID, ParticleBuilderS2C::new);
+        registerClientMessage(ConfigSyncS2C.ID, ConfigSyncS2C::new);
     }
 
     private static <T extends Message> void registerClientMessage(ResourceLocation id, Function<FriendlyByteBuf, T> decoder) {

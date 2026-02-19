@@ -83,6 +83,7 @@ public final class EBEventHelper {
     private static void onPlayerJoin(WizardryEventBus bus) {
         bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
         bus.register(EBPlayerJoinServerEvent.class, (SpellProperties::onPlayerJoin));
+        bus.register(EBPlayerJoinServerEvent.class, com.binaris.wizardry.core.config.EBConfigManager::onPlayerJoin);
     }
 
     private static void onServerLevelLoad(WizardryEventBus bus) {

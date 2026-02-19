@@ -16,6 +16,7 @@
     "LivingEntityMixin",
     "PersistentEntitySectionManagerMixin",
     "PlayerMixin",
+    "ReloadCommandMixin",
     "ServerLevelMixin",
     "ServerPlayerMixin",
     "SlotMixin",
