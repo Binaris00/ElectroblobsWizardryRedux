@@ -1,7 +1,7 @@
 package com.binaris.wizardry.core.mixin.client;
 
 import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.core.OLDEBCONFIG;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.setup.registries.client.EBKeyBinding;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.MouseHandler;
@@ -23,7 +23,7 @@ public abstract class MouseHandlerMixin {
 
         if (Minecraft.getInstance().mouseHandler.isMouseGrabbed() && !wand.isEmpty() && yOffset != 0 && player.isShiftKeyDown()) {
             ci.cancel();
-            int d = (int) (OLDEBCONFIG.reverseScrollDirection ? -yOffset : yOffset);
+            int d = (int) (EBConfig.REVERSE_SCROLL_DIRECTION.get() ? -yOffset : yOffset);
 
             if (d > 0) {
                 EBKeyBinding.selectNextSpell(wand);

@@ -7,8 +7,8 @@ import com.binaris.wizardry.api.content.item.ITierValue;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.content.item.WandItem;
-import com.binaris.wizardry.core.OLDEBCONFIG;
 import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
@@ -460,7 +460,7 @@ public final class WandHelper {
         if (level > 0)
             modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), 1.0f - level * EBConstants.COOLDOWN_REDUCTION_PER_LEVEL, true);
 
-        float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConstants.MAX_RECENT_SPELLS) * OLDEBCONFIG.MAX_PROGRESSION_REDUCTION;
+        float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConstants.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION.get();
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
         WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
 

@@ -12,8 +12,8 @@ import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.*;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
-import com.binaris.wizardry.core.OLDEBCONFIG;
 import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
@@ -468,9 +468,9 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
      */
     protected void applySpecialUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
         Item specialUpgrade = upgrade.getItem();
-        int maxUpgrades = tier.getUpgradeLimit() + (element == Elements.MAGIC ? OLDEBCONFIG.NON_ELEMENTAL_UPGRADE_BONUS : 0);
+        int maxUpgrades = tier.getUpgradeLimit() + (element == Elements.MAGIC ? EBConfig.NON_ELEMENTAL_UPGRADE_BONUS.get() : 0);
 
-        if (WandHelper.getTotalUpgrades(wand) >= maxUpgrades || WandHelper.getUpgradeLevel(wand, specialUpgrade) >= OLDEBCONFIG.UPGRADE_STACK_LIMIT) {
+        if (WandHelper.getTotalUpgrades(wand) >= maxUpgrades || WandHelper.getUpgradeLevel(wand, specialUpgrade) >= EBConfig.UPGRADE_STACK_LIMIT.get()) {
             return;
         }
 
@@ -574,7 +574,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public int getMaxDamage(ItemStack stack) {
-        return (int) (this.getMaxDamage() * (1.0f + OLDEBCONFIG.STORAGE_INCREASE_PER_LEVEL * WandHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE.get())) + 0.5f);
+        return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL.get() * WandHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE.get())) + 0.5f);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.binaris.wizardry.core;
 
 import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.world.entity.Entity;
@@ -48,7 +49,7 @@ public final class AllyDesignation {
         if (target == null || target == attacker) return false;
         if (attacker == null) return true;
         if (attacker instanceof OwnableEntity ownable && !isValidTarget(ownable.getOwner(), target)) return false;
-        if (OLDEBCONFIG.passiveMobsAreAllies && target.getType().getCategory().isFriendly()) return false;
+        if (EBConfig.PASSIVE_MOBS_ARE_ALLIES.get() && target.getType().getCategory().isFriendly()) return false;
 
         if (target instanceof OwnableEntity ownable) {
             Entity owner = ownable.getOwner();
@@ -79,8 +80,8 @@ public final class AllyDesignation {
 
         Entity damagedEntity = event.getDamagedEntity();
         if (damagedEntity instanceof Player playerSource) {
-            if (OLDEBCONFIG.blockPlayersAlliesDamage && isPlayerAlly(playerDirect, playerSource)) event.setCanceled(true);
-        } else if (OLDEBCONFIG.blockOwnedAlliesDamage && isAllied(playerDirect, damagedEntity)) {
+            if (EBConfig.BLOCK_PLAYERS_ALLIES_DAMAGE.get() && isPlayerAlly(playerDirect, playerSource)) event.setCanceled(true);
+        } else if (EBConfig.BLOCK_OWNED_ALLIES_DAMAGE.get() && isAllied(playerDirect, damagedEntity)) {
             event.setCanceled(true);
         }
     }

@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.WandHelper;
 import com.binaris.wizardry.client.SpellGUIDisplay;
 import com.binaris.wizardry.content.item.WandItem;
-import com.binaris.wizardry.core.OLDEBCONFIG;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.networking.c2s.ControlInputPacketC2S;
 import com.binaris.wizardry.core.networking.c2s.SpellAccessPacketC2S;
 import com.binaris.wizardry.core.platform.Services;
@@ -27,7 +27,7 @@ public final class EBKeyBinding {
 
     public static final KeyMapping NEXT_SPELL = new KeyMapping("key." + WizardryMainMod.MOD_ID + ".next_spell", InputConstants.Type.KEYSYM, InputConstants.KEY_N, CATEGORY);
     public static final KeyMapping PREVIOUS_SPELL = new KeyMapping("key." + WizardryMainMod.MOD_ID + ".previous_spell", InputConstants.Type.KEYSYM, InputConstants.KEY_B, CATEGORY);
-    public static final KeyMapping[] SPELL_QUICK_ACCESS = new KeyMapping[WandItem.BASE_SPELL_SLOTS + OLDEBCONFIG.UPGRADE_STACK_LIMIT];
+    public static final KeyMapping[] SPELL_QUICK_ACCESS = new KeyMapping[WandItem.BASE_SPELL_SLOTS + EBConfig.UPGRADE_STACK_LIMIT.get()];
 
     static boolean nextSpellKeyPressed = false;
     static boolean previousSpellKeyPressed = false;

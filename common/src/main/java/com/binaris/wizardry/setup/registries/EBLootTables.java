@@ -1,18 +1,18 @@
 package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.core.OLDEBCONFIG;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.function.BiConsumer;
@@ -57,27 +57,27 @@ public final class EBLootTables {
      * You should add your injections here, not only add them to the list or just creating the members.
      */
     public static void initInjections() {
-        // Check all the locations from config and add the loot pool to each of them
-        Arrays.stream(OLDEBCONFIG.lootInjectionLocations).forEach(location -> LOOT_INJECTIONS.add(Pair.of(location, createAdditivePool(DUNGEON_ADDITIONS, 1))));
+        EBConfig.LOOT_INJECTION_LOCATIONS_TO_STRUCTURES.get().forEach(
+                location -> LOOT_INJECTIONS.add(Pair.of(location, createAdditivePool(DUNGEON_ADDITIONS, 1)))
+        );
 
         LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/gameplay/fishing/junk"), createAdditivePool(JUNK_FISHING_ADDITIONS, 4)));
         LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/gameplay/fishing/treasure"), createAdditivePool(TREASURE_FISHING_ADDITIONS, 4)));
         LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/jungle_temple_dispenser"), createAdditivePool(DISPENSER_ADDITIONS, 1)));
 
-        if (!OLDEBCONFIG.injectMobDrops) return;
         // For each entity, if it's in the modifiableMobs or a hostile mob, add the loot pool
-        BuiltInRegistries.ENTITY_TYPE.forEach(entityType -> {
+        for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
             ResourceLocation lootTable = entityType.getDefaultLootTable();
             ResourceLocation entityName = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
-            // mobs that aren't a hostile one and normally shouldn't drop anything
-            if (Arrays.asList(OLDEBCONFIG.modifiableMobs).contains(entityName)) {
+            if (EBConfig.INJECT_LOOT_TO_HOSTILE_MOBS.get() && !entityType.getCategory().isFriendly()) {
                 LOOT_INJECTIONS.add(Pair.of(lootTable, createAdditivePool(WizardryMainMod.location("entities/mob_additions"), 1)));
-            } else {
-                // if it's a hostile mob
-                if (!entityType.getCategory().isFriendly())
-                    LOOT_INJECTIONS.add(Pair.of(lootTable, createAdditivePool(WizardryMainMod.location("entities/mob_additions"), 1)));
+                continue;
             }
-        });
+
+            if (EBConfig.LOOT_INJECTION_TO_MOBS.get().contains(entityName)) {
+                LOOT_INJECTIONS.add(Pair.of(lootTable, createAdditivePool(WizardryMainMod.location("entities/mob_additions"), 1)));
+            }
+        }
     }
 
     public static void applyInjections(BiConsumer<ResourceLocation, LootPool> injector) {

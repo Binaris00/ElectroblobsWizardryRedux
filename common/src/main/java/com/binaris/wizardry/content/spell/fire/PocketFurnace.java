@@ -8,7 +8,7 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
-import com.binaris.wizardry.core.OLDEBCONFIG;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.particles.ParticleTypes;
@@ -50,7 +50,7 @@ public class PocketFurnace extends Spell {
             result = optionalSmeltingRecipe.get().getResultItem(null);
             if (result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem)
                 continue;
-            if (OLDEBCONFIG.isOnList(OLDEBCONFIG.meltItemsBlackList, stack)) continue;
+            if (EBConfig.isOnList(EBConfig.MELT_ITEMS_BLACKLIST, stack)) continue;
 
             hasSmeltableItems = true;
             break;
@@ -83,7 +83,7 @@ public class PocketFurnace extends Spell {
                 result = optionalSmeltingRecipe.get().getResultItem(null);
                 if (result.isEmpty() || stack.getItem() instanceof TieredItem || stack.getItem() instanceof ArmorItem)
                     continue;
-                if (OLDEBCONFIG.isOnList(OLDEBCONFIG.meltItemsBlackList, stack)) continue;
+                if (EBConfig.isOnList(EBConfig.MELT_ITEMS_BLACKLIST, stack)) continue;
 
                 if (stack.getCount() <= usesLeft) {
                     ItemStack stack2 = new ItemStack(result.getItem(), stack.getCount());

@@ -1,11 +1,12 @@
 package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.content.data.SpellManagerData;
+import com.binaris.wizardry.api.content.item.IManaStoringItem;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.util.SpellUtil;
-import com.binaris.wizardry.core.OLDEBCONFIG;
+import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
@@ -54,10 +55,10 @@ public class BlankScrollItem extends Item implements IWorkbenchItem {
     }
 
     private int getManaPerCrystal(ItemStack crystalStack) {
-        Item crystal = crystalStack.getItem();
-        if (crystal == EBItems.MAGIC_CRYSTAL_SHARD.get()) return OLDEBCONFIG.MANA_PER_SHARD;
-        if (crystal == EBItems.MAGIC_CRYSTAL_GRAND.get()) return OLDEBCONFIG.GRAND_CRYSTAL_MANA;
-        return OLDEBCONFIG.MANA_PER_CRYSTAL;
+        if (crystalStack.getItem() instanceof IManaStoringItem manaStoringItem) {
+            return manaStoringItem.getManaCapacity(crystalStack);
+        }
+        return EBConfig.MANA_PER_CRYSTAL.get(); // default
     }
 
     private boolean hasEnoughMana(int crystalCount, int manaPerCrystal, int requiredMana) {

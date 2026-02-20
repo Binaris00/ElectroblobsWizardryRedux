@@ -9,7 +9,6 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.content.data.SpellGlyphData;
-import com.binaris.wizardry.core.OLDEBCONFIG;
 import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
@@ -76,7 +75,7 @@ public final class SpellGUIDisplay {
     }
 
     public static void draw(GuiGraphics guiGraphics, PoseStack stack, float partialTicks) {
-        if (!OLDEBCONFIG.showSpellHUD && !OLDEBCONFIG.showChargeMeter) return;
+        if (!EBConfig.SHOW_SPELL_HUD.get() && !EBConfig.SHOW_CHARGE_METER.get()) return;
 
         Player player = mc.player;
         if (player.isSpectator()) return;
@@ -104,7 +103,7 @@ public final class SpellGUIDisplay {
     }
 
     public static void renderSpellHUD(GuiGraphics guiGraphics, PoseStack stack, Player player, ItemStack wand, boolean mainHand, int width, int height, float partialTicks, boolean textLayer) {
-        if (!OLDEBCONFIG.showSpellHUD) return;
+        if (!EBConfig.SHOW_SPELL_HUD.get()) return;
 
         if (!(wand.getItem() instanceof ISpellCastingItem))
             throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
@@ -112,7 +111,7 @@ public final class SpellGUIDisplay {
         boolean flipX = EBConfig.SPELL_HUD_FLIP_X.get();
         boolean flipY = EBConfig.SPELL_HUD_FLIP_Y.get();
 
-        if (OLDEBCONFIG.spellHUDDynamicPositioning) {
+        if (EBConfig.SPELL_HUD_DYNAMIC_POSITIONING.get()) {
             flipX = flipX == ((mainHand ? player.getMainArm() : player.getMainArm().getOpposite()) == HumanoidArm.LEFT);
         }
 
@@ -164,7 +163,7 @@ public final class SpellGUIDisplay {
         if (player.isSpectator()) return;
         stack.pushPose();
 
-        if (!OLDEBCONFIG.showChargeMeter) return;
+        if (!EBConfig.SHOW_CHARGE_METER.get()) return;
         if (mc.options.renderDebug) return;
         if (mc.options.getCameraType() != CameraType.FIRST_PERSON) return;
         if (wand != player.getUseItem()) return;
