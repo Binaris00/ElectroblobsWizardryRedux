@@ -116,6 +116,7 @@ public final class SpellUtil {
      * @return The spell retrieved from the ItemStack.
      */
     public static @NotNull Spell getSpell(ItemStack stack) {
+        if (!stack.hasTag()) return Spells.NONE;
         return getSpellFromNbt(stack.getOrCreateTag());
     }
 

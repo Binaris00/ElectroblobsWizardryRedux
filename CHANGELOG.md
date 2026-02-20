@@ -1,1 +1,2 @@
-- Now wizards don't attack neutral/friendly mobs 
+- Added missing translation name to death by sorcery attack
+- Now evil wizards aren't persistent entities

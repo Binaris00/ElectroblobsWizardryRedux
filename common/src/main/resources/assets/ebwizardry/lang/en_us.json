@@ -1179,5 +1179,6 @@
   "death.attack.wizardry_poison": "%1$s was poisoned by %2$s's poison magic",
   "death.attack.wizardry_force": "%1$s was blasted away by %2$s's magical force",
   "death.attack.wizardry_blast": "%1$s was blown to bits by %2$s's magical blast",
+  "death.attack.wizardry_sorcery": "%1$s was slain by %2$s's sorcery",
   "death.attack.wizardry_radiant": "%1$s was incinerated by %2$s's radiant magic"
 }

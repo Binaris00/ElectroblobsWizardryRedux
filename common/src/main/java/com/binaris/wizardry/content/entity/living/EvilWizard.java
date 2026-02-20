@@ -56,4 +56,9 @@ public class EvilWizard extends AbstractWizard implements Enemy {
     protected SoundEvent getDeathSound() {
         return EBSounds.ENTITY_EVIL_WIZARD_DEATH.get();
     }
+
+    @Override
+    public boolean removeWhenFarAway(double distanceToClosestPlayer) {
+        return true; // Evil wizards should despawn like normal hostile mobs
+    }
 }
