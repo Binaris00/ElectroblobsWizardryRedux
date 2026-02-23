@@ -20,6 +20,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -147,13 +148,15 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void attachCapabilityItem(final AttachCapabilitiesEvent<ItemStack> event) {
-            if (ConjureItemSpell.isSummonableItem(event.getObject().getItem())) {
-                final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(event.getObject());
+            ItemStack stack = event.getObject();
+
+            if (ConjureItemSpell.isSummonableItem(stack.getItem())) {
+                final ConjureDataHolder.Provider provider = new ConjureDataHolder.Provider(stack);
                 event.addCapability(ConjureDataHolder.LOCATION, provider);
             }
 
-            if (event.getObject().hasTag()) {
-                event.addCapability(ImbuementEnchantDataHolder.LOCATION, new ImbuementEnchantDataHolder.Provider(event.getObject()));
+            if (stack.getItem() instanceof TieredItem && stack.isEnchantable()) {
+                event.addCapability(ImbuementEnchantDataHolder.LOCATION, new ImbuementEnchantDataHolder.Provider(stack));
             }
         }
 

@@ -6,35 +6,17 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{Tier:\"ebwizardry:apprentice\"}"
-            }
-          ],
-          "name": "ebwizardry:arcane_tome",
+          "name": "ebwizardry:arcane_tome_apprentice",
           "weight": 4
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{Tier:\"ebwizardry:advanced\"}"
-            }
-          ],
-          "name": "ebwizardry:arcane_tome",
+          "name": "ebwizardry:arcane_tome_advanced",
           "weight": 2
         },
         {
           "type": "minecraft:item",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{Tier:\"ebwizardry:master\"}"
-            }
-          ],
-          "name": "ebwizardry:arcane_tome"
+          "name": "ebwizardry:arcane_tome_master"
         }
       ],
       "name": "master_tome",

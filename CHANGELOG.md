@@ -1,2 +1,5 @@
 - Added missing translation name to death by sorcery attack
 - Now evil wizards aren't persistent entities
+- Avoid setting the "imbuement" tag on items that don't really have temporal enchants at the moment
+- Avoid passing null in contexts that the mod doesn't find entity data, fixing a lot of bugs
+- Added missing changes to advancements

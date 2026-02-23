@@ -14,7 +14,7 @@
     "frame": "goal",
     "hidden": false,
     "icon": {
-      "item": "ebwizardry:arcane_tome"
+      "item": "ebwizardry:arcane_tome_apprentice"
     },
     "show_toast": true,
     "title": {

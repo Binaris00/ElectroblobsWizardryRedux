@@ -84,7 +84,7 @@ public class ImbuementEnchantDataHolder implements INBTSerializable<CompoundTag>
     @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
-        tag.put("imbuements", this.tag);
+        if (!this.tag.isEmpty()) tag.put("imbuements", this.tag);
         return tag;
     }
 
