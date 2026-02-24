@@ -73,6 +73,8 @@ public final class EBBlocks {
     public static final DeferredObject<Block> HEALING_RUNESTONE_PEDESTAL = block("healing_runestone_pedestal", () -> new RunestonePedestalBlock(Elements.HEALING), false, true, true);
     public static final DeferredObject<Block> RECEPTACLE = block("receptacle", ReceptacleBlock::new, false, false, false);
     public static final DeferredObject<Block> WALL_RECEPTACLE = block("wall_receptacle", WallReceptacleBlock::new, false, false, false);
+    public static final DeferredObject<Block> OBSIDIAN_CRUST = block("obsidian_crust", ObsidianCrustBlock::new, false, false, false);
+    //public static final DeferredObject<Block> SPECTRAL_BLOCK = block("spectral_block", SpectralBlock::new, false, false, false);
     public static final DeferredObject<Block> IMBUEMENT_ALTAR = block("imbuement_altar", ImbuementAltarBlock::new, false, true, true);
 
     private EBBlocks() {

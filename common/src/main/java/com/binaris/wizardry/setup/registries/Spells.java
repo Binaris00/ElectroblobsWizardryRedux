@@ -188,7 +188,7 @@ public final class Spells {
     // empowering presence
     // disintegration
     public static final Spell COMBUSTION_RUNE;
-    // frost step
+    public static final Spell FROST_STEP;
     // paralysis
     public static final Spell SHULKER_BULLET;
     public static final Spell CURSE_OF_UNDEATH;
@@ -539,6 +539,13 @@ public final class Spells {
                         .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 20, 0, 50)
                         .add(BuffSpell.getEffectDurationProperty(EBMobEffects.OAKFLESH.get()), 600)
                         .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.OAKFLESH.get()), 0)
+                        .build()));
+
+        FROST_STEP = spell("frost_step", () -> new BuffSpell(0.3f, 0.4f, 0.8f, EBMobEffects.FROST_STEP).soundValues(0.7f, 1.2f, 0.4f)
+                .assignProperties(SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.UTILITY, SpellAction.POINT_UP, 50, 0, 250)
+                        .add(BuffSpell.getEffectDurationProperty(EBMobEffects.FROST_STEP.get()), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.FROST_STEP.get()), 0)
                         .build()));
 
         PERMAFROST = spell("permafrost", Permafrost::new);

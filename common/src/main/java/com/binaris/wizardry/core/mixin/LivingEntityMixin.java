@@ -3,11 +3,13 @@ package com.binaris.wizardry.core.mixin;
 import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
+import com.binaris.wizardry.content.effect.FrostStepEffect;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -86,5 +88,13 @@ public abstract class LivingEntityMixin {
             return false;
         }
         return living.hurt(entity, ev);
+    }
+
+    @Inject(method = "onChangedBlock", at = @At("HEAD"))
+    public void EBWIZARDRY$frostStep(BlockPos pos, CallbackInfo ci) {
+        if (livingEntity.hasEffect(EBMobEffects.FROST_STEP.get())) {
+            FrostStepEffect.onEntityMoved(livingEntity, livingEntity.level(), pos,
+                    livingEntity.getEffect(EBMobEffects.FROST_STEP.get()).getAmplifier());
+        }
     }
 }

@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "crush_level=0": {
+      "model": "ebwizardry:block/obsidian_crust_0"
+    },
+    "crush_level=1": {
+      "model": "ebwizardry:block/obsidian_crust_1"
+    },
+    "crush_level=2": {
+      "model": "ebwizardry:block/obsidian_crust_2"
+    },
+    "crush_level=3": {
+      "model": "ebwizardry:block/obsidian_crust_3"
+    }
+  }
+}

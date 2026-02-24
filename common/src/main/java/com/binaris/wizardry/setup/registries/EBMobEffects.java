@@ -29,6 +29,7 @@ public final class EBMobEffects {
     public static final DeferredObject<MobEffect> CONTAINMENT = mobEffect("containment", ContainmentEffect::new);
     public static final DeferredObject<MobEffect> FONT_OF_MANA = mobEffect("font_of_mana", FontOfManaMobEffect::new);
     public static final DeferredObject<MobEffect> CURSE_OF_SOULBINDING = mobEffect("curse_of_soulbinding", () -> new CurseMobEffect(MobEffectCategory.HARMFUL, 0x0f000f));
+    public static final DeferredObject<MobEffect> FROST_STEP = mobEffect("frost_step", FrostStepEffect::new);
 
     // ======= Registry =======
     public static void register(RegisterFunction<MobEffect> function) {
