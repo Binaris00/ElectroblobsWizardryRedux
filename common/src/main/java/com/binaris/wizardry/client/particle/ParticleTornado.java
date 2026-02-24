@@ -9,11 +9,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class ParticleTornado extends TerrainParticle {
+    private float angle;
     private final double radius;
     private final double speed;
-    private final double velX;
-    private final double velZ;
-    private float angle;
+    private final double velX, velZ;
     private boolean fullBrightness = false;
 
     public ParticleTornado(ClientLevel world, int maxAge, double originX, double originZ, double radius, double yPos, double velX, double velZ, BlockState block) {
@@ -29,9 +28,9 @@ public class ParticleTornado extends TerrainParticle {
         this.lifetime = maxAge;
         this.hasPhysics = false;
         if (block.getLightEmission() == 0) {
-            this.rCol *= 0.75;
-            this.gCol *= 0.75;
-            this.bCol *= 0.75;
+            this.rCol *= 0.75F;
+            this.gCol *= 0.75F;
+            this.bCol *= 0.75F;
         } else {
             this.fullBrightness = true;
         }
@@ -53,15 +52,20 @@ public class ParticleTornado extends TerrainParticle {
 
         if (this.age++ >= this.lifetime) {
             this.remove();
+            return;
         }
 
         double omega = Math.signum(speed) * ((Math.PI * 2) / 20 - speed / (20 * radius));
 
-        this.angle += omega;
+        this.angle += (float) omega;
 
-        this.zd = radius * omega * Mth.cos(angle);
-        this.xd = radius * omega * Mth.sin(angle);
-        this.move(xd + velX, 0, zd + velZ);
+        // Calculate velocities: spiral motion + tornado movement
+        this.xd = radius * omega * Mth.sin(angle) + velX;
+        this.yd = 0;
+        this.zd = radius * omega * Mth.cos(angle) + velZ;
+
+        // Apply movement
+        this.move(xd, yd, zd);
 
         if (this.age > this.lifetime / 2) {
             this.setAlpha(1.0F - ((float) this.age - (float) (this.lifetime / 2)) / (float) this.lifetime);

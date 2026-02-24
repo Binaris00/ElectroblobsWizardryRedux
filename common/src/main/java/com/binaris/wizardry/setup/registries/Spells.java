@@ -38,14 +38,14 @@ public final class Spells {
     public static final Spell MAGIC_MISSILE;
     public static final Spell IGNITE;
     public static final Spell FREEZE;
-    // snowball
+//    public static final Spell SNOWBALL;
     public static final Spell ARC;
     public static final Spell THUNDERBOLT;
     public static final Spell SUMMON_ZOMBIE;
     // snare
     public static final Spell DART;
     // light
-    // telekinesis
+    public static final Spell TELEKINESIS;
     public static final Spell HEAL;
 
     public static final Spell FIREBALL;
@@ -108,7 +108,7 @@ public final class Spells {
     // shadow ward
     public static final Spell DECAY;
     public static final Spell WATER_BREATHING;
-    // tornado
+    public static final Spell TORNADO;
     // glide
     // summon spirit horse
     public static final Spell SPIDER_SWARM;
@@ -134,7 +134,7 @@ public final class Spells {
     // thunderstorm
     // lightning hammer
     public static final Spell PLAGUE_DARKNESS;
-    // summon skeleton legion
+    public static final Spell SUMMON_SKELETON_LEGION;
     // summon shadow wraith
     public static final Spell FOREST_CURSE;
     public static final Spell FLIGHT;
@@ -178,7 +178,7 @@ public final class Spells {
     // mine
     // conjure block
     // muffle
-    // ward
+    public static final Spell WARD;
     public static final Spell EVADE;
     public static final Spell ICE_BALL;
     public static final Spell CHARGE;
@@ -196,7 +196,7 @@ public final class Spells {
     public static final Spell GREATER_TELEKINESIS;
     public static final Spell VEX_SWARM;
     public static final Spell ARCANE_LOCK;
-    // containment
+    public static final Spell CONTAINMENT;
     public static final Spell SATIETY;
     public static final Spell GREATER_WARD;
     public static final Spell RAY_OF_PURIFICATION;
@@ -242,6 +242,16 @@ public final class Spells {
                         .add(DefaultProperties.DAMAGE, 3f)
                         .build()
         ));
+
+//        SNOWBALL = spell("snowball", () -> new ProjectileSpell<>((e) -> new Snowball(EntityType.SNOWBALL, e)).assignProperties(
+//                SpellProperties.builder()
+//                        .assignBaseProperties(SpellTiers.NOVICE, Elements.ICE, SpellType.PROJECTILE, SpellAction.POINT, 5, 0, 10)
+//                        .add(DefaultProperties.RANGE, 15f)
+//                        .add(DefaultProperties.DAMAGE, 2f)
+//                        .add(DefaultProperties.EFFECT_DURATION, 100)
+//                        .add(DefaultProperties.EFFECT_STRENGTH, 1)
+//                        .build()
+//        ));
 
         SMOKE_BOMB = spell("smoke_bomb", () -> new ProjectileSpell<>(SmokeBombEntity::new).assignProperties(
                 SpellProperties.builder()
@@ -825,6 +835,22 @@ public final class Spells {
                                 .add(DefaultProperties.SUMMON_RADIUS, 2)
                                 .build()
                 );
+
+        TELEKINESIS = spell("telekinesis", Telekinesis::new);
+
+        CONTAINMENT = spell("containment", Containment::new);
+
+        SUMMON_SKELETON_LEGION = spell("summon_skeleton_legion", SummonSkeletonLegion::new);
+
+        TORNADO = spell("tornado", Tornado::new);
+
+        WARD = spell("ward", () -> new BuffSpell( 0.75f, 0.6f, 0.8f, EBMobEffects.WARD).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 5, 0, 30)
+                        .add(BuffSpell.getEffectDurationProperty(EBMobEffects.WARD.get()), 600)
+                        .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.WARD.get()), 0)
+                        .build()
+        ));
 
         SUMMON_ICE_GIANT = spell("summon_ice_giant", SummonIceGiant::new);
 

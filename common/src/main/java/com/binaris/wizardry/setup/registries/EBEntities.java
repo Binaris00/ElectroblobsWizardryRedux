@@ -53,7 +53,7 @@ public final class EBEntities {
     public static final DeferredObject<EntityType<IceSpikeConstruct>> ICE_SPICKES = entity("ice_spikes", EntityType.Builder.<IceSpikeConstruct>of(IceSpikeConstruct::new, MobCategory.MISC).sized(0.5f, 1.0f).updateInterval(1).clientTrackingRange(160));
     public static final DeferredObject<EntityType<FireRingConstruct>> RING_OF_FIRE = entity(FireRingConstruct::new, "ring_of_fire", MobCategory.MISC, 3, 3, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<HealAuraConstruct>> HEAL_AURA = entity(HealAuraConstruct::new, "heal_aura", MobCategory.MISC, 3, 3, MagicType.CONSTRUCT);
-    public static final DeferredObject<EntityType<TornadoConstruct>> TORNADO = entity(TornadoConstruct::new, "tornado", MobCategory.MISC, 8, 8, MagicType.CONSTRUCT);
+    public static final DeferredObject<EntityType<TornadoConstruct>> TORNADO = entityFireImmune(TornadoConstruct::new, "tornado", MobCategory.MISC, 8, 8, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<BoulderConstruct>> BOULDER = entity(BoulderConstruct::new, "boulder", MobCategory.MISC, 2.375f, 2.375f, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<ZombieSpawnerConstruct>> ZOMBIE_SPAWNER = entity(ZombieSpawnerConstruct::new, "zombie_spawner", MobCategory.MISC, 4f, 2f, MagicType.CONSTRUCT);
     public static final DeferredObject<EntityType<IceBarrierConstruct>> ICE_BARRIER = entity(IceBarrierConstruct::new, "ice_barrier", MobCategory.MISC, 3, 3, MagicType.CONSTRUCT);

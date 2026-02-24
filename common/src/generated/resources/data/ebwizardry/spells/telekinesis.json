@@ -1,0 +1,23 @@
+{
+  "type": "utility",
+  "base_properties": {
+    "range": 8.0
+  },
+  "chargeup": 0,
+  "cooldown": 5,
+  "cost": 5,
+  "element": "ebwizardry:sorcery",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
+  "spell_action": "ebwizardry:point",
+  "tier": "ebwizardry:novice"
+}

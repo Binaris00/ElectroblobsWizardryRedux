@@ -3,3 +3,4 @@
 - Avoid setting the "imbuement" tag on items that don't really have temporal enchants at the moment
 - Avoid passing null in contexts that the mod doesn't find entity data, fixing a lot of bugs
 - Added missing changes to advancements
+- Added Containment, Summon Skeleton legion, Telekinesis, Tornado and Ward spells

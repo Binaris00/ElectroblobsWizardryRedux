@@ -1,0 +1,24 @@
+{
+  "type": "buff",
+  "base_properties": {
+    "effect.ebwizardry.ward_duration": 600,
+    "effect.ebwizardry.ward_strength": 0
+  },
+  "chargeup": 0,
+  "cooldown": 30,
+  "cost": 5,
+  "element": "ebwizardry:healing",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
+  "spell_action": "ebwizardry:point_up",
+  "tier": "ebwizardry:novice"
+}

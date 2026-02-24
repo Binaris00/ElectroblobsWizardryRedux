@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-23T12:37:55.628638708	Spell Data Provider: ebwizardry
+// 1.20.1	2026-02-24T10:31:55.679246143	Spell Data Provider: ebwizardry
 59709226fef8219dd2c5cd41cb6bb719de55c656 data/ebwizardry/spells/agility.json
 34ede34dc275e94721ac699f01685084738cbd27 data/ebwizardry/spells/arcane_lock.json
 e11cad8049f551f1dd69b0deb78e7ddfa7a0a087 data/ebwizardry/spells/arrow_rain.json
@@ -13,6 +13,7 @@ d5b1731efaa04f19fcf347612e7f2ad66d7a2244 data/ebwizardry/spells/combustion_rune.
 76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_bow.json
 76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_pickaxe.json
 76bf5cd91403e8815aca2dfc39989fcaacfa7a30 data/ebwizardry/spells/conjure_sword.json
+1963fe77da4c9304337c60c284af30eb3b80b893 data/ebwizardry/spells/containment.json
 e966e28a981b29ef76ac99c89473df4a13368f6d data/ebwizardry/spells/cure_effects.json
 9811f2a544a1863c96ae324d8d0d5ed67e63da71 data/ebwizardry/spells/curse_of_enfeeblement.json
 aa0e35a91777491e280fdfe4074ed269f884a2ca data/ebwizardry/spells/curse_of_soulbinding.json
@@ -99,12 +100,16 @@ eb7c6ce2ab40c74f936d246299768bb1aee4a298 data/ebwizardry/spells/static_aura.json
 c32882214361ba8f6158042b76c4d7fc4a3d7f0f data/ebwizardry/spells/summon_blaze.json
 3493c5a3a9e4e21130b55c872c4c0071a6ba3e69 data/ebwizardry/spells/summon_lightning_wraith.json
 5b66a3a53a02c08a77dbbfb98b8363c52f6dca76 data/ebwizardry/spells/summon_skeleton.json
+03eb8c82853642a60154ffe19cb3a94aed89230c data/ebwizardry/spells/summon_skeleton_legion.json
 1a59c2c695866e8eeb9b55ba1a04ff8edbe6a5b4 data/ebwizardry/spells/summon_snow_golem.json
 251b54655551901451e7c1c8b9017916b1f5bc2f data/ebwizardry/spells/summon_wither_skeleton.json
 5fe2ccabd274748cb09ae527d8fd54768356ec0b data/ebwizardry/spells/summon_zombie.json
+fcdbb45772f348f6e37db3b8e848db3808b863e5 data/ebwizardry/spells/telekinesis.json
 cc40fb3baed6dac638336137ce8472cdc09be6b5 data/ebwizardry/spells/thunderbolt.json
+d18ab5c50641a1ad14e840179ad6f8cca7c6b0d8 data/ebwizardry/spells/tornado.json
 98a4c74d028cc3de0424d5900fbefb020b2dd72e data/ebwizardry/spells/vanishing_box.json
 3b2a67b9d730f8aafd17e88b9d5f5960f8342919 data/ebwizardry/spells/vex_swarm.json
+c2ca078f39518505ee920e6b9e973b186ef2bb8b data/ebwizardry/spells/ward.json
 75ad4fd31bdbaf28f2a4193fcb21c5d898edee77 data/ebwizardry/spells/water_breathing.json
 aee441e978c2712f83bca1ac86d0d3ec1f4acc83 data/ebwizardry/spells/whirlwind.json
 67e9b19438ebc3b0e63ba5dd47abaa699b28f684 data/ebwizardry/spells/wither.json

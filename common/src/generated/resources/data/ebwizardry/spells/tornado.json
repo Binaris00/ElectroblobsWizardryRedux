@@ -1,0 +1,27 @@
+{
+  "type": "attack",
+  "base_properties": {
+    "acceleration": 0.22,
+    "damage": 1.0,
+    "duration": 200,
+    "effect_radius": 4,
+    "speed": 0.33
+  },
+  "chargeup": 10,
+  "cooldown": 80,
+  "cost": 35,
+  "element": "ebwizardry:earth",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
+  "spell_action": "ebwizardry:point",
+  "tier": "ebwizardry:advanced"
+}

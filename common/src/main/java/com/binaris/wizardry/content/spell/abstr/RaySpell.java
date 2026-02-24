@@ -129,11 +129,11 @@ public abstract class RaySpell extends Spell {
         return true;
     }
 
-    protected abstract boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction);
+    protected abstract boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin);
 
     protected abstract boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin);
 
-    protected abstract boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin);
+    protected abstract boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction);
 
     protected boolean shootSpell(CastContext ctx, Vec3 origin, Vec3 direction) {
         double range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
