@@ -4,6 +4,22 @@ plugins {
     id "me.modmuss50.mod-publish-plugin" version "1.1.0"
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    options {
+        encoding = 'UTF-8'
+        charSet = 'UTF-8'
+        addStringOption('Xdoclint:none', '-quiet')
+    }}
+
+base {
+    archivesName = 'electroblobs-wizardry-redux'
+}
+
 repositories {
     maven {
         name = "Ladysnake Mods"
@@ -83,6 +99,9 @@ publishMods {
     type = STABLE
     displayName = "[Fabric] EbWizardry-Redux ${project.version} for ${minecraft_version}"
     modLoaders.add("fabric")
+
+    additionalFiles.from(tasks.named("sourcesJar"))
+    additionalFiles.from(tasks.named("javadocJar"))
 
     curseforge {
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")

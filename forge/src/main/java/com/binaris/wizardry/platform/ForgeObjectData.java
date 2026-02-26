@@ -15,14 +15,13 @@ import java.util.Arrays;
 public class ForgeObjectData implements IObjectData {
     @Override
     public ConjureData getConjureData(ItemStack stack) {
-        return stack.getCapability(ConjureDataHolder.INSTANCE)
-                .orElse(new ConjureDataHolder(stack));
+        return stack.getCapability(ConjureDataHolder.INSTANCE).orElse(null);
     }
 
     @Override
     public ImbuementEnchantData getImbuementData(ItemStack stack) {
         return stack.getCapability(ImbuementEnchantDataHolder.INSTANCE)
-                .orElse(new ImbuementEnchantDataHolder());
+                .orElse(null);
     }
 
     @Override

@@ -1,6 +1,6 @@
-- Added missing translation name to death by sorcery attack
-- Now evil wizards aren't persistent entities
-- Avoid setting the "imbuement" tag on items that don't really have temporal enchants at the moment
-- Avoid passing null in contexts that the mod doesn't find entity data, fixing a lot of bugs
-- Added missing changes to advancements
-- Added Containment, Summon Skeleton legion, Telekinesis, Tornado and Ward spells
+- Change to the version system works, now for alpha releases are going to start with 0 (now: 0.7.1)
+- Fixed Flamecatcher (without being summoned by spell) had infinite durability, making it to show negative durability after using it for a while.
+- Fixed 2 duplication bugs when using conjure items
+- Docs to how conjure events works on code
+- Added quick tests for conjure items, to make sure they are working as intended
+- Fixed bug that made all blocks/items to have tags on forge

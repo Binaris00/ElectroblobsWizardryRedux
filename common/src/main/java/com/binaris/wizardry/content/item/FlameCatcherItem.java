@@ -46,12 +46,13 @@ public class FlameCatcherItem extends BowItem {
 
             int shotsLeft = stack.getOrCreateTag().getInt("ShotsLeft");
 
-            if (shotsLeft <= 0) stack.shrink(1);
+            if (shotsLeft <= 0) {
+                data.setSummoned(false);
+                stack.shrink(1);
+                return; // Don't continue processing an expired item
+            }
             stack.getOrCreateTag().putInt("ShotsLeft", shotsLeft - 1);
         }
-
-
-        stack.setDamageValue(stack.getDamageValue() + (this.getUseDuration(stack) - timeLeft));
 
         // Arrow!!
         float velocity = getPowerForTime(charge);
@@ -62,6 +63,9 @@ public class FlameCatcherItem extends BowItem {
         level.addFreshEntity(arrow);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), EBSounds.ITEM_FLAMECATCHER_SHOOT.get(), SoundSource.PLAYERS, 1, 1);
         level.playSound(null, player.getX(), player.getY(), player.getZ(), EBSounds.ITEM_FLAMECATCHER_FLAME.get(), SoundSource.PLAYERS, 1, 1);
+
+        stack.hurtAndBreak(this.getUseDuration(stack) - timeLeft, player, (p) ->
+                p.broadcastBreakEvent(p.getUsedItemHand()));
     }
 
 

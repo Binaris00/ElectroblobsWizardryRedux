@@ -2,6 +2,23 @@ plugins {
     id 'multiloader-common'
 }
 
+// Append the loader suffix (project name) to the project version for loader subprojects
+// e.g. version 0.7.1.1 -> 0.7.1.1-fabric or 0.7.1.1-forge
+// Avoid double-appending if already present.
+afterEvaluate {
+    try {
+        def loaderSuffix = project.name?.toString()
+        if (loaderSuffix) {
+            def ver = project.version?.toString() ?: ''
+            if (ver && !ver.endsWith("-${loaderSuffix}")) {
+                project.version = "${ver}-${loaderSuffix}"
+            }
+        }
+    } catch (Exception ignored) {
+        // fail silently; don't break configuration for unusual setups
+    }
+}
+
 configurations {
     commonJava{
         canBeResolved = true

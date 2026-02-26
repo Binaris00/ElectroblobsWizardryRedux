@@ -11,6 +11,22 @@ mixin {
     config("${mod_id}.forge.mixins.json")
 }
 
+java {
+    withSourcesJar()
+    withJavadocJar()
+}
+
+javadoc {
+    options {
+        encoding = 'UTF-8'
+        charSet = 'UTF-8'
+        addStringOption('Xdoclint:none', '-quiet')
+    }}
+
+base {
+    archivesName = 'electroblobs-wizardry-redux'
+}
+
 legacyForge {
     version = "${minecraft_version}-${forge_version}"
 
@@ -97,6 +113,9 @@ publishMods {
     type = STABLE
     displayName = "[Forge] EbWizardry-Redux ${project.version} for ${minecraft_version}"
     modLoaders.add("forge")
+
+    additionalFiles.from(tasks.named("sourcesJar"))
+    additionalFiles.from(tasks.named("javadocJar"))
 
     curseforge {
         accessToken = providers.environmentVariable("CURSEFORGE_TOKEN")

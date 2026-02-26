@@ -229,6 +229,7 @@ public final class Spells {
     public static final Spell BLOCK_SURPRISE;
     public static final Spell PLAYER_HAND;
     public static final Spell WIZARD_HAND;
+    public static final Spell QUICK_FLAMECATCHER;
 
     public static Map<String, Spell> SPELLS = new LinkedHashMap<>();
 
@@ -878,6 +879,14 @@ public final class Spells {
         PLAYER_HAND = spell("player_hand", PlayerHand::new);
 
         WIZARD_HAND = spell("wizard_hand", WizardHand::new);
+
+        QUICK_FLAMECATCHER = spell("quick_flamecatcher", () -> new ConjureItemSpell(EBItems.FLAMECATCHER.get()).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .add(DefaultProperties.ITEM_LIFETIME, 100)
+                        .add(DefaultProperties.SENSIBLE, true)
+                        .build()
+        ));
     }
 
     private Spells() {
