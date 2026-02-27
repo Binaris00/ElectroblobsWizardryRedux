@@ -1,6 +1,6 @@
 package com.binaris.wizardry.content.blockentity;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.data.ArcaneLockData;
 import com.binaris.wizardry.api.content.data.ContainmentData;

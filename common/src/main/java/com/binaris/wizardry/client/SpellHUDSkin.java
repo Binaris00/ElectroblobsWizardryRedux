@@ -1,6 +1,6 @@
 package com.binaris.wizardry.client;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;

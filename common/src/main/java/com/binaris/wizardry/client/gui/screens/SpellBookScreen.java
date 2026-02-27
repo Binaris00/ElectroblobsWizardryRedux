@@ -1,6 +1,6 @@
 package com.binaris.wizardry.client.gui.screens;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.client.gui.screens.abstr.SpellInfoScreen;

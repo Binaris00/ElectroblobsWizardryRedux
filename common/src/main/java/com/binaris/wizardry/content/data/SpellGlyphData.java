@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.data;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.NBTExtras;

@@ -1,7 +1,7 @@
 package com.binaris.wizardry.core.networking.c2s;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.item.ISpellCastingItem;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.binaris.wizardry.core.networking.abst.Message;

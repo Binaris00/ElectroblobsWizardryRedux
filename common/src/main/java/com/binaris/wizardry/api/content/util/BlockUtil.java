@@ -1,6 +1,6 @@
 package com.binaris.wizardry.api.content.util;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

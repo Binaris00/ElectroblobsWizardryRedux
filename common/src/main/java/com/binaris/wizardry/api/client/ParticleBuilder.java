@@ -1,6 +1,6 @@
 package com.binaris.wizardry.api.client;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.client.particle.ParticleWizardry;
 import com.binaris.wizardry.api.content.DeferredObject;
 import com.binaris.wizardry.api.content.spell.Spell;

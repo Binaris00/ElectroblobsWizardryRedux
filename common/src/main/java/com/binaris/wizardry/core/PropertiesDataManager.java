@@ -54,7 +54,7 @@ public class PropertiesDataManager extends SimpleJsonResourceReloadListener {
                     continue;
                 }
 
-                spell.setProperties(properties);
+                spell.assignProperties(properties);
             } catch (IllegalArgumentException | JsonParseException jsonParseException) {
                 LOGGER.error("Parsing error loading spell properties {}", location, jsonParseException);
             } catch (Exception exception) {

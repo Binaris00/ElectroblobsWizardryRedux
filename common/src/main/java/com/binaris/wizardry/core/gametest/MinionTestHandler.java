@@ -1,6 +1,6 @@
 package com.binaris.wizardry.core.gametest;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.data.MinionData;
 import com.binaris.wizardry.content.entity.living.Wizard;
 import com.binaris.wizardry.core.platform.Services;

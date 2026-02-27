@@ -1,6 +1,6 @@
 package com.binaris.wizardry.core.platform;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.platform.services.INetworkHelper;
 import com.binaris.wizardry.core.platform.services.IObjectData;
 import com.binaris.wizardry.core.platform.services.IPlatformHelper;

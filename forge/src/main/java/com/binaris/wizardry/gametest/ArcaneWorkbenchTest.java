@@ -1,7 +1,7 @@
 package com.binaris.wizardry.gametest;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.DeferredObject;
 import com.binaris.wizardry.content.item.WizardArmorItem;
 import com.binaris.wizardry.content.item.WizardArmorType;

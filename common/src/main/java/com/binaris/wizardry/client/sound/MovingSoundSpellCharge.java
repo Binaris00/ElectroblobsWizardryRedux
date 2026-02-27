@@ -17,7 +17,7 @@ public class MovingSoundSpellCharge extends MovingSoundEntity<LivingEntity> {
             ItemStack stack = source.getUseItem();
 
             if (stack.getItem() instanceof ISpellCastingItem) {
-                if (source.getTicksUsingItem() < ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack).getCharge()) {
+                if (source.getTicksUsingItem() < ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack).getChargeUp()) {
                     super.tick();
                     return;
                 }

@@ -1,6 +1,6 @@
 package com.binaris.wizardry.cca.player;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.data.ISpellVar;
 import com.binaris.wizardry.api.content.data.IStoredSpellVar;
 import com.binaris.wizardry.api.content.data.SpellManagerData;

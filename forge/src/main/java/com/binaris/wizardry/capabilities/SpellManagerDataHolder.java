@@ -1,7 +1,7 @@
 package com.binaris.wizardry.capabilities;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.data.ISpellVar;
 import com.binaris.wizardry.api.content.data.IStoredSpellVar;
 import com.binaris.wizardry.api.content.data.SpellManagerData;

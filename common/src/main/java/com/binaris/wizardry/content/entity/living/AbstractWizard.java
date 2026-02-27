@@ -1,6 +1,6 @@
 package com.binaris.wizardry.content.entity.living;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.entity.living.ISpellCaster;
 import com.binaris.wizardry.api.content.spell.Element;

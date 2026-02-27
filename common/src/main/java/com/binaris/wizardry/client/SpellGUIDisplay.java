@@ -1,7 +1,7 @@
 package com.binaris.wizardry.client;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
 import com.binaris.wizardry.api.content.item.ISpellCastingItem;
@@ -173,7 +173,7 @@ public final class SpellGUIDisplay {
 
         Spell spell = ((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand);
 
-        int chargeup = spell.getCharge();
+        int chargeup = spell.getChargeUp();
 
         chargeup = (int) (chargeup * Services.OBJECT_DATA.getWizardData(player).getSpellModifiers().get(SpellModifiers.CHARGEUP));
 

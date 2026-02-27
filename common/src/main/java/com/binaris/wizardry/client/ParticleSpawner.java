@@ -1,6 +1,6 @@
 package com.binaris.wizardry.client;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.client.particle.ParticleWizardry;
 import net.minecraft.client.Minecraft;

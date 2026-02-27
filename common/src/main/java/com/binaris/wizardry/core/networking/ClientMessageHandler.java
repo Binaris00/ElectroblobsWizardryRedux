@@ -1,6 +1,6 @@
 package com.binaris.wizardry.core.networking;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
 import com.binaris.wizardry.api.content.entity.living.ISpellCaster;
@@ -106,7 +106,7 @@ public final class ClientMessageHandler {
                 EBLogger.warn("Received spell properties for unknown spell: {}", entry.getKey());
                 continue;
             }
-            spell.get().setProperties(entry.getValue());
+            spell.get().assignProperties(entry.getValue());
         }
     }
 

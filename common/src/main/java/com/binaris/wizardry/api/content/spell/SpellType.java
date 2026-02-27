@@ -1,6 +1,6 @@
 package com.binaris.wizardry.api.content.spell;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 
 public enum SpellType {
     ATTACK("attack"),

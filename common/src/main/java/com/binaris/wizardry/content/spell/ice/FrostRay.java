@@ -65,7 +65,7 @@ public class FrostRay extends RaySpell {
     }
 
     @Override
-    public int getCharge() {
+    public int getChargeUp() {
         return 20;
     }
 

@@ -26,7 +26,7 @@ import java.util.Map;
  * @see CastCommandData
  */
 public final class DataEvents {
-    private static final int CONJURE_CHECK_INTERVAL = 20;
+    private static final int CONJURE_CHECK_INTERVAL = 5;
     private static final int IMBUEMENT_ENCHANTS_CHECK_INTERVAL = 20;
 
     private DataEvents() {
@@ -37,26 +37,6 @@ public final class DataEvents {
         if (!(event.getEntity() instanceof Mob mob)) return;
         if (!Services.OBJECT_DATA.isMinion(mob)) return;
         Services.OBJECT_DATA.getMinionData(mob).tick();
-    }
-
-    public static void onConjureToss(EBItemTossEvent event) {
-        ItemStack stack = event.getStack();
-        if (ConjureItemSpell.isSummoned(stack)) {
-            ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-            if (data != null && data.isSummoned()) event.setCanceled(true);
-        }
-    }
-
-    public static void onConjureEntityDeath(EBLivingDeathEvent event) {
-        if (!(event.getEntity() instanceof Player player)) return; // only players can conjure items so...
-
-        InventoryUtil.getAllItemsIncludingCarried(player).stream().filter(ConjureItemSpell::isSummoned)
-                .forEach(stack -> stack.shrink(stack.getCount()));
-    }
-
-    public static void onConjureItemPlaceInContainer(EBItemPlaceInContainerEvent event) {
-        ItemStack stack = event.getStack();
-        if (ConjureItemSpell.isSummoned(stack) && !(event.getContainer() instanceof Inventory)) event.setCanceled(true);
     }
 
     public static void onPlayerTick(EBLivingTick event) {
@@ -131,40 +111,100 @@ public final class DataEvents {
         }
     }
 
-    private static void conjureItemTick(Player player) {
-        if (player.tickCount % CONJURE_CHECK_INTERVAL != 0) return;
-
-        long currentGameTime = player.level().getGameTime();
-
-        // Check regular inventory items
-        InventoryUtil.getAllItems(player).stream()
-                .filter(ConjureItemSpell::isSummoned)
-                .forEach(stack -> checkAndExpireItem(stack, currentGameTime));
-
-        // Check carried item separately to handle it properly
-        ItemStack carried = player.containerMenu.getCarried();
-        if (!carried.isEmpty() && ConjureItemSpell.isSummoned(carried)) {
-            checkAndExpireItem(carried, currentGameTime);
-            // If the carried item is now empty after expiring, clear it from the menu
-            if (carried.isEmpty()) {
-                player.containerMenu.setCarried(ItemStack.EMPTY);
-            }
-        }
-    }
-
-    private static void checkAndExpireItem(ItemStack stack, long currentGameTime) {
-        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
-        if (data != null && data.hasExpired(currentGameTime)) {
-            stack.shrink(1);
-            data.setSummoned(false);
-        }
-    }
-
     private static void recentSpells(Player player) {
         WizardData data = Services.OBJECT_DATA.getWizardData(player);
         if (player.tickCount % 60 == 0) {
             long currentTime = player.level().getGameTime();
             data.removeRecentCasts((entry) -> currentTime - entry.getValue() >= EBConstants.RECENT_SPELL_EXPIRY_TICKS);
         }
+    }
+
+    /**
+     * Prevents conjured items from being thrown out of the inventory, as that would cause inconsistency on how the
+     * "temporal" item system should work.
+     */
+    public static void onConjureToss(EBItemTossEvent event) {
+        ItemStack stack = event.getStack();
+        if (ConjureItemSpell.isSummoned(stack)) {
+            ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
+            if (data != null && data.isSummoned()) event.setCanceled(true);
+        }
+    }
+
+    /**
+     * When a player dies, all conjured items in their inventory should be removed, as they are not "real" items and
+     * should not be thrown on the ground or kept in the inventory after death. This also prevents potential exploits
+     * with conjured items and death.
+     */
+    public static void onConjureEntityDeath(EBLivingDeathEvent event) {
+        if (!(event.getEntity() instanceof Player player)) return; // only players can conjure items so...
+
+        InventoryUtil.getAllItemsIncludingCarried(player).stream().filter(ConjureItemSpell::isSummoned)
+                .forEach(stack -> stack.shrink(stack.getCount()));
+    }
+
+    /**
+     * Prevents conjured items from being placed in containers, as that would allow them to be stored indefinitely and
+     * potentially cause issues with the conjure item system. Conjured items should only exist in the player's inventory and should not be able to be stored in chests,
+     * hoppers, or other containers. This also prevents potential exploits with conjured items and container storage.
+     */
+    public static void onConjureItemPlaceInContainer(EBItemPlaceInContainerEvent event) {
+        ItemStack stack = event.getStack();
+        if (ConjureItemSpell.isSummoned(stack) && !(event.getContainer() instanceof Inventory)) event.setCanceled(true);
+    }
+
+
+    /**
+     * Every 5 ticks, checks the player's inventory for conjured items and expires them if their time has run out or if
+     * their durability is 0 or less. This includes the item currently being carried by the cursor.
+     */
+    public static void conjureItemTick(Player player) {
+        if (player.tickCount % CONJURE_CHECK_INTERVAL != 0) return;
+
+        long currentGameTime = player.level().getGameTime();
+        boolean inventoryChanged = false;
+
+        // Check regular inventory items
+        for (ItemStack stack : InventoryUtil.getAllItems(player)) {
+            if (ConjureItemSpell.isSummoned(stack)) {
+                if (checkAndExpireItem(player, stack, currentGameTime)) {
+                    inventoryChanged = true;
+                }
+            }
+        }
+
+        // Check carried item separately to handle it properly
+        ItemStack carried = player.containerMenu.getCarried();
+        if (!carried.isEmpty() && ConjureItemSpell.isSummoned(carried)) {
+            if (checkAndExpireItem(player, carried, currentGameTime)) {
+                inventoryChanged = true;
+                // If the carried item is now empty after expiring, clear it from the menu
+                if (carried.isEmpty()) {
+                    player.containerMenu.setCarried(ItemStack.EMPTY);
+                }
+            }
+        }
+
+        // Force inventory sync if any items expired
+        if (inventoryChanged && !player.level().isClientSide) {
+            player.containerMenu.broadcastChanges();
+        }
+    }
+
+    /**
+     * Checks if the given conjured item stack has expired (based on game time) or the durability is 0 or less, and if so,
+     * marks it as not summoned FIRST, then shrinks the stack by 1.
+     *
+     * @return true if the item was expired and modified, false otherwise
+     */
+    private static boolean checkAndExpireItem(Player player, ItemStack stack, long currentGameTime) {
+        ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
+        if (data != null && (data.hasExpired(currentGameTime) || (stack.isDamageableItem() && stack.getDamageValue() >= stack.getMaxDamage()))) {
+            data.setSummoned(false);
+            player.getInventory().removeItem(stack);
+            stack.shrink(stack.getCount());
+            return true;
+        }
+        return false;
     }
 }

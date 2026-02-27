@@ -56,7 +56,7 @@ public class Firestorm extends AreaEffectSpell {
     }
 
     @Override
-    public int getCharge() {
+    public int getChargeUp() {
         return 20;
     }
 

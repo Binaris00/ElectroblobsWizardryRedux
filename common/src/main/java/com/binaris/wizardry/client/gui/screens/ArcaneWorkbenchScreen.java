@@ -1,6 +1,6 @@
 package com.binaris.wizardry.client.gui.screens;
 
-import com.binaris.wizardry.api.EBLogger;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.client.EBClientConstants;

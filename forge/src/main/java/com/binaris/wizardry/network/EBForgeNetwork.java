@@ -33,6 +33,7 @@ public class EBForgeNetwork {
         register(SpellPropertiesSyncS2C.class, SpellPropertiesSyncS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(NPCSpellCastS2C.class, NPCSpellCastS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(SpellCastS2C.class, SpellCastS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+        register(ScreenShakeS2C.class, ScreenShakeS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(MinionSyncPacketS2C.class, MinionSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ContainmentSyncPacketS2C.class, ContainmentSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(PlayerCapabilitySyncPacketS2C.class, PlayerCapabilitySyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);

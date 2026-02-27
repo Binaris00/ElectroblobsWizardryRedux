@@ -23,6 +23,7 @@ public final class EBClientEventHelper {
     private static void onClientTick(WizardryEventBus bus) {
         bus.register(EBClientTickEvent.class, SoundLoop::onClientTick);
         bus.register(EBClientTickEvent.class, EBKeyBinding::onClientTick);
+        bus.register(EBClientTickEvent.class, ScreenShakeHandler::onClientTick);
     }
 
 }

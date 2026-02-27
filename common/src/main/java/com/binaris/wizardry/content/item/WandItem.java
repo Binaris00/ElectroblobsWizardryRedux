@@ -369,7 +369,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
      * @return The calculated charge time
      */
     private int calculateCharge(Spell spell, SpellModifiers modifiers) {
-        return (int) (spell.getCharge() * modifiers.get(SpellModifiers.CHARGEUP));
+        return (int) (spell.getChargeUp() * modifiers.get(SpellModifiers.CHARGEUP));
     }
 
     /**
