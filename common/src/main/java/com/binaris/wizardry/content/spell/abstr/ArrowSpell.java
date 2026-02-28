@@ -18,18 +18,19 @@ import java.util.function.Function;
 /**
  * Represents a spell that launches a {@link MagicArrowEntity}-based projectile.
  * <p>
- * This class abstracts the logic of casting spells that behave like arrows, handling all the core steps
- * such as entity creation, aiming, velocity calculation, and launch.
+ * This class abstracts the logic of casting spells that behave like arrows, handling all the core steps such as entity
+ * creation, aiming, velocity calculation, and launch.
  * <p>
- * Check {@link Spells#DART Spells#Dart}
- * - {@link Spells#MAGIC_MISSILE Spells#MagicMissile} for some examples
+ * Check {@link Spells#DART Spells#Dart} - {@link Spells#MAGIC_MISSILE Spells#MagicMissile} for some examples
+ * <p>
+ * You must override the {@link #properties()} to return an actual instance of {@link SpellProperties} for this spell or
+ * use {@link Spell#assignProperties(SpellProperties)}, otherwise the spell will have no properties and may not function
+ * as intended.
  *
  * @param <T> The type of {@link MagicArrowEntity} this spell launches.
  */
 public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
-    /**
-     * A factory function to create instances of the projectile entity.
-     */
+    /** factory function to create instances of the projectile entity. */
     protected final Function<Level, T> arrowFactory;
 
     public ArrowSpell(Function<Level, T> arrowFactory) {

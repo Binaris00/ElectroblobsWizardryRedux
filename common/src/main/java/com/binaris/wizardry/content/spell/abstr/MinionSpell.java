@@ -33,39 +33,35 @@ import java.util.function.Function;
  * the summon radius, they will be spawned at y=2 at a random horizontal position within the summon radius instead.
  * <p>
  * The process of creating the minion data and overwriting the original entity logic is handled by the {@link MinionData}
+ * <p>
+ * You must override the {@link #properties()} to return an actual instance of {@link SpellProperties} for this spell or
+ * use {@link Spell#assignProperties(SpellProperties)}, otherwise the spell will have no properties and may not function
+ * as intended.
  *
  * @param <T> The type of mob that is summoned by this spell.
  */
 public class MinionSpell<T extends Mob> extends Spell {
-    /**
-     * Attribute Modifier id
-     */
+    /** Attribute Modifier id */
     public static final String HEALTH_MODIFIER = "minion_health";
-
-    /**
-     * Attribute Modifier id
-     */
+    /** Attribute Modifier id */
     public static final String POTENCY_ATTRIBUTE_MODIFIER = "potency";
-
-    /**
-     * A factory that creates the minions.
-     */
+    /** A factory that creates the minions. */
     protected final Function<Level, T> minionFactory;
-
-    /**
-     * Whether the minions are spawned in midair. Defaults to false.
-     */
+    /** Whether the minions are spawned in midair. Defaults to false. */
     protected boolean flying = false;
-
-    /**
-     * When the created minion should follow the owner
-     */
+    /** When the created minion should follow the owner */
     protected boolean shouldFollowOwner = true;
 
     public MinionSpell(Function<Level, T> minionFactory) {
         this.minionFactory = minionFactory;
     }
 
+    /**
+     * Sets whether the minions should follow their owner. Defaults to true.
+     *
+     * @param shouldFollowOwner True if the minions should follow their owner, false if they should stay in place.
+     * @return The spell instance, allowing this method to be chained onto the constructor.
+     */
     public MinionSpell<T> setShouldFollowOwner(boolean shouldFollowOwner) {
         this.shouldFollowOwner = shouldFollowOwner;
         return this;
@@ -139,6 +135,16 @@ public class MinionSpell<T extends Mob> extends Spell {
         return true;
     }
 
+    /**
+     * Spawns the minions in the world. Handles finding suitable positions for the minions to be spawned at, creating
+     * the minion entities and adding them to the world. By default, this spawns the minions on the ground near the
+     * caster, but this can be changed by overriding this method or by using the {@link #flying(boolean)} method to allow
+     * midair spawns.
+     *
+     * @param ctx The context of the spell cast, which may contain useful information for spawning the minions.
+     * @return True if the minions were successfully spawned, false if there was an error (e.g. no suitable spawn
+     * position could be found).
+     */
     protected boolean spawnMinions(CastContext ctx) {
         if (ctx.world().isClientSide) return true; // No need to go further on the client side
 
@@ -184,22 +190,56 @@ public class MinionSpell<T extends Mob> extends Spell {
         return true;
     }
 
-    private void setLifetime(T minion, int lifetime) {
+    /**
+     * Sets the lifetime of the minion on the MinionData. this gives you the opportunity to modify the lifetime of the
+     * minion after it has been created, but before it is added to the world.
+     *
+     * @param minion   The minion to set the lifetime of.
+     * @param lifetime The lifetime to set, in ticks.
+     */
+    protected void setLifetime(T minion, int lifetime) {
         MinionData data = Services.OBJECT_DATA.getMinionData(minion);
         data.setLifetime(lifetime);
     }
 
-
+    /**
+     * Creates the minion entity. This is called during the casting process, and allows you to modify the minion before
+     * it is added to the world by applying modifiers or passing the caster as an argument. By default, this just calls
+     * the minion factory, but it can be overridden to provide more complex behavior.
+     *
+     * @param world     The world the minion is being created in.
+     * @param caster    The caster of the spell, if available. This may be null if the spell is being cast by a
+     *                  non-entity or if the caster is not available for some reason.
+     * @param modifiers The spell modifiers that may affect the minion's attributes or behavior.
+     * @return The created minion entity.
+     */
     protected T createMinion(Level world, @Nullable LivingEntity caster, SpellModifiers modifiers) {
         return minionFactory.apply(world);
     }
 
-
+    /**
+     * Applies additional effects or modifications to the minion after it has been created and its lifetime has been set,
+     * but before it is added to the world. This is called for each minion that is spawned, and allows you to apply
+     * spell-specific behavior or effects to the minions.
+     *
+     * @param minion         The minion entity that has been created and had its lifetime set, but has not yet been added
+     *                       to the world.
+     * @param ctx            The context of the spell cast, which may contain useful information for modifying the minion.
+     * @param alreadySpawned The number of minions that have already been spawned by this spell cast. This can be used
+     *                       to apply different effects to different minions if multiple are spawned.
+     */
     protected void addMinionExtras(T minion, CastContext ctx, int alreadySpawned) {
-        //minion.spawn(minion.world.getDifficultyForLocation(pos), null);
     }
 
-
+    /**
+     * Checks additional conditions for whether the spell can be cast at the given location. This is called during the
+     * casting process, and allows you to prevent the spell from being cast if certain conditions are not met.
+     *
+     * @param ctx        The context of the spell cast, which may contain useful information for checking the conditions.
+     * @param containing The block position that the minions will be spawned around. This can be used to check if the
+     *                   location is suitable for spawning minions.
+     * @return True if the spell can be cast at the given location, false otherwise.
+     */
     protected boolean extraConditions(CastContext ctx, BlockPos containing) {
         return true;
     }
