@@ -22,62 +22,68 @@ public class ConjureDataHolder implements INBTSerializable<CompoundTag>, Conjure
     public static final Capability<ConjureDataHolder> INSTANCE = CapabilityManager.get(new CapabilityToken<>() {
     });
 
-    private final ItemStack stack;
+    private CompoundTag tag = new CompoundTag();
 
-    public ConjureDataHolder(ItemStack stack) {
-        this.stack = stack;
+    public ConjureDataHolder() {
     }
 
     @Override
     public CompoundTag serializeNBT() {
-        return stack.getOrCreateTag();
+        CompoundTag tag = new CompoundTag();
+        if (!this.tag.isEmpty()) tag.put("conjureData", this.tag);
+        return tag;
     }
 
     @Override
     public void deserializeNBT(CompoundTag tag) {
-        stack.setTag(tag);
+        if (tag.contains("conjureData")) {
+            this.tag = tag.getCompound("conjureData");
+        } else {
+            this.tag = new CompoundTag();
+        }
     }
 
     @Override
     public long getExpireTime() {
-        if (!this.stack.getOrCreateTag().contains("expire_time"))
-            this.stack.getOrCreateTag().putLong("expire_time", -1L);
-        return this.stack.getOrCreateTag().getLong("expire_time");
+        if (!this.tag.contains("expire_time"))
+            this.tag.putLong("expire_time", -1L);
+        return this.tag.getLong("expire_time");
     }
 
     @Override
     public void setExpireTime(long expireTime) {
-        this.stack.getOrCreateTag().putLong("expire_time", expireTime);
+        this.tag.putLong("expire_time", expireTime);
     }
 
     @Override
     public int getDuration() {
-        if (!this.stack.getOrCreateTag().contains("duration")) this.stack.getOrCreateTag().putInt("duration", 0);
-        return this.stack.getOrCreateTag().getInt("duration");
+        if (!this.tag.contains("duration")) this.tag.putInt("duration", 0);
+        return this.tag.getInt("duration");
     }
 
     @Override
     public void setDuration(int duration) {
-        this.stack.getOrCreateTag().putInt("duration", duration);
+        this.tag.putInt("duration", duration);
     }
 
     @Override
     public boolean isSummoned() {
-        if (!this.stack.getOrCreateTag().contains("is_summoned"))
-            this.stack.getOrCreateTag().putBoolean("is_summoned", false);
-        return this.stack.getOrCreateTag().getBoolean("is_summoned");
+        if (!this.tag.contains("is_summoned"))
+            this.tag.putBoolean("is_summoned", false);
+        return this.tag.getBoolean("is_summoned");
     }
 
     @Override
     public void setSummoned(boolean summoned) {
-        this.stack.getOrCreateTag().putBoolean("is_summoned", summoned);
+        this.tag.putBoolean("is_summoned", summoned);
     }
 
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {
         private final LazyOptional<ConjureDataHolder> dataHolder;
 
+        @SuppressWarnings("unused")
         public Provider(ItemStack stack) {
-            this.dataHolder = LazyOptional.of(() -> new ConjureDataHolder(stack));
+            this.dataHolder = LazyOptional.of(ConjureDataHolder::new);
         }
 
         @Override

@@ -702,9 +702,13 @@
   "entity.iceball.hit": {
     "category": "spells",
     "sounds": [
-      "damage/hit1",
-      "damage/hit2",
-      "damage/hit3"
+      "block/powder_snow/break1",
+      "block/powder_snow/break2",
+      "block/powder_snow/break3",
+      "block/powder_snow/break4",
+      "block/powder_snow/break5",
+      "block/powder_snow/break6",
+      "block/powder_snow/break7"
     ]
   },
   "entity.ice_charge.smash": {

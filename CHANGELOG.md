@@ -7,3 +7,5 @@
 - Added WIP config for public use
 - Minions can target nearby mobs without requiring owner interaction. This can be modified inside MinionSpell
 - Now can mark if minions should delete its original goals inside MinionSpell
+- (Forge) Fix to empty tags applied to items that are in main hand for some seconds
+- Change Iceball hit block/entity sound
