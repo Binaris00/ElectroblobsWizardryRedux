@@ -5,10 +5,7 @@ import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
-import com.binaris.wizardry.api.content.spell.internal.CastContext;
-import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
-import com.binaris.wizardry.api.content.spell.internal.LocationCastContext;
-import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.GeometryUtil;
@@ -94,7 +91,7 @@ public class Fangs extends Spell {
         } else {
             Vec3 horizontal = GeometryUtil.horizontalise(ctx.caster().getLookAngle());
 
-            int count = (int) (this.property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get()));
+            int count = (int) (this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE));
             float yaw = (float) Mth.atan2(horizontal.z, horizontal.x);
 
             for (int i = 0; i < count; i++) {

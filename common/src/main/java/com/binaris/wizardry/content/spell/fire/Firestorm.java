@@ -3,10 +3,7 @@ package com.binaris.wizardry.content.spell.fire;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
-import com.binaris.wizardry.api.content.spell.internal.CastContext;
-import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
-import com.binaris.wizardry.api.content.spell.internal.LocationCastContext;
-import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
@@ -15,7 +12,6 @@ import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.AreaEffectSpell;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -70,7 +66,7 @@ public class Firestorm extends AreaEffectSpell {
     private void burnNearbyBlocks(CastContext ctx, Vec3 origin) {
         if (ctx.world().isClientSide || !EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return;
 
-        double radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+        double radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
 
         for (int i = -(int) radius; i <= (int) radius; i++) {
             for (int j = -(int) radius; j <= (int) radius; j++) {

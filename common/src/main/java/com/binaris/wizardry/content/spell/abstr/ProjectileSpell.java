@@ -7,7 +7,6 @@ import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.core.Vec3i;
 import net.minecraft.util.Mth;
@@ -58,7 +57,7 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
             projectile.aim(ctx.caster(), calculateVelocity(ctx, projectile, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET));
             projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }
@@ -80,7 +79,7 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
             projectile.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, projectile, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET), aimingError);
             projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }
@@ -99,7 +98,7 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
             projectile.shoot(vec.getX(), vec.getY(), vec.getZ(), calculateVelocity(ctx, projectile, 0.375f), 1);
             projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }
@@ -120,7 +119,7 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
      * @return the calculated velocity for launching the projectile
      */
     protected float calculateVelocity(CastContext ctx, MagicProjectileEntity projectile, float launchHeight) {
-        float range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
+        float range = property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
 
         if (projectile.isNoGravity()) {
             if (projectile.getLifeTime() <= 0) return FALLBACK_VELOCITY;

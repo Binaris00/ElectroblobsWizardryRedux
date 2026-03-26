@@ -12,7 +12,6 @@ import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.api.content.util.WorkbenchUtils;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -143,17 +142,17 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
 
     protected void applySpellModifiers(LivingEntity caster, Spell spell, SpellModifiers modifiers) {
         if (spell.getElement() == this.getElement()) {
-            modifiers.set(SpellModifiers.COST, modifiers.get(SpellModifiers.COST) - getWizardArmorType().elementalCostReduction, false);
+            modifiers.subtract(SpellModifiers.COST, getWizardArmorType().elementalCostReduction);
         }
-        modifiers.set(SpellModifiers.POTENCY, 2, false);
-        modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), modifiers.get(EBItems.COOLDOWN_UPGRADE.get()) - getWizardArmorType().cooldownReduction, true);
+        modifiers.add(SpellModifiers.POTENCY, 2);
+        modifiers.subtract(SpellModifiers.COOLDOWN, getWizardArmorType().cooldownReduction);
 
         if (getEquipmentSlot() == EquipmentSlot.HEAD
                 && InventoryUtil.isWearingFullSet(caster, element, getWizardArmorType())
                 && InventoryUtil.doAllArmourPiecesHaveMana(caster)) {
 
             if (getWizardArmorType() == WizardArmorType.SAGE && spell.getElement() != this.element) {
-                modifiers.set(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION, false);
+                modifiers.subtract(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION);
             }
         }
     }

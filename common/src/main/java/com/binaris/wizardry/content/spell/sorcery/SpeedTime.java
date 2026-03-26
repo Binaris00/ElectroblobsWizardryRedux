@@ -11,7 +11,6 @@ import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -42,7 +41,7 @@ public class SpeedTime extends Spell {
         Player caster = ctx.caster();
         boolean didAnything = false;
 
-        float blastMod = ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+        float blastMod = ctx.modifiers().get(SpellModifiers.BLAST);
         // Advance world time on server
         if (!world.isClientSide) {
             long advance = (long) (property(TIME_INCREMENT) * blastMod);

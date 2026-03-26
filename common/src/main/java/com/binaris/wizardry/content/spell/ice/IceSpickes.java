@@ -3,13 +3,13 @@ package com.binaris.wizardry.content.spell.ice;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.content.entity.construct.IceSpikeConstruct;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.ConstructRangedSpell;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.Spells;
@@ -37,8 +37,8 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
         Vec3 pos = origin.add(new Vec3(side.getOpposite().step()));
         super.spawnConstruct(ctx, pos, side);
 
-        int quantity = (int) (Spells.ICE_SPIKES.property(DefaultProperties.ENTITIES) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1);
-        float maxRadius = Spells.ICE_SPIKES.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+        int quantity = (int) (Spells.ICE_SPIKES.property(DefaultProperties.ENTITIES) * ctx.modifiers().get(SpellModifiers.BLAST) - 1);
+        float maxRadius = Spells.ICE_SPIKES.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
 
         for (int i = 0; i < quantity; i++) {
             double radius = 0.5 + ctx.world().random.nextDouble() * (maxRadius - 0.5);

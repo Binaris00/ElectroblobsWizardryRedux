@@ -3,13 +3,13 @@ package com.binaris.wizardry.content.spell.necromancy;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.entity.construct.DecayConstruct;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.ConstructRangedSpell;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
@@ -33,9 +33,9 @@ public class Decay extends ConstructRangedSpell<DecayConstruct> {
         super.spawnConstruct(ctx, vec3, side);
 
         float decayCount = property(PATCHES_SPAWNED);
-        int quantity = (int) (decayCount * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
-        int horizontalRange = (int) (0.4 * decayCount * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
-        int verticalRange = (int) (6 * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
+        int quantity = (int) (decayCount * ctx.modifiers().get(SpellModifiers.BLAST));
+        int horizontalRange = (int) (0.4 * decayCount * ctx.modifiers().get(SpellModifiers.BLAST));
+        int verticalRange = (int) (6 * ctx.modifiers().get(SpellModifiers.BLAST));
 
         for (int i = 0; i < quantity; i++) {
             BlockPos pos = BlockUtil.findNearbyFloorSpace(ctx.world(), origin, horizontalRange, verticalRange, false);

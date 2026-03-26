@@ -12,7 +12,6 @@ import com.binaris.wizardry.content.entity.living.AbstractWizard;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -49,7 +48,7 @@ public class Bubble extends RaySpell {
         BubbleConstruct bubble = new BubbleConstruct(ctx.world());
         bubble.setPos(target.getX(), target.getY(), target.getZ());
         if (ctx.caster() != null) bubble.setCaster(ctx.caster());
-        bubble.lifetime = ((int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+        bubble.lifetime = ((int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
         bubble.setDarkOrb(false);
         bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
         ctx.world().addFreshEntity(bubble);

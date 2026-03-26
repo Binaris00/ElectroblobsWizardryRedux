@@ -214,7 +214,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
                 this.consumeMana(stack, accumulatedCost, player);
 
                 if (!player.isCreative()) {
-                    WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())), level.getGameTime());
+                    WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(SpellModifiers.COOLDOWN)), level.getGameTime());
                 }
             }
         }
@@ -385,7 +385,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         consumeMana(stack, cost, player);
 
         if (!player.isCreative()) {
-            WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(EBItems.COOLDOWN_UPGRADE.get())), player.level().getGameTime());
+            WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(SpellModifiers.COOLDOWN)), player.level().getGameTime());
         }
     }
 

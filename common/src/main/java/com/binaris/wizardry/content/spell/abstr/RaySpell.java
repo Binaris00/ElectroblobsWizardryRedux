@@ -2,17 +2,13 @@ package com.binaris.wizardry.content.spell.abstr;
 
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.internal.CastContext;
-import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
-import com.binaris.wizardry.api.content.spell.internal.LocationCastContext;
-import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.RayTracer;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.fire.FlameRay;
 import com.binaris.wizardry.content.spell.ice.FrostRay;
-import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
@@ -267,7 +263,7 @@ public abstract class RaySpell extends Spell {
      * should not be cast (e.g. if it was blocked by an uncollidable block and ignoreUncollidables is true).
      */
     protected boolean shootSpell(CastContext ctx, Vec3 origin, Vec3 direction) {
-        double range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
+        double range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
         Vec3 endpoint = origin.add(direction.scale(range));
 
         HitResult rayTrace = RayTracer.rayTrace(ctx.world(), ctx.caster(), origin, endpoint, aimAssist, hitLiquids, Entity.class, ignoreLivingEntities ? EntityUtil::isLiving : RayTracer.ignoreEntityFilter(ctx.caster()));

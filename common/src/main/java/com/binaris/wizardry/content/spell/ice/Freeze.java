@@ -50,7 +50,7 @@ public class Freeze extends RaySpell {
 
         if (ctx.world().isClientSide) return true;
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
-                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
+                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
                 property(DefaultProperties.EFFECT_STRENGTH)));
         if (target.isOnFire()) target.clearFire();
         return true;

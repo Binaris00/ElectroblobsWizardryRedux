@@ -446,19 +446,18 @@ public final class WandHelper {
 
         int level = getUpgradeLevel(stack, EBItems.RANGE_UPGRADE.get());
         if (level > 0)
-            modifiers.set(EBItems.RANGE_UPGRADE.get(), 1.0f + level * EBConstants.RANGE_INCREASE_PER_LEVEL, true);
+            modifiers.add(SpellModifiers.RANGE, 1.0f + level * EBConstants.RANGE_INCREASE_PER_LEVEL);
 
         level = getUpgradeLevel(stack, EBItems.DURATION_UPGRADE.get());
-        if (level > 0)
-            modifiers.set(EBItems.DURATION_UPGRADE.get(), 1.0f + level * EBConstants.DURATION_INCREASE_PER_LEVEL, false);
+        if (level > 0) modifiers.add(SpellModifiers.DURATION, 1.0f + level * EBConstants.DURATION_INCREASE_PER_LEVEL);
 
         level = getUpgradeLevel(stack, EBItems.BLAST_UPGRADE.get());
         if (level > 0)
-            modifiers.set(EBItems.BLAST_UPGRADE.get(), 1.0f + level * EBConstants.BLAST_RADIUS_INCREASE_PER_LEVEL, true);
+            modifiers.add(SpellModifiers.BLAST, 1.0f + level * EBConstants.BLAST_RADIUS_INCREASE_PER_LEVEL);
 
         level = getUpgradeLevel(stack, EBItems.COOLDOWN_UPGRADE.get());
         if (level > 0)
-            modifiers.set(EBItems.COOLDOWN_UPGRADE.get(), 1.0f - level * EBConstants.COOLDOWN_REDUCTION_PER_LEVEL, true);
+            modifiers.add(SpellModifiers.COOLDOWN, 1.0f - level * EBConstants.COOLDOWN_REDUCTION_PER_LEVEL);
 
         float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConstants.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION.get();
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
@@ -466,7 +465,7 @@ public final class WandHelper {
 
         if (stack.getItem() instanceof IElementValue elementValue && stack.getItem() instanceof ITierValue tierValue) {
             if (elementValue.getElement() == spell.getElement()) {
-                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).getLevel() + 1) * EBConstants.POTENCY_INCREASE_PER_TIER, true);
+                modifiers.add(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).getLevel() + 1) * EBConstants.POTENCY_INCREASE_PER_TIER);
                 progressionModifier *= 1.2f;
             }
 
@@ -480,7 +479,7 @@ public final class WandHelper {
         }
 
 
-        modifiers.set(SpellModifiers.PROGRESSION, progressionModifier, false);
+        modifiers.add(SpellModifiers.PROGRESSION, progressionModifier);
         return modifiers;
     }
 }

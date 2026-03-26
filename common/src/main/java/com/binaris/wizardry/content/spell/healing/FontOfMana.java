@@ -9,7 +9,6 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.AreaEffectSpell;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -34,11 +33,7 @@ public class FontOfMana extends AreaEffectSpell {
     public static void onSpellCastPreEvent(SpellCastEvent.Pre event) {
         if (event.getCaster() != null && event.getCaster().hasEffect(EBMobEffects.FONT_OF_MANA.get())) {
             MobEffectInstance inst = event.getCaster().getEffect(EBMobEffects.FONT_OF_MANA.get());
-            if (inst != null) {
-                float current = event.getModifiers().get(EBItems.COOLDOWN_UPGRADE.get());
-                int amp = inst.getAmplifier();
-                event.getModifiers().set(EBItems.COOLDOWN_UPGRADE.get(), current / (2 + amp), false);
-            }
+            if (inst != null) event.getModifiers().divide(SpellModifiers.COOLDOWN, 2 + inst.getAmplifier());
         }
     }
 
@@ -46,7 +41,7 @@ public class FontOfMana extends AreaEffectSpell {
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (!(target instanceof Player)) return true;
 
-        int duration = (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
+        int duration = (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION));
         int strength = (int) (property(DefaultProperties.EFFECT_STRENGTH) + (ctx.modifiers().get(SpellModifiers.POTENCY) - 1f) * 2f);
 
         // Apply the new Font of Mana mob effect

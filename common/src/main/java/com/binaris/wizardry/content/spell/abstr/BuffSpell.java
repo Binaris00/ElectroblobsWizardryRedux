@@ -6,7 +6,6 @@ import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.content.spell.healing.Heal;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffect;
@@ -134,7 +133,7 @@ public class BuffSpell extends Spell {
         for (MobEffect effect : mobEffects) {
             if (ctx.world().isClientSide) continue;
             target.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? 1 :
-                    (int) (this.property(getEffectDurationProperty(effect)) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
+                    (int) (this.property(getEffectDurationProperty(effect)) * ctx.modifiers().get(SpellModifiers.DURATION)),
                     this.property(getEffectStrengthProperty(effect)) + bonusAmplifier,
                     false, true));
         }

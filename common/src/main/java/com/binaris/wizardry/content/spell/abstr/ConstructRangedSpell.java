@@ -5,11 +5,11 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
 import com.binaris.wizardry.api.content.spell.internal.LocationCastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.RayTracer;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.level.Level;
@@ -91,7 +91,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
+        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
         HitResult rayTrace = RayTracer.standardBlockRayTrace(ctx.world(), ctx.caster(), range, hitLiquids, ignoreUncollidables, false);
 
         if (rayTrace instanceof BlockHitResult blockTrace) {
@@ -119,7 +119,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
     @Override
     public boolean cast(EntityCastContext ctx) {
-        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
+        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
         if (ctx.target() == null) return false;
         if (ctx.caster().distanceTo(ctx.target()) >= range || ctx.world().isClientSide) return false;
 
@@ -150,7 +150,7 @@ public class ConstructRangedSpell<T extends MagicConstructEntity> extends Constr
 
     @Override
     public boolean cast(LocationCastContext ctx) {
-        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
+        double range = property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
         Vec3 endpoint = ctx.vec3().add(Vec3.atLowerCornerOf(ctx.direction().getNormal()).scale(range));
         HitResult rayTrace = ctx.world().clip(new ClipContext(ctx.vec3(), endpoint,
                 ClipContext.Block.COLLIDER, hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE, null));

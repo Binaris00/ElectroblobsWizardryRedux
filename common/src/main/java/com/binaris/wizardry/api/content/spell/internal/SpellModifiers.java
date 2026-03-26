@@ -1,9 +1,7 @@
 package com.binaris.wizardry.api.content.spell.internal;
 
-import com.binaris.wizardry.setup.registries.WandUpgrades;
 import com.google.common.collect.Sets;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.Item;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,29 +11,33 @@ import java.util.Map;
  * a mutable object that is intended to be modified rather than replaced, for example, inside the {@code SpellCastEvent.Pre}
  * you would use this object to modify specific parts of the spell ("modifiers") rather making some hacky replacement.
  * <p>
- * It also keeps track of which modifiers need to be synced to the client, so that only those are sent over the network.
- * <p>
  * If you try to add a new modifier that's not on the original mod (e.g. custom wand upgrades/modifiers) make sure to
  * mark them as needing syncing if you want the client to be aware of them and of course make the needed implementations
  * on your spell casting code to make use of them.
  */
+@SuppressWarnings("unused")
 public final class SpellModifiers {
     /** Constant string identifier for the potency modifier. */
-    public static final String POTENCY = "potency";
+    public static final String POTENCY = "ebwizardry.potency";
     /** Constant string identifier for the mana cost modifier. */
-    public static final String COST = "cost";
+    public static final String COST = "ebwizardry.cost";
     /** Constant string identifier for the wand charge-up modifier. */
-    public static final String CHARGEUP = "chargeup";
+    public static final String CHARGEUP = "ebwizardry.chargeup";
     /** Constant string identifier for the wand progression modifier. */
-    public static final String PROGRESSION = "progression";
+    public static final String PROGRESSION = "ebwizardry.progression";
+    /** Constant string identifier for modifying the duration effects of spells */
+    public static final String DURATION = "ebwizardry.duration";
+    /** Constant string identifier for modifying the area effect of spells */
+    public static final String BLAST = "ebwizardry.blast";
+    /** Constant string identifier for modifying the effect range of spells */
+    public static final String RANGE = "ebwizardry.range";
+    /** Constant string identifier for modifying cooldown of spells */
+    public static final String COOLDOWN = "ebwizardry.cooldown";
 
     private final Map<String, Float> multiplierMap;
-    private final Map<String, Float> syncedMultiplierMap;
-
 
     public SpellModifiers() {
         multiplierMap = new HashMap<>();
-        syncedMultiplierMap = new HashMap<>();
     }
 
     /**
@@ -47,7 +49,7 @@ public final class SpellModifiers {
      */
     public static SpellModifiers fromTag(CompoundTag tag) {
         SpellModifiers modifiers = new SpellModifiers();
-        tag.getAllKeys().forEach(key -> modifiers.set(key, tag.getFloat(key), true));
+        tag.getAllKeys().forEach(key -> modifiers.set(key, tag.getFloat(key)));
         return modifiers;
     }
 
@@ -74,49 +76,72 @@ public final class SpellModifiers {
     public SpellModifiers combine(SpellModifiers modifiers) {
         for (String key : Sets.union(this.multiplierMap.keySet(), modifiers.multiplierMap.keySet())) {
             float newValue = this.get(key) * modifiers.get(key);
-            boolean sync = this.syncedMultiplierMap.containsKey(key) || modifiers.syncedMultiplierMap.containsKey(key);
-            this.set(key, newValue, sync);
+            this.set(key, newValue);
         }
         return this;
     }
 
     /**
-     * Sets the multiplier for a specific upgrade identified by the given item, along with its syncing status. The item
-     * is converted to its string identifier using {@link WandUpgrades#getIdentifier(Item)} in order to store the multiplier.
+     * Sets the multiplier for a specific upgrade identified by the given key.
      *
-     * @param upgrade The item representing the upgrade.
+     * @param key        The string identifier for the upgrade.
      * @param multiplier The multiplier value to set.
-     * @param needsSyncing Whether this modifier needs to be synced to the client.
      * @return This {@link SpellModifiers} instance after setting the multiplier.
      */
-    public SpellModifiers set(Item upgrade, float multiplier, boolean needsSyncing) {
-        this.set(WandUpgrades.getIdentifier(upgrade), multiplier, needsSyncing);
-        return this;
-    }
-
-    /**
-     * Sets the multiplier for a specific upgrade identified by the given key, along with its syncing status.
-     *
-     * @param key The string identifier for the upgrade.
-     * @param multiplier The multiplier value to set.
-     * @param needsSyncing Whether this modifier needs to be synced to the client.
-     * @return This {@link SpellModifiers} instance after setting the multiplier.
-     */
-    public SpellModifiers set(String key, float multiplier, boolean needsSyncing) {
+    public SpellModifiers set(String key, float multiplier) {
         multiplierMap.put(key, multiplier);
-        if (needsSyncing) syncedMultiplierMap.put(key, multiplier);
         return this;
     }
 
     /**
-     * Gets the multiplier for a specific upgrade identified by the given item. The item is converted to its string
-     * identifier using {@link WandUpgrades#getIdentifier(Item)} in order to retrieve the multiplier.
+     * Adds the value to the given key. In case there's not already a value for this modifier it will be saved as the
+     * base.
      *
-     * @param upgrade The item representing the upgrade.
-     * @return The multiplier value for the specified upgrade, or 1 if not set.
+     * @param key   The string identifier for the upgrade.
+     * @param value The value that's going to be added to the modifier
+     * @return This {@link SpellModifiers} instance after setting the multiplier.
      */
-    public float get(Item upgrade) {
-        return get(WandUpgrades.getIdentifier(upgrade));
+    public SpellModifiers add(String key, float value) {
+        multiplierMap.merge(key, value, Float::sum);
+        return this;
+    }
+
+    /**
+     * Subtract the value based on the given key. In case there's not already a value for this modifier it will be saved
+     * as the base.
+     *
+     * @param key   The string identifier for the upgrade.
+     * @param value The value that's going to be subtracted to the modifier
+     * @return This {@link SpellModifiers} instance after setting the multiplier.
+     */
+    public SpellModifiers subtract(String key, float value) {
+        multiplierMap.merge(key, -value, Float::sum);
+        return this;
+    }
+
+    /**
+     * Multiply the value based on the given key. In case there's not already a value for this modifier it won't do anything.
+     *
+     * @param key   The string identifier for the upgrade.
+     * @param factor The value that's going to serve as the factor of the multiply
+     * @return This {@link SpellModifiers} instance after setting the multiplier.
+     */
+    public SpellModifiers multiply(String key, float factor) {
+        multiplierMap.computeIfPresent(key, (k, v) -> v * factor);
+        return this;
+    }
+
+    /**
+     * Divide the value based on the given key. In case there's not already a value for this modifier it won't do anything.
+     *
+     * @param key   The string identifier for the upgrade.
+     * @param divisor The value that's going to serve as the divisor
+     * @return This {@link SpellModifiers} instance after setting the multiplier.
+     */
+    public SpellModifiers divide(String key, float divisor) {
+        if (divisor == 0) throw new ArithmeticException("Cannot divide spell modifier by zero: " + key);
+        multiplierMap.computeIfPresent(key, (k, v) -> v / divisor);
+        return this;
     }
 
     /**
@@ -140,20 +165,10 @@ public final class SpellModifiers {
     }
 
     /**
-     * Retrieves the map of multipliers that need to be synced to the client.
-     *
-     * @return A map containing modifier identifiers and their corresponding multiplier values that require syncing.
-     */
-    public Map<String, Float> getSyncedMultipliers() {
-        return syncedMultiplierMap;
-    }
-
-    /**
      * Resets all multipliers and synced multipliers, clearing all stored values, including those that do not require
      * syncing.
      */
     public void reset() {
         this.multiplierMap.clear();
-        this.syncedMultiplierMap.clear();
     }
 }

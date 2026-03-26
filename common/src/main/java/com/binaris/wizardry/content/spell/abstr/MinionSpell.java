@@ -7,7 +7,6 @@ import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.platform.Services;
-import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -40,6 +39,7 @@ import java.util.function.Function;
  *
  * @param <T> The type of mob that is summoned by this spell.
  */
+@SuppressWarnings("unused")
 public class MinionSpell<T extends Mob> extends Spell {
     /** Attribute Modifier id */
     public static final String HEALTH_MODIFIER = "minion_health";
@@ -153,7 +153,7 @@ public class MinionSpell<T extends Mob> extends Spell {
             for (int i = 0; i < property(DefaultProperties.MINION_COUNT); i++) {
                 T minion = minionFactory.apply(ctx.world());
                 minion.setPos(ctx.pos().getX() + 0.5, ctx.pos().getY(), ctx.pos().getZ() + 0.5);
-                setLifetime(minion, (int) (property(DefaultProperties.MINION_LIFETIME).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+                setLifetime(minion, (int) (property(DefaultProperties.MINION_LIFETIME).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
                 this.addMinionExtras(minion, ctx, i);
 
                 ctx.world().addFreshEntity(minion);
@@ -203,7 +203,7 @@ public class MinionSpell<T extends Mob> extends Spell {
             minion.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             data.setSummoned(true);
             data.setOwnerUUID(ctx.caster().getUUID());
-            setLifetime(minion, (int) (property(DefaultProperties.MINION_LIFETIME) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+            setLifetime(minion, (int) (property(DefaultProperties.MINION_LIFETIME) * ctx.modifiers().get(SpellModifiers.DURATION)));
             data.setShouldFollowOwner(shouldFollowOwner);
             data.setShouldDeleteGoals(shouldDeleteBaseGoals);
             data.setSearchNearbyTargets(searchNearbyTargets);

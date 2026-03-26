@@ -9,3 +9,5 @@
 - Now can mark if minions should delete its original goals inside MinionSpell
 - (Forge) Fix to empty tags applied to items that are in main hand for some seconds
 - Change Iceball hit block/entity sound
+- Helper methods to add/substract/divide/multiply values when working with modifiers
+- Removed possibility to pass items to save/load on spell modifiers (you should use strings instead!)

@@ -13,7 +13,6 @@ import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.sorcery.ImbueWeapon;
 import com.binaris.wizardry.core.EBConstants;
 import com.binaris.wizardry.core.platform.Services;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -36,7 +35,7 @@ public class FlamingWeapon extends Spell {
             ImbuementEnchantData data = Services.OBJECT_DATA.getImbuementData(stack);
             if (data == null) continue;
             int level = ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1 : (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConstants.POTENCY_INCREASE_PER_TIER + 0.5f);
-            long duration = (long) (ctx.world().getGameTime() + (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+            long duration = (long) (ctx.world().getGameTime() + (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)));
 
             if (stack.getItem() instanceof SwordItem) {
                 stack.enchant(Enchantments.FIRE_ASPECT, level);

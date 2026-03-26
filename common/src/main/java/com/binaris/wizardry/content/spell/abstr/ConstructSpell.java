@@ -7,7 +7,6 @@ import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
@@ -167,10 +166,10 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
             construct.setPos(vec3);
             if (ctx.caster() != null) construct.setCaster(ctx.caster());
 
-            construct.lifetime = permanent ? -1 : (int) (property(DefaultProperties.DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
+            construct.lifetime = permanent ? -1 : (int) (property(DefaultProperties.DURATION) * ctx.modifiers().get(SpellModifiers.DURATION));
             construct.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
             if (construct instanceof ScaledConstructEntity scaledConstruct)
-                scaledConstruct.setSizeMultiplier(ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
+                scaledConstruct.setSizeMultiplier(ctx.modifiers().get(SpellModifiers.BLAST));
             addConstructExtras(ctx, construct, side);
 
             if (!allowOverlap && !ctx.world().getEntitiesOfClass(construct.getClass(), construct.getBoundingBox()).isEmpty())
