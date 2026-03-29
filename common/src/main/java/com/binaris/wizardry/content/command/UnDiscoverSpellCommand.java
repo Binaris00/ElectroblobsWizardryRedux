@@ -6,6 +6,7 @@ import com.binaris.wizardry.core.platform.Services;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -17,7 +18,7 @@ public final class UnDiscoverSpellCommand {
     private UnDiscoverSpellCommand() {
     }
 
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext ctx) {
         dispatcher.register(Commands.literal("undiscover")
                 .then(Commands.argument("player", EntityArgument.player())
                         .then(Commands.argument("spell", SpellArgument.spell())

@@ -5,6 +5,7 @@ import com.binaris.wizardry.core.platform.Services;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;
@@ -12,7 +13,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
 
 public final class AllyCommand {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext context) {
         dispatcher.register(Commands.literal("ally")
                 .then(Commands.literal("add")
                         // Remote version where you need to specify an origin and an ally

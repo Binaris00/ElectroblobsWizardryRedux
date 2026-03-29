@@ -8,6 +8,7 @@ import com.binaris.wizardry.setup.registries.EBEntities;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.BoolArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.coordinates.BlockPosArgument;
@@ -18,7 +19,7 @@ import net.minecraft.world.entity.MobSpawnType;
 import java.util.List;
 
 public class WizardSpellTestCommand {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext ctx) {
         dispatcher.register(Commands.literal("wizard_spell_test")
                 .then(Commands.argument("spell", SpellArgument.spell())
                         .then(Commands.argument("pos", BlockPosArgument.blockPos())

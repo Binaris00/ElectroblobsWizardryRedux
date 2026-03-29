@@ -212,7 +212,7 @@ public class SpellProperties {
         public Builder assignBaseProperties(SpellTier tier, Element element, SpellType type, SpellAction action, int cost, int charge, int cooldown) {
             add(DefaultProperties.ENABLED);
             add(DefaultProperties.ELEMENT, element.getLocation().toString());
-            add(DefaultProperties.SPELL_TYPE, type.getUnlocalisedName());
+            add(DefaultProperties.SPELL_TYPE, type.getName());
             add(DefaultProperties.TIER, tier.getOrCreateLocation().toString());
             add(DefaultProperties.SPELL_ACTION, action.location.toString());
             add(DefaultProperties.COST, cost);

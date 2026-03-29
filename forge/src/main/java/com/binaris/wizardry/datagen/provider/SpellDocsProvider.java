@@ -231,7 +231,7 @@ public abstract class SpellDocsProvider implements DataProvider {
     private String formatSpellType(SpellType type) {
         String key = type.getDisplayName();
         String translated = translate(key);
-        return translated.equals(key) ? type.getUnlocalisedName() : translated;
+        return translated.equals(key) ? type.getName() : translated;
     }
 
     /**

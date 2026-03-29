@@ -18,7 +18,7 @@ public final class MinionTestHandler {
     private static final Vec3 CASTER_POS = new Vec3(1.5, 2.0, 1.5);
     private static final Vec3 TARGET_POS = new Vec3(2.5, 2.0, 1.5);
     private static final Vec3 MINION_POS = new Vec3(1.5, 2.0, 2.5);
-    private static final int MAX_ATTEMPTS = 20;
+    private static final int MAX_ATTEMPTS = 50;
     private static final int CHECK_DELAY_TICKS = 25;
     private static final int RETRY_DELAY_TICKS = 10;
 

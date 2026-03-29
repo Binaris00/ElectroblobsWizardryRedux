@@ -10,4 +10,6 @@
 - (Forge) Fix to empty tags applied to items that are in main hand for some seconds
 - Change Iceball hit block/entity sound
 - Helper methods to add/substract/divide/multiply values when working with modifiers
-- Removed possibility to pass items to save/load on spell modifiers (you should use strings instead!)
+- Removed possibility to pass items to save/load on spell modifiers (you should ONLY use strings instead!)
+- New extension of Attribute modifiers to handle spell conditions
+- Added command `/magic_attribute` to add attribute modifiers with spell conditions to entities, similar to how `/attribute` works

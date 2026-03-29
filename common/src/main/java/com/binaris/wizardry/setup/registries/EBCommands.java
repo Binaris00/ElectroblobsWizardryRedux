@@ -5,10 +5,11 @@ import com.binaris.wizardry.content.command.debug.*;
 import com.binaris.wizardry.core.mixin.CommandsMixin;
 import com.google.common.collect.ImmutableList;
 import com.mojang.brigadier.CommandDispatcher;
+import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.commands.CommandSourceStack;
 
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 
 /**
  * Check {@link CommandsMixin CommandsMixin} to see the registry
@@ -18,15 +19,16 @@ import java.util.function.Consumer;
  */
 public final class EBCommands {
     // TODO CastCommand::register
-    public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> COMMANDS_TO_REGISTER = ImmutableList.of(
+    public static final List<BiConsumer<CommandDispatcher<CommandSourceStack>, CommandBuildContext>> COMMANDS_TO_REGISTER = ImmutableList.of(
             ListSpellsCommand::register,
             ListElementsCommand::register,
             ListTiersCommand::register,
             AllyCommand::register,
             DiscoverSpellCommand::register,
-            UnDiscoverSpellCommand::register
+            UnDiscoverSpellCommand::register,
+            MagicAttributeCommand::register
     );
-    public static final List<Consumer<CommandDispatcher<CommandSourceStack>>> DEBUG_COMMANDS = ImmutableList.of(
+    public static final List<BiConsumer<CommandDispatcher<CommandSourceStack>, CommandBuildContext>> DEBUG_COMMANDS = ImmutableList.of(
             WandSpellCommand::register,
             WandSpellListCommand::register,
             WandSelectCommand::register,

@@ -6,6 +6,7 @@ import com.binaris.wizardry.api.content.item.ArtifactItem;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.Forfeit;
+import com.binaris.wizardry.content.WizardryAttributeModifier;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.content.effect.ContainmentEffect;
 import com.binaris.wizardry.content.effect.FireSkinMobEffect;
@@ -116,6 +117,7 @@ public final class EBEventHelper {
         bus.register(SpellCastEvent.Pre.class, EBEventHelper::castContextCheck);
         bus.register(SpellCastEvent.Pre.class, FontOfMana::onSpellCastPreEvent);
         bus.register(SpellCastEvent.Pre.class, ArcaneJammer::onSpellCastPreEvent);
+        bus.register(SpellCastEvent.Pre.class, WizardryAttributeModifier::onPreCast);
     }
 
     private static void onSpellPostCast(WizardryEventBus bus) {

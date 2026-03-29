@@ -1194,5 +1194,16 @@
   "death.attack.wizardry_force": "%1$s was blasted away by %2$s's magical force",
   "death.attack.wizardry_blast": "%1$s was blown to bits by %2$s's magical blast",
   "death.attack.wizardry_sorcery": "%1$s was slain by %2$s's sorcery",
-  "death.attack.wizardry_radiant": "%1$s was incinerated by %2$s's radiant magic"
+  "death.attack.wizardry_radiant": "%1$s was incinerated by %2$s's radiant magic",
+  "ebwizardry.raw_line_30": "========================================================",
+  "ebwizardry.attributes_names.desc": "EBWIZARDRY ATTRIBUTE NAMES",
+  "ebwizardry.raw_line_31": "========================================================",
+  "attribute.name.ebwizardry.cast.potency": "Cast Potency",
+  "attribute.name.ebwizardry.cast.cost": "Cast Cost",
+  "attribute.name.ebwizardry.cast.chargeup": "Cast Chargeup",
+  "attribute.name.ebwizardry.cast.progression": "Cast Progression",
+  "attribute.name.ebwizardry.cast.duration": "Cast Duration",
+  "attribute.name.ebwizardry.cast.blast": "Cast Blast",
+  "attribute.name.ebwizardry.cast.range": "Cast Range",
+  "attribute.name.ebwizardry.cast.cooldown": "Cast Cooldown"
 }
