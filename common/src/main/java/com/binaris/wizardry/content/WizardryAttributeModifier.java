@@ -53,14 +53,18 @@ public class WizardryAttributeModifier extends AttributeModifier {
         if (event.getCaster() == null) return;
         LivingEntity caster = event.getCaster();
 
-        event.getModifiers().add(SpellModifiers.POTENCY, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_POTENCY.get()));
-        event.getModifiers().add(SpellModifiers.COST, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_COST.get()));
-        event.getModifiers().add(SpellModifiers.CHARGEUP, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_CHARGEUP.get()));
-        event.getModifiers().add(SpellModifiers.PROGRESSION, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_PROGRESSION.get()));
-        event.getModifiers().add(SpellModifiers.DURATION, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_DURATION.get()));
-        event.getModifiers().add(SpellModifiers.BLAST, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_BLAST.get()));
-        event.getModifiers().add(SpellModifiers.RANGE, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_RANGE.get()));
-        event.getModifiers().add(SpellModifiers.COOLDOWN, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_COOLDOWN.get()));
+        safeAddModifiers(event.getModifiers(), SpellModifiers.POTENCY, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_POTENCY.get()));
+        safeAddModifiers(event.getModifiers(), SpellModifiers.COST, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_COST.get()));
+        safeAddModifiers(event.getModifiers(), SpellModifiers.CHARGEUP, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_CHARGEUP.get()));
+        safeAddModifiers(event.getModifiers(), SpellModifiers.PROGRESSION, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_PROGRESSION.get()));
+        safeAddModifiers(event.getModifiers(), SpellModifiers.DURATION, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_DURATION.get()));
+        safeAddModifiers(event.getModifiers(), SpellModifiers.BLAST, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_BLAST.get()));
+        safeAddModifiers(event.getModifiers(), SpellModifiers.RANGE, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_RANGE.get()));
+        safeAddModifiers(event.getModifiers(), SpellModifiers.COOLDOWN, calculateModifiers(caster, event.getSpell(), EBAttributes.CAST_COOLDOWN.get()));
+    }
+
+    public static void safeAddModifiers(SpellModifiers modifiers, String key, float value){
+        if (value != 0) modifiers.add(key, value);
     }
 
     /**

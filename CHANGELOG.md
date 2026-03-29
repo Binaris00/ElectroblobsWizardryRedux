@@ -13,3 +13,4 @@
 - Removed possibility to pass items to save/load on spell modifiers (you should ONLY use strings instead!)
 - New extension of Attribute modifiers to handle spell conditions
 - Added command `/magic_attribute` to add attribute modifiers with spell conditions to entities, similar to how `/attribute` works
+- Fix to 'attributes deleting spell properties'
