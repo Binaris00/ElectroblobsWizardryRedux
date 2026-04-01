@@ -46,7 +46,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
     /** Radius around the pedestal to spawn evil wizards */
     private static final int WIZARD_SPAWN_RADIUS = 5;
     /** Delay before the pedestal regenerates after being conquered (in ticks) */
-    private static final int REGENERATION_DELAY_TICKS = 72000; // 1 hour in ticks
+    private static final int REGENERATION_DELAY_TICKS = 216000; // 3 hours in ticks
     /**
      * List of UUIDs of spawned evil wizards for this pedestal event, used to check if they are alive and manage the event state,
      * if all wizards are dead, the players will be released from containment and finish the event.
@@ -194,7 +194,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
 
         playersInContainment.removeIf(uuid -> {
             Player player = serverLevel.getPlayerByUUID(uuid);
-            if (player == null || !player.isAlive()) return true;
+            if (player == null || !player.isAlive() || player.isDeadOrDying() || player.isRemoved()) return true;
             setContainmentPos(player);
             player.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 200, 0, false, false, true));
             return false;
@@ -223,13 +223,12 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
             return entity == null || !entity.isAlive();
         });
 
-
         if (spawnedWizards.isEmpty()) {
-            boolean playersEmpty = playersInContainment.isEmpty();
+            playersInContainment.removeIf(uuid -> {
+                Player player = serverLevel.getPlayerByUUID(uuid);
+                return player == null || !player.isAlive() || player.isDeadOrDying() || player.isRemoved();
+            });
             conquered();
-            // After conquering, if there are no players left in containment, regenerate immediately
-            // this happens if all players disconnect or die during the event, for example
-            if (playersEmpty) regenerate(this, getBlockPos());
         }
     }
 

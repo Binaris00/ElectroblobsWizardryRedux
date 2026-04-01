@@ -163,9 +163,6 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void onPlayerCloned(PlayerEvent.Clone event) {
-            if (!event.isWasDeath()) return; // Only copy data when player respawns after death
-
-            // Revive the original player's capabilities to be able to read them
             event.getOriginal().reviveCaps();
 
             event.getOriginal().getCapability(WizardDataHolder.INSTANCE).ifPresent(old ->

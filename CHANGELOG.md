@@ -15,3 +15,6 @@
 - Added command `/magic_attribute` to add attribute modifiers with spell conditions to entities, similar to how `/attribute` works
 - Fix to 'attributes deleting spell properties'
 - Added direct compatibility with Curios and Trinkets
+- Avoid weird server behavior on shrine when one of the involucrated players dies without conquering the shrine
+- Fix spell data delete when returning from the End Dimension
+- Fix eternal frost axe error
