@@ -9,7 +9,7 @@ import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.SpellBookItem;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBLootFunctions;
@@ -103,7 +103,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
 
         if (player != null && undiscoveredBias > 0) {
             float bias = undiscoveredBias;
-            if (EBAccessoriesIntegration.isEquipped(player, EBItems.CHARM_SPELL_DISCOVERY.get()))
+            if (ArtifactChannel.isEquipped(player, EBItems.CHARM_SPELL_DISCOVERY.get()))
                 bias = Math.min(bias + 0.4f, 0.9f);
             if (bias > 0) {
                 SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);

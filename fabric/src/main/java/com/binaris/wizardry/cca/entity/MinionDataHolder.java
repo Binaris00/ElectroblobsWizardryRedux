@@ -22,6 +22,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     private UUID ownerUUID = null;
     private boolean shouldFollowOwner = false;
     private boolean restartGoals;
+    private boolean searchNearbyTargets = true;
 
     public MinionDataHolder(Mob provider) {
         this.provider = provider;
@@ -96,6 +97,16 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setShouldFollowOwner(boolean shouldFollowOwner) {
         this.shouldFollowOwner = shouldFollowOwner;
+    }
+
+    @Override
+    public boolean searchNearbyTargets() {
+        return searchNearbyTargets;
+    }
+
+    @Override
+    public void setSearchNearbyTargets(boolean searchNearbyTargets) {
+        this.searchNearbyTargets = searchNearbyTargets;
     }
 
     @Override

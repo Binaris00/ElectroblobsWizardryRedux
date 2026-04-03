@@ -5,9 +5,9 @@ import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.InteractionHand;
@@ -25,7 +25,7 @@ public class DragonFireball extends Spell {
 
             fireball.setPos(ctx.caster().getX() + look.x, ctx.caster().getY() + look.y + 1.3, ctx.caster().getZ() + look.z);
 
-            double acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
+            double acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(SpellModifiers.RANGE);
 
             fireball.xPower = look.x * acceleration;
             fireball.yPower = look.y * acceleration;

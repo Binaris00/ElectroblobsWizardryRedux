@@ -1,4 +1,20 @@
 - Now you can datagen the Markdown documentation for the spells
 - Now you can datagen a Markdown table for all the spells added
 - Added the possibility to datagen artifacts
-- Moved MAGIC_TIER to it's own class
+- Moved MAGIC_TIER (item tiers) to its own class
+- Added Arcane Jammer Spell
+- Change to warlock robe texture, now has more consistency with the colors
+- Added WIP config for public use
+- Minions can target nearby mobs without requiring owner interaction. This can be modified inside MinionSpell
+- Now can mark if minions should delete its original goals inside MinionSpell
+- (Forge) Fix to empty tags applied to items that are in main hand for some seconds
+- Change Iceball hit block/entity sound
+- Helper methods to add/substract/divide/multiply values when working with modifiers
+- Removed possibility to pass items to save/load on spell modifiers (you should ONLY use strings instead!)
+- New extension of Attribute modifiers to handle spell conditions
+- Added command `/magic_attribute` to add attribute modifiers with spell conditions to entities, similar to how `/attribute` works
+- Fix to 'attributes deleting spell properties'
+- Added direct compatibility with Curios and Trinkets
+- Avoid weird server behavior on shrine when one of the involucrated players dies without conquering the shrine
+- Fix spell data delete when returning from the End Dimension
+- Fix eternal frost axe error

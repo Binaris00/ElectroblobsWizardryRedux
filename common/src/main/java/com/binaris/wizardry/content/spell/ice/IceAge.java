@@ -53,7 +53,7 @@ public class IceAge extends AreaEffectSpell {
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
-                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())),
+                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
                 property(DefaultProperties.EFFECT_STRENGTH)));
 
         target.playSound(EBSounds.MISC_FREEZE.get(), 1.0F, ctx.world().random.nextFloat() * 0.4F + 0.8F);
@@ -96,7 +96,7 @@ public class IceAge extends AreaEffectSpell {
     private void freezeNearbyBlocks(Level world, Vec3 origin, @Nullable LivingEntity caster, SpellModifiers modifiers) {
         if (world.isClientSide() || !EntityUtil.canDamageBlocks(caster, world)) return;
 
-        double radius = property(DefaultProperties.EFFECT_RADIUS).floatValue() * modifiers.get(EBItems.BLAST_UPGRADE.get());
+        double radius = property(DefaultProperties.EFFECT_RADIUS).floatValue() * modifiers.get(SpellModifiers.BLAST);
 
         for (int i = -(int) radius; i <= (int) radius; i++) {
             for (int j = -(int) radius; j <= (int) radius; j++) {

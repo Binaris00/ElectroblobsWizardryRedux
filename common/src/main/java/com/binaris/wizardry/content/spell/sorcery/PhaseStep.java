@@ -9,7 +9,7 @@ import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -30,7 +30,7 @@ public class PhaseStep extends Spell {
         Player caster = ctx.caster();
         Level world = ctx.world();
 
-        boolean teleportMount = caster.getVehicle() != null && EBAccessoriesIntegration.isEquipped(caster, EBItems.CHARM_MOUNT_TELEPORTING.get());
+        boolean teleportMount = caster.getVehicle() != null && ArtifactChannel.isEquipped(caster, EBItems.CHARM_MOUNT_TELEPORTING.get());
         double range = property(DefaultProperties.RANGE);
         int maxThickness = property(WALL_THICKNESS);
 

@@ -5,7 +5,7 @@ import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
 import com.binaris.wizardry.content.effect.FrostStepEffect;
 import com.binaris.wizardry.core.event.WizardryEventBus;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
@@ -39,10 +39,10 @@ public abstract class LivingEntityMixin {
     public void EBWIZARDRY$livingCanBeAffected(MobEffectInstance effect, CallbackInfoReturnable<Boolean> cir) {
         if (!(livingEntity instanceof Player player)) return;
 
-        if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_ICE_IMMUNITY.get()))
+        if (ArtifactChannel.isEquipped(player, EBItems.AMULET_ICE_IMMUNITY.get()))
             if (effect.getEffect() == EBMobEffects.FROST.get()) cir.setReturnValue(false);
 
-        if (EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_WITHER_IMMUNITY.get()))
+        if (ArtifactChannel.isEquipped(player, EBItems.AMULET_WITHER_IMMUNITY.get()))
             if (effect.getEffect() == MobEffects.WITHER) cir.setReturnValue(false);
     }
 

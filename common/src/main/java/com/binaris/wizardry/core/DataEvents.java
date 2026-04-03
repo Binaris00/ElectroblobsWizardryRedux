@@ -200,9 +200,9 @@ public final class DataEvents {
     private static boolean checkAndExpireItem(Player player, ItemStack stack, long currentGameTime) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if (data != null && (data.hasExpired(currentGameTime) || (stack.isDamageableItem() && stack.getDamageValue() >= stack.getMaxDamage()))) {
-            data.setSummoned(false);
+            stack.shrink(1);
             player.getInventory().removeItem(stack);
-            stack.shrink(stack.getCount());
+            data.setSummoned(false);
             return true;
         }
         return false;

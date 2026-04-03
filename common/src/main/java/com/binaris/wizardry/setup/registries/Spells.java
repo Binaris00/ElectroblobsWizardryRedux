@@ -168,7 +168,7 @@ public final class Spells {
     public static final Spell COBWEBS;
     // decoy
     public static final Spell CONJURE_ARMOR;
-    // arcane jammer
+    public static final Spell ARCANE_JAMMER;
     public static final Spell GROUP_HEAL;
     public static final Spell HAILSTORM;
     // lightning web
@@ -859,6 +859,8 @@ public final class Spells {
                         .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.WARD.get()), 0)
                         .build()
         ));
+
+        ARCANE_JAMMER = spell("arcane_jammer", ArcaneJammer::new);
 
         SUMMON_ICE_GIANT = spell("summon_ice_giant", SummonIceGiant::new);
 

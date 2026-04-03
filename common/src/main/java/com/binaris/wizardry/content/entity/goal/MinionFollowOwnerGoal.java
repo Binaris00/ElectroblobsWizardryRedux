@@ -1,7 +1,6 @@
 package com.binaris.wizardry.content.entity.goal;
 
 import com.binaris.wizardry.api.content.data.MinionData;
-import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
@@ -18,23 +17,27 @@ import net.minecraft.world.level.pathfinder.WalkNodeEvaluator;
 import java.util.EnumSet;
 
 public class MinionFollowOwnerGoal extends Goal {
+    private static final float SPEED_MODIFIER = 1.0F;
+    private static final float STOP_DISTANCE = 2.0F;
+    private static final float START_DISTANCE = 10.0F;
+
     private final Mob minion;
     private final MinionData data;
     private final LevelReader level;
-    private final float speedModifier = 1.0F;
-    private final float stopDistance = 2.0F;
-    private final float startDistance = 10.0F;
-    private final boolean canFly = false;
+    private boolean canFly = false;
     private final PathNavigation navigation;
     private LivingEntity owner;
     private float oldWaterCost;
     private int timeToRecalcPath;
 
-    public MinionFollowOwnerGoal(Mob minion) {
-        if (!Services.OBJECT_DATA.isMinion(minion))
-            throw new RuntimeException("MinionFollowOwnerGoal can only be used by minions!");
+    public MinionFollowOwnerGoal(Mob minion, MinionData data, boolean canFly){
+        this(minion, data);
+        this.canFly = canFly;
+    }
+
+    public MinionFollowOwnerGoal(Mob minion, MinionData data) {
         this.minion = minion;
-        this.data = Services.OBJECT_DATA.getMinionData(this.minion);
+        this.data = data;
         this.level = minion.level();
         this.navigation = minion.getNavigation();
         this.setFlags(EnumSet.of(Flag.MOVE, Flag.LOOK));
@@ -52,7 +55,7 @@ public class MinionFollowOwnerGoal extends Goal {
             return false;
         } else if (this.unableToMove()) {
             return false;
-        } else if (this.minion.distanceToSqr(livingentity) < (double) (this.startDistance * this.startDistance)) {
+        } else if (this.minion.distanceToSqr(livingentity) < (double) (this.START_DISTANCE * this.START_DISTANCE)) {
             return false;
         } else {
             this.owner = livingentity;
@@ -66,7 +69,7 @@ public class MinionFollowOwnerGoal extends Goal {
         } else if (this.unableToMove()) {
             return false;
         } else {
-            return !(this.minion.distanceToSqr(this.owner) <= (double) (this.stopDistance * this.stopDistance));
+            return !(this.minion.distanceToSqr(this.owner) <= (double) (this.STOP_DISTANCE * this.STOP_DISTANCE));
         }
     }
 
@@ -93,7 +96,7 @@ public class MinionFollowOwnerGoal extends Goal {
             if (this.minion.distanceToSqr(this.owner) >= (double) 144.0F) {
                 this.teleportToOwner();
             } else {
-                this.navigation.moveTo(this.owner, this.speedModifier);
+                this.navigation.moveTo(this.owner, this.SPEED_MODIFIER);
             }
         }
 

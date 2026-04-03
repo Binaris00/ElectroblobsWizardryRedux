@@ -11,7 +11,7 @@
   "cost": 35,
   "element": "ebwizardry:necromancy",
   "enabled": {
-    "book": false,
+    "book": true,
     "commands": true,
     "dispensers": true,
     "looting": true,

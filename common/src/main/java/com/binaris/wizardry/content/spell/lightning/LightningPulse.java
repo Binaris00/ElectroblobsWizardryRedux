@@ -14,7 +14,6 @@ import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -31,7 +30,7 @@ public class LightningPulse extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if (!ctx.caster().onGround()) return false;
-        float radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+        float radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.world());
         targets.removeIf(t -> !AllyDesignation.isValidTarget(ctx.caster(), t));
@@ -63,7 +62,7 @@ public class LightningPulse extends Spell {
         if (ctx.world().isClientSide()) {
             ParticleBuilder.create(EBParticles.LIGHTNING_PULSE)
                     .pos(ctx.caster().getX(), ctx.caster().getY() + GeometryUtil.ANTI_Z_FIGHTING_OFFSET, ctx.caster().getZ())
-                    .scale(ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()))
+                    .scale(ctx.modifiers().get(SpellModifiers.BLAST))
                     .spawn(ctx.world());
         }
 

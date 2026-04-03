@@ -6,7 +6,6 @@ import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
@@ -107,7 +106,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
      * @return The velocity value to be used when launching the projectile.
      */
     public float calculateVelocity(CastContext ctx, MagicArrowEntity projectile, float launchHeight) {
-        float range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get());
+        float range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
 
         if (projectile.isNoGravity()) {
             if (projectile.getLifetime() <= 0) return 2;

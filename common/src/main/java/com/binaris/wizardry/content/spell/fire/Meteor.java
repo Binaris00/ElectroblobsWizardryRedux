@@ -4,12 +4,13 @@ import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.entity.MeteorEntity;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -22,13 +23,13 @@ public class Meteor extends RaySpell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if (!(EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.RING_METEOR.get()))) return super.cast(ctx);
+        if (!(ArtifactChannel.isEquipped(ctx.caster(), EBItems.RING_METEOR.get()))) return super.cast(ctx);
 
         if (!ctx.world().isClientSide) {
             MeteorEntity meteor = new MeteorEntity(ctx.world(), ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight(), ctx.caster().getZ(),
-                    ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                    ctx.modifiers().get(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
 
-            Vec3 direction = ctx.caster().getLookAngle().scale(2 * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get()));
+            Vec3 direction = ctx.caster().getLookAngle().scale(2 * ctx.modifiers().get(SpellModifiers.RANGE));
             meteor.setDeltaMovement(direction);
 
             ctx.world().addFreshEntity(meteor);
@@ -43,7 +44,7 @@ public class Meteor extends RaySpell {
         if (ctx.world().canSeeSky(blockHit.getBlockPos().above())) {
             if (!ctx.world().isClientSide) {
                 MeteorEntity meteor = new MeteorEntity(ctx.world(), blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY() + 50, blockHit.getBlockPos().getZ(),
-                        ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                        ctx.modifiers().get(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
                 ctx.world().addFreshEntity(meteor);
             }
             return true;

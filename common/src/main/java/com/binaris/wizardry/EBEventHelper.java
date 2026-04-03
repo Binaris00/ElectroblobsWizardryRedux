@@ -6,6 +6,7 @@ import com.binaris.wizardry.api.content.item.ArtifactItem;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.Forfeit;
+import com.binaris.wizardry.content.WizardryAttributeModifier;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.content.effect.ContainmentEffect;
 import com.binaris.wizardry.content.effect.FireSkinMobEffect;
@@ -14,6 +15,7 @@ import com.binaris.wizardry.content.effect.WardMobEffect;
 import com.binaris.wizardry.content.entity.construct.BubbleConstruct;
 import com.binaris.wizardry.content.item.WandUpgradeItem;
 import com.binaris.wizardry.content.item.WizardArmorItem;
+import com.binaris.wizardry.content.spell.healing.ArcaneJammer;
 import com.binaris.wizardry.content.spell.healing.FontOfMana;
 import com.binaris.wizardry.content.spell.lightning.Charge;
 import com.binaris.wizardry.content.spell.necromancy.CurseOfSoulbinding;
@@ -83,6 +85,7 @@ public final class EBEventHelper {
     private static void onPlayerJoin(WizardryEventBus bus) {
         bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
         bus.register(EBPlayerJoinServerEvent.class, (SpellProperties::onPlayerJoin));
+        bus.register(EBPlayerJoinServerEvent.class, com.binaris.wizardry.core.config.EBConfigManager::onPlayerJoin);
     }
 
     private static void onServerLevelLoad(WizardryEventBus bus) {
@@ -113,6 +116,8 @@ public final class EBEventHelper {
         bus.register(SpellCastEvent.Pre.class, ArtifactItem::onSpellPreCast);
         bus.register(SpellCastEvent.Pre.class, EBEventHelper::castContextCheck);
         bus.register(SpellCastEvent.Pre.class, FontOfMana::onSpellCastPreEvent);
+        bus.register(SpellCastEvent.Pre.class, ArcaneJammer::onSpellCastPreEvent);
+        bus.register(SpellCastEvent.Pre.class, WizardryAttributeModifier::onPreCast);
     }
 
     private static void onSpellPostCast(WizardryEventBus bus) {

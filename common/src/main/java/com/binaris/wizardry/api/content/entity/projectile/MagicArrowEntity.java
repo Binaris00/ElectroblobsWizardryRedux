@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.util.RayTracer;
 import com.binaris.wizardry.client.renderer.entity.MagicArrowRenderer;
 import com.binaris.wizardry.content.spell.abstr.ArrowSpell;
 import com.binaris.wizardry.core.AllyDesignation;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.nbt.CompoundTag;
@@ -210,7 +210,7 @@ public abstract class MagicArrowEntity extends AbstractArrow {
      * and also make it depend on other factors such as the caster's equipment.
      */
     public float getSeekingStrength() {
-        return getOwner() instanceof Player player && EBAccessoriesIntegration.isEquipped(player, EBItems.RING_SEEKING.get()) ? 2 : 0;
+        return getOwner() instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.RING_SEEKING.get()) ? 2 : 0;
     }
 
     @Override

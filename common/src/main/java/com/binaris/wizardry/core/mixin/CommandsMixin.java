@@ -19,19 +19,15 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(Commands.class)
 public abstract class CommandsMixin {
-
-    @Shadow
-    @Final
-    private CommandDispatcher<CommandSourceStack> dispatcher;
+    @Shadow @Final private CommandDispatcher<CommandSourceStack> dispatcher;
 
     @Inject(method =
             "<init>(Lnet/minecraft/commands/Commands$CommandSelection;Lnet/minecraft/commands/CommandBuildContext;)V",
             at = @At(value = "RETURN"))
     public void EBWIZARDRY$commands(Commands.CommandSelection commandSelection, CommandBuildContext commandBuildContext, CallbackInfo ci) {
-        EBCommands.COMMANDS_TO_REGISTER.forEach(c -> c.accept(dispatcher));
+        EBCommands.COMMANDS_TO_REGISTER.forEach(c -> c.accept(dispatcher, commandBuildContext));
         if (Services.PLATFORM.isDevelopmentEnvironment()) {
-            EBCommands.DEBUG_COMMANDS.forEach(c -> c.accept(dispatcher));
+            EBCommands.DEBUG_COMMANDS.forEach(c -> c.accept(dispatcher, commandBuildContext));
         }
     }
-
 }

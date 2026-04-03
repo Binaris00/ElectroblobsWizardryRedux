@@ -28,7 +28,7 @@ public class HungerCastingCharmEffect implements IArtifactEffect {
 
             if (player.getFoodData().getFoodLevel() >= hunger) {
                 player.getFoodData().eat(-hunger, 0);
-                event.getModifiers().set(SpellModifiers.COST, 0, false);
+                event.getModifiers().set(SpellModifiers.COST, 0);
             }
         }
     }

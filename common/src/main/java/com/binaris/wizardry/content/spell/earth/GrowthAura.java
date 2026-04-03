@@ -4,10 +4,11 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -27,7 +28,7 @@ public class GrowthAura extends Spell {
 
         boolean flag = false;
         Level level = ctx.caster().level();
-        List<BlockPos> sphere = BlockUtil.getBlockSphere(ctx.caster().blockPosition(), property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()));
+        List<BlockPos> sphere = BlockUtil.getBlockSphere(ctx.caster().blockPosition(), property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST));
 
         for (BlockPos pos : sphere) {
             BlockState state = level.getBlockState(pos);
@@ -40,7 +41,7 @@ public class GrowthAura extends Spell {
                 flag = true;
             }
 
-            if (level.random.nextFloat() < 0.35f && EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.CHARM_GROWTH.get())) {
+            if (level.random.nextFloat() < 0.35f && ArtifactChannel.isEquipped(ctx.caster(), EBItems.CHARM_GROWTH.get())) {
                 for (int i = 0; i < 5 && plant.isValidBonemealTarget(level, pos, state, false); i++) {
                     plant.performBonemeal((ServerLevel) level, level.random, pos, state);
                     state = level.getBlockState(pos);

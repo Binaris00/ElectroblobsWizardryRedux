@@ -3,6 +3,7 @@ package com.binaris.wizardry;
 import com.binaris.wizardry.client.NotImplementedItems;
 import com.binaris.wizardry.client.WizardryForgeClient;
 import com.binaris.wizardry.content.menu.BookshelfMenu;
+import com.binaris.wizardry.integration.curios.CuriosIntegration;
 import com.binaris.wizardry.network.EBForgeNetwork;
 import com.binaris.wizardry.registry.EBArgumentTypesForge;
 import com.binaris.wizardry.registry.EBRegistriesForge;
@@ -38,5 +39,6 @@ public final class WizardryForgeMod {
         BookshelfMenu.initBookItems();
         WandUpgrades.initUpgrades();
         NotImplementedItems.init();
+        CuriosIntegration.load();
     }
 }

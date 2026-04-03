@@ -5,7 +5,7 @@ import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.core.IArtifactEffect;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -62,7 +62,7 @@ public class ArtifactItem extends Item {
      */
     public static void onTick(EBLivingTick event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
+        List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
                 .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onTick(event.getEntity(), event.getLevel(), stack));
     }
@@ -78,7 +78,7 @@ public class ArtifactItem extends Item {
      */
     public static void onHurtEntity(EBLivingHurtEvent event) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
-        List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
+        List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
                 .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onHurtEntity(event, stack));
     }
@@ -94,7 +94,7 @@ public class ArtifactItem extends Item {
      */
     public static void onPlayerHurt(EBLivingHurtEvent event) {
         if (!(event.getDamagedEntity() instanceof Player player)) return;
-        List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
+        List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
                 .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onPlayerHurt(event, stack));
     }
@@ -105,7 +105,7 @@ public class ArtifactItem extends Item {
      */
     public static void onKillEntity(EBLivingDeathEvent event) {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
-        List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
+        List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
                 .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onKillEntity(event, stack));
     }
@@ -121,7 +121,7 @@ public class ArtifactItem extends Item {
      */
     public static void onSpellPreCast(SpellCastEvent.Pre event) {
         if (!(event.getCaster() instanceof Player player)) return;
-        List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
+        List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
                 .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onSpellPreCast(event, stack));
     }
@@ -137,7 +137,7 @@ public class ArtifactItem extends Item {
      */
     public static void onSpellPostCast(SpellCastEvent.Post event) {
         if (!(event.getCaster() instanceof Player player)) return;
-        List<ItemStack> stacks = EBAccessoriesIntegration.getEquippedItems(player);
+        List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
                 .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onSpellPostCast(event, stack));
     }

@@ -29,6 +29,14 @@ repositories {
     maven { url 'https://maven.wispforest.io/releases' }
     maven { url 'https://maven.su5ed.dev/releases' }
     maven { url = "https://maven.shedaniel.me/" }
+
+    maven {
+        url "https://maven.terraformersmc.com/"
+        content {
+            includeGroup "dev.emi"
+            includeGroup "com.terraformersmc"
+        }
+    }
 }
 
 dependencies {
@@ -45,6 +53,9 @@ dependencies {
     include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cca_version}"))
 
     modCompileOnly "io.wispforest:accessories-fabric:${property("accessories_version")}"
+
+    modCompileOnly "dev.emi:trinkets:${property("trinkets_version")}"
+    modRuntimeOnly "dev.emi:trinkets:${property("trinkets_version")}"
     modImplementation("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_config_version}") {
         exclude group: 'net.fabricmc', module: 'fabric-loader'
     }

@@ -33,6 +33,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegisterGameTestsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -162,9 +163,6 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void onPlayerCloned(PlayerEvent.Clone event) {
-            if (!event.isWasDeath()) return; // Only copy data when player respawns after death
-
-            // Revive the original player's capabilities to be able to read them
             event.getOriginal().reviveCaps();
 
             event.getOriginal().getCapability(WizardDataHolder.INSTANCE).ifPresent(old ->
@@ -245,6 +243,8 @@ public class WizardryForgeEvents {
                 register(event, EBEnchantments::register);
             else if (event.getRegistryKey() == Registries.MENU)
                 register(event, EBMenus::register);
+            else if (event.getRegistryKey() == Registries.ATTRIBUTE)
+                register(event, EBAttributes::register);
             else if (event.getRegistryKey() == Registries.RECIPE_TYPE)
                 register(event, EBRecipeTypes::register);
             else if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER)
@@ -274,6 +274,11 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void registerTests(RegisterGameTestsEvent event) {
+        }
+
+        @SubscribeEvent
+        public static void modifyEntityAttributes(EntityAttributeModificationEvent e) {
+            e.getTypes().forEach(entity -> EBAttributes.getAttributes().forEach(attribute -> e.add(entity, attribute.get())));
         }
     }
 

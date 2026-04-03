@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.MinionSpell;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -32,7 +32,7 @@ public class SummonSkeletonLegion extends MinionSpell<AbstractSkeleton> {
 
     @Override
     protected AbstractSkeleton createMinion(Level world, @Nullable LivingEntity caster, SpellModifiers modifiers) {
-        if (caster instanceof Player player && EBAccessoriesIntegration.isEquipped(player, EBItems.CHARM_MINION_VARIANTS.get())) {
+        if (caster instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.CHARM_MINION_VARIANTS.get())) {
             return new Stray(EntityType.STRAY, world);
         } else {
             return super.createMinion(world, caster, modifiers);

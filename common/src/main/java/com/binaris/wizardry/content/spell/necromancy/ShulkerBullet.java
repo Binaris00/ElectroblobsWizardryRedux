@@ -9,7 +9,6 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.Direction;
@@ -46,7 +45,7 @@ public class ShulkerBullet extends Spell {
      */
     private boolean shoot(Level world, LivingEntity caster, double x, double y, double z, int castingTicks, SpellModifiers modifiers) {
         if (!world.isClientSide) {
-            double range = property(DefaultProperties.RANGE) * modifiers.get(EBItems.RANGE_UPGRADE.get());
+            double range = property(DefaultProperties.RANGE) * modifiers.get(SpellModifiers.RANGE);
 
             List<LivingEntity> possibleTargets = EntityUtil.getLivingWithinRadius(range, x, y, z, world);
 

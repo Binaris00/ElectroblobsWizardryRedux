@@ -3,7 +3,7 @@ package com.binaris.wizardry.content.spell.necromancy;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.content.spell.abstr.MinionSpell;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -24,7 +24,7 @@ public class SummonSkeleton extends MinionSpell<AbstractSkeleton> {
 
     @Override
     protected AbstractSkeleton createMinion(Level world, @Nullable LivingEntity caster, SpellModifiers modifiers) {
-        if (caster instanceof Player player && EBAccessoriesIntegration.isEquipped(player, EBItems.CHARM_MINION_VARIANTS.get())) {
+        if (caster instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.CHARM_MINION_VARIANTS.get())) {
             return new Stray(EntityType.STRAY, world);
         } else {
             return super.createMinion(world, caster, modifiers);

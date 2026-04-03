@@ -9,7 +9,7 @@ import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.entity.construct.ZombieSpawnerConstruct;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.ConstructSpell;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -41,7 +41,7 @@ public class ZombieApocalypse extends ConstructSpell<ZombieSpawnerConstruct> {
 
     @Override
     protected void addConstructExtras(CastContext ctx, ZombieSpawnerConstruct construct, Direction side) {
-        construct.spawnHusks = ctx.caster() instanceof Player && EBAccessoriesIntegration.isEquipped((Player) ctx.caster(), EBItems.CHARM_MINION_VARIANTS.get());
+        construct.spawnHusks = ctx.caster() instanceof Player && ArtifactChannel.isEquipped((Player) ctx.caster(), EBItems.CHARM_MINION_VARIANTS.get());
     }
 
     @Override

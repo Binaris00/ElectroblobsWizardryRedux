@@ -31,3 +31,10 @@ mandatory = false
 versionRange = "*"
 ordering = "NONE"
 side = "BOTH"
+
+[[dependencies.${ mod_id }]]
+modId = "curios"
+mandatory = false
+versionRange = "*"
+ordering = "NONE"
+side = "BOTH"

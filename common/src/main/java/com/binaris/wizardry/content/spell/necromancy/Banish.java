@@ -4,12 +4,12 @@ import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -32,7 +32,7 @@ public class Banish extends RaySpell {
         if (entityHit.getEntity() instanceof LivingEntity target) {
             double minRadius = this.property(MINIMUM_TELEPORT);
             double maxRadius = this.property(MAX_TELEPORT);
-            double radius = (minRadius + ctx.world().random.nextDouble() * maxRadius - minRadius) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+            double radius = (minRadius + ctx.world().random.nextDouble() * maxRadius - minRadius) * ctx.modifiers().get(SpellModifiers.BLAST);
 
             teleport(target, ctx.world(), radius);
         }

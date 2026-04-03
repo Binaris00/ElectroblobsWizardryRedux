@@ -1,15 +1,11 @@
 package com.binaris.wizardry.content.spell.abstr;
 
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.internal.CastContext;
-import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
-import com.binaris.wizardry.api.content.spell.internal.LocationCastContext;
-import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.AllyDesignation;
-import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
@@ -137,7 +133,7 @@ public abstract class AreaEffectSpell extends Spell {
      * @return true if at least one entity was affected, or if {@link #alwaysSucceed} is true
      */
     protected boolean findAndAffectEntities(CastContext ctx, Vec3 origin) {
-        double radius = this.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(EBItems.BLAST_UPGRADE.get());
+        double radius = this.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, origin.x, origin.y, origin.z, ctx.world());
 

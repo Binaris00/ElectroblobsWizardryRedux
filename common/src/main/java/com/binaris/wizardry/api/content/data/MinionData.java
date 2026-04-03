@@ -5,9 +5,11 @@ import com.binaris.wizardry.content.entity.goal.MinionFollowOwnerGoal;
 import com.binaris.wizardry.content.entity.goal.MinionOwnerHurtByTargetGoal;
 import com.binaris.wizardry.content.entity.goal.MinionOwnerHurtTargetGoal;
 import com.binaris.wizardry.content.spell.abstr.MinionSpell;
+import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.mixin.accessor.MobGoalsAccessor;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
@@ -39,12 +41,18 @@ public interface MinionData {
         ((MobGoalsAccessor) getProvider()).getTargetSelector().removeAllGoals((goal) -> true);
         if (shouldDeleteGoals()) ((MobGoalsAccessor) getProvider()).getGoalSelector().removeAllGoals((goal) -> true);
 
-        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(1, new MinionOwnerHurtByTargetGoal(getProvider()));
-        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(2, new MinionCopyTargetGoal(getProvider()));
-        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(2, new MinionOwnerHurtTargetGoal(getProvider()));
+        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(1, new MinionOwnerHurtByTargetGoal(getProvider(), this));
+        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(2, new MinionCopyTargetGoal(getProvider(), this));
+        ((MobGoalsAccessor) getProvider()).getTargetSelector().addGoal(2, new MinionOwnerHurtTargetGoal(getProvider(), this));
         if (shouldFollowOwner())
-            ((MobGoalsAccessor) getProvider()).getGoalSelector().addGoal(3, new MinionFollowOwnerGoal(getProvider()));
+            ((MobGoalsAccessor) getProvider()).getGoalSelector().addGoal(3, new MinionFollowOwnerGoal(getProvider(), this));
 
+        if (searchNearbyTargets()) {
+            ((MobGoalsAccessor) getProvider()).getGoalSelector().addGoal(3, new NearestAttackableTargetGoal<>(getProvider(),
+                    Mob.class, 5, false, false,
+                    (t) -> getOwner() != null && t.canAttack(getOwner())
+                            && !AllyDesignation.isMinionAlly(getOwner(), (Mob) t) && !t.getType().getCategory().isFriendly()));
+        }
     }
 
     /**
@@ -105,6 +113,22 @@ public interface MinionData {
      * @param shouldFollowOwner true if the minion should follow its owner, false otherwise
      */
     void setShouldFollowOwner(boolean shouldFollowOwner);
+
+    /**
+     * Determines if the minion should search nearby mobs that can attack the owner and target them. (This avoids attacking
+     * allies minions and passive mobs!)
+     *
+     * @return true if the minion should search and target nearby mobs based on the target conditions, false otherwise
+     */
+    boolean searchNearbyTargets();
+
+    /**
+     * Sets whether the minion should search nearby mobs that can represent a danger to the owner and target them.
+     *
+     * @param searchNearbyTargets true if the minion should search and target nearby mobs based on the target conditions,
+     *                            false otherwise
+     */
+    void setSearchNearbyTargets(boolean searchNearbyTargets);
 
     /**
      * Gets the UUID of the owner of the minion.

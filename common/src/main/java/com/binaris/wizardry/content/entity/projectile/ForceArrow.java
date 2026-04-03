@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.entity.projectile.MagicArrowEntity;
 import com.binaris.wizardry.api.content.item.IManaStoringItem;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.resources.ResourceKey;
@@ -82,7 +82,7 @@ public class ForceArrow extends MagicArrowEntity {
     private void returnManaToCaster() {
         if (mana <= 0 || !(getOwner() instanceof Player player)) return;
 
-        if (!player.isCreative() && EBAccessoriesIntegration.isEquipped(player, EBItems.RING_MANA_RETURN.get())) {
+        if (!player.isCreative() && ArtifactChannel.isEquipped(player, EBItems.RING_MANA_RETURN.get())) {
             InventoryUtil.getHotBarAndOffhand(player)
                     .stream().filter(st -> st.getItem() instanceof IManaStoringItem)
                     .findAny()

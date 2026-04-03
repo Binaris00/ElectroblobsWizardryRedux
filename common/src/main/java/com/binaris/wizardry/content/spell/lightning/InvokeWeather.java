@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -36,7 +36,7 @@ public class InvokeWeather extends Spell {
             } else {
                 ctx.caster().displayClientMessage(Component.translatable(this.getDescriptionId() + ".rain"), true);
                 ((ServerLevel) ctx.world()).setWeatherParameters(0, standardWeatherTime, true,
-                        EBAccessoriesIntegration.isEquipped(ctx.caster(), EBItems.CHARM_STOP_TIME.get()) || ctx.world().random.nextFloat() < property(THUNDER_CHANCE));
+                        ArtifactChannel.isEquipped(ctx.caster(), EBItems.CHARM_STOP_TIME.get()) || ctx.world().random.nextFloat() < property(THUNDER_CHANCE));
             }
         } else {
             for (int i = 0; i < 10; i++) {

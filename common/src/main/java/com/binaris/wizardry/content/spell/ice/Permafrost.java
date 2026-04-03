@@ -4,13 +4,13 @@ import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
 import com.binaris.wizardry.core.EBConstants;
 import com.binaris.wizardry.setup.registries.EBBlocks;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -37,9 +37,9 @@ public class Permafrost extends RaySpell {
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         boolean flag = false;
         if (!ctx.world().isClientSide) {
-            int blastUpgradeCount = (int) ((ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1) / EBConstants.BLAST_RADIUS_INCREASE_PER_LEVEL + 0.5f);
+            int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST) - 1) / EBConstants.BLAST_RADIUS_INCREASE_PER_LEVEL + 0.5f);
             float radius = 0.5f + 0.73f * blastUpgradeCount;
-            int duration = (int) (property(DefaultProperties.DURATION) * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get()));
+            int duration = (int) (property(DefaultProperties.DURATION) * ctx.modifiers().get(SpellModifiers.DURATION));
             List<BlockPos> sphere = BlockUtil.getBlockSphere(blockHit.getBlockPos().above(), radius);
             for (BlockPos pos1 : sphere) {
                 flag |= tryToPlaceIce(ctx.world(), pos1, ctx.caster(), duration);

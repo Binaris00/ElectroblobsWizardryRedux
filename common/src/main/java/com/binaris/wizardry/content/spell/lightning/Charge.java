@@ -45,7 +45,7 @@ public class Charge extends Spell {
 
             Vec3 look = player.getLookAngle();
 
-            float speed = Spells.CHARGE.property(Charge.CHARGE_SPEED) * modifiers.get(EBItems.RANGE_UPGRADE.get());
+            float speed = Spells.CHARGE.property(Charge.CHARGE_SPEED) * modifiers.get(SpellModifiers.RANGE);
 
             player.setDeltaMovement(look.x * speed, player.getDeltaMovement().y, look.z * speed);
 
@@ -94,7 +94,7 @@ public class Charge extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
-        data.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+        data.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
         data.setVariable(CHARGE_MODIFIERS, ctx.modifiers());
 
         if (ctx.world().isClientSide)

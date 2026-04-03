@@ -35,6 +35,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     private boolean shouldFollowOwner = false;
     private @Nullable UUID ownerUUID = null;
     private boolean shouldRestartGoals;
+    private boolean searchNearbyTargets = true;
 
     public MinionDataHolder(Mob mob) {
         this.provider = mob;
@@ -114,6 +115,16 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setShouldFollowOwner(boolean shouldFollowOwner) {
         this.shouldFollowOwner = shouldFollowOwner;
+    }
+
+    @Override
+    public boolean searchNearbyTargets() {
+        return searchNearbyTargets;
+    }
+
+    @Override
+    public void setSearchNearbyTargets(boolean searchNearbyTargets) {
+        this.searchNearbyTargets = searchNearbyTargets;
     }
 
     @Override

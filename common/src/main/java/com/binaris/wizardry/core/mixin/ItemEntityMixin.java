@@ -1,7 +1,7 @@
 package com.binaris.wizardry.core.mixin;
 
 import com.binaris.wizardry.content.item.RandomSpellBookItem;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.stats.Stats;
@@ -34,7 +34,7 @@ public abstract class ItemEntityMixin {
         Item item = itemstack.getItem();
         int i = itemstack.getCount();
 
-        if (EBAccessoriesIntegration.isEquipped(entity, EBItems.CHARM_AUTO_SMELT.get())) {
+        if (ArtifactChannel.isEquipped(entity, EBItems.CHARM_AUTO_SMELT.get())) {
             if (entity.getInventory().items.stream()
                     .filter(s -> !entity.level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, new SimpleContainer(s), entity.level()).isEmpty())
                     .mapToInt(ItemStack::getCount).sum() >= 64) {

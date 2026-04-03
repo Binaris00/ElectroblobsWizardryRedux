@@ -56,7 +56,8 @@
     "java": ">=17"
   },
   "recommends": {
-    "accessories": "*"
+    "accessories": "*",
+    "trinkets": "*"
   }
 }
   

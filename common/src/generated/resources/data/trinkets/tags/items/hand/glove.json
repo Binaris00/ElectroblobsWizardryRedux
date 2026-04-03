@@ -1,0 +1,26 @@
+{
+  "values": [
+    "ebwizardry:charm_abseiling",
+    "ebwizardry:charm_auto_smelt",
+    "ebwizardry:charm_black_hole",
+    "ebwizardry:charm_experience_tome",
+    "ebwizardry:charm_feeding",
+    "ebwizardry:charm_flight",
+    "ebwizardry:charm_growth",
+    "ebwizardry:charm_haggler",
+    "ebwizardry:charm_hunger_casting",
+    "ebwizardry:charm_lava_walking",
+    "ebwizardry:charm_light",
+    "ebwizardry:charm_minion_health",
+    "ebwizardry:charm_minion_variants",
+    "ebwizardry:charm_mount_teleporting",
+    "ebwizardry:charm_move_speed",
+    "ebwizardry:charm_silk_touch",
+    "ebwizardry:charm_sixth_sense",
+    "ebwizardry:charm_spell_discovery",
+    "ebwizardry:charm_stop_time",
+    "ebwizardry:charm_storm",
+    "ebwizardry:charm_transportation",
+    "ebwizardry:charm_undead_helmets"
+  ]
+}

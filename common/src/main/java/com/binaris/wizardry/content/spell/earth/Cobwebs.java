@@ -3,6 +3,7 @@ package com.binaris.wizardry.content.spell.earth;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.blockentity.BlockEntityTimer;
@@ -10,7 +11,6 @@ import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
 import com.binaris.wizardry.core.EBConstants;
 import com.binaris.wizardry.setup.registries.EBBlocks;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
@@ -28,7 +28,7 @@ public class Cobwebs extends RaySpell {
         boolean flag = false;
         BlockPos pos = blockHit.getBlockPos().relative(blockHit.getDirection());
 
-        int blastUpgradeCount = (int) ((ctx.modifiers().get(EBItems.BLAST_UPGRADE.get()) - 1) / EBConstants.RANGE_INCREASE_PER_LEVEL + 0.5f);
+        int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST) - 1) / EBConstants.RANGE_INCREASE_PER_LEVEL + 0.5f);
 
         float radius = property(DefaultProperties.BLAST_RADIUS) + 0.73f * blastUpgradeCount;
 
@@ -40,7 +40,7 @@ public class Cobwebs extends RaySpell {
             if (!ctx.world().isClientSide) {
                 ctx.world().setBlockAndUpdate(pos1, EBBlocks.VANISHING_COBWEB.get().defaultBlockState());
                 if (ctx.world().getBlockEntity(pos1) instanceof BlockEntityTimer timer) {
-                    timer.setLifetime((int) (property(DefaultProperties.DURATION).doubleValue() * ctx.modifiers().get(EBItems.DURATION_UPGRADE.get())));
+                    timer.setLifetime((int) (property(DefaultProperties.DURATION).doubleValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
                 }
             }
             flag = true;

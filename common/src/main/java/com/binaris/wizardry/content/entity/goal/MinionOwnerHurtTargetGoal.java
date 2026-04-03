@@ -1,7 +1,6 @@
 package com.binaris.wizardry.content.entity.goal;
 
 import com.binaris.wizardry.api.content.data.MinionData;
-import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
@@ -10,17 +9,13 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import java.util.EnumSet;
 
 public class MinionOwnerHurtTargetGoal extends TargetGoal {
-    private final Mob minion;
     private final MinionData data;
     private LivingEntity ownerLastHurt;
     private int timestamp;
 
-    public MinionOwnerHurtTargetGoal(Mob mob) {
+    public MinionOwnerHurtTargetGoal(Mob mob, MinionData data) {
         super(mob, false);
-        if (!Services.OBJECT_DATA.isMinion(mob))
-            throw new RuntimeException("MinionOwnerHurtByTargetGoal can only be used by minions!");
-        this.minion = mob;
-        this.data = Services.OBJECT_DATA.getMinionData(minion);
+        this.data = data;
         this.setFlags(EnumSet.of(Flag.TARGET));
     }
 

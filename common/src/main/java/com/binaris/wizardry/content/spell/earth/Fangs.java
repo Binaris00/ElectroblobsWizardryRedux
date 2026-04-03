@@ -5,16 +5,13 @@ import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
-import com.binaris.wizardry.api.content.spell.internal.CastContext;
-import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
-import com.binaris.wizardry.api.content.spell.internal.LocationCastContext;
-import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
+import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.AllyDesignation;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -64,7 +61,7 @@ public class Fangs extends Spell {
     }
 
     protected boolean spawnFangs(CastContext ctx, Vec3 origin, Vec3 direction) {
-        boolean defensiveCircle = ctx.caster() instanceof Player caster && caster.isCrouching() && EBAccessoriesIntegration.isEquipped(caster, EBItems.RING_EVOKER.get());
+        boolean defensiveCircle = ctx.caster() instanceof Player caster && caster.isCrouching() && ArtifactChannel.isEquipped(caster, EBItems.RING_EVOKER.get());
         boolean flag = false;
 
         if (ctx.world().isClientSide) {
@@ -94,7 +91,7 @@ public class Fangs extends Spell {
         } else {
             Vec3 horizontal = GeometryUtil.horizontalise(ctx.caster().getLookAngle());
 
-            int count = (int) (this.property(DefaultProperties.RANGE) * ctx.modifiers().get(EBItems.RANGE_UPGRADE.get()));
+            int count = (int) (this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE));
             float yaw = (float) Mth.atan2(horizontal.z, horizontal.x);
 
             for (int i = 0; i < count; i++) {

@@ -5,7 +5,7 @@ import com.binaris.wizardry.api.content.item.IManaStoringItem;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.api.content.util.WandHelper;
 import com.binaris.wizardry.core.EBConstants;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
@@ -40,7 +40,7 @@ public class WandUpgradeItem extends Item {
                         * WandHelper.getUpgradeLevel(itemStack, EBItems.SIPHON_UPGRADE.get())
                         + player.level().random.nextInt(EBConstants.SIPHON_MANA_PER_LEVEL);
 
-                if (EBAccessoriesIntegration.isEquipped(player, EBItems.RING_SIPHONING.get())) mana *= RING_SIPHONING_BONUS;
+                if (ArtifactChannel.isEquipped(player, EBItems.RING_SIPHONING.get())) mana *= RING_SIPHONING_BONUS;
                 manaItem.rechargeMana(itemStack, (int) mana);
                 break;
 

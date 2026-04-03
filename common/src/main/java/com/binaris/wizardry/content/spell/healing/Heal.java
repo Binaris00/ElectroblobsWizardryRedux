@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.BuffSpell;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -25,7 +25,7 @@ public class Heal extends BuffSpell {
 
         entity.heal(health);
 
-        if (excessHealth > 0 && entity instanceof Player player && EBAccessoriesIntegration.isEquipped(player, EBItems.AMULET_ABSORPTION.get())) {
+        if (excessHealth > 0 && entity instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.AMULET_ABSORPTION.get())) {
             entity.setAbsorptionAmount(excessHealth);
         }
     }

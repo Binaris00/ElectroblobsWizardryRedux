@@ -14,7 +14,7 @@ import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.content.item.WizardArmorType;
 import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.event.WizardryEventBus;
-import com.binaris.wizardry.core.integrations.accessories.EBAccessoriesIntegration;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
@@ -160,14 +160,14 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
 
         // Calculate XP gain
         int xpGain = merchantOffer.getXp();
-        if (EBAccessoriesIntegration.isEquipped(customer, EBItems.CHARM_HAGGLER.get())) {
+        if (ArtifactChannel.isEquipped(customer, EBItems.CHARM_HAGGLER.get())) {
             xpGain *= 2;
         }
 
         this.wizardXp += xpGain;
         this.tryLevelUp();
 
-        if (this.random.nextInt(5) == 0 || EBAccessoriesIntegration.isEquipped(customer, EBItems.CHARM_HAGGLER.get())) {
+        if (this.random.nextInt(5) == 0 || ArtifactChannel.isEquipped(customer, EBItems.CHARM_HAGGLER.get())) {
             this.timeUntilReset = 40;
         }
 

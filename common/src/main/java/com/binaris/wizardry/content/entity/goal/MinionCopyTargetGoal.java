@@ -1,7 +1,6 @@
 package com.binaris.wizardry.content.entity.goal;
 
 import com.binaris.wizardry.api.content.data.MinionData;
-import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.ai.goal.target.TargetGoal;
@@ -23,12 +22,10 @@ public class MinionCopyTargetGoal extends TargetGoal {
     private final @Nullable LivingEntity owner;
     private int recheckDelay = 0;
 
-    public MinionCopyTargetGoal(Mob mob) {
+    public MinionCopyTargetGoal(Mob mob, MinionData data) {
         super(mob, false);
-        if (!Services.OBJECT_DATA.isMinion(mob))
-            throw new RuntimeException("MinionCopyTargetGoal can only be used by minions!");
-        this.data = Services.OBJECT_DATA.getMinionData(mob);
-        this.owner = data.getOwner();
+        this.data = data;
+        this.owner = this.data.getOwner();
     }
 
     @Override
