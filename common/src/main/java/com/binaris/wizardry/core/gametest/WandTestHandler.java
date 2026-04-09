@@ -20,10 +20,16 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 public final class WandTestHandler {
+    /** List of spells used in full spell list tests. */
     private static final List<Spell> FULL_SPELL_LIST = List.of(Spells.FIREBALL, Spells.ICE_SHARD, Spells.HEAL, Spells.LIFE_DRAIN, Spells.EVADE);
 
+    /**
+     * Tests basic spell navigation through a wand's spell list. Basically, checks if the previous/next spell selection
+     * on wand is working.
+     */
     public static void wandBasicMovement(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, FULL_SPELL_LIST);
         ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
@@ -41,6 +47,10 @@ public final class WandTestHandler {
         GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "selecting previous spell from 'Evade'");
     }
 
+    /**
+     * Tests spell navigation when a wand has only one spell loaded, this should be cycling starting on that spell and
+     * then return to it
+     */
     public static void wandPartiallyEmpty(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, List.of(Spells.FIREBALL));
         ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
@@ -53,21 +63,25 @@ public final class WandTestHandler {
         GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "cycling through empty slots");
     }
 
+    /**
+     * Verifies that selecting next/previous spells wraps around correctly when cyclin through all spell slots multiple
+     * times.
+     */
     public static void wandCircularSelection(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, List.of(Spells.FIREBALL));
         ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
 
-        for (int i = 0; i < 5; i++) {
-            wandItem.selectNextSpell(wand);
-        }
+        IntStream.range(0, 5).mapToObj(i -> wand).forEach(wandItem::selectNextSpell);
         GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "cycling next through all slots");
 
-        for (int i = 0; i < 5; i++) {
-            wandItem.selectPreviousSpell(wand);
-        }
+        IntStream.range(0, 5).mapToObj(i -> wand).forEach(wandItem::selectPreviousSpell);
         GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "cycling previous through all slots");
     }
 
+    /**
+     * Verifies that selecting a specific spell slot by literal index correctly
+     * changes the active spell to the spell at that index.
+     */
     public static void wandLiteralIndex(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, FULL_SPELL_LIST);
         ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
@@ -82,6 +96,7 @@ public final class WandTestHandler {
         GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "selecting index 0");
     }
 
+    /** Tests direct spell selection by index on a wand with only one spell loaded. */
     public static void wandLiteralIndexPartiallyEmpty(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, List.of(Spells.ICE_SHARD));
         ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
@@ -93,8 +108,9 @@ public final class WandTestHandler {
         GST.assertIndexEquals(helper, wand, 2, "selecting index 2 on a partially empty wand");
     }
 
+    /** Tests the siphon upgrade's behavior when a player kills a mob. */
     public static void siphonUpgradePlayerKillMob(GameTestHelper helper) {
-        Player player = GST.mockServerPlayer(helper, new Vec3(1, 2.0, 1));
+        Player player = GST.mockPlayer(helper, new Vec3(1, 2.0, 1));
         ItemStack wand = EBItems.MASTER_WAND.get().getDefaultInstance();
         WandHelper.applyUpgrade(wand, EBItems.SIPHON_UPGRADE.get());
 
@@ -108,19 +124,17 @@ public final class WandTestHandler {
         EBLivingDeathEvent deathEvent = new EBLivingDeathEvent(cow, deathSource);
         WandUpgradeItem.onPlayerKillMob(deathEvent);
 
-        GST.assertEquals(helper,
-                "Mana should be recharged by siphon upgrade on player kill mob.",
+        GST.assertEquals(helper, "Mana should be recharged by siphon upgrade on player kill mob.",
                 manaItem.getManaCapacity(wand),
                 manaItem.getMana(wand));
     }
 
+    /** Sets up a wand with the specified spells loaded into the Arcane Workbench. */
     private static ItemStack setupWandWithSpells(GameTestHelper helper, List<Spell> spells) {
         ItemStack wand = EBItems.MASTER_WAND.get().getDefaultInstance();
         AWTestHandler.TestContext ctx = AWTestHandler.setupTest(helper, wand);
 
-        for (int i = 0; i < spells.size(); i++) {
-            ctx.workbench().setItem(i, SpellUtil.spellBookItem(spells.get(i)));
-        }
+        IntStream.range(0, spells.size()).forEach(i -> ctx.workbench().setItem(i, SpellUtil.spellBookItem(spells.get(i))));
         ctx.menu().onApplyButtonPressed(ctx.player());
 
         wand = ctx.workbench().getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);

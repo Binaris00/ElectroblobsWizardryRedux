@@ -1,7 +1,10 @@
 package com.binaris.wizardry.core.gametest;
 
+import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.content.item.WizardArmorType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -10,6 +13,7 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
@@ -25,11 +29,20 @@ public class GST {
     private GST() {
     }
 
-    public static Player mockServerPlayer(GameTestHelper helper, Vec3 position) {
-        Player serverPlayer = helper.makeMockPlayer();
-        GST.assertNotNull(helper, "ServerPlayer is null!", serverPlayer);
-        serverPlayer.setPos(helper.absoluteVec(position));
-        return serverPlayer;
+    public static Player mockPlayer(GameTestHelper helper, Vec3 position) {
+        Player player = helper.makeMockPlayer();
+        GST.assertNotNull(helper, "Player is null!", player);
+        player.setPos(helper.absoluteVec(position));
+        return player;
+    }
+
+    public static Player mockPlayerWithArmor(GameTestHelper helper, Vec3 position, Element element, WizardArmorType type) {
+        Player player = mockPlayer(helper, position);
+        player.setItemSlot(EquipmentSlot.HEAD, RegistryUtils.getArmor(type, element, EquipmentSlot.HEAD).getDefaultInstance());
+        player.setItemSlot(EquipmentSlot.CHEST, RegistryUtils.getArmor(type, element, EquipmentSlot.CHEST).getDefaultInstance());
+        player.setItemSlot(EquipmentSlot.LEGS, RegistryUtils.getArmor(type, element, EquipmentSlot.LEGS).getDefaultInstance());
+        player.setItemSlot(EquipmentSlot.FEET, RegistryUtils.getArmor(type, element, EquipmentSlot.FEET).getDefaultInstance());
+        return player;
     }
 
     /**
