@@ -21,6 +21,7 @@ base {
 }
 
 repositories {
+    mavenCentral()
     maven {
         name = "Ladysnake Mods"
         url = 'https://maven.ladysnake.org/releases'
@@ -52,6 +53,7 @@ dependencies {
     include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-item:${project.cca_version}"))
     include(modImplementation("dev.onyxstudios.cardinal-components-api:cardinal-components-block:${project.cca_version}"))
 
+    implementation "net.steppschuh.markdowngenerator:markdowngenerator:${markdowngenerator_version}"
     modCompileOnly "io.wispforest:accessories-fabric:${property("accessories_version")}"
 
     modCompileOnly "dev.emi:trinkets:${property("trinkets_version")}"
