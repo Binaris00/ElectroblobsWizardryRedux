@@ -35,26 +35,49 @@ public abstract class ParticleTargeted extends ParticleWizardry {
         super(world, x, y, z, spriteProvider, updateTextureOnTick);
     }
 
-    @Override
+    /**
+     * Sets the target position for this particle. This will cause it to stretch to touch the given position,
+     * if supported.
+     *
+     * @param x The x-coordinate of the target position.
+     * @param y The y-coordinate of the target position.
+     * @param z The z-coordinate of the target position.
+     */
     public void setTargetPosition(double x, double y, double z) {
         this.targetX = x;
         this.targetY = y;
         this.targetZ = z;
     }
 
-    @Override
+    /**
+     * Sets the target point velocity for this particle. This will cause the position it stretches to touch to move
+     * at the given velocity.
+     *
+     * @param vx The x velocity of the target point.
+     * @param vy The y velocity of the target point.
+     * @param vz The z velocity of the target point.
+     */
     public void setTargetVelocity(double vx, double vy, double vz) {
         this.targetVelX = vx;
         this.targetVelY = vy;
         this.targetVelZ = vz;
     }
 
-    @Override
-    public void setTargetEntity(Entity target) {
+    /**
+     * Links this particle to the given target. This will cause it to stretch to touch the target, if supported.
+     *
+     * @param target The target to link to.
+     */
+    public void setTargetEntity(@Nullable Entity target) {
         this.target = target;
     }
 
-    @Override
+    /**
+     * Sets the length of this particle. This will cause it to stretch to touch a point this distance along its
+     * linked entity's line of sight.
+     *
+     * @param length The length to set.
+     */
     public void setLength(double length) {
         this.length = length;
     }

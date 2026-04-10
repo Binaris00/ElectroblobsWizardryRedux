@@ -8,8 +8,22 @@
     "minecraft:plains",
     "minecraft:snowy_plains",
     "minecraft:sunflower_plains",
-    "minecraft:savanna",
-    "minecraft:savanna_plateau",
-    "minecraft:windswept_savanna"
+    "#minecraft:is_savanna",
+    {
+      "id": "#forge:is_desert",
+      "required": false
+    },
+    {
+      "id": "#forge:is_plains",
+      "required": false
+    },
+    {
+      "id": "#c:is_desert",
+      "required": false
+    },
+    {
+      "id": "#c:is_plains",
+      "required": false
+    }
   ]
 }

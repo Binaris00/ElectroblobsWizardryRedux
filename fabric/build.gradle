@@ -122,6 +122,7 @@ publishMods {
 
         requires { slug = "fabric-api" }
         optional { slug = "accessories" }
+        optional { slug = "trinkets" }
     }
 
     modrinth {
@@ -131,5 +132,6 @@ publishMods {
 
         requires { slug = "fabric-api" }
         optional { slug = "accessories" }
+        optional { slug = "trinkets" }
     }
 }

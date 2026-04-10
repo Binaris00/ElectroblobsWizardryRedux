@@ -142,17 +142,17 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
 
     protected void applySpellModifiers(LivingEntity caster, Spell spell, SpellModifiers modifiers) {
         if (spell.getElement() == this.getElement()) {
-            modifiers.subtract(SpellModifiers.COST, getWizardArmorType().elementalCostReduction);
+            modifiers.set(SpellModifiers.COST, modifiers.get(SpellModifiers.COST) - getWizardArmorType().elementalCostReduction);
         }
-        modifiers.add(SpellModifiers.POTENCY, 2);
-        modifiers.subtract(SpellModifiers.COOLDOWN, getWizardArmorType().cooldownReduction);
+        modifiers.set(SpellModifiers.POTENCY, 2);
+        modifiers.set(SpellModifiers.COOLDOWN, modifiers.get(SpellModifiers.COOLDOWN) - getWizardArmorType().cooldownReduction);
 
         if (getEquipmentSlot() == EquipmentSlot.HEAD
                 && InventoryUtil.isWearingFullSet(caster, element, getWizardArmorType())
                 && InventoryUtil.doAllArmourPiecesHaveMana(caster)) {
 
             if (getWizardArmorType() == WizardArmorType.SAGE && spell.getElement() != this.element) {
-                modifiers.subtract(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION);
+                modifiers.set(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION);
             }
         }
     }

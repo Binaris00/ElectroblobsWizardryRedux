@@ -34,7 +34,6 @@ import java.util.function.BiFunction;
  *
  * @see ParticleBuilder ParticleBuilder
  */
-
 public abstract class ParticleWizardry extends TextureSheetParticle {
     public static final Map<SimpleParticleType, BiFunction<ClientLevel, Vec3, ParticleWizardry>> PROVIDERS = new LinkedHashMap<>();
     /**
@@ -243,49 +242,6 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
     public void setFacing(float yaw, float pitch) {
         this.yaw = yaw;
         this.pitch = pitch;
-    }
-
-    /**
-     * Sets the target position for this particle. This will cause it to stretch to touch the given position,
-     * if supported.
-     *
-     * @param x The x-coordinate of the target position.
-     * @param y The y-coordinate of the target position.
-     * @param z The z-coordinate of the target position.
-     */
-    public void setTargetPosition(double x, double y, double z) {
-        // Does nothing for normal particles since normal particles always render at a single point
-    }
-
-    /**
-     * Sets the target point velocity for this particle. This will cause the position it stretches to touch to move
-     * at the given velocity.
-     *
-     * @param vx The x velocity of the target point.
-     * @param vy The y velocity of the target point.
-     * @param vz The z velocity of the target point.
-     */
-    public void setTargetVelocity(double vx, double vy, double vz) {
-        // Does nothing for normal particles since normal particles always render at a single point
-    }
-
-    /**
-     * Links this particle to the given target. This will cause it to stretch to touch the target, if supported.
-     *
-     * @param target The target to link to.
-     */
-    public void setTargetEntity(Entity target) {
-        // Does nothing for normal particles since normal particles always render at a single point
-    }
-
-    /**
-     * Sets the length of this particle. This will cause it to stretch to touch a point this distance along its
-     * linked entity's line of sight.
-     *
-     * @param length The length to set.
-     */
-    public void setLength(double length) {
-        // Does nothing for normal particles since normal particles always render at a single point
     }
 
     // ============================================== Method Overrides ==============================================
