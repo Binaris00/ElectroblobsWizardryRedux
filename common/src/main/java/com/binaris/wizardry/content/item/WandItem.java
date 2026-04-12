@@ -241,10 +241,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     }
 
     @Override
-    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level world, @NotNull Entity entity, int slot, boolean isHeldInMainhand) {
-        // Cooldowns are now handled via gametime comparison, no need to decrement every tick!
-        // This significantly improves performance by avoiding constant NBT modifications.
-
+    public void inventoryTick(@NotNull ItemStack stack, @NotNull Level world, @NotNull Entity entity, int slot, boolean isHeldInMainHand) {
         if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
             this.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE.get()));
         }

@@ -1,8 +1,10 @@
 package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
+import com.binaris.wizardry.content.command.argument.ElementArgument;
 import com.binaris.wizardry.content.command.argument.SpellArgument;
 import com.binaris.wizardry.content.command.argument.SpellConditionArgument;
+import com.binaris.wizardry.content.command.argument.SpellTierArgument;
 import com.binaris.wizardry.core.platform.Services;
 import com.mojang.brigadier.arguments.ArgumentType;
 import net.minecraft.commands.synchronization.ArgumentTypeInfo;
@@ -14,11 +16,13 @@ public final class EBArgumentTypeRegistry {
     }
 
     public static void init() {
-        registerArgumentType(WizardryMainMod.location("spell"), SpellArgument.class, SingletonArgumentInfo.contextFree(SpellArgument::new));
-        registerArgumentType(WizardryMainMod.location("spell_condition"), SpellConditionArgument.class, SingletonArgumentInfo.contextFree(SpellConditionArgument::new));
+        register(WizardryMainMod.location("spell"), SpellArgument.class, SingletonArgumentInfo.contextFree(SpellArgument::new));
+        register(WizardryMainMod.location("spell_condition"), SpellConditionArgument.class, SingletonArgumentInfo.contextFree(SpellConditionArgument::new));
+        register(WizardryMainMod.location("element"), ElementArgument.class, SingletonArgumentInfo.contextFree(ElementArgument::new));
+        register(WizardryMainMod.location("tier"), SpellTierArgument.class, SingletonArgumentInfo.contextFree(SpellTierArgument::new));
     }
 
-    private static <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>> void registerArgumentType(ResourceLocation id, Class<? extends A> clazz, ArgumentTypeInfo<A, T> serializer) {
+    private static <A extends ArgumentType<?>, T extends ArgumentTypeInfo.Template<A>> void register(ResourceLocation id, Class<? extends A> clazz, ArgumentTypeInfo<A, T> serializer) {
         Services.PLATFORM.registerArgumentType(id, clazz, serializer);
     }
 }

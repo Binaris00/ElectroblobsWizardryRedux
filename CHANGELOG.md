@@ -1,5 +1,2 @@
-- added British translation ([#16](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/16))
-- added Korean translation ([#15](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/15))
-- wizard tower now has biome tags for fabric and forge ([#18](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/18))
-- fixed some typo issues with "Baubles" mentions in artifacts
-- rollback to how spell modifier calculation was before refactoring (only applying to armor and wand logic)
+- new '/ebw generator' commands to debug/obtain ebw items easily
+- deleted old commands for debugging (replaced by /ebw generator)

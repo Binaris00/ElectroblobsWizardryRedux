@@ -199,7 +199,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
      *
      * @param element The element of the armor to equip.
      */
-    private void equipArmorAndDisableDrops(Element element) {
+    public void equipArmorAndDisableDrops(Element element) {
         for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) {
             this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, element, slot)));
         }
@@ -214,7 +214,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
      * @param element The element of the wand.
      * @param maxTier The maximum tier of spell the wand can contain.
      */
-    private void prepareWandWithSpells(Element element, SpellTier maxTier) {
+    public void  prepareWandWithSpells(Element element, SpellTier maxTier) {
         ArrayList<Spell> list = new ArrayList<>(spells);
         list.add(Spells.HEAL);
 

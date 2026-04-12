@@ -24,7 +24,7 @@ public final class RegistryUtils {
      * @param element The element of the wand. If null, defaults to {@link Elements#MAGIC}.
      * @return The wand Item.
      */
-    public static Item getWand(@NotNull SpellTier tier, @Nullable Element element) {
+    public static @Nullable Item getWand(@NotNull SpellTier tier, @Nullable Element element) {
         if (element == null) element = Elements.MAGIC;
         String registryName = tier == SpellTiers.NOVICE && element == Elements.MAGIC ? "novice" : tier.getOrCreateLocation().getPath();
         if (element != Elements.MAGIC) registryName = registryName + "_" + element.getLocation().getPath();
