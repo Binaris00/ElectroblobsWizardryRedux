@@ -6,11 +6,14 @@ import com.binaris.wizardry.client.model.armor.RobeArmorModel;
 import com.binaris.wizardry.client.model.armor.WizardArmorModel;
 import com.binaris.wizardry.content.item.WizardArmorItem;
 import com.binaris.wizardry.content.item.WizardArmorType;
+import com.google.common.collect.Multimap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -105,5 +108,10 @@ public abstract class WizardArmorItemMixin extends ArmorItem {
             string = "ebwizardry:textures/armor/" + s + "_legs.png";
         }
         return string;
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        return wizardArmorItem.getCustomAttributes(stack, slot);
     }
 }

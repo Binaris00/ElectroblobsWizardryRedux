@@ -44,9 +44,9 @@ import java.util.List;
  * upgraded using special items to enhance their capabilities, such as increasing mana capacity or adding spell slots.
  *
  * @see ISpellCastingItem
- * @see IWizardryItem
+ * @see ICustomDamageItem
  */
-public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, IWizardryItem, ITierValue, IElementValue {
+public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, ICustomDamageItem, ITierValue, IElementValue {
     /* Base number of spell slots on a wand without upgrades. */
     public static final int BASE_SPELL_SLOTS = 5;
     /** Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
@@ -570,13 +570,18 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     }
 
     @Override
-    public int getMaxDamage(ItemStack stack) {
+    public int getCustomMaxDamage(ItemStack stack) {
         return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL.get() * WandHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE.get())) + 0.5f);
     }
 
     @Override
-    public void setDamage(ItemStack stack, int damage) {
+    public void setCustomDamage(ItemStack stack, int damage) {
         stack.getOrCreateTag().putInt("Damage", Math.max(0, Math.min(damage, stack.getMaxDamage())));
+    }
+
+    @Override
+    public boolean canBreak(ItemStack stack) {
+        return false;
     }
 
     @Override

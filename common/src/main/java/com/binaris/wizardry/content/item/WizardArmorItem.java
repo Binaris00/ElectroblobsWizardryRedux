@@ -2,17 +2,14 @@ package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
-import com.binaris.wizardry.api.content.item.IElementValue;
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
-import com.binaris.wizardry.api.content.item.IWorkbenchItem;
+import com.binaris.wizardry.api.content.item.*;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
-import com.binaris.wizardry.api.content.util.RegistryUtils;
-import com.binaris.wizardry.api.content.util.WorkbenchUtils;
+import com.binaris.wizardry.api.content.util.*;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
+import com.google.common.collect.ImmutableMultimap;
+import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -20,6 +17,8 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ArmorItem;
@@ -33,7 +32,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWorkbenchItem, IElementValue {
+public class WizardArmorItem extends ArmorItem implements IManaStoringItem, ICustomDamageItem, IWorkbenchItem, IElementValue, ICustomAttributesItem {
     private static final float SAGE_OTHER_COST_REDUCTION = 0.2f;
     private static final float WARLOCK_SPEED_BOOST = 0.2f;
     private final Element element;
@@ -125,6 +124,7 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level level, @NotNull Entity entity, int slotId, boolean isSelected) {
         if (level.isClientSide) return;
         if (level.getGameTime() % 40 != 0) return;
+        if (getMana(stack) == 0) return;
 
         if (entity instanceof LivingEntity livingEntity && getEquipmentSlot() == EquipmentSlot.HEAD
                 && InventoryUtil.isWearingFullSet(livingEntity, element, getWizardArmorType()) && InventoryUtil.doAllArmourPiecesHaveMana(livingEntity)) {
@@ -141,6 +141,9 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
     }
 
     protected void applySpellModifiers(LivingEntity caster, Spell spell, SpellModifiers modifiers) {
+        ItemStack armorStack = caster.getItemBySlot(getEquipmentSlot());
+        if (getMana(armorStack) == 0) return;
+
         if (spell.getElement() == this.getElement()) {
             modifiers.set(SpellModifiers.COST, modifiers.get(SpellModifiers.COST) - getWizardArmorType().elementalCostReduction);
         }
@@ -155,6 +158,18 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
                 modifiers.set(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION);
             }
         }
+    }
+
+
+
+    @Override
+    public void setCustomDamage(ItemStack stack, int damage) {
+        stack.getOrCreateTag().putInt("Damage", Math.max(0, Math.min(damage, stack.getMaxDamage())));
+    }
+
+    @Override
+    public boolean canBreak(ItemStack stack) {
+        return false;
     }
 
     @Override
@@ -209,5 +224,11 @@ public class WizardArmorItem extends ArmorItem implements IManaStoringItem, IWor
     @Override
     public boolean isValidRepairItem(@NotNull ItemStack toRepair, @NotNull ItemStack repair) {
         return false;
+    }
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getCustomAttributes(ItemStack stack, EquipmentSlot slot) {
+        if (getMana(stack) != 0) return super.getDefaultAttributeModifiers(slot);
+        return ImmutableMultimap.of();
     }
 }

@@ -7,7 +7,7 @@
   "mixins": [
     "SpectralArmorItemMixin",
     "WizardArmorItemMixin",
-    "WizardItemImpMixin"
+    "WizardItemStackMixin"
   ],
   "client": [
   ],
