@@ -4,3 +4,4 @@
 - fix: avoid wizard armor breaking
 - fix: when wizard armors have 0 mana, you can't obtain spell modifiers, armor protection and full armor buff
 - fix: adding empty tags to items when held in hand and opening creative mode tabs
+- fix: crash when renaming/deleting spells and then entering a world with these

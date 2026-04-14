@@ -225,11 +225,9 @@ public final class Spells {
 
     // TEST SPELLS (SENSIBLES)
     public static final Spell OJOSPOCOS;
-    public static final Spell SUMMON_RICH;
     public static final Spell BLOCK_SURPRISE;
     public static final Spell PLAYER_HAND;
     public static final Spell WIZARD_HAND;
-    public static final Spell QUICK_FLAMECATCHER;
 
     public static Map<String, Spell> SPELLS = new LinkedHashMap<>();
 
@@ -674,16 +672,6 @@ public final class Spells {
 
         BLOCK_SURPRISE = spell("block_surprise", BlockWithSurprise::new);
 
-        SUMMON_RICH = spell("summon_rich", () -> new MinionSpell<>((l) -> new WitherSkeleton(EntityType.WITHER_SKELETON, l)).assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellType.MINION, SpellAction.POINT, 100, 50, 600)
-                        .add(DefaultProperties.MINION_COUNT, 1)
-                        .add(DefaultProperties.MINION_LIFETIME, 1200)
-                        .add(DefaultProperties.SUMMON_RADIUS, 5)
-                        .add(DefaultProperties.SENSIBLE, true)
-                        .build()
-        ));
-
         SUMMON_ZOMBIE = spell("summon_zombie", SummonZombie::new);
 
         SUMMON_SNOW_GOLEM = spell("summon_snow_golem", () -> new MinionSpell<>((l) -> new SnowGolem(EntityType.SNOW_GOLEM, l)).assignProperties(
@@ -881,14 +869,6 @@ public final class Spells {
         PLAYER_HAND = spell("player_hand", PlayerHand::new);
 
         WIZARD_HAND = spell("wizard_hand", WizardHand::new);
-
-        QUICK_FLAMECATCHER = spell("quick_flamecatcher", () -> new ConjureItemSpell(EBItems.FLAMECATCHER.get()).assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
-                        .add(DefaultProperties.ITEM_LIFETIME, 100)
-                        .add(DefaultProperties.SENSIBLE, true)
-                        .build()
-        ));
     }
 
     private Spells() {
