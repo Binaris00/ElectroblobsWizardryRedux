@@ -74,7 +74,8 @@ public final class WandHelper {
      */
     public static List<Spell> getSpells(ItemStack wand) {
         ArrayList<Spell> spells = new ArrayList<>();
-        CompoundTag tag = wand.getOrCreateTag();
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return spells;
 
         if (tag.contains(SPELL_ARRAY_KEY)) {
             ListTag list = tag.getList(SPELL_ARRAY_KEY, Tag.TAG_STRING);
@@ -115,8 +116,9 @@ public final class WandHelper {
     public static Spell getCurrentSpell(ItemStack wand) {
         List<Spell> spells = getSpells(wand);
         if (spells.isEmpty()) return Spells.NONE;
-
-        int selectedIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return Spells.NONE;
+        int selectedIndex = wand.getTag().getInt(SELECTED_SPELL_KEY);
 
         // Bounds check
         if (selectedIndex >= 0 && selectedIndex < spells.size()) {
@@ -127,7 +129,8 @@ public final class WandHelper {
     }
 
     public static int getCurrentSpellIndex(ItemStack wand) {
-        return wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+        if (wand.getTag() == null || wand.getTag().isEmpty()) return 0;
+        return wand.getTag().getInt(SELECTED_SPELL_KEY);
     }
 
     /**
@@ -188,8 +191,9 @@ public final class WandHelper {
     public static void selectNextSpell(ItemStack wand) {
         List<Spell> spells = getSpells(wand);
         if (spells.isEmpty()) return;
-
-        int currentIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return;
+        int currentIndex = wand.getTag().getInt(SELECTED_SPELL_KEY);
 
         // Bounds check
         if (currentIndex < 0 || currentIndex >= spells.size()) {
@@ -197,7 +201,7 @@ public final class WandHelper {
         }
 
         int newIndex = (currentIndex + 1) % spells.size();
-        wand.getOrCreateTag().putInt(SELECTED_SPELL_KEY, newIndex);
+        wand.getTag().putInt(SELECTED_SPELL_KEY, newIndex);
     }
 
     /**
@@ -209,8 +213,9 @@ public final class WandHelper {
     public static void selectPreviousSpell(ItemStack wand) {
         List<Spell> spells = getSpells(wand);
         if (spells.isEmpty()) return;
-
-        int currentIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return;
+        int currentIndex = wand.getTag().getInt(SELECTED_SPELL_KEY);
 
         // Bounds check
         if (currentIndex < 0 || currentIndex >= spells.size()) {
@@ -218,14 +223,15 @@ public final class WandHelper {
         }
 
         int newIndex = (currentIndex - 1 + spells.size()) % spells.size();
-        wand.getOrCreateTag().putInt(SELECTED_SPELL_KEY, newIndex);
+        wand.getTag().putInt(SELECTED_SPELL_KEY, newIndex);
     }
 
     private static Spell getAdjacentSpell(ItemStack wand, int offset) {
         List<Spell> spells = getSpells(wand);
         if (spells.isEmpty()) return Spells.NONE;
-
-        int currentIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return Spells.NONE;
+        int currentIndex = wand.getTag().getInt(SELECTED_SPELL_KEY);
 
         // Bounds check
         if (currentIndex < 0 || currentIndex >= spells.size()) {
@@ -243,7 +249,9 @@ public final class WandHelper {
      * @return An array of cooldown end times.
      */
     public static long[] getCooldownEndTimes(ItemStack wand) {
-        return wand.getOrCreateTag().getLongArray(COOLDOWN_END_TIME_ARRAY_KEY);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return new long[0];
+        return wand.getTag().getLongArray(COOLDOWN_END_TIME_ARRAY_KEY);
     }
 
     /**
@@ -253,7 +261,9 @@ public final class WandHelper {
      * @param cooldownEndTimes The array of cooldown end times to set.
      */
     public static void setCooldownEndTimes(ItemStack wand, long[] cooldownEndTimes) {
-        wand.getOrCreateTag().putLongArray(COOLDOWN_END_TIME_ARRAY_KEY, cooldownEndTimes);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return;
+        wand.getTag().putLongArray(COOLDOWN_END_TIME_ARRAY_KEY, cooldownEndTimes);
     }
 
     /**
@@ -265,7 +275,9 @@ public final class WandHelper {
      */
     public static int getCurrentCooldown(ItemStack wand, long currentGameTime) {
         long[] endTimes = getCooldownEndTimes(wand);
-        int selectedSpellIndex = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return 0;
+        int selectedSpellIndex = wand.getTag().getInt(SELECTED_SPELL_KEY);
 
         if (selectedSpellIndex >= 0 && selectedSpellIndex < endTimes.length) {
             long endTime = endTimes[selectedSpellIndex];
@@ -308,7 +320,9 @@ public final class WandHelper {
      * @return An array of maximum cooldowns.
      */
     public static int[] getMaxCooldowns(ItemStack wand) {
-        return wand.getOrCreateTag().getIntArray(MAX_COOLDOWN_ARRAY_KEY);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return new int[0];
+        return wand.getTag().getIntArray(MAX_COOLDOWN_ARRAY_KEY);
     }
 
     /**
@@ -328,8 +342,10 @@ public final class WandHelper {
      * @return The maximum cooldown for the selected spell, or 0 if not set.
      */
     public static int getCurrentMaxCooldown(ItemStack wand) {
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return 0;
         int[] cooldowns = getMaxCooldowns(wand);
-        int selectedSpell = wand.getOrCreateTag().getInt(SELECTED_SPELL_KEY);
+        int selectedSpell = wand.getTag().getInt(SELECTED_SPELL_KEY);
 
         return (selectedSpell >= 0 && selectedSpell < cooldowns.length) ? cooldowns[selectedSpell] : 0;
     }
@@ -342,9 +358,12 @@ public final class WandHelper {
      * @return The level of the upgrade, or 0 if the upgrade is not found.
      */
     public static int getUpgradeLevel(ItemStack wand, Item upgrade) {
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return 0;
+
         for (var entry : WandUpgrades.getWandUpgrades().entrySet()) {
             if (entry.getKey().equals(upgrade)) {
-                return wand.getOrCreateTag().getCompound(UPGRADES_KEY).getInt(entry.getValue());
+                return wand.getTag().getCompound(UPGRADES_KEY).getInt(entry.getValue());
             }
         }
         return 0;
@@ -357,6 +376,8 @@ public final class WandHelper {
      * @return The total number of upgrades, could be zero if no upgrades are applied.
      */
     public static int getTotalUpgrades(ItemStack wand) {
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return 0;
         return WandUpgrades.getWandUpgrades().keySet().stream()
                 .mapToInt(item -> getUpgradeLevel(wand, item))
                 .sum();
@@ -391,7 +412,9 @@ public final class WandHelper {
      * @return The wand's progression level.
      */
     public static int getProgression(ItemStack wand) {
-        return wand.getOrCreateTag().getInt(PROGRESSION_KEY);
+        CompoundTag tag = wand.getTag();
+        if (tag == null || tag.isEmpty()) return 0;
+        return wand.getTag().getInt(PROGRESSION_KEY);
     }
 
     /**

@@ -72,17 +72,6 @@ public final class SpellUtil {
     }
 
     /**
-     * Creates a wand ItemStack of the given tier and element.
-     *
-     * @param tier    The tier of the wand.
-     * @param element The element of the wand.
-     * @return The wand ItemStack.
-     */
-    public static ItemStack wandItem(SpellTier tier, Element element) {
-        return new ItemStack(RegistryUtils.getWand(tier, element));
-    }
-
-    /**
      * Creates an arcane tome ItemStack of the given tier.
      *
      * @param tier The tier of the arcane tome.
@@ -109,24 +98,13 @@ public final class SpellUtil {
         return createArcaneTome(tier);
     }
 
-    /**
-     * Retrieves the spell from the given ItemStack.
-     *
-     * @param stack The ItemStack from which the spell is to be retrieved.
-     * @return The spell retrieved from the ItemStack.
-     */
     public static @NotNull Spell getSpell(ItemStack stack) {
         if (!stack.hasTag()) return Spells.NONE;
-        return getSpellFromNbt(stack.getOrCreateTag());
+        return getSpellFromNbt(stack.getTag());
     }
 
-    /**
-     * Retrieves the spell from the given NbtCompound.
-     *
-     * @param tag The NbtCompound from which the spell is to be retrieved.
-     * @return The spell retrieved from the NbtCompound. If the tag is null, returns Spells.NONE.
-     */
     private static Spell getSpellFromNbt(CompoundTag tag) {
+        if (tag == null) return Spells.NONE;
         Spell byId = byId(tag.getString(SPELL_KEY));
         return byId == null ? Spells.NONE : byId;
     }

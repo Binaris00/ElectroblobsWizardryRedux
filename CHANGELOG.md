@@ -1,5 +1,6 @@
-- new '/ebw generator' commands to debug/obtain ebw items easily
-- deleted old commands for debugging (replaced by /ebw generator)
-- new '/ebw data durability <player> <int>' to set item durability (debug only)
+- reconstruct: old commands for debugging (replaced by /ebw generator)
+- feat: '/ebw generator' commands to debug/obtain ebw items easily
+- feat: '/ebw data durability <player> <int>' to set item durability (debug only)
 - fix: avoid wizard armor breaking
 - fix: when wizard armors have 0 mana, you can't obtain spell modifiers, armor protection and full armor buff
+- fix: adding empty tags to items when held in hand and opening creative mode tabs
