@@ -1,2 +1,3 @@
 - new '/ebw generator' commands to debug/obtain ebw items easily
 - deleted old commands for debugging (replaced by /ebw generator)
+- new '/ebw data durability <player> <int>' to set item durability (debug only)

@@ -32,7 +32,8 @@ public final class EBCommands {
             GenArmorCommand::register,
             GenSpellBookCommand::register,
             GenScrollCommand::register,
-            GenWizardCommand::register
+            GenWizardCommand::register,
+            DataDurabilityCommand::register
     );
 
     private EBCommands() {
