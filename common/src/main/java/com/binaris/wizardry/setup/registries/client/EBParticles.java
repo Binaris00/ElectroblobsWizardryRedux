@@ -35,7 +35,6 @@ public final class EBParticles {
     public static final DeferredObject<SimpleParticleType> SCORCH = particle("scorch");
     @Deprecated
     public static final DeferredObject<SimpleParticleType> PATH = particle("path");
-    @Deprecated
     public static final DeferredObject<SimpleParticleType> LIGHTNING = particle("lightning");
 
     private EBParticles() {

@@ -1,7 +1,11 @@
 - reconstruct: old commands for debugging (replaced by /ebw generator)
 - feat: '/ebw generator' commands to debug/obtain ebw items easily
 - feat: '/ebw data durability <player> <int>' to set item durability (debug only)
+- feat: added Spark bomb and Arc spells
+- feat: added following particle to remnants
 - fix: avoid wizard armor breaking
 - fix: when wizard armors have 0 mana, you can't obtain spell modifiers, armor protection and full armor buff
 - fix: adding empty tags to items when held in hand and opening creative mode tabs
 - fix: crash when renaming/deleting spells and then entering a world with these
+- fix: problem with lightning particle that made render look bad
+- fix: following particles had a lot of delay when copying entity location

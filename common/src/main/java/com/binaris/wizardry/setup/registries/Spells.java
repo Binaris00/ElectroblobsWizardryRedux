@@ -59,7 +59,7 @@ public final class Spells {
     // ice_statue
     public static final Spell FROST_SIGIL;
     //lightning_ray
-    // spark bomb
+    public static final Spell SPARK_BOMB;
     public static final Spell HOMING_SPARK;
     public static final Spell LIGHTNING_SIGIL;
     public static final Spell LIGHTNING_ARROW;
@@ -326,6 +326,17 @@ public final class Spells {
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 5f)
                         .add(DefaultProperties.EFFECT_DURATION, 5)
+                        .build()
+        ));
+
+        SPARK_BOMB = spell("spark_bomb", () -> new ProjectileSpell<>(SparkBombEntity::new).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 25)
+                        .add(DefaultProperties.RANGE, 10F)
+                        .add(DefaultProperties.SPLASH_DAMAGE, 4F)
+                        .add(DefaultProperties.DIRECT_DAMAGE, 6F)
+                        .add(DefaultProperties.EFFECT_RADIUS, 5)
+                        .add(DefaultProperties.MAX_TARGETS, 4)
                         .build()
         ));
 

@@ -257,8 +257,6 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
 
     @Override
     public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
-        Entity viewer = camera.getEntity();
-
         updateEntityLinking(tickDelta);
 
         if (Float.isNaN(this.yaw) || Float.isNaN(this.pitch)) {
@@ -322,9 +320,13 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
 
     protected void updateEntityLinking(float partialTicks) {
         if (this.entity != null) {
-            x = x + entity.xo - entity.getX() - relativeMotionX * (1 - partialTicks);
-            y = y + entity.yo - entity.getY() - relativeMotionY * (1 - partialTicks);
-            z = z + entity.zo - entity.getZ() - relativeMotionZ * (1 - partialTicks);
+            double entityX = Mth.lerp(partialTicks, entity.xo, entity.getX());
+            double entityY = Mth.lerp(partialTicks, entity.yo, entity.getY());
+            double entityZ = Mth.lerp(partialTicks, entity.zo, entity.getZ());
+
+            x = entityX + relativeX;
+            y = entityY + relativeY;
+            z = entityZ + relativeZ;
         }
     }
 
@@ -345,11 +347,20 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
             if (this.entity != null) {
                 if (!this.entity.isAlive()) {
                     this.remove();
+                    return;
                 } else {
-                    x += this.entity.getX();
-                    y += this.entity.getY();
-                    z += this.entity.getZ();
+                    this.relativeX += relativeMotionX;
+                    this.relativeY += relativeMotionY;
+                    this.relativeZ += relativeMotionZ;
+
+                    x = this.entity.getX() + relativeX;
+                    y = this.entity.getY() + relativeY;
+                    z = this.entity.getZ() + relativeZ;
                 }
+            } else {
+                this.relativeX += relativeMotionX;
+                this.relativeY += relativeMotionY;
+                this.relativeZ += relativeMotionZ;
             }
 
             if (radius > 0) {
@@ -359,14 +370,9 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
             }
 
             this.setPos(x, y, z);
-
-            this.relativeX += relativeMotionX;
-            this.relativeY += relativeMotionY;
-            this.relativeZ += relativeMotionZ;
         }
 
         float ageFraction = (float) this.age / (float) this.lifetime;
-
         this.rCol = this.initialRed + (this.fadeRed - this.initialRed) * ageFraction;
         this.gCol = this.initialGreen + (this.fadeGreen - this.initialGreen) * ageFraction;
         this.bCol = this.initialBlue + (this.fadeBlue - this.initialBlue) * ageFraction;
@@ -375,7 +381,6 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
             if (this.xd == 0 && this.prevVelX != 0) {
                 this.yd *= IMPACT_FRICTION;
                 this.zd *= IMPACT_FRICTION;
-
                 this.yd += (random.nextDouble() * 2 - 1) * this.prevVelX * SPREAD_FACTOR;
                 this.zd += (random.nextDouble() * 2 - 1) * this.prevVelX * SPREAD_FACTOR;
             }
@@ -383,7 +388,6 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
             if (this.yd == 0 && this.prevVelY != 0) {
                 this.xd *= IMPACT_FRICTION;
                 this.zd *= IMPACT_FRICTION;
-
                 this.xd += (random.nextDouble() * 2 - 1) * this.prevVelY * SPREAD_FACTOR;
                 this.zd += (random.nextDouble() * 2 - 1) * this.prevVelY * SPREAD_FACTOR;
             }
@@ -391,13 +395,11 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
             if (this.zd == 0 && this.prevVelZ != 0) {
                 this.xd *= IMPACT_FRICTION;
                 this.yd *= IMPACT_FRICTION;
-
                 this.xd += (random.nextDouble() * 2 - 1) * this.prevVelZ * SPREAD_FACTOR;
                 this.yd += (random.nextDouble() * 2 - 1) * this.prevVelZ * SPREAD_FACTOR;
             }
 
             double searchRadius = 20;
-
             List<Entity> nearbyEntities = EntityUtil.getEntitiesWithinRadius(searchRadius, this.x, this.y, this.z, level, Entity.class);
 
             if (nearbyEntities.stream().anyMatch(e -> e instanceof ICustomHitbox && ((ICustomHitbox) e).calculateIntercept(new Vec3(x, y, z), new Vec3(x, y, z), 0) != null))
@@ -444,6 +446,4 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
             this.zd = 0.0D;
         }
     }
-
-
 }

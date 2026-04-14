@@ -11,7 +11,7 @@ import java.util.EnumSet;
 /**
  * Intelligent kiting goal for ranged attack entities that maintains a safe distance. Just controls the movement directly
  * without using pathfinding (avoiding the look modifications that comes with that), leaving look control to other goals
- * (e.g. {@link HardLookAtTargetGoal}), and attack control to other goals (e.g.. {@link AttackSpellBasicGoal}).
+ * (e.g. {@link HardLookAtTargetGoal}), and attack control to other goals (e.g. {@link AttackSpellBasicGoal}).
  * <p>
  * Behavior:
  * <ul>
@@ -64,7 +64,7 @@ public class RangedKitingGoal extends Goal {
      * @param moveSpeed Movement speed when approaching or retreating
      */
     public RangedKitingGoal(PathfinderMob mob, double moveSpeed) {
-        this(mob, moveSpeed, 12.0, 6.0, 32.0);
+        this(mob, moveSpeed, 8.0, 6.0, 32.0);
     }
 
     @Override
