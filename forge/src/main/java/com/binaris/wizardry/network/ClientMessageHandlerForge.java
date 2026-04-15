@@ -1,6 +1,7 @@
 package com.binaris.wizardry.network;
 
 import com.binaris.wizardry.capabilities.*;
+import com.binaris.wizardry.client.effect.ArcaneLockRender;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -22,8 +23,11 @@ public final class ClientMessageHandlerForge {
         BlockEntity blockEntity = level.getBlockEntity(m.getPos());
         if (blockEntity == null) return;
 
-        blockEntity.getCapability(ArcaneLockDataHolder.INSTANCE).ifPresent(arcaneLockData ->
-                arcaneLockData.deserializeNBT(m.getData()));
+        blockEntity.getCapability(ArcaneLockDataHolder.INSTANCE)
+                .ifPresent(arcaneLockData -> {
+                    arcaneLockData.deserializeNBT(m.getData());
+                    ArcaneLockRender.markDirty();
+                });
     }
 
     public static void minionSync(MinionSyncPacketS2C m) {

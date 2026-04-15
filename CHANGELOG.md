@@ -9,3 +9,4 @@
 - fix: crash when renaming/deleting spells and then entering a world with these
 - fix: problem with lightning particle that made render look bad
 - fix: following particles had a lot of delay when copying entity location
+- fix: arcane lock consuming too much resources on client rendering
