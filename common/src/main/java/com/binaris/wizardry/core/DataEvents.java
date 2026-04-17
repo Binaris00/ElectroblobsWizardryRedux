@@ -115,7 +115,7 @@ public final class DataEvents {
         WizardData data = Services.OBJECT_DATA.getWizardData(player);
         if (player.tickCount % 60 == 0) {
             long currentTime = player.level().getGameTime();
-            data.removeRecentCasts((entry) -> currentTime - entry.getValue() >= EBConstants.RECENT_SPELL_EXPIRY_TICKS);
+            data.removeRecentCasts((entry) -> currentTime - entry.timestamp() >= EBConstants.RECENT_SPELL_EXPIRY_TICKS);
         }
     }
 

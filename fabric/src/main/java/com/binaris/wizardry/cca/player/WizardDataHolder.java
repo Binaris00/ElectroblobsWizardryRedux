@@ -8,7 +8,6 @@ import com.binaris.wizardry.cca.EBComponents;
 import com.binaris.wizardry.core.EBConstants;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.SpellTiers;
-import com.google.common.collect.EvictingQueue;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
@@ -18,6 +17,7 @@ import net.minecraft.nbt.Tag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Predicate;
@@ -28,7 +28,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     public Set<String> allyNames = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
-    private Queue<AbstractMap.SimpleEntry<Spell, Long>> recentSpells = EvictingQueue.create(EBConstants.MAX_RECENT_SPELLS);
+    private final Deque<RecentSpellCast> recentSpells = new ArrayDeque<>(EBConstants.MAX_RECENT_SPELLS);
     private Random random = new Random();
 
     public WizardDataHolder(Player provider) {
@@ -92,19 +92,27 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
 
     @Override
     public void trackRecentSpell(Spell spell, long timestamp) {
-        recentSpells.add(new AbstractMap.SimpleEntry<>(spell, timestamp));
+        recentSpells.add(new RecentSpellCast(spell, timestamp));
         sync();
     }
 
     @Override
     public int countRecentCasts(Spell spell) {
-        return (int) recentSpells.stream()
-                .filter(entry -> entry.getKey().equals(spell))
-                .count();
+        return (int) recentSpells.stream().filter(record -> record.spell().equals(spell)).count();
     }
 
     @Override
-    public void removeRecentCasts(Predicate<AbstractMap.SimpleEntry<Spell, Long>> predicate) {
+    public List<RecentSpellCast> getRecentSpells() {
+        return recentSpells.stream().toList();
+    }
+
+    @Override
+    public @Nullable RecentSpellCast getRecentlyCastSpell() {
+        return recentSpells.isEmpty() ? null : recentSpells.peekLast();
+    }
+
+    @Override
+    public void removeRecentCasts(Predicate<RecentSpellCast> predicate) {
         recentSpells.removeIf(predicate);
         sync();
     }
@@ -157,7 +165,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
             if (spellLocation != null) {
                 Spell spell = Services.REGISTRY_UTIL.getSpell(spellLocation);
                 if (spell != null) {
-                    this.recentSpells.add(new AbstractMap.SimpleEntry<>(spell, timestamp));
+                    this.recentSpells.add(new RecentSpellCast(spell, timestamp));
                 }
             }
         }
@@ -183,10 +191,10 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
         tag.put("itemModifiers", itemModifiers.toTag());
 
         ListTag recentSpellsTag = new ListTag();
-        for (AbstractMap.SimpleEntry<Spell, Long> entry : recentSpells) {
+        for (RecentSpellCast entry : recentSpells) {
             CompoundTag spellEntryTag = new CompoundTag();
-            spellEntryTag.putString("spell", entry.getKey().getLocation().toString());
-            spellEntryTag.putLong("timestamp", entry.getValue());
+            spellEntryTag.putString("spell", entry.spell().getLocation().toString());
+            spellEntryTag.putLong("timestamp", entry.timestamp());
             recentSpellsTag.add(spellEntryTag);
         }
         tag.put("recentSpells", recentSpellsTag);

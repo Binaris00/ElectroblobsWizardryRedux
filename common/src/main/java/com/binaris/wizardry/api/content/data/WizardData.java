@@ -4,8 +4,9 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.Nullable;
 
-import java.util.AbstractMap;
+import java.util.List;
 import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
@@ -79,12 +80,26 @@ public interface WizardData {
     int countRecentCasts(Spell spell);
 
     /**
+     * Gets the recent spells cast by the player.
+     *
+     * @return A list of recent spells cast by the player.
+     */
+    List<RecentSpellCast> getRecentSpells();
+
+    /**
+     * Gets the most recently cast spell by the player.
+     *
+     * @return The most recently cast spell by the player, or null if no spells have been cast recently.
+     */
+    @Nullable RecentSpellCast getRecentlyCastSpell();
+
+    /**
      * Removes recent spell casts that match the given predicate, allowing for custom filtering of which entries to remove.
      *
      * @param predicate A Predicate that tests AbstractMap.SimpleEntry&lt;Spell, Long&gt; objects representing
      *                  recent spell casts. If the predicate returns true for an entry, that entry will be removed.
      */
-    void removeRecentCasts(Predicate<AbstractMap.SimpleEntry<Spell, Long>> predicate);
+    void removeRecentCasts(Predicate<RecentSpellCast> predicate);
 
     /**
      * Gets a Random instance associated with this WizardData.
@@ -92,4 +107,7 @@ public interface WizardData {
      * @return A Random instance.
      */
     Random getRandom();
+
+    record RecentSpellCast(Spell spell, long timestamp) {
+    }
 }
