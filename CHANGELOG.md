@@ -1,4 +1,3 @@
-- reconstruct: old commands for debugging (replaced by /ebw generator)
 - feat: '/ebw generator' commands to debug/obtain ebw items easily
 - feat: '/ebw data durability <player> <int>' to set item durability (debug only)
 - feat: added Spark bomb and Arc spells
@@ -10,3 +9,6 @@
 - fix: problem with lightning particle that made render look bad
 - fix: following particles had a lot of delay when copying entity location
 - fix: arcane lock consuming too much resources on client rendering
+- reconstruct: old commands for debugging (replaced by /ebw generator)
+- reconstruct: old wizard armor structure refactored to use better class hierarchy
+- reconstruct: old cast item system documented and refactored to be more maintainable and cleaner
