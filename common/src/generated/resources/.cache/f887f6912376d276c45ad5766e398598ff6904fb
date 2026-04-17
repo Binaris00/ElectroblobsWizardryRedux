@@ -1,6 +1,7 @@
-// 1.20.1	2026-03-30T09:26:12.616439862	Spell Documentation: ebwizardry
-52c72c8984bc81f285968a087389a217df5a14a9 docs/spells.md
+// 1.20.1	2026-04-17T10:33:24.978283524	Spell Documentation: ebwizardry
+1d50810377674211a4aff00d60fafeeb3f615dab docs/spells.md
 b5ed5dfb6422a93452ce6148862262c78c017981 docs/spells/ebwizardry/agility.md
+ab2bb9f5beba5ca49328cf74e07a5089fcc63917 docs/spells/ebwizardry/arc.md
 bce3671523493e20285bcf1083df256f2c4e7db1 docs/spells/ebwizardry/arcane_jammer.md
 9a9e8e6ece9a8507574baa2ebb8e0ffa3fa32618 docs/spells/ebwizardry/arcane_lock.md
 d304545c9bfda7d2a11d8c6da87ec169363dc6d6 docs/spells/ebwizardry/arrow_rain.md
@@ -96,6 +97,7 @@ d049eedf2db33637d02361ef7ce2b55fac8bf939 docs/spells/ebwizardry/reversal.md
 3eddd70b5f0a6729aa07566b83a284cdeb653a33 docs/spells/ebwizardry/shulker_bullet.md
 9d7d902a55295508cc0e41cbeda6cd65cb02257e docs/spells/ebwizardry/slime.md
 f5de4b19b03e662b7c88484a897ee682bb0bc672 docs/spells/ebwizardry/smoke_bomb.md
+3e5efb288e3e3dfa9e2c72a67dbf6c11754ff621 docs/spells/ebwizardry/spark_bomb.md
 d5460f3dc9a3d4589bd0c570c9afda5e1bc2182b docs/spells/ebwizardry/speed_time.md
 8e451f779ea6c10134791fce1e4634854d9482de docs/spells/ebwizardry/spider_swarm.md
 5363bc28a9afe79872fe444cc924bcf7888e198c docs/spells/ebwizardry/static_aura.md

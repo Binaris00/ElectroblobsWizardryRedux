@@ -1,7 +1,7 @@
 package com.binaris.wizardry.client;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.setup.registries.client.EBKeyBinding;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
@@ -23,10 +23,10 @@ public class ForgeModClientEvents {
             ItemStack wand = player.getMainHandItem();
             boolean mainHand;
 
-            if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand))) {
+            if (!(wand.getItem() instanceof ICastItem castingItem && castingItem.showSpellHUD(player, wand))) {
                 wand = player.getOffhandItem();
                 mainHand = false;
-                if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand)))
+                if (!(wand.getItem() instanceof ICastItem castingItem && castingItem.showSpellHUD(player, wand)))
                     return;
             } else {
                 mainHand = true;
@@ -41,10 +41,10 @@ public class ForgeModClientEvents {
             ItemStack wand = player.getMainHandItem();
             boolean mainHand;
 
-            if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand))) {
+            if (!(wand.getItem() instanceof ICastItem castingItem && castingItem.showSpellHUD(player, wand))) {
                 wand = player.getOffhandItem();
                 mainHand = false;
-                if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand)))
+                if (!(wand.getItem() instanceof ICastItem castingItem && castingItem.showSpellHUD(player, wand)))
                     return;
             } else {
                 mainHand = true;
@@ -59,10 +59,10 @@ public class ForgeModClientEvents {
             ItemStack wand = player.getMainHandItem();
             boolean mainHand;
 
-            if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand))) {
+            if (!(wand.getItem() instanceof ICastItem castingItem && castingItem.showSpellHUD(player, wand))) {
                 wand = player.getOffhandItem();
                 mainHand = false;
-                if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand)))
+                if (!(wand.getItem() instanceof ICastItem castingItem && castingItem.showSpellHUD(player, wand)))
                     return;
             } else {
                 mainHand = true;

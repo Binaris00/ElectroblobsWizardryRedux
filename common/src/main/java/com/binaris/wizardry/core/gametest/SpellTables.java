@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
-import com.binaris.wizardry.content.item.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import net.minecraft.gametest.framework.GameTestHelper;

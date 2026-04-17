@@ -7,11 +7,10 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
-import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.content.entity.goal.WizardLookAtTradePlayer;
 import com.binaris.wizardry.content.entity.goal.WizardTradeGoal;
 import com.binaris.wizardry.content.item.SpellBookItem;
-import com.binaris.wizardry.content.item.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
@@ -175,7 +174,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         EBAdvancementTriggers.WIZARD_TRADE.triggerFor(this.getTradingPlayer());
 
         if (!(merchantOffer.getResult().getItem() instanceof SpellBookItem)) return;
-        Spell spell = SpellUtil.getSpell(merchantOffer.getResult());
+        Spell spell = RegistryUtils.getSpell(merchantOffer.getResult());
 
         if (spell.getTier() == SpellTiers.MASTER)
             EBAdvancementTriggers.BUY_MASTER_SPELL.triggerFor(this.getTradingPlayer());
@@ -396,14 +395,14 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
     private MerchantOffer createSpellTrade(SpellTier tier, int goldAmount, int crystalAmount, List<Spell> usedSpells) {
-        List<Spell> spells = SpellUtil.getSpells((s) -> s.getTier() == tier && !usedSpells.contains(s));
+        List<Spell> spells = RegistryUtils.getSpells((s) -> s.getTier() == tier && !usedSpells.contains(s));
         if (spells.isEmpty()) return null;
 
         Spell spell = spells.get(random.nextInt(spells.size()));
         usedSpells.add(spell); // Mark this spell as used
 
         ItemStack spellBook = new ItemStack(EBItems.SPELL_BOOK.get());
-        SpellUtil.setSpell(spellBook, spell);
+        RegistryUtils.setSpell(spellBook, spell);
 
         int xp = getXpForTier(tier);
 

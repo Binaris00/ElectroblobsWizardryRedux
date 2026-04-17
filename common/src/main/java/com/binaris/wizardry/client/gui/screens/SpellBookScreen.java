@@ -1,8 +1,8 @@
 package com.binaris.wizardry.client.gui.screens;
 
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.client.gui.screens.abstr.SpellInfoScreen;
 import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.setup.registries.Spells;
@@ -20,7 +20,7 @@ public class SpellBookScreen extends SpellInfoScreen {
             throw new ClassCastException("Cannot create spell book GUI for item that does not extend ItemSpellBook!");
         }
         this.book = (SpellBookItem) stack.getItem();
-        Spell spell = SpellUtil.getSpell(stack);
+        Spell spell = RegistryUtils.getSpell(stack);
         if (spell == Spells.NONE) {
             spell = Spells.MAGIC_MISSILE;
             EBLogger.warn("SpellBookItem has no spell assigned to it! Defaulting to Magic Missile, where did this item come from?");

@@ -2,7 +2,7 @@ package com.binaris.wizardry.core;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
@@ -50,7 +50,7 @@ public final class ArtifactUtils {
      */
     public static boolean findMatchingWandAndCast(Player player, Spell spell) {
         return findMatchingWandAndExecute(player, spell, wand -> {
-            ISpellCastingItem spellCastItem = (ISpellCastingItem) wand.getItem();
+            ICastItem spellCastItem = (ICastItem) wand.getItem();
             SpellModifiers modifiers = new SpellModifiers();
             PlayerCastContext context = new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers);
             if (spellCastItem.canCast(wand, spell, context)) {
@@ -66,7 +66,7 @@ public final class ArtifactUtils {
     public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action) {
         List<ItemStack> hotbar = InventoryUtil.getHotBarAndOffhand(player);
         for (ItemStack stack : hotbar) {
-            if (stack.getItem() instanceof ISpellCastingItem spellCastingItem && Arrays.asList(spellCastingItem.getSpells(stack)).contains(spell)) {
+            if (stack.getItem() instanceof ICastItem spellCastingItem && Arrays.asList(spellCastingItem.getSpells(stack)).contains(spell)) {
                 action.accept(stack);
                 return true;
             }

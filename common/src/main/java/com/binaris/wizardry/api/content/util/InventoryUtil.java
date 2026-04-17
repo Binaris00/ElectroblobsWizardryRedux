@@ -1,9 +1,9 @@
 package com.binaris.wizardry.api.content.util;
 
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.spell.Element;
-import com.binaris.wizardry.content.item.WizardArmorItem;
-import com.binaris.wizardry.content.item.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import net.minecraft.core.NonNullList;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
@@ -83,7 +83,7 @@ public final class InventoryUtil {
     }
 
     public static boolean doAllArmourPiecesHaveMana(LivingEntity entity) {
-        return Arrays.stream(ARMOR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaStoringItem manaStoringItem
+        return Arrays.stream(ARMOR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaItem manaStoringItem
                 && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
     }
 }

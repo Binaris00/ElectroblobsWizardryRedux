@@ -2,7 +2,7 @@ package com.binaris.wizardry.core.networking.c2s;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.core.EBLogger;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.binaris.wizardry.core.networking.abst.Message;
 import net.minecraft.network.FriendlyByteBuf;
@@ -38,19 +38,19 @@ public class ControlInputPacketC2S implements Message {
         if (player == null) return;
         ItemStack wand = player.getMainHandItem();
 
-        if (!(wand.getItem() instanceof ISpellCastingItem)) {
+        if (!(wand.getItem() instanceof ICastItem)) {
             wand = player.getOffhandItem();
         }
 
         switch (controlType) {
             case NEXT_SPELL_KEY:
-                if (wand.getItem() instanceof ISpellCastingItem castItem) {
+                if (wand.getItem() instanceof ICastItem castItem) {
                     castItem.selectNextSpell(wand);
                     player.stopUsingItem();
                 }
                 break;
             case PREVIOUS_SPELL_KEY:
-                if (wand.getItem() instanceof ISpellCastingItem castItem) {
+                if (wand.getItem() instanceof ICastItem castItem) {
                     castItem.selectPreviousSpell(wand);
                     player.stopUsingItem();
                 }

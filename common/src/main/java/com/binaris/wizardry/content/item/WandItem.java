@@ -36,17 +36,17 @@ import java.util.List;
 
 /**
  * Where the magic (normally) happens!! Most of the functions and logic for this item are handled on various utils
- * classes (e.g. {@link WandHelper} and {@link CastUtils}), so refer to those for more details on specific aspects of
+ * classes (e.g. {@link CastItemDataHelper} and {@link CastItemUtils}), so refer to those for more details on specific aspects of
  * wand functionality.
  * <p>
  * A wand is a spell-casting item that can store mana, hold multiple spells, and be upgraded in various ways. Wands
  * can cast both instant and continuous spells, with mechanics for charging, cooldowns, and mana consumption. They can be
  * upgraded using special items to enhance their capabilities, such as increasing mana capacity or adding spell slots.
  *
- * @see ISpellCastingItem
+ * @see ICastItem
  * @see ICustomDamageItem
  */
-public class WandItem extends Item implements ISpellCastingItem, IManaStoringItem, IWorkbenchItem, ICustomDamageItem, ITierValue, IElementValue {
+public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchItem, ICustomDamageItem, ITierValue, IElementValue {
     /* Base number of spell slots on a wand without upgrades. */
     public static final int BASE_SPELL_SLOTS = 5;
     /** Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
@@ -66,14 +66,15 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand hand) {
         ItemStack stack = player.getItemInHand(hand);
-        Spell spell = WandHelper.getCurrentSpell(stack);
+        Spell spell = CastItemDataHelper.getCurrentSpell(stack);
         if (spell == Spells.NONE) return InteractionResultHolder.pass(stack);
 
         PlayerCastContext ctx = createContext(level, player, hand, 0, stack, spell);
         if (!canCastRequirements(stack, spell, ctx)) return InteractionResultHolder.fail(stack);
-        int charge = calculateCharge(spell, ctx);
+        int charge = CastItemUtils.calcCharge(spell, ctx.modifiers());
 
-        if (!requiresCharging(spell, charge)) {
+        // if it requires charging or is a continuous spell
+        if (!(!spell.isInstantCast() || charge > 0)) {
             // Instant spell without charge
             if (canCast(stack, spell, ctx)) {
                 if (!level.isClientSide) {
@@ -93,10 +94,10 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity user, @NotNull ItemStack stack, int timeLeft) {
         if (!(user instanceof Player player)) return;
 
-        Spell spell = WandHelper.getCurrentSpell(stack);
+        Spell spell = CastItemDataHelper.getCurrentSpell(stack);
         SpellModifiers modifiers = Services.OBJECT_DATA.getWizardData(player).getSpellModifiers();
         int useTick = stack.getUseDuration() - timeLeft;
-        int charge = calculateCharge(spell, modifiers);
+        int charge = CastItemUtils.calcCharge(spell, modifiers);
 
         int castingTick;
         if (spell.isInstantCast()) {
@@ -116,68 +117,32 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (CastUtils.fireSpellCastEvent(SpellCastEvent.Source.WAND, spell, ctx)) {
-            CastUtils.applyCooldownForfeit(ctx.caster(), COOLDOWN_FORFEIT_TICKS);
+        if (CastItemUtils.fireSpellCastEvent(SpellCastEvent.Source.WAND, spell, ctx)) {
+            CastItemUtils.applyCooldownForfeit(ctx.caster(), COOLDOWN_FORFEIT_TICKS);
             return false;
         }
         return canCastRequirements(stack, spell, ctx);
     }
 
-    /**
-     * Calculates the accumulated mana cost for a continuous spell based on the casting ticks.
-     *
-     * @param spell       The spell being cast
-     * @param castingTick The number of ticks the spell has been cast for
-     * @param totalCost   The total mana cost of the spell
-     * @return The accumulated mana cost for the given casting ticks
-     */
-    protected static int getAccumulatedCost(Spell spell, int castingTick, int totalCost) {
-        int accumulatedCost = 0;
-        if (!spell.isInstantCast() && castingTick > 0) {
-            int completeCycles = castingTick / 20;  // Number of complete 20-tick cycles
-            int remainingTicks = castingTick % 20;  // Ticks in the partial cycle (0-19)
-
-            // Each complete cycle applies cost twice: at tick 0 and tick 10
-            // This equals totalCost per cycle (cost/2 + cost%2 + cost/2 = cost)
-            accumulatedCost = completeCycles * totalCost;
-
-            // Only add partial cycle costs if there are remaining ticks
-            // (remainingTicks == 0 means we completed exactly at a cycle boundary)
-            if (remainingTicks > 0) {
-                accumulatedCost += totalCost / 2 + totalCost % 2;
-                if (remainingTicks >= 10) accumulatedCost += totalCost / 2;
-            }
-        }
-        return accumulatedCost;
-    }
-
     private boolean canCastRequirements(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        int cost = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.COST) + 0.1f);
-        if (!spell.isInstantCast()) {
-            cost = WandHelper.getDistributedCost(cost, ctx.castingTicks());
-        }
+        int cost = CastItemUtils.calcCastCost(spell, ctx.modifiers());
+        if (!spell.isInstantCast()) cost = CastItemUtils.getDistributedCastCost(cost, ctx.castingTicks());
 
         return cost <= this.getMana(stack)
                 && spell.getTier().getLevel() <= this.tier.getLevel()
-                && (WandHelper.getCurrentCooldown(stack, ctx.world().getGameTime()) == 0 || ctx.caster().isCreative());
-    }
-
-    @Override
-    public boolean isFoil(@NotNull ItemStack stack) {
-        if (tier == SpellTiers.MASTER) return false;
-        return WandHelper.getProgression(stack) >= tier.next().getProgression();
+                && (CastItemDataHelper.getCurrentCooldown(stack, ctx.world().getGameTime()) == 0 || ctx.caster().isCreative());
     }
 
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         if (ctx.world().isClientSide && spell.isInstantCast() && spell.requiresPacket()) return false;
-        if (!CastUtils.executeSpellCast(SpellCastEvent.Source.WAND, spell, ctx)) return false;
+        if (!CastItemUtils.executeSpellCast(SpellCastEvent.Source.WAND, spell, ctx)) return false;
 
-        CastUtils.sendSpellCastPacket(ctx.caster(), spell, ctx);
+        CastItemUtils.sendSpellCastPacket(ctx.caster(), spell, ctx);
         if (!spell.isInstantCast()) ctx.caster().startUsingItem(ctx.hand());
 
         handleProgression(ctx, spell, stack);
-        CastUtils.trackSpellUsage(ctx.caster(), spell);
+        CastItemUtils.trackSpellUsage(ctx.caster(), spell);
         return true;
     }
 
@@ -197,14 +162,14 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public void releaseUsing(@NotNull ItemStack stack, @NotNull Level level, @NotNull LivingEntity livingEntity, int timeCharged) {
         if (!(livingEntity instanceof Player player)) return;
-        Spell spell = WandHelper.getCurrentSpell(stack);
+        Spell spell = CastItemDataHelper.getCurrentSpell(stack);
         SpellModifiers modifiers;
         WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
         modifiers = wizardData.getSpellModifiers();
 
         int castingTick = stack.getUseDuration() - timeCharged;
-        int totalCost = (int) (spell.getCost() * modifiers.get(SpellModifiers.COST) + 0.1f);
-        int accumulatedCost = getAccumulatedCost(spell, castingTick, totalCost);
+        int totalCost = CastItemUtils.calcCastCost(spell, modifiers);
+        int accumulatedCost = CastItemUtils.getAccumulatedCastCost(spell, castingTick, totalCost);
 
         if (!spell.isInstantCast() && spell.getTier().getLevel() <= this.tier.getLevel()) {
             WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.WAND, spell, livingEntity, modifiers, castingTick));
@@ -213,9 +178,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
             if (!level.isClientSide) {
                 this.consumeMana(stack, accumulatedCost, player);
 
-                if (!player.isCreative()) {
-                    WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(SpellModifiers.COOLDOWN)), level.getGameTime());
-                }
+                if (!player.isCreative()) CastItemDataHelper.setCurrentCooldown(stack, totalCost, level.getGameTime());
             }
         }
     }
@@ -243,23 +206,12 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level world, @NotNull Entity entity, int slot, boolean isHeldInMainHand) {
         if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
-            this.rechargeMana(stack, WandHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE.get()));
+            this.rechargeMana(stack, CastItemDataHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE.get()));
         }
     }
 
     // utility methods
     // Mostly related to mana cost calculations for continuous spells
-
-    @Override
-    public void onClearButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks) {
-        ItemStack stack = centre.getItem();
-        if (!stack.getOrCreateTag().contains(WandHelper.SPELL_ARRAY_KEY)) return;
-        List<Spell> spells = WandHelper.getSpells(stack);
-        int expectedSlotCount = BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE.get());
-        if (spells.size() < expectedSlotCount) spells = new ArrayList<>();
-
-        WandHelper.setSpells(stack, spells);
-    }
 
     /**
      * Handles the logic for instant spell casting on {@code useTick}. If the current {@code useTick} matches the required
@@ -342,31 +294,9 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
      */
     protected PlayerCastContext createContext(Level level, Player player, InteractionHand hand, int tick, ItemStack stack, Spell spell) {
         SpellModifiers modifiers = tick == 0
-                ? WandHelper.calculateModifiers(stack, player, spell)
+                ? CastItemUtils.calculateModifiers(stack, player, spell)
                 : Services.OBJECT_DATA.getWizardData(player).getSpellModifiers();
         return new PlayerCastContext(level, player, hand, tick, modifiers);
-    }
-
-    /**
-     * Calculates the charge time required for a spell based on the spell's base charge and the player's spell modifiers.
-     *
-     * @param spell The spell being cast
-     * @param ctx   The player cast context
-     * @return The calculated charge time
-     */
-    protected int calculateCharge(Spell spell, PlayerCastContext ctx) {
-        return calculateCharge(spell, ctx.modifiers());
-    }
-
-    /**
-     * Calculates the charge time required for a spell based on the spell's base charge and the given spell modifiers.
-     *
-     * @param spell     The spell being cast
-     * @param modifiers The spell modifiers affecting the cast
-     * @return The calculated charge time
-     */
-    private int calculateCharge(Spell spell, SpellModifiers modifiers) {
-        return (int) (spell.getChargeUp() * modifiers.get(SpellModifiers.CHARGEUP));
     }
 
     /**
@@ -378,38 +308,16 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
      * @param modifiers The spell modifiers affecting the cast
      */
     private void consumeManaAndSetCooldown(ItemStack stack, Spell spell, Player player, SpellModifiers modifiers) {
-        int cost = calculateSpellCost(spell, modifiers);
+        int cost = CastItemUtils.calcCastCost(spell, modifiers);
         consumeMana(stack, cost, player);
 
         if (!player.isCreative()) {
-            WandHelper.setCurrentCooldown(stack, (int) (spell.getCooldown() * modifiers.get(SpellModifiers.COOLDOWN)), player.level().getGameTime());
+            CastItemDataHelper.setCurrentCooldown(stack, CastItemUtils.calcCastCooldown(spell, modifiers), player.level().getGameTime());
         }
     }
 
     /**
-     * Calculates the mana cost of a spell based on its base cost and the given spell modifiers.
-     *
-     * @param spell     The spell being cast
-     * @param modifiers The spell modifiers affecting the cast
-     * @return The calculated mana cost
-     */
-    private int calculateSpellCost(Spell spell, SpellModifiers modifiers) {
-        return (int) (spell.getCost() * modifiers.get(SpellModifiers.COST) + 0.1f);
-    }
-
-    /**
-     * Determines if a spell requires charging based on whether it is instant cast and the charge time.
-     *
-     * @param spell  The spell being cast
-     * @param charge The calculated charge time
-     * @return true if the spell requires charging, false otherwise
-     */
-    private boolean requiresCharging(Spell spell, int charge) {
-        return !spell.isInstantCast() || charge > 0;
-    }
-
-    /**
-     * Applies an upgrade from the workbench upgrade slot to the wand in the centre slot.
+     * Applies an upgrade from the workbench upgrade slot to the wand in the center slot.
      *
      * @param player  The player applying the upgrade (can be null)
      * @param centre  The workbench slot containing the wand
@@ -438,9 +346,9 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         SpellTier nextTier = tomeItem.getTier(tomeStack);
         if (tier == nextTier) return wand;
 
-        if (player == null || WandHelper.getProgression(wand) >= nextTier.getProgression()) {
-            int newProgression = Math.max(0, WandHelper.getProgression(wand) - nextTier.getProgression());
-            WandHelper.setProgression(wand, newProgression);
+        if (player == null || CastItemDataHelper.getProgression(wand) >= nextTier.getProgression()) {
+            int newProgression = Math.max(0, CastItemDataHelper.getProgression(wand) - nextTier.getProgression());
+            CastItemDataHelper.setProgression(wand, newProgression);
 
             if (player != null) {
                 Services.OBJECT_DATA.getWizardData(player).setTierReached(tier);
@@ -448,7 +356,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
             ItemStack newWand = new ItemStack(RegistryUtils.getWand(nextTier, element));
             newWand.setTag(wand.getTag());
-            ((IManaStoringItem) newWand.getItem()).setMana(newWand, getMana(wand));
+            ((IManaItem) newWand.getItem()).setMana(newWand, getMana(wand));
             tomeStack.shrink(1);
             return newWand;
         }
@@ -467,12 +375,12 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         Item specialUpgrade = upgrade.getItem();
         int maxUpgrades = tier.getUpgradeLimit() + (element == Elements.MAGIC ? EBConfig.NON_ELEMENTAL_UPGRADE_BONUS.get() : 0);
 
-        if (WandHelper.getTotalUpgrades(wand) >= maxUpgrades || WandHelper.getUpgradeLevel(wand, specialUpgrade) >= EBConfig.UPGRADE_STACK_LIMIT.get()) {
+        if (CastItemDataHelper.getTotalUpgrades(wand) >= maxUpgrades || CastItemDataHelper.getUpgradeLevel(wand, specialUpgrade) >= EBConfig.UPGRADE_STACK_LIMIT.get()) {
             return;
         }
 
         int prevMana = getMana(wand);
-        WandHelper.applyUpgrade(wand, specialUpgrade);
+        CastItemDataHelper.applyUpgrade(wand, specialUpgrade);
 
         if (specialUpgrade == EBItems.STORAGE_UPGRADE.get()) {
             setMana(wand, prevMana);
@@ -484,7 +392,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         if (player == null) return;
 
         EBAdvancementTriggers.SPECIAL_UPGRADE.triggerFor(player);
-        if (WandHelper.getTotalUpgrades(wand) == SpellTiers.MASTER.getUpgradeLimit())
+        if (CastItemDataHelper.getTotalUpgrades(wand) == SpellTiers.MASTER.getUpgradeLimit())
             EBAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
     }
 
@@ -495,14 +403,14 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
      * @param wand The wand item stack to expand spell slots for
      */
     protected void expandSpellSlots(ItemStack wand) {
-        int newSlotCount = BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(wand, EBItems.ATTUNEMENT_UPGRADE.get());
-        List<Spell> spells = WandHelper.getSpells(wand);
+        int newSlotCount = BASE_SPELL_SLOTS + CastItemDataHelper.getUpgradeLevel(wand, EBItems.ATTUNEMENT_UPGRADE.get());
+        List<Spell> spells = CastItemDataHelper.getSpells(wand);
 
         Spell[] newSpells = new Spell[newSlotCount];
         for (int i = 0; i < newSpells.length; i++) {
             newSpells[i] = i < spells.size() && spells.get(i) != null ? spells.get(i) : Spells.NONE;
         }
-        WandHelper.setSpells(wand, List.of(newSpells));
+        CastItemDataHelper.setSpells(wand, List.of(newSpells));
     }
 
     /**
@@ -524,9 +432,8 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
         if (!shouldAddProgression) return;
 
-        int progression = (int) (spell.getCost() * ctx.modifiers().get(SpellModifiers.PROGRESSION));
-        WandHelper.addProgression(stack, progression);
-
+        int progression = CastItemUtils.calcCastProgression(spell, ctx.modifiers());
+        CastItemDataHelper.addProgression(stack, progression);
         checkLevelUp(ctx, stack, progression);
     }
 
@@ -541,7 +448,7 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
     protected void checkLevelUp(PlayerCastContext ctx, ItemStack stack, int progression) {
         Player player = ctx.caster();
         SpellTier nextTier = tier.next();
-        int excess = WandHelper.getProgression(stack) - nextTier.getProgression();
+        int excess = CastItemDataHelper.getProgression(stack) - nextTier.getProgression();
 
         if (excess >= 0 && excess < progression) {
             player.playSound(EBSounds.ITEM_WAND_LEVELUP.get(), 1.25f, 1);
@@ -551,9 +458,20 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
         }
     }
 
-
     // Simple interface implementations and getters
     // Not much logic here, just boilerplate to satisfy the interfaces
+
+    @Override
+    public void onClearButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks) {
+        ItemStack stack = centre.getItem();
+        if (!stack.getOrCreateTag().contains(CastItemDataHelper.SPELL_ARRAY_KEY)) return;
+        List<Spell> spells = CastItemDataHelper.getSpells(stack);
+        int expectedSlotCount = BASE_SPELL_SLOTS + CastItemDataHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE.get());
+        if (spells.size() < expectedSlotCount) spells = new ArrayList<>();
+
+        CastItemDataHelper.setSpells(stack, spells);
+    }
+
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         return (this.element == null ? super.getName(stack) : Component.literal(super.getName(stack).getString()).withStyle(this.element.getColor()));
@@ -561,22 +479,28 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public void selectNextSpell(ItemStack stack) {
-        WandHelper.selectNextSpell(stack);
+        CastItemDataHelper.selectNextSpell(stack);
     }
 
     @Override
     public void selectPreviousSpell(ItemStack stack) {
-        WandHelper.selectPreviousSpell(stack);
+        CastItemDataHelper.selectPreviousSpell(stack);
     }
 
     @Override
     public int getCustomMaxDamage(ItemStack stack) {
-        return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL.get() * WandHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE.get())) + 0.5f);
+        return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL.get() * CastItemDataHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE.get())) + 0.5f);
     }
 
     @Override
     public void setCustomDamage(ItemStack stack, int damage) {
         stack.getOrCreateTag().putInt("Damage", Math.max(0, Math.min(damage, stack.getMaxDamage())));
+    }
+
+    @Override
+    public boolean isFoil(@NotNull ItemStack stack) {
+        if (tier == SpellTiers.MASTER) return false;
+        return CastItemDataHelper.getProgression(stack) >= tier.next().getProgression();
     }
 
     @Override
@@ -606,17 +530,17 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public boolean selectSpell(ItemStack stack, int index) {
-        return WandHelper.setCurrentSpell(stack, index);
+        return CastItemDataHelper.setCurrentSpell(stack, index);
     }
 
     @Override
     public int getCurrentCooldown(ItemStack stack, Level level) {
-        return WandHelper.getCurrentCooldown(stack, level.getGameTime());
+        return CastItemDataHelper.getCurrentCooldown(stack, level.getGameTime());
     }
 
     @Override
     public int getCurrentMaxCooldown(ItemStack stack) {
-        return WandHelper.getCurrentMaxCooldown(stack);
+        return CastItemDataHelper.getCurrentMaxCooldown(stack);
     }
 
     @Override
@@ -641,28 +565,28 @@ public class WandItem extends Item implements ISpellCastingItem, IManaStoringIte
 
     @Override
     public int getSpellSlotCount(ItemStack stack) {
-        return BASE_SPELL_SLOTS + WandHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE.get());
+        return BASE_SPELL_SLOTS + CastItemDataHelper.getUpgradeLevel(stack, EBItems.ATTUNEMENT_UPGRADE.get());
     }
 
     @NotNull
     @Override
     public Spell getCurrentSpell(ItemStack stack) {
-        return WandHelper.getCurrentSpell(stack);
+        return CastItemDataHelper.getCurrentSpell(stack);
     }
 
     @Override
     public @NotNull Spell getNextSpell(ItemStack stack) {
-        return WandHelper.getNextSpell(stack);
+        return CastItemDataHelper.getNextSpell(stack);
     }
 
     @Override
     public @NotNull Spell getPreviousSpell(ItemStack stack) {
-        return WandHelper.getPreviousSpell(stack);
+        return CastItemDataHelper.getPreviousSpell(stack);
     }
 
     @Override
     public Spell[] getSpells(ItemStack stack) {
-        return WandHelper.getSpells(stack).toArray(new Spell[0]);
+        return CastItemDataHelper.getSpells(stack).toArray(new Spell[0]);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.command.debug;
 
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.content.command.argument.SpellArgument;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
@@ -28,7 +28,7 @@ public final class GenSpellBookCommand {
     }
 
     private static int execute(CommandContext<CommandSourceStack> c, ServerPlayer player, Spell spell) {
-        player.getInventory().add(SpellUtil.spellBookItem(spell));
+        player.getInventory().add(RegistryUtils.spellBookItem(spell));
         return 1;
     }
 

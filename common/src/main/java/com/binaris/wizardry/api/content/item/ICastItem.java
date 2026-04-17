@@ -11,44 +11,51 @@ import org.jetbrains.annotations.NotNull;
 
 
 /**
- * This helps items to hold and cast spells that could be consumables (like scrolls) or they may be durability-based
- * (like wands), it could also handle custom behaviours outside the mod like items that are special for certain spells,
- * unlock new modifiers, exclusive effects and much more. Custom spell casting items should implement this to integrate
- * properly with Electroblob's Wizardry Ecosystem. <br><br>
- * Used for the following:
- * <ul>
- *     <li>Display of the arcane workbench tooltip (in conjunction with {@link IManaStoringItem})</li>
- *     <li>Supplying information to the spell HUD</li>
- *     <li>Spell switching controls for different spells (Controlled by packets by main mod, don't worry)</li>
- * </ul>
+ * Offers a template for spell casting items to handle the base spell casting logic, cooldown, spell selection, cast
+ * verification and spell casting. Implementing this interface allows you to have a better integration with EBWR Ecosystem
+ * and order how the spell casting works in your item.
+ *
+ * @see IManaItem
+ * @see com.binaris.wizardry.api.content.util.CastItemDataHelper CastItemDataHelper
  */
-public interface ISpellCastingItem {
+public interface ICastItem {
 
     /**
-     * The items implementing this interface are responsible about how to use this. Normally you would call the events
-     * {@link SpellCastEvent.Pre} and {@link SpellCastEvent.Tick} in order to know when to allow the spell to run. <br><br>
-     * <p>
-     * You could also add some custom to logic (like special cooldowns or handling specific spells) if you want to.
+     * Normally you would call the events {@link SpellCastEvent.Pre} and {@link SpellCastEvent.Tick} in order to know
+     * when to allow the spell to run, but here you also handle any other conditions to allow casting.
+     *
+     * @param stack The ItemStack to cast the spell from
+     * @param spell The spell to cast
+     * @param ctx The context of the cast
+     * @return Whether the spell can be cast or not
      */
     boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx);
 
     /**
-     * The items implementing this interface are responsible about how to use this. This is where you make all the spell cast handling
-     * (normally just instant spells). For doing the continuous spells you should use {@link net.minecraft.world.item.Item#onUseTick(Level, LivingEntity, ItemStack, int)}
+     * This is where you make all the spell cast handling (normally just instant spells). For doing the continuous spells
+     * you could use {@link net.minecraft.world.item.Item#onUseTick(Level, LivingEntity, ItemStack, int)}
+     *
+     * @param stack The ItemStack to cast the spell from
+     * @param spell The spell to cast
+     * @param ctx The context of the cast
+     * @return Whether the spell was cast successfully or not
      */
     boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx);
 
     /**
-     * This gets the actual item that's on the ItemStack, normally you won't use this. Used by the Spell GUI to get
-     * the actual spell icon and some client related features
+     * Gets the current spell selected in the ItemStack. This is used for client-side rendering or spell selection utils.
+     *
+     * @param stack The ItemStack to get the current spell from
+     * @return The current spell selected in the ItemStack
      */
     @NotNull
     Spell getCurrentSpell(ItemStack stack);
 
     /**
-     * If your item will have more than just one spell loaded you need to override this in order to have a next spell
-     * on list, by default it just gets the current spell saved. Used by the Spell GUI to get the actual spell icon and
-     * some client related features
+     * Gets the next spell in the list of spells. By default, it just returns the current spell.
+     *
+     * @param stack The ItemStack to get the next spell from
+     * @return The next spell in the list of spells or the current spell if there is only one spell allowed
      */
     @NotNull
     default Spell getNextSpell(ItemStack stack) {

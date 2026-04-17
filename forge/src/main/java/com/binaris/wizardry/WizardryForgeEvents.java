@@ -1,7 +1,7 @@
 package com.binaris.wizardry;
 
 import com.binaris.wizardry.api.content.event.*;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
+import com.binaris.wizardry.setup.registries.RegisterFunction;
 import com.binaris.wizardry.capabilities.*;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.PropertiesForgeDataManager;

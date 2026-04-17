@@ -1,7 +1,7 @@
 package com.binaris.wizardry.client.gui.elements;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.client.EBClientConstants;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
@@ -84,7 +84,7 @@ public class TooltipElementText extends TooltipElement {
 
         @Override
         protected Component getText(ItemStack stack) {
-            IManaStoringItem manaItem = (IManaStoringItem) stack.getItem();
+            IManaItem manaItem = (IManaItem) stack.getItem();
             return Component.literal(I18n.get("container." + WizardryMainMod.MOD_ID + ".arcane_workbench.mana",
                     manaItem.getMana(stack), manaItem.getManaCapacity(stack))).withStyle(this.getStyle());
         }
@@ -97,7 +97,7 @@ public class TooltipElementText extends TooltipElement {
 
         @Override
         protected boolean isVisible(ItemStack stack) {
-            return stack.getItem() instanceof IManaStoringItem && ((IManaStoringItem) stack.getItem()).showManaInWorkbench(Minecraft.getInstance().player, stack);
+            return stack.getItem() instanceof IManaItem && ((IManaItem) stack.getItem()).showManaInWorkbench(Minecraft.getInstance().player, stack);
         }
     }
 }

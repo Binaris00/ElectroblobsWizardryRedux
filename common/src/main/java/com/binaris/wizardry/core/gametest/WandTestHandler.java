@@ -1,11 +1,11 @@
 package com.binaris.wizardry.core.gametest;
 
 import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.content.item.WandUpgradeItem;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
@@ -32,7 +32,7 @@ public final class WandTestHandler {
      */
     public static void wandBasicMovement(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, FULL_SPELL_LIST);
-        ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
+        ICastItem wandItem = (ICastItem) wand.getItem();
 
         wandItem.selectPreviousSpell(wand);
         GST.assertSpellEquals(helper, wand, Spells.EVADE, "selecting next spell from 'Fireball'");
@@ -53,7 +53,7 @@ public final class WandTestHandler {
      */
     public static void wandPartiallyEmpty(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, List.of(Spells.FIREBALL));
-        ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
+        ICastItem wandItem = (ICastItem) wand.getItem();
 
         wandItem.selectNextSpell(wand);
         wandItem.selectNextSpell(wand);
@@ -69,7 +69,7 @@ public final class WandTestHandler {
      */
     public static void wandCircularSelection(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, List.of(Spells.FIREBALL));
-        ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
+        ICastItem wandItem = (ICastItem) wand.getItem();
 
         IntStream.range(0, 5).mapToObj(i -> wand).forEach(wandItem::selectNextSpell);
         GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "cycling next through all slots");
@@ -84,7 +84,7 @@ public final class WandTestHandler {
      */
     public static void wandLiteralIndex(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, FULL_SPELL_LIST);
-        ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
+        ICastItem wandItem = (ICastItem) wand.getItem();
 
         wandItem.selectSpell(wand, 2);
         GST.assertSpellEquals(helper, wand, Spells.HEAL, "selecting index 2");
@@ -99,7 +99,7 @@ public final class WandTestHandler {
     /** Tests direct spell selection by index on a wand with only one spell loaded. */
     public static void wandLiteralIndexPartiallyEmpty(GameTestHelper helper) {
         ItemStack wand = setupWandWithSpells(helper, List.of(Spells.ICE_SHARD));
-        ISpellCastingItem wandItem = (ISpellCastingItem) wand.getItem();
+        ICastItem wandItem = (ICastItem) wand.getItem();
 
         wandItem.selectSpell(wand, 3);
         GST.assertIndexEquals(helper, wand, 3, "selecting index 3 on a partially empty wand");
@@ -112,11 +112,11 @@ public final class WandTestHandler {
     public static void siphonUpgradePlayerKillMob(GameTestHelper helper) {
         Player player = GST.mockPlayer(helper, new Vec3(1, 2.0, 1));
         ItemStack wand = EBItems.MASTER_WAND.get().getDefaultInstance();
-        WandHelper.applyUpgrade(wand, EBItems.SIPHON_UPGRADE.get());
+        CastItemDataHelper.applyUpgrade(wand, EBItems.SIPHON_UPGRADE.get());
 
         player.getInventory().items.set(0, wand);
 
-        IManaStoringItem manaItem = (IManaStoringItem) wand.getItem();
+        IManaItem manaItem = (IManaItem) wand.getItem();
         manaItem.setMana(wand, manaItem.getManaCapacity(wand) - 1);
         DamageSource deathSource = GST.createDamageSource(player, EBDamageSources.MAGIC);
 
@@ -134,11 +134,11 @@ public final class WandTestHandler {
         ItemStack wand = EBItems.MASTER_WAND.get().getDefaultInstance();
         AWTestHandler.TestContext ctx = AWTestHandler.setupTest(helper, wand);
 
-        IntStream.range(0, spells.size()).forEach(i -> ctx.workbench().setItem(i, SpellUtil.spellBookItem(spells.get(i))));
+        IntStream.range(0, spells.size()).forEach(i -> ctx.workbench().setItem(i, RegistryUtils.spellBookItem(spells.get(i))));
         ctx.menu().onApplyButtonPressed(ctx.player());
 
         wand = ctx.workbench().getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
-        List<Spell> wandSpells = WandHelper.getSpells(wand);
+        List<Spell> wandSpells = CastItemDataHelper.getSpells(wand);
 
         for (Spell spell : spells) {
             GST.assertTrue(helper, "Wand %s should contain %s spell after applying.".formatted(wand, spell), wandSpells.contains(spell));

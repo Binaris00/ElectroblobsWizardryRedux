@@ -3,9 +3,7 @@ package com.binaris.wizardry.setup.registries;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
-import com.binaris.wizardry.api.content.util.SpellUtil;
-import com.binaris.wizardry.client.NotImplementedItems;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -95,7 +93,7 @@ public final class EBCreativeTabs {
                 .filter(spell -> spell != Spells.NONE)
                 .sorted(Comparator.<Spell>comparingInt(s -> s.getTier().getLevel())
                         .thenComparingInt(s -> elements.indexOf(s.getElement())))
-                .forEach(spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SPELL_BOOK.get()), spell)));
+                .forEach(spell -> list.add(RegistryUtils.setSpell(new ItemStack(EBItems.SPELL_BOOK.get()), spell)));
         return list;
     }
 
@@ -106,7 +104,7 @@ public final class EBCreativeTabs {
                 .stream().filter(spell -> spell != Spells.NONE)
                 .sorted(Comparator.<Spell>comparingInt(s -> s.getTier().getLevel())
                         .thenComparingInt(s -> elements.indexOf(s.getElement())))
-                .forEach(spell -> list.add(SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), spell)));
+                .forEach(spell -> list.add(RegistryUtils.setSpell(new ItemStack(EBItems.SCROLL.get()), spell)));
         return list;
     }
 

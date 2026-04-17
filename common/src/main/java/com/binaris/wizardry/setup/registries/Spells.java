@@ -6,7 +6,6 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.content.entity.construct.*;
 import com.binaris.wizardry.content.entity.living.LightningWraith;
 import com.binaris.wizardry.content.entity.projectile.*;

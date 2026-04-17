@@ -1,7 +1,7 @@
 package com.binaris.wizardry.core.gametest;
 
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
-import com.binaris.wizardry.content.item.WizardArmorItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorItem;
 import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -15,7 +15,7 @@ public final class WizardArmorTestHandler {
 
     public static void armorNeverBreaks(GameTestHelper helper) {
         ItemStack stack = EBItems.WIZARD_BOOTS_FIRE.get().getDefaultInstance();
-        IManaStoringItem manaItem = (IManaStoringItem) stack.getItem();
+        IManaItem manaItem = (IManaItem) stack.getItem();
         Player player = GST.mockPlayer(helper, PLAYER_POS);
 
         stack.hurtAndBreak(9999, player, (a) -> {});
@@ -37,7 +37,7 @@ public final class WizardArmorTestHandler {
     public static void armorNoAttributesWithoutMana(GameTestHelper helper) {
         ItemStack stack = EBItems.WIZARD_HAT.get().getDefaultInstance();
         WizardArmorItem armorItem = (WizardArmorItem) stack.getItem();
-        IManaStoringItem manaItem = (IManaStoringItem) stack.getItem();
+        IManaItem manaItem = (IManaItem) stack.getItem();
         manaItem.setMana(stack, 0);
 
         var modifiers = armorItem.getCustomAttributes(stack, EquipmentSlot.HEAD);

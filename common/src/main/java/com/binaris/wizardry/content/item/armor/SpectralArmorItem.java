@@ -1,4 +1,4 @@
-package com.binaris.wizardry.content.item;
+package com.binaris.wizardry.content.item.armor;
 
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;

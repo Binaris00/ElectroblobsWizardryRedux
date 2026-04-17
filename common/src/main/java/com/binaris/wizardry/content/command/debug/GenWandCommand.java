@@ -4,7 +4,7 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.content.command.argument.ElementArgument;
 import com.binaris.wizardry.content.command.argument.SpellArgument;
 import com.binaris.wizardry.content.command.argument.SpellTierArgument;
@@ -114,7 +114,7 @@ public final class GenWandCommand {
         }
 
         ItemStack stack = wand.getDefaultInstance();
-        if (spells.length != 0) WandHelper.setSpells(stack, Arrays.stream(spells).toList());
+        if (spells.length != 0) CastItemDataHelper.setSpells(stack, Arrays.stream(spells).toList());
         player.getInventory().add(stack);
         return 1;
     }

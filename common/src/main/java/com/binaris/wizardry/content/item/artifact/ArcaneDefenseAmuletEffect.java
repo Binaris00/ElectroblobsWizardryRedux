@@ -1,6 +1,6 @@
 package com.binaris.wizardry.content.item.artifact;
 
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -16,8 +16,8 @@ public class ArcaneDefenseAmuletEffect implements IArtifactEffect {
 
         if (player.tickCount % MANA_RECHARGE_INTERVAL_TICKS == 0) {
             for (ItemStack armorSlot : player.getArmorSlots()) {
-                if (armorSlot.getItem() instanceof IManaStoringItem)
-                    ((IManaStoringItem) armorSlot.getItem()).rechargeMana(armorSlot, 1);
+                if (armorSlot.getItem() instanceof IManaItem)
+                    ((IManaItem) armorSlot.getItem()).rechargeMana(armorSlot, 1);
             }
         }
     }

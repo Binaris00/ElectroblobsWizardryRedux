@@ -1,7 +1,7 @@
 package com.binaris.wizardry.mixin;
 
 import com.binaris.wizardry.client.BlendingHumanoidModel;
-import com.binaris.wizardry.content.item.SpectralArmorItem;
+import com.binaris.wizardry.content.item.armor.SpectralArmorItem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.geom.ModelLayers;

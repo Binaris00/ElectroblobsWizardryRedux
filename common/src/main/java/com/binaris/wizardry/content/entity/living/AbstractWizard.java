@@ -12,7 +12,7 @@ import com.binaris.wizardry.content.entity.goal.AttackSpellBasicGoal;
 import com.binaris.wizardry.content.entity.goal.HardLookAtTargetGoal;
 import com.binaris.wizardry.content.entity.goal.RangedKitingGoal;
 import com.binaris.wizardry.content.item.WandItem;
-import com.binaris.wizardry.content.item.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
@@ -225,7 +225,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         }
         ItemStack wand = new ItemStack(item);
         Spell[] spellsArray = list.toArray(new Spell[0]);
-        WandHelper.setSpells(wand, Arrays.asList(spellsArray));
+        CastItemDataHelper.setSpells(wand, Arrays.asList(spellsArray));
         this.setItemSlot(EquipmentSlot.MAINHAND, wand);
     }
 

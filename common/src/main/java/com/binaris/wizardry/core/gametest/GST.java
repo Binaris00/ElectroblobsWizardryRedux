@@ -3,8 +3,8 @@ package com.binaris.wizardry.core.gametest;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
-import com.binaris.wizardry.api.content.util.WandHelper;
-import com.binaris.wizardry.content.item.WizardArmorType;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
+import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -138,7 +138,7 @@ public class GST {
      * a message that includes the given action description if they are not.
      */
     public static void assertSpellEquals(GameTestHelper helper, ItemStack wand, Spell expected, String action) {
-        Spell selectedSpell = WandHelper.getCurrentSpell(wand);
+        Spell selectedSpell = CastItemDataHelper.getCurrentSpell(wand);
         assertEquals(helper,
                 "Selected spell should be '%s' after %s.".formatted(expected, action),
                 expected,
@@ -150,7 +150,7 @@ public class GST {
      * a message that includes the given action description if they are not.
      */
     public static void assertIndexEquals(GameTestHelper helper, ItemStack wand, int expected, String action) {
-        int selectedIndex = WandHelper.getCurrentSpellIndex(wand);
+        int selectedIndex = CastItemDataHelper.getCurrentSpellIndex(wand);
         assertEquals(helper,
                 "Selected spell index should be %d after %s.".formatted(expected, action),
                 expected,

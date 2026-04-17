@@ -1,7 +1,7 @@
 package com.binaris.wizardry.core.networking.c2s;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.core.networking.abst.Message;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
@@ -32,12 +32,12 @@ public class SpellAccessPacketC2S implements Message {
 
         ItemStack wand = player.getMainHandItem();
 
-        if (!(wand.getItem() instanceof ISpellCastingItem)) {
+        if (!(wand.getItem() instanceof ICastItem)) {
             wand = player.getOffhandItem();
         }
 
-        if (wand.getItem() instanceof ISpellCastingItem) {
-            ((ISpellCastingItem) wand.getItem()).selectSpell(wand, index);
+        if (wand.getItem() instanceof ICastItem) {
+            ((ICastItem) wand.getItem()).selectSpell(wand, index);
             player.stopUsingItem();
         }
     }

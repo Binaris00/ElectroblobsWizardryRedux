@@ -3,7 +3,7 @@ package com.binaris.wizardry.content.entity.projectile;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.entity.projectile.MagicArrowEntity;
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
@@ -84,9 +84,9 @@ public class ForceArrow extends MagicArrowEntity {
 
         if (!player.isCreative() && ArtifactChannel.isEquipped(player, EBItems.RING_MANA_RETURN.get())) {
             InventoryUtil.getHotBarAndOffhand(player)
-                    .stream().filter(st -> st.getItem() instanceof IManaStoringItem)
+                    .stream().filter(st -> st.getItem() instanceof IManaItem)
                     .findAny()
-                    .ifPresent(st -> ((IManaStoringItem) st.getItem()).rechargeMana(st, mana));
+                    .ifPresent(st -> ((IManaItem) st.getItem()).rechargeMana(st, mana));
         }
     }
 

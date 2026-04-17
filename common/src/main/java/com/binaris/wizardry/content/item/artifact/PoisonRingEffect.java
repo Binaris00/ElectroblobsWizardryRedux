@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
@@ -34,7 +34,7 @@ public class PoisonRingEffect implements IArtifactEffect {
             ItemStack wand = player.getItemInHand(player.getUsedItemHand());
             if (wand.isEmpty()) return;
             Item item = wand.getItem();
-            if (item instanceof ISpellCastingItem castItem && castItem.getCurrentSpell(wand).getElement() == Elements.EARTH) {
+            if (item instanceof ICastItem castItem && castItem.getCurrentSpell(wand).getElement() == Elements.EARTH) {
                 damaged.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION));
             }
         }

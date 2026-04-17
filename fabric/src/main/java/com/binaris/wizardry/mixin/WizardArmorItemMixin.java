@@ -1,6 +1,6 @@
 package com.binaris.wizardry.mixin;
 
-import com.binaris.wizardry.content.item.WizardArmorItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorItem;
 import com.google.common.collect.Multimap;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;

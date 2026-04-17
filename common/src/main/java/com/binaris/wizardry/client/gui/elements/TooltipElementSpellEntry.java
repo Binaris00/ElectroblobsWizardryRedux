@@ -2,10 +2,10 @@ package com.binaris.wizardry.client.gui.elements;
 
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
-import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.content.item.ScrollItem;
@@ -37,7 +37,7 @@ public class TooltipElementSpellEntry extends TooltipElementText {
     private boolean shouldFlash(ItemStack stack) {
         ItemStack spellBook = screen.getMenu().getSlot(index).getItem();
         return !spellBook.isEmpty() && (spellBook.getItem() instanceof SpellBookItem || spellBook.getItem() instanceof ScrollItem)
-                && SpellUtil.getSpell(stack) != ((ISpellCastingItem) stack.getItem()).getSpells(stack)[index];
+                && RegistryUtils.getSpell(stack) != ((ICastItem) stack.getItem()).getSpells(stack)[index];
     }
 
     private float getAlpha(float partialTicks) {
@@ -46,7 +46,7 @@ public class TooltipElementSpellEntry extends TooltipElementText {
 
     @Override
     protected boolean isVisible(ItemStack stack) {
-        return stack.getItem() instanceof ISpellCastingItem && index < ((ISpellCastingItem) stack.getItem()).getSpells(stack).length;
+        return stack.getItem() instanceof ICastItem && index < ((ICastItem) stack.getItem()).getSpells(stack).length;
     }
 
     @Override
@@ -89,9 +89,9 @@ public class TooltipElementSpellEntry extends TooltipElementText {
         ItemStack spellBook = screen.getMenu().getSlot(index).getItem();
 
         if (!spellBook.isEmpty() && (spellBook.getItem() instanceof SpellBookItem || spellBook.getItem() instanceof ScrollItem)) {
-            return SpellUtil.getSpell(spellBook);
+            return RegistryUtils.getSpell(spellBook);
         } else {
-            Spell spell = ((ISpellCastingItem) stack.getItem()).getSpells(stack)[index];
+            Spell spell = ((ICastItem) stack.getItem()).getSpells(stack)[index];
             return spell == null ? Spells.NONE : spell;
         }
     }

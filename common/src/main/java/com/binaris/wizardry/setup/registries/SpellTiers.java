@@ -2,7 +2,6 @@ package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.spell.SpellTier;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.content.spell_tier.AdvancedTier;
 import com.binaris.wizardry.content.spell_tier.ApprenticeTier;
 import com.binaris.wizardry.content.spell_tier.MasterTier;

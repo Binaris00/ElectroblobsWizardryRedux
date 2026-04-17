@@ -1,6 +1,6 @@
 package com.binaris.wizardry.client.sound;
 
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -16,8 +16,8 @@ public class MovingSoundSpellCharge extends MovingSoundEntity<LivingEntity> {
         if (source.isUsingItem()) {
             ItemStack stack = source.getUseItem();
 
-            if (stack.getItem() instanceof ISpellCastingItem) {
-                if (source.getTicksUsingItem() < ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack).getChargeUp()) {
+            if (stack.getItem() instanceof ICastItem) {
+                if (source.getTicksUsingItem() < ((ICastItem) stack.getItem()).getCurrentSpell(stack).getChargeUp()) {
                     super.tick();
                     return;
                 }

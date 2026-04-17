@@ -1,6 +1,6 @@
 package com.binaris.wizardry.api.content.entity.construct;
 
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.core.AllyDesignation;
 import net.minecraft.nbt.CompoundTag;
@@ -42,7 +42,7 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
 
     @Override
     public @NotNull InteractionResult interactAt(@NotNull Player player, @NotNull Vec3 vec3, @NotNull InteractionHand hand) {
-        if (lifetime == -1 && getCaster() == player && player.isShiftKeyDown() && player.getMainHandItem().getItem() instanceof ISpellCastingItem) {
+        if (lifetime == -1 && getCaster() == player && player.isShiftKeyDown() && player.getMainHandItem().getItem() instanceof ICastItem) {
             this.despawn();
             return InteractionResult.SUCCESS;
         }

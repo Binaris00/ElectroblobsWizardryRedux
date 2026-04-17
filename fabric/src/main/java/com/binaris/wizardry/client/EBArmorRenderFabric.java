@@ -3,7 +3,7 @@ package com.binaris.wizardry.client;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.render.SpectralArmorRenderer;
 import com.binaris.wizardry.client.render.WizardArmorRenderer;
-import com.binaris.wizardry.content.item.WizardArmorItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorItem;
 import com.binaris.wizardry.setup.registries.EBItems;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.client.Minecraft;

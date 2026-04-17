@@ -1,11 +1,11 @@
 package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.content.data.SpellManagerData;
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
-import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
@@ -24,7 +24,7 @@ public class BlankScrollItem extends Item implements IWorkbenchItem {
     @Override
     public boolean onApplyButtonPressed(Player player, Slot centre, Slot crystals, Slot upgrade, Slot[] spellBooks) {
         if (spellBooks[0].getItem().isEmpty() || crystals.getItem().isEmpty()) return false;
-        Spell spell = SpellUtil.getSpell(spellBooks[0].getItem());
+        Spell spell = RegistryUtils.getSpell(spellBooks[0].getItem());
 
         if (!canPlayerUseSpell(player, spell)) return false;
 
@@ -55,7 +55,7 @@ public class BlankScrollItem extends Item implements IWorkbenchItem {
     }
 
     private int getManaPerCrystal(ItemStack crystalStack) {
-        if (crystalStack.getItem() instanceof IManaStoringItem manaStoringItem) {
+        if (crystalStack.getItem() instanceof IManaItem manaStoringItem) {
             return manaStoringItem.getManaCapacity(crystalStack);
         }
         return EBConfig.MANA_PER_CRYSTAL.get(); // default
@@ -67,7 +67,7 @@ public class BlankScrollItem extends Item implements IWorkbenchItem {
 
     private void consumeCrystalsAndCreateScroll(Slot crystals, Slot centre, Spell spell, int cost, int manaPerCrystal) {
         crystals.remove(Mth.ceil((float) cost / manaPerCrystal));
-        ItemStack scroll = SpellUtil.setSpell(EBItems.SCROLL.get().getDefaultInstance(), spell);
+        ItemStack scroll = RegistryUtils.setSpell(EBItems.SCROLL.get().getDefaultInstance(), spell);
         scroll.setCount(centre.getItem().getCount());
         centre.set(scroll);
     }

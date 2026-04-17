@@ -2,10 +2,12 @@ package com.binaris.wizardry.core.gametest;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
-import com.binaris.wizardry.api.content.util.SpellUtil;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.content.blockentity.ArcaneWorkbenchBlockEntity;
 import com.binaris.wizardry.content.item.*;
+import com.binaris.wizardry.content.item.armor.WizardArmorItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -40,11 +42,11 @@ public class AWTestHandler {
 
         TestContext ctx = setupTest(helper, wandStack);
 
-        IntStream.range(0, validSpells.size()).forEach(i -> ctx.workbench.setItem(i, SpellUtil.spellBookItem(validSpells.get(i))));
+        IntStream.range(0, validSpells.size()).forEach(i -> ctx.workbench.setItem(i, RegistryUtils.spellBookItem(validSpells.get(i))));
         ctx.menu.onApplyButtonPressed(ctx.player);
 
         wandStack = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
-        List<Spell> wandSpells = WandHelper.getSpells(wandStack);
+        List<Spell> wandSpells = CastItemDataHelper.getSpells(wandStack);
 
         validSpells.forEach(spell -> GST.assertTrue(helper, "Wand %s should contain %s spell after applying.".formatted(wandItem, spell), wandSpells.contains(spell)));
     }
@@ -62,10 +64,10 @@ public class AWTestHandler {
         if (wandItem.getTier(wandStack) == SpellTiers.MASTER) return;
 
         SpellTier nextTier = wandItem.getTier(wandStack).next();
-        WandHelper.setProgression(wandStack, nextTier.getProgression());
+        CastItemDataHelper.setProgression(wandStack, nextTier.getProgression());
 
         TestContext ctx = setupTest(helper, wandStack);
-        ctx.workbench.setItem(ArcaneWorkbenchMenu.UPGRADE_SLOT, SpellUtil.createArcaneTome(nextTier));
+        ctx.workbench.setItem(ArcaneWorkbenchMenu.UPGRADE_SLOT, RegistryUtils.createArcaneTome(nextTier));
         ctx.menu.onApplyButtonPressed(ctx.player);
 
         wandStack = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
@@ -87,10 +89,10 @@ public class AWTestHandler {
         if (wandItem.getTier(wandStack) == SpellTiers.MASTER) return;
 
         SpellTier nextTier = wandItem.getTier(wandStack).next();
-        WandHelper.setProgression(wandStack, nextTier.getProgression());
+        CastItemDataHelper.setProgression(wandStack, nextTier.getProgression());
 
         TestContext ctx = setupTest(helper, wandStack);
-        ctx.workbench.setItem(ArcaneWorkbenchMenu.UPGRADE_SLOT, SpellUtil.getArcaneTome(nextTier));
+        ctx.workbench.setItem(ArcaneWorkbenchMenu.UPGRADE_SLOT, RegistryUtils.getArcaneTome(nextTier));
         ctx.menu.onApplyButtonPressed(ctx.player);
 
         wandStack = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
@@ -102,12 +104,12 @@ public class AWTestHandler {
     public static void putSpellOnBlankScroll(GameTestHelper helper, Spell spell) {
         TestContext ctx = setupTest(helper, EBItems.BLANK_SCROLL.get().getDefaultInstance());
 
-        ctx.workbench.setItem(0, SpellUtil.spellBookItem(spell));
+        ctx.workbench.setItem(0, RegistryUtils.spellBookItem(spell));
         ctx.workbench.setItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT, new ItemStack(EBItems.MAGIC_CRYSTAL.get(), 10));
         ctx.menu.onApplyButtonPressed(ctx.player);
 
         ItemStack scroll = ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT);
-        Spell resultSpell = SpellUtil.getSpell(scroll);
+        Spell resultSpell = RegistryUtils.getSpell(scroll);
 
         GST.assertFalse(helper, "Scroll should not be blank or empty: " + scroll, scroll.isEmpty() || scroll.getItem() instanceof BlankScrollItem);
         GST.assertEquals(helper, "Scroll should contain " + spell + " spell.", spell, resultSpell);
@@ -116,10 +118,10 @@ public class AWTestHandler {
 
     /** Try to put a spell into a not blank scroll, should be false */
     public static void putSpellOnScrollFilled(GameTestHelper helper) {
-        ItemStack scroll = SpellUtil.setSpell(EBItems.SCROLL.get().getDefaultInstance(), Spells.FIREBALL);
+        ItemStack scroll = RegistryUtils.setSpell(EBItems.SCROLL.get().getDefaultInstance(), Spells.FIREBALL);
         TestContext ctx = setupTest(helper, scroll);
 
-        ctx.workbench.setItem(0, SpellUtil.spellBookItem(Spells.ICE_SHARD));
+        ctx.workbench.setItem(0, RegistryUtils.spellBookItem(Spells.ICE_SHARD));
         ctx.workbench.setItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT, new ItemStack(EBItems.MAGIC_CRYSTAL.get(), 10));
         ctx.menu.onApplyButtonPressed(ctx.player);
 
@@ -127,7 +129,7 @@ public class AWTestHandler {
 
         GST.assertFalse(helper, "Scroll should not be blank or empty: " + scroll, scroll.isEmpty() || scroll.getItem() instanceof BlankScrollItem);
         GST.assertFalse(helper, "Crystals shouldn't be consumed.", ctx.workbench.getItem(ArcaneWorkbenchMenu.CRYSTAL_SLOT).isEmpty());
-        GST.assertEquals(helper, "Scroll should still contain original spell.", Spells.FIREBALL, SpellUtil.getSpell(scroll));
+        GST.assertEquals(helper, "Scroll should still contain original spell.", Spells.FIREBALL, RegistryUtils.getSpell(scroll));
         helper.succeed();
     }
 
@@ -199,9 +201,9 @@ public class AWTestHandler {
     /** Tests that spell books cannot exceed the stack limit of 1 per slot in the workbench. */
     public static void cannotExceedSpellBookLimit(GameTestHelper helper, Spell spell) {
         TestContext ctx = setupTest(helper, EBItems.NOVICE_HEALING_WAND.get().getDefaultInstance());
-        ctx.workbench.setItem(0, SpellUtil.spellBookItem(spell));
+        ctx.workbench.setItem(0, RegistryUtils.spellBookItem(spell));
 
-        ItemStack spellBooks = SpellUtil.spellBookItem(spell);
+        ItemStack spellBooks = RegistryUtils.spellBookItem(spell);
         spellBooks.setCount(64);
         ctx.player.getInventory().add(spellBooks);
 
@@ -252,7 +254,7 @@ public class AWTestHandler {
     private static int findSpellBookInMenu(ArcaneWorkbenchMenu menu, Spell spell) {
         for (int i = 11; i < menu.slots.size(); i++) {
             ItemStack slotItem = menu.getSlot(i).getItem();
-            if (slotItem.getItem() instanceof SpellBookItem && SpellUtil.getSpell(slotItem) == spell) {
+            if (slotItem.getItem() instanceof SpellBookItem && RegistryUtils.getSpell(slotItem) == spell) {
                 return i;
             }
         }

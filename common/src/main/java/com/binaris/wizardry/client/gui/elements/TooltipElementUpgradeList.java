@@ -1,7 +1,7 @@
 package com.binaris.wizardry.client.gui.elements;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.client.EBClientConstants;
 import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import net.minecraft.ChatFormatting;
@@ -22,6 +22,6 @@ public class TooltipElementUpgradeList extends TooltipElementText {
 
     @Override
     protected boolean isVisible(ItemStack stack) {
-        return WandHelper.getTotalUpgrades(stack) > 0;
+        return CastItemDataHelper.getTotalUpgrades(stack) > 0;
     }
 }

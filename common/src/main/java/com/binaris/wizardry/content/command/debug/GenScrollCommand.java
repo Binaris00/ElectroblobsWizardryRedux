@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.command.debug;
 
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.content.command.argument.SpellArgument;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.mojang.brigadier.CommandDispatcher;
@@ -30,7 +30,7 @@ public final class GenScrollCommand {
     }
 
     private static int execute(CommandContext<CommandSourceStack> c, ServerPlayer player, Spell spell) {
-        player.getInventory().add(SpellUtil.setSpell(new ItemStack(EBItems.SCROLL.get()), spell));
+        player.getInventory().add(RegistryUtils.setSpell(new ItemStack(EBItems.SCROLL.get()), spell));
         return 1;
     }
 
