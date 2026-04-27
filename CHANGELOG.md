@@ -1,1 +1,1 @@
-- reconstruct: changed recent spell tracking to use a deque instead of a stack
+- fix: wizard and evil wizards mobs now can step up blocks when kiting

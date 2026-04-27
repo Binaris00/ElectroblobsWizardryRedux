@@ -4,6 +4,7 @@ package com.binaris.wizardry.content.entity.goal;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -116,6 +117,20 @@ public class RangedKitingGoal extends Goal {
             // Optimal distance: STOP MOVING
             this.stopMovement();
         }
+
+        handleStepUp();
+    }
+
+    private void handleStepUp() {
+        if (mob.horizontalCollision && mob.onGround()) {
+            if (!canStepUp()) return;
+            mob.setDeltaMovement(mob.getDeltaMovement().x, 0.42f, mob.getDeltaMovement().z);
+        }
+    }
+
+    private boolean canStepUp() {
+        AABB checkBox = mob.getBoundingBox().move(0.0, 0.42, 0.0);
+        return mob.level().noCollision(mob, checkBox);
     }
 
     /** Goes away from the target applying velocity directly backwards */
