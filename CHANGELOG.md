@@ -1,1 +1,2 @@
 - fix: wizard and evil wizards mobs now can step up blocks when kiting
+- fix: progression now works correctly with modifiers

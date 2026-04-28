@@ -432,7 +432,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
 
         if (!shouldAddProgression) return;
 
-        int progression = CastItemUtils.calcCastProgression(spell, ctx.modifiers());
+        int progression = Math.max(1, CastItemUtils.calcCastProgression(spell, ctx.modifiers()));
         CastItemDataHelper.addProgression(stack, progression);
         checkLevelUp(ctx, stack, progression);
     }

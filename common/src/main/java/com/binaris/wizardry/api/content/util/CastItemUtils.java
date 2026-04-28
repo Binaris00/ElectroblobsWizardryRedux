@@ -129,7 +129,7 @@ public final class CastItemUtils {
         if (!data.hasSpellBeenDiscovered(spell)) progressionModifier *= 5f;
 
 
-        modifiers.add(SpellModifiers.PROGRESSION, progressionModifier);
+        modifiers.set(SpellModifiers.PROGRESSION, progressionModifier);
         return modifiers;
     }
 
@@ -199,6 +199,7 @@ public final class CastItemUtils {
 
     /**
      * Calculates the progression of a spell based on its base cost and the given spell modifiers.
+     * This could result in negative values! Always try to check the result before using it.
      *
      * @param spell     The spell being cast
      * @param modifiers The spell modifiers affecting the cast

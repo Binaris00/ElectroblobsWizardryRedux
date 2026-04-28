@@ -272,6 +272,11 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         this.spells = (List<Spell>) NBTExtras.tagToList(nbt.getList("spells", Tag.TAG_STRING), (StringTag tag) -> Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getAsString())));
     }
 
+    @Override
+    public float maxUpStep() {
+        return 1.0F;
+    }
+
     private int getHealCooldown() {
         return this.entityData.get(HEAL_COOLDOWN);
     }
