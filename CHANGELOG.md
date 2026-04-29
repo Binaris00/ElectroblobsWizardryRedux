@@ -1,2 +1,1 @@
-- fix: wizard and evil wizards mobs now can step up blocks when kiting
-- fix: progression now works correctly with modifiers
+- fix: better progression reduction calc, when 60% of the max recent spells are casted, the reduction is applied (50% less progression)

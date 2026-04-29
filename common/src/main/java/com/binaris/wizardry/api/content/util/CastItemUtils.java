@@ -9,7 +9,6 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.core.EBConstants;
-import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.networking.s2c.SpellCastS2C;
 import com.binaris.wizardry.core.platform.Services;
@@ -113,9 +112,9 @@ public final class CastItemUtils {
         applyModifierUpgrade(stack, modifiers, EBItems.BLAST_UPGRADE, SpellModifiers.BLAST, EBConstants.BLAST_RADIUS_INCREASE_PER_LEVEL, false);
         applyModifierUpgrade(stack, modifiers, EBItems.COOLDOWN_UPGRADE, SpellModifiers.COOLDOWN, EBConstants.COOLDOWN_REDUCTION_PER_LEVEL, true);
 
-        float progressionModifier = 1.0F - ((float) Services.OBJECT_DATA.getWizardData(player).countRecentCasts(spell) / EBConstants.MAX_RECENT_SPELLS) * EBConfig.MAX_PROGRESSION_REDUCTION.get();
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
         WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
+        float progressionModifier = wizardData.countRecentCasts(spell) < (EBConstants.MAX_RECENT_SPELLS * 0.6) ? 1.0f : 0.5f;
 
         if (stack.getItem() instanceof IElementValue elementValue && stack.getItem() instanceof ITierValue tierValue) {
             if (elementValue.getElement() == spell.getElement()) {
@@ -127,7 +126,6 @@ public final class CastItemUtils {
         }
 
         if (!data.hasSpellBeenDiscovered(spell)) progressionModifier *= 5f;
-
 
         modifiers.set(SpellModifiers.PROGRESSION, progressionModifier);
         return modifiers;

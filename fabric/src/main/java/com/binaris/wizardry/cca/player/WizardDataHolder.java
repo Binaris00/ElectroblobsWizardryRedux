@@ -92,7 +92,12 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
 
     @Override
     public void trackRecentSpell(Spell spell, long timestamp) {
-        recentSpells.add(new RecentSpellCast(spell, timestamp));
+        recentSpells.addLast(new RecentSpellCast(spell, timestamp));
+
+        while (recentSpells.size() > EBConstants.MAX_RECENT_SPELLS) {
+            recentSpells.removeFirst();
+        }
+
         sync();
     }
 

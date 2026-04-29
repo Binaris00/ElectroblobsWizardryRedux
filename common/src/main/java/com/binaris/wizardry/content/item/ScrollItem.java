@@ -1,6 +1,7 @@
 package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.client.util.ClientUtils;
+import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
@@ -111,16 +112,14 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
             ctx.caster().getCooldowns().addCooldown(this, CastItemUtils.calcCastCooldown(spell, ctx.modifiers()));
         }
 
-        if (ctx.castingTicks() == 0) {
-            CastItemUtils.trackSpellUsage(ctx.caster(), spell);
-        }
-
         return true;
     }
 
     private void finishCast(ItemStack stack, Level world, LivingEntity entity, int timeCharged) {
         if (!(entity instanceof Player player)) return;
         Spell spell = RegistryUtils.getSpell(stack);
+        WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
+        if (!world.isClientSide) CastItemUtils.trackSpellUsage(player, spell);
         if (spell.isInstantCast()) return;
 
         if (!player.isCreative()) {
@@ -129,7 +128,7 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
         }
 
         int castingTick = stack.getUseDuration() - timeCharged;
-        SpellModifiers modifiers = Services.OBJECT_DATA.getWizardData(player).getSpellModifiers();
+        SpellModifiers modifiers = wizardData.getSpellModifiers();
 
         WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, entity, modifiers, castingTick));
         spell.endCast(new CastContext(world, entity, castingTick, modifiers));

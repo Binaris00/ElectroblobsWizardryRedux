@@ -108,7 +108,12 @@ public class WizardDataHolder implements INBTSerializable<CompoundTag>, WizardDa
 
     @Override
     public void trackRecentSpell(Spell spell, long timestamp) {
-        recentSpells.add(new RecentSpellCast(spell, timestamp));
+        recentSpells.addLast(new RecentSpellCast(spell, timestamp));
+
+        while (recentSpells.size() > EBConstants.MAX_RECENT_SPELLS) {
+            recentSpells.removeFirst();
+        }
+
         sync();
     }
 

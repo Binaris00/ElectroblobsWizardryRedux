@@ -13,6 +13,7 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.*;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
 import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.config.EBConfig;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.platform.Services;
@@ -142,7 +143,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         if (!spell.isInstantCast()) ctx.caster().startUsingItem(ctx.hand());
 
         handleProgression(ctx, spell, stack);
-        CastItemUtils.trackSpellUsage(ctx.caster(), spell);
+        if (spell.isInstantCast()) CastItemUtils.trackSpellUsage(ctx.caster(), spell);
         return true;
     }
 
@@ -177,8 +178,8 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
 
             if (!level.isClientSide) {
                 this.consumeMana(stack, accumulatedCost, player);
-
                 if (!player.isCreative()) CastItemDataHelper.setCurrentCooldown(stack, totalCost, level.getGameTime());
+                CastItemUtils.trackSpellUsage(player, spell);
             }
         }
     }
@@ -431,6 +432,8 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
                 : ctx.castingTicks() % 20 == 0;
 
         if (!shouldAddProgression) return;
+
+        EBLogger.info("Recent cast: " + Services.OBJECT_DATA.getWizardData(ctx.caster()).getRecentSpells());
 
         int progression = Math.max(1, CastItemUtils.calcCastProgression(spell, ctx.modifiers()));
         CastItemDataHelper.addProgression(stack, progression);

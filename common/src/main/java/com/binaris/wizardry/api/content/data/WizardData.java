@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -109,5 +110,9 @@ public interface WizardData {
     Random getRandom();
 
     record RecentSpellCast(Spell spell, long timestamp) {
+        @Override
+        public @NotNull String toString() {
+            return spell.getLocation().getNamespace() + ":" + timestamp;
+        }
     }
 }
