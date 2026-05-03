@@ -1,6 +1,6 @@
 package com.binaris.wizardry.core.mixin.client;
 
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
@@ -29,7 +29,7 @@ public abstract class LocalPlayerMixin {
             input.shiftKeyDown = false;
         }
 
-        if (ArtifactChannel.isEquipped(player, EBItems.CHARM_MOVE_SPEED.get()) && player.isUsingItem() && player.getUseItem().getItem() instanceof ISpellCastingItem) {
+        if (ArtifactChannel.isEquipped(player, EBItems.CHARM_MOVE_SPEED.get()) && player.isUsingItem() && player.getUseItem().getItem() instanceof ICastItem) {
             input.leftImpulse *= 4;
             input.forwardImpulse *= 4;
         }

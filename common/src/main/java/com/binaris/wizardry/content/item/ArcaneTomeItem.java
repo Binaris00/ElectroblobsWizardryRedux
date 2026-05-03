@@ -2,6 +2,7 @@ package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.content.item.ITierValue;
 import com.binaris.wizardry.api.content.spell.SpellTier;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.ChatFormatting;
@@ -23,8 +24,8 @@ import java.util.List;
  * item's NBT. This allows for more flexible things (like having custom spell tier on server side and using it here without
  * having to create a new item for each tier).
  *
- * @see com.binaris.wizardry.api.content.util.SpellUtil#createArcaneTome(SpellTier) SpellUtil.createArcaneTome(SpellTier)
- * @see com.binaris.wizardry.api.content.util.SpellUtil#getArcaneTome(SpellTier) SpellUtil.getArcaneTome(SpellTier)
+ * @see RegistryUtils#createArcaneTome(SpellTier) SpellUtil.createArcaneTome(SpellTier)
+ * @see RegistryUtils#getArcaneTome(SpellTier) SpellUtil.getArcaneTome(SpellTier)
  */
 public class ArcaneTomeItem extends Item implements ITierValue {
     @Nullable SpellTier tier;

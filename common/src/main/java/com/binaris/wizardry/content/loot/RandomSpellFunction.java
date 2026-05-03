@@ -1,12 +1,12 @@
 package com.binaris.wizardry.content.loot;
 
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.spell.SpellTier;
-import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
@@ -74,8 +74,8 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         Player player = lootContext.getParamOrNull(LootContextParams.LAST_DAMAGE_PLAYER);
         Spell spell = pickRandomSpell(stack, lootContext.getRandom(), context, player);
 
-        if (spell == Spells.NONE) return SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
-        return SpellUtil.setSpell(stack, spell);
+        if (spell == Spells.NONE) return RegistryUtils.setSpell(stack, Spells.MAGIC_MISSILE);
+        return RegistryUtils.setSpell(stack, spell);
     }
 
     private Spell pickRandomSpell(ItemStack stack, RandomSource random, SpellContext context, Player player) {

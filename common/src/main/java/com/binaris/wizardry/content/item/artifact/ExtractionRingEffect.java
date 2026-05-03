@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
@@ -15,8 +15,8 @@ public class ExtractionRingEffect implements IArtifactEffect {
         if (!(event.getSource().is(EBDamageSources.SORCERY))) return;
 
         InventoryUtil.getHotBarAndOffhand(player).stream()
-                .filter(s -> s.getItem() instanceof IManaStoringItem && !((IManaStoringItem) s.getItem()).isManaFull(s))
+                .filter(s -> s.getItem() instanceof IManaItem && !((IManaItem) s.getItem()).isManaFull(s))
                 .findFirst()
-                .ifPresent(s -> ((IManaStoringItem) s.getItem()).rechargeMana(s, 4 + player.level().random.nextInt(3)));
+                .ifPresent(s -> ((IManaItem) s.getItem()).rechargeMana(s, 4 + player.level().random.nextInt(3)));
     }
 }

@@ -199,7 +199,7 @@ public final class ParticleBuilder {
 
         for (int i = 0; i < 8; i++) {
             px = x + world.random.nextDouble() - 0.5;
-            py = y + world.random.nextDouble() + 0.5;
+            py = y + world.random.nextDouble() - 0.5;
             pz = z + world.random.nextDouble() - 0.5;
             ParticleBuilder.create(EBParticles.SPARK).pos(px, py, pz).spawn(world);
 

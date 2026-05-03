@@ -1,7 +1,7 @@
 package com.binaris.wizardry.api.client.util;
 
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.client.gui.screens.SpellBookScreen;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.core.mixin.accessor.MerchantMenuAccessor;
@@ -71,7 +71,7 @@ public class ClientUtils {
     }
 
     public static Component getScrollDisplayName(ItemStack scroll) {
-        Spell spell = SpellUtil.getSpell(scroll);
+        Spell spell = RegistryUtils.getSpell(scroll);
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, scroll);
         Component name = discovered ? spell.getDescriptionFormatted() :
                 SpellGlyphData.getGlyphNameFormatted(spell, GlyphClientHandler.INSTANCE.getGlyphData());
@@ -79,7 +79,7 @@ public class ClientUtils {
     }
 
     public static Component getBookDisplayName(ItemStack book) {
-        Spell spell = SpellUtil.getSpell(book);
+        Spell spell = RegistryUtils.getSpell(book);
         if (spell == Spells.NONE) return Component.translatable("item.ebwizardry.spell_book.empty");
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, book);
         Component name = discovered ? spell.getDescriptionFormatted() :

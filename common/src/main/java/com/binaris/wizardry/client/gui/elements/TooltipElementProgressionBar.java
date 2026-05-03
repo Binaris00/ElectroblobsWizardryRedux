@@ -2,7 +2,7 @@ package com.binaris.wizardry.client.gui.elements;
 
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.client.EBClientConstants;
 import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -41,7 +41,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
 
         SpellTier nextTier = getNextTier(stack);
         if (nextTier != null) {
-            progressFraction = (float) WandHelper.getProgression(stack) / nextTier.getProgression();
+            progressFraction = (float) CastItemDataHelper.getProgression(stack) / nextTier.getProgression();
         }
 
         DrawingUtils.drawTexturedRect(x, y, EBClientConstants.MAIN_GUI_WIDTH, height + EBClientConstants.PROGRESSION_BAR_HEIGHT, EBClientConstants.PROGRESSION_BAR_WIDTH, EBClientConstants.PROGRESSION_BAR_HEIGHT, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
@@ -60,7 +60,7 @@ public class TooltipElementProgressionBar extends TooltipElement {
         if (nextTier != null) {
             Component s = nextTier.getDescriptionFormatted().copy().withStyle(ChatFormatting.DARK_GRAY);
 
-            if (WandHelper.getProgression(stack) >= nextTier.getProgression())
+            if (CastItemDataHelper.getProgression(stack) >= nextTier.getProgression())
                 s = nextTier.getDescriptionFormatted();
             guiGraphics.drawString(Minecraft.getInstance().font, s.getString(),
                     x + TOOLTIP_WIDTH - TOOLTIP_BORDER * 2 - Minecraft.getInstance().font.width(s.getString()), y,

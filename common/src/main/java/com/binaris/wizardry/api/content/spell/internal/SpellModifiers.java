@@ -5,6 +5,7 @@ import net.minecraft.nbt.CompoundTag;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Glorified map for storing and saving spell modifier values such as potency, cost, chargeup and many others. This is
@@ -122,7 +123,7 @@ public final class SpellModifiers {
     /**
      * Multiply the value based on the given key. In case there's not already a value for this modifier it won't do anything.
      *
-     * @param key   The string identifier for the upgrade.
+     * @param key    The string identifier for the upgrade.
      * @param factor The value that's going to serve as the factor of the multiply
      * @return This {@link SpellModifiers} instance after setting the multiplier.
      */
@@ -134,7 +135,7 @@ public final class SpellModifiers {
     /**
      * Divide the value based on the given key. In case there's not already a value for this modifier it won't do anything.
      *
-     * @param key   The string identifier for the upgrade.
+     * @param key     The string identifier for the upgrade.
      * @param divisor The value that's going to serve as the divisor
      * @return This {@link SpellModifiers} instance after setting the multiplier.
      */
@@ -170,5 +171,13 @@ public final class SpellModifiers {
      */
     public void reset() {
         this.multiplierMap.clear();
+    }
+
+    @Override
+    public String toString() {
+        return multiplierMap.entrySet()
+                .stream()
+                .map(e -> e.getKey() + " (" + e.getValue() + "x)")
+                .collect(Collectors.joining(", "));
     }
 }

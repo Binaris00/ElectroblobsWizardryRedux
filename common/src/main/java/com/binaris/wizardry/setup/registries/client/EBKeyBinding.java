@@ -2,9 +2,9 @@ package com.binaris.wizardry.setup.registries.client;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.event.EBClientTickEvent;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.client.SpellGUIDisplay;
 import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.core.config.EBConfig;
@@ -79,7 +79,7 @@ public final class EBKeyBinding {
     }
 
     public static void selectNextSpell(ItemStack wand) {
-        ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
+        ICastItem item = (ICastItem) wand.getItem();
 
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.NEXT_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
@@ -90,7 +90,7 @@ public final class EBKeyBinding {
     }
 
     public static void selectPreviousSpell(ItemStack wand) {
-        ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
+        ICastItem item = (ICastItem) wand.getItem();
 
         ControlInputPacketC2S msg = new ControlInputPacketC2S(ControlInputPacketC2S.ControlType.PREVIOUS_SPELL_KEY);
         Services.NETWORK_HELPER.sendToServer(msg);
@@ -101,8 +101,8 @@ public final class EBKeyBinding {
     }
 
     private static void selectSpell(ItemStack wand, int index) {
-        ISpellCastingItem item = (ISpellCastingItem) wand.getItem();
-        int currentIndex = WandHelper.getCurrentSpellIndex(wand);
+        ICastItem item = (ICastItem) wand.getItem();
+        int currentIndex = CastItemDataHelper.getCurrentSpellIndex(wand);
         if (index == currentIndex) return;
 
         if (item.selectSpell(wand, index)) {

@@ -100,7 +100,9 @@ public class SpellManagerDataHolder implements INBTSerializable<CompoundTag>, Sp
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         ListTag spellsDiscoveredTag = new ListTag();
-        spellsDiscovered.forEach((spell -> spellsDiscoveredTag.add(StringTag.valueOf(spell.getLocation().toString()))));
+        spellsDiscovered.forEach((spell -> {
+            if (spell != null) spellsDiscoveredTag.add(StringTag.valueOf(spell.getLocation().toString()));
+        }));
         tag.put("spellsDiscovered", spellsDiscoveredTag);
         storedVariables.forEach(k -> k.write(tag, this.spellData.get(k)));
         return tag;

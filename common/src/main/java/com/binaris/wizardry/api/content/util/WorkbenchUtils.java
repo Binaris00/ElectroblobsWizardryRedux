@@ -1,6 +1,6 @@
 package com.binaris.wizardry.api.content.util;
 
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.item.ITierValue;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
@@ -28,7 +28,7 @@ public final class WorkbenchUtils {
      */
     public static boolean rechargeManaFromCrystals(Slot centre, Slot crystals) {
         ItemStack stack = centre.getItem();
-        if (!(stack.getItem() instanceof IManaStoringItem manaItem)) return false;
+        if (!(stack.getItem() instanceof IManaItem manaItem)) return false;
         if (!crystals.hasItem() || manaItem.isManaFull(centre.getItem())) return false;
 
         int chargeDepleted = manaItem.getManaCapacity(centre.getItem()) - manaItem.getMana(centre.getItem());
@@ -53,7 +53,7 @@ public final class WorkbenchUtils {
      * @return The amount of mana contained in a single crystal item
      */
     public static int getManaValuePerCrystal(ItemStack crystal) {
-        if (crystal.getItem() instanceof IManaStoringItem manaItem) return manaItem.getMana(crystal);
+        if (crystal.getItem() instanceof IManaItem manaItem) return manaItem.getMana(crystal);
         return 0;
     }
 
@@ -66,7 +66,7 @@ public final class WorkbenchUtils {
      * @return True if any spells were bound, false otherwise
      */
     public static boolean applySpellBooks(Slot centre, Slot[] spellBooks, SpellContext ctx) {
-        List<Spell> spells = WandHelper.getSpells(centre.getItem());
+        List<Spell> spells = CastItemDataHelper.getSpells(centre.getItem());
         boolean changed = false;
         SpellTier origin = centre.getItem().getItem() instanceof ITierValue tierItem
                 ? tierItem.getTier(centre.getItem())
@@ -75,7 +75,7 @@ public final class WorkbenchUtils {
         for (int i = 0; i < spells.size(); i++) {
             if (!spellBooks[i].hasItem()) continue;
 
-            Spell spell = SpellUtil.getSpell(spellBooks[i].getItem());
+            Spell spell = RegistryUtils.getSpell(spellBooks[i].getItem());
             if (!canBindSpell(spell, spells, origin, i, ctx)) continue;
 
             updateSpellSlot(centre.getItem(), spells, i, spell);
@@ -85,7 +85,7 @@ public final class WorkbenchUtils {
             changed = true;
         }
 
-        if (changed) WandHelper.setSpells(centre.getItem(), spells);
+        if (changed) CastItemDataHelper.setSpells(centre.getItem(), spells);
         return changed;
     }
 
@@ -115,8 +115,8 @@ public final class WorkbenchUtils {
      * @param spell  The new spell to set
      */
     public static void updateSpellSlot(ItemStack wand, List<Spell> spells, int slot, Spell spell) {
-        int currentSelectedIndex = spells.indexOf(WandHelper.getCurrentSpell(wand));
-        if (currentSelectedIndex == slot) WandHelper.setCurrentSpell(wand, spell);
+        int currentSelectedIndex = spells.indexOf(CastItemDataHelper.getCurrentSpell(wand));
+        if (currentSelectedIndex == slot) CastItemDataHelper.setCurrentSpell(wand, spell);
         spells.set(slot, spell);
     }
 

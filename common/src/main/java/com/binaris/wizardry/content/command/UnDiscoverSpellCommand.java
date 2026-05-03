@@ -20,6 +20,7 @@ public final class UnDiscoverSpellCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext ctx) {
         dispatcher.register(Commands.literal("undiscover")
+                        .requires(p -> p.hasPermission(2))
                 .then(Commands.argument("player", EntityArgument.player())
                         .then(Commands.argument("spell", SpellArgument.spell())
                                 .executes((c) -> execute(c, EntityArgument.getPlayer(c, "player"), SpellArgument.getSpell(c, "spell"))))

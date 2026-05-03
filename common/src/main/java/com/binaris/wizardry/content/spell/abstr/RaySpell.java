@@ -1,6 +1,5 @@
 package com.binaris.wizardry.content.spell.abstr;
 
-import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -162,8 +161,6 @@ public abstract class RaySpell extends Spell {
         Vec3 look = ctx.caster().getLookAngle();
         Vec3 origin = new Vec3(ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight() - Y_OFFSET, ctx.caster().getZ());
 
-        if (this.isInstantCast() && ctx.world().isClientSide && ClientUtils.isFirstPerson(ctx.caster()))
-            origin = origin.add(look.scale(1.2));
         if (!shootSpell(ctx, origin, look)) return false;
 
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);

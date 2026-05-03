@@ -2,7 +2,7 @@ package com.binaris.wizardry.setup.registries.client;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.DeferredObject;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
+import com.binaris.wizardry.setup.registries.RegisterFunction;
 import net.minecraft.core.particles.ParticleType;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -35,7 +35,6 @@ public final class EBParticles {
     public static final DeferredObject<SimpleParticleType> SCORCH = particle("scorch");
     @Deprecated
     public static final DeferredObject<SimpleParticleType> PATH = particle("path");
-    @Deprecated
     public static final DeferredObject<SimpleParticleType> LIGHTNING = particle("lightning");
 
     private EBParticles() {

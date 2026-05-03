@@ -1,15 +1,16 @@
 package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.client.util.ClientUtils;
+import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.api.content.util.CastUtils;
-import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.api.content.util.CastItemUtils;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.networking.s2c.SpellCastS2C;
 import com.binaris.wizardry.core.platform.Services;
@@ -36,7 +37,7 @@ import java.util.List;
  * Compared to wands, scrolls are single use items that allow the player to cast a single spell without any mana/charge
  * cost. They are consumed upon use. You can think of them as disposable spellcasting items.
  */
-public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchItem {
+public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
     /** The limit time for a continuous spell cast from a scroll. */
     public static final int CASTING_TIME = 120;
     /** Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
@@ -78,7 +79,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     public void onUseTick(@NotNull Level level, @NotNull LivingEntity livingEntity, @NotNull ItemStack stack, int timeLeft) {
         if (!(livingEntity instanceof Player player)) return;
 
-        Spell spell = SpellUtil.getSpell(stack);
+        Spell spell = RegistryUtils.getSpell(stack);
         int castingTick = stack.getUseDuration() - timeLeft - 1;
 
         PlayerCastContext ctx = new PlayerCastContext(level, player, player.getUsedItemHand(), castingTick,
@@ -95,8 +96,8 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (CastUtils.fireSpellCastEvent(SpellCastEvent.Source.SCROLL, spell, ctx)) {
-            CastUtils.applyCooldownForfeit(ctx.caster(), COOLDOWN_FORFEIT_TICKS);
+        if (CastItemUtils.fireSpellCastEvent(SpellCastEvent.Source.SCROLL, spell, ctx)) {
+            CastItemUtils.applyCooldownForfeit(ctx.caster(), COOLDOWN_FORFEIT_TICKS);
             return false;
         }
         return true;
@@ -104,15 +105,11 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (!CastUtils.executeSpellCast(SpellCastEvent.Source.SCROLL, spell, ctx)) return false;
+        if (!CastItemUtils.executeSpellCast(SpellCastEvent.Source.SCROLL, spell, ctx)) return false;
 
         if (spell.isInstantCast() && !ctx.caster().isCreative()) {
             stack.shrink(1);
-            ctx.caster().getCooldowns().addCooldown(this, spell.getCooldown());
-        }
-
-        if (ctx.castingTicks() == 0) {
-            CastUtils.trackSpellUsage(ctx.caster(), spell);
+            ctx.caster().getCooldowns().addCooldown(this, CastItemUtils.calcCastCooldown(spell, ctx.modifiers()));
         }
 
         return true;
@@ -120,7 +117,9 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
 
     private void finishCast(ItemStack stack, Level world, LivingEntity entity, int timeCharged) {
         if (!(entity instanceof Player player)) return;
-        Spell spell = SpellUtil.getSpell(stack);
+        Spell spell = RegistryUtils.getSpell(stack);
+        WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
+        if (!world.isClientSide) CastItemUtils.trackSpellUsage(player, spell);
         if (spell.isInstantCast()) return;
 
         if (!player.isCreative()) {
@@ -129,7 +128,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
         }
 
         int castingTick = stack.getUseDuration() - timeCharged;
-        SpellModifiers modifiers = Services.OBJECT_DATA.getWizardData(player).getSpellModifiers();
+        SpellModifiers modifiers = wizardData.getSpellModifiers();
 
         WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, entity, modifiers, castingTick));
         spell.endCast(new CastContext(world, entity, castingTick, modifiers));
@@ -138,7 +137,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
         if (level == null) return;
-        Spell spell = SpellUtil.getSpell(stack);
+        Spell spell = RegistryUtils.getSpell(stack);
 
         if (ClientUtils.shouldDisplayDiscovered(spell, stack) && tooltipFlag.isAdvanced()) {
             list.add(Component.translatable(spell.getTier().getDescriptionId()).withStyle(ChatFormatting.GRAY));
@@ -161,7 +160,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     @NotNull
     @Override
     public Spell getCurrentSpell(ItemStack stack) {
-        return SpellUtil.getSpell(stack);
+        return RegistryUtils.getSpell(stack);
     }
 
     @Override
@@ -177,7 +176,7 @@ public class ScrollItem extends Item implements ISpellCastingItem, IWorkbenchIte
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         if (Services.PLATFORM.isDedicatedServer()) {
-            Spell spell = SpellUtil.getSpell(stack);
+            Spell spell = RegistryUtils.getSpell(stack);
             return Component.translatable("item.ebwizardry.scroll", spell.getDescriptionFormatted());
         }
         return ClientUtils.getScrollDisplayName(stack);

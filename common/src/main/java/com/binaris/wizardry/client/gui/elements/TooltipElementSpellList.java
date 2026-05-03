@@ -1,6 +1,6 @@
 package com.binaris.wizardry.client.gui.elements;
 
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
@@ -14,7 +14,7 @@ public class TooltipElementSpellList extends TooltipElement {
 
     @Override
     protected boolean isVisible(ItemStack stack) {
-        return stack.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellsInWorkbench(Minecraft.getInstance().player, stack);
+        return stack.getItem() instanceof ICastItem castingItem && castingItem.showSpellsInWorkbench(Minecraft.getInstance().player, stack);
     }
 
     @Override

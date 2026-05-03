@@ -2,7 +2,6 @@ package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.DeferredObject;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.binaris.wizardry.content.menu.BookshelfMenu;
 import net.minecraft.core.registries.BuiltInRegistries;

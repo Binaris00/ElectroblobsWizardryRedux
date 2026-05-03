@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.effect;
 
 import com.binaris.wizardry.api.content.effect.CurseMobEffect;
-import com.binaris.wizardry.content.item.WizardArmorItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.EquipmentSlot;

@@ -2,6 +2,7 @@ package com.binaris.wizardry.cca.blockentity;
 
 import com.binaris.wizardry.api.content.data.ArcaneLockData;
 import com.binaris.wizardry.cca.EBComponents;
+import com.binaris.wizardry.client.effect.ArcaneLockRender;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
 import net.minecraft.nbt.CompoundTag;
@@ -56,6 +57,10 @@ public class ArcaneLockDataHolder implements ArcaneLockData, ComponentV3, AutoSy
             this.ownerUUID = UUID.fromString(tag.getString(NBT_KEY));
         } else {
             this.ownerUUID = null;
+        }
+
+        if (provider.getLevel() != null && provider.getLevel().isClientSide()) {
+            ArcaneLockRender.markDirty();
         }
     }
 

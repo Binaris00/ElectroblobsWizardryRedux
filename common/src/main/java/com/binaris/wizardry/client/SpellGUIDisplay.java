@@ -4,7 +4,7 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.DrawingUtils;
@@ -83,10 +83,10 @@ public final class SpellGUIDisplay {
         ItemStack wand = player.getMainHandItem();
         boolean mainHand = true;
 
-        if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand))) {
+        if (!(wand.getItem() instanceof ICastItem castingItem && castingItem.showSpellHUD(player, wand))) {
             wand = player.getOffhandItem();
             mainHand = false;
-            if (!(wand.getItem() instanceof ISpellCastingItem castingItem && castingItem.showSpellHUD(player, wand)))
+            if (!(wand.getItem() instanceof ICastItem castingItem && castingItem.showSpellHUD(player, wand)))
                 return;
         }
 
@@ -105,7 +105,7 @@ public final class SpellGUIDisplay {
     public static void renderSpellHUD(GuiGraphics guiGraphics, PoseStack stack, Player player, ItemStack wand, boolean mainHand, int width, int height, float partialTicks, boolean textLayer) {
         if (!EBConfig.SHOW_SPELL_HUD.get()) return;
 
-        if (!(wand.getItem() instanceof ISpellCastingItem))
+        if (!(wand.getItem() instanceof ICastItem))
             throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
 
         boolean flipX = EBConfig.SPELL_HUD_FLIP_X.get();
@@ -123,16 +123,16 @@ public final class SpellGUIDisplay {
         int x = flipX ? width : 0;
         int y = flipY ? 0 : height;
 
-        Spell spell = ((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand);
-        int cooldown = ((ISpellCastingItem) wand.getItem()).getCurrentCooldown(wand, player.level());
-        int maxCooldown = ((ISpellCastingItem) wand.getItem()).getCurrentMaxCooldown(wand);
+        Spell spell = ((ICastItem) wand.getItem()).getCurrentSpell(wand);
+        int cooldown = ((ICastItem) wand.getItem()).getCurrentCooldown(wand, player.level());
+        int maxCooldown = ((ICastItem) wand.getItem()).getCurrentMaxCooldown(wand);
 
         if (textLayer) {
             float animationProgress = Math.signum(switchTimer) * ((SPELL_SWITCH_TIME - Math.abs(switchTimer) + partialTicks) / SPELL_SWITCH_TIME);
 
-            Component prevSpellName = getFormattedSpellName(((ISpellCastingItem) wand.getItem()).getPreviousSpell(wand), player, 0);
-            Component spellName = getFormattedSpellName(((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand), player, cooldown);
-            Component nextSpellName = getFormattedSpellName(((ISpellCastingItem) wand.getItem()).getNextSpell(wand), player, 0);
+            Component prevSpellName = getFormattedSpellName(((ICastItem) wand.getItem()).getPreviousSpell(wand), player, 0);
+            Component spellName = getFormattedSpellName(((ICastItem) wand.getItem()).getCurrentSpell(wand), player, cooldown);
+            Component nextSpellName = getFormattedSpellName(((ICastItem) wand.getItem()).getNextSpell(wand), player, 0);
             skin.drawText(guiGraphics, x, y, flipX, flipY, prevSpellName, spellName, nextSpellName, animationProgress);
         } else {
             boolean discovered = true;
@@ -166,10 +166,10 @@ public final class SpellGUIDisplay {
         if (mc.options.getCameraType() != CameraType.FIRST_PERSON) return;
         if (wand != player.getUseItem()) return;
 
-        if (!(wand.getItem() instanceof ISpellCastingItem))
+        if (!(wand.getItem() instanceof ICastItem))
             throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
 
-        Spell spell = ((ISpellCastingItem) wand.getItem()).getCurrentSpell(wand);
+        Spell spell = ((ICastItem) wand.getItem()).getCurrentSpell(wand);
 
         int chargeup = spell.getChargeUp();
 

@@ -1,6 +1,6 @@
 package com.binaris.wizardry.core;
 
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.client.sound.MovingSoundEntity;
 import com.binaris.wizardry.client.sound.MovingSoundSpellCharge;
@@ -54,7 +54,7 @@ public final class ClientSpellSoundManager {
     }
 
     /**
-     * Plays the spell charge sound, used inside a {@link ISpellCastingItem SpellCastingItem}
+     * Plays the spell charge sound, used inside a {@link ICastItem SpellCastingItem}
      * when the item is on charge time.
      *
      * @param entity entity that's going to listen the sound (normally a player)

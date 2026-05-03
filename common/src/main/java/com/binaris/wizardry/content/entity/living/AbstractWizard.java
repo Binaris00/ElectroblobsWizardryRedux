@@ -12,7 +12,7 @@ import com.binaris.wizardry.content.entity.goal.AttackSpellBasicGoal;
 import com.binaris.wizardry.content.entity.goal.HardLookAtTargetGoal;
 import com.binaris.wizardry.content.entity.goal.RangedKitingGoal;
 import com.binaris.wizardry.content.item.WandItem;
-import com.binaris.wizardry.content.item.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
@@ -199,7 +199,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
      *
      * @param element The element of the armor to equip.
      */
-    private void equipArmorAndDisableDrops(Element element) {
+    public void equipArmorAndDisableDrops(Element element) {
         for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) {
             this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, element, slot)));
         }
@@ -214,7 +214,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
      * @param element The element of the wand.
      * @param maxTier The maximum tier of spell the wand can contain.
      */
-    private void prepareWandWithSpells(Element element, SpellTier maxTier) {
+    public void  prepareWandWithSpells(Element element, SpellTier maxTier) {
         ArrayList<Spell> list = new ArrayList<>(spells);
         list.add(Spells.HEAL);
 
@@ -225,7 +225,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         }
         ItemStack wand = new ItemStack(item);
         Spell[] spellsArray = list.toArray(new Spell[0]);
-        WandHelper.setSpells(wand, Arrays.asList(spellsArray));
+        CastItemDataHelper.setSpells(wand, Arrays.asList(spellsArray));
         this.setItemSlot(EquipmentSlot.MAINHAND, wand);
     }
 
@@ -270,6 +270,11 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         if (element != null) this.setElement(element);
         this.setTextureIndex(nbt.getInt("skin"));
         this.spells = (List<Spell>) NBTExtras.tagToList(nbt.getList("spells", Tag.TAG_STRING), (StringTag tag) -> Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getAsString())));
+    }
+
+    @Override
+    public float maxUpStep() {
+        return 1.0F;
     }
 
     private int getHealCooldown() {

@@ -1,5 +1,6 @@
-// 1.20.1	2026-03-30T09:26:12.618797981	Spell Data Provider: ebwizardry
+// 1.20.1	2026-04-17T10:33:24.982223702	Spell Data Provider: ebwizardry
 59709226fef8219dd2c5cd41cb6bb719de55c656 data/ebwizardry/spells/agility.json
+12e12c73b30c50363edbf0bbe8132934b20111d1 data/ebwizardry/spells/arc.json
 9fee9a6638261052b8101e8197dbef3e9aac6521 data/ebwizardry/spells/arcane_jammer.json
 34ede34dc275e94721ac699f01685084738cbd27 data/ebwizardry/spells/arcane_lock.json
 e11cad8049f551f1dd69b0deb78e7ddfa7a0a087 data/ebwizardry/spells/arrow_rain.json
@@ -96,6 +97,7 @@ f662d6da129710323fbac51d5760dfc65f2a8635 data/ebwizardry/spells/satiety.json
 569de7630cabe5ef69d685249abd74eed6481525 data/ebwizardry/spells/shulker_bullet.json
 4dfa9284ae5464f06e8ebb0a84c05ef67e1198f6 data/ebwizardry/spells/slime.json
 d126beffd96ef8d80eda831cae2df4a49738bee0 data/ebwizardry/spells/smoke_bomb.json
+f5c8e83c22c5c6a7498ee9dd49d46aaa1483c287 data/ebwizardry/spells/spark_bomb.json
 8e70e1d1bf2bf09d27f5affed4764d0f2d0c43e6 data/ebwizardry/spells/speed_time.json
 38cd383fe392675eb1d0e1ea004d8820053b175c data/ebwizardry/spells/spider_swarm.json
 eb7c6ce2ab40c74f936d246299768bb1aee4a298 data/ebwizardry/spells/static_aura.json

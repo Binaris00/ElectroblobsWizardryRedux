@@ -4,6 +4,7 @@ package com.binaris.wizardry.content.entity.goal;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.Goal;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 
 import java.util.EnumSet;
@@ -11,7 +12,7 @@ import java.util.EnumSet;
 /**
  * Intelligent kiting goal for ranged attack entities that maintains a safe distance. Just controls the movement directly
  * without using pathfinding (avoiding the look modifications that comes with that), leaving look control to other goals
- * (e.g. {@link HardLookAtTargetGoal}), and attack control to other goals (e.g.. {@link AttackSpellBasicGoal}).
+ * (e.g. {@link HardLookAtTargetGoal}), and attack control to other goals (e.g. {@link AttackSpellBasicGoal}).
  * <p>
  * Behavior:
  * <ul>
@@ -64,7 +65,7 @@ public class RangedKitingGoal extends Goal {
      * @param moveSpeed Movement speed when approaching or retreating
      */
     public RangedKitingGoal(PathfinderMob mob, double moveSpeed) {
-        this(mob, moveSpeed, 12.0, 6.0, 32.0);
+        this(mob, moveSpeed, 8.0, 6.0, 32.0);
     }
 
     @Override
@@ -116,6 +117,20 @@ public class RangedKitingGoal extends Goal {
             // Optimal distance: STOP MOVING
             this.stopMovement();
         }
+
+        handleStepUp();
+    }
+
+    private void handleStepUp() {
+        if (mob.horizontalCollision && mob.onGround()) {
+            if (!canStepUp()) return;
+            mob.setDeltaMovement(mob.getDeltaMovement().x, 0.42f, mob.getDeltaMovement().z);
+        }
+    }
+
+    private boolean canStepUp() {
+        AABB checkBox = mob.getBoundingBox().move(0.0, 0.42, 0.0);
+        return mob.level().noCollision(mob, checkBox);
     }
 
     /** Goes away from the target applying velocity directly backwards */

@@ -1,7 +1,7 @@
 package com.binaris.wizardry.api.content.util;
 
 import com.binaris.wizardry.api.content.entity.living.ISpellCaster;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
@@ -225,11 +225,11 @@ public final class EntityUtil {
         if (caster instanceof Player) {
             if (caster.isUsingItem()) {
                 ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
-                boolean isSpellCastingItem = stack.getItem() instanceof ISpellCastingItem;
+                boolean isSpellCastingItem = stack.getItem() instanceof ICastItem;
 
                 if (!isSpellCastingItem) return false;
 
-                Spell currentSpell = ((ISpellCastingItem) stack.getItem()).getCurrentSpell(stack);
+                Spell currentSpell = ((ICastItem) stack.getItem()).getCurrentSpell(stack);
 
                 if (stack.getItem() instanceof ScrollItem) {
                     return currentSpell == spell;
@@ -265,11 +265,11 @@ public final class EntityUtil {
         // This is the tier of the highest tier spell added, novice only at the start
         SpellTier maxTier = SpellTiers.NOVICE;
 
-        List<Spell> npcSpells = SpellUtil.getSpells(Spell::canCastByEntity);
+        List<Spell> npcSpells = RegistryUtils.getSpells(Spell::canCastByEntity);
 
         for (int i = 0; i < n; i++) {
             SpellTier tier;
-            Element element = e == Elements.MAGIC ? SpellUtil.getRandomElement(random) : e;
+            Element element = e == Elements.MAGIC ? RegistryUtils.getRandomElement(random) : e;
 
             int randomizer = random.nextInt(20);
             if (randomizer < 10) tier = SpellTiers.NOVICE;
@@ -278,7 +278,7 @@ public final class EntityUtil {
             else tier = SpellTiers.MASTER;
             if (tier.getLevel() > maxTier.getLevel()) maxTier = tier;
 
-            List<Spell> list = SpellUtil.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element
+            List<Spell> list = RegistryUtils.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element
                     && spell.canCastByEntity() && spell.isEnabled(SpellContext.NPCS));
 
             list.retainAll(npcSpells);
@@ -296,9 +296,9 @@ public final class EntityUtil {
     public static ItemStack getWandInUse(Player player) {
         ItemStack wand = player.getMainHandItem();
 
-        if (!(wand.getItem() instanceof ISpellCastingItem) || ((ISpellCastingItem) wand.getItem()).getSpells(wand).length < 2) {
+        if (!(wand.getItem() instanceof ICastItem) || ((ICastItem) wand.getItem()).getSpells(wand).length < 2) {
             wand = player.getOffhandItem();
-            if (!(wand.getItem() instanceof ISpellCastingItem) || ((ISpellCastingItem) wand.getItem()).getSpells(wand).length < 2)
+            if (!(wand.getItem() instanceof ICastItem) || ((ICastItem) wand.getItem()).getSpells(wand).length < 2)
                 return null;
         }
 

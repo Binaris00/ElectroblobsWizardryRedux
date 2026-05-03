@@ -1,8 +1,8 @@
 package com.binaris.wizardry.core.mixin;
 
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.client.NotImplementedItems;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.SpellBookItem;
@@ -30,7 +30,7 @@ public abstract class ItemStackMixin {
     @Inject(method = "getTooltipLines", at = @At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z",
             ordinal = 15, shift = At.Shift.AFTER))
     public void EBWIZARDRY$getTooltipLinesMana(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir, @Local List<Component> list) {
-        if (stack.getItem() instanceof IManaStoringItem) {
+        if (stack.getItem() instanceof IManaItem) {
             list.remove(list.size() - 1); // Removing "Durability %s/%s"
             list.add(Component.translatable("item.ebwizardry.wand.damage_desc", stack.getMaxDamage() - stack.getDamageValue(), stack.getMaxDamage()).withStyle(ChatFormatting.BLUE));
         }
@@ -43,7 +43,7 @@ public abstract class ItemStackMixin {
         }
 
         if (stack.getItem() instanceof SpellBookItem || stack.getItem() instanceof ScrollItem) {
-            Spell spell = SpellUtil.getSpell(stack);
+            Spell spell = RegistryUtils.getSpell(stack);
             if (spell != Spells.NONE && spell.property(DefaultProperties.SENSIBLE)) {
                 cir.getReturnValue().add(Component.literal("Sensible Spell (Only for testing)").withStyle(ChatFormatting.RED));
             }

@@ -1,4 +1,4 @@
-package com.binaris.wizardry.api.content.util;
+package com.binaris.wizardry.setup.registries;
 
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceLocation;

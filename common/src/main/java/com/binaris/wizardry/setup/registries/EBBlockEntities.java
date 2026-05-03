@@ -3,7 +3,6 @@ package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.DeferredObject;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.content.blockentity.*;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.level.block.entity.BlockEntity;

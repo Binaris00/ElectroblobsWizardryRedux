@@ -1,8 +1,8 @@
 package com.binaris.wizardry.core.mixin;
 
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.world.InteractionHand;
@@ -20,10 +20,10 @@ public abstract class HumanoidModelMixin<T> {
         HumanoidModel<?> model = ((HumanoidModel<?>) (Object) this);
         ItemStack stack = livingEntity.getItemInHand(InteractionHand.MAIN_HAND);
         Spell spell;
-        if (SpellUtil.getSpell(stack) != Spells.NONE && SpellUtil.getSpell(stack) != null) {
-            spell = SpellUtil.getSpell(stack);
+        if (RegistryUtils.getSpell(stack) != Spells.NONE && RegistryUtils.getSpell(stack) != null) {
+            spell = RegistryUtils.getSpell(stack);
         } else {
-            spell = WandHelper.getCurrentSpell(stack);
+            spell = CastItemDataHelper.getCurrentSpell(stack);
         }
 
         if (spell != Spells.NONE && spell.getAction().shouldRender(livingEntity, spell, stack, InteractionHand.MAIN_HAND)) {
@@ -37,10 +37,10 @@ public abstract class HumanoidModelMixin<T> {
         HumanoidModel<?> model = ((HumanoidModel<?>) (Object) this);
         ItemStack stack = livingEntity.getItemInHand(InteractionHand.OFF_HAND);
         Spell spell;
-        if (SpellUtil.getSpell(stack) != Spells.NONE && SpellUtil.getSpell(stack) != null) {
-            spell = SpellUtil.getSpell(stack);
+        if (RegistryUtils.getSpell(stack) != Spells.NONE && RegistryUtils.getSpell(stack) != null) {
+            spell = RegistryUtils.getSpell(stack);
         } else {
-            spell = WandHelper.getCurrentSpell(stack);
+            spell = CastItemDataHelper.getCurrentSpell(stack);
         }
 
         if (spell != Spells.NONE && spell.getAction().shouldRender(livingEntity, spell, stack, InteractionHand.OFF_HAND)) {

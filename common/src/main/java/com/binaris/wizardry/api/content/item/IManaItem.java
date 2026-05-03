@@ -5,8 +5,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-
-public interface IManaStoringItem {
+public interface IManaItem {
     int getMana(ItemStack stack);
 
     void setMana(ItemStack stack, int mana);

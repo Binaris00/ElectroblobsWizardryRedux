@@ -1,9 +1,9 @@
 package com.binaris.wizardry.content.loot;
 
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.entity.living.ISpellCaster;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.setup.registries.EBLootFunctions;
@@ -48,7 +48,7 @@ public class WizardSpellFunction extends LootItemConditionalFunction {
             return stack;
         }
 
-        SpellUtil.setSpell(stack, spells.get(context.getRandom().nextInt(spells.size())));
+        RegistryUtils.setSpell(stack, spells.get(context.getRandom().nextInt(spells.size())));
         return stack;
     }
 

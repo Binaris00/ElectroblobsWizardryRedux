@@ -1,7 +1,6 @@
 package com.binaris.wizardry.client.gui.elements;
 
-import com.binaris.wizardry.api.content.DeferredObject;
-import com.binaris.wizardry.api.content.util.WandHelper;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.binaris.wizardry.setup.registries.WandUpgrades;
 import net.minecraft.client.Minecraft;
@@ -29,7 +28,7 @@ class TooltipElementUpgrades extends TooltipElement {
 
     @Override
     protected int getHeight(ItemStack stack) {
-        int rows = 1 + (WandHelper.getTotalUpgrades(stack) * (ITEM_SIZE + ITEM_SPACING) - ITEM_SPACING) / (TOOLTIP_WIDTH - TOOLTIP_BORDER * 2);
+        int rows = 1 + (CastItemDataHelper.getTotalUpgrades(stack) * (ITEM_SIZE + ITEM_SPACING) - ITEM_SPACING) / (TOOLTIP_WIDTH - TOOLTIP_BORDER * 2);
         return rows * (ITEM_SIZE + ITEM_SPACING) - ITEM_SPACING;
     }
 
@@ -38,7 +37,7 @@ class TooltipElementUpgrades extends TooltipElement {
         int x1 = 0;
 
         for (Item item : WandUpgrades.getSpecialUpgrades()) {
-            int upgradeLevel = WandHelper.getUpgradeLevel(stack, item);
+            int upgradeLevel = CastItemDataHelper.getUpgradeLevel(stack, item);
 
             if (upgradeLevel > 0) {
                 ItemStack upgrade = new ItemStack(item, upgradeLevel);
@@ -60,7 +59,7 @@ class TooltipElementUpgrades extends TooltipElement {
         int x1 = 0;
 
         for (Item item : WandUpgrades.getSpecialUpgrades()) {
-            int level = WandHelper.getUpgradeLevel(stack, item);
+            int level = CastItemDataHelper.getUpgradeLevel(stack, item);
             if (level < 0) continue;
 
             // FIXME upgrades tooltip item on arcane workbench

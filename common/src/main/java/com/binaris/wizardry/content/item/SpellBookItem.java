@@ -1,9 +1,9 @@
 package com.binaris.wizardry.content.item;
 
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.SpellUtil;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.ChatFormatting;
@@ -29,8 +29,8 @@ public class SpellBookItem extends Item {
     @Override
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, @NotNull Player player, @NotNull InteractionHand interactionHand) {
         ItemStack stack = player.getItemInHand(interactionHand);
-        if (SpellUtil.getSpell(stack) == Spells.NONE) {
-            SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
+        if (RegistryUtils.getSpell(stack) == Spells.NONE) {
+            RegistryUtils.setSpell(stack, Spells.MAGIC_MISSILE);
             EBLogger.warn("SpellBookItem has no spell assigned to it! Defaulting to Magic Missile, where did this item come from?");
         }
         if (level.isClientSide) ClientUtils.openSpellBook(stack);
@@ -40,14 +40,14 @@ public class SpellBookItem extends Item {
     @Override
     public void onCraftedBy(@NotNull ItemStack stack, @NotNull Level level, @NotNull Player player) {
         super.onCraftedBy(stack, level, player);
-        Spell spell = SpellUtil.getSpell(stack);
-        if (spell == Spells.NONE) SpellUtil.setSpell(stack, Spells.MAGIC_MISSILE);
+        Spell spell = RegistryUtils.getSpell(stack);
+        if (spell == Spells.NONE) RegistryUtils.setSpell(stack, Spells.MAGIC_MISSILE);
     }
 
     @Override
     public @NotNull Component getName(@NotNull ItemStack stack) {
         if (Services.PLATFORM.isDedicatedServer()) {
-            Spell spell = SpellUtil.getSpell(stack);
+            Spell spell = RegistryUtils.getSpell(stack);
             if (spell == Spells.NONE) return Component.translatable("item.ebwizardry.spell_book.empty");
             return Component.translatable("item.ebwizardry.spell_book", spell.getDescriptionFormatted());
         }
@@ -57,7 +57,7 @@ public class SpellBookItem extends Item {
     @Override
     public void appendHoverText(@NotNull ItemStack stack, @Nullable Level level, @NotNull List<Component> list, @NotNull TooltipFlag tooltipFlag) {
         if (level == null) return;
-        Spell spell = SpellUtil.getSpell(stack);
+        Spell spell = RegistryUtils.getSpell(stack);
         if (spell == Spells.NONE) return;
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
         list.add(spell.getTier().getDescriptionFormatted());

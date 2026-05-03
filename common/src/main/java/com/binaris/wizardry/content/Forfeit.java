@@ -5,8 +5,8 @@ import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.EBDiscoverSpellEvent;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
@@ -175,7 +175,7 @@ public class Forfeit {
 
         if (event.getSource() == SpellCastEvent.Source.SCROLL) {
             if (!player.isCreative()) stack.shrink(1);
-        } else if (stack.getItem() instanceof IManaStoringItem manaItem) {
+        } else if (stack.getItem() instanceof IManaItem manaItem) {
             int cost = (int) (event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST) + 0.1f);
             manaItem.consumeMana(stack, cost, player);
         }
@@ -189,9 +189,9 @@ public class Forfeit {
      */
     private static ItemStack findCastingItem(Player player) {
         ItemStack mainHand = player.getMainHandItem();
-        if (mainHand.getItem() instanceof ISpellCastingItem) return mainHand;
+        if (mainHand.getItem() instanceof ICastItem) return mainHand;
         ItemStack offHand = player.getOffhandItem();
-        if (offHand.getItem() instanceof ISpellCastingItem) return offHand;
+        if (offHand.getItem() instanceof ICastItem) return offHand;
         return ItemStack.EMPTY;
     }
 

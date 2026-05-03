@@ -35,8 +35,11 @@ public class Arc extends RaySpell {
         }
 
         if (ctx.world().isClientSide) {
-            ParticleBuilder.create(EBParticles.LIGHTNING).entity(ctx.caster())
-                    .pos(ctx.caster() != null ? origin.subtract(ctx.caster().position()) : origin).target(target).spawn(ctx.world());
+            ParticleBuilder.create(EBParticles.LIGHTNING)
+                    .entity(ctx.caster())
+                    .pos(ctx.caster() != null ? origin.subtract(ctx.caster().position()) : origin)
+                    .target(target)
+                    .spawn(ctx.world());
             ParticleBuilder.spawnShockParticles(ctx.world(), target.xo, target.yo + target.getBbHeight() / 2, target.zo);
         }
 
@@ -49,7 +52,6 @@ public class Arc extends RaySpell {
         }
 
         return true;
-
     }
 
     @Override
@@ -68,7 +70,6 @@ public class Arc extends RaySpell {
                 .assignBaseProperties(SpellTiers.NOVICE, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT, 5, 0, 15)
                 .add(DefaultProperties.RANGE, 3F)
                 .add(DefaultProperties.DAMAGE, 8F)
-                .add(DefaultProperties.SENSIBLE, true)
                 .build();
     }
 }

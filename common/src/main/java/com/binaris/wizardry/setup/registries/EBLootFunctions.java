@@ -1,7 +1,6 @@
 package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.content.loot.RandomSpellFunction;
 import com.binaris.wizardry.content.loot.WizardSpellFunction;
 import net.minecraft.core.registries.BuiltInRegistries;

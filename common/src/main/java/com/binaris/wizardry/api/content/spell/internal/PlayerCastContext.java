@@ -1,6 +1,6 @@
 package com.binaris.wizardry.api.content.spell.internal;
 
-import com.binaris.wizardry.api.content.item.ISpellCastingItem;
+import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.WandItem;
 import net.minecraft.world.InteractionHand;
@@ -20,7 +20,7 @@ import net.minecraft.world.level.Level;
  * @see CastContext The base class with shared information
  * @see WandItem Example of creation from wands
  * @see ScrollItem Example of creation from scrolls
- * @see ISpellCastingItem Interface for spell-casting items
+ * @see ICastItem Interface for spell-casting items
  */
 public class PlayerCastContext extends CastContext {
     private final InteractionHand hand;

@@ -2,7 +2,6 @@ package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.DeferredObject;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.sounds.SoundEvent;
 import org.jetbrains.annotations.Nullable;

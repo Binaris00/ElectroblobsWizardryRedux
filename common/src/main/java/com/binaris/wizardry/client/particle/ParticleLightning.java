@@ -39,17 +39,11 @@ public class ParticleLightning extends ParticleTargeted {
     }
 
     @Override
-    protected boolean shouldApplyOriginOffset() {
-        return false;
-    }
-
-    @Override
     protected void draw(PoseStack stack, Tesselator tesselator, float length, float tickDelta) {
         RenderSystem.enableBlend();
         RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE);
 
         boolean freeEnd = this.target == null;
-
         int numberOfSegments = Math.round(length / MAX_SEGMENT_LENGTH);
 
         for (int layer = 0; layer < 3; layer++) {
@@ -129,10 +123,13 @@ public class ParticleLightning extends ParticleTargeted {
         buffer.vertex(stack.last().pose(), x2 - width, y2 - width, z2).color(r, g, b, a).endVertex();
         buffer.vertex(stack.last().pose(), x1 - width, y1 + width, z1).color(r, g, b, a).endVertex();
         buffer.vertex(stack.last().pose(), x2 - width, y2 + width, z2).color(r, g, b, a).endVertex();
+
         buffer.vertex(stack.last().pose(), x1 + width, y1 + width, z1).color(r, g, b, a).endVertex();
         buffer.vertex(stack.last().pose(), x2 + width, y2 + width, z2).color(r, g, b, a).endVertex();
+
         buffer.vertex(stack.last().pose(), x1 + width, y1 - width, z1).color(r, g, b, a).endVertex();
         buffer.vertex(stack.last().pose(), x2 + width, y2 - width, z2).color(r, g, b, a).endVertex();
+
         buffer.vertex(stack.last().pose(), x1 - width, y1 - width, z1).color(r, g, b, a).endVertex();
         buffer.vertex(stack.last().pose(), x2 - width, y2 - width, z2).color(r, g, b, a).endVertex();
     }

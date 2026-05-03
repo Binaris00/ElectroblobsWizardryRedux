@@ -1,6 +1,6 @@
 package com.binaris.wizardry.content.item.artifact;
 
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.LivingEntity;
@@ -17,8 +17,8 @@ public class CondensingRingEffect implements IArtifactEffect {
 
         if (player.tickCount % MANA_RECHARGE_INTERVAL_TICKS == 0) {
             InventoryUtil.getHotbar(player).stream()
-                    .filter(st -> st.getItem() instanceof IManaStoringItem)
-                    .forEach(st -> ((IManaStoringItem) st.getItem()).rechargeMana(st, 1));
+                    .filter(st -> st.getItem() instanceof IManaItem)
+                    .forEach(st -> ((IManaItem) st.getItem()).rechargeMana(st, 1));
         }
     }
 }

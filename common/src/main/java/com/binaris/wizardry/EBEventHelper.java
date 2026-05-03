@@ -14,7 +14,7 @@ import com.binaris.wizardry.content.effect.StaticAuraMobEffect;
 import com.binaris.wizardry.content.effect.WardMobEffect;
 import com.binaris.wizardry.content.entity.construct.BubbleConstruct;
 import com.binaris.wizardry.content.item.WandUpgradeItem;
-import com.binaris.wizardry.content.item.WizardArmorItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorItem;
 import com.binaris.wizardry.content.spell.healing.ArcaneJammer;
 import com.binaris.wizardry.content.spell.healing.FontOfMana;
 import com.binaris.wizardry.content.spell.lightning.Charge;

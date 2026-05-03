@@ -6,7 +6,6 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.content.entity.construct.*;
 import com.binaris.wizardry.content.entity.living.LightningWraith;
 import com.binaris.wizardry.content.entity.projectile.*;
@@ -59,7 +58,7 @@ public final class Spells {
     // ice_statue
     public static final Spell FROST_SIGIL;
     //lightning_ray
-    // spark bomb
+    public static final Spell SPARK_BOMB;
     public static final Spell HOMING_SPARK;
     public static final Spell LIGHTNING_SIGIL;
     public static final Spell LIGHTNING_ARROW;
@@ -225,11 +224,9 @@ public final class Spells {
 
     // TEST SPELLS (SENSIBLES)
     public static final Spell OJOSPOCOS;
-    public static final Spell SUMMON_RICH;
     public static final Spell BLOCK_SURPRISE;
     public static final Spell PLAYER_HAND;
     public static final Spell WIZARD_HAND;
-    public static final Spell QUICK_FLAMECATCHER;
 
     public static Map<String, Spell> SPELLS = new LinkedHashMap<>();
 
@@ -328,6 +325,17 @@ public final class Spells {
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 5f)
                         .add(DefaultProperties.EFFECT_DURATION, 5)
+                        .build()
+        ));
+
+        SPARK_BOMB = spell("spark_bomb", () -> new ProjectileSpell<>(SparkBombEntity::new).assignProperties(
+                SpellProperties.builder()
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 25)
+                        .add(DefaultProperties.RANGE, 10F)
+                        .add(DefaultProperties.SPLASH_DAMAGE, 4F)
+                        .add(DefaultProperties.DIRECT_DAMAGE, 6F)
+                        .add(DefaultProperties.EFFECT_RADIUS, 5)
+                        .add(DefaultProperties.MAX_TARGETS, 4)
                         .build()
         ));
 
@@ -674,16 +682,6 @@ public final class Spells {
 
         BLOCK_SURPRISE = spell("block_surprise", BlockWithSurprise::new);
 
-        SUMMON_RICH = spell("summon_rich", () -> new MinionSpell<>((l) -> new WitherSkeleton(EntityType.WITHER_SKELETON, l)).assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellType.MINION, SpellAction.POINT, 100, 50, 600)
-                        .add(DefaultProperties.MINION_COUNT, 1)
-                        .add(DefaultProperties.MINION_LIFETIME, 1200)
-                        .add(DefaultProperties.SUMMON_RADIUS, 5)
-                        .add(DefaultProperties.SENSIBLE, true)
-                        .build()
-        ));
-
         SUMMON_ZOMBIE = spell("summon_zombie", SummonZombie::new);
 
         SUMMON_SNOW_GOLEM = spell("summon_snow_golem", () -> new MinionSpell<>((l) -> new SnowGolem(EntityType.SNOW_GOLEM, l)).assignProperties(
@@ -881,14 +879,6 @@ public final class Spells {
         PLAYER_HAND = spell("player_hand", PlayerHand::new);
 
         WIZARD_HAND = spell("wizard_hand", WizardHand::new);
-
-        QUICK_FLAMECATCHER = spell("quick_flamecatcher", () -> new ConjureItemSpell(EBItems.FLAMECATCHER.get()).assignProperties(
-                SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
-                        .add(DefaultProperties.ITEM_LIFETIME, 100)
-                        .add(DefaultProperties.SENSIBLE, true)
-                        .build()
-        ));
     }
 
     private Spells() {

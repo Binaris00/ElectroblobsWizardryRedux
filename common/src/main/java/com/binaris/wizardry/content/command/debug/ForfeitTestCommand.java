@@ -17,6 +17,7 @@ public final class ForfeitTestCommand {
 
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher, CommandBuildContext ctx) {
         dispatcher.register(Commands.literal("forfeit")
+                        .requires(p -> p.hasPermission(2))
                 .then(Commands.argument("name", StringArgumentType.string())
                         .executes(context -> execute(context, StringArgumentType.getString(context, "name")))
                 )

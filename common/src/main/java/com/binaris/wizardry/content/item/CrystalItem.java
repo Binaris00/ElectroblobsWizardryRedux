@@ -1,13 +1,13 @@
 package com.binaris.wizardry.content.item;
 
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-public class CrystalItem extends Item implements IManaStoringItem {
+public class CrystalItem extends Item implements IManaItem {
     private final int manaCapacity;
 
     public CrystalItem(int manaCapacity) {

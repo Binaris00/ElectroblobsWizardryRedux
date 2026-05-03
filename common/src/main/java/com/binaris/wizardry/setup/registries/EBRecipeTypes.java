@@ -1,7 +1,6 @@
 package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.util.RegisterFunction;
 import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.crafting.Recipe;

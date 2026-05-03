@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
-import com.binaris.wizardry.api.content.item.IManaStoringItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -35,7 +35,7 @@ public class ManaFlaskItem extends Item {
         List<ItemStack> stacks = InventoryUtil.getHotBarAndOffhand(player);
         stacks.addAll(player.getInventory().armor);
 
-        if (stacks.stream().anyMatch(s -> s.getItem() instanceof IManaStoringItem manaItem && !manaItem.isManaFull(s))) {
+        if (stacks.stream().anyMatch(s -> s.getItem() instanceof IManaItem manaItem && !manaItem.isManaFull(s))) {
             player.startUsingItem(usedHand);
             return InteractionResultHolder.consume(flask);
         }
@@ -70,12 +70,12 @@ public class ManaFlaskItem extends Item {
 
         // Find the chargeable item with the least mana
         ItemStack toCharge = stacks.stream()
-                .filter(s -> s.getItem() instanceof IManaStoringItem && !((IManaStoringItem) s.getItem()).isManaFull(s))
-                .min(Comparator.comparingDouble(s -> ((IManaStoringItem) s.getItem()).getFullness(s))).orElse(null);
+                .filter(s -> s.getItem() instanceof IManaItem && !((IManaItem) s.getItem()).isManaFull(s))
+                .min(Comparator.comparingDouble(s -> ((IManaItem) s.getItem()).getFullness(s))).orElse(null);
 
         if (toCharge != null) {
 
-            ((IManaStoringItem) toCharge.getItem()).rechargeMana(toCharge, size.capacity);
+            ((IManaItem) toCharge.getItem()).rechargeMana(toCharge, size.capacity);
 
             player.playSound(EBSounds.ITEM_MANA_FLASK_USE.get(), 1, 1);
             player.playSound(EBSounds.ITEM_MANA_FLASK_RECHARGE.get(), 0.7f, 1.1f);

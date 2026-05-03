@@ -1,5 +1,1 @@
-- added British translation ([#16](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/16))
-- added Korean translation ([#15](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/15))
-- wizard tower now has biome tags for fabric and forge ([#18](https://github.com/Binaris00/ElectroblobsWizardryRedux/pull/18))
-- fixed some typo issues with "Baubles" mentions in artifacts
-- rollback to how spell modifier calculation was before refactoring (only applying to armor and wand logic)
+- fix: better progression reduction calc, when 60% of the max recent spells are casted, the reduction is applied (50% less progression)
