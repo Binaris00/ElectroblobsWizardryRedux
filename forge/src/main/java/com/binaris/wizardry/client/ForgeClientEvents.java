@@ -3,11 +3,12 @@ package com.binaris.wizardry.client;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.effect.ArcaneLockRender;
 import com.binaris.wizardry.client.effect.ContainmentFieldRender;
+import com.binaris.wizardry.core.config.ConfigManager;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
 import net.minecraftforge.client.event.RenderLevelStageEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-
 
 @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ForgeClientEvents {
@@ -20,5 +21,10 @@ public class ForgeClientEvents {
 
         ContainmentFieldRender.render(event.getCamera(), event.getPoseStack(), event.getPartialTick());
         ArcaneLockRender.render(event.getCamera(), event.getPoseStack(), event.getPartialTick());
+    }
+
+    @SubscribeEvent
+    public static void onClientLogout(ClientPlayerNetworkEvent.LoggingOut event) {
+        ConfigManager.restoreLocalConfigs();
     }
 }
