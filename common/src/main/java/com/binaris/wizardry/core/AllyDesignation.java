@@ -13,6 +13,8 @@ import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.UUID;
+
 public final class AllyDesignation {
     /**
      * Covers both {@link AllyDesignation#isPlayerAlly(Player, Player)} and {@link AllyDesignation#isOwnerAlly(Player, OwnableEntity)},
@@ -106,6 +108,14 @@ public final class AllyDesignation {
      * Helper method for testing if two players are allies of each other according to the given player's data.
      */
     public static boolean isPlayerAlly(Player allyOf, Player possibleAlly) {
+        WizardData data = Services.OBJECT_DATA.getWizardData(allyOf);
+        return data.isPlayerAlly(possibleAlly);
+    }
+
+    /**
+     * Helper method for testing if the given UUID is an ally of the given player.
+     */
+    public static boolean isPlayerAlly(Player allyOf, UUID possibleAlly) {
         WizardData data = Services.OBJECT_DATA.getWizardData(allyOf);
         return data.isPlayerAlly(possibleAlly);
     }
