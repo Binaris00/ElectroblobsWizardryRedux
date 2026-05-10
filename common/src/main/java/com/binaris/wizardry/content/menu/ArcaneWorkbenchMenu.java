@@ -17,6 +17,7 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.util.Mth;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
@@ -45,6 +46,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
     public static final int PLAYER_INVENTORY_SIZE = 36;
     public Container container;
     public boolean needsRefresh;
+    private final Player player;
 
     public ArcaneWorkbenchMenu(int i, Inventory playerInv) {
         this(i, playerInv, new SimpleContainer(11));
@@ -53,6 +55,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
     public ArcaneWorkbenchMenu(int id, Inventory inventory, Container container) {
         super(EBMenus.ARCANE_WORKBENCH_MENU.get(), id);
         this.container = container;
+        this.player = inventory.player;
         ItemStack wand = container.getItem(CENTRE_SLOT);
 
         // Spell Book Slots
@@ -86,7 +89,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             for (int x = 0; x < 9; x++)
                 addSlot(new Slot(inventory, 9 + x + y * 9, 8 + x * 18, 138 + y * 18));
 
-        onSlotChanged(CENTRE_SLOT, wand, null);
+        onSlotChanged(CENTRE_SLOT, wand, this.player);
     }
 
     /**
@@ -175,16 +178,29 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
     }
 
     /**
-     * Called when a slot is changed. If the centre slot is changed, this updates the visibility and position of the
-     * spell book slots. (Because there's no point in showing them if there's no wand in the centre slot). Depending of
+     * Called when a slot is changed. If the center slot is changed, this updates the visibility and position of the
+     * spell book slots. (Because there's no point in showing them if there's no wand in the center slot). Depending on
      * the wand upgrade, the number of spell slots may vary, so the spell book slots are arranged in a circle around
-     * the centre slot.
+     * the center slot.
+     *
+     * @param slotNumber The ID of the slot that changed.
+     * @param stack      The new stack in that slot.
+     */
+    public void onSlotChanged(int slotNumber, ItemStack stack) {
+        onSlotChanged(slotNumber, stack, this.player);
+    }
+
+    /**
+     * Called when a slot is changed. If the center slot is changed, this updates the visibility and position of the
+     * spell book slots. (Because there's no point in showing them if there's no wand in the center slot). Depending on
+     * the wand upgrade, the number of spell slots may vary, so the spell book slots are arranged in a circle around
+     * the center slot.
      *
      * @param slotNumber The slot number that changed.
      * @param stack      The new stack in that slot.
      * @param player     The player viewing the arcane workbench.
      */
-    public void onSlotChanged(int slotNumber, ItemStack stack, Player player) {
+    public void onSlotChanged(int slotNumber, ItemStack stack, @NotNull Player player) {
         if (slotNumber != CENTRE_SLOT) return;
         if (stack.isEmpty()) {
             for (int i = 0; i < CRYSTAL_SLOT; i++) {
@@ -273,11 +289,19 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
         Slot slot = this.getSlot(index);
         ((SlotAccessor) slot).setX(-999);
         ((SlotAccessor) slot).setY(-999);
-        ItemStack stack = slot.getItem();
-        ItemStack rest = this.quickMoveStack(player, index);
-        if (rest == ItemStack.EMPTY && stack != ItemStack.EMPTY) {
-            slot.set(ItemStack.EMPTY);
-            player.drop(stack, false);
+
+        this.quickMoveStack(player, index);
+        ItemStack remaining = slot.getItem();
+
+        if (remaining.isEmpty()) return;
+
+        slot.set(ItemStack.EMPTY);
+        if (player.addItem(remaining)) return;
+
+        ItemEntity itemEntity = player.drop(remaining, false);
+        if (itemEntity != null) {
+            itemEntity.setNoPickUpDelay();
+            itemEntity.setTarget(player.getUUID());
         }
     }
 

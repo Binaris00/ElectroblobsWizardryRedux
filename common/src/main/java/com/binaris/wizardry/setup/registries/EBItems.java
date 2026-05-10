@@ -15,7 +15,7 @@ import com.binaris.wizardry.content.spell.necromancy.Banish;
 import com.binaris.wizardry.content.spell.sorcery.ImbueWeapon;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.core.QuickArtifactEffect;
-import com.binaris.wizardry.core.config.EBConfig;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.datagen.EBDataGenProcessor;
@@ -128,16 +128,16 @@ public final class EBItems {
     public static final DeferredObject<Item> ADVANCED_SORCERY_WAND = wand("wand_advanced_sorcery", SpellTiers.ADVANCED, Elements.SORCERY);
     public static final DeferredObject<Item> MASTER_SORCERY_WAND = wand("wand_master_sorcery", SpellTiers.MASTER, Elements.SORCERY);
     //Crystals
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_SHARD = crystal("magic_crystal_shard", EBConfig.MANA_PER_SHARD.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL = crystal("magic_crystal", EBConfig.MANA_PER_CRYSTAL.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_EARTH = crystal("magic_crystal_earth", EBConfig.MANA_PER_CRYSTAL.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_FIRE = crystal("magic_crystal_fire", EBConfig.MANA_PER_CRYSTAL.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_HEALING = crystal("magic_crystal_healing", EBConfig.MANA_PER_CRYSTAL.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_ICE = crystal("magic_crystal_ice", EBConfig.MANA_PER_CRYSTAL.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_LIGHTNING = crystal("magic_crystal_lightning", EBConfig.MANA_PER_CRYSTAL.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_NECROMANCY = crystal("magic_crystal_necromancy", EBConfig.MANA_PER_CRYSTAL.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_SORCERY = crystal("magic_crystal_sorcery", EBConfig.MANA_PER_CRYSTAL.get());
-    public static final DeferredObject<Item> MAGIC_CRYSTAL_GRAND = crystal("magic_crystal_grand", EBConfig.GRAND_CRYSTAL_MANA.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_SHARD = crystal("magic_crystal_shard", EBServerConfig.MANA_PER_SHARD.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL = crystal("magic_crystal", EBServerConfig.MANA_PER_CRYSTAL.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_EARTH = crystal("magic_crystal_earth", EBServerConfig.MANA_PER_CRYSTAL.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_FIRE = crystal("magic_crystal_fire", EBServerConfig.MANA_PER_CRYSTAL.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_HEALING = crystal("magic_crystal_healing", EBServerConfig.MANA_PER_CRYSTAL.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_ICE = crystal("magic_crystal_ice", EBServerConfig.MANA_PER_CRYSTAL.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_LIGHTNING = crystal("magic_crystal_lightning", EBServerConfig.MANA_PER_CRYSTAL.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_NECROMANCY = crystal("magic_crystal_necromancy", EBServerConfig.MANA_PER_CRYSTAL.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_SORCERY = crystal("magic_crystal_sorcery", EBServerConfig.MANA_PER_CRYSTAL.get());
+    public static final DeferredObject<Item> MAGIC_CRYSTAL_GRAND = crystal("magic_crystal_grand", EBServerConfig.GRAND_CRYSTAL_MANA.get());
     //Wand Upgrades
     public static final DeferredObject<Item> ATTUNEMENT_UPGRADE = wandUpgrade("attunement_upgrade");
     public static final DeferredObject<Item> BLAST_UPGRADE = wandUpgrade("blast_upgrade");

@@ -22,11 +22,13 @@ import com.binaris.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.binaris.wizardry.content.spell.sorcery.ArcaneLockSpell;
 import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.DataEvents;
+import com.binaris.wizardry.core.config.ConfigManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.setup.registries.EBAdvancementTriggers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.level.storage.LevelResource;
 
 /**
  * Simple class to save all the event helper methods
@@ -53,6 +55,7 @@ public final class EBEventHelper {
         onItemPlaceInContainer(bus);
         onPlayerUseBlock(bus);
         onPlayerBreakBlock(bus);
+        onServerLoad(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -85,11 +88,18 @@ public final class EBEventHelper {
     private static void onPlayerJoin(WizardryEventBus bus) {
         bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
         bus.register(EBPlayerJoinServerEvent.class, (SpellProperties::onPlayerJoin));
-        bus.register(EBPlayerJoinServerEvent.class, com.binaris.wizardry.core.config.EBConfigManager::onPlayerJoin);
+        bus.register(EBPlayerJoinServerEvent.class, ConfigManager::onPlayerJoin);
     }
 
     private static void onServerLevelLoad(WizardryEventBus bus) {
         bus.register(EBServerLevelLoadEvent.class, SpellGlyphData::onServerLevelLoad);
+        bus.register(EBServerLevelLoadEvent.class, (e) -> {
+            ConfigManager.loadServerConfigs(e.getLevel().getServer().getWorldPath(LevelResource.ROOT));
+        });
+    }
+
+    private static void onServerLoad(WizardryEventBus bus) {
+
     }
 
     private static void onEntityJoinLevel(WizardryEventBus bus) {

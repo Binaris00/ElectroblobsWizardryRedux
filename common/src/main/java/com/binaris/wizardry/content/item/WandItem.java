@@ -14,7 +14,7 @@ import com.binaris.wizardry.api.content.util.*;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
 import com.binaris.wizardry.core.EBConstants;
 import com.binaris.wizardry.core.EBLogger;
-import com.binaris.wizardry.core.config.EBConfig;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
@@ -374,9 +374,9 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
      */
     protected void applySpecialUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
         Item specialUpgrade = upgrade.getItem();
-        int maxUpgrades = tier.getUpgradeLimit() + (element == Elements.MAGIC ? EBConfig.NON_ELEMENTAL_UPGRADE_BONUS.get() : 0);
+        int maxUpgrades = tier.getUpgradeLimit() + (element == Elements.MAGIC ? EBServerConfig.NON_ELEMENTAL_UPGRADE_BONUS.get() : 0);
 
-        if (CastItemDataHelper.getTotalUpgrades(wand) >= maxUpgrades || CastItemDataHelper.getUpgradeLevel(wand, specialUpgrade) >= EBConfig.UPGRADE_STACK_LIMIT.get()) {
+        if (CastItemDataHelper.getTotalUpgrades(wand) >= maxUpgrades || CastItemDataHelper.getUpgradeLevel(wand, specialUpgrade) >= EBServerConfig.UPGRADE_STACK_LIMIT.get()) {
             return;
         }
 
@@ -492,7 +492,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
 
     @Override
     public int getCustomMaxDamage(ItemStack stack) {
-        return (int) (this.getMaxDamage() * (1.0f + EBConfig.STORAGE_INCREASE_PER_LEVEL.get() * CastItemDataHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE.get())) + 0.5f);
+        return (int) (this.getMaxDamage() * (1.0f + EBServerConfig.STORAGE_INCREASE_PER_LEVEL.get() * CastItemDataHelper.getUpgradeLevel(stack, EBItems.STORAGE_UPGRADE.get())) + 0.5f);
     }
 
     @Override

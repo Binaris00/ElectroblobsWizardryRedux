@@ -11,6 +11,7 @@ import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -35,6 +36,8 @@ public final class WizardryFabricMod implements ModInitializer {
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(handler.getPlayer(), server)));
 
         ServerWorldEvents.LOAD.register(((minecraftServer, serverLevel) -> WizardryEventBus.getInstance().fire(new EBServerLevelLoadEvent(serverLevel))));
+
+        ServerLifecycleEvents.SERVER_STARTING.register((server) -> WizardryEventBus.getInstance().fire(new EBServerLoad(server)));
 
         EBBlocks.register(Registry::register);
         EBBlockEntities.register(Registry::register);

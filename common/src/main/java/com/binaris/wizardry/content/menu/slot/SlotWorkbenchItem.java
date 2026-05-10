@@ -24,7 +24,7 @@ public class SlotWorkbenchItem extends Slot {
     @Override
     public void set(@NotNull ItemStack stack) {
         super.set(stack);
-        this.menu.onSlotChanged(index, stack, null);
+        this.menu.onSlotChanged(index, stack);
     }
 
     @Override

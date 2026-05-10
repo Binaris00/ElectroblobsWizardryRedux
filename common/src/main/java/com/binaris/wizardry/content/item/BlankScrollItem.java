@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
-import com.binaris.wizardry.core.config.EBConfig;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
@@ -58,7 +58,7 @@ public class BlankScrollItem extends Item implements IWorkbenchItem {
         if (crystalStack.getItem() instanceof IManaItem manaStoringItem) {
             return manaStoringItem.getManaCapacity(crystalStack);
         }
-        return EBConfig.MANA_PER_CRYSTAL.get(); // default
+        return EBServerConfig.MANA_PER_CRYSTAL.get(); // default
     }
 
     private boolean hasEnoughMana(int crystalCount, int manaPerCrystal, int requiredMana) {

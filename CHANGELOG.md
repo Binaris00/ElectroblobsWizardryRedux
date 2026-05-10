@@ -1,1 +1,5 @@
 - fix: better progression reduction calc, when 60% of the max recent spells are casted, the reduction is applied (50% less progression)
+- fix: Game Crash when grabbing a wand from a spell table while inventory is full
+- fix: Arcane Lock lacking ability for allies to open it
+- fix: Fix ruined spell book earth gives Sorcery spell books
+- refactor: minion test removed

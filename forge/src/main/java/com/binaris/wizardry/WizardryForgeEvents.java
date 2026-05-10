@@ -21,6 +21,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -39,6 +40,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
@@ -55,6 +57,11 @@ public class WizardryForgeEvents {
 
     @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeBusEvents {
+        @SubscribeEvent
+        public static void onServerAboutToStart(ServerAboutToStartEvent event) {
+            WizardryEventBus.getInstance().fire(new EBServerLoad(event.getServer()));
+        }
+
         @SubscribeEvent
         public static void onWorldLoadEvent(final LevelEvent.Load event) {
             if (event.getLevel().isClientSide()) return;
@@ -100,7 +107,7 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void onBlockBreak(BlockEvent.BreakEvent event) {
-            if (WizardryEventBus.getInstance().fire(new EBPlayerBreakBlockEvent(event.getPlayer(), (net.minecraft.world.level.Level) event.getLevel(), event.getPos())))
+            if (WizardryEventBus.getInstance().fire(new EBPlayerBreakBlockEvent(event.getPlayer(), (Level) event.getLevel(), event.getPos())))
                 event.setCanceled(true);
         }
 

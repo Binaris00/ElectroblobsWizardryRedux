@@ -9,6 +9,7 @@ import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
+import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -42,13 +43,11 @@ public class ArcaneLockSpell extends RaySpell {
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
         if (data == null) return;
 
-        if (data.isArcaneLocked()) {
-            // Check if the player is the owner
-            if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID())) {
-                event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning")
-                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
-                event.setCanceled(true);
-            }
+        if (!data.isArcaneLocked()) return;
+
+        if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID()) && !AllyDesignation.isPlayerAlly(event.getPlayer(), data.getArcaneLockOwnerUUID())) {
+            event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            event.setCanceled(true);
         }
     }
 
@@ -67,13 +66,11 @@ public class ArcaneLockSpell extends RaySpell {
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
         if (data == null) return;
 
-        if (data.isArcaneLocked()) {
-            // Check if the player is the owner
-            if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID())) {
-                event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning")
-                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
-                event.setCanceled(true);
-            }
+        if (!data.isArcaneLocked()) return;
+
+        if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID()) && !AllyDesignation.isPlayerAlly(event.getPlayer(), data.getArcaneLockOwnerUUID())) {
+            event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            event.setCanceled(true);
         }
     }
 
@@ -87,9 +84,7 @@ public class ArcaneLockSpell extends RaySpell {
             if (toggleLock(ctx, pos, player)) {
                 // Handle double chests
                 BlockPos otherHalf = getConnectedChest(ctx.world(), pos);
-                if (otherHalf != null) {
-                    toggleLock(ctx, otherHalf, player);
-                }
+                if (otherHalf != null) toggleLock(ctx, otherHalf, player);
                 return true;
             }
         }
@@ -118,8 +113,7 @@ public class ArcaneLockSpell extends RaySpell {
             if (data.getArcaneLockOwnerUUID().equals(player.getUUID())) {
                 // Unlocking
                 data.setArcaneLockOwner(null);
-                player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking")
-                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+                player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking").withStyle(ChatFormatting.LIGHT_PURPLE), true);
                 return true;
             } else {
                 player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(this.getElement().getColor()), true);
@@ -130,8 +124,7 @@ public class ArcaneLockSpell extends RaySpell {
             data.setArcaneLockOwner(player.getUUID().toString());
             blockEntity.setChanged();
             ctx.world().sendBlockUpdated(pos, ctx.world().getBlockState(pos), ctx.world().getBlockState(pos), 3);
-            player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.locking")
-                    .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.locking").withStyle(ChatFormatting.LIGHT_PURPLE), true);
             return true;
         }
     }

@@ -3,7 +3,7 @@ package com.binaris.wizardry.core;
 import com.binaris.wizardry.api.content.data.MinionData;
 import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
-import com.binaris.wizardry.core.config.EBConfig;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import net.minecraft.world.entity.Entity;
@@ -12,6 +12,8 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.UUID;
 
 public final class AllyDesignation {
     /**
@@ -65,7 +67,7 @@ public final class AllyDesignation {
         if (target == null || target == attacker) return false;
         if (attacker == null) return true;
         if (attacker instanceof OwnableEntity ownable && !isValidTarget(ownable.getOwner(), target)) return false;
-        if (EBConfig.PASSIVE_MOBS_ARE_ALLIES.get() && target.getType().getCategory().isFriendly()) return false;
+        if (EBServerConfig.PASSIVE_MOBS_ARE_ALLIES.get() && target.getType().getCategory().isFriendly()) return false;
 
         if (target instanceof OwnableEntity ownable) {
             Entity owner = ownable.getOwner();
@@ -96,8 +98,8 @@ public final class AllyDesignation {
 
         Entity damagedEntity = event.getDamagedEntity();
         if (damagedEntity instanceof Player playerSource) {
-            if (EBConfig.BLOCK_PLAYERS_ALLIES_DAMAGE.get() && isPlayerAlly(playerDirect, playerSource)) event.setCanceled(true);
-        } else if (EBConfig.BLOCK_OWNED_ALLIES_DAMAGE.get() && isAllied(playerDirect, damagedEntity)) {
+            if (EBServerConfig.BLOCK_PLAYERS_ALLIES_DAMAGE.get() && isPlayerAlly(playerDirect, playerSource)) event.setCanceled(true);
+        } else if (EBServerConfig.BLOCK_OWNED_ALLIES_DAMAGE.get() && isAllied(playerDirect, damagedEntity)) {
             event.setCanceled(true);
         }
     }
@@ -106,6 +108,14 @@ public final class AllyDesignation {
      * Helper method for testing if two players are allies of each other according to the given player's data.
      */
     public static boolean isPlayerAlly(Player allyOf, Player possibleAlly) {
+        WizardData data = Services.OBJECT_DATA.getWizardData(allyOf);
+        return data.isPlayerAlly(possibleAlly);
+    }
+
+    /**
+     * Helper method for testing if the given UUID is an ally of the given player.
+     */
+    public static boolean isPlayerAlly(Player allyOf, UUID possibleAlly) {
         WizardData data = Services.OBJECT_DATA.getWizardData(allyOf);
         return data.isPlayerAlly(possibleAlly);
     }
