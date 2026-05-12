@@ -3,3 +3,5 @@
 - fix: Arcane Lock lacking ability for allies to open it
 - fix: Fix ruined spell book earth gives Sorcery spell books
 - refactor: minion test removed
+- fix: (fabric) now imbuement enchants are only applied to tiered and enchantable items (avoiding crash with )
+- fix: inject arms pose into HumanoidModel now checks if the entity is a player (avoiding weird crash with piglins)
