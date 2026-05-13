@@ -6,6 +6,7 @@ import com.binaris.wizardry.api.content.item.ArtifactItem;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.SpellTier;
+import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.content.item.*;
 import com.binaris.wizardry.content.item.armor.*;
@@ -13,6 +14,7 @@ import com.binaris.wizardry.content.item.artifact.*;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.content.spell.necromancy.Banish;
 import com.binaris.wizardry.content.spell.sorcery.ImbueWeapon;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.core.QuickArtifactEffect;
 import com.binaris.wizardry.core.config.EBServerConfig;
@@ -292,7 +294,7 @@ public final class EBItems {
     public static final DeferredObject<Item> CHARM_HUNGER_CASTING = charmArtifact("charm_hunger_casting", Rarity.RARE, new HungerCastingCharmEffect());
     public static final DeferredObject<Item> CHARM_LAVA_WALKING = charmArtifact("charm_lava_walking", Rarity.EPIC, null);
     public static final DeferredObject<Item> CHARM_LIGHT = charmArtifact("charm_light", Rarity.RARE, null);
-    public static final DeferredObject<Item> CHARM_MINION_HEALTH = charmArtifact("charm_minion_health", Rarity.UNCOMMON, null);
+    public static final DeferredObject<Item> CHARM_MINION_HEALTH = charmArtifact("charm_minion_health", Rarity.UNCOMMON, QuickArtifactEffect.spellPreCast((e, s) -> e.getSpell().getType() == SpellType.MINION, (e, s) -> e.getModifiers().multiply(SpellModifiers.HEALTH_MODIFIER, 1.5f)));
     public static final DeferredObject<Item> CHARM_MINION_VARIANTS = charmArtifact("charm_minion_variants", Rarity.UNCOMMON, null);
     public static final DeferredObject<Item> CHARM_MOUNT_TELEPORTING = charmArtifact("charm_mount_teleporting", Rarity.RARE, null);
     public static final DeferredObject<Item> CHARM_MOVE_SPEED = charmArtifact("charm_move_speed", Rarity.RARE, null);
@@ -317,7 +319,7 @@ public final class EBItems {
     public static final DeferredObject<Item> AMULET_ICE_PROTECTION = necklaceArtifact("amulet_ice_protection", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && e.getSource().is(EBDamageSources.FROST), (e, s) -> e.setAmount(e.getAmount() * 0.7f)));
     public static final DeferredObject<Item> AMULET_LICH = necklaceArtifact("amulet_lich", Rarity.UNCOMMON, new LichAmuletEffect());
     public static final DeferredObject<Item> AMULET_POTENTIAL = necklaceArtifact("amulet_potential", Rarity.RARE, new AmuletPotentialEffect());
-    public static final DeferredObject<Item> AMULET_RECOVERY = necklaceArtifact("amulet_recovery", Rarity.UNCOMMON, null);
+    public static final DeferredObject<Item> AMULET_RECOVERY = necklaceArtifact("amulet_recovery", Rarity.UNCOMMON, new RecoveryAmuletEffect());
     public static final DeferredObject<Item> AMULET_RESURRECTION = necklaceArtifact("amulet_resurrection", Rarity.EPIC, null); // TODO PlayerDropsEvent
     public static final DeferredObject<Item> AMULET_TRANSIENCE = necklaceArtifact("amulet_transience", Rarity.EPIC, QuickArtifactEffect.hurtEntity((e, s) -> e.getSource().getEntity() instanceof Player player && player.getHealth() <= 6 && player.level().random.nextFloat() < 0.25f, (e, s) -> ((Player) e.getSource().getEntity()).addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, 300, 0, false, false))));
     public static final DeferredObject<Item> AMULET_WARDING = necklaceArtifact("amulet_warding", Rarity.UNCOMMON, QuickArtifactEffect.hurtEntity((e, s) -> EBDamageSources.isMagic(e.getSource()), (e, s) -> e.setAmount(e.getAmount() * 0.9f)));

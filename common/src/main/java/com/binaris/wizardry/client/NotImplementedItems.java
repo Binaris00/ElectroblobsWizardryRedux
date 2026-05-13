@@ -10,14 +10,12 @@ public final class NotImplementedItems {
             EBItems.AMULET_AUTO_SHIELD.get(),
             EBItems.CHARM_ABSEILING.get(),
             EBItems.CHARM_BLACK_HOLE.get(),
-            EBItems.CHARM_LAVA_WALKING.get(),
             EBItems.CHARM_LIGHT.get(),
             EBItems.CHARM_MINION_HEALTH.get(),
             EBItems.CHARM_SILK_TOUCH.get(),
             EBItems.CHARM_SIXTH_SENSE.get(),
-            EBItems.CHARM_STORM.get(),
+            EBItems.CHARM_STOP_TIME.get(),
             EBItems.CHARM_TRANSPORTATION.get(),
-            EBItems.CHARM_UNDEAD_HELMETS.get(),
             EBItems.AMULET_ANCHORING.get(),
             EBItems.AMULET_RECOVERY.get(),
             EBItems.AMULET_RESURRECTION.get(),
@@ -31,7 +29,6 @@ public final class NotImplementedItems {
             EBItems.LIGHTNING_HAMMER.get(),
             EBItems.AMULET_FIRE_CLOAKING.get(),
             EBItems.AMULET_BANISHING.get(),
-            EBItems.CHARM_AUTO_SMELT.get(),
             EBItems.RING_SOULBINDING.get(),
             EBItems.CHARM_HUNGER_CASTING.get()
     );

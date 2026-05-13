@@ -41,10 +41,6 @@ import java.util.function.Function;
  */
 @SuppressWarnings("unused")
 public class MinionSpell<T extends Mob> extends Spell {
-    /** Attribute Modifier id */
-    public static final String HEALTH_MODIFIER = "minion_health";
-    /** Attribute Modifier id */
-    public static final String POTENCY_ATTRIBUTE_MODIFIER = "potency";
     /** A factory that creates the minions. */
     protected final Function<Level, T> minionFactory;
     /** Whether the minions are spawned in midair. Defaults to false. */
@@ -209,9 +205,9 @@ public class MinionSpell<T extends Mob> extends Spell {
             data.setSearchNearbyTargets(searchNearbyTargets);
 
             if (minion.getAttribute(Attributes.ATTACK_DAMAGE) != null)
-                minion.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(POTENCY_ATTRIBUTE_MODIFIER, ctx.modifiers().get(SpellModifiers.POTENCY) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                minion.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(SpellModifiers.POTENCY, ctx.modifiers().get(SpellModifiers.POTENCY) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
             if (minion.getAttribute(Attributes.MAX_HEALTH) != null)
-                minion.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(HEALTH_MODIFIER, ctx.modifiers().get(HEALTH_MODIFIER) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                minion.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(SpellModifiers.HEALTH_MODIFIER, ctx.modifiers().get(SpellModifiers.HEALTH_MODIFIER) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
             minion.setHealth(minion.getMaxHealth());
             minion.finalizeSpawn((ServerLevelAccessor) ctx.world(), ctx.world().getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);

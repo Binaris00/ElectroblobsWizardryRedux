@@ -2,12 +2,15 @@ package com.binaris.wizardry.content.effect;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.effect.MagicMobEffect;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBBlocks;
+import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.FrostedIceBlock;
@@ -24,30 +27,31 @@ public class FrostStepEffect extends MagicMobEffect {
         ParticleBuilder.create(EBParticles.SNOW).pos(x, y, z).time(15 + world.random.nextInt(5)).spawn(world);
     }
 
+    // This code is a copy of the enchantment similar to frost step
     public static void onEntityMoved(LivingEntity living, Level level, BlockPos pos, int amplifier) {
         if (!living.onGround()) return;
-
         int i = Math.min(16, 2 + amplifier);
-        BlockPos.MutableBlockPos blockpos$mutableblockpos = new BlockPos.MutableBlockPos();
+        BlockPos.MutableBlockPos mutablePos = new BlockPos.MutableBlockPos();
 
-        for(BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-i, -1, -i), pos.offset(i, -1, i))) {
-            if (blockpos.closerToCenterThan(living.position(), (double)i)) {
-                blockpos$mutableblockpos.set(blockpos.getX(), blockpos.getY() + 1, blockpos.getZ());
-                BlockState blockstate1 = level.getBlockState(blockpos$mutableblockpos);
-                if (blockstate1.isAir()) {
-                    BlockState blockstate2 = level.getBlockState(blockpos);
-                    if (blockstate2 == FrostedIceBlock.meltsInto() && Blocks.FROSTED_ICE.defaultBlockState().canSurvive(level, blockpos) && level.isUnobstructed(Blocks.FROSTED_ICE.defaultBlockState(), blockpos, CollisionContext.empty())) {
-                        level.setBlockAndUpdate(blockpos, Blocks.FROSTED_ICE.defaultBlockState());
-                        level.scheduleTick(blockpos, Blocks.FROSTED_ICE, Mth.nextInt(living.getRandom(), 60, 120));
-                    }
+        for (BlockPos blockpos : BlockPos.betweenClosed(pos.offset(-i, -1, -i), pos.offset(i, -1, i))) {
+            if (!blockpos.closerToCenterThan(living.position(), i)) continue;
 
-                    if (blockstate2 == Blocks.LAVA.defaultBlockState() && EBBlocks.OBSIDIAN_CRUST.get().defaultBlockState().canSurvive(level, blockpos) && level.isUnobstructed(EBBlocks.OBSIDIAN_CRUST.get().defaultBlockState(), blockpos, CollisionContext.empty())) {
-                        level.setBlockAndUpdate(blockpos, EBBlocks.OBSIDIAN_CRUST.get().defaultBlockState());
-                        level.scheduleTick(blockpos, EBBlocks.OBSIDIAN_CRUST.get(), Mth.nextInt(living.getRandom(), 60, 120));
-                    }
+            mutablePos.set(blockpos.getX(), blockpos.getY() + 1, blockpos.getZ());
+            BlockState dummyState = level.getBlockState(mutablePos);
+            if (!dummyState.isAir()) continue;
+
+            BlockState state = level.getBlockState(blockpos);
+            if (state == FrostedIceBlock.meltsInto() && Blocks.FROSTED_ICE.defaultBlockState().canSurvive(level, blockpos) && level.isUnobstructed(Blocks.FROSTED_ICE.defaultBlockState(), blockpos, CollisionContext.empty())) {
+                level.setBlockAndUpdate(blockpos, Blocks.FROSTED_ICE.defaultBlockState());
+                level.scheduleTick(blockpos, Blocks.FROSTED_ICE, Mth.nextInt(living.getRandom(), 60, 120));
+            }
+
+            if (living instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.CHARM_LAVA_WALKING.get())) {
+                if (state == Blocks.LAVA.defaultBlockState() && EBBlocks.OBSIDIAN_CRUST.get().defaultBlockState().canSurvive(level, blockpos) && level.isUnobstructed(EBBlocks.OBSIDIAN_CRUST.get().defaultBlockState(), blockpos, CollisionContext.empty())) {
+                    level.setBlockAndUpdate(blockpos, EBBlocks.OBSIDIAN_CRUST.get().defaultBlockState());
+                    level.scheduleTick(blockpos, EBBlocks.OBSIDIAN_CRUST.get(), Mth.nextInt(living.getRandom(), 60, 120));
                 }
             }
         }
-
     }
 }

@@ -66,7 +66,7 @@ public final class ArtifactUtils {
     public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action) {
         List<ItemStack> hotbar = InventoryUtil.getHotBarAndOffhand(player);
         for (ItemStack stack : hotbar) {
-            if (stack.getItem() instanceof ICastItem spellCastingItem && Arrays.asList(spellCastingItem.getSpells(stack)).contains(spell)) {
+            if (stack.getItem() instanceof ICastItem castItem && Arrays.asList(castItem.getSpells(stack)).contains(spell)) {
                 action.accept(stack);
                 return true;
             }

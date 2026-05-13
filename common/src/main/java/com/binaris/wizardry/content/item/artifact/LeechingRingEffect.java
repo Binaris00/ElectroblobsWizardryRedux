@@ -12,8 +12,9 @@ import java.util.Optional;
 public class LeechingRingEffect implements IArtifactEffect {
     @Override
     public void onHurtEntity(EBLivingHurtEvent e, ItemStack s) {
-        Player player = (Player) e.getSource().getEntity();
-        if (player.getHealth() < player.getMaxHealth()) {
+        if (!(e.getSource().getEntity() instanceof Player player)) return;
+        // 30% chance to heal
+        if (player.getHealth() < player.getMaxHealth() && player.getRandom().nextFloat() < 0.3f) {
             float healFactor = Optional.ofNullable(Spells.LIFE_DRAIN.property(DefaultProperties.HEALTH)).map(Number::floatValue).orElse(0.5f);
             player.heal(e.getAmount() * healFactor);
         }

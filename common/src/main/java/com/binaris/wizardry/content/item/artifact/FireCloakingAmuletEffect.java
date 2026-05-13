@@ -11,8 +11,8 @@ import java.util.List;
 
 public class FireCloakingAmuletEffect implements IArtifactEffect {
     @Override
-    public void onHurtEntity(EBLivingHurtEvent event, ItemStack stack) {
-        if (!(event.getSource().getEntity() instanceof Player player)) return;
+    public void onPlayerHurt(EBLivingHurtEvent event, ItemStack stack) {
+        if (!(event.getDamagedEntity() instanceof Player player)) return;
 
         List<FireRingConstruct> fireRings = player.level().getEntitiesOfClass(FireRingConstruct.class, player.getBoundingBox());
 
@@ -22,6 +22,5 @@ public class FireCloakingAmuletEffect implements IArtifactEffect {
                 break;
             }
         }
-
     }
 }

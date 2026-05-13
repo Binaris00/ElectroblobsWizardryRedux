@@ -16,10 +16,10 @@ public class FeedingCharmEffect implements IArtifactEffect {
         if (!(entity instanceof Player player)) return;
         if (player.tickCount % 100 != 0) return;
 
-        if (player.getFoodData().getFoodLevel() < 20 - Spells.SATIETY.property(ReplenishHunger.HUNGER_POINTS))
+        if (player.getFoodData().getFoodLevel() < (20 - Spells.SATIETY.property(ReplenishHunger.HUNGER_POINTS)))
             if (findMatchingWandAndCast(player, Spells.SATIETY)) return;
 
-        if (player.getFoodData().getFoodLevel() < 20 - Spells.REPLENISH_HUNGER.property(ReplenishHunger.HUNGER_POINTS))
+        if (player.getFoodData().getFoodLevel() < (20 - Spells.REPLENISH_HUNGER.property(ReplenishHunger.HUNGER_POINTS)))
             findMatchingWandAndCast(player, Spells.REPLENISH_HUNGER);
 
     }

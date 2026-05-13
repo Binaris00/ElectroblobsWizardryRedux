@@ -34,6 +34,8 @@ public final class SpellModifiers {
     public static final String RANGE = "ebwizardry.range";
     /** Constant string identifier for modifying cooldown of spells */
     public static final String COOLDOWN = "ebwizardry.cooldown";
+    /** Constant string identifier for modifying health of players and mobs, normally used for minions */
+    public static final String HEALTH_MODIFIER = "ebwizardry.health_modifier";
 
     private final Map<String, Float> multiplierMap;
 

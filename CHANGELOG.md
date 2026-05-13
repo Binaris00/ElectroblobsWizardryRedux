@@ -1,7 +1,11 @@
+- feat: added Auto-smelt, Lava Walking, Storm, Undead helmets, Recovery artifact
+- fix: errors with Feeding Charm artifact
 - fix: better progression reduction calc, when 60% of the max recent spells are casted, the reduction is applied (50% less progression)
 - fix: Game Crash when grabbing a wand from a spell table while inventory is full
 - fix: Arcane Lock lacking ability for allies to open it
 - fix: Fix ruined spell book earth gives Sorcery spell books
 - refactor: minion test removed
-- fix: (fabric) now imbuement enchants are only applied to tiered and enchantable items (avoiding crash with )
+- fix: (fabric) now imbuement enchants are only applied to tiered and enchantable items (avoiding crash with other mods)
 - fix: inject arms pose into HumanoidModel now checks if the entity is a player (avoiding weird crash with piglins)
+- fix: Leeching ring now has a 30% chance to heal the player, not always
+- fix: extractor ring now works when killing mobs, not just when hurting them
