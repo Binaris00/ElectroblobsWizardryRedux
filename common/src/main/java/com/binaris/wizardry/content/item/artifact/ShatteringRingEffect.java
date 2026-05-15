@@ -1,31 +1,34 @@
 package com.binaris.wizardry.content.item.artifact;
 
-import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.content.entity.projectile.IceShardEntity;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
+import com.google.common.util.concurrent.AtomicDouble;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class ShatteringRingEffect implements IArtifactEffect {
+
     @Override
-    public void onHurtEntity(EBLivingHurtEvent event, ItemStack stack) {
-        if (!(event.getSource().getEntity() instanceof Player player)) return;
+    public void onHurtEntity(Player player, LivingEntity damagedEntity, DamageSource source, AtomicDouble amount, AtomicBoolean canceled, ItemStack artifact) {
+        if (player.level().random.nextFloat() < 0.15f && damagedEntity.getHealth() < 12f
+                && damagedEntity.hasEffect(EBMobEffects.FROST.get()) && !source.isIndirect()) {
 
-        if (player.level().random.nextFloat() < 0.15f && event.getDamagedEntity().getHealth() < 12f
-                && event.getDamagedEntity().hasEffect(EBMobEffects.FROST.get()) && !event.getSource().isIndirect()) {
-
-            event.setAmount(12f);
+            amount.set(12f);
 
             for (int i = 0; i < 8; i++) {
-                double dx = event.getDamagedEntity().level().random.nextDouble() - 0.5;
-                double dy = event.getDamagedEntity().level().random.nextDouble() - 0.5;
-                double dz = event.getDamagedEntity().level().random.nextDouble() - 0.5;
-                IceShardEntity iceshard = new IceShardEntity(event.getDamagedEntity().level());
-                iceshard.setPos(event.getDamagedEntity().xo + dx + Math.signum(dx) * event.getDamagedEntity().getBbWidth(), event.getDamagedEntity().yo + event.getDamagedEntity().getBbHeight() / 2 + dy, event.getDamagedEntity().zo + dz + Math.signum(dz) * event.getDamagedEntity().getBbWidth());
+                double dx = damagedEntity.level().random.nextDouble() - 0.5;
+                double dy = damagedEntity.level().random.nextDouble() - 0.5;
+                double dz = damagedEntity.level().random.nextDouble() - 0.5;
+                IceShardEntity iceshard = new IceShardEntity(damagedEntity.level());
+                iceshard.setPos(damagedEntity.xo + dx + Math.signum(dx) * damagedEntity.getBbWidth(), damagedEntity.yo + damagedEntity.getBbHeight() / 2 + dy, damagedEntity.zo + dz + Math.signum(dz) * damagedEntity.getBbWidth());
                 iceshard.setDeltaMovement(dx * 1.5, dy * 1.5, dz * 1.5);
                 iceshard.setOwner(player);
-                event.getDamagedEntity().level().addFreshEntity(iceshard);
+                player.level().addFreshEntity(iceshard);
             }
         }
     }

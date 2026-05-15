@@ -70,15 +70,18 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
             EBLogger.warn("Applying the random_spell loot function to an item that isn't a spell book or scroll.");
 
         SpellContext context = !lootContext.hasParam(LootContextParams.THIS_ENTITY) ? SpellContext.TREASURE : SpellContext.LOOTING;
+        Player player = null;
+        if (lootContext.hasParam(LootContextParams.THIS_ENTITY) && lootContext.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player player1) {
+            player = player1;
+        }
 
-        Player player = lootContext.getParamOrNull(LootContextParams.LAST_DAMAGE_PLAYER);
         Spell spell = pickRandomSpell(stack, lootContext.getRandom(), context, player);
 
         if (spell == Spells.NONE) return RegistryUtils.setSpell(stack, Spells.MAGIC_MISSILE);
         return RegistryUtils.setSpell(stack, spell);
     }
 
-    private Spell pickRandomSpell(ItemStack stack, RandomSource random, SpellContext context, Player player) {
+    private Spell pickRandomSpell(ItemStack stack, RandomSource random, SpellContext context, @Nullable Player player) {
         ArrayList<Spell> possibleSpells = new ArrayList<>(Services.REGISTRY_UTIL.getSpells());
 
         // Checking spells, if the spells list is specified

@@ -85,6 +85,25 @@ public final class SpellModifiers {
     }
 
     /**
+     * Operates on the given key with the given value and operation.
+     *
+     * @param key The string identifier for the upgrade.
+     * @param value The value to be used in the operation.
+     * @param op The operation to be performed.
+     * @return This {@link SpellModifiers} instance after operating.
+     */
+    public SpellModifiers operate(String key, float value, Operation op) {
+        switch (op) {
+            case SET -> set(key, value);
+            case ADD -> add(key, value);
+            case SUBTRACT -> subtract(key, value);
+            case MULTIPLY -> multiply(key, value);
+            case DIVIDE -> divide(key, value);
+        }
+        return this;
+    }
+
+    /**
      * Sets the multiplier for a specific upgrade identified by the given key.
      *
      * @param key        The string identifier for the upgrade.
@@ -130,7 +149,8 @@ public final class SpellModifiers {
      * @return This {@link SpellModifiers} instance after setting the multiplier.
      */
     public SpellModifiers multiply(String key, float factor) {
-        multiplierMap.computeIfPresent(key, (k, v) -> v * factor);
+        if (multiplierMap.containsKey(key)) multiplierMap.compute(key, (k, v) -> v * factor);
+        else multiplierMap.put(key, get(key) * factor);
         return this;
     }
 
@@ -143,7 +163,8 @@ public final class SpellModifiers {
      */
     public SpellModifiers divide(String key, float divisor) {
         if (divisor == 0) throw new ArithmeticException("Cannot divide spell modifier by zero: " + key);
-        multiplierMap.computeIfPresent(key, (k, v) -> v / divisor);
+        if (multiplierMap.containsKey(key)) multiplierMap.compute(key, (s, v) -> v / divisor);
+        else multiplierMap.put(key, get(key) / divisor);
         return this;
     }
 
@@ -173,6 +194,10 @@ public final class SpellModifiers {
      */
     public void reset() {
         this.multiplierMap.clear();
+    }
+
+    public enum Operation {
+        SET, ADD, SUBTRACT, MULTIPLY, DIVIDE
     }
 
     @Override

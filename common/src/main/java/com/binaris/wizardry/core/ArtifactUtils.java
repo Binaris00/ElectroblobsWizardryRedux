@@ -1,7 +1,6 @@
 package com.binaris.wizardry.core;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
-import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
@@ -27,14 +26,9 @@ import java.util.List;
 import java.util.function.Consumer;
 
 /**
- * Various utility methods for use by artifacts. These are all static methods, so there is no need to ever instantiate
- * this class. Normally we use these methods to make more good-looking {@link QuickArtifactEffect} lambdas and avoid
- * creating loads of classes with the same logic (specially referred to predicates and similar).
+ * Various utility methods for use by artifacts.
  */
 public final class ArtifactUtils {
-    private ArtifactUtils() {
-    }
-
     /**
      * Check if the source isn't melee (like a projectile, explosion or something like that), the direct entity isn't
      * null and if it's a living one, and finally check the main hand for seeing the wand element. Quite weird but this
@@ -75,13 +69,16 @@ public final class ArtifactUtils {
         return false;
     }
 
-    public static void handleLightningEffect(Entity player, LivingEntity target, EBLivingHurtEvent event) {
+    public static void handleLightningEffect(Entity player, LivingEntity target, LivingEntity damaged) {
         if (player.level().isClientSide) {
-            ParticleBuilder.create(EBParticles.LIGHTNING).entity(event.getDamagedEntity()).pos(0, event.getDamagedEntity().getBbHeight() / 2, 0).target(target).spawn(player.level());
+            ParticleBuilder.create(EBParticles.LIGHTNING).entity(damaged).pos(0, damaged.getBbHeight() / 2, 0).target(target).spawn(player.level());
             ParticleBuilder.spawnShockParticles(player.level(), target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ());
         }
 
         target.hurt(MagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), Spells.STATIC_AURA.property(DefaultProperties.DAMAGE));
         target.playSound(EBSounds.SPELL_STATIC_AURA_RETALIATE.get(), 1.0F, player.level().random.nextFloat() * 0.4F + 1.5F);
+    }
+
+    private ArtifactUtils() {
     }
 }

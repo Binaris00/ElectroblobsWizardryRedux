@@ -779,7 +779,7 @@
   "item.ebwizardry.amulet_absorption": "Amulet of Vitality",
   "item.ebwizardry.amulet_absorption.desc": "Excess health from healing spells is converted into absorption hearts",
   "item.ebwizardry.charm_haggler": "Haggler's Sign",
-  "item.ebwizardry.charm_haggler.desc": "Wizards are guaranteed to offer a new trade every time you trade with them",
+  "item.ebwizardry.charm_haggler.desc": "Wizards are guaranteed to restock their trades instantly after you trade with them",
   "item.ebwizardry.charm_experience_tome": "Tome of the Diligent",
   "item.ebwizardry.charm_experience_tome.desc": "Increases the rate at which wands gain progression by 50%%",
   "item.ebwizardry.charm_move_speed": "Icarus Medallion",

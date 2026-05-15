@@ -11,7 +11,6 @@ public final class NotImplementedItems {
             EBItems.CHARM_ABSEILING.get(),
             EBItems.CHARM_BLACK_HOLE.get(),
             EBItems.CHARM_LIGHT.get(),
-            EBItems.CHARM_MINION_HEALTH.get(),
             EBItems.CHARM_SILK_TOUCH.get(),
             EBItems.CHARM_SIXTH_SENSE.get(),
             EBItems.CHARM_STOP_TIME.get(),

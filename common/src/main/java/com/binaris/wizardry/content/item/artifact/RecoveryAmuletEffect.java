@@ -3,7 +3,6 @@ package com.binaris.wizardry.content.item.artifact;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
 import com.binaris.wizardry.core.IArtifactEffect;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -12,11 +11,10 @@ import java.util.Arrays;
 
 public class RecoveryAmuletEffect implements IArtifactEffect {
     private static final float HEAL_AMOUNT = 1.0f;
-    private static final int MANA_COST = 5;
+    private static final int MANA_COST = 8;
 
     @Override
-    public void onTick(LivingEntity entity, Level level, ItemStack artifact) {
-        if (!(entity instanceof Player player)) return;
+    public void onTick(Player player, Level level, ItemStack artifact) {
         if (player.tickCount % 50 != 0) return;
         if (player.getHealth() >= player.getMaxHealth()) return;
 

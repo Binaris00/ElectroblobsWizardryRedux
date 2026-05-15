@@ -1,4 +1,6 @@
 - feat: added Auto-smelt, Lava Walking, Storm, Undead helmets, Recovery artifact
+- refactor: Major overhaul of the Artifact Effect system (IArtifactEffect, QuickArtifactEffect, ArtifactItem) for better performance and extensibility
+- refactor: Migrated legacy artifact effects to dedicated logic classes (Amulets, Rings, and Charms)
 - fix: errors with Feeding Charm artifact
 - fix: better progression reduction calc, when 60% of the max recent spells are casted, the reduction is applied (50% less progression)
 - fix: Game Crash when grabbing a wand from a spell table while inventory is full
@@ -9,3 +11,11 @@
 - fix: inject arms pose into HumanoidModel now checks if the entity is a player (avoiding weird crash with piglins)
 - fix: Leeching ring now has a 30% chance to heal the player, not always
 - fix: extractor ring now works when killing mobs, not just when hurting them
+- fix: better description for Haggler's Sign
+- fix: charm spell discovery wasn't working due to incorrect loot parameter check
+- fix: amulet transience now uses the correct event: player damaged
+- fix: combustion ring now explodes when the player kills a mob with fire damage (it was calling the wrong event)
+- fix: Lich Amulet now correctly redirects damage to owned minions when player is hurt
+- fix: Channeling Amulet now correctly cancels shock (not frost) damage on player hurt
+- fix: Banishing Amulet now correctly teleports the attacker when player is hurt
+- fix: Soulbinding Ring now correctly tracks soulbound creatures on the server side
