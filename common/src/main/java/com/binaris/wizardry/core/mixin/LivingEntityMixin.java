@@ -20,15 +20,18 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
     @Unique
     LivingEntity livingEntity = (LivingEntity) (Object) this;
+
+    @Unique
+    boolean eventCanceled = false;
 
     @Inject(at = @At("HEAD"), method = "tick")
     public void EBWIZARDRY$tick(CallbackInfo ci) {
@@ -46,9 +49,20 @@ public abstract class LivingEntityMixin {
             if (effect.getEffect() == MobEffects.WITHER) cir.setReturnValue(false);
     }
 
-    @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
-    public void EBWIZARDRY$livingEntityHurt(DamageSource source, float f, CallbackInfoReturnable<Boolean> cir) {
-        if (WizardryEventBus.getInstance().fire(new EBLivingHurtEvent(livingEntity, source, f))) cir.cancel();
+    @Inject(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/WalkAnimationState;setSpeed(F)V", shift = At.Shift.AFTER), cancellable = true)
+    public void EBWIZARDRY$livingEntityHurtCancel(DamageSource source, float f, CallbackInfoReturnable<Boolean> cir) {
+        if (eventCanceled) {
+            cir.setReturnValue(false);
+            eventCanceled = false;
+        }
+    }
+
+    @ModifyVariable(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/WalkAnimationState;setSpeed(F)V", shift = At.Shift.BEFORE), argsOnly = true, ordinal = 0)
+    private float EBWIZARDRY$livingEntityHurtAmount(float amount, DamageSource source) {
+        EBLivingHurtEvent event = new EBLivingHurtEvent(livingEntity, source, amount);
+        WizardryEventBus.getInstance().fire(event);
+        eventCanceled = event.isCanceled();
+        return event.getAmount();
     }
 
 
