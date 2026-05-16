@@ -16,7 +16,6 @@ public final class NotImplementedItems {
             EBItems.CHARM_STOP_TIME.get(),
             EBItems.CHARM_TRANSPORTATION.get(),
             EBItems.AMULET_ANCHORING.get(),
-            EBItems.AMULET_RECOVERY.get(),
             EBItems.AMULET_RESURRECTION.get(),
             EBItems.RING_DEFENDER.get(),
             EBItems.RING_DISINTEGRATION.get(),
@@ -27,6 +26,7 @@ public final class NotImplementedItems {
             EBItems.WIZARD_HANDBOOK.get(),
             EBItems.LIGHTNING_HAMMER.get(),
             EBItems.AMULET_FIRE_CLOAKING.get(),
+            EBItems.AMULET_FROST_WARDING.get(),
             EBItems.AMULET_BANISHING.get(),
             EBItems.RING_SOULBINDING.get(),
             EBItems.CHARM_HUNGER_CASTING.get()
