@@ -6,6 +6,7 @@ import com.binaris.wizardry.api.content.DeferredObject;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
 import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import com.binaris.wizardry.core.gametest.AWTestHandler;
+import com.binaris.wizardry.core.gametest.EBTestCentral;
 import com.binaris.wizardry.setup.datagen.EBDataGenProcessor;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Spells;
@@ -25,7 +26,7 @@ public class ArcaneWorkbenchTest {
     @GameTest(template = "arcane_workbench_3x3x3")
     public static void applySpellsToWand(GameTestHelper helper) {
         EBDataGenProcessor.wandItems().values().forEach(wand ->
-                AWTestHandler.applySpellsToWand(helper, wand.get(), Spells.COBWEBS, Spells.FIREBALL));
+                EBTestCentral.ArcaneWorkbench.applySpellsToWand(helper, wand.get(), Spells.COBWEBS, Spells.FIREBALL));
         helper.succeed();
     }
 

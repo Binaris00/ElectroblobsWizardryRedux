@@ -29,7 +29,7 @@ public class AWTestHandler {
     private static final Vec3 PLAYER_POS = new Vec3(1.5, 2.0, 1.5);
 
     /** Applies the given spells to the wand */
-    public static void applySpellsToWand(GameTestHelper helper, Item wand, Spell... spells) {
+    static void applySpellsToWand(GameTestHelper helper, Item wand, Spell... spells) {
         GST.assertFalse(helper, "Invalid parameters", !(wand instanceof WandItem) || spells.length == 0);
         assert wand instanceof WandItem;
         WandItem wandItem = (WandItem) wand;
