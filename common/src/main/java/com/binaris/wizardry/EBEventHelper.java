@@ -13,6 +13,7 @@ import com.binaris.wizardry.content.effect.FireSkinMobEffect;
 import com.binaris.wizardry.content.effect.StaticAuraMobEffect;
 import com.binaris.wizardry.content.effect.WardMobEffect;
 import com.binaris.wizardry.content.entity.construct.BubbleConstruct;
+import com.binaris.wizardry.content.item.RandomSpellBookItem;
 import com.binaris.wizardry.content.item.WandUpgradeItem;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
 import com.binaris.wizardry.content.spell.healing.ArcaneJammer;
@@ -21,14 +22,25 @@ import com.binaris.wizardry.content.spell.lightning.Charge;
 import com.binaris.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.binaris.wizardry.content.spell.sorcery.ArcaneLockSpell;
 import com.binaris.wizardry.core.AllyDesignation;
+import com.binaris.wizardry.core.ArtifactUtils;
 import com.binaris.wizardry.core.DataEvents;
 import com.binaris.wizardry.core.config.ConfigManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBAdvancementTriggers;
+import com.binaris.wizardry.setup.registries.EBItems;
+import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.storage.LevelResource;
+
+import java.util.Optional;
 
 /**
  * Simple class to save all the event helper methods
@@ -56,6 +68,8 @@ public final class EBEventHelper {
         onPlayerUseBlock(bus);
         onPlayerBreakBlock(bus);
         onServerLoad(bus);
+        onItemPickup(bus);
+        onPlayerItemPickup(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -148,6 +162,22 @@ public final class EBEventHelper {
 
     private static void onPlayerBreakBlock(WizardryEventBus bus) {
         bus.register(EBPlayerBreakBlockEvent.class, ArcaneLockSpell::onPlayerBreakBlock);
+    }
+
+    private static void onItemPickup(WizardryEventBus bus) {
+        bus.register(EBItemPickupEvent.class, RandomSpellBookItem::onPickup);
+    }
+
+
+    private static void onPlayerItemPickup(WizardryEventBus bus) {
+        bus.register(EBPlayerItemPickupEvent.class, (e) -> {
+            if (ArtifactChannel.isEquipped(e.getEntity(), EBItems.CHARM_AUTO_SMELT.get())) {
+                Container dummyInv = new SimpleContainer(1);
+                dummyInv.setItem(0, e.getItemEntity().getItem());
+                Optional<SmeltingRecipe> optionalSmeltingRecipe = e.getEntity().level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, dummyInv, e.getEntity().level());
+                if (optionalSmeltingRecipe.isPresent()) ArtifactUtils.findMatchingWandAndCast(e.getEntity(), Spells.POCKET_FURNACE);
+            }
+        });
     }
 
     private static void castContextCheck(SpellCastEvent.Pre event) {

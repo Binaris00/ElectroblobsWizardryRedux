@@ -36,7 +36,7 @@ public class InvokeWeather extends Spell {
             } else {
                 ctx.caster().displayClientMessage(Component.translatable(this.getDescriptionId() + ".rain"), true);
                 ((ServerLevel) ctx.world()).setWeatherParameters(0, standardWeatherTime, true,
-                        ArtifactChannel.isEquipped(ctx.caster(), EBItems.CHARM_STOP_TIME.get()) || ctx.world().random.nextFloat() < property(THUNDER_CHANCE));
+                        ArtifactChannel.isEquipped(ctx.caster(), EBItems.CHARM_STORM.get()) || ctx.world().random.nextFloat() < property(THUNDER_CHANCE));
             }
         } else {
             for (int i = 0; i < 10; i++) {

@@ -35,5 +35,8 @@ public class SummonSkeleton extends MinionSpell<AbstractSkeleton> {
     protected void addMinionExtras(AbstractSkeleton minion, CastContext ctx, int alreadySpawned) {
         minion.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         minion.setDropChance(EquipmentSlot.MAINHAND, 0.0f);
+        if (ctx.caster() instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.CHARM_UNDEAD_HELMETS.get())) {
+            minion.setItemSlot(EquipmentSlot.HEAD, Items.LEATHER_HELMET.getDefaultInstance());
+        }
     }
 }

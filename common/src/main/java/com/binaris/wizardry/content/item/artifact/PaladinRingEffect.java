@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 public class PaladinRingEffect implements IArtifactEffect {
 
     @Override
-    public void onSpellPostCast(SpellCastEvent.Post event, ItemStack stack) {
+    public void onSpellPostCast(SpellCastEvent.Post event, ItemStack artifact) {
         if (!(event.getCaster() instanceof Player player)) return;
 
         if (event.getSpell() instanceof Heal || event.getSpell() instanceof HealAlly || event.getSpell() instanceof GreaterHeal) {

@@ -21,6 +21,7 @@ import dev.onyxstudios.cca.api.v3.item.ItemComponentFactoryRegistry;
 import dev.onyxstudios.cca.api.v3.item.ItemComponentInitializer;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 
 /**
@@ -50,7 +51,7 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
     @Override
     public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
         registry.register(ConjureItemSpell::isSummonableItem, CONJURE, ConjureDataHolder::new);
-        registry.register(itemStack -> true, IMBUEMENT_ENCHANTS, ImbuementEnchantDataHolder::new);
+        registry.register(item -> item instanceof TieredItem && item.isEnchantable(item.getDefaultInstance()), IMBUEMENT_ENCHANTS, ImbuementEnchantDataHolder::new);
     }
 
     @Override

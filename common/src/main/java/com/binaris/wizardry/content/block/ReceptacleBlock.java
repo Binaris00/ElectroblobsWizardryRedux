@@ -3,7 +3,9 @@ package com.binaris.wizardry.content.block;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.item.IElementValue;
 import com.binaris.wizardry.api.content.spell.Element;
+import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.GeometryUtil;
+import com.binaris.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.binaris.wizardry.content.blockentity.ReceptacleBlockEntity;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBSounds;
@@ -44,16 +46,6 @@ public class ReceptacleBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return AABB;
-    }
-
-    @Override
-    public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
-        return direction == Direction.DOWN && !this.canSurvive(state, level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, neighborState, level, pos, neighborPos);
-    }
-
-    @Override
     public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
         return canSupportCenter(level, pos.below(), Direction.UP);
     }
@@ -61,7 +53,7 @@ public class ReceptacleBlock extends Block implements EntityBlock {
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof ReceptacleBlockEntity blockEntity)) return InteractionResult.PASS;
-
+        boolean changed = false;
         ItemStack heldItem = player.getItemInHand(hand);
         ItemStack stack = blockEntity.getStack();
 
@@ -70,11 +62,27 @@ public class ReceptacleBlock extends Block implements EntityBlock {
             ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
             blockEntity.setStack(receptacleItem.split(1));
             level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f, false);
+            changed = true;
         }
+
         // If wanting to take an item out of a filled receptacle
         if (!stack.isEmpty() && !player.getInventory().add(stack)) {
             player.drop(stack, false);
+            changed = true;
         }
+
+
+        if (changed) {
+            for (int i = 0; i < 4; i++) {
+                BlockEntity te = level.getBlockEntity(pos.relative(BlockUtil.getHorizontals()[i]));
+                if (te instanceof ImbuementAltarBlockEntity altar) {
+                    altar.checkRecipe();
+                    
+                    break;
+                }
+            }
+        }
+
         return InteractionResult.SUCCESS;
     }
 
@@ -136,5 +144,15 @@ public class ReceptacleBlock extends Block implements EntityBlock {
             return element == null ? 0 : Services.REGISTRY_UTIL.getElements().stream().toList().indexOf(element) + 1;
         }
         return super.getAnalogOutputSignal(state, level, pos);
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+        return AABB;
+    }
+
+    @Override
+    public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+        return direction == Direction.DOWN && !this.canSurvive(state, level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 }

@@ -2,6 +2,7 @@ package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
@@ -11,10 +12,12 @@ import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.monster.Husk;
 import net.minecraft.world.entity.monster.Zombie;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -31,6 +34,13 @@ public class SummonZombie extends MinionSpell<Zombie> {
             return new Husk(EntityType.HUSK, world);
         } else {
             return super.createMinion(world, caster, modifiers);
+        }
+    }
+
+    @Override
+    protected void addMinionExtras(Zombie minion, CastContext ctx, int alreadySpawned) {
+        if (ctx.caster() instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.CHARM_UNDEAD_HELMETS.get())) {
+            minion.setItemSlot(EquipmentSlot.HEAD, Items.LEATHER_HELMET.getDefaultInstance());
         }
     }
 

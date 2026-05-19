@@ -22,7 +22,7 @@ import java.util.Map;
  * You don't need to use or access to this interface, this could help
  * you if you want to make events for you mod
  */
-public final class WizardryEventBus implements EventRegistry {
+public class WizardryEventBus implements EventRegistry {
     private static final WizardryEventBus INSTANCE = new WizardryEventBus();
     private final Map<Class<? extends IWizardryEvent>, List<EventListener<? extends IWizardryEvent>>> listeners = new HashMap<>();
 

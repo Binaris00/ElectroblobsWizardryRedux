@@ -55,6 +55,8 @@ public class SummonSkeletonLegion extends MinionSpell<AbstractSkeleton> {
         minion.setDropChance(EquipmentSlot.OFFHAND, 0.0f);
         minion.setDropChance(EquipmentSlot.HEAD, 0.0f);
         minion.setDropChance(EquipmentSlot.CHEST, 0.0f);
+
+        // we don't use the undead helmet charm here because the skeletons already have chainmail helmet!!
     }
 
     @Override

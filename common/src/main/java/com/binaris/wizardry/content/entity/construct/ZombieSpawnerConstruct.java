@@ -3,8 +3,8 @@ package com.binaris.wizardry.content.entity.construct;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.data.MinionData;
 import com.binaris.wizardry.api.content.entity.construct.MagicConstructEntity;
+import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.content.spell.abstr.MinionSpell;
 import com.binaris.wizardry.content.spell.necromancy.ZombieApocalypse;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBEntities;
@@ -64,7 +64,7 @@ public class ZombieSpawnerConstruct extends MagicConstructEntity {
                 AttributeInstance attackAttr = zombie.getAttribute(Attributes.ATTACK_DAMAGE);
                 if (attackAttr != null) {
                     attackAttr.addPermanentModifier(
-                            new AttributeModifier(MinionSpell.POTENCY_ATTRIBUTE_MODIFIER, damageMultiplier - 1, Operation.MULTIPLY_TOTAL)
+                            new AttributeModifier(SpellModifiers.POTENCY, damageMultiplier - 1, Operation.MULTIPLY_TOTAL)
                     );
                 }
 

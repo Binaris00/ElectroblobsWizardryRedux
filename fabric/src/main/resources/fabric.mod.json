@@ -27,7 +27,8 @@
     "fabric-gametest": [
       "com.binaris.wizardry.gametest.ArcaneWorkbenchTest",
       "com.binaris.wizardry.gametest.WandTest",
-      "com.binaris.wizardry.gametest.ConjureItemTest"
+      "com.binaris.wizardry.gametest.ConjureItemTest",
+      "com.binaris.wizardry.gametest.ImbuementEnchantsTest"
     ]
   },
   "mixins": [

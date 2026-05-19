@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 public class HungerCastingCharmEffect implements IArtifactEffect {
 
     @Override
-    public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack stack) {
+    public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack artifact) {
         if (!(event.getCaster() instanceof Player player)) return;
         if (player.isCreative() || event.getSource() != SpellCastEvent.Source.WAND || !event.getSpell().isInstantCast())
             return;
