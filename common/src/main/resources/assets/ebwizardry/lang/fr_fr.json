@@ -1208,5 +1208,5 @@
   "attribute.name.cast.cooldown": "Temps de recharge du sort",
   "argument.ebwizardry.element.notfound": "Élément attendu introuvable",
   "argument.ebwizardry.spelltier.notfound": "Niveau de sort attendu introuvable",
-  "commands.ebwizardry.generator_wand.no_wand": "Il n'y avait pas de baguette magique avec %s et %s"
+  "commands.ebwizardry.generator_wand.no_wand": "Il n'y a pas de baguette magique avec %s et %s"
 }
