@@ -157,7 +157,6 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         if (recipe != null) {
             ItemStack result = recipe.getResultItem(level.registryAccess()).copy();
 
-            // TODO Consume ingredients, not working very well
             stack.shrink(1);
             for (int i = 0; i < 4; i++) {
                 receptacleItems[i].shrink(1);
@@ -255,6 +254,10 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
 
     public @Nullable Element getElement() {
         return element;
+    }
+
+    public boolean isCrafting() {
+        return imbuementTimer > 0;
     }
 
     public void setStack(ItemStack stack, boolean shouldCheckRecipe) {

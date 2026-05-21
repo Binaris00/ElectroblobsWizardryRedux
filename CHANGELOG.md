@@ -1,5 +1,8 @@
 - feat: added Russian language (thanks to @maxwell_pov on Discord)
 - refactor: added imbuement enchant tests
 - refactor: game tests are protected, and you can't access them normally anymore (only through the EBTestCentral)
+- fix: now you can't move items in the imbuement altar/receptacle when you're crafting
+- fix: new config option to allow creative mode players to bypass arcane lock (default to false)
+- fix: new config option to allow OPs of a specific permission level to bypass arcane lock (default to 2 or above)
 - fix: avoid ghost item when repairing ruining spell books
 - fix: avoid always needing to put the spectral dust first and then the ruined spell book, now the order doesn't matter

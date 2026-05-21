@@ -58,6 +58,10 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
         ItemStack currentStack = entity.getStack();
         ItemStack toInsert = player.getItemInHand(hand);
 
+        if (entity.isCrafting()) {
+            return InteractionResult.FAIL;
+        }
+
         if (currentStack.isEmpty()) {
             ItemStack stack = toInsert.copy();
             stack.setCount(1);

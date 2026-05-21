@@ -9,9 +9,11 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class ReceptacleBlockEntity extends BlockEntity {
     private @NotNull ItemStack stack;
+    private @Nullable BlockPos altarPos;
 
     public ReceptacleBlockEntity(BlockPos pos, BlockState blockState) {
         super(EBBlockEntities.RECEPTACLE.get(), pos, blockState);
@@ -34,10 +36,23 @@ public class ReceptacleBlockEntity extends BlockEntity {
         return stack.getItem() instanceof IElementValue receptacleItem ? receptacleItem.getElement() : null;
     }
 
+    public void setAltarPos(BlockPos altarPos) {
+        this.altarPos = altarPos;
+        setChanged();
+        if (level != null && !level.isClientSide) {
+            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        }
+    }
+
+    public BlockPos getAltarPos() {
+        return altarPos;
+    }
+
     @Override
     protected void saveAdditional(@NotNull CompoundTag tag) {
         super.saveAdditional(tag);
         if (!stack.isEmpty()) tag.put("Stack", stack.save(new CompoundTag()));
+        if (altarPos != null) tag.putLong("AltarPos", altarPos.asLong());
     }
 
     @Override
@@ -45,5 +60,7 @@ public class ReceptacleBlockEntity extends BlockEntity {
         super.load(tag);
         if (tag.contains("Stack")) this.stack = ItemStack.of(tag.getCompound("Stack"));
         else this.stack = ItemStack.EMPTY;
+        if (tag.contains("AltarPos")) this.altarPos = BlockPos.of(tag.getLong("AltarPos"));
+        else this.altarPos = null;
     }
 }

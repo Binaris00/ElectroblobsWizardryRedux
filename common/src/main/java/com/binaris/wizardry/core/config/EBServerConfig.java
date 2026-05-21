@@ -37,6 +37,8 @@ public class EBServerConfig implements ConfigProvider {
                     "minecraft:chests/woodland_mansion", "minecraft:chests/end_city_treasure"))
     );
 
+    public static final ConfigOption<Boolean> CREATIVE_MODE_BYPASS_ARCANE_LOCK = addOption(BoolConfigOption.booleanOption("creative_mode_bypass_arcane_lock", false));
+    public static final ConfigOption<Integer> OP_PERMISSION_BYPASS_ARCANE_LOCK = addOption(NumberConfigOption.integer("op_permission_bypass_arcane_lock", 2, 0, Integer.MAX_VALUE));
     public static final ConfigOption<List<ResourceLocation>> MELT_ITEMS_BLACKLIST = addOption(ListConfigOption.resourceLocation("melt_items_blacklist", List.of()));
     public static final ConfigOption<List<ResourceLocation>> LOOT_INJECTION_TO_MOBS = addOption(ListConfigOption.resourceLocation("loot_injection_to_mobs", List.of()));
     public static final ConfigOption<Boolean> INJECT_LOOT_TO_HOSTILE_MOBS = addOption(BoolConfigOption.booleanOption("inject_mob_drops", true));

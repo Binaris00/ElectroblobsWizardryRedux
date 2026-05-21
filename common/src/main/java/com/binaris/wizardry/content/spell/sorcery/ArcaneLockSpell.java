@@ -10,6 +10,7 @@ import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
 import com.binaris.wizardry.core.AllyDesignation;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -28,52 +29,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class ArcaneLockSpell extends RaySpell {
-    /**
-     * Checks if a player is allowed to use a block with arcane lock.
-     * Called from the block use event listener.
-     *
-     * @param event The player use block event
-     */
-    public static void onPlayerUseBlock(EBPlayerUseBlockEvent event) {
-        if (event.getLevel().isClientSide()) return;
-
-        BlockEntity blockEntity = event.getLevel().getBlockEntity(event.getPos());
-        if (!(blockEntity instanceof BaseContainerBlockEntity containerBlock)) return;
-
-        ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
-        if (data == null) return;
-
-        if (!data.isArcaneLocked()) return;
-
-        if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID()) && !AllyDesignation.isPlayerAlly(event.getPlayer(), data.getArcaneLockOwnerUUID())) {
-            event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(ChatFormatting.LIGHT_PURPLE), true);
-            event.setCanceled(true);
-        }
-    }
-
-    /**
-     * Checks if a player is allowed to break a block with arcane lock.
-     * Called from the block break event listener.
-     *
-     * @param event The player break block event
-     */
-    public static void onPlayerBreakBlock(EBPlayerBreakBlockEvent event) {
-        if (event.getLevel().isClientSide()) return;
-
-        BlockEntity blockEntity = event.getLevel().getBlockEntity(event.getPos());
-        if (!(blockEntity instanceof BaseContainerBlockEntity containerBlock)) return;
-
-        ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
-        if (data == null) return;
-
-        if (!data.isArcaneLocked()) return;
-
-        if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID()) && !AllyDesignation.isPlayerAlly(event.getPlayer(), data.getArcaneLockOwnerUUID())) {
-            event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(ChatFormatting.LIGHT_PURPLE), true);
-            event.setCanceled(true);
-        }
-    }
-
     @Override
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         if (!(ctx.caster() instanceof Player player)) return false;
@@ -100,6 +55,60 @@ public class ArcaneLockSpell extends RaySpell {
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         return false;
+    }
+
+    /**
+     * Checks if a player is allowed to use a block with arcane lock.
+     * Called from the block use event listener.
+     *
+     * @param event The player use block event
+     */
+    public static void onPlayerUseBlock(EBPlayerUseBlockEvent event) {
+        if (event.getLevel().isClientSide()) return;
+
+        BlockEntity blockEntity = event.getLevel().getBlockEntity(event.getPos());
+        if (!(blockEntity instanceof BaseContainerBlockEntity containerBlock)) return;
+
+        ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
+        if (data == null) return;
+
+        if (!data.isArcaneLocked()) return;
+
+        boolean isOwnerOrAlly = data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID()) || AllyDesignation.isPlayerAlly(event.getPlayer(), data.getArcaneLockOwnerUUID());
+        boolean hasPermission = event.getPlayer().hasPermissions(EBServerConfig.OP_PERMISSION_BYPASS_ARCANE_LOCK.get());
+        boolean canCreativeBypass = event.getPlayer().isCreative() && EBServerConfig.CREATIVE_MODE_BYPASS_ARCANE_LOCK.get();
+
+        if (!isOwnerOrAlly && !hasPermission && !canCreativeBypass) {
+            event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            event.setCanceled(true);
+        }
+    }
+
+    /**
+     * Checks if a player is allowed to break a block with arcane lock.
+     * Called from the block break event listener.
+     *
+     * @param event The player break block event
+     */
+    public static void onPlayerBreakBlock(EBPlayerBreakBlockEvent event) {
+        if (event.getLevel().isClientSide()) return;
+
+        BlockEntity blockEntity = event.getLevel().getBlockEntity(event.getPos());
+        if (!(blockEntity instanceof BaseContainerBlockEntity containerBlock)) return;
+
+        ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
+        if (data == null) return;
+
+        if (!data.isArcaneLocked()) return;
+
+        boolean isOwnerOrAlly = data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID()) || AllyDesignation.isPlayerAlly(event.getPlayer(), data.getArcaneLockOwnerUUID());
+        boolean hasPermission = event.getPlayer().hasPermissions(EBServerConfig.OP_PERMISSION_BYPASS_ARCANE_LOCK.get());
+        boolean canCreativeBypass = event.getPlayer().isCreative() && EBServerConfig.CREATIVE_MODE_BYPASS_ARCANE_LOCK.get();
+
+        if (!isOwnerOrAlly && !hasPermission && !canCreativeBypass) {
+            event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            event.setCanceled(true);
+        }
     }
 
     private boolean toggleLock(CastContext ctx, BlockPos pos, Player player) {

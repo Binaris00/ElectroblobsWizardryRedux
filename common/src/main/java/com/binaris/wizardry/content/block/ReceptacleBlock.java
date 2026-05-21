@@ -53,9 +53,17 @@ public class ReceptacleBlock extends Block implements EntityBlock {
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof ReceptacleBlockEntity blockEntity)) return InteractionResult.PASS;
+        if (blockEntity.getAltarPos() == null) blockEntity.setAltarPos(findAltar(level, pos));
         boolean changed = false;
         ItemStack heldItem = player.getItemInHand(hand);
         ItemStack stack = blockEntity.getStack();
+
+        if (blockEntity.getAltarPos() != null) {
+            BlockEntity te = level.getBlockEntity(blockEntity.getAltarPos());
+            if (te instanceof ImbuementAltarBlockEntity altar && altar.isCrafting()) {
+                return InteractionResult.PASS;
+            }
+        }
 
         // If wanting to add an item to an empty receptacle
         if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof IElementValue value && value.validForReceptacle()) {
@@ -72,14 +80,10 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         }
 
 
-        if (changed) {
-            for (int i = 0; i < 4; i++) {
-                BlockEntity te = level.getBlockEntity(pos.relative(BlockUtil.getHorizontals()[i]));
-                if (te instanceof ImbuementAltarBlockEntity altar) {
-                    altar.checkRecipe();
-                    
-                    break;
-                }
+        if (changed && blockEntity.getAltarPos() != null) {
+            BlockEntity te = level.getBlockEntity(blockEntity.getAltarPos());
+            if (te instanceof ImbuementAltarBlockEntity altar) {
+                altar.checkRecipe();
             }
         }
 
@@ -94,6 +98,17 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         }
         super.onRemove(state, level, pos, newState, movedByPiston);
     }
+
+    @Override
+    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean movedByPiston) {
+        if (level.getBlockEntity(pos) instanceof ReceptacleBlockEntity entity) {
+            entity.setAltarPos(findAltar(level, pos));
+        }
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+    }
+
+
+    // Client side methods / methods to satisfy Block class
 
     @Override
     public void animateTick(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
@@ -129,6 +144,17 @@ public class ReceptacleBlock extends Block implements EntityBlock {
             return element == null ? 0 : super.getLightBlock(state, level, pos);
         }
         return 0;
+    }
+
+    public @Nullable BlockPos findAltar(@NotNull Level level, @NotNull BlockPos pos) {
+        for (int i = 0; i < 4; i++) {
+            BlockPos position = pos.relative(BlockUtil.getHorizontals()[i]);
+            BlockEntity te = level.getBlockEntity(position);
+            if (te instanceof ImbuementAltarBlockEntity altar) {
+                return position;
+            }
+        }
+        return null;
     }
 
     @Override
