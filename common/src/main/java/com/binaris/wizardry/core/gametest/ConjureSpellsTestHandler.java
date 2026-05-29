@@ -5,10 +5,10 @@ import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
+import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.DataEvents;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.platform.Services;
-import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -21,21 +21,21 @@ import net.minecraft.world.phys.Vec3;
 public final class ConjureSpellsTestHandler {
     private static final Vec3 PLAYER_POS = new Vec3(1.5, 2.0, 1.5);
 
-    static void spawnConjureItem(GameTestHelper helper) {
+    static void spawnConjureItem(GameTestHelper helper, ConjureItemSpell spell, Item expectedItem) {
         Player player = GST.mockPlayer(helper, PLAYER_POS);
-        Spells.FLAMECATCHER.cast(new PlayerCastContext(helper.getLevel(), player, InteractionHand.MAIN_HAND, 0, new SpellModifiers()));
+        spell.cast(new PlayerCastContext(helper.getLevel(), player, InteractionHand.MAIN_HAND, 0, new SpellModifiers()));
 
-        InventoryUtil.getAllItems(player).stream().filter(stack -> stack.getItem().equals(EBItems.FLAMECATCHER.get())).findAny()
+        InventoryUtil.getAllItems(player).stream().filter(stack -> stack.getItem().equals(expectedItem)).findAny()
                 .ifPresentOrElse(stack -> helper.succeed(),
                         () -> helper.fail("Player did not receive the conjured item (flamecatcher)"));
     }
 
-    static void conjureItemDespawn(GameTestHelper helper) {
-        TestContext ctx = setupTest(helper, EBItems.FLAMECATCHER.get(), 20);
+    static void conjureItemDespawn(GameTestHelper helper, Item itemToConjure) {
+        TestContext ctx = setupTest(helper, itemToConjure, 20);
         helper.runAtTickTime(30, () -> {
             DataEvents.conjureItemTick(ctx.player);
 
-            if (InventoryUtil.getAllItems(ctx.player).stream().anyMatch(stack -> stack.getItem().equals(EBItems.FLAMECATCHER.get()))) {
+            if (InventoryUtil.getAllItems(ctx.player).stream().anyMatch(stack -> stack.getItem().equals(itemToConjure))) {
                 helper.fail("Conjured item still in player's inventory after duration has expired");
                 return;
             }

@@ -3,6 +3,7 @@
 - feat: added Swedish language (thanks to @sugarooo on Discord)
 - refactor: added imbuement enchant tests
 - refactor: game tests are protected, and you can't access them normally anymore (only through the EBTestCentral)
+- refactor: game tests now needs parameters that are passed to them inside the EBTestCentral
 - fix: now you can't move items in the imbuement altar/receptacle when you're crafting
 - fix: new config option to allow creative mode players to bypass arcane lock (default to false)
 - fix: new config option to allow OPs of a specific permission level to bypass arcane lock (default to 2 or above)

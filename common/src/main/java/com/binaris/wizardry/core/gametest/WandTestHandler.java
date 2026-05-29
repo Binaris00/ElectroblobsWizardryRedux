@@ -22,29 +22,27 @@ import net.minecraft.world.phys.Vec3;
 import java.util.List;
 import java.util.stream.IntStream;
 
+@SuppressWarnings("all")
 public final class WandTestHandler {
-    /** List of spells used in full spell list tests. */
-    private static final List<Spell> FULL_SPELL_LIST = List.of(Spells.FIREBALL, Spells.ICE_SHARD, Spells.HEAL, Spells.LIFE_DRAIN, Spells.EVADE);
-
-    static void wandBasicMovement(GameTestHelper helper) {
-        ItemStack wand = setupWandWithSpells(helper, FULL_SPELL_LIST);
+    static void wandBasicMovement(GameTestHelper helper, List<Spell> spells) {
+        ItemStack wand = setupWandWithSpells(helper, spells);
         ICastItem wandItem = (ICastItem) wand.getItem();
 
         wandItem.selectPreviousSpell(wand);
-        GST.assertSpellEquals(helper, wand, Spells.EVADE, "selecting next spell from 'Fireball'");
+        GST.assertcurrentSpellEquals(helper, wand, spells.get(spells.size() - 1), "spell selection is incorrect after basic previous selection");
 
         wandItem.selectPreviousSpell(wand);
-        GST.assertSpellEquals(helper, wand, Spells.LIFE_DRAIN, "selecting next spell from 'Evade'");
+        GST.assertcurrentSpellEquals(helper, wand, spells.get(spells.size() - 2), "spell selection is incorrect after basic previous selection");
 
         wandItem.selectNextSpell(wand);
-        GST.assertSpellEquals(helper, wand, Spells.EVADE, "selecting previous spell from 'Life Drain'");
+        GST.assertcurrentSpellEquals(helper, wand, spells.get(spells.size() - 1), "spell selection is incorrect after basic next selection");
 
         wandItem.selectNextSpell(wand);
-        GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "selecting previous spell from 'Evade'");
+        GST.assertcurrentSpellEquals(helper, wand, spells.get(0), "spell selection is incorrect after basic next selection");
     }
 
-    static void wandPartiallyEmpty(GameTestHelper helper) {
-        ItemStack wand = setupWandWithSpells(helper, List.of(Spells.FIREBALL));
+    static void wandPartiallyEmpty(GameTestHelper helper, Spell singleSpell) {
+        ItemStack wand = setupWandWithSpells(helper, List.of(singleSpell));
         ICastItem wandItem = (ICastItem) wand.getItem();
 
         wandItem.selectNextSpell(wand);
@@ -52,36 +50,36 @@ public final class WandTestHandler {
         wandItem.selectPreviousSpell(wand);
         wandItem.selectPreviousSpell(wand);
 
-        GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "cycling through empty slots");
+        GST.assertcurrentSpellEquals(helper, wand, singleSpell, "cycling through empty slots on a wand with a single spell didn't work");
     }
 
-    static void wandCircularSelection(GameTestHelper helper) {
-        ItemStack wand = setupWandWithSpells(helper, List.of(Spells.FIREBALL));
+    static void wandCircularSelection(GameTestHelper helper, Spell singleSpell) {
+        ItemStack wand = setupWandWithSpells(helper, List.of(singleSpell));
         ICastItem wandItem = (ICastItem) wand.getItem();
 
         IntStream.range(0, 5).mapToObj(i -> wand).forEach(wandItem::selectNextSpell);
-        GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "cycling next through all slots");
+        GST.assertcurrentSpellEquals(helper, wand, singleSpell, "cycling next through all slots on a wand with a single spell didn't work");
 
         IntStream.range(0, 5).mapToObj(i -> wand).forEach(wandItem::selectPreviousSpell);
-        GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "cycling previous through all slots");
+        GST.assertcurrentSpellEquals(helper, wand, singleSpell, "cycling previous through all slots on a wand with a single spell didn't work");
     }
 
-    static void wandLiteralIndex(GameTestHelper helper) {
-        ItemStack wand = setupWandWithSpells(helper, FULL_SPELL_LIST);
+    static void wandLiteralIndex(GameTestHelper helper, List<Spell> spells) {
+        ItemStack wand = setupWandWithSpells(helper, spells);
         ICastItem wandItem = (ICastItem) wand.getItem();
 
         wandItem.selectSpell(wand, 2);
-        GST.assertSpellEquals(helper, wand, Spells.HEAL, "selecting index 2");
+        GST.assertcurrentSpellEquals(helper, wand, spells.get(2), "selecting index 2 returned a spell that wasn't expected");
 
         wandItem.selectSpell(wand, 4);
-        GST.assertSpellEquals(helper, wand, Spells.EVADE, "selecting index 4");
+        GST.assertcurrentSpellEquals(helper, wand, spells.get(4), "selecting index 4 returned a spell that wasn't expected");
 
         wandItem.selectSpell(wand, 0);
-        GST.assertSpellEquals(helper, wand, Spells.FIREBALL, "selecting index 0");
+        GST.assertcurrentSpellEquals(helper, wand, spells.get(0), "selecting index 0 returned a spell that wasn't expected");
     }
 
-    static void wandLiteralIndexPartiallyEmpty(GameTestHelper helper) {
-        ItemStack wand = setupWandWithSpells(helper, List.of(Spells.ICE_SHARD));
+    static void wandLiteralIndexPartiallyEmpty(GameTestHelper helper, Spell singleSpell) {
+        ItemStack wand = setupWandWithSpells(helper, List.of(singleSpell));
         ICastItem wandItem = (ICastItem) wand.getItem();
 
         wandItem.selectSpell(wand, 3);

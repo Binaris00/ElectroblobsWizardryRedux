@@ -137,7 +137,7 @@ public class GST {
      * Asserts that the currently selected spell in the given wand is equal to the expected spell, failing the test with
      * a message that includes the given action description if they are not.
      */
-    public static void assertSpellEquals(GameTestHelper helper, ItemStack wand, Spell expected, String action) {
+    public static void assertcurrentSpellEquals(GameTestHelper helper, ItemStack wand, Spell expected, String action) {
         Spell selectedSpell = CastItemDataHelper.getCurrentSpell(wand);
         assertEquals(helper,
                 "Selected spell should be '%s' after %s.".formatted(expected, action),
