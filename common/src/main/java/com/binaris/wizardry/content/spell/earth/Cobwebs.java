@@ -9,7 +9,7 @@ import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.blockentity.BlockEntityTimer;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
-import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -28,7 +28,7 @@ public class Cobwebs extends RaySpell {
         boolean flag = false;
         BlockPos pos = blockHit.getBlockPos().relative(blockHit.getDirection());
 
-        int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST) - 1) / EBConstants.RANGE_INCREASE_PER_LEVEL + 0.5f);
+        int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST) - 1) / EBServerConfig.RANGE_INCREASE_PER_LEVEL.get() + 0.5f);
 
         float radius = property(DefaultProperties.BLAST_RADIUS) + 0.73f * blastUpgradeCount;
 

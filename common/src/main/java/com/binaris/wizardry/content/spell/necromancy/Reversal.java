@@ -8,7 +8,7 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
-import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -34,7 +34,7 @@ public class Reversal extends RaySpell {
                 .filter(effect -> effect.getEffect().getCategory() == MobEffectCategory.HARMFUL)
                 .toList());
 
-        int bonusEffects = (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1) / EBConstants.POTENCY_INCREASE_PER_TIER + 0.5F);
+        int bonusEffects = (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get() + 0.5F);
         int n = property(DefaultProperties.EFFECT_STRENGTH) + bonusEffects;
 
         for (int i = 0; i < n; i++) {

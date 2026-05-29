@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.content.data.*;
 import com.binaris.wizardry.api.content.event.*;
 import com.binaris.wizardry.api.content.util.InventoryUtil;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -115,7 +116,7 @@ public final class DataEvents {
         WizardData data = Services.OBJECT_DATA.getWizardData(player);
         if (player.tickCount % 60 == 0) {
             long currentTime = player.level().getGameTime();
-            data.removeRecentCasts((entry) -> currentTime - entry.timestamp() >= EBConstants.RECENT_SPELL_EXPIRY_TICKS);
+            data.removeRecentCasts((entry) -> currentTime - entry.timestamp() >= EBServerConfig.RECENT_SPELL_EXPIRY_TICKS.get());
         }
     }
 

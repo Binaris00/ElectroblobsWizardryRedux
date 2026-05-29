@@ -12,7 +12,6 @@ import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.*;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
-import com.binaris.wizardry.core.EBConstants;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.event.WizardryEventBus;
@@ -206,7 +205,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
 
     @Override
     public void inventoryTick(@NotNull ItemStack stack, @NotNull Level world, @NotNull Entity entity, int slot, boolean isHeldInMainHand) {
-        if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBConstants.CONDENSER_TICK_INTERVAL == 0) {
+        if (!world.isClientSide && !this.isManaFull(stack) && world.getGameTime() % EBServerConfig.CONDENSER_TICK_INTERVAL.get() == 0) {
             this.rechargeMana(stack, CastItemDataHelper.getUpgradeLevel(stack, EBItems.CONDENSER_UPGRADE.get()));
         }
     }

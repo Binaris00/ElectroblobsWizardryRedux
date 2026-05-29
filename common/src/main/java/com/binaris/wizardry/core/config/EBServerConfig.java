@@ -37,6 +37,15 @@ public class EBServerConfig implements ConfigProvider {
                     "minecraft:chests/woodland_mansion", "minecraft:chests/end_city_treasure"))
     );
 
+    public static final ConfigOption<Integer> MAX_RECENT_SPELLS = addOption(NumberConfigOption.integer("max_recent_spells", 5, 1, Integer.MAX_VALUE));
+    public static final ConfigOption<Float> POTENCY_INCREASE_PER_TIER = addOption(NumberConfigOption.floating("potency_increase_per_tier", 0.15f, 0.0f, 1.0f));
+    public static final ConfigOption<Float> BLAST_RADIUS_INCREASE_PER_LEVEL = addOption(NumberConfigOption.floating("blast_radius_increase_per_level", 0.25f, 0.0f, 1.0f));
+    public static final ConfigOption<Float> DURATION_INCREASE_PER_LEVEL = addOption(NumberConfigOption.floating("duration_increase_per_level", 0.25f, 0.0f, 1.0f));
+    public static final ConfigOption<Float> RANGE_INCREASE_PER_LEVEL = addOption(NumberConfigOption.floating("range_increase_per_level", 0.25f, 0.0f, 1.0f));
+    public static final ConfigOption<Float> COOLDOWN_REDUCTION_PER_LEVEL = addOption(NumberConfigOption.floating("cooldown_reduction_per_level", 0.15f, 0.0f, 1.0f));
+    public static final ConfigOption<Integer> SIPHON_MANA_PER_LEVEL = addOption(NumberConfigOption.integer("siphon_mana_per_level", 5, 1, Integer.MAX_VALUE));
+    public static final ConfigOption<Integer> CONDENSER_TICK_INTERVAL = addOption(NumberConfigOption.integer("condenser_tick_interval", 50, 1, Integer.MAX_VALUE));
+    public static final ConfigOption<Integer> RECENT_SPELL_EXPIRY_TICKS = addOption(NumberConfigOption.integer("recent_spell_expiry_ticks", 1200, 1, Integer.MAX_VALUE));
     public static final ConfigOption<Boolean> CREATIVE_MODE_BYPASS_ARCANE_LOCK = addOption(BoolConfigOption.booleanOption("creative_mode_bypass_arcane_lock", false));
     public static final ConfigOption<Integer> OP_PERMISSION_BYPASS_ARCANE_LOCK = addOption(NumberConfigOption.integer("op_permission_bypass_arcane_lock", 2, 0, Integer.MAX_VALUE));
     public static final ConfigOption<List<ResourceLocation>> MELT_ITEMS_BLACKLIST = addOption(ListConfigOption.resourceLocation("melt_items_blacklist", List.of()));

@@ -8,7 +8,7 @@ import com.binaris.wizardry.api.content.item.ITierValue;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.networking.s2c.SpellCastS2C;
 import com.binaris.wizardry.core.platform.Services;
@@ -107,18 +107,18 @@ public final class CastItemUtils {
     public static SpellModifiers calculateModifiers(ItemStack stack, Player player, Spell spell) {
         SpellModifiers modifiers = new SpellModifiers();
 
-        applyModifierUpgrade(stack, modifiers, EBItems.RANGE_UPGRADE, SpellModifiers.RANGE, EBConstants.RANGE_INCREASE_PER_LEVEL, false);
-        applyModifierUpgrade(stack, modifiers, EBItems.DURATION_UPGRADE, SpellModifiers.DURATION, EBConstants.DURATION_INCREASE_PER_LEVEL, false);
-        applyModifierUpgrade(stack, modifiers, EBItems.BLAST_UPGRADE, SpellModifiers.BLAST, EBConstants.BLAST_RADIUS_INCREASE_PER_LEVEL, false);
-        applyModifierUpgrade(stack, modifiers, EBItems.COOLDOWN_UPGRADE, SpellModifiers.COOLDOWN, EBConstants.COOLDOWN_REDUCTION_PER_LEVEL, true);
+        applyModifierUpgrade(stack, modifiers, EBItems.RANGE_UPGRADE, SpellModifiers.RANGE, EBServerConfig.RANGE_INCREASE_PER_LEVEL.get(), false);
+        applyModifierUpgrade(stack, modifiers, EBItems.DURATION_UPGRADE, SpellModifiers.DURATION, EBServerConfig.DURATION_INCREASE_PER_LEVEL.get(), false);
+        applyModifierUpgrade(stack, modifiers, EBItems.BLAST_UPGRADE, SpellModifiers.BLAST, EBServerConfig.BLAST_RADIUS_INCREASE_PER_LEVEL.get(), false);
+        applyModifierUpgrade(stack, modifiers, EBItems.COOLDOWN_UPGRADE, SpellModifiers.COOLDOWN, EBServerConfig.COOLDOWN_REDUCTION_PER_LEVEL.get(), true);
 
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
         WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
-        float progressionModifier = wizardData.countRecentCasts(spell) < (EBConstants.MAX_RECENT_SPELLS * 0.6) ? 1.0f : 0.5f;
+        float progressionModifier = wizardData.countRecentCasts(spell) < (EBServerConfig.MAX_RECENT_SPELLS.get() * 0.6) ? 1.0f : 0.5f;
 
         if (stack.getItem() instanceof IElementValue elementValue && stack.getItem() instanceof ITierValue tierValue) {
             if (elementValue.getElement() == spell.getElement()) {
-                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).getLevel() + 1) * EBConstants.POTENCY_INCREASE_PER_TIER);
+                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).getLevel() + 1) * EBServerConfig.POTENCY_INCREASE_PER_TIER.get());
                 progressionModifier *= 1.2f;
             }
 
