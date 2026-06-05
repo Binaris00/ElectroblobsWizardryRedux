@@ -1,2 +1,4 @@
+- feat: added wiki to mod pages and mod description
 - fix: firebomb now can burn entities on direct hit
 - fix: poison bomb now poisons entities on direct hit
+- fix: crash when holding vanilla or modded enchantments

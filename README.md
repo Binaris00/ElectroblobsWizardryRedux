@@ -1,4 +1,4 @@
-**Note: This mod is currently in Alpha. For development updates, bug reports, and community discussion, join our [Discord](https://discord.gg/9R3nw3uQTu)**
+**Note: This mod is currently in Alpha. For development updates, bug reports, and community discussion, join our [Discord](https://discord.gg/9R3nw3uQTu) and check our [Wiki](https://electroblobs-redux-wiki.pages.dev/)**
 
 ## About
 

@@ -43,8 +43,8 @@ public class FabricObjectData implements IObjectData {
     }
 
     @Override
-    public ImbuementEnchantData getImbuementData(ItemStack stack) {
-        return EBComponents.IMBUEMENT_ENCHANTS.get(stack);
+    public @Nullable ImbuementEnchantData getImbuementData(ItemStack stack) {
+        return EBComponents.IMBUEMENT_ENCHANTS.getNullable(stack);
     }
 
     @Override
