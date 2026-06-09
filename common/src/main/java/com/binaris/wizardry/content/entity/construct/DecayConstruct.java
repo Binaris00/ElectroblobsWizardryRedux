@@ -22,6 +22,7 @@ public class DecayConstruct extends ScaledConstructEntity {
 
     public DecayConstruct(Level world) {
         this(EBEntities.DECAY.get(), world);
+        this.setBaseSize(2, 0.2F);
     }
 
     public DecayConstruct(EntityType<?> entityType, Level world) {
@@ -29,6 +30,7 @@ public class DecayConstruct extends ScaledConstructEntity {
         textureIndex = this.random.nextInt(10);
         this.noCulling = true;
         this.lifetime = Spells.DECAY.property(DefaultProperties.DURATION);
+        this.setBaseSize(2, 0.2F);
     }
 
     @Override

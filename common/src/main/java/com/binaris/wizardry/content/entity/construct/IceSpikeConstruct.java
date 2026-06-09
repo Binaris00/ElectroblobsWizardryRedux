@@ -19,10 +19,12 @@ public class IceSpikeConstruct extends ScaledConstructEntity {
 
     public IceSpikeConstruct(EntityType<?> entityType, Level level) {
         super(entityType, level);
+        this.setBaseSize(0.5f, 1.0f);
     }
 
     public IceSpikeConstruct(Level world) {
         super(EBEntities.ICE_SPICKES.get(), world);
+        this.setBaseSize(0.5f, 1.0f);
     }
 
     @Override

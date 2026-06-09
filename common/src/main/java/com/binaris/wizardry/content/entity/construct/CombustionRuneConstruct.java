@@ -16,10 +16,12 @@ import java.util.List;
 public class CombustionRuneConstruct extends ScaledConstructEntity {
     public CombustionRuneConstruct(EntityType<?> type, Level world) {
         super(type, world);
+        this.setBaseSize(2, 0.2F);
     }
 
     public CombustionRuneConstruct(Level world) {
         super(EBEntities.COMBUSTION_RUNE.get(), world);
+        this.setBaseSize(2, 0.2F);
     }
 
     @Override

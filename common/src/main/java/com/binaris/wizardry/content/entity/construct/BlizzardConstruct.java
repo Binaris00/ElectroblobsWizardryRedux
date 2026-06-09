@@ -8,12 +8,9 @@ import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -21,11 +18,13 @@ public class BlizzardConstruct extends ScaledConstructEntity {
     public BlizzardConstruct(EntityType<?> type, Level level) {
         super(type, level);
         this.lifetime = Spells.BLIZZARD.property(DefaultProperties.DURATION);
+        this.setBaseSize(Spells.BLIZZARD.property(DefaultProperties.EFFECT_RADIUS) * 2, 3);
     }
 
     public BlizzardConstruct(Level world) {
         super(EBEntities.BLIZZARD.get(), world);
         this.lifetime = Spells.BLIZZARD.property(DefaultProperties.DURATION);
+        this.setBaseSize(Spells.BLIZZARD.property(DefaultProperties.EFFECT_RADIUS) * 2, 3);
     }
 
     @Override
@@ -33,7 +32,7 @@ public class BlizzardConstruct extends ScaledConstructEntity {
         super.tick();
 
         if (this.tickCount % 120 == 1) this.playSound(EBSounds.ENTITY_BLIZZARD_AMBIENT.get(), 1.0f, 1.0f);
-        double radius = Spells.BLIZZARD.property(DefaultProperties.EFFECT_RADIUS) * sizeMultiplier;
+        double radius = getBbWidth() / 2;
 
         if (!this.level().isClientSide) {
             List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, this.getX(), this.getY(), this.getZ(), level());
@@ -59,11 +58,6 @@ public class BlizzardConstruct extends ScaledConstructEntity {
                 ParticleBuilder.create(EBParticles.CLOUD).pos(this.getX(), this.getY() + random.nextDouble() * (getBbHeight() - 0.5), this.getZ()).color(0xffffff).shaded(true).spin(random.nextDouble() * (radius - 1) + 0.5, speed).spawn(level());
             }
         }
-    }
-
-    @Override
-    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return EntityDimensions.scalable(Spells.BLIZZARD.property(DefaultProperties.EFFECT_RADIUS) * 2, 3);
     }
 
     @Override

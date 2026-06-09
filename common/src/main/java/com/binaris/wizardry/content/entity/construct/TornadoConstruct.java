@@ -30,7 +30,6 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -40,10 +39,12 @@ public class TornadoConstruct extends ScaledConstructEntity {
 
     public TornadoConstruct(EntityType<?> type, Level world) {
         super(type, world);
+        this.setBaseSize(Spells.TORNADO.property(DefaultProperties.EFFECT_RADIUS), 8);
     }
 
     public TornadoConstruct(Level world) {
         super(EBEntities.TORNADO.get(), world);
+        this.setBaseSize(Spells.TORNADO.property(DefaultProperties.EFFECT_RADIUS), 8);
     }
 
     @Override
@@ -51,11 +52,6 @@ public class TornadoConstruct extends ScaledConstructEntity {
         super.defineSynchedData();
         this.entityData.define(VEL_X, 0.0F);
         this.entityData.define(VEL_Z, 0.0F);
-    }
-
-    @Override
-    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return EntityDimensions.scalable(Spells.TORNADO.property(DefaultProperties.EFFECT_RADIUS), 8);
     }
 
     @Override

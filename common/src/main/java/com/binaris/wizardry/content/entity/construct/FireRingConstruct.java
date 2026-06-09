@@ -8,24 +8,23 @@ import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.EBEntities;
 import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.Spells;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class FireRingConstruct extends ScaledConstructEntity {
     public FireRingConstruct(EntityType<?> entityType, Level level) {
         super(entityType, level);
+        this.setBaseSize(Spells.RING_OF_FIRE.property(DefaultProperties.EFFECT_RADIUS).floatValue() * 2, 1);
     }
 
     public FireRingConstruct(Level world) {
         super(EBEntities.RING_OF_FIRE.get(), world);
         this.lifetime = Spells.RING_OF_FIRE.property(DefaultProperties.DURATION);
+        this.setBaseSize(Spells.RING_OF_FIRE.property(DefaultProperties.EFFECT_RADIUS).floatValue() * 2, 1);
     }
 
     @Override
@@ -46,11 +45,6 @@ public class FireRingConstruct extends ScaledConstructEntity {
                 target.setDeltaMovement(originalVec);
             }
         }
-    }
-
-    @Override
-    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return EntityDimensions.scalable((float) (Spells.RING_OF_FIRE.property(DefaultProperties.EFFECT_RADIUS) * 2), 1);
     }
 
     @Override

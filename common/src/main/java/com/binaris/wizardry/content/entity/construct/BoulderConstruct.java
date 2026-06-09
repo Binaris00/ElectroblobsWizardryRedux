@@ -36,6 +36,7 @@ public class BoulderConstruct extends ScaledConstructEntity {
         this.noPhysics = false;
         this.setNoGravity(false);
         lifetime = Spells.BOULDER.property(DefaultProperties.DURATION);
+        this.setBaseSize(2.375f, 2.375f);
     }
 
     public BoulderConstruct(Level world) {
@@ -43,6 +44,7 @@ public class BoulderConstruct extends ScaledConstructEntity {
         this.noPhysics = false;
         this.setNoGravity(false);
         lifetime = Spells.BOULDER.property(DefaultProperties.DURATION);
+        this.setBaseSize(2.375f, 2.375f);
     }
 
     public void setHorizontalVelocity(double velX, double velZ) {

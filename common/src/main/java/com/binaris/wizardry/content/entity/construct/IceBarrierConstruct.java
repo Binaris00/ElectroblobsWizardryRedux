@@ -23,6 +23,7 @@ public class IceBarrierConstruct extends ScaledConstructEntity implements ICusto
 
     public IceBarrierConstruct(EntityType<?> p_19870_, Level p_19871_) {
         super(p_19870_, p_19871_);
+        this.setBaseSize(3, 3);
     }
 
     public void setDelay(int delay) {

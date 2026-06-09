@@ -10,23 +10,22 @@ import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class FireSigilConstruct extends ScaledConstructEntity {
     public FireSigilConstruct(EntityType<?> entityType, Level level) {
         super(entityType, level);
+        this.setBaseSize(Spells.FIRE_SIGIL.property(DefaultProperties.EFFECT_RADIUS) * 2, 0.2f);
     }
 
     public FireSigilConstruct(Level world) {
         super(EBEntities.FIRE_SIGIL.get(), world);
+        this.setBaseSize(Spells.FIRE_SIGIL.property(DefaultProperties.EFFECT_RADIUS) * 2, 0.2f);
     }
 
     @Override
@@ -54,11 +53,6 @@ public class FireSigilConstruct extends ScaledConstructEntity {
             this.playSound(EBSounds.ENTITY_FIRE_SIGIL_TRIGGER.get(), 1, 1);
             this.discard();
         }
-    }
-
-    @Override
-    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return EntityDimensions.scalable(Spells.FIRE_SIGIL.property(DefaultProperties.EFFECT_RADIUS) * 2, 0.2f);
     }
 
     @Override
