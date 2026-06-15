@@ -1,1 +1,3 @@
 - fix: scaled construct entities now can actually scale, increasing width and height depending on the size multiplier (blast upgrade)
+- fix: Meteor spell can be used to attack direct targets, not just pointing at a block
+- fix: (German translation) fix to Magic Scroll name

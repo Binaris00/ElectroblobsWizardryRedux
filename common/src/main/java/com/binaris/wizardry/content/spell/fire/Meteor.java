@@ -14,6 +14,7 @@ import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -42,8 +43,23 @@ public class Meteor extends RaySpell {
     @Override
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         if (ctx.world().canSeeSky(blockHit.getBlockPos().above())) {
-            if (!ctx.world().isClientSide) {
+            if (!ctx.world().isClientSide()) {
                 MeteorEntity meteor = new MeteorEntity(ctx.world(), blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY() + 50, blockHit.getBlockPos().getZ(),
+                        ctx.modifiers().get(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                ctx.world().addFreshEntity(meteor);
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
+        BlockPos pos = entityHit.getEntity().blockPosition();
+        if (ctx.world().canSeeSky(pos.above())){
+            if (!ctx.world().isClientSide()) {
+                MeteorEntity meteor = new MeteorEntity(ctx.world(), pos.getX(), pos.getY() + 50, pos.getZ(),
                         ctx.modifiers().get(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
                 ctx.world().addFreshEntity(meteor);
             }
@@ -54,11 +70,6 @@ public class Meteor extends RaySpell {
 
     @Override
     protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
-        return false;
-    }
-
-    @Override
-    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         return false;
     }
 
