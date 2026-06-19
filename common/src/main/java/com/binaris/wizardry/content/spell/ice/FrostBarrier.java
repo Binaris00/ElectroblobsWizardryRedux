@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.spell.internal.LocationCastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
+import com.binaris.wizardry.api.content.util.VecUtils;
 import com.binaris.wizardry.content.entity.construct.IceBarrierConstruct;
 import com.binaris.wizardry.setup.registries.EBEntities;
 import net.minecraft.core.BlockPos;
@@ -62,7 +62,7 @@ public class FrostBarrier extends Spell {
 
     private boolean createBarriers(Level world, Vec3 origin, Vec3 direction, @Nullable LivingEntity caster) {
         if (!world.isClientSide) {
-            direction = GeometryUtil.horizontalise(direction);
+            direction = VecUtils.flattenToHorizontal(direction);
             Vec3 centre = origin.add(direction.scale(BARRIER_DISTANCE - BARRIER_ARC_RADIUS));
 
             List<IceBarrierConstruct> barriers = new ArrayList<>();
@@ -91,7 +91,7 @@ public class FrostBarrier extends Spell {
         Vec3 position = centre.add(direction.scale(BARRIER_ARC_RADIUS));
         Integer floor = BlockUtil.getNearestFloor(world, BlockPos.containing(position), 3);
         if (floor == null) return null;
-        position = GeometryUtil.replaceComponent(position, Axis.Y, floor);
+        position = VecUtils.replaceComponent(position, Axis.Y, floor);
 
         float scale = 1.5f - (float) index / barrierCount * 0.5f;
         double yOffset = 1.5 * scale;

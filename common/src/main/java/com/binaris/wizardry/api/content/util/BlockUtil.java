@@ -201,7 +201,7 @@ public final class BlockUtil {
     @Nullable
     public static BlockPos findNearbyFloorSpace(Level world, BlockPos origin, int horizontalRange, int verticalRange, boolean lineOfSight, Entity entity) {
         List<BlockPos> possibleLocations = new ArrayList<>();
-        final Vec3 centre = GeometryUtil.getCentre(origin);
+        final Vec3 centre = Vec3.atCenterOf(origin);
 
         for (int x = -horizontalRange; x <= horizontalRange; x++) {
             for (int z = -horizontalRange; z <= horizontalRange; z++) {
@@ -209,7 +209,7 @@ public final class BlockUtil {
                 if (y != null) {
                     BlockPos location = new BlockPos(origin.getX() + x, y, origin.getZ() + z);
                     if (lineOfSight) {
-                        HitResult rayTrace = world.clip(new ClipContext(centre, GeometryUtil.getCentre(location), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, entity));
+                        HitResult rayTrace = world.clip(new ClipContext(centre, Vec3.atCenterOf(location), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, entity));
                         if (rayTrace.getType() == HitResult.Type.BLOCK) continue;
                     }
                     possibleLocations.add(location);
@@ -238,7 +238,7 @@ public final class BlockUtil {
     @Nullable
     public static BlockPos findNearbyFloorSpace(Level world, BlockPos origin, int horizontalRange, int verticalRange, boolean lineOfSight) {
         List<BlockPos> possibleLocations = new ArrayList<>();
-        final Vec3 centre = GeometryUtil.getCentre(origin);
+        final Vec3 centre = Vec3.atCenterOf(origin);
 
         for (int x = -horizontalRange; x <= horizontalRange; x++) {
             for (int z = -horizontalRange; z <= horizontalRange; z++) {
@@ -246,7 +246,7 @@ public final class BlockUtil {
                 if (y != null) {
                     BlockPos location = new BlockPos(origin.getX() + x, y, origin.getZ() + z);
                     if (lineOfSight) {
-                        HitResult rayTrace = world.clip(new ClipContext(centre, GeometryUtil.getCentre(location), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, null));
+                        HitResult rayTrace = world.clip(new ClipContext(centre, Vec3.atCenterOf(location), ClipContext.Block.COLLIDER, ClipContext.Fluid.ANY, null));
                         if (rayTrace.getType() == HitResult.Type.BLOCK) continue;
                     }
                     possibleLocations.add(location);
@@ -318,7 +318,7 @@ public final class BlockUtil {
             BlockPos testPos = pos.relative(direction, i);
 
             if (criteria.test(world, testPos, direction)) {
-                surface = (int) GeometryUtil.component(GeometryUtil.getFaceCentre(testPos, direction), direction.getAxis());
+                surface = (int) VecUtils.getFaceCentre(testPos, direction).get(direction.getAxis());
                 currentBest = Math.abs(i);
             }
         }

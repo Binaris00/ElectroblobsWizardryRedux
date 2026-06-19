@@ -168,7 +168,7 @@ public final class EntityUtil {
 
             BlockPos nearest = possiblePositions.stream().min(Comparator.comparingDouble(b -> destination.distanceToSqr(b.getX() + 0.5, b.getY() + 0.5, b.getZ() + 0.5))).get();
 
-            return GeometryUtil.getFaceCentre(nearest, Direction.DOWN);
+            return VecUtils.getFaceCentre(nearest, Direction.DOWN);
         }
     }
 

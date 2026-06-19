@@ -23,12 +23,17 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
-public class ClientUtils {
-
-    public static boolean isFirstPerson(Entity entity) {
-        return entity == Minecraft.getInstance().getCameraEntity() && Minecraft.getInstance().options.getCameraType() == CameraType.FIRST_PERSON;
-    }
-
+/**
+ * A utility class for client-side operations. Normally used for quick and easy formatting of components.
+ */
+public final class ClientUtils {
+    /**
+     * Checks if a spell should be displayed (name, description and any other data) in the item stack.
+     *
+     * @param spell The spell to check.
+     * @param stack The item stack associated with the spell.
+     * @return true if the spell should be displayed as discovered, false otherwise.
+     */
     public static boolean shouldDisplayDiscovered(Spell spell, @Nullable ItemStack stack) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return false;
@@ -51,10 +56,20 @@ public class ClientUtils {
         return Services.OBJECT_DATA.getSpellManagerData(player).hasSpellBeenDiscovered(spell);
     }
 
+    /**
+     * Returns the current local player. (Safety wrapper for Minecraft.getInstance().player)
+     *
+     * @return The current local player.
+     */
     public static LocalPlayer getPlayer() {
         return Minecraft.getInstance().player;
     }
 
+    /**
+     * Handles a glyph data packet received from the server by the networking layer.
+     *
+     * @param message The glyph data packet received from the server.
+     */
     public static void handleGlyphDataPacket(SpellGlyphPacketS2C message) {
         SpellGlyphData data = GlyphClientHandler.INSTANCE.getGlyphData();
         data.randomNames = new HashMap<>();
@@ -70,6 +85,12 @@ public class ClientUtils {
         }
     }
 
+    /**
+     * Util class to get the translatable name of a scroll with a saved spell in it, also checks if the spell is discovered.
+     *
+     * @param scroll The scroll item stack.
+     * @return The translatable name of the scroll.
+     */
     public static Component getScrollDisplayName(ItemStack scroll) {
         Spell spell = RegistryUtils.getSpell(scroll);
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, scroll);
@@ -78,6 +99,12 @@ public class ClientUtils {
         return Component.translatable("item.ebwizardry.scroll", name);
     }
 
+    /**
+     * Util class to get the translatable name of a spell book with a saved spell in it, also checks if the spell is discovered.
+     *
+     * @param book The spell book item stack.
+     * @return The translatable name of the spell book.
+     */
     public static Component getBookDisplayName(ItemStack book) {
         Spell spell = RegistryUtils.getSpell(book);
         if (spell == Spells.NONE) return Component.translatable("item.ebwizardry.spell_book.empty");
@@ -87,7 +114,15 @@ public class ClientUtils {
         return Component.translatable("item.ebwizardry.spell_book", name);
     }
 
+    /**
+     * Util class to open a spell book screen.
+     *
+     * @param stack The spell book item stack.
+     */
     public static void openSpellBook(ItemStack stack) {
         Minecraft.getInstance().setScreen(new SpellBookScreen(stack));
+    }
+
+    private ClientUtils() {
     }
 }

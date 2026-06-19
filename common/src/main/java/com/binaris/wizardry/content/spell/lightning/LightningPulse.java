@@ -9,7 +9,6 @@ import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.AllyDesignation;
@@ -25,6 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class LightningPulse extends Spell {
+    private static final double ANTI_Z_FIGHTING_OFFSET = 0.005;
     private static final SpellProperty<Float> REPULSION_VELOCITY = SpellProperty.floatProperty("repulsion_velocity", 0.8f);
 
     @Override
@@ -61,7 +61,7 @@ public class LightningPulse extends Spell {
 
         if (ctx.world().isClientSide()) {
             ParticleBuilder.create(EBParticles.LIGHTNING_PULSE)
-                    .pos(ctx.caster().getX(), ctx.caster().getY() + GeometryUtil.ANTI_Z_FIGHTING_OFFSET, ctx.caster().getZ())
+                    .pos(ctx.caster().getX(), ctx.caster().getY() + ANTI_Z_FIGHTING_OFFSET, ctx.caster().getZ())
                     .scale(ctx.modifiers().get(SpellModifiers.BLAST))
                     .spawn(ctx.world());
         }

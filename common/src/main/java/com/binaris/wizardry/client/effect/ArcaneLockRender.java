@@ -3,7 +3,7 @@ package com.binaris.wizardry.client.effect;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.ArcaneLockData;
 import com.binaris.wizardry.api.content.event.EBEntityJoinLevelEvent;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
+import com.binaris.wizardry.api.content.util.VecUtils;
 import com.binaris.wizardry.core.platform.Services;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
@@ -87,7 +87,7 @@ public final class ArcaneLockRender {
         Matrix4f matrix = poseStack.last().pose();
 
         for (AABB bb : cache.values()) {
-            Vec3[] vertices = GeometryUtil.getVertices(bb);
+            Vec3[] vertices = VecUtils.getVertices(bb);
             drawFace(buffer, matrix, vertices[0], vertices[1], vertices[3], vertices[2]);
             drawFace(buffer, matrix, vertices[6], vertices[7], vertices[2], vertices[3]);
             drawFace(buffer, matrix, vertices[5], vertices[6], vertices[1], vertices[2]);

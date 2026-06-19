@@ -23,3 +23,13 @@ To allow effects to be applied to non-player entities (e.g., via mob effects), t
 - `onKillEntity(LivingEntity user, ...)`
 
 These changes apply to "QuickArtifactEffect" utils too.
+
+## Utils
+
+### GeometryUtils
+
+- `GeometryUtils` has been renamed to `VecUtils`.
+- `GeometryUtils#getPitch` deleted because it was not used outside of Ice Spikes spell
+- `GeometryUtils#horizontalise` renamed to `VecUtils#flattenToHorizontal`
+- `GeometryUtils#getCentre` deleted and replaced for `Vec3.atCenterOf(BlockPos)`
+- `GeometryUtils#component` deleted

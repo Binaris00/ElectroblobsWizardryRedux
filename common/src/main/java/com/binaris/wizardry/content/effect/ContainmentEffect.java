@@ -4,7 +4,6 @@ import com.binaris.wizardry.api.content.data.ContainmentData;
 import com.binaris.wizardry.api.content.effect.MagicMobEffect;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
 import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import com.binaris.wizardry.setup.registries.EBSounds;
@@ -43,7 +42,7 @@ public class ContainmentEffect extends MagicMobEffect {
             data.setContainmentPos(target.blockPosition().offset(-1, -1, -1));
         }
 
-        Vec3 origin = GeometryUtil.getCentre(data.getContainmentPos());
+        Vec3 origin = Vec3.atCenterOf(data.getContainmentPos());
 
         double x = target.xo, y = target.yo, z = target.zo;
 

@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
+import com.binaris.wizardry.api.content.util.VecUtils;
 import com.binaris.wizardry.content.entity.construct.IceSpikeConstruct;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.ConstructRangedSpell;
@@ -44,7 +44,7 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
             double radius = 0.5 + ctx.world().random.nextDouble() * (maxRadius - 0.5);
 
             Vec3 offset = Vec3.directionFromRotation(ctx.world().random.nextFloat() * 180 - 90, ctx.world().random.nextBoolean() ? 0 : 180)
-                    .scale(radius).yRot(side.toYRot() * (float) Math.PI / 180).xRot(GeometryUtil.getPitch(side) * (float) Math.PI / 180);
+                    .scale(radius).yRot(side.toYRot() * (float) Math.PI / 180).xRot(getPitch(side) * (float) Math.PI / 180);
 
             if (side.getAxis().isHorizontal()) offset = offset.yRot((float) Math.PI / 2);
 
@@ -52,7 +52,7 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
                     (int) maxRadius, true, BlockUtil.SurfaceCriteria.basedOn(this::isCollisionShapeFullBlock));
 
             if (surface != null) {
-                Vec3 vec = GeometryUtil.replaceComponent(origin.add(offset), side.getAxis(), surface).subtract(new Vec3(side.step()));
+                Vec3 vec = VecUtils.replaceComponent(origin.add(offset), side.getAxis(), surface).subtract(new Vec3(side.step()));
                 super.spawnConstruct(ctx, vec, side);
             }
         }
@@ -81,5 +81,9 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
                 .add(DefaultProperties.EFFECT_DURATION, 100)
                 .add(DefaultProperties.EFFECT_STRENGTH, 0)
                 .build();
+    }
+
+    private static float getPitch(Direction facing) {
+        return facing == Direction.UP ? 90 : facing == Direction.DOWN ? -90 : 0;
     }
 }
