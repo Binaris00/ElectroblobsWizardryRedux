@@ -1,21 +1,21 @@
 package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.content.entity.projectile.IceShardEntity;
+import com.binaris.wizardry.core.ArtifactEffectContext;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import com.google.common.util.concurrent.AtomicDouble;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ShatteringRingEffect implements IArtifactEffect {
 
     @Override
-    public void onHurtEntity(Player player, LivingEntity damagedEntity, DamageSource source, AtomicDouble amount, AtomicBoolean canceled, ItemStack artifact) {
-        if (player.level().random.nextFloat() < 0.15f && damagedEntity.getHealth() < 12f
+    public void onHurtEntity(LivingEntity user, LivingEntity damagedEntity, DamageSource source, AtomicDouble amount, AtomicBoolean canceled, ArtifactEffectContext context) {
+        if (user instanceof Player player && player.level().random.nextFloat() < 0.15f && damagedEntity.getHealth() < 12f
                 && damagedEntity.hasEffect(EBMobEffects.FROST.get()) && !source.isIndirect()) {
 
             amount.set(12f);

@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
+import com.binaris.wizardry.core.ArtifactEffectContext;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.google.common.util.concurrent.AtomicDouble;
@@ -66,7 +67,7 @@ public class ArtifactItem extends Item {
         if (!(event.getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
-                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onTick(player, event.getLevel(), stack));
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onTick(player, event.getLevel(), new ArtifactEffectContext(stack)));
     }
 
     /**
@@ -84,7 +85,7 @@ public class ArtifactItem extends Item {
         AtomicDouble amount = new AtomicDouble(event.getAmount());
         AtomicBoolean canceled = new AtomicBoolean(event.isCanceled());
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
-                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onHurtEntity(player, event.getDamagedEntity(), event.getSource(), amount, canceled, stack));
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onHurtEntity(player, event.getDamagedEntity(), event.getSource(), amount, canceled, new ArtifactEffectContext(stack)));
         if (amount.floatValue() != event.getAmount()) event.setAmount(amount.floatValue());
         if (canceled.get()) event.setCanceled(true);
     }
@@ -104,7 +105,7 @@ public class ArtifactItem extends Item {
         AtomicDouble amount = new AtomicDouble(event.getAmount());
         AtomicBoolean canceled = new AtomicBoolean(event.isCanceled());
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
-                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onPlayerHurt(player, event.getSource(), amount, canceled, stack));
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onUserHurt(player, event.getSource(), amount, canceled, new ArtifactEffectContext(stack)));
         if (amount.floatValue() != event.getAmount()) event.setAmount(amount.floatValue());
         if (canceled.get()) event.setCanceled(true);
     }
@@ -117,7 +118,7 @@ public class ArtifactItem extends Item {
         if (!(event.getSource().getEntity() instanceof Player player)) return;
         List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
-                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onKillEntity(player, event.getEntity(), event.getSource(), stack));
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onKillEntity(player, event.getEntity(), event.getSource(), new ArtifactEffectContext(stack)));
     }
 
     /**
@@ -133,7 +134,7 @@ public class ArtifactItem extends Item {
         if (!(event.getCaster() instanceof Player player)) return;
         List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
-                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onSpellPreCast(event, stack));
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onSpellPreCast(event, new ArtifactEffectContext(stack)));
     }
 
     /**
@@ -149,7 +150,7 @@ public class ArtifactItem extends Item {
         if (!(event.getCaster() instanceof Player player)) return;
         List<ItemStack> stacks = ArtifactChannel.getEquippedArtifacts(player);
         stacks.stream().filter(stack -> stack.getItem() instanceof ArtifactItem artifact && artifact.getEffect() != null)
-                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onSpellPostCast(event, stack));
+                .forEach(stack -> ((ArtifactItem) stack.getItem()).getEffect().onSpellPostCast(event, new ArtifactEffectContext(stack)));
     }
 
     @Override

@@ -42,7 +42,7 @@ public class QuickArtifactEffect implements IArtifactEffect {
     public static IArtifactEffect changeModifiers(String modifierKey, float value, SpellModifiers.Operation operation) {
         return new QuickArtifactEffect() {
             @Override
-            public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack artifact) {
+            public void onSpellPreCast(SpellCastEvent.Pre event, ArtifactEffectContext context) {
                 event.getModifiers().operate(modifierKey, value, operation);
             }
         };
@@ -60,7 +60,7 @@ public class QuickArtifactEffect implements IArtifactEffect {
     public static IArtifactEffect changeModifiersIfCasting(Supplier<Spell> spell, String modifierKey, float value, SpellModifiers.Operation operation) {
         return new QuickArtifactEffect() {
             @Override
-            public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack artifact) {
+            public void onSpellPreCast(SpellCastEvent.Pre event, ArtifactEffectContext context) {
                 if (event.getSpell() == spell.get()) event.getModifiers().operate(modifierKey, value, operation);
             }
         };
@@ -78,7 +78,7 @@ public class QuickArtifactEffect implements IArtifactEffect {
     public static IArtifactEffect changeModifiersIfCastingType(SpellType type, String modifierKey, float value, SpellModifiers.Operation operation) {
         return new QuickArtifactEffect() {
             @Override
-            public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack artifact) {
+            public void onSpellPreCast(SpellCastEvent.Pre event, ArtifactEffectContext context) {
                 if (event.getSpell().getType() == type) event.getModifiers().operate(modifierKey, value, operation);
             }
         };
@@ -97,7 +97,7 @@ public class QuickArtifactEffect implements IArtifactEffect {
     public static IArtifactEffect meleeRing(Element element, @Nullable MobEffect effect, int level, int ticks) {
         return new QuickArtifactEffect() {
             @Override
-            public void onHurtEntity(Player player, LivingEntity damagedEntity, DamageSource source, AtomicDouble amount, AtomicBoolean canceled, ItemStack artifact) {
+            public void onHurtEntity(LivingEntity user, LivingEntity damagedEntity, DamageSource source, AtomicDouble amount, AtomicBoolean canceled, ArtifactEffectContext context) {
                 if (!source.isIndirect() && source.getEntity() instanceof LivingEntity living &&
                         living.getMainHandItem().getItem() instanceof WandItem wand && wand.getElement() == element) {
                     if (effect != null) damagedEntity.addEffect(new MobEffectInstance(effect, ticks, level));
@@ -120,7 +120,7 @@ public class QuickArtifactEffect implements IArtifactEffect {
     public static IArtifactEffect changeModifiersByBiomeElement(Element element, Predicate<Holder<Biome>> predicate, String modifierKey, float value, SpellModifiers.Operation operation) {
         return new QuickArtifactEffect() {
             @Override
-            public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack artifact) {
+            public void onSpellPreCast(SpellCastEvent.Pre event, ArtifactEffectContext context) {
                 if (predicate.test(event.getLevel().getBiome(event.getCaster().blockPosition())) && event.getSpell().getElement() == element) {
                     event.getModifiers().operate(modifierKey, value, operation);
                 }
@@ -139,7 +139,7 @@ public class QuickArtifactEffect implements IArtifactEffect {
     public static IArtifactEffect changeDamageIfSource(@Nullable ResourceKey<DamageType> damageType, float value, SpellModifiers.Operation operation) {
         return new QuickArtifactEffect() {
             @Override
-            public void onPlayerHurt(Player player, DamageSource s, AtomicDouble amount, AtomicBoolean canceled, ItemStack artifact) {
+            public void onUserHurt(LivingEntity user, DamageSource s, AtomicDouble amount, AtomicBoolean canceled, ArtifactEffectContext context) {
                 if (damageType == null && !EBDamageSources.isMagic(s)) return;
                 if (damageType != null && !s.is(damageType)) return;
 

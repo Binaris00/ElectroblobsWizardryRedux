@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
+import com.binaris.wizardry.core.ArtifactEffectContext;
 import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -11,7 +12,7 @@ import net.minecraft.world.item.ItemStack;
 public class HungerCastingCharmEffect implements IArtifactEffect {
 
     @Override
-    public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack artifact) {
+    public void onSpellPreCast(SpellCastEvent.Pre event, ArtifactEffectContext context) {
         if (!(event.getCaster() instanceof Player player)) return;
         if (player.isCreative() || event.getSource() != SpellCastEvent.Source.WAND || !event.getSpell().isInstantCast())
             return;

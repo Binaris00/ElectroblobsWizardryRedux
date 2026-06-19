@@ -1,6 +1,7 @@
 package com.binaris.wizardry.content.item.artifact;
 
 import com.binaris.wizardry.api.content.item.ICastItem;
+import com.binaris.wizardry.core.ArtifactEffectContext;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
@@ -18,16 +19,18 @@ public class PoisonRingEffect implements IArtifactEffect {
     private static final int POISON_DURATION = 100; // (5 seconds)
 
     @Override
-    public void onHurtEntity(Player player, LivingEntity damagedEntity, DamageSource source, AtomicDouble amount, AtomicBoolean canceled, ItemStack artifact) {
+    public void onHurtEntity(LivingEntity user, LivingEntity damagedEntity, DamageSource source, AtomicDouble amount, AtomicBoolean canceled, ArtifactEffectContext context) {
         if (source.is(EBDamageSources.POISON)) {
             damagedEntity.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION));
             return;
         }
 
-        ItemStack wand = player.getMainHandItem();
-        if (wand.isEmpty()) return;
-        if (wand.getItem() instanceof ICastItem castItem && castItem.getCurrentSpell(wand).getElement() == Elements.EARTH) {
-            damagedEntity.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION));
+        if (user instanceof Player player) {
+            ItemStack wand = player.getMainHandItem();
+            if (wand.isEmpty()) return;
+            if (wand.getItem() instanceof ICastItem castItem && castItem.getCurrentSpell(wand).getElement() == Elements.EARTH) {
+                damagedEntity.addEffect(new MobEffectInstance(MobEffects.POISON, POISON_DURATION));
+            }
         }
     }
 }

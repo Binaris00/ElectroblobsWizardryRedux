@@ -24,11 +24,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Random;
 
 public class ArcaneJammer extends RaySpell {
-    /** Random number generator used to coordinate whether spellcasting works or not. */
-    private static final Random random = new Random();
-    /** The number of ticks between updates of whether spellcasting works or not. */
-    private static final int UPDATE_INTERVAL = 15;
-
     public ArcaneJammer() {
         this.soundValues(0.7f, 1, 0.4f);
     }
@@ -70,28 +65,5 @@ public class ArcaneJammer extends RaySpell {
                 .add(DefaultProperties.EFFECT_DURATION, 300)
                 .add(DefaultProperties.EFFECT_STRENGTH, 0)
                 .build();
-    }
-
-    public static void onSpellCastPreEvent(SpellCastEvent.Pre event){
-        if (event.getCaster() == null || !event.getCaster().hasEffect(EBMobEffects.ARCANE_JAMMER.get())) {
-            return;
-        }
-        random.setSeed(event.getLevel().getGameTime() / UPDATE_INTERVAL);
-        random.nextInt(2);
-
-        if(random.nextInt(event.getCaster().getEffect(EBMobEffects.ARCANE_JAMMER.get()).getAmplifier() + 2) > 0){
-            event.setCanceled(true);
-
-            event.getLevel().playSound(event.getCaster(), event.getCaster().blockPosition(), EBSounds.MISC_SPELL_FAIL.get(), SoundSource.MASTER, 1.0F, 1.0F);
-
-            if(!event.getLevel().isClientSide){
-                for(int i = 0; i < 5; i++){
-                    double x = event.getCaster().xo + 0.5f * (event.getLevel().random.nextFloat() - 0.5f);
-                    double y = event.getCaster().yo + event.getCaster().getBbHeight() / 2 + 0.5f * (event.getLevel().random.nextFloat() - 0.5f);
-                    double z = event.getCaster().zo + 0.5f * (event.getLevel().random.nextFloat() - 0.5f);
-                    ((ServerLevel) event.getLevel()).sendParticles(ParticleTypes.LARGE_SMOKE, x, y, z, 1, 0.5, 0.5, 0.5, 0);
-                }
-            }
-        }
     }
 }

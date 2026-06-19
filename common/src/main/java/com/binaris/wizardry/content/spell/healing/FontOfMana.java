@@ -29,14 +29,6 @@ public class FontOfMana extends AreaEffectSpell {
         this.particleDensity(1.25f);
     }
 
-    // Event handler to reduce cooldowns when caster has the buff
-    public static void onSpellCastPreEvent(SpellCastEvent.Pre event) {
-        if (event.getCaster() != null && event.getCaster().hasEffect(EBMobEffects.FONT_OF_MANA.get())) {
-            MobEffectInstance inst = event.getCaster().getEffect(EBMobEffects.FONT_OF_MANA.get());
-            if (inst != null) event.getModifiers().divide(SpellModifiers.COOLDOWN, 2 + inst.getAmplifier());
-        }
-    }
-
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (!(target instanceof Player)) return true;

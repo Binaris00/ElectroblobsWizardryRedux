@@ -74,18 +74,18 @@ public final class EBEventHelper {
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
         bus.register(EBLivingHurtEvent.class, Charge::onLivingHurt);
-        bus.register(EBLivingHurtEvent.class, StaticAuraMobEffect::onLivingHurt);
-        bus.register(EBLivingHurtEvent.class, FireSkinMobEffect::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, CurseOfSoulbinding::onLivingHurt);
-        bus.register(EBLivingHurtEvent.class, WardMobEffect::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, BubbleConstruct::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, ArtifactItem::onHurtEntity);
         bus.register(EBLivingHurtEvent.class, ArtifactItem::onPlayerHurt);
+        bus.register(EBLivingHurtEvent.class, MagicMobEffect.EventCaller::callHurtEntityEvent);
+        bus.register(EBLivingHurtEvent.class, MagicMobEffect.EventCaller::callUserHurtEvent);
         bus.register(EBLivingHurtEvent.class, AllyDesignation::onLivingHurt);
     }
 
     private static void onLivingTickEvent(WizardryEventBus bus) {
         bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
+        bus.register(EBLivingTick.class, MagicMobEffect.EventCaller::callTickEvent);
         bus.register(EBLivingTick.class, ArtifactItem::onTick);
         bus.register(EBLivingTick.class, DataEvents::onMinionTick);
         bus.register(EBLivingTick.class, DataEvents::onPlayerTick);
@@ -126,6 +126,7 @@ public final class EBEventHelper {
 
     private static void onLivingDeathEvent(WizardryEventBus bus) {
         bus.register(EBLivingDeathEvent.class, ArtifactItem::onKillEntity);
+        bus.register(EBLivingDeathEvent.class, MagicMobEffect.EventCaller::callKillEntity);
         bus.register(EBLivingDeathEvent.class, DataEvents::onConjureEntityDeath);
         bus.register(EBLivingDeathEvent.class, WandUpgradeItem::onPlayerKillMob);
     }
@@ -139,14 +140,14 @@ public final class EBEventHelper {
         bus.register(SpellCastEvent.Pre.class, Forfeit::onSpellCastPreEvent);
         bus.register(SpellCastEvent.Pre.class, ArtifactItem::onSpellPreCast);
         bus.register(SpellCastEvent.Pre.class, EBEventHelper::castContextCheck);
-        bus.register(SpellCastEvent.Pre.class, FontOfMana::onSpellCastPreEvent);
-        bus.register(SpellCastEvent.Pre.class, ArcaneJammer::onSpellCastPreEvent);
         bus.register(SpellCastEvent.Pre.class, WizardryAttributeModifier::onPreCast);
+        bus.register(SpellCastEvent.Pre.class, MagicMobEffect.EventCaller::callSpellPreCast);
     }
 
     private static void onSpellPostCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Post.class, Forfeit::onSpellCastPostEvent);
         bus.register(SpellCastEvent.Post.class, ArtifactItem::onSpellPostCast);
+        bus.register(SpellCastEvent.Post.class, MagicMobEffect.EventCaller::callSpellPostCast);
     }
 
     private static void onSpellTickCast(WizardryEventBus bus) {
