@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.block;
 
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.binaris.wizardry.content.item.RandomSpellBookItem;
 import com.binaris.wizardry.core.EBLogger;
@@ -76,7 +76,7 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
 
-        if (!(player.isCreative() && InventoryUtil.doesPlayerHaveItem(player, currentStack.getItem()))) {
+        if (!(player.isCreative() && EntityUtil.doesPlayerHaveItem(player, currentStack.getItem()))) {
             if (!player.addItem(currentStack)) {
                 player.drop(currentStack, false);
             }

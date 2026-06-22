@@ -40,8 +40,7 @@ public class Freeze extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (!(entityHit.getEntity() instanceof LivingEntity target)
-                || MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target)) return false;
+        if (!(entityHit.getEntity() instanceof LivingEntity target)) return false;
 
         if (target instanceof Blaze || target instanceof MagmaCube) {
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST) : target.damageSources().magic();

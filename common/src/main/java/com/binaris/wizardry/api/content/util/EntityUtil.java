@@ -2,17 +2,21 @@ package com.binaris.wizardry.api.content.util;
 
 import com.binaris.wizardry.api.content.entity.living.ISpellCaster;
 import com.binaris.wizardry.api.content.item.ICastItem;
+import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellContext;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.content.item.ScrollItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorItem;
+import com.binaris.wizardry.content.item.armor.WizardArmorType;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.google.common.collect.Streams;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.NonNullList;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
@@ -21,25 +25,34 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Arrow;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public final class EntityUtil {
+    /* Array of all armor equipment slots for convenience. */
+    public static final EquipmentSlot[] ARMOR_SLOTS;
+
+    static {
+        List<EquipmentSlot> slots = new ArrayList<>(Arrays.asList(EquipmentSlot.values()));
+        slots.removeIf(slot -> slot.getType() != EquipmentSlot.Type.ARMOR);
+        ARMOR_SLOTS = slots.toArray(new EquipmentSlot[0]);
+    }
+
     private EntityUtil() {
     }
 
@@ -314,4 +327,107 @@ public final class EntityUtil {
         target.knockback(strength, dx, dz);
     }
 
+    /**
+     * Gets all items in the player's inventory. (This does not include the carried item (cursor item when inventory is open).)
+     * Check {@link #getAllItemsIncludingCarried(Player)} for a version that includes the carried item.
+     *
+     * @param player The player to get the items from.
+     * @return A collection of all items in the player's inventory.
+     */
+    public static Collection<ItemStack> getAllItems(Player player) {
+        // This could also be {@code Player#compartments}!! But its private :(
+        List<ItemStack> items = new ArrayList<>();
+        items.addAll(player.getInventory().items);
+        items.addAll(player.getInventory().armor);
+        items.addAll(player.getInventory().offhand);
+        return items;
+    }
+
+    /**
+     * Gets all items including the carried item (cursor item when inventory is open).
+     * This is important for systems that need to track ALL items a player has access to.
+     *
+     * @param player The player to get the items from.
+     * @return A collection of all items in the player's inventory, including the carried item.
+     */
+    public static Collection<ItemStack> getAllItemsIncludingCarried(Player player) {
+        List<ItemStack> items = new ArrayList<>(getAllItems(player));
+        ItemStack carried = player.containerMenu.getCarried();
+        if (!carried.isEmpty()) {
+            items.add(carried);
+        }
+        return items;
+    }
+
+    /**
+     * Gets the player's hotbar and offhand/mainhand items.
+     *
+     * @param player The player to get the items from.
+     * @return A list of the player's hotbar and offhand slots.
+     */
+    public static List<ItemStack> getHotBarAndHandItems(Player player) {
+        List<ItemStack> hotbar = getHotbarItems(player);
+        hotbar.add(0, player.getOffhandItem());
+        hotbar.remove(player.getMainHandItem());
+        hotbar.add(0, player.getMainHandItem());
+        return hotbar;
+    }
+
+    /**
+     * Search the player's inventory for a specific item.
+     *
+     * @param player The player to search.
+     * @param item   The item to search for.
+     * @return True if the player has the item, false otherwise.
+     */
+    public static boolean doesPlayerHaveItem(Player player, Item item) {
+        for (ItemStack stack : getAllItems(player)) {
+            if (stack != null && stack.is(item)) return true;
+        }
+        return false;
+    }
+
+    /**
+     * Gets the player's hotbar items. (If you want to include the hands use {@link #getHotBarAndHandItems(Player)} (Player)})
+     *
+     * @param player The player to get the items from.
+     * @return A list of the player's hotbar slots.
+     */
+    public static List<ItemStack> getHotbarItems(Player player) {
+        NonNullList<ItemStack> hotBar = NonNullList.create();
+        hotBar.addAll(player.getInventory().items.subList(0, 9));
+        return hotBar;
+    }
+
+    /**
+     * Checks if the entity has a full set of the given element and armor type. (it could be null in case you want the default
+     * armors without a specific element or armor type)
+     *
+     * @param entity  The entity to check.
+     * @param element The element of the armor.
+     * @param armor   The type of the armor.
+     * @return True if the entity has a full set of the given element and armor type, false otherwise.
+     */
+    public static boolean isWearingFullMagicArmorSet(LivingEntity entity, @javax.annotation.Nullable Element element, @javax.annotation.Nullable WizardArmorType armor) {
+        ItemStack helmet = entity.getItemBySlot(EquipmentSlot.HEAD);
+        if (!(helmet.getItem() instanceof WizardArmorItem wizardArmor)) return false;
+
+        Element e = element == null ? wizardArmor.getElement() : element;
+        WizardArmorType ac = armor == null ? wizardArmor.getWizardArmorType() : armor;
+        return Arrays.stream(ARMOR_SLOTS)
+                .allMatch(slot -> entity.getItemBySlot(slot).getItem() instanceof WizardArmorItem armor2
+                        && armor2.getElement() == e
+                        && armor2.getWizardArmorType() == ac);
+    }
+
+    /**
+     * Checks if all the armor pieces the entity is wearing have mana.
+     *
+     * @param entity The entity to check.
+     * @return True if all the armor pieces the entity is wearing have mana, false otherwise.
+     */
+    public static boolean doAllArmorPiecesHaveMana(LivingEntity entity) {
+        return Arrays.stream(ARMOR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaItem manaStoringItem
+                && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
+    }
 }

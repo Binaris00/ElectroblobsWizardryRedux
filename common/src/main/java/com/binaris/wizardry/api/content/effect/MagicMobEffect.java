@@ -11,10 +11,9 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -24,25 +23,56 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @see IMobEventEffect
  */
 public abstract class MagicMobEffect extends MobEffect implements CustomMobEffectParticles, IMobEventEffect {
+    private int particleCount = 1;
+    private double particleOffsetScale = 1.0;
+    private int particleTickInterval = 1;
+    private boolean hideVanillaParticles = true;
+
     public MagicMobEffect(MobEffectCategory category, int color) {
         super(category, color);
     }
 
-    // TODO Remove this
-    public static void onLivingTick(EBLivingTick event) {
+    public static void onParticleTick(EBLivingTick event) {
         if (!event.getLevel().isClientSide) return;
-        for (MobEffectInstance effect : event.getEntity().getActiveEffects()) {
-            if (effect.getEffect() instanceof CustomMobEffectParticles) {
-                double x = event.getEntity().getX()
-                        + (event.getLevel().random.nextDouble() - 0.5) * event.getEntity().getBbWidth();
-                double y = event.getEntity().getY()
-                        + event.getLevel().random.nextDouble() * event.getEntity().getBbHeight();
-                double z = event.getEntity().getZ()
-                        + (event.getLevel().random.nextDouble() - 0.5) * event.getEntity().getBbWidth();
+        LivingEntity entity = event.getEntity();
+        Level level = event.getLevel();
 
-                ((CustomMobEffectParticles) effect.getEffect()).spawnCustomParticle(event.getLevel(), x, y, z);
+        for (MobEffectInstance instance : entity.getActiveEffects()) {
+            if (!(instance.getEffect() instanceof MagicMobEffect magic)) continue;
+            if (entity.tickCount % magic.particleTickInterval != 0) continue;
+            if (!instance.isVisible()) continue;
+
+            for (int i = 0; i < magic.particleCount; i++) {
+                double x = entity.getX() + (level.random.nextDouble() - 0.5) * entity.getBbWidth() * magic.particleOffsetScale;
+                double y = entity.getY() + level.random.nextDouble() * entity.getBbHeight();
+                double z = entity.getZ() + (level.random.nextDouble() - 0.5) * entity.getBbWidth() * magic.particleOffsetScale;
+                magic.spawnCustomParticle(level, x, y, z);
             }
         }
+    }
+
+    protected MagicMobEffect particleCount(int count) {
+        this.particleCount = count;
+        return this;
+    }
+
+    protected MagicMobEffect particleOffset(double scale) {
+        this.particleOffsetScale = scale;
+        return this;
+    }
+
+    protected MagicMobEffect particleInterval(int ticks) {
+        this.particleTickInterval = ticks;
+        return this;
+    }
+
+    protected MagicMobEffect hideVanillaParticles() {
+        this.hideVanillaParticles = true;
+        return this;
+    }
+
+    public boolean shouldHideVanillaParticles() {
+        return hideVanillaParticles;
     }
 
     /**

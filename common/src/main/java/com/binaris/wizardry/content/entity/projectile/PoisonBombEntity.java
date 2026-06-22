@@ -62,10 +62,9 @@ public class PoisonBombEntity extends BombEntity {
             for (LivingEntity entity : livingEntities) {
                 if (entity != null && entity != this.getOwner()) {
                     MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE);
-                    if (!MagicDamageSource.isEntityImmune(EBDamageSources.POISON, entity))
-                        entity.addEffect(new MobEffectInstance(MobEffects.POISON,
-                                Spells.POISON_BOMB.property(DefaultProperties.EFFECT_DURATION),
-                                Spells.POISON_BOMB.property(DefaultProperties.EFFECT_STRENGTH)));
+                    entity.addEffect(new MobEffectInstance(MobEffects.POISON,
+                            Spells.POISON_BOMB.property(DefaultProperties.EFFECT_DURATION),
+                            Spells.POISON_BOMB.property(DefaultProperties.EFFECT_STRENGTH)));
                 }
             }
         }

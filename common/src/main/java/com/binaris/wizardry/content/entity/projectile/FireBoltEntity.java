@@ -40,10 +40,8 @@ public class FireBoltEntity extends MagicProjectileEntity {
 
             float damage = Spells.FIREBOLT.property(DefaultProperties.DAMAGE) * damageMultiplier;
 
-            if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity)) {
-                MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE);
-                entity.setSecondsOnFire(Spells.FIREBOLT.property(DefaultProperties.EFFECT_DURATION));
-            }
+            MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE);
+            entity.setSecondsOnFire(Spells.FIREBOLT.property(DefaultProperties.EFFECT_DURATION));
         }
 
         this.playSound(EBSounds.ENTITY_FIREBOLT_HIT.get(), 2, 0.8f + random.nextFloat() * 0.3f);

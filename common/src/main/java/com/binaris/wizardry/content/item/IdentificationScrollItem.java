@@ -4,7 +4,7 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.event.EBDiscoverSpellEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.platform.Services;
@@ -34,7 +34,7 @@ public class IdentificationScrollItem extends Item {
         ItemStack stack = player.getItemInHand(hand);
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
 
-        for (ItemStack stack1 : InventoryUtil.getHotBarAndOffhand(player)) {
+        for (ItemStack stack1 : EntityUtil.getHotBarAndHandItems(player)) {
             if (stack1.isEmpty()) continue;
             Spell spell = RegistryUtils.getSpell(stack1);
             if (stack1.getItem() instanceof IdentificationScrollItem || spell == Spells.NONE) continue;

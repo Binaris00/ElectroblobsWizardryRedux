@@ -9,15 +9,10 @@ import com.binaris.wizardry.content.Forfeit;
 import com.binaris.wizardry.content.WizardryAttributeModifier;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.content.effect.ContainmentEffect;
-import com.binaris.wizardry.content.effect.FireSkinMobEffect;
-import com.binaris.wizardry.content.effect.StaticAuraMobEffect;
-import com.binaris.wizardry.content.effect.WardMobEffect;
 import com.binaris.wizardry.content.entity.construct.BubbleConstruct;
 import com.binaris.wizardry.content.item.RandomSpellBookItem;
 import com.binaris.wizardry.content.item.WandUpgradeItem;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
-import com.binaris.wizardry.content.spell.healing.ArcaneJammer;
-import com.binaris.wizardry.content.spell.healing.FontOfMana;
 import com.binaris.wizardry.content.spell.lightning.Charge;
 import com.binaris.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.binaris.wizardry.content.spell.sorcery.ArcaneLockSpell;
@@ -35,7 +30,6 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.Container;
 import net.minecraft.world.SimpleContainer;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.RecipeType;
 import net.minecraft.world.item.crafting.SmeltingRecipe;
 import net.minecraft.world.level.storage.LevelResource;
@@ -84,7 +78,7 @@ public final class EBEventHelper {
     }
 
     private static void onLivingTickEvent(WizardryEventBus bus) {
-        bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
+        bus.register(EBLivingTick.class, MagicMobEffect::onParticleTick);
         bus.register(EBLivingTick.class, MagicMobEffect.EventCaller::callTickEvent);
         bus.register(EBLivingTick.class, ArtifactItem::onTick);
         bus.register(EBLivingTick.class, DataEvents::onMinionTick);

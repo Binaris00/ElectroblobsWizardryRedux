@@ -58,8 +58,7 @@ public class Firestorm extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
-            target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
+        target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
         return true;
     }
 

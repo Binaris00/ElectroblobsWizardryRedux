@@ -20,7 +20,7 @@ import java.util.List;
 public final class WorkbenchUtils {
 
     /**
-     * Recharges the mana of the item in the centre slot using the crystals in the crystals slot.
+     * Recharges the mana of the item in the center slot using the crystals in the crystals slot.
      *
      * @param centre   The slot containing the item to be recharged
      * @param crystals The slot containing the mana crystals
@@ -58,7 +58,7 @@ public final class WorkbenchUtils {
     }
 
     /**
-     * Applies the spell books in the given slots to the wand in the centre slot.
+     * Applies the spell books in the given slots to the wand in the center slot.
      *
      * @param centre     The slot containing the wand
      * @param spellBooks The slots containing the spell books

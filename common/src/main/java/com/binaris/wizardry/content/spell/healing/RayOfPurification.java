@@ -33,13 +33,6 @@ public class RayOfPurification extends RaySpell {
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (!(entityHit.getEntity() instanceof LivingEntity target)) return false;
 
-        if (MagicDamageSource.isEntityImmune(EBDamageSources.RADIANT, target)) {
-            if (!ctx.world().isClientSide() && ctx.castingTicks() == 1)
-                ctx.caster().sendSystemMessage(Component.translatable("spell.resist", target.getName(),
-                        this.getDescriptionFormatted())
-                );
-            return false;
-        }
         if (ctx.castingTicks() % 10 != 0) return true;
         float damage = property(UNDEAD_DAMAGE_MULTIPLIER) * ctx.modifiers().get(SpellModifiers.POTENCY);
         if (target.isInvertedHealAndHarm()) damage *= property(UNDEAD_DAMAGE_MULTIPLIER);

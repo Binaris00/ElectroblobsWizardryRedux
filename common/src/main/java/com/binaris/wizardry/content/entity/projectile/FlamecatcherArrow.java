@@ -63,8 +63,7 @@ public class FlamecatcherArrow extends MagicArrowEntity {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         if (hitResult.getEntity() instanceof LivingEntity livingEntity) {
-            if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, livingEntity))
-                livingEntity.setSecondsOnFire(15);
+            livingEntity.setSecondsOnFire(15);
             this.playSound(EBSounds.ENTITY_FLAMECATCHER_ARROW_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
             if (this.level().isClientSide) {
                 ParticleBuilder.create(EBParticles.FLASH).pos(getX(), getY(), getZ()).color(0xff6d00).spawn(level());

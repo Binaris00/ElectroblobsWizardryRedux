@@ -106,7 +106,7 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
             modifiers.set(SpellModifiers.COOLDOWN, modifiers.get(SpellModifiers.COOLDOWN) - armor.getWizardArmorType().cooldownReduction);
         }
 
-        if (InventoryUtil.isWearingFullSet(caster, armor.getElement(), armor.getWizardArmorType()) && InventoryUtil.doAllArmourPiecesHaveMana(caster)) {
+        if (EntityUtil.isWearingFullMagicArmorSet(caster, armor.getElement(), armor.getWizardArmorType()) && EntityUtil.doAllArmorPiecesHaveMana(caster)) {
             applyModifiers(caster, modifiers, armor, spell);
         }
     }
@@ -130,7 +130,7 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
         if (getMana(stack) == 0) return;
         if (!(entity instanceof LivingEntity livingEntity)) return;
 
-        if (InventoryUtil.isWearingFullSet(livingEntity, getElement(), getWizardArmorType()) && InventoryUtil.doAllArmourPiecesHaveMana(livingEntity)) {
+        if (EntityUtil.isWearingFullMagicArmorSet(livingEntity, getElement(), getWizardArmorType()) && EntityUtil.doAllArmorPiecesHaveMana(livingEntity)) {
             effectTick(stack, livingEntity, level);
         }
     }
@@ -144,7 +144,7 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
 
     // Shared helper used by both pre- and tick-cast events to collect modifiers from worn armor.
     public static void collectArmorModifiers(Player caster, Spell spell, SpellModifiers out) {
-        Arrays.stream(InventoryUtil.ARMOR_SLOTS)
+        Arrays.stream(EntityUtil.ARMOR_SLOTS)
                 .map(slot -> caster.getItemBySlot(slot).getItem()).filter(i -> i instanceof WizardArmorItem)
                 .forEach(i -> ((WizardArmorItem) i).applySpellModifiers(caster, (WizardArmorItem) i, spell, out));
     }

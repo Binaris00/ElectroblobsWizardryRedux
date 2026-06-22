@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.content.spell.DefaultProperties;
@@ -58,7 +58,7 @@ public final class ArtifactUtils {
      * if any of them have the given spell bound to them. This is a useful code pattern for artifact effects.
      */
     public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action) {
-        List<ItemStack> hotbar = InventoryUtil.getHotBarAndOffhand(player);
+        List<ItemStack> hotbar = EntityUtil.getHotBarAndHandItems(player);
         for (ItemStack stack : hotbar) {
             if (stack.getItem() instanceof ICastItem castItem && Arrays.asList(castItem.getSpells(stack)).contains(spell)) {
                 action.accept(stack);

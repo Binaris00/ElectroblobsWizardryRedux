@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -81,7 +81,7 @@ public class PocketFurnace extends Spell {
 
                 if (stack.getCount() <= usesLeft) {
                     ItemStack stack2 = new ItemStack(result.getItem(), stack.getCount());
-                    if (InventoryUtil.doesPlayerHaveItem(ctx.caster(), result.getItem())) {
+                    if (EntityUtil.doesPlayerHaveItem(ctx.caster(), result.getItem())) {
                         ctx.caster().addItem(stack2);
                         ctx.caster().getInventory().setItem(i, ItemStack.EMPTY);
                     } else {

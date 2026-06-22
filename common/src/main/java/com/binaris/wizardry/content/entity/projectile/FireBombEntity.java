@@ -47,8 +47,7 @@ public class FireBombEntity extends BombEntity {
 
             for (LivingEntity entity : livingEntities) {
                 MagicDamageSource.causeMagicDamage(this, entity, Spells.FIREBOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE);
-                if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
-                    entity.setSecondsOnFire(Spells.FIREBOMB.property(DefaultProperties.EFFECT_DURATION));
+                entity.setSecondsOnFire(Spells.FIREBOMB.property(DefaultProperties.EFFECT_DURATION));
             }
         }
 

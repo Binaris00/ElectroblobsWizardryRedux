@@ -43,13 +43,8 @@ public class Arc extends RaySpell {
             ParticleBuilder.spawnShockParticles(ctx.world(), target.xo, target.yo + target.getBbHeight() / 2, target.zo);
         }
 
-        if (MagicDamageSource.isEntityImmune(EBDamageSources.SHOCK, target)) {
-            if (!ctx.world().isClientSide && ctx.caster() instanceof Player player)
-                player.displayClientMessage(Component.translatable("spell.resist", target.getName(), this.getDescriptionFormatted()), true);
-        } else {
-            target.hurt(MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
-                    property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
-        }
+        target.hurt(MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
+                property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
 
         return true;
     }

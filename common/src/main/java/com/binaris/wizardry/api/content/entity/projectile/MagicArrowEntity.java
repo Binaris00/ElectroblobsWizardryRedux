@@ -111,10 +111,6 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         if (!(hitResult.getEntity() instanceof LivingEntity target)) return;
-        if (MagicDamageSource.isEntityImmune(getDamageType(), target)) {
-            this.discard();
-            return;
-        }
 
         // Damage stuff
         DamageSource damageSource = getOwner() == null ? MagicDamageSource.causeDirectMagicDamage(this, getDamageType())

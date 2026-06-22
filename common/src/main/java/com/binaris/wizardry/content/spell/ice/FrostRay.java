@@ -34,7 +34,7 @@ public class FrostRay extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (!(entityHit.getEntity() instanceof LivingEntity target) || MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
+        if (!(entityHit.getEntity() instanceof LivingEntity target))
             return false;
         if (target.isOnFire()) target.clearFire();
         if (ctx.world().isClientSide) return true;

@@ -8,7 +8,7 @@ import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.sorcery.ImbueWeapon;
 import com.binaris.wizardry.core.config.EBServerConfig;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 public class FlamingWeapon extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        for (ItemStack stack : InventoryUtil.getHotBarAndOffhand(ctx.caster())) {
+        for (ItemStack stack : EntityUtil.getHotBarAndHandItems(ctx.caster())) {
             // If the item isn't a sword or a bow, or if it already has Fire Aspect or Flaming Arrows, skip it
             if ((!ImbueWeapon.isSword(stack) && !ImbueWeapon.isBow(stack)) ||
                     EnchantmentHelper.getEnchantments(stack).containsKey(Enchantments.FLAMING_ARROWS) ||

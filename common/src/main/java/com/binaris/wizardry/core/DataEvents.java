@@ -2,7 +2,7 @@ package com.binaris.wizardry.core;
 
 import com.binaris.wizardry.api.content.data.*;
 import com.binaris.wizardry.api.content.event.*;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
@@ -80,7 +80,7 @@ public final class DataEvents {
         if (player.level().getGameTime() % IMBUEMENT_ENCHANTS_CHECK_INTERVAL != 0) return;
         long currentGameTime = player.level().getGameTime();
 
-        for (ItemStack stack : InventoryUtil.getAllItems(player)) {
+        for (ItemStack stack : EntityUtil.getAllItems(player)) {
             if (stack.isEmpty()) continue;
             if (EnchantmentHelper.getEnchantments(stack).isEmpty())
                 continue; // An item with no enchantments can't have temporary ones
@@ -140,7 +140,7 @@ public final class DataEvents {
     public static void onConjureEntityDeath(EBLivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) return; // only players can conjure items so...
 
-        InventoryUtil.getAllItemsIncludingCarried(player).stream().filter(ConjureItemSpell::isSummoned)
+        EntityUtil.getAllItemsIncludingCarried(player).stream().filter(ConjureItemSpell::isSummoned)
                 .forEach(stack -> stack.shrink(stack.getCount()));
     }
 
@@ -166,7 +166,7 @@ public final class DataEvents {
         boolean inventoryChanged = false;
 
         // Check regular inventory items
-        for (ItemStack stack : InventoryUtil.getAllItems(player)) {
+        for (ItemStack stack : EntityUtil.getAllItems(player)) {
             if (ConjureItemSpell.isSummoned(stack)) {
                 if (checkAndExpireItem(player, stack, currentGameTime)) {
                     inventoryChanged = true;

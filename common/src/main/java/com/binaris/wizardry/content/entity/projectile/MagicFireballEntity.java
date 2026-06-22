@@ -35,8 +35,7 @@ public class MagicFireballEntity extends MagicProjectileEntity {
 
         Entity entity = result.getEntity();
         MagicDamageSource.causeMagicDamage(this, entity, Spells.FIREBALL.property(DefaultProperties.DAMAGE), EBDamageSources.FIRE);
-        if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
-            entity.setSecondsOnFire(Spells.FIREBALL.property(DefaultProperties.DAMAGE).intValue());
+        entity.setSecondsOnFire(Spells.FIREBALL.property(DefaultProperties.DAMAGE).intValue());
         this.discard();
     }
 

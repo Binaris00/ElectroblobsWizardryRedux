@@ -33,3 +33,15 @@ These changes apply to "QuickArtifactEffect" utils too.
 - `GeometryUtils#horizontalise` renamed to `VecUtils#flattenToHorizontal`
 - `GeometryUtils#getCentre` deleted and replaced for `Vec3.atCenterOf(BlockPos)`
 - `GeometryUtils#component` deleted
+
+### InventoryUtils and EntityUtils
+
+- `InventoryUtils` has been deleted and moved all its methods to `EntityUtils`.
+- `InventoryUtils#getHotBarAndOffhand` renamed to `EntityUtils#getHotBarAndHandItems`
+- `InventoryUtils#getHotbar` renamed to `EntityUtils#getHotbarItems`
+- `InventoryUtils#isWearingFullSet` renamed to `EntityUtils#isWearingFullMagicArmorSet`
+- `InventoryUtils#doAllArmourPiecesHaveMana` renamed to `EntityUtils#doAllArmorPiecesHaveMana`
+
+## Entity Immunities
+
+In favor of creating a new mod for entity immunities, deleting not important parts of the API and cleaning the codebase entity immunities have been deleted.

@@ -61,7 +61,7 @@ public final class RegistryUtils {
      * @return The corresponding wizard armor item.
      */
     public static Item getArmor(WizardArmorType type, Element element, RandomSource randomSource) {
-        EquipmentSlot randomArmorSlot = InventoryUtil.ARMOR_SLOTS[randomSource.nextInt(InventoryUtil.ARMOR_SLOTS.length)];
+        EquipmentSlot randomArmorSlot = EntityUtil.ARMOR_SLOTS[randomSource.nextInt(EntityUtil.ARMOR_SLOTS.length)];
         return getArmor(type, element, randomArmorSlot);
     }
 

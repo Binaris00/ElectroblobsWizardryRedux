@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.command.debug;
 
 import com.binaris.wizardry.api.content.spell.Element;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.content.command.argument.ElementArgument;
 import com.binaris.wizardry.content.item.armor.WizardArmorType;
@@ -52,7 +52,7 @@ public final class GenArmorCommand {
 
 
     private static int execute(CommandContext<CommandSourceStack> context, ServerPlayer player, Element element, WizardArmorType type) {
-        for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) {
+        for (EquipmentSlot slot : EntityUtil.ARMOR_SLOTS) {
             Item armor = RegistryUtils.getArmor(type, element, slot);
             player.getInventory().add(armor.getDefaultInstance());
         }

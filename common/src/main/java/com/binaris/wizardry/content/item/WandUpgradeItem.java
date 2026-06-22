@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
 import com.binaris.wizardry.api.content.item.IManaItem;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
@@ -32,7 +32,7 @@ public class WandUpgradeItem extends Item {
 
         // Need to be a ManaStoringItem and without full mana
         // only can recharge 1 item for death
-        for (ItemStack itemStack : InventoryUtil.getHotBarAndOffhand(player)) {
+        for (ItemStack itemStack : EntityUtil.getHotBarAndHandItems(player)) {
             if (itemStack.getItem() instanceof IManaItem manaItem && !manaItem.isManaFull(itemStack)) {
                 if (CastItemDataHelper.getUpgradeLevel(itemStack, EBItems.SIPHON_UPGRADE.get()) <= 0) continue;
 

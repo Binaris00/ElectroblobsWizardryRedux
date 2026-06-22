@@ -10,10 +10,6 @@ import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.OwnableEntity;
 import net.minecraft.world.entity.TraceableEntity;
-import net.minecraft.world.entity.animal.PolarBear;
-import net.minecraft.world.entity.animal.SnowGolem;
-import net.minecraft.world.entity.boss.enderdragon.EnderDragon;
-import net.minecraft.world.entity.boss.wither.WitherBoss;
 import net.minecraft.world.entity.monster.*;
 import org.jetbrains.annotations.Nullable;
 
@@ -23,9 +19,7 @@ import java.util.*;
  * Damage source factory for the mod's magic damage types. Including immunity saving and lookup.
  * <p>
  * This class extends {@link DamageSource} to provide convenience factory methods
- * for creating magic damage sources (both direct and indirect). It also keeps
- * a simple static mapping of entity classes to {@link DamageType} resource keys
- * that represent immunities; this mapping is consulted by {@link #isEntityImmune}.
+ * for creating magic damage sources (both direct and indirect).
  * <p>
  * Typical usage:
  * <ul>
@@ -35,37 +29,6 @@ import java.util.*;
  * </ul>
  */
 public class MagicDamageSource extends DamageSource {
-
-    /**
-     * Mapping from entity implementation classes to the set of damage types
-     * (resource keys) that those entities are immune to within the mod's logic.
-     */
-    private static final Map<Class<? extends Entity>, Set<ResourceKey<DamageType>>> IMMUNITY_MAPPING = new HashMap<>();
-
-    // Immunity setup
-    static {
-        // Populate the known/implied immunities for vanilla and mod entities.
-        // These entries are consulted by isEntityImmune(...)
-        setEntityImmunities(Blaze.class, EBDamageSources.FIRE);
-        setEntityImmunities(ZombifiedPiglin.class, EBDamageSources.FIRE, EBDamageSources.POISON);
-        setEntityImmunities(MagmaCube.class, EBDamageSources.FIRE);
-        setEntityImmunities(Ghast.class, EBDamageSources.FIRE);
-        setEntityImmunities(EnderDragon.class, EBDamageSources.FIRE);
-        setEntityImmunities(WitherBoss.class, EBDamageSources.FIRE, EBDamageSources.WITHER);
-        setEntityImmunities(SnowGolem.class, EBDamageSources.FROST);
-        setEntityImmunities(PolarBear.class, EBDamageSources.FROST);
-        setEntityImmunities(WitherSkeleton.class, EBDamageSources.WITHER);
-        setEntityImmunities(Spider.class, EBDamageSources.POISON);
-        setEntityImmunities(CaveSpider.class, EBDamageSources.POISON);
-        setEntityImmunities(Zombie.class, EBDamageSources.POISON);
-        setEntityImmunities(Skeleton.class, EBDamageSources.POISON);
-        setEntityImmunities(IceWraith.class, EBDamageSources.FROST);
-        setEntityImmunities(IceGiant.class, EBDamageSources.FROST);
-        setEntityImmunities(LightningWraith.class, EBDamageSources.SHOCK);
-        setEntityImmunities(ShadowWraith.class, EBDamageSources.WITHER);
-        setEntityImmunities(StormElemental.class, EBDamageSources.FIRE, EBDamageSources.SHOCK);
-    }
-
     /**
      * Construct a new magic damage source wrapper.
      *
@@ -78,35 +41,11 @@ public class MagicDamageSource extends DamageSource {
     }
 
     /**
-     * Sets the immunities for the specified entity type.
-     *
-     * @param entityType The class of the entity type.
-     * @param immunities The damage types to which the entity type is immune.
-     */
-    @SafeVarargs
-    public static void setEntityImmunities(Class<? extends Entity> entityType, ResourceKey<DamageType>... immunities) {
-        IMMUNITY_MAPPING.computeIfAbsent(entityType, k -> new HashSet<>()).addAll(Arrays.asList(immunities));
-    }
-
-    /**
-     * Checks if the given entity is immune to the specified damage type.
-     *
-     * @param type   The damage type to check immunity against (a resource key from {@link EBDamageSources}).
-     * @param entity The entity to check for immunity.
-     * @return true if the entity is immune to the specified damage type, false otherwise.
-     */
-    public static boolean isEntityImmune(ResourceKey<DamageType> type, Entity entity) {
-        if (type == EBDamageSources.FIRE && entity.fireImmune()) return true;
-        Set<ResourceKey<DamageType>> immunities = IMMUNITY_MAPPING.get(entity.getClass());
-        return immunities != null && immunities.contains(type);
-    }
-
-    /**
      * A convenience method for applying magic damage to a target entity.
      * <p>
      * If the caster entity has an owner (either implements {@link OwnableEntity} or {@link TraceableEntity}
      * and returns a non-null owner), the damage is treated as indirect: the magic entity is the direct
-     * source and the owner is the indirect/causing entity. Otherwise damage is treated as direct and the
+     * source and the owner is the indirect/causing entity. Otherwise, damage is treated as direct and the
      * caster is used as the direct source with no indirect entity.
      * </p>
      *
@@ -129,7 +68,7 @@ public class MagicDamageSource extends DamageSource {
      * with a non-null owner. Otherwise, returns {@code null}.
      *
      * <p>
-     * This helper centralises the instanceof checks used when deciding whether damage should be
+     * This helper centralizes the instanceof checks used when deciding whether damage should be
      * considered indirect (attributed to an owner) or direct (attributed to the entity itself).
      * </p>
      *
@@ -176,7 +115,7 @@ public class MagicDamageSource extends DamageSource {
      * {@link MagicDamageSource} (which delegates to {@link DamageSource} superclass).
      * </p>
      *
-     * @param source   The direct source entity (may be a projectile).
+     * @param source   The direct source entity (maybe a projectile).
      * @param indirect The indirect/causing entity (owner), or {@code null} if none.
      * @param type     The damage type resource key.
      * @return A new {@link DamageSource} describing this magic damage.

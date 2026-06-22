@@ -200,7 +200,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
      * @param element The element of the armor to equip.
      */
     public void equipArmorAndDisableDrops(Element element) {
-        for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) {
+        for (EquipmentSlot slot : EntityUtil.ARMOR_SLOTS) {
             this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, element, slot)));
         }
         for (EquipmentSlot slot : EquipmentSlot.values()) {
