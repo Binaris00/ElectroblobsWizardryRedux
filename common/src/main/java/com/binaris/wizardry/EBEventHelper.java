@@ -87,7 +87,7 @@ public final class EBEventHelper {
     }
 
     private static void onSpellDiscovery(WizardryEventBus bus) {
-        bus.register(EBDiscoverSpellEvent.class, (event -> {
+        bus.register(DiscoverSpellEvent.class, (event -> {
             if (!event.getPlayer().level().isClientSide)
                 EBAdvancementTriggers.DISCOVER_SPELL.trigger((ServerPlayer) event.getPlayer(), event.getSpell(), event.getSource());
         }));

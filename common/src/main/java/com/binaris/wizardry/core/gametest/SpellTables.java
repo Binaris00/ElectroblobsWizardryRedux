@@ -106,7 +106,7 @@ public class SpellTables {
     }
 
     public static void fireCastEvent(SpellCastEvent.Source source, CastContext ctx, Spell spell) {
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(source, spell, ctx.caster(), ctx.modifiers()));
+        WizardryEventBus.fireEvent(new SpellCastEvent.Pre(source, spell, ctx.caster(), ctx.modifiers()));
     }
 
     public static class Builder {

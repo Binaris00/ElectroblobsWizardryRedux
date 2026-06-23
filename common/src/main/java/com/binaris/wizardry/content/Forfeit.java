@@ -3,7 +3,7 @@ package com.binaris.wizardry.content;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.data.WizardData;
-import com.binaris.wizardry.api.content.event.EBDiscoverSpellEvent;
+import com.binaris.wizardry.api.content.event.DiscoverSpellEvent;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.item.ICastItem;
@@ -145,14 +145,14 @@ public class Forfeit {
     }
 
     /**
-     * Discovers the given spell for the given player, firing an {@link EBDiscoverSpellEvent} first.
+     * Discovers the given spell for the given player, firing an {@link DiscoverSpellEvent} first.
      *
      * @param player The player to discover the spell for.
      * @param spell  The spell to be discovered.
      */
     private static void discoverSpell(Player player, Spell spell) {
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
-        boolean eventCancelled = WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.CASTING));
+        boolean eventCancelled = WizardryEventBus.fireEvent(new DiscoverSpellEvent(player, spell, DiscoverSpellEvent.Sources.CASTING));
 
         if (eventCancelled || !data.discoverSpell(spell)) return;
 

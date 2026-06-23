@@ -19,6 +19,6 @@ public abstract class MinecraftMixin {
     @Inject(method = "tick", at = @At("TAIL"))
     public void EBWIZARDRY$clientTick(CallbackInfo ci) {
         Minecraft minecraft = ((Minecraft) (Object) this);
-        WizardryEventBus.getInstance().fire(new EBClientTickEvent(minecraft));
+        WizardryEventBus.fireEvent(new EBClientTickEvent(minecraft));
     }
 }

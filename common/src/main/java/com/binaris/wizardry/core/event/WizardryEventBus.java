@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class WizardryEventBus implements EventRegistry {
     private static final WizardryEventBus INSTANCE = new WizardryEventBus();
-    private final Map<Class<? extends IWizardryEvent>, List<EventListener<? extends IWizardryEvent>>> listeners = new HashMap<>();
+    private final Map<Class<? extends IWizardryEvent>, List<PrioritizedListener<? extends IWizardryEvent>>> listeners = new HashMap<>();
 
     public static WizardryEventBus getInstance() {
         return INSTANCE;
@@ -32,19 +32,51 @@ public class WizardryEventBus implements EventRegistry {
 
     @Override
     public synchronized <E extends IWizardryEvent> void register(Class<E> eventClass, EventListener<E> listener) {
-        listeners.computeIfAbsent(eventClass, key -> new ArrayList<>()).add(listener);
+        register(eventClass, listener, EventPriorityOrder.NORMAL);
+    }
+
+    @Override
+    public synchronized <E extends IWizardryEvent> void register(Class<E> eventClass, EventListener<E> listener, EventPriorityOrder priority) {
+        List<PrioritizedListener<? extends IWizardryEvent>> eventListeners = listeners.computeIfAbsent(eventClass, key -> new ArrayList<>());
+        eventListeners.add(new PrioritizedListener<>(listener, priority, eventListeners.size()));
+        eventListeners.sort(null);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public synchronized <E extends IWizardryEvent> boolean fire(E event) {
-        List<EventListener<? extends IWizardryEvent>> eventListeners = listeners.get(event.getClass());
+        List<PrioritizedListener<? extends IWizardryEvent>> eventListeners = listeners.get(event.getClass());
         if (eventListeners != null) {
-            for (EventListener<? extends IWizardryEvent> listener : eventListeners) {
-                ((EventListener<E>) listener).onEvent(event);
+            for (PrioritizedListener<? extends IWizardryEvent> prioritizedListener : eventListeners) {
+                ((EventListener<E>) prioritizedListener.listener).onEvent(event);
             }
         }
 
         return event.canBeCanceled() && event.isCanceled();
+    }
+
+    public static <E extends IWizardryEvent> boolean fireEvent(E event){
+        return getInstance().fire(event);
+    }
+
+    private static class PrioritizedListener<E extends IWizardryEvent> implements Comparable<PrioritizedListener<?>> {
+        private final EventListener<E> listener;
+        private final EventPriorityOrder priority;
+        private final int registrationOrder;
+
+        public PrioritizedListener(EventListener<E> listener, EventPriorityOrder priority, int registrationOrder) {
+            this.listener = listener;
+            this.priority = priority;
+            this.registrationOrder = registrationOrder;
+        }
+
+        @Override
+        public int compareTo(PrioritizedListener<?> other) {
+            int priorityCompare = Integer.compare(other.priority.ordinal(), this.priority.ordinal());
+            if (priorityCompare != 0) {
+                return priorityCompare;
+            }
+            return Integer.compare(this.registrationOrder, other.registrationOrder);
+        }
     }
 }

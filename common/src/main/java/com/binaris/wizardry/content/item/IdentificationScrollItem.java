@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
-import com.binaris.wizardry.api.content.event.EBDiscoverSpellEvent;
+import com.binaris.wizardry.api.content.event.DiscoverSpellEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
@@ -40,7 +40,7 @@ public class IdentificationScrollItem extends Item {
             if (stack1.getItem() instanceof IdentificationScrollItem || spell == Spells.NONE) continue;
 
             if ((stack1.getItem() instanceof SpellBookItem || stack1.getItem() instanceof ScrollItem) && !data.hasSpellBeenDiscovered(spell)) {
-                if (WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(player, spell, EBDiscoverSpellEvent.Source.IDENTIFICATION_SCROLL)))
+                if (WizardryEventBus.fireEvent(new DiscoverSpellEvent(player, spell, DiscoverSpellEvent.Sources.IDENTIFICATION_SCROLL)))
                     return InteractionResultHolder.fail(stack);
 
                 if (!level.isClientSide) {

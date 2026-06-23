@@ -47,7 +47,7 @@ public final class CastCommand {
         ServerPlayer player = source.getPlayer();
         SpellModifiers modifiers = new SpellModifiers();
 
-        if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.COMMAND, spell, player, modifiers))) {
+        if (WizardryEventBus.fireEvent(new SpellCastEvent.Pre(SpellCastEvent.Source.COMMAND, spell, player, modifiers))) {
             source.sendFailure(Component.translatable("commands.ebwizardry.cast.failure" + spell.getDescriptionId()));
             return 0;
         }
@@ -72,7 +72,7 @@ public final class CastCommand {
 
     private static int handleInstantSpell(CommandSourceStack source, Spell spell, ServerPlayer player, SpellModifiers modifiers) {
         if (spell.cast(new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers))) {
-            WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.COMMAND, spell, player, modifiers));
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Source.COMMAND, spell, player, modifiers));
             source.sendSystemMessage(Component.translatable("commands.ebwizardry.cast.success", spell.getDescriptionFormatted()));
         }
         return 0;

@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.entity.living;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
-import com.binaris.wizardry.api.content.event.EBDiscoverSpellEvent;
+import com.binaris.wizardry.api.content.event.DiscoverSpellEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.EntityUtil;
@@ -181,7 +181,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
 
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(this.getTradingPlayer());
 
-        if (WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(this.getTradingPlayer(), spell, EBDiscoverSpellEvent.Source.PURCHASE)))
+        if (WizardryEventBus.fireEvent(new DiscoverSpellEvent(this.getTradingPlayer(), spell, DiscoverSpellEvent.Sources.PURCHASE)))
             return;
 
         if (!level().isClientSide) {

@@ -13,5 +13,7 @@ package com.binaris.wizardry.core.event;
 public interface EventRegistry {
     <E extends IWizardryEvent> void register(Class<E> eventClass, EventListener<E> listener);
 
+    <E extends IWizardryEvent> void register(Class<E> eventClass, EventListener<E> listener, EventPriorityOrder priority);
+
     <E extends IWizardryEvent> boolean fire(E event);
 }

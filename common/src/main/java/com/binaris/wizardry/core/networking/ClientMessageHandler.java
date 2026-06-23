@@ -57,7 +57,7 @@ public final class ClientMessageHandler {
 
         // No need to check if the spell succeeded, because the packet is only ever sent when it succeeds.
         // The handler for this event now deals with discovery.
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(source, m.getSpell(), caster, m.getModifiers()));
+        WizardryEventBus.fireEvent(new SpellCastEvent.Post(source, m.getSpell(), caster, m.getModifiers()));
     }
 
     public static void npcSpellCast(NPCSpellCastS2C m) {
@@ -72,7 +72,7 @@ public final class ClientMessageHandler {
         if (!(caster instanceof LivingEntity livingCaster) || !(target instanceof LivingEntity livingTarget)) return;
 
         m.getSpell().cast(new EntityCastContext(level, livingCaster, m.getHand(), 0, livingTarget, m.getModifiers()));
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, m.getSpell(), livingCaster, m.getModifiers()));
+        WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, m.getSpell(), livingCaster, m.getModifiers()));
 
         if (caster instanceof ISpellCaster spellCaster) {
             if (!m.getSpell().isInstantCast() || m.getSpell() instanceof NoneSpell) {

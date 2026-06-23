@@ -127,7 +127,7 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
             // Conditions to stop casting the continuous spell
             if (distanceSq > (double) this.maxAttackDistance
                     || !targetIsVisible
-                    || WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers(), currentTick))
+                    || WizardryEventBus.fireEvent(new SpellCastEvent.Tick(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers(), currentTick))
                     || !attacker.getContinuousSpell().cast(ctx)
                     || this.continuousSpellTimer == 0) {
 
@@ -137,7 +137,7 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
                 attacker.setSpellCounter(0);
 
             } else if (currentTick == 1) {
-                WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers()));
+                WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers()));
             }
 
         } else if (--this.cooldown == 0) {
@@ -179,7 +179,7 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
      * @param modifiers The spell modifiers to apply.
      */
     private boolean attemptCastSpell(Spell spell, SpellModifiers modifiers) {
-        if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.NPC, spell, attacker, modifiers)))
+        if (WizardryEventBus.fireEvent(new SpellCastEvent.Pre(SpellCastEvent.Source.NPC, spell, attacker, modifiers)))
             return false;
 
         EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, 0, target, modifiers);
@@ -190,7 +190,7 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
 
         // Handle instant and continuous spells
         if (spell.isInstantCast()) {
-            WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, spell, attacker, modifiers));
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, spell, attacker, modifiers));
             this.cooldown = this.baseCooldown + spell.getCooldown();
 
             if (!attacker.level().isClientSide && spell.requiresPacket()) {

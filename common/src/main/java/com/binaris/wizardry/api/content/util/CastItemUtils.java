@@ -41,7 +41,7 @@ public final class CastItemUtils {
                 ? new SpellCastEvent.Pre(source, spell, ctx.caster(), ctx.modifiers())
                 : new SpellCastEvent.Tick(source, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks());
 
-        return WizardryEventBus.getInstance().fire(event);
+        return WizardryEventBus.fireEvent(event);
     }
 
     /**
@@ -76,7 +76,7 @@ public final class CastItemUtils {
         if (!spell.cast(ctx)) return false;
 
         if (ctx.castingTicks() == 0) {
-            WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(source, spell, ctx.caster(), ctx.modifiers()));
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(source, spell, ctx.caster(), ctx.modifiers()));
         }
 
         return true;

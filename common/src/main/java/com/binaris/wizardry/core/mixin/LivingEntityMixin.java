@@ -35,7 +35,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(at = @At("HEAD"), method = "tick")
     public void EBWIZARDRY$tick(CallbackInfo ci) {
-        WizardryEventBus.getInstance().fire(new EBLivingTick(livingEntity, livingEntity.level()));
+        WizardryEventBus.fireEvent(new EBLivingTick(livingEntity, livingEntity.level()));
     }
 
     @Inject(method = "canBeAffected", at = @At("HEAD"), cancellable = true)
@@ -60,7 +60,7 @@ public abstract class LivingEntityMixin {
     @ModifyVariable(method = "hurt", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/WalkAnimationState;setSpeed(F)V", shift = At.Shift.BEFORE), argsOnly = true, ordinal = 0)
     private float EBWIZARDRY$livingEntityHurtAmount(float amount, DamageSource source) {
         EBLivingHurtEvent event = new EBLivingHurtEvent(livingEntity, source, amount);
-        WizardryEventBus.getInstance().fire(event);
+        WizardryEventBus.fireEvent(event);
         eventCanceled = event.isCanceled();
         return event.getAmount();
     }
@@ -79,7 +79,7 @@ public abstract class LivingEntityMixin {
 
     @Inject(method = "die", at = @At("HEAD"))
     public void EBWIZARDRY$LivingEntityDie(DamageSource damageSource, CallbackInfo ci) {
-        WizardryEventBus.getInstance().fire(new EBLivingDeathEvent(livingEntity, damageSource));
+        WizardryEventBus.fireEvent(new EBLivingDeathEvent(livingEntity, damageSource));
     }
 
     @Inject(method = "shouldDropLoot", at = @At(value = "RETURN"), cancellable = true)

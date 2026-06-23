@@ -237,7 +237,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
      */
     public void onApplyButtonPressed(Player player) {
         if (player.level().isClientSide) return;
-        if (WizardryEventBus.getInstance().fire(new SpellBindEvent(player, this))) return;
+        if (WizardryEventBus.fireEvent(new SpellBindEvent(player, this))) return;
         Slot centre = this.getSlot(CENTRE_SLOT);
 
         if (centre.getItem().getItem() instanceof IWorkbenchItem workbenchItem) {
