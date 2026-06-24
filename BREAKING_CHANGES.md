@@ -41,7 +41,25 @@ These changes apply to "QuickArtifactEffect" utils too.
 - `InventoryUtils#getHotbar` renamed to `EntityUtils#getHotbarItems`
 - `InventoryUtils#isWearingFullSet` renamed to `EntityUtils#isWearingFullMagicArmorSet`
 - `InventoryUtils#doAllArmourPiecesHaveMana` renamed to `EntityUtils#doAllArmorPiecesHaveMana`
+- `EntityUtils#isLiving` deleted
+- `EntityUtils#applyStandardKnockback` deleted
+- `EntityUtils#undoGravity` deleted
+ 
+### DrawingUtils and ClientUtils
+
+- `DrawingUtils#mix` deleted and replaced for `ClientUtils#mixColor`.
+- `DrawingUtils#drawTexturedFlippedRectF` deleted
+- `DrawingUtils#drawGlitchRect` deleted
+- `DrawingUtils#drawTexturedRect` deleted
+- `DrawingUtils#drawTexturedFlippedRect` deleted
+- `DrawingUtils#drawScaledStringToWidth` deleted 
+- The rest of methods have been moved to `ClientUtils`, `DrawingUtils` has been deleted
 
 ## Entity Immunities
 
 In favor of creating a new mod for entity immunities, deleting not important parts of the API and cleaning the codebase entity immunities have been deleted.
+
+
+## Others
+
+- Deleted `EBClientConstants` and moved constants to `ArcaneWorkbenchScreen`

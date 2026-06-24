@@ -1,5 +1,6 @@
 package com.binaris.wizardry.content.item;
 
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.*;
@@ -512,7 +513,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getDamageValue());
+        return ClientUtils.mixColor(0xff8bfe, 0x8e2ee4, stack.getDamageValue());
     }
 
     @Override

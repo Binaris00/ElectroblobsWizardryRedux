@@ -1,6 +1,7 @@
 package com.binaris.wizardry.content.item.armor;
 
 import com.binaris.wizardry.WizardryMainMod;
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.*;
 import com.binaris.wizardry.api.content.spell.Element;
@@ -209,7 +210,7 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
 
     @Override
     public int getBarColor(@NotNull ItemStack stack) {
-        return DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) getBarWidth(stack));
+        return ClientUtils.mixColor(0xff8bfe, 0x8e2ee4, (float) getBarWidth(stack));
     }
 
     @Override

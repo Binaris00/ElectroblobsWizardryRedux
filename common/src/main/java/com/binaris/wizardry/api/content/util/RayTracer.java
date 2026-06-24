@@ -1,6 +1,5 @@
 package com.binaris.wizardry.api.content.util;
 
-import com.binaris.wizardry.api.content.entity.ICustomHitbox;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.ClipContext;
@@ -73,16 +72,11 @@ public final class RayTracer {
      */
     @Nullable
     private static Vec3 calculateIntercept(Entity entity, Vec3 origin, Vec3 endpoint, float aimAssist) {
-        if (entity instanceof ICustomHitbox customHitbox) {
-            float fuzziness = EntityUtil.isLiving(entity) ? aimAssist : 0;
-            return customHitbox.calculateIntercept(origin, endpoint, fuzziness);
-        }
-
         AABB bounds = entity.getBoundingBox();
         float pickRadius = entity.getPickRadius();
         if (pickRadius != 0) bounds = bounds.inflate(pickRadius);
 
-        if (EntityUtil.isLiving(entity) && aimAssist != 0) {
+        if (entity instanceof LivingEntity && aimAssist != 0) {
             bounds = bounds.inflate(aimAssist);
         }
 

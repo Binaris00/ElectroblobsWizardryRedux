@@ -28,23 +28,25 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
-import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.Arrow;
-import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+/**
+ * Utility class containing helper methods for entity manipulation, checking spell casting, querying entities within physical
+ * bounds (radius, range, cylinder), handling player inventories, and performing other utility functions related to Minecraft entities.
+ */
 public final class EntityUtil {
-    /* Array of all armor equipment slots for convenience. */
+    /** Array of all armor equipment slots for convenience. */
     public static final EquipmentSlot[] ARMOR_SLOTS;
 
     static {
@@ -53,39 +55,67 @@ public final class EntityUtil {
         ARMOR_SLOTS = slots.toArray(new EquipmentSlot[0]);
     }
 
-    private EntityUtil() {
-    }
-
-    public static void undoGravity(Entity entity) {
-        if (!entity.isNoGravity()) {
-            double gravity = 0.04;
-            if (entity instanceof ThrowableProjectile) gravity = 0.03;
-            else if (entity instanceof Arrow) gravity = 0.05;
-            else if (entity instanceof LivingEntity) gravity = 0.08;
-            entity.setDeltaMovement(entity.getDeltaMovement().add(0, gravity, 0));
-        }
-    }
-
+    /**
+     * Returns the entity with the given UUID, or null if no such entity exists. Keep in mind that this process is made in the server
+     * thread. Using this in common/client expecting a client-side entity will always return null.
+     *
+     * @param world The world to search in
+     * @param id    The UUID of the entity to search for
+     * @return The entity with the given UUID, or null if no such entity exists
+     */
     @Nullable
     public static Entity getEntityByUUID(Level world, @Nullable UUID id) {
         if (id == null) return null; // It would return null eventually, but there's no point even looking
+        if (!(world instanceof ServerLevel serverWorld)) return null;
 
-        if (world instanceof ServerLevel serverWorld) {
-            for (Entity entity : serverWorld.getAllEntities()) {
-                if (entity.getUUID().equals(id)) return entity;
-            }
+        for (Entity entity : serverWorld.getAllEntities()) {
+            if (entity.getUUID().equals(id)) return entity;
         }
         return null;
     }
 
+    /**
+     * Gets all living entities within a cubic bounding box centered on the specified coordinates. The results are filtered to
+     * only include entities within the specified range (distance limit).
+     *
+     * @param world The level to search in.
+     * @param x     The X coordinate of the center.
+     * @param y     The Y coordinate of the center.
+     * @param z     The Z coordinate of the center.
+     * @param range The maximum distance from the center.
+     * @return A list of living entities in range.
+     */
     public static List<LivingEntity> getLivingEntitiesInRange(Level world, double x, double y, double z, double range) {
         return getEntitiesInRange(world, x, y, z, range, LivingEntity.class);
     }
 
+    /**
+     * Gets all living entities within a spherical radius around the specified coordinates.
+     *
+     * @param radius The radius of the sphere.
+     * @param x      The X coordinate of the center.
+     * @param y      The Y coordinate of the center.
+     * @param z      The Z coordinate of the center.
+     * @param world  The level to search in.
+     * @return A list of living entities within the radius.
+     */
     public static List<LivingEntity> getLivingWithinRadius(double radius, double x, double y, double z, Level world) {
         return getEntitiesWithinRadius(radius, x, y, z, world, LivingEntity.class);
     }
 
+    /**
+     * Gets all entities of a specific class within a cubic bounding box centered on the specified coordinates, filtered by
+     * maximum range.
+     *
+     * @param <T>         The type of entity to search for.
+     * @param world       The level to search in.
+     * @param x           The X coordinate of the center.
+     * @param y           The Y coordinate of the center.
+     * @param z           The Z coordinate of the center.
+     * @param range       The maximum distance from the center.
+     * @param entityClass The class of the entities to search for.
+     * @return A list of entities in range matching the specified class.
+     */
     public static <T extends Entity> List<T> getEntitiesInRange(Level world, double x, double y, double z, double range, Class<T> entityClass) {
         AABB boundingBox = new AABB(x - range, y - range, z - range, x + range, y + range, z + range);
         Predicate<T> alwaysTrue = entity -> true;
@@ -96,6 +126,18 @@ public final class EntityUtil {
         return entities;
     }
 
+    /**
+     * Gets all entities of a specific class within a spherical radius around the specified coordinates.
+     *
+     * @param <T>        The type of entity to search for.
+     * @param radius     The radius of the sphere.
+     * @param x          The X coordinate of the center.
+     * @param y          The Y coordinate of the center.
+     * @param z          The Z coordinate of the center.
+     * @param world      The level to search in.
+     * @param entityType The class of the entities to search for.
+     * @return A list of entities of the specified type within the radius.
+     */
     public static <T extends Entity> List<T> getEntitiesWithinRadius(double radius, double x, double y, double z, Level world, Class<T> entityType) {
         AABB box = new AABB(x - radius, y - radius, z - radius, x + radius, y + radius, z + radius);
         List<T> entityList = world.getEntitiesOfClass(entityType, box);
@@ -104,11 +146,14 @@ public final class EntityUtil {
         return entityList;
     }
 
-    //@Deprecated(forRemoval = true, since = "1.20.1")
-    public static boolean isLiving(Entity entity) {
-        return entity instanceof LivingEntity && !(entity instanceof ArmorStand);
-    }
-
+    /**
+     * Hurts the specified entity without causing it to receive knockback.
+     *
+     * @param entity The entity to damage.
+     * @param source The damage source.
+     * @param amount The amount of damage to inflict.
+     * @return True if the entity was successfully hurt, false otherwise.
+     */
     public static boolean attackEntityWithoutKnockback(Entity entity, DamageSource source, float amount) {
         Vec3 originalVec = entity.getDeltaMovement();
         boolean succeeded = entity.hurt(source, amount);
@@ -116,15 +161,21 @@ public final class EntityUtil {
         return succeeded;
     }
 
+    /**
+     * Gets the first rider (passenger) of the specified entity, if any.
+     *
+     * @param entity The entity to check.
+     * @return The first passenger entity, or null if there are no passengers.
+     */
     @Nullable
     public static Entity getRider(Entity entity) {
         return !entity.getPassengers().isEmpty() ? entity.getPassengers().get(0) : null;
     }
 
     /**
-     * Finds the nearest space to the specified position that the given entity can teleport to without being inside one
-     * or more solid blocks. The search volume is twice the size of the entity's bounding box (meaning that when
-     * teleported to the returned position, the original destination remains within the entity's bounding box).
+     * Finds the nearest space to the specified position that the given entity can teleport to without being inside one or more
+     * solid blocks. The search volume is twice the size of the entity's bounding box (meaning that when teleported to the
+     * returned position, the original destination remains within the entity's bounding box).
      *
      * @param entity               The entity being teleported
      * @param destination          The target position to search around
@@ -143,8 +194,7 @@ public final class EntityUtil {
 
         box = box.move(destination.subtract(entity.getX(), entity.getY(), entity.getZ()));
 
-        Iterable<BlockPos> cuboid = BlockPos.betweenClosed(Mth.floor(box.minX), Mth.floor(box.minY),
-                Mth.floor(box.minZ), Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ));
+        Iterable<BlockPos> cuboid = BlockPos.betweenClosed(Mth.floor(box.minX), Mth.floor(box.minY), Mth.floor(box.minZ), Mth.floor(box.maxX), Mth.floor(box.maxY), Mth.floor(box.maxZ));
 
         if (Streams.stream(cuboid).allMatch(b -> world.noCollision(new AABB(b)))) {
             return destination;
@@ -169,9 +219,7 @@ public final class EntityUtil {
                 BlockPos pos = nearby.remove(0);
 
                 if (!world.noCollision(new AABB(pos))) {
-                    Predicate<BlockPos> nearSolidBlock = b -> b.getX() >= pos.getX() - nx && b.getX() <= pos.getX() + px
-                            && b.getY() >= pos.getY() - ny && b.getY() <= pos.getY() + py
-                            && b.getZ() >= pos.getZ() - nz && b.getZ() <= pos.getZ() + pz;
+                    Predicate<BlockPos> nearSolidBlock = b -> b.getX() >= pos.getX() - nx && b.getX() <= pos.getX() + px && b.getY() >= pos.getY() - ny && b.getY() <= pos.getY() + py && b.getZ() >= pos.getZ() - nz && b.getZ() <= pos.getZ() + pz;
                     nearby.removeIf(nearSolidBlock);
                     possiblePositions.removeIf(nearSolidBlock);
                 }
@@ -186,10 +234,34 @@ public final class EntityUtil {
     }
 
 
+    /**
+     * Gets all living entities within a vertical cylinder centered on the specified coordinates.
+     *
+     * @param radius The radius of the cylinder.
+     * @param x      The X coordinate of the center.
+     * @param y      The Y coordinate of the bottom of the cylinder.
+     * @param z      The Z coordinate of the center.
+     * @param height The height of the cylinder.
+     * @param world  The level to search in.
+     * @return A list of living entities within the cylinder.
+     */
     public static List<LivingEntity> getLivingWithinCylinder(double radius, double x, double y, double z, double height, Level world) {
         return getEntitiesWithinCylinder(radius, x, y, z, height, world, LivingEntity.class);
     }
 
+    /**
+     * Gets all entities of a specific class within a vertical cylinder centered on the specified coordinates.
+     *
+     * @param <T>        The type of entity to search for.
+     * @param radius     The radius of the cylinder.
+     * @param x          The X coordinate of the center.
+     * @param y          The Y coordinate of the bottom of the cylinder.
+     * @param z          The Z coordinate of the center.
+     * @param height     The height of the cylinder.
+     * @param world      The level to search in.
+     * @param entityType The class of the entities to search for.
+     * @return A list of entities of the specified type within the cylinder.
+     */
     public static <T extends Entity> List<T> getEntitiesWithinCylinder(double radius, double x, double y, double z, double height, Level world, Class<T> entityType) {
         AABB aabb = new AABB(x - radius, y, z - radius, x + radius, y + height, z + radius);
         List<T> entityList = world.getEntitiesOfClass(entityType, aabb);
@@ -199,8 +271,8 @@ public final class EntityUtil {
     }
 
     /**
-     * Determines whether the given entity is allowed to damage blocks in the given world, this doesn't check specific
-     * block properties, just whether the entity in general can damage blocks.
+     * Determines whether the given entity is allowed to damage blocks in the given world, this doesn't check specific block
+     * properties, just whether the entity in general can damage blocks.
      *
      * @param entity The entity to check.
      * @param world  The world in which the entity is attempting to damage blocks.
@@ -219,6 +291,12 @@ public final class EntityUtil {
         return false;
     }
 
+    /**
+     * Gets the default aiming error angle (in degrees) for a projectile cast by an NPC based on the level's current difficulty.
+     *
+     * @param difficulty The difficulty of the level.
+     * @return The aiming error value.
+     */
     public static int getDefaultAimingError(Difficulty difficulty) {
         return switch (difficulty) {
             case EASY -> 5;
@@ -228,34 +306,48 @@ public final class EntityUtil {
         };
     }
 
+    /**
+     * Plays a sound at the specified player's position, audible to everyone.
+     *
+     * @param player The player whose position to play the sound at.
+     * @param sound  The sound event to play.
+     * @param volume The volume of the sound.
+     * @param pitch  The pitch of the sound.
+     */
     public static void playSoundAtPlayer(Player player, SoundEvent sound, float volume, float pitch) {
         player.level().playSound(null, player.getX(), player.getY(), player.getZ(), sound, SoundSource.PLAYERS, volume, pitch);
     }
 
+    /**
+     * Checks whether the given living entity is currently casting the specified spell.
+     *
+     * @param caster The entity to check.
+     * @param spell  The spell to check.
+     * @return True if the entity is casting the spell, false otherwise.
+     */
     public static boolean isCasting(LivingEntity caster, Spell spell) {
         if (spell.isInstantCast()) return false;
 
-        if (caster instanceof Player) {
-            if (caster.isUsingItem()) {
-                ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
-                boolean isSpellCastingItem = stack.getItem() instanceof ICastItem;
-
-                if (!isSpellCastingItem) return false;
-
-                Spell currentSpell = ((ICastItem) stack.getItem()).getCurrentSpell(stack);
-
-                if (stack.getItem() instanceof ScrollItem) {
-                    return currentSpell == spell;
-                }
-
-                int ticksInUse = caster.getUseItem().getUseDuration() - caster.getUseItemRemainingTicks();
-
-                if (ticksInUse >= spell.getChargeUp()) {
-                    return currentSpell == spell;
-                }
-            }
-        } else if (caster instanceof ISpellCaster spellCaster) {
+        if (caster instanceof ISpellCaster spellCaster) {
             return spellCaster.getContinuousSpell() == spell;
+        }
+
+        // Player checking now
+        if (!(caster instanceof Player)) return false;
+        if (!caster.isUsingItem()) return false;
+
+        ItemStack stack = caster.getItemInHand(caster.getUsedItemHand());
+        boolean isSpellCastingItem = stack.getItem() instanceof ICastItem;
+        if (!isSpellCastingItem) return false;
+        Spell currentSpell = ((ICastItem) stack.getItem()).getCurrentSpell(stack);
+
+        if (stack.getItem() instanceof ScrollItem) {
+            return currentSpell == spell;
+        }
+
+        int ticksInUse = caster.getUseItem().getUseDuration() - caster.getUseItemRemainingTicks();
+        if (ticksInUse >= spell.getChargeUp()) {
+            return currentSpell == spell;
         }
 
         return false;
@@ -291,8 +383,7 @@ public final class EntityUtil {
             else tier = SpellTiers.MASTER;
             if (tier.getLevel() > maxTier.getLevel()) maxTier = tier;
 
-            List<Spell> list = RegistryUtils.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element
-                    && spell.canCastByEntity() && spell.isEnabled(SpellContext.NPCS));
+            List<Spell> list = RegistryUtils.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element && spell.canCastByEntity() && spell.isEnabled(SpellContext.NPCS));
 
             list.retainAll(npcSpells);
             list.removeAll(spells);
@@ -306,25 +397,22 @@ public final class EntityUtil {
         return maxTier;
     }
 
-    public static ItemStack getWandInUse(Player player) {
+    /**
+     * Finds and returns the casting item (e.g. wand) currently being used or held by the player. Checks the main hand first,
+     * then falls back to the offhand.
+     *
+     * @param player The player to check.
+     * @return The ItemStack of the wand/casting item in use, or {@link ItemStack#EMPTY} if none is found.
+     */
+    public static @NotNull ItemStack getWandInUse(Player player) {
         ItemStack wand = player.getMainHandItem();
 
         if (!(wand.getItem() instanceof ICastItem) || ((ICastItem) wand.getItem()).getSpells(wand).length < 2) {
             wand = player.getOffhandItem();
-            if (!(wand.getItem() instanceof ICastItem) || ((ICastItem) wand.getItem()).getSpells(wand).length < 2)
-                return null;
+            if (!(wand.getItem() instanceof ICastItem) || ((ICastItem) wand.getItem()).getSpells(wand).length < 2) return ItemStack.EMPTY;
         }
 
         return wand;
-    }
-
-    public static void applyStandardKnockback(Entity attacker, LivingEntity target, float strength) {
-        double dx = attacker.getX() - target.getX();
-        double dz;
-        for (dz = attacker.getZ() - target.getZ(); dx * dx + dz * dz < 1.0E-4D; dz = (Math.random() - Math.random()) * 0.01D) {
-            dx = (Math.random() - Math.random()) * 0.01D;
-        }
-        target.knockback(strength, dx, dz);
     }
 
     /**
@@ -408,16 +496,13 @@ public final class EntityUtil {
      * @param armor   The type of the armor.
      * @return True if the entity has a full set of the given element and armor type, false otherwise.
      */
-    public static boolean isWearingFullMagicArmorSet(LivingEntity entity, @javax.annotation.Nullable Element element, @javax.annotation.Nullable WizardArmorType armor) {
+    public static boolean isWearingFullMagicArmorSet(LivingEntity entity, @Nullable Element element, @Nullable WizardArmorType armor) {
         ItemStack helmet = entity.getItemBySlot(EquipmentSlot.HEAD);
         if (!(helmet.getItem() instanceof WizardArmorItem wizardArmor)) return false;
 
         Element e = element == null ? wizardArmor.getElement() : element;
         WizardArmorType ac = armor == null ? wizardArmor.getWizardArmorType() : armor;
-        return Arrays.stream(ARMOR_SLOTS)
-                .allMatch(slot -> entity.getItemBySlot(slot).getItem() instanceof WizardArmorItem armor2
-                        && armor2.getElement() == e
-                        && armor2.getWizardArmorType() == ac);
+        return Arrays.stream(ARMOR_SLOTS).allMatch(slot -> entity.getItemBySlot(slot).getItem() instanceof WizardArmorItem armor2 && armor2.getElement() == e && armor2.getWizardArmorType() == ac);
     }
 
     /**
@@ -427,7 +512,10 @@ public final class EntityUtil {
      * @return True if all the armor pieces the entity is wearing have mana, false otherwise.
      */
     public static boolean doAllArmorPiecesHaveMana(LivingEntity entity) {
-        return Arrays.stream(ARMOR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaItem manaStoringItem
-                && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
+        return Arrays.stream(ARMOR_SLOTS).noneMatch(s -> entity.getItemBySlot(s).getItem() instanceof IManaItem manaStoringItem && manaStoringItem.isManaEmpty(entity.getItemBySlot(s)));
+    }
+
+    private EntityUtil() {
+        // Prevent instantiation
     }
 }

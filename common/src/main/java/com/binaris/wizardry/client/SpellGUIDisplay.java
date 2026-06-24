@@ -7,12 +7,10 @@ import com.binaris.wizardry.api.content.event.EBLivingTick;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.core.config.EBClientConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.CameraType;
@@ -93,7 +91,7 @@ public final class SpellGUIDisplay {
         int width = mc.getWindow().getGuiScaledWidth();
         int height = mc.getWindow().getGuiScaledHeight();
 
-        renderChargeMeter(stack, player, wand, width, height, partialTicks);
+        renderChargeMeter(guiGraphics, player, wand, width, height, partialTicks);
         renderSpellHUD(guiGraphics, stack, player, wand, mainHand, width, height, partialTicks, true);
         renderSpellHUD(guiGraphics, stack, player, wand, mainHand, width, height, partialTicks, false);
     }
@@ -151,48 +149,37 @@ public final class SpellGUIDisplay {
                 progress = maxCooldown == 0 ? 1 : (maxCooldown - (float) cooldown + partialTicks) / maxCooldown;
             }
 
-            skin.drawBackground(stack, x, y, flipX, flipY, icon, progress, player.isCreative(), player.hasEffect(EBMobEffects.ARCANE_JAMMER.get()));
+            skin.drawBackground(guiGraphics, x, y, flipX, flipY, icon, progress, player.isCreative(), player.hasEffect(EBMobEffects.ARCANE_JAMMER.get()));
         }
 
         stack.popPose();
     }
 
-    public static void renderChargeMeter(PoseStack stack, Player player, ItemStack wand, int width, int height, float partialTicks) {
+    public static void renderChargeMeter(GuiGraphics guiGraphics, Player player, ItemStack wand, int width, int height, float partialTicks) {
         if (player.isSpectator()) return;
-        stack.pushPose();
-
         if (!EBClientConfig.SHOW_CHARGE_METER.get()) return;
         if (mc.options.renderDebug) return;
         if (mc.options.getCameraType() != CameraType.FIRST_PERSON) return;
         if (wand != player.getUseItem()) return;
-
-        if (!(wand.getItem() instanceof ICastItem))
+        if (!(wand.getItem() instanceof ICastItem castItem))
             throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
 
-        Spell spell = ((ICastItem) wand.getItem()).getCurrentSpell(wand);
-
+        Spell spell = castItem.getCurrentSpell(wand);
         int chargeup = spell.getChargeUp();
-
         chargeup = (int) (chargeup * Services.OBJECT_DATA.getWizardData(player).getSpellModifiers().get(SpellModifiers.CHARGEUP));
-
         if (chargeup <= 0) return;
-
         if (player.getTicksUsingItem() == 0) return;
+
         float charge = (player.getTicksUsingItem() + partialTicks) / chargeup;
         if (charge > 1) return;
 
-        RenderSystem.setShaderTexture(0, CHARGE_METER);
-
-        // -1 to make it more centered...
         int x1 = width / 2 - CHARGE_METER_WIDTH / 2 - 1;
         float y = height / 2F - CHARGE_METER_HEIGHT / 2F - 0.5F;
         int w = (int) ((float) CHARGE_METER_WIDTH / 2 * charge);
         int u = CHARGE_METER_WIDTH - w;
 
-        DrawingUtils.drawTexturedRect(x1, y, 0, 0, w, CHARGE_METER_HEIGHT, 32, 32);
-        DrawingUtils.drawTexturedRect(x1 + u, y, u, 0, w, CHARGE_METER_HEIGHT, 32, 32);
-
-        stack.popPose();
+        guiGraphics.blit(CHARGE_METER, x1,     (int) y, 0, 0, w, CHARGE_METER_HEIGHT, 32, 32);
+        guiGraphics.blit(CHARGE_METER, x1 + u, (int) y, u, 0, w, CHARGE_METER_HEIGHT, 32, 32);
     }
 
     private static Component getFormattedSpellName(Spell spell, Player player, int cooldown) {

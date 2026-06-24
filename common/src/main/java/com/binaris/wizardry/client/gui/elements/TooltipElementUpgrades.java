@@ -8,8 +8,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 
-import static com.binaris.wizardry.client.EBClientConstants.TOOLTIP_BORDER;
-import static com.binaris.wizardry.client.EBClientConstants.TOOLTIP_WIDTH;
+import static com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen.TOOLTIP_BORDER;
+import static com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen.TOOLTIP_WIDTH;
 
 class TooltipElementUpgrades extends TooltipElement {
     private static final int ITEM_SIZE = 16;

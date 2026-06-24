@@ -3,7 +3,6 @@ package com.binaris.wizardry.content.effect;
 import com.binaris.wizardry.api.content.data.ContainmentData;
 import com.binaris.wizardry.api.content.effect.MagicMobEffect;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
-import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import com.binaris.wizardry.setup.registries.EBSounds;
@@ -58,7 +57,7 @@ public class ContainmentEffect extends MagicMobEffect {
 
         if (x != target.xo || y != target.yo || z != target.zo) {
             target.addDeltaMovement(new Vec3(0.15 * Math.signum(x - target.xo), 0.15 * Math.signum(y - target.yo), 0.15 * Math.signum(z - target.zo)));
-            EntityUtil.undoGravity(target);
+            target.setDeltaMovement(target.getDeltaMovement().add(0, 0.08, 0)); // undo gravity
             if (target.level().isClientSide) {
                 target.level().playSound(null, target.blockPosition(), EBSounds.ENTITY_FORCEFIELD_DEFLECT.get(), SoundSource.HOSTILE, 0.3f, 1f);
             }

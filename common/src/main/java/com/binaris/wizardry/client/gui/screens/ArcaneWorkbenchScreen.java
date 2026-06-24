@@ -1,9 +1,8 @@
 package com.binaris.wizardry.client.gui.screens;
 
+import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
-import com.binaris.wizardry.client.EBClientConstants;
 import com.binaris.wizardry.client.gui.button.GuiButtonApply;
 import com.binaris.wizardry.client.gui.button.GuiButtonClear;
 import com.binaris.wizardry.client.gui.elements.*;
@@ -14,6 +13,7 @@ import com.binaris.wizardry.setup.registries.EBSounds;
 import com.mojang.blaze3d.platform.GlStateManager.DestFactor;
 import com.mojang.blaze3d.platform.GlStateManager.SourceFactor;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
@@ -21,6 +21,7 @@ import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.Style;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
@@ -29,13 +30,33 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.binaris.wizardry.client.EBClientConstants.LINE_SPACING_WIDE;
-
 /**
  * Client-side GUI screen for the Arcane Workbench, where all rendering, button logic, tooltips, and animations are
  * handled. Delegates most logic to the associated {@link ArcaneWorkbenchMenu}.
  */
 public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkbenchMenu> {
+    public static final int MAIN_GUI_WIDTH = 176;
+    public static final int RUNE_LEFT = 38;
+    public static final int RUNE_TOP = 22;
+    public static final int RUNE_WIDTH = 100;
+    public static final int RUNE_HEIGHT = 100;
+    public static final int HALO_DIAMETER = 156;
+    public static final int TEXTURE_WIDTH = 512;
+    public static final int TEXTURE_HEIGHT = 512;
+
+    public static final int TOOLTIP_WIDTH = 144;
+    public static final int TOOLTIP_BORDER = 6;
+    public static final int PROGRESSION_BAR_WIDTH = 131;
+    public static final int PROGRESSION_BAR_HEIGHT = 3;
+
+    public static final ResourceLocation ARCANE_WORKBENCH_CONTAINER_TEXTURE = WizardryMainMod.location("textures/gui/container/arcane_workbench.png");
+    public static final ResourceLocation ARCANE_WORKBENCH_EMPTY_SLOT_CRYSTAL = new ResourceLocation("item/empty_slot_crystal");
+    public static final ResourceLocation ARCANE_WORKBENCH_EMPTY_SLOT_UPGRADE = new ResourceLocation("item/empty_slot_upgrade");
+
+    public static final int LINE_SPACING_WIDE = 5;
+    public static final int LINE_SPACING_NARROW = 1;
+    public static final int ANIMATION_DURATION = 20;
+
     private final Inventory playerInventory;
     private final ArcaneWorkbenchMenu menu;
     private final List<TooltipElement> tooltipElements = new ArrayList<>();
@@ -47,7 +68,7 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         super(menu, playerInventory, name);
         this.menu = menu;
         this.playerInventory = playerInventory;
-        imageWidth = EBClientConstants.MAIN_GUI_WIDTH;
+        imageWidth = MAIN_GUI_WIDTH;
         imageHeight = 220;
     }
 
@@ -62,7 +83,7 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         if (this.minecraft.player == null) return;
         this.minecraft.player.containerMenu = this.menu;
 
-        this.leftPos = (this.width - EBClientConstants.MAIN_GUI_WIDTH) / 2;
+        this.leftPos = (this.width - MAIN_GUI_WIDTH) / 2;
         this.topPos = (this.height - this.imageHeight) / 2;
         this.clearWidgets();
 
@@ -107,11 +128,11 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
 
         Slot centreSlot = this.menu.getSlot(ArcaneWorkbenchMenu.CENTRE_SLOT);
 
-        imageWidth = EBClientConstants.MAIN_GUI_WIDTH;
-        leftPos = (this.width - EBClientConstants.MAIN_GUI_WIDTH) / 2;
+        imageWidth = MAIN_GUI_WIDTH;
+        leftPos = (this.width - MAIN_GUI_WIDTH) / 2;
 
         if (centreSlot.hasItem() && centreSlot.getItem().getItem() instanceof IWorkbenchItem && ((IWorkbenchItem) centreSlot.getItem().getItem()).showTooltip(centreSlot.getItem())) {
-            imageWidth += EBClientConstants.TOOLTIP_WIDTH;
+            imageWidth += TOOLTIP_WIDTH;
         }
 
         this.applyBtn.active = centreSlot.hasItem();
@@ -132,117 +153,91 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
     @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        RenderSystem.setShaderTexture(0, EBClientConstants.ARCANE_WORKBENCH_CONTAINER_TEXTURE);
+        ResourceLocation texture = ARCANE_WORKBENCH_CONTAINER_TEXTURE;
         int left = leftPos;
         int top = topPos;
 
-        //Gray background
-        DrawingUtils.drawTexturedRect(left + EBClientConstants.RUNE_LEFT, top + EBClientConstants.RUNE_TOP, EBClientConstants.MAIN_GUI_WIDTH + EBClientConstants.TOOLTIP_WIDTH, 0,
-                EBClientConstants.RUNE_WIDTH, EBClientConstants.RUNE_HEIGHT, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
+        // Gray background
+        guiGraphics.blit(texture, left + RUNE_LEFT, top + RUNE_TOP, MAIN_GUI_WIDTH + TOOLTIP_WIDTH, 0,
+                RUNE_WIDTH, RUNE_HEIGHT, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 
-        //Yellow 'halo'
+        // Yellow 'halo'
         if (animationTimer > 0) {
-            guiGraphics.pose().pushPose();
+            float scale = (animationTimer + partialTick) / ANIMATION_DURATION;
+            scale = (float) (1 - Math.pow(1 - scale, 1.4f));
 
+            int x = left + RUNE_LEFT + RUNE_WIDTH / 2;
+            int y = top + RUNE_TOP + RUNE_HEIGHT / 2;
+            float halfDiameter = HALO_DIAMETER / 2f;
+
+            PoseStack pose = guiGraphics.pose();
+            pose.pushPose();
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-
-            int x = left + EBClientConstants.RUNE_LEFT + EBClientConstants.RUNE_WIDTH / 2;
-            int y = top + EBClientConstants.RUNE_TOP + EBClientConstants.RUNE_HEIGHT / 2;
-
-            float scale = (animationTimer + partialTick) / EBClientConstants.ANIMATION_DURATION;
-            scale = (float) (1 - Math.pow(1 - scale, 1.4f));
-            guiGraphics.pose().scale(scale, scale, 1);
-            guiGraphics.pose().translate(x / scale, y / scale, 0);
-
-            DrawingUtils.drawTexturedRectF(guiGraphics.pose(), (float) -EBClientConstants.HALO_DIAMETER / 2, (float) -EBClientConstants.HALO_DIAMETER / 2,
-                    EBClientConstants.MAIN_GUI_WIDTH + EBClientConstants.TOOLTIP_WIDTH, EBClientConstants.RUNE_HEIGHT,
-                    EBClientConstants.HALO_DIAMETER, EBClientConstants.HALO_DIAMETER, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
-
+            pose.scale(scale, scale, 1);
+            pose.translate(x / scale, y / scale, 0);
+            guiGraphics.blit(texture, (int) -halfDiameter, (int) -halfDiameter, MAIN_GUI_WIDTH + TOOLTIP_WIDTH,
+                    RUNE_HEIGHT, HALO_DIAMETER, HALO_DIAMETER, TEXTURE_WIDTH, TEXTURE_HEIGHT);
             RenderSystem.disableBlend();
-            guiGraphics.pose().popPose();
+            pose.popPose();
         }
 
-        //Main Inventory
-        DrawingUtils.drawTexturedRect(left, top, 0, 0, EBClientConstants.MAIN_GUI_WIDTH, this.imageHeight, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT); //166 was old ySize
+        // Main inventory
+        guiGraphics.blit(texture, left, top, 0, 0, MAIN_GUI_WIDTH, this.imageHeight, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        float opacity = (animationTimer + partialTick) / ANIMATION_DURATION;
 
-        float opacity = (animationTimer + partialTick) / EBClientConstants.ANIMATION_DURATION;
-
-        // Spell book slots (always use guiLeft and guiTop here regardless of bookshelf UI visibility
+        // Spell book slots
         for (int i = 0; i < ArcaneWorkbenchMenu.CRYSTAL_SLOT; i++) {
             Slot slot = this.menu.getSlot(i);
-            if (slot.x >= 0 && slot.y >= 0) {
-                DrawingUtils.drawTexturedRect(leftPos + slot.x - 10, topPos + slot.y - 10, 0, 220, 36, 36, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
+            if (slot.x < 0 || slot.y < 0) continue;
 
-                if (animationTimer > 0 && slot.hasItem()) {
-                    guiGraphics.pose().pushPose();
-                    RenderSystem.enableBlend();
-                    RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-                    RenderSystem.setShaderColor(1, 1, 1, opacity);
+            guiGraphics.blit(texture, leftPos + slot.x - 10, topPos + slot.y - 10, 0, 220, 36, 36, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 
-                    DrawingUtils.drawTexturedRect(leftPos + slot.x - 10, topPos + slot.y - 10, 36, 220, 36, 36, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
-
-                    RenderSystem.setShaderColor(1, 1, 1, 1);
-                    RenderSystem.disableBlend();
-                    guiGraphics.pose().popPose();
-                }
+            if (animationTimer > 0 && slot.hasItem()) {
+                blitWithOpacity(guiGraphics, texture, leftPos + slot.x - 10, topPos + slot.y - 10, 36, 220, 36, 36, opacity);
             }
         }
 
         // Crystal + upgrade slot animations
         if (animationTimer > 0) {
+            int glowU = MAIN_GUI_WIDTH + TOOLTIP_WIDTH + RUNE_WIDTH;
+
             Slot crystals = this.menu.getSlot(ArcaneWorkbenchMenu.CRYSTAL_SLOT);
-            Slot upgrades = this.menu.getSlot(ArcaneWorkbenchMenu.UPGRADE_SLOT);
-
             if (crystals.hasItem()) {
-                guiGraphics.pose().pushPose();
-                RenderSystem.enableBlend();
-                RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-                RenderSystem.setShaderColor(1, 1, 1, opacity);
-
-                DrawingUtils.drawTexturedRect(leftPos + crystals.x - 8, topPos + crystals.y - 8,
-                        EBClientConstants.MAIN_GUI_WIDTH + EBClientConstants.TOOLTIP_WIDTH + EBClientConstants.RUNE_WIDTH, 0,
-                        32, 32, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
-
-                RenderSystem.setShaderColor(1, 1, 1, 1);
-                RenderSystem.disableBlend();
-                guiGraphics.pose().popPose();
+                blitWithOpacity(guiGraphics, texture,
+                        leftPos + crystals.x - 8, topPos + crystals.y - 8,
+                        glowU, 0, 32, 32, opacity);
             }
 
+            Slot upgrades = this.menu.getSlot(ArcaneWorkbenchMenu.UPGRADE_SLOT);
             if (upgrades.hasItem()) {
-                guiGraphics.pose().pushPose();
-                RenderSystem.enableBlend();
-                RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
-                RenderSystem.setShaderColor(1, 1, 1, opacity);
-
-                DrawingUtils.drawTexturedRect(leftPos + upgrades.x - 8, topPos + upgrades.y - 8,
-                        EBClientConstants.MAIN_GUI_WIDTH + EBClientConstants.TOOLTIP_WIDTH + EBClientConstants.RUNE_WIDTH, 0, 32, 32,
-                        EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
-
-                RenderSystem.setShaderColor(1, 1, 1, 1);
-                RenderSystem.disableBlend();
-                guiGraphics.pose().popPose();
+                blitWithOpacity(guiGraphics, texture,
+                        leftPos + upgrades.x - 8, topPos + upgrades.y - 8,
+                        glowU, 0, 32, 32, opacity);
             }
         }
 
-        //Render rune
+        // Render rune tooltip panel
         if (this.menu.getSlot(ArcaneWorkbenchMenu.CENTRE_SLOT).hasItem()) {
             ItemStack stack = this.menu.getSlot(ArcaneWorkbenchMenu.CENTRE_SLOT).getItem();
 
-            if (!(stack.getItem() instanceof IWorkbenchItem)) {
+            if (!(stack.getItem() instanceof IWorkbenchItem workbenchItem)) {
                 EBLogger.warn("Invalid item in central slot of arcane workbench, how did that get there?!");
                 return;
             }
 
-            if (((IWorkbenchItem) stack.getItem()).showTooltip(stack)) {
-                int tooltipHeight = tooltipElements.stream().mapToInt(e -> e.getTotalHeight(stack)).sum() - tooltipElements.get(tooltipElements.size() - 1).spaceAfter;
+            if (workbenchItem.showTooltip(stack)) {
+                int tooltipHeight = tooltipElements.stream().mapToInt(e -> e.getTotalHeight(stack)).sum()
+                        - tooltipElements.get(tooltipElements.size() - 1).spaceAfter;
 
-                DrawingUtils.drawTexturedRect(left + EBClientConstants.MAIN_GUI_WIDTH, top, EBClientConstants.MAIN_GUI_WIDTH, 0, EBClientConstants.TOOLTIP_WIDTH, EBClientConstants.TOOLTIP_BORDER + tooltipHeight, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
-                DrawingUtils.drawTexturedRect(left + EBClientConstants.MAIN_GUI_WIDTH, top + EBClientConstants.TOOLTIP_BORDER + tooltipHeight, EBClientConstants.MAIN_GUI_WIDTH, imageHeight - EBClientConstants.TOOLTIP_BORDER, EBClientConstants.TOOLTIP_WIDTH, EBClientConstants.TOOLTIP_BORDER, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
+                guiGraphics.blit(texture, left + MAIN_GUI_WIDTH, top, MAIN_GUI_WIDTH, 0, TOOLTIP_WIDTH,
+                        TOOLTIP_BORDER + tooltipHeight, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 
-                int x = left + EBClientConstants.MAIN_GUI_WIDTH + EBClientConstants.TOOLTIP_BORDER;
-                int y = top + EBClientConstants.TOOLTIP_BORDER;
+                guiGraphics.blit(texture, left + MAIN_GUI_WIDTH, top + TOOLTIP_BORDER + tooltipHeight, MAIN_GUI_WIDTH, imageHeight - TOOLTIP_BORDER,
+                        TOOLTIP_WIDTH, TOOLTIP_BORDER, TEXTURE_WIDTH, TEXTURE_HEIGHT);
 
+                int x = left + MAIN_GUI_WIDTH + TOOLTIP_BORDER;
+                int y = top + TOOLTIP_BORDER;
                 for (TooltipElement element : this.tooltipElements) {
                     y = element.drawBackgroundLayer(guiGraphics, x, y, stack, partialTick, mouseX, mouseY);
                 }
@@ -250,7 +245,15 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         }
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
-        RenderSystem.setShaderTexture(0, EBClientConstants.ARCANE_WORKBENCH_CONTAINER_TEXTURE);
+        RenderSystem.disableBlend();
+    }
+
+    private void blitWithOpacity(GuiGraphics guiGraphics, ResourceLocation texture, int x, int y, int u, int v, int w, int h, float opacity) {
+        RenderSystem.enableBlend();
+        RenderSystem.blendFunc(SourceFactor.SRC_ALPHA, DestFactor.ONE_MINUS_SRC_ALPHA);
+        RenderSystem.setShaderColor(1, 1, 1, opacity);
+        guiGraphics.blit(texture, x, y, u, v, w, h, TEXTURE_WIDTH, TEXTURE_HEIGHT);
+        RenderSystem.setShaderColor(1, 1, 1, 1);
         RenderSystem.disableBlend();
     }
 
@@ -270,22 +273,20 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         guiGraphics.drawString(this.font, getTitle(), left + 8, 6, 4210752, false);
         guiGraphics.drawString(this.font, this.playerInventory.getName().getString(), left + 8, imageHeight - 96 + 2, 4210752, false);
 
-        if (this.menu.getSlot(ArcaneWorkbenchMenu.CENTRE_SLOT).hasItem()) {
-            ItemStack stack = this.menu.getSlot(ArcaneWorkbenchMenu.CENTRE_SLOT).getItem();
+        if (!this.menu.getSlot(ArcaneWorkbenchMenu.CENTRE_SLOT).hasItem()) return;
+        ItemStack stack = this.menu.getSlot(ArcaneWorkbenchMenu.CENTRE_SLOT).getItem();
 
-            if (!(stack.getItem() instanceof IWorkbenchItem)) {
-                EBLogger.warn("Invalid item in central slot of arcane workbench, how did that get there?!");
-                return;
-            }
+        if (!(stack.getItem() instanceof IWorkbenchItem)) {
+            EBLogger.warn("Invalid item in central slot of arcane workbench, how did that get there?!");
+            return;
+        }
 
-            if (((IWorkbenchItem) stack.getItem()).showTooltip(stack)) {
-                int x = left + EBClientConstants.MAIN_GUI_WIDTH + EBClientConstants.TOOLTIP_BORDER;
-                int y = EBClientConstants.TOOLTIP_BORDER;
+        if (!((IWorkbenchItem) stack.getItem()).showTooltip(stack)) return;
+        int x = left + MAIN_GUI_WIDTH + TOOLTIP_BORDER;
+        int y = TOOLTIP_BORDER;
 
-                for (TooltipElement element : this.tooltipElements) {
-                    y = element.drawForegroundLayer(guiGraphics, x, y, stack, mouseX, mouseY);
-                }
-            }
+        for (TooltipElement element : this.tooltipElements) {
+            y = element.drawForegroundLayer(guiGraphics, x, y, stack, mouseX, mouseY);
         }
     }
 

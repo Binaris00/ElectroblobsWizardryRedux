@@ -1,17 +1,15 @@
 package com.binaris.wizardry.content.spell.fire;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.api.content.spell.SpellType;
 import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.AreaEffectSpell;
-import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -104,7 +102,7 @@ public class Firestorm extends AreaEffectSpell {
             double speed = 0.02 / r * (1 + ctx.world().random.nextDouble());
             ParticleBuilder.create(EBParticles.CLOUD)
                     .pos(origin.x, origin.y + ctx.world().random.nextDouble() * 2.5, origin.z)
-                    .color(DrawingUtils.mix(DrawingUtils.mix(0xffbe00, 0xff3600, r / 0.6f), 0x222222, (r - 0.6f) / 0.4f))
+                    .color(ClientUtils.mixColor(ClientUtils.mixColor(0xffbe00, 0xff3600, r / 0.6f), 0x222222, (r - 0.6f) / 0.4f))
                     .spin(r * (radius - 1) + 0.5, speed)
                     .spawn(ctx.world());
         }

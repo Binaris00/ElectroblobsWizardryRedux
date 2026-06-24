@@ -1,7 +1,7 @@
 package com.binaris.wizardry.core.mixin;
 
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.data.ConjureData;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.core.platform.Services;
 import com.llamalad7.mixinextras.sugar.Local;
 import net.minecraft.ChatFormatting;
@@ -42,7 +42,7 @@ public class ConjureMixin {
     public void EBWIZARDRY$conjureGetBarColor(CallbackInfoReturnable<Integer> cir) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if (data == null || !data.isSummoned()) return;
-        cir.setReturnValue(DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getBarWidth()));
+        cir.setReturnValue(ClientUtils.mixColor(0xff8bfe, 0x8e2ee4, stack.getBarWidth()));
     }
 
     @Inject(method = "getTooltipLines", at = @At("RETURN"))
@@ -58,7 +58,7 @@ public class ConjureMixin {
     }
 
     // This is the important one - prevents damage being set on conjured items, avoiding items to continue using the
-    // durability tags and making inconsistent behaviour with the conjure system.
+    // durability tags and making inconsistent behavior with the conjure system.
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void EBWIZARDRY$preventDurabilityLoss(int amount, RandomSource random, ServerPlayer user, CallbackInfoReturnable<Boolean> cir) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);

@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.menu;
 
 import com.binaris.wizardry.api.content.event.SpellBindEvent;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
-import com.binaris.wizardry.client.EBClientConstants;
+import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.content.menu.slot.SlotItemClassList;
 import com.binaris.wizardry.content.menu.slot.SlotItemList;
@@ -63,7 +63,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
             addSlot(new SlotItemClassList(container, i, -999, -999, 1, SpellBookItem.class));
 
         // Crystal and Workbench Slots
-        addSlot(new SlotItemList(container, CRYSTAL_SLOT, 13, 101, 64, EBClientConstants.ARCANE_WORKBENCH_EMPTY_SLOT_CRYSTAL,
+        addSlot(new SlotItemList(container, CRYSTAL_SLOT, 13, 101, 64, ArcaneWorkbenchScreen.ARCANE_WORKBENCH_EMPTY_SLOT_CRYSTAL,
                 EBItems.MAGIC_CRYSTAL.get(), EBItems.MAGIC_CRYSTAL_SHARD.get(), EBItems.MAGIC_CRYSTAL_GRAND.get(),
                 EBItems.MAGIC_CRYSTAL_EARTH.get(), EBItems.MAGIC_CRYSTAL_FIRE.get(), EBItems.MAGIC_CRYSTAL_HEALING.get(),
                 EBItems.MAGIC_CRYSTAL_ICE.get(), EBItems.MAGIC_CRYSTAL_LIGHTNING.get(), EBItems.MAGIC_CRYSTAL_NECROMANCY.get(),
@@ -80,7 +80,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
         upgrades.add(EBItems.RESPLENDENT_THREAD.get());
         upgrades.add(EBItems.CRYSTAL_SILVER_PLATING.get());
         upgrades.add(EBItems.ETHEREAL_CRYSTAL_WEAVE.get());
-        addSlot(new SlotItemList(container, UPGRADE_SLOT, 147, 17, 1, EBClientConstants.ARCANE_WORKBENCH_EMPTY_SLOT_UPGRADE, upgrades.toArray(new Item[0])));
+        addSlot(new SlotItemList(container, UPGRADE_SLOT, 147, 17, 1, ArcaneWorkbenchScreen.ARCANE_WORKBENCH_EMPTY_SLOT_UPGRADE, upgrades.toArray(new Item[0])));
 
         // Player Inventory Slots
         for (int x = 0; x < 9; x++)

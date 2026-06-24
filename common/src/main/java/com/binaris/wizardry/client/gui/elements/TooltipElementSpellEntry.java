@@ -4,7 +4,6 @@ import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.binaris.wizardry.content.data.SpellGlyphData;
@@ -22,7 +21,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 
-import static com.binaris.wizardry.client.EBClientConstants.LINE_SPACING_NARROW;
+import static com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen.LINE_SPACING_NARROW;
 
 public class TooltipElementSpellEntry extends TooltipElementText {
     private final int index;
@@ -55,7 +54,7 @@ public class TooltipElementSpellEntry extends TooltipElementText {
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, stack);
         int color = discovered ? spell.getElement().getColor().getColor() : ChatFormatting.BLUE.getColor();
 
-        return shouldFlash(stack) ? DrawingUtils.makeTranslucent(color, getAlpha(Minecraft.getInstance().getFrameTime()))
+        return shouldFlash(stack) ? ClientUtils.makeTranslucentColor(color, getAlpha(Minecraft.getInstance().getFrameTime()))
                 : color;
     }
 
@@ -67,7 +66,7 @@ public class TooltipElementSpellEntry extends TooltipElementText {
         }
         // TODO Better spell display name
         if (ClientUtils.shouldDisplayDiscovered(spell, null)) {
-            return Component.translatable(spell.getDescriptionId().toString()).withStyle(spell.getElement().getColor());
+            return Component.translatable(spell.getDescriptionId()).withStyle(spell.getElement().getColor());
         } else {
             return Component.literal(SpellGlyphData.getGlyphName(spell, GlyphClientHandler.INSTANCE.getGlyphData())).withStyle(Style.EMPTY.withColor(ChatFormatting.BLUE).withFont(new ResourceLocation("minecraft", "alt")));
         }
@@ -77,11 +76,8 @@ public class TooltipElementSpellEntry extends TooltipElementText {
     @Override
     protected void drawBackground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, float partialTicks, int mouseX, int mouseY) {
         Spell spell = getSpell(stack);
-        RenderSystem._setShaderTexture(0, ClientUtils.shouldDisplayDiscovered(spell, null) ? spell.getElement().getIconId() : Elements.MAGIC.getIconId());
-
         if (shouldFlash(stack)) RenderSystem.setShaderColor(1, 1, 1, getAlpha(partialTicks));
-
-        DrawingUtils.drawTexturedRect(x, y, 8, 8);
+        guiGraphics.blit(ClientUtils.shouldDisplayDiscovered(spell, null) ? spell.getElement().getIconId() : Elements.MAGIC.getIconId(), x, y, 0, 0, 8, 8);
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 

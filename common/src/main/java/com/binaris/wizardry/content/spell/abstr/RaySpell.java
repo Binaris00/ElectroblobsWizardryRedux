@@ -3,7 +3,6 @@ package com.binaris.wizardry.content.spell.abstr;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
-import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.RayTracer;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.fire.FlameRay;
@@ -263,7 +262,7 @@ public abstract class RaySpell extends Spell {
         double range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
         Vec3 endpoint = origin.add(direction.scale(range));
 
-        HitResult rayTrace = RayTracer.rayTrace(ctx.world(), ctx.caster(), origin, endpoint, aimAssist, hitLiquids, Entity.class, ignoreLivingEntities ? EntityUtil::isLiving : RayTracer.ignoreEntityFilter(ctx.caster()));
+        HitResult rayTrace = RayTracer.rayTrace(ctx.world(), ctx.caster(), origin, endpoint, aimAssist, hitLiquids, Entity.class, ignoreLivingEntities ? (entity) -> entity instanceof LivingEntity : RayTracer.ignoreEntityFilter(ctx.caster()));
 
         boolean flag = false;
 

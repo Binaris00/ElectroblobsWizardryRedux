@@ -20,7 +20,7 @@ public class LightningMeleeEffect implements IArtifactEffect {
     public void onHurtEntity(LivingEntity user, LivingEntity damagedEntity, DamageSource source, AtomicDouble amount, AtomicBoolean canceled, ArtifactEffectContext context) {
         if (user instanceof Player player && meleeRing(source, Elements.LIGHTNING)) {
             Optional<LivingEntity> nearestTarget = EntityUtil.getLivingWithinRadius(3, player.getX(), player.getY(), player.getZ(), player.level()).stream()
-                    .filter(EntityUtil::isLiving)
+                    .filter(e -> e instanceof LivingEntity)
                     .filter(e -> e != damagedEntity && e != player)
                     .findAny();
 

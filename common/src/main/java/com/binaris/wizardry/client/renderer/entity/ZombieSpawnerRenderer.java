@@ -1,7 +1,7 @@
 package com.binaris.wizardry.client.renderer.entity;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.util.VecUtils;
 import com.binaris.wizardry.content.entity.construct.ZombieSpawnerConstruct;
 import com.mojang.blaze3d.platform.GlStateManager;
@@ -55,7 +55,7 @@ public class ZombieSpawnerRenderer extends EntityRenderer<ZombieSpawnerConstruct
 
         poseStack.pushPose();
 
-        float s = DrawingUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 10);
+        float s = ClientUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 10);
         poseStack.scale(s, s, s);
 
         poseStack.mulPose(Axis.YP.rotationDegrees((entity.tickCount + partialTicks) * 2));
