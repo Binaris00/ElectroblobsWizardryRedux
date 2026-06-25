@@ -118,7 +118,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
 
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (CastItemUtils.fireSpellCastEvent(SpellCastEvent.Source.WAND, spell, ctx)) {
+        if (CastItemUtils.fireSpellCastEvent(SpellCastEvent.Sources.WAND, spell, ctx)) {
             CastItemUtils.applyCooldownForfeit(ctx.caster(), COOLDOWN_FORFEIT_TICKS);
             return false;
         }
@@ -137,7 +137,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         if (ctx.world().isClientSide && spell.isInstantCast() && spell.requiresPacket()) return false;
-        if (!CastItemUtils.executeSpellCast(SpellCastEvent.Source.WAND, spell, ctx)) return false;
+        if (!CastItemUtils.executeSpellCast(SpellCastEvent.Sources.WAND, spell, ctx)) return false;
 
         CastItemUtils.sendSpellCastPacket(ctx.caster(), spell, ctx);
         if (!spell.isInstantCast()) ctx.caster().startUsingItem(ctx.hand());
@@ -173,7 +173,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         int accumulatedCost = CastItemUtils.getAccumulatedCastCost(spell, castingTick, totalCost);
 
         if (!spell.isInstantCast() && spell.getTier().getLevel() <= this.tier.getLevel()) {
-            WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Source.WAND, spell, livingEntity, modifiers, castingTick));
+            WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Sources.WAND, spell, livingEntity, modifiers, castingTick));
             spell.endCast(new CastContext(player.level(), player, castingTick, modifiers));
 
             if (!level.isClientSide) {

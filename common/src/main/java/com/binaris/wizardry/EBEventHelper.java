@@ -176,20 +176,22 @@ public final class EBEventHelper {
     }
 
     private static void castContextCheck(SpellCastEvent.Pre event) {
-        boolean enabled = switch (event.getSource()) {
-            case WAND -> event.getSpell().isEnabled(SpellContext.WANDS);
-            case SCROLL -> event.getSpell().isEnabled(SpellContext.SCROLL);
-            case COMMAND -> event.getSpell().isEnabled(SpellContext.COMMANDS);
-            case NPC -> event.getSpell().isEnabled(SpellContext.NPCS);
-            case DISPENSER -> event.getSpell().isEnabled(SpellContext.DISPENSERS);
-            default -> true;
-        };
+        if (event.getSource() instanceof SpellCastEvent.Sources legalSource) {
+            boolean enabled = switch (legalSource) {
+                case WAND -> event.getSpell().isEnabled(SpellContext.WANDS);
+                case SCROLL -> event.getSpell().isEnabled(SpellContext.SCROLL);
+                case COMMAND -> event.getSpell().isEnabled(SpellContext.COMMANDS);
+                case NPC -> event.getSpell().isEnabled(SpellContext.NPCS);
+                case DISPENSER -> event.getSpell().isEnabled(SpellContext.DISPENSERS);
+                default -> true;
+            };
 
-        // If a spell is disabled in the config, it will not work.
-        if (!enabled) {
-            if (event.getCaster() != null && !event.getCaster().level().isClientSide)
-                event.getCaster().sendSystemMessage(Component.translatable("spell.disabled", event.getSpell().getDescriptionFormatted()));
-            event.setCanceled(true);
+            // If a spell is disabled in the config, it will not work.
+            if (!enabled) {
+                if (event.getCaster() != null && !event.getCaster().level().isClientSide)
+                    event.getCaster().sendSystemMessage(Component.translatable("spell.disabled", event.getSpell().getDescriptionFormatted()));
+                event.setCanceled(true);
+            }
         }
     }
 }

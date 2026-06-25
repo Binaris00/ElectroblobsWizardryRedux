@@ -88,14 +88,14 @@ public class SpellTables {
 
     public static Column columnByProperty(String name, SpellProperty<? extends Number> property, String modifier) {
         return new Column(name, (ctx, spell) -> {
-            fireCastEvent(SpellCastEvent.Source.WAND, ctx, spell);
+            fireCastEvent(SpellCastEvent.Sources.WAND, ctx, spell);
             return String.valueOf(spell.property(property).floatValue() * ctx.modifiers().get(modifier));
         });
     }
 
     public static Column columnByModifiers() {
         return new Column("Modifiers", (ctx, spell) -> {
-            fireCastEvent(SpellCastEvent.Source.WAND, ctx, spell);
+            fireCastEvent(SpellCastEvent.Sources.WAND, ctx, spell);
             return ctx.modifiers().toString();
         });
     }
@@ -105,7 +105,7 @@ public class SpellTables {
         return new Row(ctx, spell, name);
     }
 
-    public static void fireCastEvent(SpellCastEvent.Source source, CastContext ctx, Spell spell) {
+    public static void fireCastEvent(SpellCastEvent.Sources source, CastContext ctx, Spell spell) {
         WizardryEventBus.fireEvent(new SpellCastEvent.Pre(source, spell, ctx.caster(), ctx.modifiers()));
     }
 

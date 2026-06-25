@@ -36,10 +36,10 @@ public final class CastItemUtils {
      * @param ctx    The casting context
      * @return true if the event was canceled (cast should be blocked)
      */
-    public static boolean fireSpellCastEvent(SpellCastEvent.Source source, Spell spell, PlayerCastContext ctx) {
+    public static boolean fireSpellCastEvent(SpellCastEvent.Sources source, Spell spell, PlayerCastContext ctx) {
         SpellCastEvent event = ctx.castingTicks() == 0
-                ? new SpellCastEvent.Pre(source, spell, ctx.caster(), ctx.modifiers())
-                : new SpellCastEvent.Tick(source, spell, ctx.caster(), ctx.modifiers(), ctx.castingTicks());
+                ? new SpellCastEvent.Pre(source, spell, ctx)
+                : new SpellCastEvent.Tick(source, spell, ctx);
 
         return WizardryEventBus.fireEvent(event);
     }
@@ -72,7 +72,7 @@ public final class CastItemUtils {
      * @param ctx    The casting context
      * @return true if the spell was successfully cast
      */
-    public static boolean executeSpellCast(SpellCastEvent.Source source, Spell spell, PlayerCastContext ctx) {
+    public static boolean executeSpellCast(SpellCastEvent.Sources source, Spell spell, PlayerCastContext ctx) {
         if (!spell.cast(ctx)) return false;
 
         if (ctx.castingTicks() == 0) {

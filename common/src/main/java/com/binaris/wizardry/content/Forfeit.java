@@ -63,7 +63,7 @@ public class Forfeit {
     public static void onSpellCastPreEvent(SpellCastEvent.Pre event) {
         Player player = event.getCaster() instanceof Player p ? p : null;
         if (player == null || player.isCreative()) return;
-        if (event.getSource() != SpellCastEvent.Source.WAND && event.getSource() != SpellCastEvent.Source.SCROLL)
+        if (event.getSource() != SpellCastEvent.Sources.WAND && event.getSource() != SpellCastEvent.Sources.SCROLL)
             return;
 
         SpellManagerData spellData = Services.OBJECT_DATA.getSpellManagerData(player);
@@ -124,7 +124,7 @@ public class Forfeit {
         if (player instanceof ServerPlayer) EBAdvancementTriggers.SPELL_FAILURE.triggerFor(player);
         EntityUtil.playSoundAtPlayer(player, forfeit.getSound(), 1, 1);
 
-        Component message = event.getSource() == SpellCastEvent.Source.WAND ? forfeit.getMessageForWand() : forfeit.getMessageForScroll();
+        Component message = event.getSource() == SpellCastEvent.Sources.WAND ? forfeit.getMessageForWand() : forfeit.getMessageForScroll();
         if (!player.level().isClientSide) player.displayClientMessage(message, true);
     }
 
@@ -173,7 +173,7 @@ public class Forfeit {
         ItemStack stack = findCastingItem(player);
         if (stack.isEmpty()) return;
 
-        if (event.getSource() == SpellCastEvent.Source.SCROLL) {
+        if (event.getSource() == SpellCastEvent.Sources.SCROLL) {
             if (!player.isCreative()) stack.shrink(1);
         } else if (stack.getItem() instanceof IManaItem manaItem) {
             int cost = (int) (event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST) + 0.1f);

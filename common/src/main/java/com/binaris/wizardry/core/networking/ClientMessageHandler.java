@@ -49,11 +49,11 @@ public final class ClientMessageHandler {
         if (!(e instanceof Player caster)) return;
         m.getSpell().cast(new PlayerCastContext(level, caster, m.getHand(), 0, m.getModifiers()));
 
-        SpellCastEvent.Source source = SpellCastEvent.Source.OTHER;
+        SpellCastEvent.Sources source = SpellCastEvent.Sources.OTHER;
         Item item = caster.getItemInHand(m.getHand()).getItem();
 
-        if (item instanceof WandItem) source = SpellCastEvent.Source.WAND;
-        else if (item instanceof ScrollItem) source = SpellCastEvent.Source.SCROLL;
+        if (item instanceof WandItem) source = SpellCastEvent.Sources.WAND;
+        else if (item instanceof ScrollItem) source = SpellCastEvent.Sources.SCROLL;
 
         // No need to check if the spell succeeded, because the packet is only ever sent when it succeeds.
         // The handler for this event now deals with discovery.
@@ -72,7 +72,7 @@ public final class ClientMessageHandler {
         if (!(caster instanceof LivingEntity livingCaster) || !(target instanceof LivingEntity livingTarget)) return;
 
         m.getSpell().cast(new EntityCastContext(level, livingCaster, m.getHand(), 0, livingTarget, m.getModifiers()));
-        WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, m.getSpell(), livingCaster, m.getModifiers()));
+        WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, m.getSpell(), livingCaster, m.getModifiers()));
 
         if (caster instanceof ISpellCaster spellCaster) {
             if (!m.getSpell().isInstantCast() || m.getSpell() instanceof NoneSpell) {

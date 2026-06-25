@@ -14,7 +14,7 @@ public class HungerCastingCharmEffect implements IArtifactEffect {
     @Override
     public void onSpellPreCast(SpellCastEvent.Pre event, ArtifactEffectContext context) {
         if (!(event.getCaster() instanceof Player player)) return;
-        if (player.isCreative() || event.getSource() != SpellCastEvent.Source.WAND || !event.getSpell().isInstantCast())
+        if (player.isCreative() || event.getSource() != SpellCastEvent.Sources.WAND || !event.getSpell().isInstantCast())
             return;
 
         ItemStack wand = player.getMainHandItem();

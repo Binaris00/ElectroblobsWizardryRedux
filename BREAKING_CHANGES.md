@@ -1,5 +1,13 @@
 # Breaking Changes
 
+## Events
+
+### SpellCastEvent Refactor
+
+- `SpellCastEvent` constructors and all its sub-events constructors are deprecated in favor of using the ones with the `CastContext` parameter. 
+- `SpellCastEvent.Source` is now `SpellCastEvent.Sources`. `SpellCastEvent.Source` is now an interface that can be used to create custom cast sources for this event
+- `getTicksCasting()` from `Tick` and `Finish` are deprecated in favor of `context.castingTicks()`
+
 ## Artifact and Event Effect System Refactor
 
 ### `IArtifactEffect`
