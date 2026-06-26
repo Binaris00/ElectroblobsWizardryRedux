@@ -5,16 +5,14 @@ import com.binaris.wizardry.core.event.IWizardryEvent;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 
 /**
- * Base event class to use if you want to create custom events
- * Just make a new subclass with this and fire the event when you need it
- * <br><br>
- * Keep in mind if one event before you cancel the used event your
- * listener will be used anyway, if you don't want this,
+ * Base event class to use if you want to create custom events. Just make a new subclass with this and fire the event
+ * when you need it
+ * <br>
+ * Keep in mind if one event before you cancel the used event your listener will be used anyway, if you don't want this,
  * use {@link WizardryCancelableEvent#isCanceled()} before doing anything
  *
  * @see WizardryEventBus#fire(IWizardryEvent) WizardryEventBus#fire
  * @see WizardryEventBus#register(Class, EventListener) WizardryEventBus#register
- *
  */
 public abstract class WizardryCancelableEvent implements IWizardryEvent {
     private boolean isCanceled;
