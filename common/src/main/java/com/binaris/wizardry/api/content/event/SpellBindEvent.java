@@ -9,6 +9,7 @@ import net.minecraft.world.entity.player.Player;
  * the server side). This event is fired before anything is actually done, so you can use it to prevent or modify any
  * changes. This event is cancelable.
  *
+ * @see ArcaneWorkbenchMenu
  */
 public class SpellBindEvent extends WizardryCancelableEvent {
     Player player;

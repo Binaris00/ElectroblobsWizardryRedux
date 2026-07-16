@@ -173,8 +173,9 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         int accumulatedCost = CastItemUtils.getAccumulatedCastCost(spell, castingTick, totalCost);
 
         if (!spell.isInstantCast() && spell.getTier().getLevel() <= this.tier.getLevel()) {
-            WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Sources.WAND, spell, livingEntity, modifiers, castingTick));
-            spell.endCast(new CastContext(player.level(), player, castingTick, modifiers));
+            CastContext ctx = new CastContext(player.level(), player, castingTick, modifiers);
+            WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Sources.WAND, spell, ctx));
+            spell.endCast(ctx);
 
             if (!level.isClientSide) {
                 this.consumeMana(stack, accumulatedCost, player);

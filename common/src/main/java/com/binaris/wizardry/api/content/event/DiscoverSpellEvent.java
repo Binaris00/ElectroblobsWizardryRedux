@@ -18,7 +18,7 @@ import javax.annotation.Nullable;
 public class DiscoverSpellEvent extends WizardryCancelableEvent {
     private final Player player;
     private final Spell spell;
-    private final Sources source;
+    private final Source source;
 
     /**
      * Constructs a new {@code DiscoverSpellEvent}.
@@ -27,7 +27,7 @@ public class DiscoverSpellEvent extends WizardryCancelableEvent {
      * @param spell  The spell being discovered.
      * @param source The source or method of the discovery.
      */
-    public DiscoverSpellEvent(Player player, Spell spell, Sources source) {
+    public DiscoverSpellEvent(Player player, Spell spell, Source source) {
         this.player = player;
         this.spell = spell;
         this.source = source;
@@ -47,7 +47,7 @@ public class DiscoverSpellEvent extends WizardryCancelableEvent {
      *
      * @return The {@link Sources} describing how the spell was discovered.
      */
-    public Sources getSource() {
+    public Source getSource() {
         return source;
     }
 

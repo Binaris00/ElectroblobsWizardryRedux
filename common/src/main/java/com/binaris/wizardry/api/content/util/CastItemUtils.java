@@ -76,7 +76,7 @@ public final class CastItemUtils {
         if (!spell.cast(ctx)) return false;
 
         if (ctx.castingTicks() == 0) {
-            WizardryEventBus.fireEvent(new SpellCastEvent.Post(source, spell, ctx.caster(), ctx.modifiers()));
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(source, spell, ctx));
         }
 
         return true;

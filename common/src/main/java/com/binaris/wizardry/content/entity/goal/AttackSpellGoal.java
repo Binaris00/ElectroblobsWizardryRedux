@@ -124,7 +124,7 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
             attacker.setSpellCounter(currentTick);
 
             if (distanceSq > (double) this.maxAttackDistance
-                    || !targetIsVisible || WizardryEventBus.fireEvent(new SpellCastEvent.Tick(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers(), currentTick))
+                    || !targetIsVisible || WizardryEventBus.fireEvent(new SpellCastEvent.Tick(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), ctx))
                     || !attacker.getContinuousSpell().cast(ctx)
                     || this.continuousSpellTimer == 0) {
                 this.continuousSpellTimer = 0;
@@ -134,7 +134,7 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
                 return;
 
             } else if (currentTick == 1) {
-                WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers()));
+                WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), ctx));
             }
 
         } else if (--this.cooldown == 0) {
@@ -156,9 +156,9 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
                 while (!spells.isEmpty()) {
                     spell = spells.get(attacker.level().random.nextInt(spells.size()));
 
-                    SpellModifiers modifiers = attacker.getModifiers();
+                    EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, 0, target, attacker.getModifiers());
 
-                    if (spell != null && attemptCastSpell(spell, modifiers)) {
+                    if (spell != null && attemptCastSpell(spell, ctx)) {
                         attacker.setYRot((float) (Math.atan2(dz, dx) * 180.0D / Math.PI) - 90.0F);
                         return;
                     } else {
@@ -175,28 +175,26 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
         }
     }
 
-    private boolean attemptCastSpell(Spell spell, SpellModifiers modifiers) {
-        if (WizardryEventBus.fireEvent(new SpellCastEvent.Pre(SpellCastEvent.Sources.NPC, spell, attacker, modifiers)))
+    private boolean attemptCastSpell(Spell spell, EntityCastContext ctx) {
+        if (WizardryEventBus.fireEvent(new SpellCastEvent.Pre(SpellCastEvent.Sources.NPC, spell, ctx)))
             return false;
-
-        EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, 0, target, modifiers);
 
         if (!spell.cast(ctx)) return false;
 
         // Send spell cast packet and post cast event to clients for instant spells
         if (spell.isInstantCast()) {
-            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, spell, attacker, modifiers));
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, spell, ctx));
             this.cooldown = this.baseCooldown + spell.getCooldown();
 
             if (!attacker.level().isClientSide && spell.requiresPacket()) {
-                NPCSpellCastS2C msg = new NPCSpellCastS2C(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, modifiers);
+                NPCSpellCastS2C msg = new NPCSpellCastS2C(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, ctx.modifiers());
                 Services.NETWORK_HELPER.sendToTracking(attacker, msg);
             }
 
         } else {
             // Start continuous spell casting if applicable
             this.continuousSpellTimer = this.continuousSpellDuration - 1;
-            setContinuousSpellAndNotify(spell, modifiers);
+            setContinuousSpellAndNotify(spell, ctx.modifiers());
             // FIXME - this could be better, the target isn't available on client (aiStep) so we're saving the entity ID here
             attacker.setTarget(target);
             if (attacker instanceof AbstractWizard wizard) wizard.setSpellTargetId(target.getId());

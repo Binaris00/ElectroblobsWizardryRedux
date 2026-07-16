@@ -127,7 +127,7 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
             // Conditions to stop casting the continuous spell
             if (distanceSq > (double) this.maxAttackDistance
                     || !targetIsVisible
-                    || WizardryEventBus.fireEvent(new SpellCastEvent.Tick(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers(), currentTick))
+                    || WizardryEventBus.fireEvent(new SpellCastEvent.Tick(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), ctx))
                     || !attacker.getContinuousSpell().cast(ctx)
                     || this.continuousSpellTimer == 0) {
 
@@ -137,7 +137,7 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
                 attacker.setSpellCounter(0);
 
             } else if (currentTick == 1) {
-                WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers()));
+                WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), ctx));
             }
 
         } else if (--this.cooldown == 0) {
@@ -153,10 +153,10 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
 
                 while (!spells.isEmpty()) {
                     spell = spells.get(attacker.level().random.nextInt(spells.size()));
+                    EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, 0, target, attacker.getModifiers());
 
-                    SpellModifiers modifiers = attacker.getModifiers();
 
-                    if (spell != null && attemptCastSpell(spell, modifiers)) {
+                    if (spell != null && attemptCastSpell(spell, ctx)) {
                         return;
                     } else {
                         spells.remove(spell);
@@ -172,17 +172,9 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
         }
     }
 
-    /**
-     * Try to cast the given spell with the specified modifiers, handling pre-cast and post-cast events.
-     *
-     * @param spell     The spell to cast.
-     * @param modifiers The spell modifiers to apply.
-     */
-    private boolean attemptCastSpell(Spell spell, SpellModifiers modifiers) {
-        if (WizardryEventBus.fireEvent(new SpellCastEvent.Pre(SpellCastEvent.Sources.NPC, spell, attacker, modifiers)))
+    private boolean attemptCastSpell(Spell spell, EntityCastContext ctx) {
+        if (WizardryEventBus.fireEvent(new SpellCastEvent.Pre(SpellCastEvent.Sources.NPC, spell, ctx)))
             return false;
-
-        EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, 0, target, modifiers);
 
         if (!spell.cast(ctx)) {
             return false;
@@ -190,18 +182,18 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
 
         // Handle instant and continuous spells
         if (spell.isInstantCast()) {
-            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, spell, attacker, modifiers));
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, spell, ctx));
             this.cooldown = this.baseCooldown + spell.getCooldown();
 
             if (!attacker.level().isClientSide && spell.requiresPacket()) {
-                NPCSpellCastS2C msg = new NPCSpellCastS2C(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, modifiers);
+                NPCSpellCastS2C msg = new NPCSpellCastS2C(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, ctx.modifiers());
                 Services.NETWORK_HELPER.sendToTracking(attacker, msg);
             }
 
         } else {
             // Start casting continuous spell
             this.continuousSpellTimer = this.continuousSpellDuration - 1;
-            setContinuousSpellAndNotify(spell, modifiers);
+            setContinuousSpellAndNotify(spell, ctx.modifiers());
             attacker.setTarget(target);
             if (attacker instanceof AbstractWizard wizard) wizard.setSpellTargetId(target.getId());
         }

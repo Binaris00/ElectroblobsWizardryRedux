@@ -55,28 +55,37 @@ public class WizardryEventBus implements EventRegistry {
         return event.canBeCanceled() && event.isCanceled();
     }
 
+    /**
+     * Fires an event, distributing it to all registered listeners in their specified priority order. This is the same as using
+     * {@link #fire(IWizardryEvent)}
+     *
+     * @param <E>   the specific type of wizardry event
+     * @param event the event instance to dispatch
+     * @return {@code true} if the event was successfully posted and processed; {@code false} otherwise
+     * (e.g., if the event was canceled)
+     */
     public static <E extends IWizardryEvent> boolean fireEvent(E event){
         return getInstance().fire(event);
     }
 
-    private static class PrioritizedListener<E extends IWizardryEvent> implements Comparable<PrioritizedListener<?>> {
-        private final EventListener<E> listener;
-        private final EventPriorityOrder priority;
-        private final int registrationOrder;
-
-        public PrioritizedListener(EventListener<E> listener, EventPriorityOrder priority, int registrationOrder) {
-            this.listener = listener;
-            this.priority = priority;
-            this.registrationOrder = registrationOrder;
-        }
-
+    /**
+     * Associates an {@link EventListener} with an {@link EventPriorityOrder} and its insertion order to preserve
+     * deterministic execution when fired.
+     * <p>
+     * Implements {@link Comparable} to sort listeners first by their priority (highest priority first),
+     * and secondarily by their FIFO (First-In, First-Out) registration sequence if priorities match.
+     *
+     * @param <E> the specific type of wizardry event this listener handles
+     */
+        private record PrioritizedListener<E extends IWizardryEvent>(EventListener<E> listener, EventPriorityOrder priority,
+                                                                     int registrationOrder) implements Comparable<PrioritizedListener<?>> {
         @Override
-        public int compareTo(PrioritizedListener<?> other) {
-            int priorityCompare = Integer.compare(other.priority.ordinal(), this.priority.ordinal());
-            if (priorityCompare != 0) {
-                return priorityCompare;
+            public int compareTo(PrioritizedListener<?> other) {
+                int priorityCompare = Integer.compare(other.priority.ordinal(), this.priority.ordinal());
+                if (priorityCompare != 0) {
+                    return priorityCompare;
+                }
+                return Integer.compare(this.registrationOrder, other.registrationOrder);
             }
-            return Integer.compare(this.registrationOrder, other.registrationOrder);
         }
-    }
 }

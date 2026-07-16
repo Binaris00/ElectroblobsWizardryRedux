@@ -130,8 +130,9 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
         int castingTick = stack.getUseDuration() - timeCharged;
         SpellModifiers modifiers = wizardData.getSpellModifiers();
 
-        WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Sources.SCROLL, spell, entity, modifiers, castingTick));
-        spell.endCast(new CastContext(world, entity, castingTick, modifiers));
+        CastContext ctx = new CastContext(world, entity, castingTick, modifiers);
+        WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Sources.SCROLL, spell, ctx));
+        spell.endCast(ctx);
     }
 
     @Override

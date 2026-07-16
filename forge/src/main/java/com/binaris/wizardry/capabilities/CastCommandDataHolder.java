@@ -81,13 +81,15 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
             return;
         }
 
-        if (WizardryEventBus.fireEvent(new SpellCastEvent.Tick(SpellCastEvent.Sources.COMMAND, castCommandSpell, provider, castCommandModifiers, castCommandTick))) {
+        PlayerCastContext ctx = new PlayerCastContext(provider.level(), provider, InteractionHand.MAIN_HAND, this.castCommandTick, this.castCommandModifiers);
+
+        if (WizardryEventBus.fireEvent(new SpellCastEvent.Tick(SpellCastEvent.Sources.COMMAND, castCommandSpell, ctx))) {
             this.stopCastingContinuousSpell();
             return;
         }
 
-        if (this.castCommandSpell.cast(new PlayerCastContext(provider.level(), provider, InteractionHand.MAIN_HAND, this.castCommandTick, this.castCommandModifiers)) && this.castCommandTick == 0) {
-            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.COMMAND, castCommandSpell, provider, castCommandModifiers));
+        if (this.castCommandSpell.cast(ctx) && this.castCommandTick == 0) {
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.COMMAND, castCommandSpell, ctx));
         }
 
         castCommandTick++;

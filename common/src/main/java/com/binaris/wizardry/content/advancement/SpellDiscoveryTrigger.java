@@ -56,38 +56,38 @@ public class SpellDiscoveryTrigger implements CriterionTrigger<SpellDiscoveryTri
         return new TriggerInstance(SpellPredicate.deserialize(json.get("spell")), source, json, context);
     }
 
-    public void trigger(ServerPlayer player, Spell spell, DiscoverSpellEvent.Sources source) {
+    public void trigger(ServerPlayer player, Spell spell, DiscoverSpellEvent.Source source) {
         Optional.ofNullable(this.listeners.get(player.getAdvancements())).ifPresent(listeners -> listeners.trigger(spell, source));
     }
 
     public static class TriggerInstance extends AbstractCriterionTriggerInstance {
         private final SpellPredicate spell;
-        private final DiscoverSpellEvent.Sources source;
+        private final DiscoverSpellEvent.Source source;
 
-        public TriggerInstance(SpellPredicate spell, DiscoverSpellEvent.Sources source, JsonObject json, DeserializationContext context) {
+        public TriggerInstance(SpellPredicate spell, DiscoverSpellEvent.Source source, JsonObject json, DeserializationContext context) {
             super(ID, EntityPredicate.fromJson(json, "player", context));
             this.spell = spell;
             this.source = source;
         }
 
-        public TriggerInstance(SpellPredicate spell, DiscoverSpellEvent.Sources source) {
+        public TriggerInstance(SpellPredicate spell, DiscoverSpellEvent.Source source) {
             super(ID, ContextAwarePredicate.ANY);
             this.spell = spell;
             this.source = source;
         }
 
-        public static TriggerInstance discoverSpell(DiscoverSpellEvent.Sources source) {
+        public static TriggerInstance discoverSpell(DiscoverSpellEvent.Source source) {
             return new TriggerInstance(SpellPredicate.any(), source);
         }
 
-        public boolean test(Spell spell, DiscoverSpellEvent.Sources source) {
+        public boolean test(Spell spell, DiscoverSpellEvent.Source source) {
             return this.spell.test(spell) && source == this.source;
         }
 
         @Override
         public @NotNull JsonObject serializeToJson(@NotNull SerializationContext conditions) {
             JsonObject jsonobject = super.serializeToJson(conditions);
-            jsonobject.addProperty("source", this.source.name().toLowerCase());
+            jsonobject.addProperty("source", this.source.getName().toLowerCase());
             JsonElement spellJson = this.spell.serialize();
             if (spellJson != null) jsonobject.add("spell", spellJson);
             return jsonobject;
@@ -114,7 +114,7 @@ public class SpellDiscoveryTrigger implements CriterionTrigger<SpellDiscoveryTri
             this.listeners.remove(listener);
         }
 
-        public void trigger(Spell spell, DiscoverSpellEvent.Sources source) {
+        public void trigger(Spell spell, DiscoverSpellEvent.Source source) {
             List<Listener<TriggerInstance>> list = this.listeners.stream()
                     .filter(li -> li.getTriggerInstance().test(spell, source)).toList();
             list.forEach(li -> li.run(this.playerAdvancements));
