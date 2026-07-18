@@ -36,7 +36,7 @@ public final class ParticleSpawner {
 
         if (!Double.isNaN(data.vx + data.vy + data.vz)) p.setParticleSpeed(data.vx, data.vy, data.vz);
         if (data.r >= 0) p.setColor(data.r, data.g, data.b);
-        if (data.fr >= 0) p.setFadeColour(data.fr, data.fg, data.fb);
+        if (data.fr >= 0) p.setFadeColor(data.fr, data.fg, data.fb);
         if (data.lifetime >= 0) p.setLifetime(data.lifetime);
         if (data.radius > 0) p.setSpin(data.radius, data.rpt);
         if (!Float.isNaN(data.yaw + data.pitch)) p.setFacing(data.yaw, data.pitch);

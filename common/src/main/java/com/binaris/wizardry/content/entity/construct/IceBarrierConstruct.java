@@ -1,6 +1,5 @@
 package com.binaris.wizardry.content.entity.construct;
 
-import com.binaris.wizardry.api.content.entity.ICustomHitbox;
 import com.binaris.wizardry.api.content.entity.construct.ScaledConstructEntity;
 import com.binaris.wizardry.setup.registries.EBSounds;
 import net.minecraft.nbt.CompoundTag;
@@ -16,7 +15,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public class IceBarrierConstruct extends ScaledConstructEntity implements ICustomHitbox {
+public class IceBarrierConstruct extends ScaledConstructEntity {
     private static final double THICKNESS = 0.4;
 
     private int delay = 0;
@@ -119,23 +118,6 @@ public class IceBarrierConstruct extends ScaledConstructEntity implements ICusto
     protected void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putInt("delay", delay);
-    }
-
-    @Override
-    public Vec3 calculateIntercept(Vec3 origin, Vec3 endpoint, float fuzziness) {
-        Vec3 vec = endpoint.subtract(origin);
-
-        double perpendicularDist = getPerpendicularDistance(origin);
-        double perpendicularDist2 = getPerpendicularDistance(endpoint);
-
-        Vec3 intercept = origin.add(vec.scale(perpendicularDist / (perpendicularDist + perpendicularDist2)));
-
-        return getBoundingBox().inflate(fuzziness).contains(intercept) ? intercept : null;
-    }
-
-    @Override
-    public boolean contains(Vec3 point) {
-        return this.getBoundingBox().contains(point) && getPerpendicularDistance(point) < THICKNESS / 2;
     }
 
     private double getPerpendicularDistance(Vec3 point) {

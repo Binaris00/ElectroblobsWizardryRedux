@@ -25,7 +25,7 @@ public class ParticleFlash extends ParticleWizardry {
     }
 
     @Override
-    public void render(@NotNull VertexConsumer buffer, Camera renderInfo, float partialTicks) {
+    public void render(@NotNull VertexConsumer buffer, @NotNull Camera renderInfo, float partialTicks) {
         float ageProgress = ((float) this.age + partialTicks) / (float) this.lifetime;
         float exponentialFade = (float) Math.pow(1.0F - ageProgress, 3.5);
         float maxAlpha = 0.6F;

@@ -58,7 +58,7 @@ public class ParticleBuff extends ParticleWizardry {
     }
 
     @Override
-    public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
+    public void render(@NotNull VertexConsumer vertexConsumer, @NotNull Camera camera, float partialTicks) {
         updateEntityLinking(partialTicks);
 
         RenderSystem.enableBlend();
