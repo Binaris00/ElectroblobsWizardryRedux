@@ -19,7 +19,7 @@ public class SageArmorItem extends WizardArmorItem {
     private static final float SAGE_OTHER_COST_REDUCTION = 0.2f;
 
     public SageArmorItem(Type type, Element element) {
-        super(WizardArmorType.SAGE, type, element);
+        super(WizardArmorTypes.SAGE, type, element);
     }
 
     @Override

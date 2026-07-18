@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.lightning;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -13,9 +13,7 @@ import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -62,7 +60,7 @@ public class Arc extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT, 5, 0, 15)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.LIGHTNING, SpellTypes.ATTACK, SpellAction.POINT, 5, 0, 15)
                 .add(DefaultProperties.RANGE, 3F)
                 .add(DefaultProperties.DAMAGE, 8F)
                 .build();

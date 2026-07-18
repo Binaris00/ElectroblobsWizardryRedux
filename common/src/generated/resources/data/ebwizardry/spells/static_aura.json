@@ -1,5 +1,5 @@
 {
-  "type": "defence",
+  "type": "ebwizardry:defence",
   "base_properties": {
     "damage": 4.0,
     "effect.ebwizardry.static_aura_duration": 600,

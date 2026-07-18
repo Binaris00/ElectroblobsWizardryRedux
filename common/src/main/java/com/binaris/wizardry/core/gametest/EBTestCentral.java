@@ -2,7 +2,7 @@ package com.binaris.wizardry.core.gametest;
 
 import com.binaris.wizardry.api.content.DeferredObject;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.setup.datagen.EBDataGenProcessor;
 import com.binaris.wizardry.setup.registries.EBItems;
@@ -78,7 +78,7 @@ public final class EBTestCentral {
         public static void upgradeNormalArmor(GameTestHelper helper) {
             EBItems.getArmors().stream()
                     .map(DeferredObject::get)
-                    .filter(item -> ((WizardArmorItem) item).getWizardArmorType() == WizardArmorType.WIZARD)
+                    .filter(item -> ((WizardArmorItem) item).getWizardArmorType() == WizardArmorTypes.WIZARD)
                     .forEach(armor -> UPGRADES.forEach(upgrade ->
                             ArcaneWorkbenchTestHandler.upgradeNormalArmor(helper, armor, upgrade)));
             helper.succeed();
@@ -88,7 +88,7 @@ public final class EBTestCentral {
         public static void cannotUpgradeMaxedArmor(GameTestHelper helper) {
             EBItems.getArmors().stream()
                     .map(DeferredObject::get)
-                    .filter(item -> ((WizardArmorItem) item).getWizardArmorType() != WizardArmorType.WIZARD)
+                    .filter(item -> ((WizardArmorItem) item).getWizardArmorType() != WizardArmorTypes.WIZARD)
                     .forEach(armor -> UPGRADES.forEach(upgrade ->
                             ArcaneWorkbenchTestHandler.cannotUpgradeMaxedArmor(helper, armor, upgrade)));
             helper.succeed();

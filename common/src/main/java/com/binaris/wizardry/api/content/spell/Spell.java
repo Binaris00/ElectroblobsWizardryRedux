@@ -346,7 +346,7 @@ public abstract class Spell {
     }
 
     /**
-     * Gets the type of this spell. By default, this is {@link SpellType#UTILITY}.
+     * Gets the type of this spell. By default, this is {@link SpellTypes#UTILITY}.
      *
      * @return The type of this spell.
      */

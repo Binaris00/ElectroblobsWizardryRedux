@@ -4,7 +4,7 @@ import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.data.ImbuementEnchantData;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -64,7 +64,7 @@ public class FlamingWeapon extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 35, 0, 70)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.UTILITY, SpellAction.IMBUE, 35, 0, 70)
                 .add(DefaultProperties.EFFECT_DURATION, 900)
                 .build();
     }

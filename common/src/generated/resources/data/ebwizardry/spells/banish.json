@@ -1,5 +1,5 @@
 {
-  "type": "attack",
+  "type": "ebwizardry:attack",
   "base_properties": {
     "maximum_teleport_distance": 16,
     "minimum_teleport_distance": 8,

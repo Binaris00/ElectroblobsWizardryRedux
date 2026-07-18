@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -62,7 +62,7 @@ public class SummonSkeletonLegion extends MinionSpell<AbstractSkeleton> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 100, 20, 400)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellTypes.MINION, SpellAction.SUMMON, 100, 20, 400)
                 .add(DefaultProperties.MINION_LIFETIME, 1200)
                 .add(DefaultProperties.MINION_COUNT, 6)
                 .add(DefaultProperties.SUMMON_RADIUS, 3)

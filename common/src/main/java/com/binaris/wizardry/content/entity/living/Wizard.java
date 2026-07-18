@@ -10,7 +10,7 @@ import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.content.entity.goal.WizardLookAtTradePlayer;
 import com.binaris.wizardry.content.entity.goal.WizardTradeGoal;
 import com.binaris.wizardry.content.item.SpellBookItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
@@ -348,7 +348,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         possibleTrades.add(createTrade(
                 new ItemStack(Items.GOLD_INGOT, 13 + random.nextInt(4)),
                 new ItemStack(EBItems.MAGIC_CRYSTAL.get(), 8 + random.nextInt(3)),
-                new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, this.getElement(), this.random)),
+                new ItemStack(RegistryUtils.getArmor(WizardArmorTypes.WIZARD, this.getElement(), this.random)),
                 3, 20, 0.2f
         ));
 

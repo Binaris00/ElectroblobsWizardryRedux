@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -48,7 +48,7 @@ public class InvigoratingPresence extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 30, 0, 60)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellTypes.BUFF, SpellAction.POINT_UP, 30, 0, 60)
                 .add(DefaultProperties.EFFECT_RADIUS, 5)
                 .add(DefaultProperties.EFFECT_DURATION, 900)
                 .add(DefaultProperties.EFFECT_STRENGTH, 1)

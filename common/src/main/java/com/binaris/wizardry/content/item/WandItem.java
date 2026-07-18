@@ -6,7 +6,7 @@ import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.*;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.SpellContext;
+import com.binaris.wizardry.api.content.spell.SpellContexts;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
@@ -190,7 +190,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         boolean changed = false;
         if (upgrade.hasItem()) changed = applyUpgradeSlot(player, centre, upgrade);
 
-        changed |= WorkbenchUtils.applySpellBooks(centre, spellBooks, SpellContext.WANDS);
+        changed |= WorkbenchUtils.applySpellBooks(centre, spellBooks, SpellContexts.WANDS);
         changed |= WorkbenchUtils.rechargeManaFromCrystals(centre, crystals);
         return changed;
     }

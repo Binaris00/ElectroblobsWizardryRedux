@@ -1,12 +1,9 @@
 package com.binaris.wizardry.content.loot;
 
+import com.binaris.wizardry.api.content.spell.*;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
-import com.binaris.wizardry.api.content.spell.Element;
-import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.SpellContext;
-import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
@@ -69,7 +66,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         if (!(stack.getItem() instanceof SpellBookItem) && !(stack.getItem() instanceof ScrollItem))
             EBLogger.warn("Applying the random_spell loot function to an item that isn't a spell book or scroll.");
 
-        SpellContext context = !lootContext.hasParam(LootContextParams.THIS_ENTITY) ? SpellContext.TREASURE : SpellContext.LOOTING;
+        SpellContext context = !lootContext.hasParam(LootContextParams.THIS_ENTITY) ? SpellContexts.TREASURE : SpellContexts.LOOTING;
         Player player = null;
         if (lootContext.hasParam(LootContextParams.THIS_ENTITY) && lootContext.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player player1) {
             player = player1;
@@ -100,9 +97,9 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         }
 
         if (stack.getItem() instanceof SpellBookItem)
-            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContext.BOOK));
+            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContexts.BOOK));
         if (stack.getItem() instanceof ScrollItem)
-            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContext.SCROLL));
+            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContexts.SCROLL));
 
         if (player != null && undiscoveredBias > 0) {
             float bias = undiscoveredBias;

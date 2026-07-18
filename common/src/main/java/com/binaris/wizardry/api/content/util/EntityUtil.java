@@ -5,11 +5,11 @@ import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.SpellContext;
+import com.binaris.wizardry.api.content.spell.SpellContexts;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorMaterial;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -383,7 +383,7 @@ public final class EntityUtil {
             else tier = SpellTiers.MASTER;
             if (tier.getLevel() > maxTier.getLevel()) maxTier = tier;
 
-            List<Spell> list = RegistryUtils.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element && spell.canCastByEntity() && spell.isEnabled(SpellContext.NPCS));
+            List<Spell> list = RegistryUtils.getSpells(spell -> spell.getTier() == tier && spell.getElement() == element && spell.canCastByEntity() && spell.isEnabled(SpellContexts.NPCS));
 
             list.retainAll(npcSpells);
             list.removeAll(spells);
@@ -496,12 +496,12 @@ public final class EntityUtil {
      * @param armor   The type of the armor.
      * @return True if the entity has a full set of the given element and armor type, false otherwise.
      */
-    public static boolean isWearingFullMagicArmorSet(LivingEntity entity, @Nullable Element element, @Nullable WizardArmorType armor) {
+    public static boolean isWearingFullMagicArmorSet(LivingEntity entity, @Nullable Element element, @Nullable WizardArmorMaterial armor) {
         ItemStack helmet = entity.getItemBySlot(EquipmentSlot.HEAD);
         if (!(helmet.getItem() instanceof WizardArmorItem wizardArmor)) return false;
 
         Element e = element == null ? wizardArmor.getElement() : element;
-        WizardArmorType ac = armor == null ? wizardArmor.getWizardArmorType() : armor;
+        WizardArmorMaterial ac = armor == null ? wizardArmor.getWizardArmorType() : armor;
         return Arrays.stream(ARMOR_SLOTS).allMatch(slot -> entity.getItemBySlot(slot).getItem() instanceof WizardArmorItem armor2 && armor2.getElement() == e && armor2.getWizardArmorType() == ac);
     }
 

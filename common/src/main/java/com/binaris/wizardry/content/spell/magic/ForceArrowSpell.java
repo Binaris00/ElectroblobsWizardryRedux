@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.magic;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -25,7 +25,7 @@ public class ForceArrowSpell extends ArrowSpell<ForceArrow> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 20)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellTypes.PROJECTILE, SpellAction.POINT, 15, 0, 20)
                 .add(DefaultProperties.RANGE, 20f)
                 .add(DefaultProperties.DAMAGE, 7f)
                 .build();

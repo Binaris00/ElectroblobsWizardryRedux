@@ -12,7 +12,7 @@ import com.binaris.wizardry.content.entity.goal.AttackSpellBasicGoal;
 import com.binaris.wizardry.content.entity.goal.HardLookAtTargetGoal;
 import com.binaris.wizardry.content.entity.goal.RangedKitingGoal;
 import com.binaris.wizardry.content.item.WandItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
@@ -201,7 +201,7 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
      */
     public void equipArmorAndDisableDrops(Element element) {
         for (EquipmentSlot slot : EntityUtil.ARMOR_SLOTS) {
-            this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, element, slot)));
+            this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorTypes.WIZARD, element, slot)));
         }
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             this.setDropChance(slot, 0.0f);

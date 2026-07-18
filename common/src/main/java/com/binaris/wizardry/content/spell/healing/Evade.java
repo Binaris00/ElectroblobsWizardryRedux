@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -42,7 +42,7 @@ public class Evade extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.NONE, 5, 0, 5)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.NONE, 5, 0, 5)
                 .add(DefaultProperties.SPEED, 1F).build();
     }
 }

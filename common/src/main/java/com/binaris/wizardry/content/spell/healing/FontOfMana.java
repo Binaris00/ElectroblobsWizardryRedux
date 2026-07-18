@@ -1,9 +1,8 @@
 package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
-import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -53,7 +52,7 @@ public class FontOfMana extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.HEALING, SpellType.UTILITY, SpellAction.POINT_UP, 100, 15, 250)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.HEALING, SpellTypes.UTILITY, SpellAction.POINT_UP, 100, 15, 250)
                 .add(DefaultProperties.EFFECT_RADIUS, 5)
                 .add(DefaultProperties.EFFECT_DURATION, 600)
                 .add(DefaultProperties.EFFECT_STRENGTH, 0)

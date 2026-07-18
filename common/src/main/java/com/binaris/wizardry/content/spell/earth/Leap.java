@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.earth;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -39,7 +39,7 @@ public class Leap extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.EARTH, SpellType.UTILITY, SpellAction.POINT, 10, 0, 20)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.EARTH, SpellTypes.UTILITY, SpellAction.POINT, 10, 0, 20)
                 .add(HORIZONTAL_SPEED)
                 .add(VERTICAL_SPEED)
                 .build();

@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.earth;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
@@ -36,7 +36,7 @@ public class Boulder extends ConstructSpell<BoulderConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.ATTACK, SpellAction.SUMMON, 125, 25, 350)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellTypes.ATTACK, SpellAction.SUMMON, 125, 25, 350)
                 .add(DefaultProperties.DURATION, 200)
                 .add(DefaultProperties.DAMAGE, 10F)
                 .add(SPEED)

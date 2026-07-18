@@ -3,7 +3,7 @@ package com.binaris.wizardry;
 import com.binaris.wizardry.api.content.effect.MagicMobEffect;
 import com.binaris.wizardry.api.content.event.*;
 import com.binaris.wizardry.api.content.item.ArtifactItem;
-import com.binaris.wizardry.api.content.spell.SpellContext;
+import com.binaris.wizardry.api.content.spell.SpellContexts;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.Forfeit;
 import com.binaris.wizardry.content.WizardryAttributeModifier;
@@ -178,11 +178,11 @@ public final class EBEventHelper {
     private static void castContextCheck(SpellCastEvent.Pre event) {
         if (event.getSource() instanceof SpellCastEvent.Sources legalSource) {
             boolean enabled = switch (legalSource) {
-                case WAND -> event.getSpell().isEnabled(SpellContext.WANDS);
-                case SCROLL -> event.getSpell().isEnabled(SpellContext.SCROLL);
-                case COMMAND -> event.getSpell().isEnabled(SpellContext.COMMANDS);
-                case NPC -> event.getSpell().isEnabled(SpellContext.NPCS);
-                case DISPENSER -> event.getSpell().isEnabled(SpellContext.DISPENSERS);
+                case WAND -> event.getSpell().isEnabled(SpellContexts.WANDS);
+                case SCROLL -> event.getSpell().isEnabled(SpellContexts.SCROLL);
+                case COMMAND -> event.getSpell().isEnabled(SpellContexts.COMMANDS);
+                case NPC -> event.getSpell().isEnabled(SpellContexts.NPCS);
+                case DISPENSER -> event.getSpell().isEnabled(SpellContexts.DISPENSERS);
                 default -> true;
             };
 

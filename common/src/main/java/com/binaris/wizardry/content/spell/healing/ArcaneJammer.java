@@ -1,9 +1,8 @@
 package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
-import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -11,17 +10,12 @@ import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
-import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Random;
 
 public class ArcaneJammer extends RaySpell {
     public ArcaneJammer() {
@@ -60,7 +54,7 @@ public class ArcaneJammer extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.ALTERATION, SpellAction.POINT, 30, 5, 50)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellTypes.ALTERATION, SpellAction.POINT, 30, 5, 50)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.EFFECT_DURATION, 300)
                 .add(DefaultProperties.EFFECT_STRENGTH, 0)

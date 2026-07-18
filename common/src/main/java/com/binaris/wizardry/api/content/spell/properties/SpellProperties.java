@@ -1,5 +1,6 @@
 package com.binaris.wizardry.api.content.spell.properties;
 
+import com.binaris.wizardry.api.content.SpellTypeRegistry;
 import com.binaris.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.binaris.wizardry.api.content.spell.*;
 import com.binaris.wizardry.content.spell.DefaultProperties;
@@ -112,8 +113,9 @@ public class SpellProperties {
     }
 
     public SpellType getType() {
-        String type = get(DefaultProperties.SPELL_TYPE);
-        return SpellType.fromName(type);
+        String name = get(DefaultProperties.SPELL_TYPE);
+        SpellType type = SpellTypeRegistry.get(ResourceLocation.tryParse(name));
+        return type != null ? type : SpellTypes.UTILITY;
     }
 
     public SpellTier getTier() {
@@ -142,7 +144,7 @@ public class SpellProperties {
 
     public boolean isEnabledInContext(SpellContext context) {
         Map<String, Boolean> enabled = get(DefaultProperties.ENABLED);
-        return enabled.getOrDefault(context.getKey(), true);
+        return enabled.getOrDefault(context.getName(), true);
     }
 
     public JsonObject toJson() {
@@ -212,7 +214,7 @@ public class SpellProperties {
         public Builder assignBaseProperties(SpellTier tier, Element element, SpellType type, SpellAction action, int cost, int charge, int cooldown) {
             add(DefaultProperties.ENABLED);
             add(DefaultProperties.ELEMENT, element.getLocation().toString());
-            add(DefaultProperties.SPELL_TYPE, type.getName());
+            add(DefaultProperties.SPELL_TYPE, type.getLocation().toString());
             add(DefaultProperties.TIER, tier.getOrCreateLocation().toString());
             add(DefaultProperties.SPELL_ACTION, action.location.toString());
             add(DefaultProperties.COST, cost);

@@ -19,7 +19,7 @@ public class WarlockArmorItem extends WizardArmorItem {
     private static final float WARLOCK_SPEED_BOOST = 0.2f;
 
     public WarlockArmorItem(Type type, Element element) {
-        super(WizardArmorType.WARLOCK, type, element);
+        super(WizardArmorTypes.WARLOCK, type, element);
     }
 
     @Override

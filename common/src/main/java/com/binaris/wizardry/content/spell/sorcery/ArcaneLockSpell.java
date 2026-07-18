@@ -4,7 +4,7 @@ import com.binaris.wizardry.api.content.data.ArcaneLockData;
 import com.binaris.wizardry.api.content.event.EBPlayerBreakBlockEvent;
 import com.binaris.wizardry.api.content.event.EBPlayerUseBlockEvent;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
@@ -152,7 +152,7 @@ public class ArcaneLockSpell extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT, 50, 0, 100)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.POINT, 50, 0, 100)
                 .add(DefaultProperties.RANGE, 8.0F)
                 .build();
     }

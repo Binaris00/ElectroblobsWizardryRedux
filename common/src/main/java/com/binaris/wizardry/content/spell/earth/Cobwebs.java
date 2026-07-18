@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.earth;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -67,7 +67,7 @@ public class Cobwebs extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellType.ATTACK, SpellAction.POINT, 30, 0, 70)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellTypes.ATTACK, SpellAction.POINT, 30, 0, 70)
                 .add(DefaultProperties.RANGE, 12F)
                 .add(DefaultProperties.BLAST_RADIUS, 1.23F)
                 .add(DefaultProperties.DURATION, 400)

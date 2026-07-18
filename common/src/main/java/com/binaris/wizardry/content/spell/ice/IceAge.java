@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
@@ -117,7 +117,7 @@ public class IceAge extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.ICE, SpellType.ATTACK, SpellAction.POINT_DOWN, 70, 20, 250)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.ICE, SpellTypes.ATTACK, SpellAction.POINT_DOWN, 70, 20, 250)
                 .add(DefaultProperties.EFFECT_RADIUS, 7)
                 .add(FREEZE_DURATION)
                 .add(DefaultProperties.EFFECT_DURATION, 400)

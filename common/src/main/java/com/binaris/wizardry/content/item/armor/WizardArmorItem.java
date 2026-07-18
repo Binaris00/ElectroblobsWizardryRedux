@@ -50,16 +50,16 @@ import java.util.List;
  */
 public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDamageItem, IWorkbenchItem, IElementValue, ICustomAttributesItem {
     private final Element element;
-    private final WizardArmorType wizardArmorType;
+    private final WizardArmorMaterial wizardArmorType;
 
-    public WizardArmorItem(WizardArmorType material, Type type, Element element) {
+    public WizardArmorItem(WizardArmorMaterial material, Type type, Element element) {
         super(material, type, new Properties());
         this.wizardArmorType = material;
         this.element = element;
     }
 
     public WizardArmorItem(Type type, Element element) {
-        this(WizardArmorType.WIZARD, type, element);
+        this(WizardArmorTypes.WIZARD, type, element);
     }
 
     /**
@@ -98,13 +98,13 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
         if (armor.getMana(armorStack) == 0) return;
 
         if (spell.getElement() == armor.getElement()) {
-            modifiers.set(SpellModifiers.COST, modifiers.get(SpellModifiers.COST) - armor.getWizardArmorType().elementalCostReduction);
+            modifiers.set(SpellModifiers.COST, modifiers.get(SpellModifiers.COST) - armor.getWizardArmorType().getElementalCostReduction());
         }
 
         modifiers.set(SpellModifiers.POTENCY, 2);
 
-        if (this.getWizardArmorType().cooldownReduction > 0) {
-            modifiers.set(SpellModifiers.COOLDOWN, modifiers.get(SpellModifiers.COOLDOWN) - armor.getWizardArmorType().cooldownReduction);
+        if (this.getWizardArmorType().getCooldownReduction() > 0) {
+            modifiers.set(SpellModifiers.COOLDOWN, modifiers.get(SpellModifiers.COOLDOWN) - armor.getWizardArmorType().getCooldownReduction());
         }
 
         if (EntityUtil.isWearingFullMagicArmorSet(caster, armor.getElement(), armor.getWizardArmorType()) && EntityUtil.doAllArmorPiecesHaveMana(caster)) {
@@ -116,12 +116,12 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
     public void appendHoverText(@NotNull ItemStack stack, Level world, @NotNull List<Component> tooltip, @NotNull TooltipFlag advanced) {
         if (getElement() != null) {
             tooltip.add(Component.translatable("item.%s.wizard_armor.element_cost_reduction".formatted(WizardryMainMod.MOD_ID),
-                    (int) (this.getWizardArmorType().elementalCostReduction * 100), getElement().getDescriptionFormatted().getString()).withStyle(ChatFormatting.DARK_GRAY));
+                    (int) (this.getWizardArmorType().getElementalCostReduction() * 100), getElement().getDescriptionFormatted().getString()).withStyle(ChatFormatting.DARK_GRAY));
         }
 
-        if (this.getWizardArmorType().cooldownReduction > 0) {
+        if (this.getWizardArmorType().getCooldownReduction() > 0) {
             tooltip.add(Component.translatable("item.%s.wizard_armor.cooldown_reduction".formatted(WizardryMainMod.MOD_ID),
-                    (int) (this.getWizardArmorType().cooldownReduction * 100)).withStyle(ChatFormatting.DARK_GRAY));
+                    (int) (this.getWizardArmorType().getCooldownReduction() * 100)).withStyle(ChatFormatting.DARK_GRAY));
         }
     }
 
@@ -152,19 +152,15 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
 
     @Override
     public ItemStack applyUpgrade(@Nullable Player player, ItemStack stack, ItemStack upgrade) {
-        if (this.getWizardArmorType() != WizardArmorType.WIZARD) return stack;
+        if (this.getWizardArmorType() != WizardArmorTypes.WIZARD) return stack;
+        if (!(upgrade.getItem() instanceof IArmorUpgrade iArmorUpgrade)) return stack;
 
-        for (WizardArmorType armourClass : WizardArmorType.values()) {
-            if (upgrade.getItem() != armourClass.upgradeItem.get()) continue;
-
-            Item newItem = RegistryUtils.getArmor(armourClass, this.getElement(), getEquipmentSlot());
-            ItemStack newStack = new ItemStack(newItem);
-            ((WizardArmorItem) newItem).setMana(newStack, this.getMana(stack));
-            newStack.setTag(stack.getTag());
-            upgrade.shrink(1);
-            return newStack;
-        }
-        return stack;
+        Item newItem = RegistryUtils.getArmor(iArmorUpgrade.getWizardArmorMaterial(), this.getElement(), getEquipmentSlot());
+        ItemStack newStack = new ItemStack(newItem);
+        ((WizardArmorItem) newItem).setMana(newStack, this.getMana(stack));
+        newStack.setTag(stack.getTag());
+        upgrade.shrink(1);
+        return newStack;
     }
 
     @Override
@@ -194,7 +190,7 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
         return (getElement() == null ? super.getName(stack) : Component.literal(super.getName(stack).getString()).withStyle(getElement().getColor()));
     }
 
-    public WizardArmorType getWizardArmorType() {
+    public WizardArmorMaterial getWizardArmorType() {
         return wizardArmorType;
     }
 

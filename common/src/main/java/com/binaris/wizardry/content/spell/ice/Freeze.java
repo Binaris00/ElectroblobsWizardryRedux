@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -71,7 +71,7 @@ public class Freeze extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 5, 0, 10)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.ICE, SpellTypes.ATTACK, SpellAction.POINT, 5, 0, 10)
                 .add(DefaultProperties.RANGE, 10f)
                 .add(DefaultProperties.DAMAGE, 3f)
                 .add(DefaultProperties.EFFECT_DURATION, 200)

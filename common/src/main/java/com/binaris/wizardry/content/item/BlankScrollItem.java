@@ -4,7 +4,7 @@ import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.SpellContext;
+import com.binaris.wizardry.api.content.spell.SpellContexts;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
@@ -41,7 +41,7 @@ public class BlankScrollItem extends Item implements IWorkbenchItem {
 
     private boolean canPlayerUseSpell(Player player, Spell spell) {
         if (spell == Spells.NONE) return false;
-        if (!spell.isEnabled(SpellContext.SCROLL)) return false;
+        if (!spell.isEnabled(SpellContexts.SCROLL)) return false;
         if (player.isCreative()) return true;
 
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);

@@ -3,7 +3,7 @@ package com.binaris.wizardry.api.content.util;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorMaterial;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
@@ -54,33 +54,33 @@ public final class RegistryUtils {
     }
 
     /**
-     * Gets a random wizard armor item of the given type and element.
+     * Gets a random wizard armor item of the given material and element.
      *
-     * @param type    The type of wizard armor.
+     * @param material    The material of wizard armor.
      * @param element The element of the armor. If null, defaults to magic.
      * @return The corresponding wizard armor item.
      */
-    public static Item getArmor(WizardArmorType type, Element element, RandomSource randomSource) {
+    public static Item getArmor(WizardArmorMaterial material, Element element, RandomSource randomSource) {
         EquipmentSlot randomArmorSlot = EntityUtil.ARMOR_SLOTS[randomSource.nextInt(EntityUtil.ARMOR_SLOTS.length)];
-        return getArmor(type, element, randomArmorSlot);
+        return getArmor(material, element, randomArmorSlot);
     }
 
     /**
      * Gets a wizard armor item based on the given parameters, searching for its implementation in the item registry
      * by constructing its registry name accordingly.
      *
-     * @param wizardArmorType The type of wizard armor.
+     * @param material The type of wizard armor.
      * @param element         The element of the armor. If null, defaults to magic.
      * @param slot            The equipment slot for the armor piece.
      * @return The corresponding wizard armor item.
      * @throws IllegalArgumentException if the slot is null or not an armor slot. (this should never happen if used correctly)
      */
-    public static Item getArmor(WizardArmorType wizardArmorType, Element element, EquipmentSlot slot) {
+    public static Item getArmor(WizardArmorMaterial material, Element element, EquipmentSlot slot) {
         if (slot == null || slot.getType() != EquipmentSlot.Type.ARMOR)
             throw new IllegalArgumentException("Must be a valid armour slot");
         if (element == null) element = Elements.MAGIC;
 
-        String registryName = wizardArmorType.getName() + "_" + wizardArmorType.getArmourPieceNames().get(slot);
+        String registryName = material.getName() + "_" + material.getArmorPieceNames().get(slot);
         if (element != Elements.MAGIC)
             registryName = registryName + "_" + element.getLocation().getPath();
 

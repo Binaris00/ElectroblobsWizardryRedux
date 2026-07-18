@@ -2,15 +2,13 @@ package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
-import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.AreaEffectSpell;
 import com.binaris.wizardry.content.spell.abstr.BuffSpell;
-import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -74,7 +72,7 @@ public class PlagueOfDarkness extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT_DOWN, 75, 15, 200)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellTypes.ATTACK, SpellAction.POINT_DOWN, 75, 15, 200)
                 .add(DefaultProperties.EFFECT_RADIUS, 5)
                 .add(DefaultProperties.DAMAGE, 8F)
                 .add(DefaultProperties.EFFECT_DURATION, 140)

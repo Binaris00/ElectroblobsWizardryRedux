@@ -5,7 +5,7 @@ import com.binaris.wizardry.api.content.DeferredObject;
 import com.binaris.wizardry.api.content.item.ArtifactItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.SpellTier;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.content.item.*;
 import com.binaris.wizardry.content.item.armor.*;
@@ -67,9 +67,9 @@ public final class EBItems {
     public static final DeferredObject<Item> WIZARD_HANDBOOK = item("wizard_handbook");
     public static final DeferredObject<Item> RANDOM_SPELL_BOOK = item("random_spell_book", () -> new RandomSpellBookItem(new Item.Properties().stacksTo(1)), true, false);
     public static final DeferredObject<Item> ASTRAL_DIAMOND = item("astral_diamond");
-    public static final DeferredObject<Item> CRYSTAL_SILVER_PLATING = armorUpgrade("crystal_silver_plating");
-    public static final DeferredObject<Item> ETHEREAL_CRYSTAL_WEAVE = armorUpgrade("ethereal_crystal_weave");
-    public static final DeferredObject<Item> RESPLENDENT_THREAD = armorUpgrade("resplendent_thread");
+    public static final DeferredObject<Item> CRYSTAL_SILVER_PLATING = armorUpgrade("crystal_silver_plating", WizardArmorTypes.BATTLEMAGE);
+    public static final DeferredObject<Item> ETHEREAL_CRYSTAL_WEAVE = armorUpgrade("ethereal_crystal_weave", WizardArmorTypes.BATTLEMAGE);
+    public static final DeferredObject<Item> RESPLENDENT_THREAD = armorUpgrade("resplendent_thread", WizardArmorTypes.SAGE);
     public static final DeferredObject<Item> IDENTIFICATION_SCROLL = item("identification_scroll", () -> new IdentificationScrollItem(new Item.Properties().stacksTo(16)), true, true);
     public static final DeferredObject<Item> MAGIC_SILK = item("magic_silk");
     public static final DeferredObject<Item> PURIFYING_ELIXIR = item("purifying_elixir", PurifyingElixirItem::new, true, true);
@@ -174,104 +174,104 @@ public final class EBItems {
     public static final DeferredObject<Item> WIZARD_LEGGINGS_SORCERY = armor("wizard_leggings_sorcery", ArmorItem.Type.LEGGINGS, Elements.SORCERY);
     public static final DeferredObject<Item> WIZARD_BOOTS_SORCERY = armor("wizard_boots_sorcery", ArmorItem.Type.BOOTS, Elements.SORCERY);
     // Sage Armors
-    public static final DeferredObject<Item> SAGE_HAT = armor("sage_hat", WizardArmorType.SAGE, ArmorItem.Type.HELMET, null);
-    public static final DeferredObject<Item> SAGE_ROBE = armor("sage_robe", WizardArmorType.SAGE, ArmorItem.Type.CHESTPLATE, null);
-    public static final DeferredObject<Item> SAGE_LEGGINGS = armor("sage_leggings", WizardArmorType.SAGE, ArmorItem.Type.LEGGINGS, null);
-    public static final DeferredObject<Item> SAGE_BOOTS = armor("sage_boots", WizardArmorType.SAGE, ArmorItem.Type.BOOTS, null);
-    public static final DeferredObject<Item> SAGE_HAT_EARTH = armor("sage_hat_earth", WizardArmorType.SAGE, ArmorItem.Type.HELMET, Elements.EARTH);
-    public static final DeferredObject<Item> SAGE_ROBE_EARTH = armor("sage_robe_earth", WizardArmorType.SAGE, ArmorItem.Type.CHESTPLATE, Elements.EARTH);
-    public static final DeferredObject<Item> SAGE_LEGGINGS_EARTH = armor("sage_leggings_earth", WizardArmorType.SAGE, ArmorItem.Type.LEGGINGS, Elements.EARTH);
-    public static final DeferredObject<Item> SAGE_BOOTS_EARTH = armor("sage_boots_earth", WizardArmorType.SAGE, ArmorItem.Type.BOOTS, Elements.EARTH);
-    public static final DeferredObject<Item> SAGE_HAT_FIRE = armor("sage_hat_fire", WizardArmorType.SAGE, ArmorItem.Type.HELMET, Elements.FIRE);
-    public static final DeferredObject<Item> SAGE_ROBE_FIRE = armor("sage_robe_fire", WizardArmorType.SAGE, ArmorItem.Type.CHESTPLATE, Elements.FIRE);
-    public static final DeferredObject<Item> SAGE_LEGGINGS_FIRE = armor("sage_leggings_fire", WizardArmorType.SAGE, ArmorItem.Type.LEGGINGS, Elements.FIRE);
-    public static final DeferredObject<Item> SAGE_BOOTS_FIRE = armor("sage_boots_fire", WizardArmorType.SAGE, ArmorItem.Type.BOOTS, Elements.FIRE);
-    public static final DeferredObject<Item> SAGE_HAT_HEALING = armor("sage_hat_healing", WizardArmorType.SAGE, ArmorItem.Type.HELMET, Elements.HEALING);
-    public static final DeferredObject<Item> SAGE_ROBE_HEALING = armor("sage_robe_healing", WizardArmorType.SAGE, ArmorItem.Type.CHESTPLATE, Elements.HEALING);
-    public static final DeferredObject<Item> SAGE_LEGGINGS_HEALING = armor("sage_leggings_healing", WizardArmorType.SAGE, ArmorItem.Type.LEGGINGS, Elements.HEALING);
-    public static final DeferredObject<Item> SAGE_BOOTS_HEALING = armor("sage_boots_healing", WizardArmorType.SAGE, ArmorItem.Type.BOOTS, Elements.HEALING);
-    public static final DeferredObject<Item> SAGE_HAT_ICE = armor("sage_hat_ice", WizardArmorType.SAGE, ArmorItem.Type.HELMET, Elements.ICE);
-    public static final DeferredObject<Item> SAGE_ROBE_ICE = armor("sage_robe_ice", WizardArmorType.SAGE, ArmorItem.Type.CHESTPLATE, Elements.ICE);
-    public static final DeferredObject<Item> SAGE_LEGGINGS_ICE = armor("sage_leggings_ice", WizardArmorType.SAGE, ArmorItem.Type.LEGGINGS, Elements.ICE);
-    public static final DeferredObject<Item> SAGE_BOOTS_ICE = armor("sage_boots_ice", WizardArmorType.SAGE, ArmorItem.Type.BOOTS, Elements.ICE);
-    public static final DeferredObject<Item> SAGE_HAT_LIGHTNING = armor("sage_hat_lightning", WizardArmorType.SAGE, ArmorItem.Type.HELMET, Elements.LIGHTNING);
-    public static final DeferredObject<Item> SAGE_ROBE_LIGHTNING = armor("sage_robe_lightning", WizardArmorType.SAGE, ArmorItem.Type.CHESTPLATE, Elements.LIGHTNING);
-    public static final DeferredObject<Item> SAGE_LEGGINGS_LIGHTNING = armor("sage_leggings_lightning", WizardArmorType.SAGE, ArmorItem.Type.LEGGINGS, Elements.LIGHTNING);
-    public static final DeferredObject<Item> SAGE_BOOTS_LIGHTNING = armor("sage_boots_lightning", WizardArmorType.SAGE, ArmorItem.Type.BOOTS, Elements.LIGHTNING);
-    public static final DeferredObject<Item> SAGE_HAT_NECROMANCY = armor("sage_hat_necromancy", WizardArmorType.SAGE, ArmorItem.Type.HELMET, Elements.NECROMANCY);
-    public static final DeferredObject<Item> SAGE_ROBE_NECROMANCY = armor("sage_robe_necromancy", WizardArmorType.SAGE, ArmorItem.Type.CHESTPLATE, Elements.NECROMANCY);
-    public static final DeferredObject<Item> SAGE_LEGGINGS_NECROMANCY = armor("sage_leggings_necromancy", WizardArmorType.SAGE, ArmorItem.Type.LEGGINGS, Elements.NECROMANCY);
-    public static final DeferredObject<Item> SAGE_BOOTS_NECROMANCY = armor("sage_boots_necromancy", WizardArmorType.SAGE, ArmorItem.Type.BOOTS, Elements.NECROMANCY);
-    public static final DeferredObject<Item> SAGE_HAT_SORCERY = armor("sage_hat_sorcery", WizardArmorType.SAGE, ArmorItem.Type.HELMET, Elements.SORCERY);
-    public static final DeferredObject<Item> SAGE_ROBE_SORCERY = armor("sage_robe_sorcery", WizardArmorType.SAGE, ArmorItem.Type.CHESTPLATE, Elements.SORCERY);
-    public static final DeferredObject<Item> SAGE_LEGGINGS_SORCERY = armor("sage_leggings_sorcery", WizardArmorType.SAGE, ArmorItem.Type.LEGGINGS, Elements.SORCERY);
-    public static final DeferredObject<Item> SAGE_BOOTS_SORCERY = armor("sage_boots_sorcery", WizardArmorType.SAGE, ArmorItem.Type.BOOTS, Elements.SORCERY);
+    public static final DeferredObject<Item> SAGE_HAT = armor("sage_hat", WizardArmorTypes.SAGE, ArmorItem.Type.HELMET, null);
+    public static final DeferredObject<Item> SAGE_ROBE = armor("sage_robe", WizardArmorTypes.SAGE, ArmorItem.Type.CHESTPLATE, null);
+    public static final DeferredObject<Item> SAGE_LEGGINGS = armor("sage_leggings", WizardArmorTypes.SAGE, ArmorItem.Type.LEGGINGS, null);
+    public static final DeferredObject<Item> SAGE_BOOTS = armor("sage_boots", WizardArmorTypes.SAGE, ArmorItem.Type.BOOTS, null);
+    public static final DeferredObject<Item> SAGE_HAT_EARTH = armor("sage_hat_earth", WizardArmorTypes.SAGE, ArmorItem.Type.HELMET, Elements.EARTH);
+    public static final DeferredObject<Item> SAGE_ROBE_EARTH = armor("sage_robe_earth", WizardArmorTypes.SAGE, ArmorItem.Type.CHESTPLATE, Elements.EARTH);
+    public static final DeferredObject<Item> SAGE_LEGGINGS_EARTH = armor("sage_leggings_earth", WizardArmorTypes.SAGE, ArmorItem.Type.LEGGINGS, Elements.EARTH);
+    public static final DeferredObject<Item> SAGE_BOOTS_EARTH = armor("sage_boots_earth", WizardArmorTypes.SAGE, ArmorItem.Type.BOOTS, Elements.EARTH);
+    public static final DeferredObject<Item> SAGE_HAT_FIRE = armor("sage_hat_fire", WizardArmorTypes.SAGE, ArmorItem.Type.HELMET, Elements.FIRE);
+    public static final DeferredObject<Item> SAGE_ROBE_FIRE = armor("sage_robe_fire", WizardArmorTypes.SAGE, ArmorItem.Type.CHESTPLATE, Elements.FIRE);
+    public static final DeferredObject<Item> SAGE_LEGGINGS_FIRE = armor("sage_leggings_fire", WizardArmorTypes.SAGE, ArmorItem.Type.LEGGINGS, Elements.FIRE);
+    public static final DeferredObject<Item> SAGE_BOOTS_FIRE = armor("sage_boots_fire", WizardArmorTypes.SAGE, ArmorItem.Type.BOOTS, Elements.FIRE);
+    public static final DeferredObject<Item> SAGE_HAT_HEALING = armor("sage_hat_healing", WizardArmorTypes.SAGE, ArmorItem.Type.HELMET, Elements.HEALING);
+    public static final DeferredObject<Item> SAGE_ROBE_HEALING = armor("sage_robe_healing", WizardArmorTypes.SAGE, ArmorItem.Type.CHESTPLATE, Elements.HEALING);
+    public static final DeferredObject<Item> SAGE_LEGGINGS_HEALING = armor("sage_leggings_healing", WizardArmorTypes.SAGE, ArmorItem.Type.LEGGINGS, Elements.HEALING);
+    public static final DeferredObject<Item> SAGE_BOOTS_HEALING = armor("sage_boots_healing", WizardArmorTypes.SAGE, ArmorItem.Type.BOOTS, Elements.HEALING);
+    public static final DeferredObject<Item> SAGE_HAT_ICE = armor("sage_hat_ice", WizardArmorTypes.SAGE, ArmorItem.Type.HELMET, Elements.ICE);
+    public static final DeferredObject<Item> SAGE_ROBE_ICE = armor("sage_robe_ice", WizardArmorTypes.SAGE, ArmorItem.Type.CHESTPLATE, Elements.ICE);
+    public static final DeferredObject<Item> SAGE_LEGGINGS_ICE = armor("sage_leggings_ice", WizardArmorTypes.SAGE, ArmorItem.Type.LEGGINGS, Elements.ICE);
+    public static final DeferredObject<Item> SAGE_BOOTS_ICE = armor("sage_boots_ice", WizardArmorTypes.SAGE, ArmorItem.Type.BOOTS, Elements.ICE);
+    public static final DeferredObject<Item> SAGE_HAT_LIGHTNING = armor("sage_hat_lightning", WizardArmorTypes.SAGE, ArmorItem.Type.HELMET, Elements.LIGHTNING);
+    public static final DeferredObject<Item> SAGE_ROBE_LIGHTNING = armor("sage_robe_lightning", WizardArmorTypes.SAGE, ArmorItem.Type.CHESTPLATE, Elements.LIGHTNING);
+    public static final DeferredObject<Item> SAGE_LEGGINGS_LIGHTNING = armor("sage_leggings_lightning", WizardArmorTypes.SAGE, ArmorItem.Type.LEGGINGS, Elements.LIGHTNING);
+    public static final DeferredObject<Item> SAGE_BOOTS_LIGHTNING = armor("sage_boots_lightning", WizardArmorTypes.SAGE, ArmorItem.Type.BOOTS, Elements.LIGHTNING);
+    public static final DeferredObject<Item> SAGE_HAT_NECROMANCY = armor("sage_hat_necromancy", WizardArmorTypes.SAGE, ArmorItem.Type.HELMET, Elements.NECROMANCY);
+    public static final DeferredObject<Item> SAGE_ROBE_NECROMANCY = armor("sage_robe_necromancy", WizardArmorTypes.SAGE, ArmorItem.Type.CHESTPLATE, Elements.NECROMANCY);
+    public static final DeferredObject<Item> SAGE_LEGGINGS_NECROMANCY = armor("sage_leggings_necromancy", WizardArmorTypes.SAGE, ArmorItem.Type.LEGGINGS, Elements.NECROMANCY);
+    public static final DeferredObject<Item> SAGE_BOOTS_NECROMANCY = armor("sage_boots_necromancy", WizardArmorTypes.SAGE, ArmorItem.Type.BOOTS, Elements.NECROMANCY);
+    public static final DeferredObject<Item> SAGE_HAT_SORCERY = armor("sage_hat_sorcery", WizardArmorTypes.SAGE, ArmorItem.Type.HELMET, Elements.SORCERY);
+    public static final DeferredObject<Item> SAGE_ROBE_SORCERY = armor("sage_robe_sorcery", WizardArmorTypes.SAGE, ArmorItem.Type.CHESTPLATE, Elements.SORCERY);
+    public static final DeferredObject<Item> SAGE_LEGGINGS_SORCERY = armor("sage_leggings_sorcery", WizardArmorTypes.SAGE, ArmorItem.Type.LEGGINGS, Elements.SORCERY);
+    public static final DeferredObject<Item> SAGE_BOOTS_SORCERY = armor("sage_boots_sorcery", WizardArmorTypes.SAGE, ArmorItem.Type.BOOTS, Elements.SORCERY);
     //Warlock Armors
-    public static final DeferredObject<Item> WARLOCK_HOOD = armor("warlock_hood", WizardArmorType.WARLOCK, ArmorItem.Type.HELMET, null);
-    public static final DeferredObject<Item> WARLOCK_ROBE = armor("warlock_robe", WizardArmorType.WARLOCK, ArmorItem.Type.CHESTPLATE, null);
-    public static final DeferredObject<Item> WARLOCK_LEGGINGS = armor("warlock_leggings", WizardArmorType.WARLOCK, ArmorItem.Type.LEGGINGS, null);
-    public static final DeferredObject<Item> WARLOCK_BOOTS = armor("warlock_boots", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, null);
-    public static final DeferredObject<Item> WARLOCK_HOOD_EARTH = armor("warlock_hood_earth", WizardArmorType.WARLOCK, ArmorItem.Type.HELMET, Elements.EARTH); //Earth Warlock Armor
-    public static final DeferredObject<Item> WARLOCK_ROBE_EARTH = armor("warlock_robe_earth", WizardArmorType.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.EARTH);
-    public static final DeferredObject<Item> WARLOCK_LEGGINGS_EARTH = armor("warlock_leggings_earth", WizardArmorType.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.EARTH);
-    public static final DeferredObject<Item> WARLOCK_BOOTS_EARTH = armor("warlock_boots_earth", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, Elements.EARTH);
-    public static final DeferredObject<Item> WARLOCK_HOOD_FIRE = armor("warlock_hood_fire", WizardArmorType.WARLOCK, ArmorItem.Type.HELMET, Elements.FIRE); //Fire Warlock Armor
-    public static final DeferredObject<Item> WARLOCK_ROBE_FIRE = armor("warlock_robe_fire", WizardArmorType.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.FIRE);
-    public static final DeferredObject<Item> WARLOCK_LEGGINGS_FIRE = armor("warlock_leggings_fire", WizardArmorType.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.FIRE);
-    public static final DeferredObject<Item> WARLOCK_BOOTS_FIRE = armor("warlock_boots_fire", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, Elements.FIRE);
-    public static final DeferredObject<Item> WARLOCK_HOOD_HEALING = armor("warlock_hood_healing", WizardArmorType.WARLOCK, ArmorItem.Type.HELMET, Elements.HEALING); //Healing Warlock Armor
-    public static final DeferredObject<Item> WARLOCK_ROBE_HEALING = armor("warlock_robe_healing", WizardArmorType.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.HEALING);
-    public static final DeferredObject<Item> WARLOCK_LEGGINGS_HEALING = armor("warlock_leggings_healing", WizardArmorType.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.HEALING);
-    public static final DeferredObject<Item> WARLOCK_BOOTS_HEALING = armor("warlock_boots_healing", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, Elements.HEALING);
-    public static final DeferredObject<Item> WARLOCK_HOOD_ICE = armor("warlock_hood_ice", WizardArmorType.WARLOCK, ArmorItem.Type.HELMET, Elements.ICE); //Ice Warlock Armor
-    public static final DeferredObject<Item> WARLOCK_ROBE_ICE = armor("warlock_robe_ice", WizardArmorType.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.ICE);
-    public static final DeferredObject<Item> WARLOCK_LEGGINGS_ICE = armor("warlock_leggings_ice", WizardArmorType.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.ICE);
-    public static final DeferredObject<Item> WARLOCK_BOOTS_ICE = armor("warlock_boots_ice", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, Elements.ICE);
-    public static final DeferredObject<Item> WARLOCK_HOOD_LIGHTNING = armor("warlock_hood_lightning", WizardArmorType.WARLOCK, ArmorItem.Type.HELMET, Elements.LIGHTNING); //Lightning Warlock Armor
-    public static final DeferredObject<Item> WARLOCK_ROBE_LIGHTNING = armor("warlock_robe_lightning", WizardArmorType.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.LIGHTNING);
-    public static final DeferredObject<Item> WARLOCK_LEGGINGS_LIGHTNING = armor("warlock_leggings_lightning", WizardArmorType.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.LIGHTNING);
-    public static final DeferredObject<Item> WARLOCK_BOOTS_LIGHTNING = armor("warlock_boots_lightning", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, Elements.LIGHTNING);
-    public static final DeferredObject<Item> WARLOCK_HOOD_NECROMANCY = armor("warlock_hood_necromancy", WizardArmorType.WARLOCK, ArmorItem.Type.HELMET, Elements.NECROMANCY); //Necromancy Warlock Armor
-    public static final DeferredObject<Item> WARLOCK_ROBE_NECROMANCY = armor("warlock_robe_necromancy", WizardArmorType.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.NECROMANCY);
-    public static final DeferredObject<Item> WARLOCK_LEGGINGS_NECROMANCY = armor("warlock_leggings_necromancy", WizardArmorType.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.NECROMANCY);
-    public static final DeferredObject<Item> WARLOCK_BOOTS_NECROMANCY = armor("warlock_boots_necromancy", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, Elements.NECROMANCY);
-    public static final DeferredObject<Item> WARLOCK_HOOD_SORCERY = armor("warlock_hood_sorcery", WizardArmorType.WARLOCK, ArmorItem.Type.HELMET, Elements.SORCERY); //Sorcery Warlock Armor
-    public static final DeferredObject<Item> WARLOCK_ROBE_SORCERY = armor("warlock_robe_sorcery", WizardArmorType.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.SORCERY);
-    public static final DeferredObject<Item> WARLOCK_LEGGINGS_SORCERY = armor("warlock_leggings_sorcery", WizardArmorType.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.SORCERY);
-    public static final DeferredObject<Item> WARLOCK_BOOTS_SORCERY = armor("warlock_boots_sorcery", WizardArmorType.WARLOCK, ArmorItem.Type.BOOTS, Elements.SORCERY);
+    public static final DeferredObject<Item> WARLOCK_HOOD = armor("warlock_hood", WizardArmorTypes.WARLOCK, ArmorItem.Type.HELMET, null);
+    public static final DeferredObject<Item> WARLOCK_ROBE = armor("warlock_robe", WizardArmorTypes.WARLOCK, ArmorItem.Type.CHESTPLATE, null);
+    public static final DeferredObject<Item> WARLOCK_LEGGINGS = armor("warlock_leggings", WizardArmorTypes.WARLOCK, ArmorItem.Type.LEGGINGS, null);
+    public static final DeferredObject<Item> WARLOCK_BOOTS = armor("warlock_boots", WizardArmorTypes.WARLOCK, ArmorItem.Type.BOOTS, null);
+    public static final DeferredObject<Item> WARLOCK_HOOD_EARTH = armor("warlock_hood_earth", WizardArmorTypes.WARLOCK, ArmorItem.Type.HELMET, Elements.EARTH); //Earth Warlock Armor
+    public static final DeferredObject<Item> WARLOCK_ROBE_EARTH = armor("warlock_robe_earth", WizardArmorTypes.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.EARTH);
+    public static final DeferredObject<Item> WARLOCK_LEGGINGS_EARTH = armor("warlock_leggings_earth", WizardArmorTypes.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.EARTH);
+    public static final DeferredObject<Item> WARLOCK_BOOTS_EARTH = armor("warlock_boots_earth", WizardArmorTypes.WARLOCK, ArmorItem.Type.BOOTS, Elements.EARTH);
+    public static final DeferredObject<Item> WARLOCK_HOOD_FIRE = armor("warlock_hood_fire", WizardArmorTypes.WARLOCK, ArmorItem.Type.HELMET, Elements.FIRE); //Fire Warlock Armor
+    public static final DeferredObject<Item> WARLOCK_ROBE_FIRE = armor("warlock_robe_fire", WizardArmorTypes.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.FIRE);
+    public static final DeferredObject<Item> WARLOCK_LEGGINGS_FIRE = armor("warlock_leggings_fire", WizardArmorTypes.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.FIRE);
+    public static final DeferredObject<Item> WARLOCK_BOOTS_FIRE = armor("warlock_boots_fire", WizardArmorTypes.WARLOCK, ArmorItem.Type.BOOTS, Elements.FIRE);
+    public static final DeferredObject<Item> WARLOCK_HOOD_HEALING = armor("warlock_hood_healing", WizardArmorTypes.WARLOCK, ArmorItem.Type.HELMET, Elements.HEALING); //Healing Warlock Armor
+    public static final DeferredObject<Item> WARLOCK_ROBE_HEALING = armor("warlock_robe_healing", WizardArmorTypes.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.HEALING);
+    public static final DeferredObject<Item> WARLOCK_LEGGINGS_HEALING = armor("warlock_leggings_healing", WizardArmorTypes.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.HEALING);
+    public static final DeferredObject<Item> WARLOCK_BOOTS_HEALING = armor("warlock_boots_healing", WizardArmorTypes.WARLOCK, ArmorItem.Type.BOOTS, Elements.HEALING);
+    public static final DeferredObject<Item> WARLOCK_HOOD_ICE = armor("warlock_hood_ice", WizardArmorTypes.WARLOCK, ArmorItem.Type.HELMET, Elements.ICE); //Ice Warlock Armor
+    public static final DeferredObject<Item> WARLOCK_ROBE_ICE = armor("warlock_robe_ice", WizardArmorTypes.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.ICE);
+    public static final DeferredObject<Item> WARLOCK_LEGGINGS_ICE = armor("warlock_leggings_ice", WizardArmorTypes.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.ICE);
+    public static final DeferredObject<Item> WARLOCK_BOOTS_ICE = armor("warlock_boots_ice", WizardArmorTypes.WARLOCK, ArmorItem.Type.BOOTS, Elements.ICE);
+    public static final DeferredObject<Item> WARLOCK_HOOD_LIGHTNING = armor("warlock_hood_lightning", WizardArmorTypes.WARLOCK, ArmorItem.Type.HELMET, Elements.LIGHTNING); //Lightning Warlock Armor
+    public static final DeferredObject<Item> WARLOCK_ROBE_LIGHTNING = armor("warlock_robe_lightning", WizardArmorTypes.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.LIGHTNING);
+    public static final DeferredObject<Item> WARLOCK_LEGGINGS_LIGHTNING = armor("warlock_leggings_lightning", WizardArmorTypes.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.LIGHTNING);
+    public static final DeferredObject<Item> WARLOCK_BOOTS_LIGHTNING = armor("warlock_boots_lightning", WizardArmorTypes.WARLOCK, ArmorItem.Type.BOOTS, Elements.LIGHTNING);
+    public static final DeferredObject<Item> WARLOCK_HOOD_NECROMANCY = armor("warlock_hood_necromancy", WizardArmorTypes.WARLOCK, ArmorItem.Type.HELMET, Elements.NECROMANCY); //Necromancy Warlock Armor
+    public static final DeferredObject<Item> WARLOCK_ROBE_NECROMANCY = armor("warlock_robe_necromancy", WizardArmorTypes.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.NECROMANCY);
+    public static final DeferredObject<Item> WARLOCK_LEGGINGS_NECROMANCY = armor("warlock_leggings_necromancy", WizardArmorTypes.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.NECROMANCY);
+    public static final DeferredObject<Item> WARLOCK_BOOTS_NECROMANCY = armor("warlock_boots_necromancy", WizardArmorTypes.WARLOCK, ArmorItem.Type.BOOTS, Elements.NECROMANCY);
+    public static final DeferredObject<Item> WARLOCK_HOOD_SORCERY = armor("warlock_hood_sorcery", WizardArmorTypes.WARLOCK, ArmorItem.Type.HELMET, Elements.SORCERY); //Sorcery Warlock Armor
+    public static final DeferredObject<Item> WARLOCK_ROBE_SORCERY = armor("warlock_robe_sorcery", WizardArmorTypes.WARLOCK, ArmorItem.Type.CHESTPLATE, Elements.SORCERY);
+    public static final DeferredObject<Item> WARLOCK_LEGGINGS_SORCERY = armor("warlock_leggings_sorcery", WizardArmorTypes.WARLOCK, ArmorItem.Type.LEGGINGS, Elements.SORCERY);
+    public static final DeferredObject<Item> WARLOCK_BOOTS_SORCERY = armor("warlock_boots_sorcery", WizardArmorTypes.WARLOCK, ArmorItem.Type.BOOTS, Elements.SORCERY);
     //Battle Mage Armors
-    public static final DeferredObject<Item> BATTLEMAGE_HELMET = armor("battlemage_helmet", WizardArmorType.BATTLEMAGE, ArmorItem.Type.HELMET, null);
-    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE = armor("battlemage_chestplate", WizardArmorType.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, null);
-    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS = armor("battlemage_leggings", WizardArmorType.BATTLEMAGE, ArmorItem.Type.LEGGINGS, null);
-    public static final DeferredObject<Item> BATTLEMAGE_BOOTS = armor("battlemage_boots", WizardArmorType.BATTLEMAGE, ArmorItem.Type.BOOTS, null);
-    public static final DeferredObject<Item> BATTLEMAGE_HELMET_EARTH = armor("battlemage_helmet_earth", WizardArmorType.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.EARTH);
-    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_EARTH = armor("battlemage_chestplate_earth", WizardArmorType.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.EARTH);
-    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_EARTH = armor("battlemage_leggings_earth", WizardArmorType.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.EARTH);
-    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_EARTH = armor("battlemage_boots_earth", WizardArmorType.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.EARTH);
-    public static final DeferredObject<Item> BATTLEMAGE_HELMET_FIRE = armor("battlemage_helmet_fire", WizardArmorType.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.FIRE);
-    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_FIRE = armor("battlemage_chestplate_fire", WizardArmorType.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.FIRE);
-    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_FIRE = armor("battlemage_leggings_fire", WizardArmorType.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.FIRE);
-    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_FIRE = armor("battlemage_boots_fire", WizardArmorType.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.FIRE);
-    public static final DeferredObject<Item> BATTLEMAGE_HELMET_HEALING = armor("battlemage_helmet_healing", WizardArmorType.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.HEALING);
-    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_HEALING = armor("battlemage_chestplate_healing", WizardArmorType.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.HEALING);
-    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_HEALING = armor("battlemage_leggings_healing", WizardArmorType.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.HEALING);
-    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_HEALING = armor("battlemage_boots_healing", WizardArmorType.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.HEALING);
-    public static final DeferredObject<Item> BATTLEMAGE_HELMET_ICE = armor("battlemage_helmet_ice", WizardArmorType.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.ICE);
-    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_ICE = armor("battlemage_chestplate_ice", WizardArmorType.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.ICE);
-    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_ICE = armor("battlemage_leggings_ice", WizardArmorType.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.ICE);
-    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_ICE = armor("battlemage_boots_ice", WizardArmorType.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.ICE);
-    public static final DeferredObject<Item> BATTLEMAGE_HELMET_LIGHTNING = armor("battlemage_helmet_lightning", WizardArmorType.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.LIGHTNING);
-    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_LIGHTNING = armor("battlemage_chestplate_lightning", WizardArmorType.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.LIGHTNING);
-    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_LIGHTNING = armor("battlemage_leggings_lightning", WizardArmorType.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.LIGHTNING);
-    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_LIGHTNING = armor("battlemage_boots_lightning", WizardArmorType.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.LIGHTNING);
-    public static final DeferredObject<Item> BATTLEMAGE_HELMET_NECROMANCY = armor("battlemage_helmet_necromancy", WizardArmorType.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.NECROMANCY);
-    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_NECROMANCY = armor("battlemage_chestplate_necromancy", WizardArmorType.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.NECROMANCY);
-    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_NECROMANCY = armor("battlemage_leggings_necromancy", WizardArmorType.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.NECROMANCY);
-    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_NECROMANCY = armor("battlemage_boots_necromancy", WizardArmorType.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.NECROMANCY);
-    public static final DeferredObject<Item> BATTLEMAGE_HELMET_SORCERY = armor("battlemage_helmet_sorcery", WizardArmorType.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.SORCERY);
-    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_SORCERY = armor("battlemage_chestplate_sorcery", WizardArmorType.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.SORCERY);
-    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_SORCERY = armor("battlemage_leggings_sorcery", WizardArmorType.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.SORCERY);
-    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_SORCERY = armor("battlemage_boots_sorcery", WizardArmorType.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.SORCERY);
+    public static final DeferredObject<Item> BATTLEMAGE_HELMET = armor("battlemage_helmet", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.HELMET, null);
+    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE = armor("battlemage_chestplate", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, null);
+    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS = armor("battlemage_leggings", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.LEGGINGS, null);
+    public static final DeferredObject<Item> BATTLEMAGE_BOOTS = armor("battlemage_boots", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.BOOTS, null);
+    public static final DeferredObject<Item> BATTLEMAGE_HELMET_EARTH = armor("battlemage_helmet_earth", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.EARTH);
+    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_EARTH = armor("battlemage_chestplate_earth", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.EARTH);
+    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_EARTH = armor("battlemage_leggings_earth", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.EARTH);
+    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_EARTH = armor("battlemage_boots_earth", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.EARTH);
+    public static final DeferredObject<Item> BATTLEMAGE_HELMET_FIRE = armor("battlemage_helmet_fire", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.FIRE);
+    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_FIRE = armor("battlemage_chestplate_fire", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.FIRE);
+    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_FIRE = armor("battlemage_leggings_fire", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.FIRE);
+    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_FIRE = armor("battlemage_boots_fire", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.FIRE);
+    public static final DeferredObject<Item> BATTLEMAGE_HELMET_HEALING = armor("battlemage_helmet_healing", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.HEALING);
+    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_HEALING = armor("battlemage_chestplate_healing", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.HEALING);
+    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_HEALING = armor("battlemage_leggings_healing", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.HEALING);
+    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_HEALING = armor("battlemage_boots_healing", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.HEALING);
+    public static final DeferredObject<Item> BATTLEMAGE_HELMET_ICE = armor("battlemage_helmet_ice", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.ICE);
+    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_ICE = armor("battlemage_chestplate_ice", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.ICE);
+    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_ICE = armor("battlemage_leggings_ice", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.ICE);
+    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_ICE = armor("battlemage_boots_ice", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.ICE);
+    public static final DeferredObject<Item> BATTLEMAGE_HELMET_LIGHTNING = armor("battlemage_helmet_lightning", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.LIGHTNING);
+    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_LIGHTNING = armor("battlemage_chestplate_lightning", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.LIGHTNING);
+    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_LIGHTNING = armor("battlemage_leggings_lightning", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.LIGHTNING);
+    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_LIGHTNING = armor("battlemage_boots_lightning", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.LIGHTNING);
+    public static final DeferredObject<Item> BATTLEMAGE_HELMET_NECROMANCY = armor("battlemage_helmet_necromancy", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.NECROMANCY);
+    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_NECROMANCY = armor("battlemage_chestplate_necromancy", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.NECROMANCY);
+    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_NECROMANCY = armor("battlemage_leggings_necromancy", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.NECROMANCY);
+    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_NECROMANCY = armor("battlemage_boots_necromancy", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.NECROMANCY);
+    public static final DeferredObject<Item> BATTLEMAGE_HELMET_SORCERY = armor("battlemage_helmet_sorcery", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.HELMET, Elements.SORCERY);
+    public static final DeferredObject<Item> BATTLEMAGE_CHESTPLATE_SORCERY = armor("battlemage_chestplate_sorcery", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.CHESTPLATE, Elements.SORCERY);
+    public static final DeferredObject<Item> BATTLEMAGE_LEGGINGS_SORCERY = armor("battlemage_leggings_sorcery", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.LEGGINGS, Elements.SORCERY);
+    public static final DeferredObject<Item> BATTLEMAGE_BOOTS_SORCERY = armor("battlemage_boots_sorcery", WizardArmorTypes.BATTLEMAGE, ArmorItem.Type.BOOTS, Elements.SORCERY);
     // Charms
     public static final DeferredObject<Item> CHARM_ABSEILING = charmArtifact("charm_abseiling", Rarity.RARE, null);
     public static final DeferredObject<Item> CHARM_AUTO_SMELT = charmArtifact("charm_auto_smelt", Rarity.RARE, null);
@@ -284,7 +284,7 @@ public final class EBItems {
     public static final DeferredObject<Item> CHARM_HUNGER_CASTING = charmArtifact("charm_hunger_casting", Rarity.RARE, new HungerCastingCharmEffect());
     public static final DeferredObject<Item> CHARM_LAVA_WALKING = charmArtifact("charm_lava_walking", Rarity.EPIC, null);
     public static final DeferredObject<Item> CHARM_LIGHT = charmArtifact("charm_light", Rarity.RARE, null);
-    public static final DeferredObject<Item> CHARM_MINION_HEALTH = charmArtifact("charm_minion_health", Rarity.UNCOMMON, changeModifiersIfCastingType(SpellType.MINION, SpellModifiers.HEALTH_MODIFIER, 1.5f, SpellModifiers.Operation.MULTIPLY));
+    public static final DeferredObject<Item> CHARM_MINION_HEALTH = charmArtifact("charm_minion_health", Rarity.UNCOMMON, changeModifiersIfCastingType(SpellTypes.MINION, SpellModifiers.HEALTH_MODIFIER, 1.5f, SpellModifiers.Operation.MULTIPLY));
     public static final DeferredObject<Item> CHARM_MINION_VARIANTS = charmArtifact("charm_minion_variants", Rarity.UNCOMMON, null);
     public static final DeferredObject<Item> CHARM_MOUNT_TELEPORTING = charmArtifact("charm_mount_teleporting", Rarity.RARE, null);
     public static final DeferredObject<Item> CHARM_MOVE_SPEED = charmArtifact("charm_move_speed", Rarity.RARE, null);
@@ -409,8 +409,8 @@ public final class EBItems {
     /**
      * Add armor upgrades with a default model and inside the item creative tab
      */
-    static DeferredObject<Item> armorUpgrade(String name) {
-        return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(1)), true, true);
+    static DeferredObject<Item> armorUpgrade(String name, WizardArmorMaterial material) {
+        return item(name, () -> new ArmorUpgradeItem(new Item.Properties().stacksTo(1), material), true, true);
     }
 
     /**
@@ -423,14 +423,14 @@ public final class EBItems {
     /**
      * Add armor with a default model and not inside the default item creative tab
      */
-    static DeferredObject<Item> armor(String name, WizardArmorType wizardArmorType, ArmorItem.Type type, Element element) {
-        if (wizardArmorType.equals(WizardArmorType.WIZARD)) {
+    static DeferredObject<Item> armor(String name, WizardArmorMaterial wizardArmorType, ArmorItem.Type type, Element element) {
+        if (wizardArmorType.equals(WizardArmorTypes.WIZARD)) {
             return armor(name, () -> new WizardArmorItem(wizardArmorType, type, element), type);
-        } else if (wizardArmorType.equals(WizardArmorType.BATTLEMAGE)) {
+        } else if (wizardArmorType.equals(WizardArmorTypes.BATTLEMAGE)) {
             return armor(name, () -> new BattleMageArmorItem(type, element), type);
-        } else if (wizardArmorType.equals(WizardArmorType.SAGE)) {
+        } else if (wizardArmorType.equals(WizardArmorTypes.SAGE)) {
             return armor(name, () -> new SageArmorItem(type, element), type);
-        } else if (wizardArmorType.equals(WizardArmorType.WARLOCK)) {
+        } else if (wizardArmorType.equals(WizardArmorTypes.WARLOCK)) {
             return armor(name, () -> new WarlockArmorItem(type, element), type);
         }
 
@@ -442,7 +442,7 @@ public final class EBItems {
      * Add armor with a default model and not inside the default item creative tab
      */
     static DeferredObject<Item> armor(String name, ArmorItem.Type type, Element element) {
-        return armor(name, () -> new WizardArmorItem(WizardArmorType.WIZARD, type, element), type);
+        return armor(name, () -> new WizardArmorItem(WizardArmorTypes.WIZARD, type, element), type);
     }
 
     /**

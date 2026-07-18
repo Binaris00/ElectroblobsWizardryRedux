@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -43,7 +43,7 @@ public class HealAlly extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT, 10, 0, 20)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.POINT, 10, 0, 20)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.HEALTH, 5F)
                 .build();

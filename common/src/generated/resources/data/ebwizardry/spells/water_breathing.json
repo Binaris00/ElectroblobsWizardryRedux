@@ -1,5 +1,5 @@
 {
-  "type": "buff",
+  "type": "ebwizardry:buff",
   "base_properties": {
     "effect.minecraft.water_breathing_duration": 1200,
     "effect.minecraft.water_breathing_strength": 0

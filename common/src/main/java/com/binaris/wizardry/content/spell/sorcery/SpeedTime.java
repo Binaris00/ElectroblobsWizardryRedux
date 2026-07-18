@@ -3,7 +3,7 @@ package com.binaris.wizardry.content.spell.sorcery;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -124,7 +124,7 @@ public class SpeedTime extends Spell {
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY,
-                        SpellType.UTILITY, SpellAction.POINT_UP, 15, 0, 0)
+                        SpellTypes.UTILITY, SpellAction.POINT_UP, 15, 0, 0)
                 .add(DefaultProperties.EFFECT_RADIUS)
                 .add(TIME_INCREMENT)
                 .add(EXTRA_TICKS)

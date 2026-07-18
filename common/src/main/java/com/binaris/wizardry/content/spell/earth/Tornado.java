@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.earth;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.entity.construct.TornadoConstruct;
@@ -29,7 +29,7 @@ public class Tornado extends ConstructSpell<TornadoConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellType.ATTACK, SpellAction.POINT, 35, 10, 80)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellTypes.ATTACK, SpellAction.POINT, 35, 10, 80)
                 .add(DefaultProperties.DURATION, 200)
                 .add(DefaultProperties.SPEED, 0.33F)
                 .add(DefaultProperties.EFFECT_RADIUS, 4)

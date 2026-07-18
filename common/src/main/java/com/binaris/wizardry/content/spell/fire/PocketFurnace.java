@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.fire;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -118,7 +118,7 @@ public class PocketFurnace extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 30, 0, 40)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellTypes.UTILITY, SpellAction.IMBUE, 30, 0, 40)
                 .add(ITEMS_SMELTED, 5)
                 .build();
     }

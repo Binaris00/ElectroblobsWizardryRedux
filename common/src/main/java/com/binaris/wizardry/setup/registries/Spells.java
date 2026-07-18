@@ -4,7 +4,7 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.spell.NoneSpell;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.entity.construct.*;
 import com.binaris.wizardry.content.entity.living.LightningWraith;
@@ -235,7 +235,7 @@ public final class Spells {
 
         MAGIC_MISSILE = spell("magic_missile", () -> new ArrowSpell<>(MagicMissileEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.NOVICE, Elements.MAGIC, SpellType.PROJECTILE, SpellAction.POINT, 5, 0, 5)
+                        .assignBaseProperties(SpellTiers.NOVICE, Elements.MAGIC, SpellTypes.PROJECTILE, SpellAction.POINT, 5, 0, 5)
                         .add(DefaultProperties.RANGE, 18f)
                         .add(DefaultProperties.DAMAGE, 3f)
                         .build()
@@ -253,7 +253,7 @@ public final class Spells {
 
         SMOKE_BOMB = spell("smoke_bomb", () -> new ProjectileSpell<>(SmokeBombEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.NOVICE, Elements.FIRE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 20)
+                        .assignBaseProperties(SpellTiers.NOVICE, Elements.FIRE, SpellTypes.PROJECTILE, SpellAction.POINT, 10, 0, 20)
                         .add(DefaultProperties.RANGE, 10f)
                         .add(DefaultProperties.EFFECT_RADIUS, 2)
                         .add(DefaultProperties.EFFECT_DURATION, 120)
@@ -262,7 +262,7 @@ public final class Spells {
 
         POISON_BOMB = spell("poison_bomb", () -> new ProjectileSpell<>(PoisonBombEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 25)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellTypes.PROJECTILE, SpellAction.POINT, 15, 0, 25)
                         .add(DefaultProperties.RANGE, 10f)
                         .add(DefaultProperties.DAMAGE, 5f)
                         .add(DefaultProperties.EFFECT_RADIUS, 3)
@@ -274,7 +274,7 @@ public final class Spells {
 
         FIREBOMB = spell("firebomb", () -> new ProjectileSpell<>(FireBombEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 25)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellTypes.PROJECTILE, SpellAction.POINT, 15, 0, 25)
                         .add(DefaultProperties.RANGE, 10f)
                         .add(DefaultProperties.DIRECT_DAMAGE, 5f)
                         .add(DefaultProperties.SPLASH_DAMAGE, 3f)
@@ -285,7 +285,7 @@ public final class Spells {
 
         THUNDERBOLT = spell("thunderbolt", () -> new ProjectileSpell<>(ThunderboltEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.NOVICE, Elements.LIGHTNING, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 15)
+                        .assignBaseProperties(SpellTiers.NOVICE, Elements.LIGHTNING, SpellTypes.PROJECTILE, SpellAction.POINT, 10, 0, 15)
                         .add(DefaultProperties.RANGE, 12f)
                         .add(DefaultProperties.DAMAGE, 3f)
                         .add(DefaultProperties.KNOCKBACK, 0.2f)
@@ -295,7 +295,7 @@ public final class Spells {
 
         DART = spell("dart", () -> new ArrowSpell<>(DartEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.NOVICE, Elements.EARTH, SpellType.PROJECTILE, SpellAction.POINT, 5, 0, 10)
+                        .assignBaseProperties(SpellTiers.NOVICE, Elements.EARTH, SpellTypes.PROJECTILE, SpellAction.POINT, 5, 0, 10)
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 4F)
                         .add(DefaultProperties.EFFECT_DURATION, 200)
@@ -311,7 +311,7 @@ public final class Spells {
 
         ICE_LANCE = spell("ice_lance", () -> new ArrowSpell<>(IceLanceEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.PROJECTILE, SpellAction.POINT, 20, 0, 20)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellTypes.PROJECTILE, SpellAction.POINT, 20, 0, 20)
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 10f)
                         .add(DefaultProperties.EFFECT_DURATION, 300)
@@ -321,7 +321,7 @@ public final class Spells {
 
         FIREBOLT = spell("firebolt", () -> new ProjectileSpell<>(FireBoltEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 10)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellTypes.PROJECTILE, SpellAction.POINT, 10, 0, 10)
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 5f)
                         .add(DefaultProperties.EFFECT_DURATION, 5)
@@ -330,7 +330,7 @@ public final class Spells {
 
         SPARK_BOMB = spell("spark_bomb", () -> new ProjectileSpell<>(SparkBombEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 25)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellTypes.PROJECTILE, SpellAction.POINT, 15, 0, 25)
                         .add(DefaultProperties.RANGE, 10F)
                         .add(DefaultProperties.SPLASH_DAMAGE, 4F)
                         .add(DefaultProperties.DIRECT_DAMAGE, 6F)
@@ -341,7 +341,7 @@ public final class Spells {
 
         ICE_BALL = spell("iceball", () -> new ProjectileSpell<>(IceBall::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 15)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellTypes.PROJECTILE, SpellAction.POINT, 10, 0, 15)
                         .add(DefaultProperties.RANGE, 20f)
                         .add(DefaultProperties.DAMAGE, 5f)
                         .add(DefaultProperties.EFFECT_DURATION, 100)
@@ -351,7 +351,7 @@ public final class Spells {
 
         ICE_SHARD = spell("ice_shard", () -> new ArrowSpell<>(IceShardEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 10)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellTypes.PROJECTILE, SpellAction.POINT, 10, 0, 10)
                         .add(DefaultProperties.RANGE, 15f)
                         .add(DefaultProperties.DAMAGE, 6f)
                         .add(DefaultProperties.EFFECT_DURATION, 200)
@@ -361,7 +361,7 @@ public final class Spells {
 
         ICE_CHARGE = spell("ice_charge", () -> new ProjectileSpell<>(IceChargeEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 10)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellTypes.PROJECTILE, SpellAction.POINT, 10, 0, 10)
                         .add(DefaultProperties.RANGE, 20f)
                         .add(DefaultProperties.DAMAGE, 4f)
                         .add(DefaultProperties.EFFECT_DURATION, 100)
@@ -372,7 +372,7 @@ public final class Spells {
 
         FIREBALL = spell("fireball", () -> new ProjectileSpell<>(MagicFireballEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 15)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellTypes.PROJECTILE, SpellAction.POINT, 10, 0, 15)
                         .add(DefaultProperties.RANGE, 20f)
                         .add(DefaultProperties.DAMAGE, 5f)
                         .add(DefaultProperties.EFFECT_DURATION, 5)
@@ -381,7 +381,7 @@ public final class Spells {
 
         HOMING_SPARK = spell("homing_spark", () -> new ProjectileSpell<>(SparkEntity::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.PROJECTILE, SpellAction.POINT, 10, 0, 20)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellTypes.PROJECTILE, SpellAction.POINT, 10, 0, 20)
                         .add(DefaultProperties.RANGE, 25f)
                         .add(DefaultProperties.DAMAGE, 6f)
                         .add(DefaultProperties.SEEKING_STRENGTH, 5)
@@ -390,7 +390,7 @@ public final class Spells {
 
         LIGHTNING_ARROW = spell("lightning_arrow", () -> new ArrowSpell<>(LightningArrow::new).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.PROJECTILE, SpellAction.POINT, 15, 0, 20)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellTypes.PROJECTILE, SpellAction.POINT, 15, 0, 20)
                         .add(DefaultProperties.RANGE, 25f)
                         .add(DefaultProperties.DAMAGE, 7f)
                         .build()
@@ -398,7 +398,7 @@ public final class Spells {
 
         FORCE_ORB = spell("force_orb", () -> new ProjectileSpell<>(ForceOrbEntity::new)
                 .soundValues(0.5f, 0.4f, 0.2f).assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.PROJECTILE, SpellAction.POINT, 20, 0, 20)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellTypes.PROJECTILE, SpellAction.POINT, 20, 0, 20)
                         .add(DefaultProperties.RANGE, 10F)
                         .add(DefaultProperties.DAMAGE, 4F)
                         .add(DefaultProperties.BLAST_RADIUS, 4F)
@@ -407,7 +407,7 @@ public final class Spells {
 
         DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrbEntity::new)
                 .soundValues(0.5f, 0.4f, 0.2f).assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.PROJECTILE, SpellAction.POINT, 20, 0, 20)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellTypes.PROJECTILE, SpellAction.POINT, 20, 0, 20)
                         .add(DefaultProperties.RANGE, 30F)
                         .add(DefaultProperties.DAMAGE, 8F)
                         .add(DefaultProperties.EFFECT_DURATION, 150)
@@ -415,7 +415,7 @@ public final class Spells {
 
         FIRE_RESISTANCE = spell("fire_resistance", () -> new BuffSpell(1, 0.5f, 0, () -> MobEffects.FIRE_RESISTANCE).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.DEFENCE, SpellAction.POINT_UP, 20, 15, 80)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.DEFENCE, SpellAction.POINT_UP, 20, 15, 80)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.FIRE_RESISTANCE), 600)
                         .add(BuffSpell.getEffectStrengthProperty(MobEffects.FIRE_RESISTANCE), 0)
                         .build()
@@ -423,7 +423,7 @@ public final class Spells {
 
         DARK_VISION = spell("dark_vision", () -> new BuffSpell(0, 0.4f, 0.7f, () -> MobEffects.NIGHT_VISION).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.BUFF, SpellAction.POINT_UP, 20, 0, 40)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellTypes.BUFF, SpellAction.POINT_UP, 20, 0, 40)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.NIGHT_VISION), 900)
                         .add(BuffSpell.getEffectStrengthProperty(MobEffects.NIGHT_VISION), 1)
                         .build()
@@ -431,7 +431,7 @@ public final class Spells {
 
         FONT_OF_VITALITY = spell("font_of_vitality", () -> new BuffSpell(1, 0.8f, 0.3f, () -> MobEffects.ABSORPTION, () -> MobEffects.REGENERATION).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.MASTER, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 75, 20, 300)
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.POINT_UP, 75, 20, 300)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.ABSORPTION), 1200)
                         .add(BuffSpell.getEffectStrengthProperty(MobEffects.ABSORPTION), 1)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.REGENERATION), 300)
@@ -443,7 +443,7 @@ public final class Spells {
 
         INVISIBILITY = spell("invisibility", () -> new BuffSpell(0, 0.5f, 0.5f, () -> MobEffects.INVISIBILITY).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.BUFF, SpellAction.POINT_UP, 35, 15, 200)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellTypes.BUFF, SpellAction.POINT_UP, 35, 15, 200)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.INVISIBILITY), 600)
                         .add(BuffSpell.getEffectStrengthProperty(MobEffects.INVISIBILITY), 0)
                         .build()
@@ -451,7 +451,7 @@ public final class Spells {
 
         WATER_BREATHING = spell("water_breathing", () -> new BuffSpell(0.3f, 0.3f, 1, () -> MobEffects.WATER_BREATHING).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellType.BUFF, SpellAction.POINT_UP, 30, 15, 250)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellTypes.BUFF, SpellAction.POINT_UP, 30, 15, 250)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.WATER_BREATHING), 1200)
                         .add(BuffSpell.getEffectStrengthProperty(MobEffects.WATER_BREATHING), 0)
                         .build()
@@ -460,7 +460,7 @@ public final class Spells {
         AGILITY = spell("agility", () -> new BuffSpell(0.4f, 1.0f, 0.8f, () -> MobEffects.MOVEMENT_SPEED,
                 () -> MobEffects.JUMP).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.BUFF, SpellAction.POINT_UP, 20, 0, 40)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellTypes.BUFF, SpellAction.POINT_UP, 20, 0, 40)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.MOVEMENT_SPEED), 600)
                         .add(BuffSpell.getEffectStrengthProperty(MobEffects.MOVEMENT_SPEED), 1)
                         .add(BuffSpell.getEffectDurationProperty(MobEffects.JUMP), 600)
@@ -470,7 +470,7 @@ public final class Spells {
 
         FIRE_SKIN = spell("fire_skin", () -> new BuffSpell(1, 0.3f, 0, EBMobEffects.FIRESKIN).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.DEFENCE, SpellAction.POINT_UP, 40, 0, 250)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.DEFENCE, SpellAction.POINT_UP, 40, 0, 250)
                         .add(BuffSpell.getEffectDurationProperty(EBMobEffects.FIRESKIN.get()), 600)
                         .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.FIRESKIN.get()), 0)
                         .add(DefaultProperties.EFFECT_DURATION, 5)
@@ -480,7 +480,7 @@ public final class Spells {
 
         STATIC_AURA = spell("static_aura", () -> new BuffSpell(0, 0.5f, 0.7f, EBMobEffects.STATIC_AURA).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellType.DEFENCE, SpellAction.POINT_UP, 40, 0, 250)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellTypes.DEFENCE, SpellAction.POINT_UP, 40, 0, 250)
                         .add(BuffSpell.getEffectDurationProperty(EBMobEffects.STATIC_AURA.get()), 600)
                         .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.STATIC_AURA.get()), 0)
                         .add(DefaultProperties.DAMAGE, 4F)
@@ -489,7 +489,7 @@ public final class Spells {
 
         GREATER_WARD = spell("greater_ward", () -> new BuffSpell(0.75f, 0.6f, 0.8f, EBMobEffects.WARD).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 20, 10, 65)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellTypes.BUFF, SpellAction.POINT_UP, 20, 10, 65)
                         .add(BuffSpell.getEffectDurationProperty(EBMobEffects.WARD.get()), 600)
                         .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.WARD.get()), 1)
                         .build()
@@ -545,14 +545,14 @@ public final class Spells {
 
         OAK_FLESH = spell("oakflesh", () -> new BuffSpell(0.6f, 0.5f, 0.4f, EBMobEffects.OAKFLESH).soundValues(0.7f, 1.2f, 0.4f)
                 .assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 20, 0, 50)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.POINT_UP, 20, 0, 50)
                         .add(BuffSpell.getEffectDurationProperty(EBMobEffects.OAKFLESH.get()), 600)
                         .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.OAKFLESH.get()), 0)
                         .build()));
 
         FROST_STEP = spell("frost_step", () -> new BuffSpell(0.3f, 0.4f, 0.8f, EBMobEffects.FROST_STEP).soundValues(0.7f, 1.2f, 0.4f)
                 .assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.UTILITY, SpellAction.POINT_UP, 50, 0, 250)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellTypes.UTILITY, SpellAction.POINT_UP, 50, 0, 250)
                         .add(BuffSpell.getEffectDurationProperty(EBMobEffects.FROST_STEP.get()), 600)
                         .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.FROST_STEP.get()), 0)
                         .build()));
@@ -591,7 +591,7 @@ public final class Spells {
 
         BLIZZARD = spell("blizzard", () -> new ConstructRangedSpell<>(BlizzardConstruct::new, false)
                 .assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.CONSTRUCT, SpellAction.POINT, 40, 10, 100)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellTypes.CONSTRUCT, SpellAction.POINT, 40, 10, 100)
                         .add(DefaultProperties.DURATION, 600)
                         .add(DefaultProperties.RANGE, 20F)
                         .add(DefaultProperties.EFFECT_RADIUS, 3)
@@ -603,7 +603,7 @@ public final class Spells {
 
         FIRE_SIGIL = spell("fire_sigil", () -> new ConstructRangedSpell<>(FireSigilConstruct::new, true).floor(true)
                 .assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.CONSTRUCT, SpellAction.POINT, 20, 0, 40)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellTypes.CONSTRUCT, SpellAction.POINT, 20, 0, 40)
                         .add(DefaultProperties.RANGE, 10F)
                         .add(DefaultProperties.EFFECT_RADIUS, 1)
                         .add(DefaultProperties.DAMAGE, 6F)
@@ -612,7 +612,7 @@ public final class Spells {
 
         FROST_SIGIL = spell("frost_sigil", () -> new ConstructRangedSpell<>(FrostSigilConstruct::new, true).floor(true).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.CONSTRUCT, SpellAction.POINT, 20, 0, 40)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellTypes.CONSTRUCT, SpellAction.POINT, 20, 0, 40)
                         .add(DefaultProperties.RANGE, 10F)
                         .add(DefaultProperties.EFFECT_RADIUS, 1)
                         .add(DefaultProperties.DAMAGE, 8F)
@@ -622,7 +622,7 @@ public final class Spells {
 
         LIGHTNING_SIGIL = spell("lightning_sigil", () -> new ConstructRangedSpell<>(LightningSigilConstruct::new, true).floor(true).assignProperties(SpellProperties.builder()
                 .add(DefaultProperties.RANGE, 10F)
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.CONSTRUCT, SpellAction.POINT, 20, 0, 40)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellTypes.CONSTRUCT, SpellAction.POINT, 20, 0, 40)
                 .add(DefaultProperties.EFFECT_RADIUS, 1)
                 .add(DefaultProperties.DAMAGE, 6F)
                 .add(LightningSigilConstruct.SECOND_RANGE, 1)
@@ -635,7 +635,7 @@ public final class Spells {
 
         RING_OF_FIRE = spell("ring_of_fire", () -> new ConstructSpell<>(FireRingConstruct::new, false).floor(true)
                 .assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.CONSTRUCT, SpellAction.POINT, 30, 10, 100)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.CONSTRUCT, SpellAction.POINT, 30, 10, 100)
                         .add(DefaultProperties.DURATION, 600)
                         .add(DefaultProperties.EFFECT_RADIUS, 3)
                         .add(DefaultProperties.DAMAGE, 1F)
@@ -645,7 +645,7 @@ public final class Spells {
 
         HEALING_AURA = spell("healing_aura", () -> new ConstructSpell<>(HealAuraConstruct::new, false).floor(true)
                 .assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.CONSTRUCT, SpellAction.POINT_DOWN, 35, 15, 150)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellTypes.CONSTRUCT, SpellAction.POINT_DOWN, 35, 15, 150)
                         .add(DefaultProperties.DURATION, 600)
                         .add(DefaultProperties.EFFECT_RADIUS, 3)
                         .add(DefaultProperties.DAMAGE, 1F)
@@ -656,7 +656,7 @@ public final class Spells {
 
         COMBUSTION_RUNE = spell("combustion_rune", () -> new ConstructRangedSpell<>(CombustionRuneConstruct::new, true).floor(true)
                 .assignProperties(SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.CONSTRUCT, SpellAction.POINT, 30, 0, 50)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.CONSTRUCT, SpellAction.POINT, 30, 0, 50)
                         .add(DefaultProperties.RANGE, 10F)
                         .add(DefaultProperties.BLAST_RADIUS, 2F)
                         .build()));
@@ -686,7 +686,7 @@ public final class Spells {
 
         SUMMON_SNOW_GOLEM = spell("summon_snow_golem", () -> new MinionSpell<>((l) -> new SnowGolem(EntityType.SNOW_GOLEM, l)).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.MINION, SpellAction.POINT, 30, 10, 200)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellTypes.MINION, SpellAction.POINT, 30, 10, 200)
                         .add(DefaultProperties.MINION_COUNT, 1)
                         .add(DefaultProperties.MINION_LIFETIME, -1)
                         .add(DefaultProperties.SUMMON_RADIUS, 2)
@@ -695,7 +695,7 @@ public final class Spells {
 
         OJOSPOCOS = spell("ojospocos", () -> new MinionSpell<>((l) -> new EnderMan(EntityType.ENDERMAN, l)).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellType.MINION, SpellAction.POINT, 80, 30, 400)
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellTypes.MINION, SpellAction.POINT, 80, 30, 400)
                         .add(DefaultProperties.MINION_COUNT, 1)
                         .add(DefaultProperties.MINION_LIFETIME, -1)
                         .add(DefaultProperties.SUMMON_RADIUS, 4)
@@ -705,7 +705,7 @@ public final class Spells {
 
         FLAMECATCHER = spell("flamecatcher", () -> new Flamecatcher().assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.UTILITY, SpellAction.SUMMON, 100, 20, 150)
+                        .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellTypes.UTILITY, SpellAction.SUMMON, 100, 20, 150)
                         .add(DefaultProperties.ITEM_LIFETIME, 900)
                         .add(Flamecatcher.SHOT_COUNT)
                         .add(DefaultProperties.RANGE, 20F)
@@ -716,7 +716,7 @@ public final class Spells {
 
         FLAMING_AXE = spell("flaming_axe", () -> new FlamingAxe().assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.UTILITY, SpellAction.SUMMON, 45, 10, 50)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.UTILITY, SpellAction.SUMMON, 45, 10, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .add(DefaultProperties.EFFECT_DURATION, 8)
                         .build()
@@ -724,7 +724,7 @@ public final class Spells {
 
         FROST_AXE = spell("frost_axe", () -> new FrostAxe().assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.UTILITY, SpellAction.SUMMON, 45, 10, 50)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellTypes.UTILITY, SpellAction.SUMMON, 45, 10, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .add(DefaultProperties.EFFECT_DURATION, 160)
                         .add(DefaultProperties.EFFECT_STRENGTH, 1)
@@ -733,28 +733,28 @@ public final class Spells {
 
         CONJURE_SWORD = spell("conjure_sword", () -> new ConjureItemSpell(EBItems.SPECTRAL_SWORD.get()).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.SUMMON, 25, 0, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .build()
         ));
 
         CONJURE_PICKAXE = spell("conjure_pickaxe", () -> new ConjureItemSpell(EBItems.SPECTRAL_PICKAXE.get()).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.SUMMON, 25, 0, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .build()
         ));
 
         CONJURE_BOW = spell("conjure_bow", () -> new ConjureItemSpell(EBItems.SPECTRAL_BOW.get()).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellType.UTILITY, SpellAction.SUMMON, 25, 0, 50)
+                        .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.SUMMON, 25, 0, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .build()
         ));
 
         CONJURE_ARMOR = spell("conjure_armor", () -> new ConjureArmor().assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.DEFENCE, SpellAction.SUMMON, 45, 10, 50)
+                        .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellTypes.DEFENCE, SpellAction.SUMMON, 45, 10, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1800)
                         .add(DefaultProperties.SENSIBLE, true)
                         .build()
@@ -764,7 +764,7 @@ public final class Spells {
                 .soundValues(1, 1.1f, 0.2f)
                 .assignProperties(
                         SpellProperties.builder()
-                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
+                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.MINION, SpellAction.SUMMON, 40, 10, 200)
                                 .add(DefaultProperties.MINION_COUNT, 1)
                                 .add(DefaultProperties.MINION_LIFETIME, 600)
                                 .add(DefaultProperties.SUMMON_RADIUS, 2)
@@ -775,7 +775,7 @@ public final class Spells {
                 .soundValues(1, 1.1f, 0.1f)
                 .assignProperties(
                         SpellProperties.builder()
-                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
+                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.EARTH, SpellTypes.MINION, SpellAction.SUMMON, 40, 10, 200)
                                 .add(DefaultProperties.MINION_COUNT, 5)
                                 .add(DefaultProperties.MINION_LIFETIME, 600)
                                 .add(DefaultProperties.SUMMON_RADIUS, 3)
@@ -786,7 +786,7 @@ public final class Spells {
                 .soundValues(1, 1.1f, 0.1f)
                 .assignProperties(
                         SpellProperties.builder()
-                                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.MINION, SpellAction.SUMMON, 80, 20, 300)
+                                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellTypes.MINION, SpellAction.SUMMON, 80, 20, 300)
                                 .add(DefaultProperties.MINION_COUNT, 20)
                                 .add(DefaultProperties.MINION_LIFETIME, 600)
                                 .add(DefaultProperties.SUMMON_RADIUS, 3)
@@ -798,7 +798,7 @@ public final class Spells {
                 .soundValues(1, 1.1f, 0.1f)
                 .assignProperties(
                         SpellProperties.builder()
-                                .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY, SpellType.MINION, SpellAction.SUMMON, 50, 10, 200)
+                                .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY, SpellTypes.MINION, SpellAction.SUMMON, 50, 10, 200)
                                 .add(DefaultProperties.MINION_COUNT, 5)
                                 .add(DefaultProperties.MINION_LIFETIME, 600)
                                 .add(DefaultProperties.SUMMON_RADIUS, 3)
@@ -809,7 +809,7 @@ public final class Spells {
                 .soundValues(1, 1.1f, 0.2f)
                 .assignProperties(
                         SpellProperties.builder()
-                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 35, 10, 150)
+                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellTypes.MINION, SpellAction.SUMMON, 35, 10, 150)
                                 .add(DefaultProperties.MINION_COUNT, 1)
                                 .add(DefaultProperties.MINION_LIFETIME, 600)
                                 .add(DefaultProperties.SUMMON_RADIUS, 2)
@@ -820,7 +820,7 @@ public final class Spells {
                 .soundValues(1, 1.1f, 0.2f)
                 .assignProperties(
                         SpellProperties.builder()
-                                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 15, 0, 50)
+                                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellTypes.MINION, SpellAction.SUMMON, 15, 0, 50)
                                 .add(DefaultProperties.MINION_COUNT, 1)
                                 .add(DefaultProperties.MINION_LIFETIME, 600)
                                 .add(DefaultProperties.SUMMON_RADIUS, 2)
@@ -835,7 +835,7 @@ public final class Spells {
                 .soundValues(1, 1.1f, 0.2f)
                 .assignProperties(
                         SpellProperties.builder()
-                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellType.MINION, SpellAction.SUMMON, 40, 10, 200)
+                                .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellTypes.MINION, SpellAction.SUMMON, 40, 10, 200)
                                 .add(DefaultProperties.MINION_COUNT, 1)
                                 .add(DefaultProperties.MINION_LIFETIME, 600)
                                 .add(DefaultProperties.SUMMON_RADIUS, 2)
@@ -852,7 +852,7 @@ public final class Spells {
 
         WARD = spell("ward", () -> new BuffSpell( 0.75f, 0.6f, 0.8f, EBMobEffects.WARD).assignProperties(
                 SpellProperties.builder()
-                        .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 5, 0, 30)
+                        .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellTypes.BUFF, SpellAction.POINT_UP, 5, 0, 30)
                         .add(BuffSpell.getEffectDurationProperty(EBMobEffects.WARD.get()), 600)
                         .add(BuffSpell.getEffectStrengthProperty(EBMobEffects.WARD.get()), 0)
                         .build()

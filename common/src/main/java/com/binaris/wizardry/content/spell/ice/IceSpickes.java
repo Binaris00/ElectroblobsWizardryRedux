@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -73,7 +73,7 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 30, 0, 75)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellTypes.ATTACK, SpellAction.POINT, 30, 0, 75)
                 .add(DefaultProperties.RANGE, 20F)
                 .add(DefaultProperties.EFFECT_RADIUS, 3)
                 .add(DefaultProperties.ENTITIES, 18)

@@ -1,5 +1,6 @@
 package com.binaris.wizardry.api.content.spell;
 
+import com.binaris.wizardry.api.content.SpellTypeRegistry;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -56,7 +57,7 @@ public record SpellCondition(List<SingleCondition> conditions) {
             return switch (type) {
                 case ELEMENT -> value.equals(spell.getElement().getLocation());
                 case TIER -> value.equals(spell.getTier().getLocation());
-                case SPELL_TYPE -> value.toString().equals(spell.getType().getName());
+                case SPELL_TYPE -> value.equals(spell.getType().getLocation());
                 case SPELL -> value.equals(spell.getLocation());
             };
         }
@@ -179,7 +180,7 @@ public record SpellCondition(List<SingleCondition> conditions) {
                         throw new IllegalArgumentException("Invalid Spell Tier provided: '%s' isn't registered".formatted(value));
                 }
                 case SPELL_TYPE -> {
-                    if (SpellType.fromLocation(rl) == null)
+                    if (SpellTypeRegistry.get(rl) == null)
                         throw new IllegalArgumentException("Invalid Spell Type provided: '%s' isn't registered".formatted(value));
                 }
             }

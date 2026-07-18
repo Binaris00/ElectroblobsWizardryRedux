@@ -23,9 +23,9 @@ public final class EBSounds {
     public static final DeferredObject<SoundEvent> ITEM_WAND_MELEE = sound("item.wand.melee");
     public static final DeferredObject<SoundEvent> ITEM_WAND_CHARGEUP = sound("item.wand.chargeup");
     public static final DeferredObject<SoundEvent> ITEM_ARMOUR_EQUIP_SILK = sound("item.armour.equip_silk");
-    public static final DeferredObject<SoundEvent> ITEM_ARMOUR_EQUIP_SAGE = sound("item.armour.equip_sage");
-    public static final DeferredObject<SoundEvent> ITEM_ARMOUR_EQUIP_BATTLEMAGE = sound("item.armour.equip_battlemage");
-    public static final DeferredObject<SoundEvent> ITEM_ARMOUR_EQUIP_WARLOCK = sound("item.armour.equip_warlock");
+    public static final DeferredObject<SoundEvent> ITEM_ARMOR_EQUIP_SAGE = sound("item.armour.equip_sage");
+    public static final DeferredObject<SoundEvent> ITEM_ARMOR_EQUIP_BATTLEMAGE = sound("item.armour.equip_battlemage");
+    public static final DeferredObject<SoundEvent> ITEM_ARMOR_EQUIP_WARLOCK = sound("item.armour.equip_warlock");
     public static final DeferredObject<SoundEvent> ITEM_PURIFYING_ELIXIR_DRINK = sound("item.purifying_elixir.drink");
     public static final DeferredObject<SoundEvent> ITEM_MANA_FLASK_USE = sound("item.mana_flask.use");
     public static final DeferredObject<SoundEvent> ITEM_MANA_FLASK_RECHARGE = sound("item.mana_flask.recharge");

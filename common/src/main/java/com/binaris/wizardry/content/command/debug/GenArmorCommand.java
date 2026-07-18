@@ -4,7 +4,7 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.content.command.argument.ElementArgument;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import net.minecraft.commands.CommandBuildContext;
@@ -25,22 +25,22 @@ public final class GenArmorCommand {
                                         .then(Commands.argument("element", ElementArgument.element())
                                                 .then(Commands.literal("wizard")
                                                         .executes(c -> execute(c, EntityArgument.getPlayer(c, "player"),
-                                                                ElementArgument.getElement(c, "element"), WizardArmorType.WIZARD))
+                                                                ElementArgument.getElement(c, "element"), WizardArmorTypes.WIZARD))
                                                 )
 
                                                 .then(Commands.literal("sage")
                                                         .executes(c -> execute(c, EntityArgument.getPlayer(c, "player"),
-                                                                ElementArgument.getElement(c, "element"), WizardArmorType.SAGE))
+                                                                ElementArgument.getElement(c, "element"), WizardArmorTypes.SAGE))
                                                 )
 
                                                 .then(Commands.literal("battlemage")
                                                         .executes(c -> execute(c, EntityArgument.getPlayer(c, "player"),
-                                                                ElementArgument.getElement(c, "element"), WizardArmorType.BATTLEMAGE))
+                                                                ElementArgument.getElement(c, "element"), WizardArmorTypes.BATTLEMAGE))
                                                 )
 
                                                 .then(Commands.literal("warlock")
                                                         .executes(c -> execute(c, EntityArgument.getPlayer(c, "player"),
-                                                                ElementArgument.getElement(c, "element"), WizardArmorType.WARLOCK))
+                                                                ElementArgument.getElement(c, "element"), WizardArmorTypes.WARLOCK))
                                                 )
                                         )
                                 )
@@ -51,7 +51,7 @@ public final class GenArmorCommand {
     }
 
 
-    private static int execute(CommandContext<CommandSourceStack> context, ServerPlayer player, Element element, WizardArmorType type) {
+    private static int execute(CommandContext<CommandSourceStack> context, ServerPlayer player, Element element, WizardArmorTypes type) {
         for (EquipmentSlot slot : EntityUtil.ARMOR_SLOTS) {
             Item armor = RegistryUtils.getArmor(type, element, slot);
             player.getInventory().add(armor.getDefaultInstance());

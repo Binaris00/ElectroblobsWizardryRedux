@@ -143,7 +143,7 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
         if (ClientUtils.shouldDisplayDiscovered(spell, stack) && tooltipFlag.isAdvanced()) {
             list.add(Component.translatable(spell.getTier().getDescriptionId()).withStyle(ChatFormatting.GRAY));
             list.add(Component.translatable(spell.getElement().getDescriptionId()).withStyle(ChatFormatting.GRAY));
-            list.add(Component.translatable(spell.getType().getName()).withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable(spell.getType().getDisplayName()).withStyle(ChatFormatting.GRAY));
         }
     }
 

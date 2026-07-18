@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -73,10 +73,10 @@ public class SpellTables {
 
     public static void addDefaultRows(Builder builder, Spell spell, GameTestHelper helper, Vec3 pos, Element element) {
         builder.addRow(SpellTables.rowPlayer("Vanilla Player", spell, GST.mockPlayer(helper, pos)))
-                .addRow(SpellTables.rowPlayer("Player Wizard Armor", spell, GST.mockPlayerWithArmor(helper, pos, element, WizardArmorType.WIZARD)))
-                .addRow(SpellTables.rowPlayer("Player Sage Armor", spell, GST.mockPlayerWithArmor(helper, pos, element, WizardArmorType.SAGE)))
-                .addRow(SpellTables.rowPlayer("Player Battlemage Armor", spell, GST.mockPlayerWithArmor(helper, pos, element, WizardArmorType.BATTLEMAGE)))
-                .addRow(SpellTables.rowPlayer("Player Warlock Armor", spell, GST.mockPlayerWithArmor(helper, pos, element, WizardArmorType.WARLOCK)));
+                .addRow(SpellTables.rowPlayer("Player Wizard Armor", spell, GST.mockPlayerWithArmor(helper, pos, element, WizardArmorTypes.WIZARD)))
+                .addRow(SpellTables.rowPlayer("Player Sage Armor", spell, GST.mockPlayerWithArmor(helper, pos, element, WizardArmorTypes.SAGE)))
+                .addRow(SpellTables.rowPlayer("Player Battlemage Armor", spell, GST.mockPlayerWithArmor(helper, pos, element, WizardArmorTypes.BATTLEMAGE)))
+                .addRow(SpellTables.rowPlayer("Player Warlock Armor", spell, GST.mockPlayerWithArmor(helper, pos, element, WizardArmorTypes.WARLOCK)));
     }
 
     public static void addDefaultColumns(Builder builder) {

@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -95,7 +95,7 @@ public class FrostRay extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 5, 0, 0)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellTypes.ATTACK, SpellAction.POINT, 5, 0, 0)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DAMAGE, 3F)
                 .add(DefaultProperties.EFFECT_DURATION, 200)
