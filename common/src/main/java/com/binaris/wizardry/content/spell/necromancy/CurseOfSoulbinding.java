@@ -2,7 +2,8 @@ package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.data.IStoredSpellVar;
-import com.binaris.wizardry.api.content.data.Persistence;
+import com.binaris.wizardry.api.content.data.StoredSpellVar;
+import com.binaris.wizardry.api.content.data.VarPersistence;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.spell.SpellAction;
@@ -11,14 +12,13 @@ import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
-import com.binaris.wizardry.api.content.util.NBTExtras;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.nbt.NbtUtils;
+import com.mojang.serialization.Codec;
+import net.minecraft.core.UUIDUtil;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -28,14 +28,12 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 public class CurseOfSoulbinding extends RaySpell {
-    public static final IStoredSpellVar<Set<UUID>> TARGETS_KEY = new IStoredSpellVar.StoredSpellVar<>("soulboundCreatures", s -> NBTExtras.listToTag(s, NbtUtils::createUUID),
-            (ListTag t) -> new HashSet<>(NBTExtras.tagToList(t, NbtUtils::loadUUID)), Persistence.DIMENSION_CHANGE);
+    public static final Codec<Set<UUID>> UUID_SET_CODEC = UUIDUtil.CODEC.listOf().xmap(HashSet::new, ArrayList::new);
+    public static final IStoredSpellVar<Set<UUID>> TARGETS_KEY = new StoredSpellVar<>("soulboundCreatures",
+            UUID_SET_CODEC, VarPersistence.DIMENSION_CHANGE);
 
     public CurseOfSoulbinding() {
         this.soundValues(1, 1.1f, 0.2f);

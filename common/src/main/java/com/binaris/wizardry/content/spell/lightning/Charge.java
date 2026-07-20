@@ -2,8 +2,9 @@ package com.binaris.wizardry.content.spell.lightning;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.data.ISpellVar;
-import com.binaris.wizardry.api.content.data.Persistence;
+import com.binaris.wizardry.api.content.data.VarPersistence;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
+import com.binaris.wizardry.api.content.data.SpellVar;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
@@ -28,9 +29,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Charge extends Spell {
-    public static final ISpellVar<SpellModifiers> CHARGE_MODIFIERS = new ISpellVar.SpellVar<>(Persistence.NEVER);
+    public static final ISpellVar<SpellModifiers> CHARGE_MODIFIERS = new SpellVar<>(VarPersistence.NEVER);
     public static final SpellProperty<Float> CHARGE_SPEED = SpellProperty.floatProperty("charge_speed");
-    public static final ISpellVar<Integer> CHARGE_TIME = new ISpellVar.SpellVar<Integer>(Persistence.NEVER).withTicker(Charge::update);
+    public static final ISpellVar<Integer> CHARGE_TIME = new SpellVar<Integer>(VarPersistence.NEVER).withTicker(Charge::update);
 
     public Charge() {
         this.soundValues(0.6f, 1, 0);

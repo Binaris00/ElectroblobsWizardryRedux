@@ -1,15 +1,16 @@
 package com.binaris.wizardry.api.content.data;
 
-public enum Persistence {
-
+/// Marks the persistence of a spell variable in the spell manager data.
+public enum VarPersistence {
     NEVER(false, false),
     DIMENSION_CHANGE(false, true),
     RESPAWN(true, false),
     ALWAYS(true, true);
 
-    private boolean persistsOnRespawn, persistsOnDimensionChange;
+    private final boolean persistsOnRespawn;
+    private final boolean persistsOnDimensionChange;
 
-    Persistence(boolean persistsOnRespawn, boolean persistsOnDimensionChange) {
+    VarPersistence(boolean persistsOnRespawn, boolean persistsOnDimensionChange) {
         this.persistsOnRespawn = persistsOnRespawn;
         this.persistsOnDimensionChange = persistsOnDimensionChange;
     }
