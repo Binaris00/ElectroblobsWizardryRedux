@@ -4,7 +4,6 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.NBTExtras;
 import com.binaris.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.nbt.CompoundTag;
@@ -193,7 +192,7 @@ public class SpellGlyphData extends SavedData {
             tagList.add(tag);
         }
 
-        NBTExtras.storeTagSafely(nbt, "spellGlyphData", tagList);
+        nbt.put("spellGlyphData", tagList);
         return nbt;
     }
 }

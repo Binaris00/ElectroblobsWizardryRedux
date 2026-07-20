@@ -16,6 +16,7 @@ import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -255,21 +256,30 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
 
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
         Element element = this.getElement();
-        if (element != null) nbt.putString("element", element.getLocation().toString());
-        nbt.putInt("skin", this.getTextureIndex());
-        NBTExtras.storeTagSafely(nbt, "spells", NBTExtras.listToTag(spells, spell -> StringTag.valueOf(spell.getLocation().toString())));
+        if (element != null) compoundTag.putString("element", element.getLocation().toString());
+        compoundTag.putInt("skin", this.getTextureIndex());
+        ListTag spellsTag = new ListTag();
+        spells.forEach((s) -> spellsTag.add(StringTag.valueOf(s.getLocation().toString())));
+        compoundTag.put("spells", spellsTag);
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        Element element = Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(nbt.getString("element")));
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        Element element = Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(compoundTag.getString("element")));
         if (element != null) this.setElement(element);
-        this.setTextureIndex(nbt.getInt("skin"));
-        this.spells = (List<Spell>) NBTExtras.tagToList(nbt.getList("spells", Tag.TAG_STRING), (StringTag tag) -> Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getAsString())));
+        this.setTextureIndex(compoundTag.getInt("skin"));
+
+        if(compoundTag.contains("spells", Tag.TAG_LIST)) {
+            this.spells.clear();
+            compoundTag.getList("spells", Tag.TAG_STRING).forEach((tag) -> {
+                Spell spell = Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getAsString()));
+                if (spell != null) this.spells.add(spell);
+            });
+        }
     }
 
     @Override

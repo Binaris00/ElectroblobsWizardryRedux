@@ -135,19 +135,19 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        if (this.trades != null) nbt.put("trades", trades.createTag());
-        nbt.putInt("wizardXp", this.wizardXp);
-        nbt.putInt("wizardLevel", this.wizardLevel);
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        if (this.trades != null) compoundTag.put("trades", trades.createTag());
+        compoundTag.putInt("wizardXp", this.wizardXp);
+        compoundTag.putInt("wizardLevel", this.wizardLevel);
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        if (nbt.contains("trades")) this.trades = new MerchantOffers(nbt.getCompound("trades"));
-        this.wizardXp = nbt.getInt("wizardXp");
-        this.wizardLevel = nbt.getInt("wizardLevel");
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        if (compoundTag.contains("trades")) this.trades = new MerchantOffers(compoundTag.getCompound("trades"));
+        this.wizardXp = compoundTag.getInt("wizardXp");
+        this.wizardLevel = compoundTag.getInt("wizardLevel");
         if (this.wizardLevel == 0) this.wizardLevel = 1;
     }
 
