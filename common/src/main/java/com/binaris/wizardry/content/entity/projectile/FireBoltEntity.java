@@ -13,9 +13,7 @@ import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -26,7 +24,7 @@ public class FireBoltEntity extends MagicProjectileEntity {
         super(EBEntities.FIRE_BOLT.get(), world);
     }
 
-    public FireBoltEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
+    public FireBoltEntity(EntityType<? extends ThrowableProjectile> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -66,12 +64,6 @@ public class FireBoltEntity extends MagicProjectileEntity {
                 ParticleBuilder.create(EBParticles.MAGIC_FIRE).pos(x, y, z).time(14).spawn(level());
             }
         }
-    }
-
-
-    @Override
-    protected @NotNull Item getDefaultItem() {
-        return ItemStack.EMPTY.getItem();
     }
 
     @Override

@@ -11,16 +11,13 @@ import com.binaris.wizardry.setup.registries.Spells;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
-import org.jetbrains.annotations.NotNull;
 
 public class SparkEntity extends MagicProjectileEntity {
-    public SparkEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
+    public SparkEntity(EntityType<? extends ThrowableProjectile> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -59,11 +56,6 @@ public class SparkEntity extends MagicProjectileEntity {
     @Override
     public int getLifeTime() {
         return 50;
-    }
-
-    @Override
-    protected @NotNull Item getDefaultItem() {
-        return ItemStack.EMPTY.getItem();
     }
 
     @Override

@@ -11,7 +11,7 @@ import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class SparkBombEntity extends BombEntity {
-    public SparkBombEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
+    public SparkBombEntity(EntityType<? extends ThrowableProjectile> entityType, Level world) {
         super(entityType, world);
     }
 

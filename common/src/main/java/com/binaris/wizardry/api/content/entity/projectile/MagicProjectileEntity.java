@@ -10,25 +10,29 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class MagicProjectileEntity extends ThrowableItemProjectile {
+public abstract class MagicProjectileEntity extends ThrowableProjectile {
     public static final double LAUNCH_Y_OFFSET = 0.3;
     public static final float FORWARD_OFFSET = 0.8f;
     public static final int SEEKING_TIME = 15;
     public float damageMultiplier = 1.0f;
 
-    public MagicProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+    public MagicProjectileEntity(EntityType<? extends ThrowableProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
-    public MagicProjectileEntity(EntityType<? extends ThrowableItemProjectile> entityType, LivingEntity livingEntity, Level level) {
-        super(entityType, livingEntity, level);
+    public MagicProjectileEntity(EntityType<? extends ThrowableProjectile> entityType, LivingEntity shooter, Level level) {
+        super(entityType, shooter, level);
+    }
+
+    public MagicProjectileEntity(EntityType<? extends ThrowableProjectile> entityType, double x, double y, double z, Level level) {
+        super(entityType, x, y, z, level);
     }
 
     @Override
@@ -117,6 +121,11 @@ public abstract class MagicProjectileEntity extends ThrowableItemProjectile {
     public boolean save(CompoundTag tag) {
         tag.putFloat("damageMultiplier", damageMultiplier);
         return super.save(tag);
+    }
+
+    @Override
+    protected void defineSynchedData() {
+
     }
 
     public int getLifeTime() {

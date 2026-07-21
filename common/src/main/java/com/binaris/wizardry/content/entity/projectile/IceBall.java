@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.entity.projectile;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
-import com.binaris.wizardry.api.content.entity.projectile.MagicProjectileEntity;
+import com.binaris.wizardry.api.content.entity.projectile.MagicItemProjectileEntity;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
@@ -13,7 +13,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
@@ -23,8 +23,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import org.jetbrains.annotations.NotNull;
 
 
-public class IceBall extends MagicProjectileEntity {
-    public IceBall(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
+public class IceBall extends MagicItemProjectileEntity {
+    public IceBall(EntityType<? extends ThrowableProjectile> entityType, Level world) {
         super(entityType, world);
     }
 

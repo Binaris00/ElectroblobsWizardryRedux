@@ -16,7 +16,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -31,7 +31,7 @@ import java.util.List;
 public class IceChargeEntity extends BombEntity {
     public static final SpellProperty<Integer> ICE_SHARDS = SpellProperty.intProperty("ice_shards");
 
-    public IceChargeEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
+    public IceChargeEntity(EntityType<? extends ThrowableProjectile> entityType, Level world) {
         super(entityType, world);
     }
 

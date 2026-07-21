@@ -14,7 +14,7 @@ import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.HitResult;
@@ -23,8 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class SmokeBombEntity extends BombEntity {
-
-    public SmokeBombEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
+    public SmokeBombEntity(EntityType<? extends ThrowableProjectile> entityType, Level world) {
         super(entityType, world);
     }
 
