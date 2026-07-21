@@ -122,10 +122,11 @@ public abstract class MagicProjectileEntity extends ThrowableProjectile {
 
     @Override
     protected void onHitEntity(@NotNull EntityHitResult result) {
-        if (isValidTarget(result.getEntity())) {
-            MagicDamageSource.causeMagicDamage(this, result.getEntity(), getDamage(result) * damageMultiplier, this.getDamageType(result));
-            this.onHitTargetExtraEffects(result);
-        }
+        if (!isValidTarget(result.getEntity())) return;
+
+        MagicDamageSource.causeMagicDamage(this, result.getEntity(), getDamage(result) * damageMultiplier, this.getDamageType(result));
+        this.onHitTargetExtraEffects(result);
+
         this.playHitSound(result);
         if (!this.level().isClientSide) {
             this.level().broadcastEntityEvent(this, HIT_ENTITY_EVENT_ID);
