@@ -2,21 +2,24 @@ package com.binaris.wizardry.content.entity.projectile;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.entity.projectile.MagicProjectileEntity;
-import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.EBEntities;
 import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.Spells;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 public class DarknessOrbEntity extends MagicProjectileEntity {
@@ -26,30 +29,6 @@ public class DarknessOrbEntity extends MagicProjectileEntity {
 
     public DarknessOrbEntity(Level world) {
         super(EBEntities.DARKNESS_ORB.get(), world);
-    }
-
-    @Override
-    protected void onHitEntity(@NotNull EntityHitResult result) {
-        super.onHitEntity(result);
-        if (level().isClientSide) return;
-
-        if (!(result.getEntity() instanceof LivingEntity livingEntity)) return;
-
-        float damage = Spells.DARKNESS_ORB.property(DefaultProperties.DAMAGE) * damageMultiplier;
-        MagicDamageSource.causeMagicDamage(this, livingEntity, damage, EBDamageSources.WITHER);
-
-        livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER,
-                Spells.DARKNESS_ORB.property(DefaultProperties.EFFECT_DURATION),
-                Spells.DARKNESS_ORB.property(DefaultProperties.EFFECT_STRENGTH)));
-
-        this.playSound(EBSounds.ENTITY_DARKNESS_ORB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
-        this.discard();
-    }
-
-    @Override
-    protected void onHitBlock(@NotNull BlockHitResult result) {
-        super.onHitBlock(result);
-        this.discard();
     }
 
     @Override
@@ -65,6 +44,14 @@ public class DarknessOrbEntity extends MagicProjectileEntity {
     }
 
     @Override
+    public void onHitTargetExtraEffects(@NotNull EntityHitResult hitResult) {
+        if (!(hitResult.getEntity() instanceof LivingEntity livingEntity)) return;
+        livingEntity.addEffect(new MobEffectInstance(MobEffects.WITHER,
+                Spells.DARKNESS_ORB.property(DefaultProperties.EFFECT_DURATION),
+                Spells.DARKNESS_ORB.property(DefaultProperties.EFFECT_STRENGTH)));
+    }
+
+    @Override
     public boolean isNoGravity() {
         return true;
     }
@@ -72,5 +59,20 @@ public class DarknessOrbEntity extends MagicProjectileEntity {
     @Override
     public int getLifeTime() {
         return 60;
+    }
+
+    @Override
+    public float getDamage(@NotNull EntityHitResult hitResult) {
+        return Spells.DARKNESS_ORB.property(DefaultProperties.DAMAGE);
+    }
+
+    @Override
+    public ResourceKey<DamageType> getDamageType(@NotNull EntityHitResult hitResult) {
+        return EBDamageSources.WITHER;
+    }
+
+    @Override
+    public @NotNull SoundEvent getSoundEvent(HitResult result) {
+        return result.getType() == HitResult.Type.ENTITY ? EBSounds.ENTITY_DARKNESS_ORB_HIT.get() : SoundEvents.EMPTY;
     }
 }

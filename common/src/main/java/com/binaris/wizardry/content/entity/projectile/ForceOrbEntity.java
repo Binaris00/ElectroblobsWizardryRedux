@@ -11,6 +11,9 @@ import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.Spells;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.ThrowableProjectile;
@@ -19,6 +22,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
+import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -33,51 +37,37 @@ public class ForceOrbEntity extends BombEntity {
     }
 
     @Override
-    protected void onHitEntity(@NotNull EntityHitResult result) {
-        super.onHitEntity(result);
+    public int getLifeTime() {
+        return -1;
+    }
 
-        if (!this.level().isClientSide) {
-            handleEntityHit();
-            this.level().broadcastEntityEvent(this, (byte) 3); // Particles (client-side)
-            handleServerHit();
-        }
+    @Override
+    public void onHitTargetExtraEffects(@NotNull EntityHitResult hitResult) {
+        splashEffect();
     }
 
     @Override
     protected void onHitBlock(@NotNull BlockHitResult result) {
+        splashEffect();
         super.onHitBlock(result);
-
-        if (!this.level().isClientSide) {
-            this.level().broadcastEntityEvent(this, (byte) 3); // Particles (client-side)
-            handleServerHit();
-        }
-
     }
 
     @Override
-    public void handleEntityEvent(byte b) {
-        if (b != 3) return;
-
-        for (int j = 0; j < 20; j++) {
-            float brightness = 0.5f + (random.nextFloat() / 2);
-            ParticleBuilder.create(EBParticles.SPARKLE, random, xo, yo, zo, 0.25, true)
-                    .time(6)
-                    .color(brightness, 1.0f, brightness + 0.2f)
-                    .spawn(level());
-        }
-        this.level().addParticle(ParticleTypes.EXPLOSION, this.xo, this.yo, this.zo, 0, 0, 0);
+    public float getDamage(@NotNull EntityHitResult hitResult) {
+        return 0;
     }
 
-
-    private void handleEntityHit() {
-        this.playSound(EBSounds.ENTITY_FORCE_ORB_HIT.get(), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+    @Override
+    public ResourceKey<DamageType> getDamageType(@NotNull EntityHitResult hitResult) {
+        return EBDamageSources.BLAST;
     }
 
-    private void handleServerHit() {
-        float pitch = this.random.nextFloat() * 0.2F + 0.3F;
-        this.playSound(EBSounds.ENTITY_FORCE_ORB_HIT_BLOCK.get(), 1.5F, pitch);
-        this.playSound(EBSounds.ENTITY_FORCE_ORB_HIT_BLOCK.get(), 1.5F, pitch - 0.01f);
+    @Override
+    public @NotNull SoundEvent getSoundEvent(HitResult result) {
+        return result instanceof BlockHitResult ? EBSounds.ENTITY_FORCE_ORB_HIT_BLOCK.get() : EBSounds.ENTITY_FORCE_ORB_HIT.get();
+    }
 
+    protected void splashEffect() {
         double blastRadius = Spells.FORCE_ORB.property(DefaultProperties.BLAST_RADIUS) * blastMultiplier;
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(blastRadius, this.xo,
@@ -93,8 +83,18 @@ public class ForceOrbEntity extends BombEntity {
                     target.hurt(MagicDamageSource.causeIndirectMagicDamage(this, getOwner(), EBDamageSources.BLAST), damage);
                     target.setDeltaMovement(dx, velY + 0.4, dz);
                 });
+    }
 
-        this.discard();
+    @Override
+    protected void spawnHitParticles(HitResult.Type type) {
+        for (int j = 0; j < 20; j++) {
+            float brightness = 0.5f + (random.nextFloat() / 2);
+            ParticleBuilder.create(EBParticles.SPARKLE, random, xo, yo, zo, 0.25, true)
+                    .time(6)
+                    .color(brightness, 1.0f, brightness + 0.2f)
+                    .spawn(level());
+        }
+        this.level().addParticle(ParticleTypes.EXPLOSION, this.xo, this.yo, this.zo, 0, 0, 0);
     }
 
     @Override
