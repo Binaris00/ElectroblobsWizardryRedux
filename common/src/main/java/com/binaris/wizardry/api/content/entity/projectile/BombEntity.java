@@ -7,6 +7,11 @@ import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+/// Abstract base class for throwable projectiles that scale their effects with a blast multiplier.
+///
+/// Provides a {@code blastMultiplier} field that is synced to tags and automatically set from {@code SpellModifiers.BLAST}
+/// by {@code ProjectileSpell} when the entity is spawned. Subclasses such as FireBombEntity and PoisonBombEntity
+/// read this multiplier to scale particle effects, splash damage, or blast radius on impact.
 public abstract class BombEntity extends MagicItemProjectileEntity {
     /// The entity blast multiplier. This is now synced and saved centrally from [BombEntity].
     public float blastMultiplier = 1.0f;
