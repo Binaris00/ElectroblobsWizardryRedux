@@ -6,15 +6,13 @@ import net.minecraft.world.entity.player.Player;
 
 import javax.annotation.Nullable;
 
-/**
- * Event fired when a player is about to discover a spell.
- * <p>
- * This event is fired on the {@link com.binaris.wizardry.core.event.WizardryEventBus WizardryEventBus}.
- * Since it extends {@link WizardryCancelableEvent}, it is cancelable. If the event is canceled, 
- * the spell discovery will be prevented (e.g., the spell will not be marked as discovered, 
- * and associated items like scrolls will not be consumed/used).
- * </p>
- */
+/// Event fired when a player is about to discover a spell.
+///
+/// This event is fired on the [`WizardryEventBus`][com.binaris.wizardry.core.event.WizardryEventBus].
+/// Since it extends [WizardryCancelableEvent], it is cancelable. If the event is canceled,
+/// the spell discovery will be prevented (e.g., the spell will not be marked as discovered,
+/// and associated items like scrolls will not be consumed/used).
+///
 public class DiscoverSpellEvent extends WizardryCancelableEvent {
     private final Player player;
     private final Spell spell;

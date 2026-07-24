@@ -40,24 +40,18 @@ public interface IPlatformHelper {
                                                                                                   Class<? extends A> clazz,
                                                                                                   ArgumentTypeInfo<A, T> serializer);
 
-    /**
-     * Each loader has its own way of firing events so we're getting all platform-specific logic out of the main codebase.
-     *
-     * @return true if the event is canceled, false otherwise
-     */
+    /// Each loader has its own way of firing events so we're getting all platform-specific logic out of the main codebase.
+    ///
+    /// @return true if the event is canceled, false otherwise
     boolean firePlayerBlockBreakEvent(Level level, BlockPos pos, Player player);
 
-    /**
-     * Each loader has its own way of firing events so we're getting all platform-specific logic out of the main codebase.
-     *
-     * @return true if the event is canceled, false otherwise
-     */
+    /// Each loader has its own way of firing events so we're getting all platform-specific logic out of the main codebase.
+    ///
+    /// @return true if the event is canceled, false otherwise
     boolean fireMobBlockBreakEvent(Level level, @Nullable BlockPos pos, Mob mob);
 
-    /**
-     * Each loader have a specific implementation of an artifact specialize dependency (Curios on forge, Trinkets on fabric)
-     *
-     * @return CuriosIntegration on forge or TrinketsIntegration on fabric.
-     */
+    /// Each loader have a specific implementation of an artifact specialize dependency (Curios on forge, Trinkets on fabric)
+    ///
+    /// @return CuriosIntegration on forge or TrinketsIntegration on fabric.
     ArtifactIntegration getArtifactIntegration();
 }

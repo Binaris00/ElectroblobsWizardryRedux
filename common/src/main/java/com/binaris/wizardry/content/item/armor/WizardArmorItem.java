@@ -30,24 +30,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Arrays;
 import java.util.List;
 
-/**
- * Base class for all wizard armor items in Electroblob's Wizardry Redux. <p>
- *
- * This provides the mana storage, full armor checking and helper methods to apply new {@code SpellModifiers} and set
- * bonuses depending on your armor type. Subclasses of this class will have the deletion of the entity attributes (Protection),
- * spell modifiers and full set bonus if mana is 0 in any of the armor pieces.
- *
- * <p>To create a new armor via addon, extend this class and override the relevant hooks:
- * <ul>
- *   <li>{@link #effectTick} — passive effect applied every tick when wearing the full set</li>
- *   <li>{@link #applyModifiers} — spell modifiers applied when wearing the full set</li>
- *   <li>{@link #appendHoverText} - tooltip lines shown for the item</li>
- * </ul>
- *
- * By default, this already handles the cost reduction when cast a spell with the same element as the armor, increment
- * potency, check cooldown reduction based on the armor type and include the tooltip lines for these bonuses. But you
- * can override these methods to customize/delete any of these behaviors.
- */
+/// Base class for all wizard armor items in Electroblob's Wizardry Redux.
+///
+/// This provides the mana storage, full armor checking and helper methods to apply new `SpellModifiers` and set
+/// bonuses depending on your armor type. Subclasses of this class will have the deletion of the entity attributes (Protection),
+/// spell modifiers and full set bonus if mana is 0 in any of the armor pieces.
+///
+/// To create a new armor via addon, extend this class and override the relevant hooks:
+///
+///   - [#effectTick] — passive effect applied every tick when wearing the full set
+///   - [#applyModifiers] — spell modifiers applied when wearing the full set
+///   - [#appendHoverText] - tooltip lines shown for the item
+///
+/// By default, this already handles the cost reduction when cast a spell with the same element as the armor, increment
+/// potency, check cooldown reduction based on the armor type and include the tooltip lines for these bonuses. But you
+/// can override these methods to customize/delete any of these behaviors.
 public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDamageItem, IWorkbenchItem, IElementValue, ICustomAttributesItem {
     private final Element element;
     private final WizardArmorMaterial wizardArmorType;
@@ -62,37 +59,31 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
         this(WizardArmorTypes.WIZARD, type, element);
     }
 
-    /**
-     * Called every {@code inventoryTick} when the entity is wearing the full armor set and all pieces have mana.
-     * In case you want to apply a specific effect without the full set check override {@code inventoryTick} instead.
-     *
-     * @param stack  the armor item stack
-     * @param entity the entity wearing the armor
-     * @param level  the current level (world)
-     */
+    /// Called every `inventoryTick` when the entity is wearing the full armor set and all pieces have mana.
+    /// In case you want to apply a specific effect without the full set check override `inventoryTick` instead.
+    ///
+    /// @param stack  the armor item stack
+    /// @param entity the entity wearing the armor
+    /// @param level  the current level (world)
     public void effectTick(ItemStack stack, LivingEntity entity, Level level) {
     }
 
-    /**
-     * Hook for applying additional {@link SpellModifiers} when the caster is wearing the full
-     * armor set with mana. Called from {@link #applySpellModifiers} after base modifiers
-     * (elemental cost reduction, cooldown reduction) have already been applied.
-     *
-     * @param entity    the entity casting the spell
-     * @param modifiers the modifiers being built, modify this in place
-     * @param armor     the specific armor piece triggering this call
-     * @param spell     the spell being cast
-     */
+    /// Hook for applying additional [SpellModifiers] when the caster is wearing the full
+    /// armor set with mana. Called from [#applySpellModifiers] after base modifiers
+    /// (elemental cost reduction, cooldown reduction) have already been applied.
+    ///
+    /// @param entity    the entity casting the spell
+    /// @param modifiers the modifiers being built, modify this in place
+    /// @param armor     the specific armor piece triggering this call
+    /// @param spell     the spell being cast
     public void applyModifiers(LivingEntity entity, SpellModifiers modifiers, WizardArmorItem armor, Spell spell) {
     }
 
-    /**
-     * Internal method that collects and applies all spell modifiers from a single armor piece.
-     * Handles elemental cost reduction, potency, and cooldown reduction, then delegates
-     * to {@link #applyModifiers} for full-set bonuses.
-     *
-     * <p>This method is not intended to be overridden in normal cases, do it only if you want to modify the base behavior.
-     */
+    /// Internal method that collects and applies all spell modifiers from a single armor piece.
+    /// Handles elemental cost reduction, potency, and cooldown reduction, then delegates
+    /// to [#applyModifiers] for full-set bonuses.
+    ///
+    /// This method is not intended to be overridden in normal cases, do it only if you want to modify the base behavior.
     private void applySpellModifiers(LivingEntity caster, WizardArmorItem armor, Spell spell, SpellModifiers modifiers) {
         ItemStack armorStack = caster.getItemBySlot(armor.getEquipmentSlot());
         if (armor.getMana(armorStack) == 0) return;

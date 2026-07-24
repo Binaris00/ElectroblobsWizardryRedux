@@ -25,23 +25,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-/**
- * Various utility methods for use by artifacts.
- */
+/// Various utility methods for use by artifacts.
 public final class ArtifactUtils {
-    /**
-     * Check if the source isn't melee (like a projectile, explosion or something like that), the direct entity isn't
-     * null and if it's a living one, and finally check the main hand for seeing the wand element. Quite weird but this
-     * logic is shared for a lot of artifacts
-     */
+    /// Check if the source isn't melee (like a projectile, explosion or something like that), the direct entity isn't
+    /// null and if it's a living one, and finally check the main hand for seeing the wand element. Quite weird but this
+    /// logic is shared for a lot of artifacts
     public static boolean meleeRing(DamageSource source, Element element) {
         return !source.isIndirect() && source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof WandItem wand && wand.getElement() == element;
     }
 
-    /**
-     * Helper method that scans through all wands on the given player's hotbar and offhand and casts the given spell if
-     * it is bound to any of them. This is a useful code pattern for artifact effects.
-     */
+    /// Helper method that scans through all wands on the given player's hotbar and offhand and casts the given spell if
+    /// it is bound to any of them. This is a useful code pattern for artifact effects.
     public static boolean findMatchingWandAndCast(Player player, Spell spell) {
         return findMatchingWandAndExecute(player, spell, wand -> {
             ICastItem spellCastItem = (ICastItem) wand.getItem();
@@ -53,10 +47,8 @@ public final class ArtifactUtils {
         });
     }
 
-    /**
-     * Helper method that scans through all wands on the given player's hotbar and offhand and executes the given action
-     * if any of them have the given spell bound to them. This is a useful code pattern for artifact effects.
-     */
+    /// Helper method that scans through all wands on the given player's hotbar and offhand and executes the given action
+    /// if any of them have the given spell bound to them. This is a useful code pattern for artifact effects.
     public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action) {
         List<ItemStack> hotbar = EntityUtil.getHotBarAndHandItems(player);
         for (ItemStack stack : hotbar) {

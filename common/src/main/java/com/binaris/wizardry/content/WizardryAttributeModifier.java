@@ -16,13 +16,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-/**
- * Extension of the base Attribute Modifiers to add {@link SpellCondition} for being used with the {@code /magic_attribute}
- * command. We use the Mixin {@code AttributeModifierMixin} to add the nbt loading.
- * <p>
- * This doesn't cancel or interrupt the base Attribute Modifier system, we can still use it normally. This just adds new
- * load values when need it.
- */
+/// Extension of the base Attribute Modifiers to add [SpellCondition] for being used with the `/magic_attribute`
+/// command. We use the Mixin `AttributeModifierMixin` to add the nbt loading.
+///
+/// This doesn't cancel or interrupt the base Attribute Modifier system, we can still use it normally. This just adds new
+/// load values when need it.
 public class WizardryAttributeModifier extends AttributeModifier {
     @Nullable
     private final SpellCondition condition;
@@ -67,17 +65,15 @@ public class WizardryAttributeModifier extends AttributeModifier {
         if (value != 0) modifiers.add(key, value);
     }
 
-    /**
-     * Search and load the attribute modifiers saved in the living entity, first, organize the attributes based on the
-     * operation order and then values the vanilla attribute modifiers and wizard attribute modifiers (modifiers with
-     * conditions). In case the entity doesn't have the attribute instance it will return 0.
-     *
-     * @param entity    living entity that could have the given attribute
-     * @param spell     result of the casting/logic made by the entity
-     * @param attribute attribute that needs to be check in order to find its modifiers
-     * @return the calculation result of all the modifiers, 0 if there wasn't any modifiers or the entity doesn't have the
-     * attribute instance
-     */
+    /// Search and load the attribute modifiers saved in the living entity, first, organize the attributes based on the
+    /// operation order and then values the vanilla attribute modifiers and wizard attribute modifiers (modifiers with
+    /// conditions). In case the entity doesn't have the attribute instance it will return 0.
+    ///
+    /// @param entity    living entity that could have the given attribute
+    /// @param spell     result of the casting/logic made by the entity
+    /// @param attribute attribute that needs to be check in order to find its modifiers
+    /// @return the calculation result of all the modifiers, 0 if there wasn't any modifiers or the entity doesn't have the
+    /// attribute instance
     public static float calculateModifiers(LivingEntity entity, Spell spell, Attribute attribute) {
         double value = 0;
         AttributeInstance instance = entity.getAttribute(attribute);
@@ -104,17 +100,15 @@ public class WizardryAttributeModifier extends AttributeModifier {
         return (float) value;
     }
 
-    /**
-     * Search and load the attribute modifiers saved in the living entity, first, organize the attributes based on the
-     * operation order and then values the vanilla attribute modifiers and wizard attribute modifiers (modifiers with
-     * conditions). In case the entity doesn't have the attribute instance it will return 0.
-     *
-     * @param entity    living entity that could have the given attribute
-     * @param condition filter that goes to test the modifiers result
-     * @param attribute attribute that needs to be check in order to find its modifiers
-     * @return the calculation result of all the modifiers, 0 if there wasn't any modifiers or the entity doesn't have the
-     * attribute instance
-     */
+    /// Search and load the attribute modifiers saved in the living entity, first, organize the attributes based on the
+    /// operation order and then values the vanilla attribute modifiers and wizard attribute modifiers (modifiers with
+    /// conditions). In case the entity doesn't have the attribute instance it will return 0.
+    ///
+    /// @param entity    living entity that could have the given attribute
+    /// @param condition filter that goes to test the modifiers result
+    /// @param attribute attribute that needs to be check in order to find its modifiers
+    /// @return the calculation result of all the modifiers, 0 if there wasn't any modifiers or the entity doesn't have the
+    /// attribute instance
     public static float calculateModifiers(LivingEntity entity, SpellCondition condition, Attribute attribute) {
         double value = 0;
         AttributeInstance instance = entity.getAttribute(attribute);

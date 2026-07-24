@@ -13,9 +13,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 
-/**
- * Arcane Workbench Slot that only allows specific items and has a configurable stack limit and icon.
- */
+/// Arcane Workbench Slot that only allows specific items and has a configurable stack limit and icon.
 public class SlotItemList extends Slot {
     private final Item[] items;
     private final int stackLimit;

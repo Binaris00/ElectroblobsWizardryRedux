@@ -19,71 +19,63 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.Function;
 
-/**
- * Extension of {@link ConstructSpell} that spawns constructs at a distance from the caster using ray casting.
- * <p>
- * This spell traces a ray from the caster's position (or from a block face when cast by location) to find the
- * target spawn position. The range of the ray is determined by the {@link DefaultProperties#RANGE} property and
- * can be modified by range upgrades.
- * <p>
- * When cast by a player, the construct is spawned at the point where the player's look direction intersects with
- * a block surface (or at maximum range if no block is hit and {@link #requiresFloor} is false). When cast by an entity,
- * the construct is spawned at the target entity's position if it is within range and not obstructed by blocks. When cast
- * by location, the construct is spawned along the direction specified by the block face, at the point where the ray
- * intersects with a block surface (or at maximum range if no block is hit).
- * <p>
- * You can configure whether the ray casting should detect liquid blocks by calling {@link #hitLiquids(boolean)},
- * and whether it should ignore uncollidable blocks by calling {@link #ignoreUncollidables(boolean)}.
- * <p>
- * You must override the {@link #properties()} to return an actual instance of {@link SpellProperties}
- * for this spell or use {@link Spell#assignProperties(SpellProperties)},
- * otherwise the spell will have no properties and may not function as intended.
- *
- * @param <T> The type of {@link MagicConstructEntity} this spell creates.
- */
+/// Extension of [ConstructSpell] that spawns constructs at a distance from the caster using ray casting.
+///
+/// This spell traces a ray from the caster's position (or from a block face when cast by location) to find the
+/// target spawn position. The range of the ray is determined by the [DefaultProperties#RANGE] property and
+/// can be modified by range upgrades.
+///
+/// When cast by a player, the construct is spawned at the point where the player's look direction intersects with
+/// a block surface (or at maximum range if no block is hit and [#requiresFloor] is false). When cast by an entity,
+/// the construct is spawned at the target entity's position if it is within range and not obstructed by blocks. When cast
+/// by location, the construct is spawned along the direction specified by the block face, at the point where the ray
+/// intersects with a block surface (or at maximum range if no block is hit).
+///
+/// You can configure whether the ray casting should detect liquid blocks by calling [#hitLiquids(boolean)],
+/// and whether it should ignore uncollidable blocks by calling [#ignoreUncollidables(boolean)].
+///
+/// You must override the [#properties()] to return an actual instance of [SpellProperties]
+/// for this spell or use [Spell#assignProperties(SpellProperties)],
+/// otherwise the spell will have no properties and may not function as intended.
+///
+/// @param <T> The type of [MagicConstructEntity] this spell creates.
 public class ConstructRangedSpell<T extends MagicConstructEntity> extends ConstructSpell<T> {
-    /** Whether ray casting should detect liquid blocks as solid surfaces. Defaults to false. */
+    /// Whether ray casting should detect liquid blocks as solid surfaces. Defaults to false.
     protected boolean hitLiquids = false;
-    /** Whether ray casting should ignore uncollidable blocks (e.g., tall grass, flowers). Defaults to false. */
+    /// Whether ray casting should ignore uncollidable blocks (e.g., tall grass, flowers). Defaults to false.
     protected boolean ignoreUncollidables = false;
 
-    /**
-     * Creates a new ranged construct spell with the specified factory and permanence setting.
-     *
-     * @param constructFactory A function that creates the construct entity given a world
-     * @param permanent        Whether the construct should be permanent (true) or temporary (false)
-     */
+    /// Creates a new ranged construct spell with the specified factory and permanence setting.
+    ///
+    /// @param constructFactory A function that creates the construct entity given a world
+    /// @param permanent        Whether the construct should be permanent (true) or temporary (false)
     public ConstructRangedSpell(Function<Level, T> constructFactory, boolean permanent) {
         super(constructFactory, permanent);
     }
 
-    /**
-     * Sets whether ray casting should detect liquid blocks as solid surfaces.
-     * <p>
-     * When set to true, the ray cast will stop when it hits water, lava, or other liquid blocks, and the
-     * construct will be spawned at that position.
-     * <p>
-     * When set to false (default), liquids are treated as air and the ray cast will pass through them.
-     *
-     * @param hitLiquids true to detect liquids, false to ignore them
-     * @return this spell instance for method chaining
-     */
+    /// Sets whether ray casting should detect liquid blocks as solid surfaces.
+    ///
+    /// When set to true, the ray cast will stop when it hits water, lava, or other liquid blocks, and the
+    /// construct will be spawned at that position.
+    ///
+    /// When set to false (default), liquids are treated as air and the ray cast will pass through them.
+    ///
+    /// @param hitLiquids true to detect liquids, false to ignore them
+    /// @return this spell instance for method chaining
     public Spell hitLiquids(boolean hitLiquids) {
         this.hitLiquids = hitLiquids;
         return this;
     }
 
-    /**
-     * Sets whether ray casting should ignore uncollidable blocks (e.g., tall grass, flowers, vines).
-     * <p>
-     * When set to true, the ray cast will pass through blocks that don't have collision (like plants and
-     * decorative blocks), only stopping when it hits a solid block.
-     * <p>
-     * When set to false (default), the ray cast will stop at any block, including decorative ones.
-     *
-     * @param ignoreUncollidables true to ignore uncollidable blocks, false to detect them
-     * @return this spell instance for method chaining
-     */
+    /// Sets whether ray casting should ignore uncollidable blocks (e.g., tall grass, flowers, vines).
+    ///
+    /// When set to true, the ray cast will pass through blocks that don't have collision (like plants and
+    /// decorative blocks), only stopping when it hits a solid block.
+    ///
+    /// When set to false (default), the ray cast will stop at any block, including decorative ones.
+    ///
+    /// @param ignoreUncollidables true to ignore uncollidable blocks, false to detect them
+    /// @return this spell instance for method chaining
     public Spell ignoreUncollidables(boolean ignoreUncollidables) {
         this.ignoreUncollidables = ignoreUncollidables;
         return this;

@@ -31,16 +31,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/**
- * <b>Scroll Item!! Fast and easy way to use spells</b>
- * <p>
- * Compared to wands, scrolls are single use items that allow the player to cast a single spell without any mana/charge
- * cost. They are consumed upon use. You can think of them as disposable spellcasting items.
- */
+/// **Scroll Item!! Fast and easy way to use spells**
+///
+/// Compared to wands, scrolls are single use items that allow the player to cast a single spell without any mana/charge
+/// cost. They are consumed upon use. You can think of them as disposable spellcasting items.
 public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
-    /** The limit time for a continuous spell cast from a scroll. */
+    /// The limit time for a continuous spell cast from a scroll.
     public static final int CASTING_TIME = 120;
-    /** Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
+    /// Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast)
     public static final int COOLDOWN_FORFEIT_TICKS = 60;
 
     public ScrollItem(Properties properties) {

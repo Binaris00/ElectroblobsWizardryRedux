@@ -22,17 +22,13 @@ import net.minecraft.world.item.trading.MerchantOffers;
 import javax.annotation.Nullable;
 import java.util.HashMap;
 
-/**
- * A utility class for client-side operations. Normally used for quick and easy formatting of components.
- */
+/// A utility class for client-side operations. Normally used for quick and easy formatting of components.
 public final class ClientUtils {
-    /**
-     * Checks if a spell should be displayed (name, description and any other data) in the item stack.
-     *
-     * @param spell The spell to check.
-     * @param stack The item stack associated with the spell.
-     * @return true if the spell should be displayed as discovered, false otherwise.
-     */
+    /// Checks if a spell should be displayed (name, description and any other data) in the item stack.
+    ///
+    /// @param spell The spell to check.
+    /// @param stack The item stack associated with the spell.
+    /// @return true if the spell should be displayed as discovered, false otherwise.
     public static boolean shouldDisplayDiscovered(Spell spell, @Nullable ItemStack stack) {
         LocalPlayer player = Minecraft.getInstance().player;
         if (player == null) return false;
@@ -55,20 +51,16 @@ public final class ClientUtils {
         return Services.OBJECT_DATA.getSpellManagerData(player).hasSpellBeenDiscovered(spell);
     }
 
-    /**
-     * Returns the current local player. (Safety wrapper for Minecraft.getInstance().player)
-     *
-     * @return The current local player.
-     */
+    /// Returns the current local player. (Safety wrapper for Minecraft.getInstance().player)
+    ///
+    /// @return The current local player.
     public static LocalPlayer getPlayer() {
         return Minecraft.getInstance().player;
     }
 
-    /**
-     * Handles a glyph data packet received from the server by the networking layer.
-     *
-     * @param message The glyph data packet received from the server.
-     */
+    /// Handles a glyph data packet received from the server by the networking layer.
+    ///
+    /// @param message The glyph data packet received from the server.
     public static void handleGlyphDataPacket(SpellGlyphPacketS2C message) {
         SpellGlyphData data = GlyphClientHandler.INSTANCE.getGlyphData();
         data.randomNames = new HashMap<>();
@@ -84,12 +76,10 @@ public final class ClientUtils {
         }
     }
 
-    /**
-     * Util class to get the translatable name of a scroll with a saved spell in it, also checks if the spell is discovered.
-     *
-     * @param scroll The scroll item stack.
-     * @return The translatable name of the scroll.
-     */
+    /// Util class to get the translatable name of a scroll with a saved spell in it, also checks if the spell is discovered.
+    ///
+    /// @param scroll The scroll item stack.
+    /// @return The translatable name of the scroll.
     public static Component getScrollDisplayName(ItemStack scroll) {
         Spell spell = RegistryUtils.getSpell(scroll);
         boolean discovered = ClientUtils.shouldDisplayDiscovered(spell, scroll);
@@ -98,12 +88,10 @@ public final class ClientUtils {
         return Component.translatable("item.ebwizardry.scroll", name);
     }
 
-    /**
-     * Util class to get the translatable name of a spell book with a saved spell in it, also checks if the spell is discovered.
-     *
-     * @param book The spell book item stack.
-     * @return The translatable name of the spell book.
-     */
+    /// Util class to get the translatable name of a spell book with a saved spell in it, also checks if the spell is discovered.
+    ///
+    /// @param book The spell book item stack.
+    /// @return The translatable name of the spell book.
     public static Component getBookDisplayName(ItemStack book) {
         Spell spell = RegistryUtils.getSpell(book);
         if (spell == Spells.NONE) return Component.translatable("item.ebwizardry.spell_book.empty");
@@ -113,26 +101,22 @@ public final class ClientUtils {
         return Component.translatable("item.ebwizardry.spell_book", name);
     }
 
-    /**
-     * Util class to open a spell book screen.
-     *
-     * @param stack The spell book item stack.
-     */
+    /// Util class to open a spell book screen.
+    ///
+    /// @param stack The spell book item stack.
     public static void openSpellBook(ItemStack stack) {
         Minecraft.getInstance().setScreen(new SpellBookScreen(stack));
     }
 
-    /**
-     * Calculates a smooth scaling factor over time, commonly used for visual fading/scaling animations
-     * (such as particles or UI elements) based on remaining or elapsed lifetime.
-     *
-     * @param lifetime     The total lifetime of the element (in ticks). If negative, it handles infinite lifetime scaling up.
-     * @param ticksExisted The total full ticks the element has been alive.
-     * @param partialTicks The fractional tick time for smooth frame interpolation.
-     * @param startLength  The duration (in ticks) of the introductory scale-up phase.
-     * @param endLength    The duration (in ticks) of the concluding scale-down phase.
-     * @return A smooth scale factor clamped between 0.0F and 1.0F.
-     */
+    /// Calculates a smooth scaling factor over time, commonly used for visual fading/scaling animations
+    /// (such as particles or UI elements) based on remaining or elapsed lifetime.
+    ///
+    /// @param lifetime     The total lifetime of the element (in ticks). If negative, it handles infinite lifetime scaling up.
+    /// @param ticksExisted The total full ticks the element has been alive.
+    /// @param partialTicks The fractional tick time for smooth frame interpolation.
+    /// @param startLength  The duration (in ticks) of the introductory scale-up phase.
+    /// @param endLength    The duration (in ticks) of the concluding scale-down phase.
+    /// @return A smooth scale factor clamped between 0.0F and 1.0F.
     public static float smoothScaleFactor(int lifetime, int ticksExisted, float partialTicks, int startLength, int endLength) {
         float age = ticksExisted + partialTicks;
         float s = Mth.clamp(age < startLength || lifetime < 0 ? age / startLength : (lifetime - age) / endLength, 0, 1);
@@ -140,25 +124,21 @@ public final class ClientUtils {
         return s;
     }
 
-    /**
-     * Injects an alpha/opacity channel into an existing RGB hex color integer.
-     *
-     * @param color   The raw RGB color code (e.g., 0xFFFFFF).
-     * @param opacity The alpha percentage ranging from 0.0F (fully transparent) to 1.0F (fully opaque).
-     * @return An ARGB format color integer.
-     */
+    /// Injects an alpha/opacity channel into an existing RGB hex color integer.
+    ///
+    /// @param color   The raw RGB color code (e.g., 0xFFFFFF).
+    /// @param opacity The alpha percentage ranging from 0.0F (fully transparent) to 1.0F (fully opaque).
+    /// @return An ARGB format color integer.
     public static int makeTranslucentColor(int color, float opacity) {
         return color | ((int)(opacity * 0xFF) << 24);
     }
 
-    /**
-     * Blends two RGB colors together based on a specified proportional bias.
-     *
-     * @param color1     The starting base color.
-     * @param color2     The target color to blend into the base.
-     * @param proportion The blend factor where 0.0F yields color1 and 1.0F yields color2.
-     * @return The mixed RGB color code integer.
-     */
+    /// Blends two RGB colors together based on a specified proportional bias.
+    ///
+    /// @param color1     The starting base color.
+    /// @param color2     The target color to blend into the base.
+    /// @param proportion The blend factor where 0.0F yields color1 and 1.0F yields color2.
+    /// @return The mixed RGB color code integer.
     public static int mixColor(int color1, int color2, float proportion) {
         proportion = Mth.clamp(proportion, 0, 1);
 

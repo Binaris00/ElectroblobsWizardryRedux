@@ -9,37 +9,31 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Represents a set of conditions that can be tested against a {@link Spell}.
- * This record encapsulates a list of {@link SingleCondition} predicates that must all be satisfied
- * for the condition to pass.
- */
+/// Represents a set of conditions that can be tested against a [Spell].
+/// This record encapsulates a list of [SingleCondition] predicates that must all be satisfied
+/// for the condition to pass.
 public record SpellCondition(List<SingleCondition> conditions) {
     public enum Type {
-        /** Condition based on the spell's element. */
+        /// Condition based on the spell's element.
         ELEMENT,
-        /** Condition based on the spell's tier. */
+        /// Condition based on the spell's tier.
         TIER,
-        /** Condition based on the spell's type. */
+        /// Condition based on the spell's type.
         SPELL_TYPE,
-        /** Condition based on the specific spell. */
+        /// Condition based on the specific spell.
         SPELL;
 
-        /**
-         * Converts the enum name to a lowercase string key without underscores. For example, SPELL_TYPE becomes "spelltype".
-         *
-         * @return the string key representation of this type.
-         */
+        /// Converts the enum name to a lowercase string key without underscores. For example, SPELL\_TYPE becomes "spelltype".
+        ///
+        /// @return the string key representation of this type.
         public String key() {
             return name().toLowerCase().replace("_", "");
         }
 
-        /**
-         * Parses a string key back to a {@link Type} enum value.
-         *
-         * @param key the string key to parse.
-         * @return the corresponding {@link Type}, or null if not found.
-         */
+        /// Parses a string key back to a [Type] enum value.
+        ///
+        /// @param key the string key to parse.
+        /// @return the corresponding [Type], or null if not found.
         public static @Nullable Type fromKey(String key) {
             for (Type t : values()) {
                 if (t.key().equalsIgnoreCase(key.trim())) return t;
@@ -48,10 +42,8 @@ public record SpellCondition(List<SingleCondition> conditions) {
         }
     }
 
-    /**
-     * A single condition predicate consisting of a type and a value. This record tests whether a given spell matches
-     * the specified condition.
-     */
+    /// A single condition predicate consisting of a type and a value. This record tests whether a given spell matches
+    /// the specified condition.
     public record SingleCondition(Type type, ResourceLocation value) {
         public boolean test(Spell spell) {
             return switch (type) {
@@ -62,18 +54,16 @@ public record SpellCondition(List<SingleCondition> conditions) {
             };
         }
 
-        /** Saves this condition to the provided NBT compound tag. */
+        /// Saves this condition to the provided NBT compound tag.
         public void save(CompoundTag nbt) {
             nbt.putString(type.key(), value.toString());
         }
     }
 
-    /**
-     * Tests if the given spell satisfies all conditions in this {@link SpellCondition}.
-     *
-     * @param spell the spell to test.
-     * @return true if all conditions are met, false otherwise.
-     */
+    /// Tests if the given spell satisfies all conditions in this [SpellCondition].
+    ///
+    /// @param spell the spell to test.
+    /// @return true if all conditions are met, false otherwise.
     public boolean test(Spell spell) {
         for (SingleCondition c : conditions) {
             if (!c.test(spell)) return false;
@@ -81,13 +71,11 @@ public record SpellCondition(List<SingleCondition> conditions) {
         return true;
     }
 
-    /**
-     * Tests if this {@link SpellCondition} is a subset or equals of the given condition. That is, all conditions in
-     * this instance are present in the other condition.
-     *
-     * @param condition the other condition to compare against.
-     * @return true if this condition is a subset or equals, false otherwise.
-     */
+    /// Tests if this [SpellCondition] is a subset or equals of the given condition. That is, all conditions in
+    /// this instance are present in the other condition.
+    ///
+    /// @param condition the other condition to compare against.
+    /// @return true if this condition is a subset or equals, false otherwise.
     public boolean test(SpellCondition condition) {
         for (SingleCondition entry : this.conditions) {
             if (!condition.conditions().contains(entry)) {
@@ -97,21 +85,17 @@ public record SpellCondition(List<SingleCondition> conditions) {
         return true;
     }
 
-    /**
-     * Checks if this condition has no single conditions.
-     *
-     * @return true if the conditions list is empty, false otherwise.
-     */
+    /// Checks if this condition has no single conditions.
+    ///
+    /// @return true if the conditions list is empty, false otherwise.
     public boolean isEmpty() {
         return conditions.isEmpty();
     }
 
-    /**
-     * Loads a {@link SpellCondition} from the provided NBT compound tag.
-     *
-     * @param nbt the NBT compound tag to load from.
-     * @return the loaded {@link SpellCondition}, or null if no conditions were found.
-     */
+    /// Loads a [SpellCondition] from the provided NBT compound tag.
+    ///
+    /// @param nbt the NBT compound tag to load from.
+    /// @return the loaded [SpellCondition], or null if no conditions were found.
     public static @Nullable SpellCondition load(CompoundTag nbt) {
         List<SingleCondition> list = new ArrayList<>();
         for (Type type : Type.values()) {
@@ -123,25 +107,21 @@ public record SpellCondition(List<SingleCondition> conditions) {
         return list.isEmpty() ? null : new SpellCondition(list);
     }
 
-    /**
-     * Saves this {@link SpellCondition} to the provided NBT compound tag.
-     *
-     * @param nbt the NBT compound tag to save to.
-     * @return the modified NBT compound tag. (Or same nbt tag if there isn't any conditions)
-     */
+    /// Saves this [SpellCondition] to the provided NBT compound tag.
+    ///
+    /// @param nbt the NBT compound tag to save to.
+    /// @return the modified NBT compound tag. (Or same nbt tag if there isn't any conditions)
     public CompoundTag save(CompoundTag nbt) {
         for (SingleCondition c : conditions) c.save(nbt);
         return nbt;
     }
 
-    /**
-     * Parses a string representation of conditions into a {@link SpellCondition}. The string should be in the format
-     * "key1=value1,key2=value2,...". Valid keys are defined by {@link Type#key()}.
-     *
-     * @param raw the raw string to parse.
-     * @return the parsed {@link SpellCondition}, or null if the string is blank or no conditions are parsed.
-     * @throws IllegalArgumentException if the string format is invalid or contains unknown keys/values.
-     */
+    /// Parses a string representation of conditions into a [SpellCondition]. The string should be in the format
+    /// "key1=value1,key2=value2,...". Valid keys are defined by [Type#key()].
+    ///
+    /// @param raw the raw string to parse.
+    /// @return the parsed [SpellCondition], or null if the string is blank or no conditions are parsed.
+    /// @throws IllegalArgumentException if the string format is invalid or contains unknown keys/values.
     public static @Nullable SpellCondition parse(String raw) {
         if (raw == null || raw.isBlank()) return null;
 
@@ -191,11 +171,9 @@ public record SpellCondition(List<SingleCondition> conditions) {
         return list.isEmpty() ? null : new SpellCondition(list);
     }
 
-    /**
-     * Formats the {@link Type} values to a string representation.
-     *
-     * @return the {@link Type} values on a string list
-     */
+    /// Formats the [Type] values to a string representation.
+    ///
+    /// @return the [Type] values on a string list
     private static String validKeysString() {
         StringBuilder sb = new StringBuilder();
         for (Type t : Type.values()) sb.append(t.key()).append(", ");

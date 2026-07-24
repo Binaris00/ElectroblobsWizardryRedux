@@ -20,11 +20,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Why this is called GST...?
- * <p>
- * General GameTest utility methods.
- */
+/// Why this is called GST...?
+///
+/// General GameTest utility methods.
 public class GST {
 
     private GST() {

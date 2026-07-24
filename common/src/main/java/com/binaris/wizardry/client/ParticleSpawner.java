@@ -12,16 +12,12 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.BiFunction;
 
-/**
- * Client-only class that handles actual particle spawning. This class should only be loaded on the client side to
- * avoid classloading issues.
- */
+/// Client-only class that handles actual particle spawning. This class should only be loaded on the client side to
+/// avoid classloading issues.
 public final class ParticleSpawner {
 
-    /**
-     * Spawns a particle on the client side using the provided data. This method should only be called from client-side
-     * code.
-     */
+    /// Spawns a particle on the client side using the provided data. This method should only be called from client-side
+    /// code.
     public static void spawnClientParticle(ParticleBuilder.ParticleData data) {
         ClientLevel level = Minecraft.getInstance().level;
         SimpleParticleType type = (SimpleParticleType) BuiltInRegistries.PARTICLE_TYPE.get(data.particleType);

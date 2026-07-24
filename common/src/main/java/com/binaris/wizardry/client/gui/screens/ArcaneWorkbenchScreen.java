@@ -30,10 +30,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Client-side GUI screen for the Arcane Workbench, where all rendering, button logic, tooltips, and animations are
- * handled. Delegates most logic to the associated {@link ArcaneWorkbenchMenu}.
- */
+/// Client-side GUI screen for the Arcane Workbench, where all rendering, button logic, tooltips, and animations are
+/// handled. Delegates most logic to the associated [ArcaneWorkbenchMenu].
 public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkbenchMenu> {
     public static final int MAIN_GUI_WIDTH = 176;
     public static final int RUNE_LEFT = 38;
@@ -72,9 +70,7 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         imageHeight = 220;
     }
 
-    /**
-     * Initializes the screen, positions widgets, and sets up tooltips.
-     */
+    /// Initializes the screen, positions widgets, and sets up tooltips.
     @Override
     protected void init() {
         super.init();
@@ -113,14 +109,12 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         this.tooltipElements.add(new TooltipElementUpgradeList(this, LINE_SPACING_WIDE));
     }
 
-    /**
-     * Renders the screen, including background, slots, tooltips, and animations.
-     *
-     * @param guiGraphics The graphics context.
-     * @param mouseX      Mouse X position.
-     * @param mouseY      Mouse Y position.
-     * @param partialTick Partial tick time.
-     */
+    /// Renders the screen, including background, slots, tooltips, and animations.
+    ///
+    /// @param guiGraphics The graphics context.
+    /// @param mouseX      Mouse X position.
+    /// @param mouseY      Mouse Y position.
+    /// @param partialTick Partial tick time.
     @Override
     public void render(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         this.renderBackground(guiGraphics);
@@ -142,14 +136,12 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         this.renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
-    /**
-     * Renders the background layer, including slot highlights and animations.
-     *
-     * @param guiGraphics The graphics context.
-     * @param partialTick Partial tick time.
-     * @param mouseX      Mouse X position.
-     * @param mouseY      Mouse Y position.
-     */
+    /// Renders the background layer, including slot highlights and animations.
+    ///
+    /// @param guiGraphics The graphics context.
+    /// @param partialTick Partial tick time.
+    /// @param mouseX      Mouse X position.
+    /// @param mouseY      Mouse Y position.
     @Override
     protected void renderBg(@NotNull GuiGraphics guiGraphics, float partialTick, int mouseX, int mouseY) {
         RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -257,14 +249,12 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         RenderSystem.disableBlend();
     }
 
-    /**
-     * Renders the foreground labels, including the title and inventory name.
-     * Also draws tooltip foreground if needed.
-     *
-     * @param guiGraphics The graphics context.
-     * @param mouseX      Mouse X position.
-     * @param mouseY      Mouse Y position.
-     */
+    /// Renders the foreground labels, including the title and inventory name.
+    /// Also draws tooltip foreground if needed.
+    ///
+    /// @param guiGraphics The graphics context.
+    /// @param mouseX      Mouse X position.
+    /// @param mouseY      Mouse Y position.
     @Override
     protected void renderLabels(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY) {
         RenderSystem.setShaderColor(1, 1, 1, 1);
@@ -290,21 +280,17 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
         }
     }
 
-    /**
-     * Called every tick to update animation and refresh state.
-     */
+    /// Called every tick to update animation and refresh state.
     @Override
     protected void containerTick() {
         if (animationTimer > 0) animationTimer--;
         if (menu.needsRefresh) menu.needsRefresh = false;
     }
 
-    /**
-     * Generates the array of spell entry tooltip elements. This is done in a separate method to keep the constructor
-     * cleaner and allow for easy overriding.
-     *
-     * @return An array of eight {@link TooltipElementSpellEntry}s.
-     */
+    /// Generates the array of spell entry tooltip elements. This is done in a separate method to keep the constructor
+    /// cleaner and allow for easy overriding.
+    ///
+    /// @return An array of eight [TooltipElementSpellEntry]s.
     private TooltipElement[] generateSpellEntries() {
         TooltipElement[] entries = new TooltipElement[8];
         for (int i = 0; i < 8; i++) entries[i] = new TooltipElementSpellEntry(this, i);

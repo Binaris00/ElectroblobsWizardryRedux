@@ -6,10 +6,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 
-/**
- * This class is used to render entities that don't have a texture,
- *
- */
+/// This class is used to render entities that don't have a texture,
 public class BlankRenderer<T extends Entity> extends EntityRenderer<T> {
 
     public BlankRenderer(EntityRendererProvider.Context context) {

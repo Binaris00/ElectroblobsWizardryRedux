@@ -13,9 +13,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Based on the vanilla {@code ParticleParticle}, but with modified rendering to allow for a pulsing scale and a fade out.
- */
+/// Based on the vanilla `ParticleParticle`, but with modified rendering to allow for a pulsing scale and a fade out.
 public class ParticleFlash extends ParticleWizardry {
 
     public ParticleFlash(ClientLevel world, double x, double y, double z, SpriteSet spriteProvider) {

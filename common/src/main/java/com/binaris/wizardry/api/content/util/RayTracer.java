@@ -14,25 +14,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.function.Predicate;
 
-/**
- * Utility class for performing ray trace operations in the world, including both block and entity detection.
- * Provides methods for tracing rays with aim assist and custom entity filtering.
- */
+/// Utility class for performing ray trace operations in the world, including both block and entity detection.
+/// Provides methods for tracing rays with aim assist and custom entity filtering.
 public final class RayTracer {
 
-    /**
-     * Performs a ray trace from origin to endpoint, detecting both blocks and entities.
-     *
-     * @param world      The world to perform the ray trace in.
-     * @param caster     The entity performing the ray trace.
-     * @param origin     The starting position of the ray.
-     * @param endpoint   The ending position of the ray.
-     * @param aimAssist  Additional size to inflate entity hitboxes for easier targeting.
-     * @param hitLiquids Whether the ray should collide with liquid blocks.
-     * @param entityType The class of entities to detect.
-     * @param filter     A predicate to filter out entities from the results.
-     * @return The hit result of the ray trace, either a block hit or an entity hit.
-     */
+    /// Performs a ray trace from origin to endpoint, detecting both blocks and entities.
+    ///
+    /// @param world      The world to perform the ray trace in.
+    /// @param caster     The entity performing the ray trace.
+    /// @param origin     The starting position of the ray.
+    /// @param endpoint   The ending position of the ray.
+    /// @param aimAssist  Additional size to inflate entity hitboxes for easier targeting.
+    /// @param hitLiquids Whether the ray should collide with liquid blocks.
+    /// @param entityType The class of entities to detect.
+    /// @param filter     A predicate to filter out entities from the results.
+    /// @return The hit result of the ray trace, either a block hit or an entity hit.
     public static @NotNull HitResult rayTrace(Level world, Entity caster, Vec3 origin, Vec3 endpoint, float aimAssist, boolean hitLiquids, Class<? extends Entity> entityType, Predicate<? super Entity> filter) {
         ClipContext.Fluid fluidMode = hitLiquids ? ClipContext.Fluid.ANY : ClipContext.Fluid.NONE;
         HitResult blockHit = world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, fluidMode, caster));
@@ -61,15 +57,13 @@ public final class RayTracer {
         return closestEntity != null ? new EntityHitResult(closestEntity) : blockHit;
     }
 
-    /**
-     * Calculates the intercept point between a ray and an entity's hitbox.
-     *
-     * @param entity    The entity to check collision with.
-     * @param origin    The ray's starting position.
-     * @param endpoint  The ray's ending position.
-     * @param aimAssist Additional inflation for living entities' hitboxes.
-     * @return The intercept point, or null if no collision occurs.
-     */
+    /// Calculates the intercept point between a ray and an entity's hitbox.
+    ///
+    /// @param entity    The entity to check collision with.
+    /// @param origin    The ray's starting position.
+    /// @param endpoint  The ray's ending position.
+    /// @param aimAssist Additional inflation for living entities' hitboxes.
+    /// @return The intercept point, or null if no collision occurs.
     @Nullable
     private static Vec3 calculateIntercept(Entity entity, Vec3 origin, Vec3 endpoint, float aimAssist) {
         AABB bounds = entity.getBoundingBox();
@@ -83,17 +77,15 @@ public final class RayTracer {
         return bounds.clip(origin, endpoint).orElse(null);
     }
 
-    /**
-     * Performs a standard block ray trace from the entity's eye position in the direction they are looking.
-     *
-     * @param world                  The world to perform the ray trace in.
-     * @param entity                 The entity performing the ray trace.
-     * @param range                  The maximum distance to trace.
-     * @param hitLiquids             Whether the ray should collide with liquid blocks.
-     * @param ignoreUncollidables    Unused parameter (kept for API compatibility).
-     * @param returnLastUncollidable Unused parameter (kept for API compatibility).
-     * @return The hit result of the ray trace.
-     */
+    /// Performs a standard block ray trace from the entity's eye position in the direction they are looking.
+    ///
+    /// @param world                  The world to perform the ray trace in.
+    /// @param entity                 The entity performing the ray trace.
+    /// @param range                  The maximum distance to trace.
+    /// @param hitLiquids             Whether the ray should collide with liquid blocks.
+    /// @param ignoreUncollidables    Unused parameter (kept for API compatibility).
+    /// @param returnLastUncollidable Unused parameter (kept for API compatibility).
+    /// @return The hit result of the ray trace.
     public static @NotNull HitResult standardBlockRayTrace(Level world, LivingEntity entity, double range, boolean hitLiquids, boolean ignoreUncollidables, boolean returnLastUncollidable) {
         Vec3 origin = entity.getEyePosition(1);
         Vec3 endpoint = origin.add(entity.getLookAngle().scale(range));
@@ -101,12 +93,10 @@ public final class RayTracer {
         return world.clip(new ClipContext(origin, endpoint, ClipContext.Block.COLLIDER, fluidMode, entity));
     }
 
-    /**
-     * Creates a predicate that filters out the specified entity and dead living entities.
-     *
-     * @param entity The entity to ignore, or null to only filter dead entities.
-     * @return A predicate for filtering entities.
-     */
+    /// Creates a predicate that filters out the specified entity and dead living entities.
+    ///
+    /// @param entity The entity to ignore, or null to only filter dead entities.
+    /// @return A predicate for filtering entities.
     public static Predicate<Entity> ignoreEntityFilter(@Nullable Entity entity) {
         return e -> e == entity || (e instanceof LivingEntity living && living.deathTime > 0);
     }

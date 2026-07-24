@@ -19,45 +19,41 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-/**
- * Basic version of {@link AttackSpellGoal} that can be used by most spell-casting mobs without checking movement or look
- * controls, leaving those to other goals. This class handles spell selection, cooldowns, and casting logic. It
- * attempts to cast a random spell from the mob's spell list when the cooldown expires, provided the target is within range
- * and visible. It supports both instant and continuous spells.
- */
+/// Basic version of [AttackSpellGoal] that can be used by most spell-casting mobs without checking movement or look
+/// controls, leaving those to other goals. This class handles spell selection, cooldowns, and casting logic. It
+/// attempts to cast a random spell from the mob's spell list when the cooldown expires, provided the target is within range
+/// and visible. It supports both instant and continuous spells.
 public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
-    /** The mob that will use this goal */
+    /// The mob that will use this goal
     private final T attacker;
 
-    /** Base cooldown between spell casts */
+    /// Base cooldown between spell casts
     private final int baseCooldown;
 
-    /** Duration for continuous spells */
+    /// Duration for continuous spells
     private final int continuousSpellDuration;
 
-    /** Maximum attack distance squared */
+    /// Maximum attack distance squared
     private final float maxAttackDistance;
 
-    /** The current target entity */
+    /// The current target entity
     private LivingEntity target;
 
-    /** Current cooldown timer */
+    /// Current cooldown timer
     private int cooldown;
 
-    /** Timer for continuous spell casting */
+    /// Timer for continuous spell casting
     private int continuousSpellTimer;
 
-    /** Time the target has been visible */
+    /// Time the target has been visible
     private int seeTime;
 
-    /**
-     * Default constructor.
-     *
-     * @param attacker                Mob that will use this goal
-     * @param maxDistance             Maximum distance to the target for casting spells
-     * @param baseCooldown            Base cooldown between spell casts
-     * @param continuousSpellDuration Duration for continuous spells
-     */
+    /// Default constructor.
+    ///
+    /// @param attacker                Mob that will use this goal
+    /// @param maxDistance             Maximum distance to the target for casting spells
+    /// @param baseCooldown            Base cooldown between spell casts
+    /// @param continuousSpellDuration Duration for continuous spells
     public AttackSpellBasicGoal(T attacker, float maxDistance, int baseCooldown, int continuousSpellDuration) {
         this.cooldown = -1;
         this.attacker = attacker;
@@ -95,9 +91,7 @@ public class AttackSpellBasicGoal<T extends Mob & ISpellCaster> extends Goal {
         this.continuousSpellTimer = 0;
     }
 
-    /**
-     * Sets the continuous spell for the attacker and notifies tracking clients.
-     */
+    /// Sets the continuous spell for the attacker and notifies tracking clients.
     private void setContinuousSpellAndNotify(Spell spell, SpellModifiers modifiers) {
         attacker.setContinuousSpell(spell);
         Services.NETWORK_HELPER.sendToTracking(attacker,

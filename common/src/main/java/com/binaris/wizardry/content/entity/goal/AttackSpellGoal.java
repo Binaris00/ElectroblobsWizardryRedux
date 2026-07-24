@@ -19,43 +19,40 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-/**
- * A goal which allows a spell-casting mob to attack its target with spells. The mob will move towards the target
- * until it is within a specified distance and has line of sight, at which point it will stop and cast spells at it.
- * It can cast both instant and continuous spells.
- * <p>
- * For reference (specially related to continuous spells), check {@link AbstractWizard}
- * for an example of how to implement the {@link ISpellCaster} and handle spell casting properly.
- *
- * @param <T> The type of mob that is also a spell caster.
- */
+/// A goal which allows a spell-casting mob to attack its target with spells. The mob will move towards the target
+/// until it is within a specified distance and has line of sight, at which point it will stop and cast spells at it.
+/// It can cast both instant and continuous spells.
+///
+/// For reference (specially related to continuous spells), check [AbstractWizard]
+/// for an example of how to implement the [ISpellCaster] and handle spell casting properly.
+///
+/// @param <T> The type of mob that is also a spell caster.
 public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
-
-    /** The mob that is casting the spell that's also implementing {@code ISpellCaster}. */
+    /// The mob that is casting the spell that's also implementing `ISpellCaster`.
     private final T attacker;
 
-    /** The base cooldown between spell casts, in ticks (not including spell-specific cooldowns). */
+    /// The base cooldown between spell casts, in ticks (not including spell-specific cooldowns).
     private final int baseCooldown;
 
-    /** The duration for which continuous spells are cast, in ticks. */
+    /// The duration for which continuous spells are cast, in ticks.
     private final int continuousSpellDuration;
 
-    /** The movement speed of the mob towards its target. */
+    /// The movement speed of the mob towards its target.
     private final double speed;
 
-    /** The maximum distance at which the mob can cast spells, squared. */
+    /// The maximum distance at which the mob can cast spells, squared.
     private final float maxAttackDistance;
 
-    /** The current target of the mob. {@link AttackSpellGoal#attacker} */
+    /// The current target of the mob. [AttackSpellGoal#attacker]
     private LivingEntity target;
 
-    /** The current cooldown before the next spell can be cast, in ticks. */
+    /// The current cooldown before the next spell can be cast, in ticks.
     private int cooldown;
 
-    /** The timer for continuous spell casting, in ticks. */
+    /// The timer for continuous spell casting, in ticks.
     private int continuousSpellTimer;
 
-    /** The number of ticks that are needed to see the target before casting. */
+    /// The number of ticks that are needed to see the target before casting.
     private int seeTime;
 
     public AttackSpellGoal(T attacker, double speed, float maxDistance, int baseCooldown, int continuousSpellDuration) {

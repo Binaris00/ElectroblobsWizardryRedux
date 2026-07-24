@@ -12,7 +12,6 @@ public class SpectralDustItem extends Item implements IElementValue {
         this.element = element;
     }
 
-
     @Override
     public Element getElement() {
         return element;

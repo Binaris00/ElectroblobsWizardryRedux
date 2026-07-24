@@ -7,20 +7,17 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * A class representing a property of a spell, such as its cost or cooldown. Each property has a type (e.g. Integer,
- * Float, Boolean), a default value, and a current value, these properties are identified by a unique string.
- * <p>
- * Properties can be created using the static factory methods provided, such as {@link #intProperty(String)} or
- * {@link #booleanProperty(String, boolean)}. Once created, the property's value can be accessed and modified using
- * the {@link #get()} and {@link #set(Object)} methods respectively.
- * (Check {@link DefaultProperties} for examples of predefined properties.)
- * <p>
- *
- * @param <T> The type of the property's value.
- * @see DefaultProperties
- * @see SpellProperties#builder()
- */
+/// A class representing a property of a spell, such as its cost or cooldown. Each property has a type (e.g. Integer,
+/// Float, Boolean), a default value, and a current value, these properties are identified by a unique string.
+///
+/// Properties can be created using the static factory methods provided, such as [#intProperty(String)] or
+/// [#booleanProperty(String, boolean)]. Once created, the property's value can be accessed and modified using
+/// the [#get()] and [#set(Object)] methods respectively.
+/// (Check [DefaultProperties] for examples of predefined properties.)
+///
+/// @param <T> The type of the property's value.
+/// @see DefaultProperties
+/// @see SpellProperties#builder()
 @SuppressWarnings("unused")
 public class SpellProperty<T> {
     private static final Set<SpellProperty<?>> PROPERTIES = new HashSet<>();

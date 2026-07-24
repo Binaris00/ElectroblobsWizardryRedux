@@ -19,21 +19,19 @@ import net.steppschuh.markdowngenerator.table.Table;
 import java.util.*;
 import java.util.function.BiFunction;
 
-/**
- * Class mostly used in minecraft gametesting framework for checking spell values in different contexts. Made to allow
- * quick rebalance and test of spell cast values, this is made by used a Markdown table to show the spell values based
- * on cast context (rows) and scenarios (columns). The rows contain the whole context and the column uses that context
- * in the wanted scenario to return the result in a readable format.
- */
+/// Class mostly used in minecraft gametesting framework for checking spell values in different contexts. Made to allow
+/// quick rebalance and test of spell cast values, this is made by used a Markdown table to show the spell values based
+/// on cast context (rows) and scenarios (columns). The rows contain the whole context and the column uses that context
+/// in the wanted scenario to return the result in a readable format.
 public class SpellTables {
     private final List<Row> rows = new ArrayList<>();
     private final List<Column> columns = new ArrayList<>();
 
-    /** A row represents a context where you're going to cast a spell */
+    /// A row represents a context where you're going to cast a spell
     public record Row(CastContext castContext, Spell spell, String name) {
     }
 
-    /** A column represents the scenario that will return a desired result to be compared */
+    /// A column represents the scenario that will return a desired result to be compared
     public record Column(String name, BiFunction<CastContext, Spell, String> valueProvider) {
         public String getValue(CastContext ctx, Spell spell) {
             return valueProvider.apply(ctx, spell);

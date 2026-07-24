@@ -7,13 +7,11 @@ import net.minecraft.nbt.CompoundTag;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
 
-/**
- * Generic implementation of the {@link IPropertyType} interface using functional interfaces for serialization and
- * deserialization. This class allows for flexible handling of different property types by providing custom functions
- * for converting between JSON, NBT, and the property value type. We use this because the main <b>Electroblob's Wizardry</b>
- * mod codebase only needs a few primitive types, but addons might want to implement more complex types, in those cases
- * you need to implement your own {@link IPropertyType} and register it on {@link PropertyTypes}.
- */
+/// Generic implementation of the [IPropertyType] interface using functional interfaces for serialization and
+/// deserialization. This class allows for flexible handling of different property types by providing custom functions
+/// for converting between JSON, NBT, and the property value type. We use this because the main **Electroblob's Wizardry**
+/// mod codebase only needs a few primitive types, but addons might want to implement more complex types, in those cases
+/// you need to implement your own [IPropertyType] and register it on [PropertyTypes].
 public class PropertyType<T> implements IPropertyType<T> {
     private final BiFunction<JsonElement, String, SpellProperty<T>> jsonDeserializer;
     private final BiFunction<CompoundTag, String, SpellProperty<T>> tagDeserializer;

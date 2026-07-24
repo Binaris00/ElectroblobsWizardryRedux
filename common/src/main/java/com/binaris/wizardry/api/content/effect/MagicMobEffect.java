@@ -16,12 +16,10 @@ import net.minecraft.world.level.Level;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-/**
- * Base class for all custom mob effects (potions) in the mod. Implementations of this class can override event callbacks
- * from {@link IMobEventEffect} to execute behavior when events are fired for entities holding this effect.
- *
- * @see IMobEventEffect
- */
+/// Base class for all custom mob effects (potions) in the mod. Implementations of this class can override event callbacks
+/// from [IMobEventEffect] to execute behavior when events are fired for entities holding this effect.
+///
+/// @see IMobEventEffect
 public abstract class MagicMobEffect extends MobEffect implements CustomMobEffectParticles, IMobEventEffect {
     private int particleCount = 1;
     private double particleOffsetScale = 1.0;
@@ -75,9 +73,7 @@ public abstract class MagicMobEffect extends MobEffect implements CustomMobEffec
         return hideVanillaParticles;
     }
 
-    /**
-     * This class is used to call the event methods of the MagicMobEffect, you shouldn't use it directly.
-     */
+    /// This class is used to call the event methods of the MagicMobEffect, you shouldn't use it directly.
     public static class EventCaller {
         public static void callTickEvent(EBLivingTick event) {
             for (MobEffectInstance instance : new ArrayList<>(event.getEntity().getActiveEffects())) {

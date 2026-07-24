@@ -14,10 +14,8 @@ import net.minecraft.world.item.enchantment.Enchantments;
 
 import java.util.List;
 
-/**
- * Central class for all game tests. Exposes static methods for each loader to use in their own test system. In this we made
- * most tests to have parameters so that they can be configured depending on the needs (e.g. different items, different spells, etc.)
- */
+/// Central class for all game tests. Exposes static methods for each loader to use in their own test system. In this we made
+/// most tests to have parameters so that they can be configured depending on the needs (e.g. different items, different spells, etc.)
 public final class EBTestCentral {
     private static final List<Item> UPGRADES = List.of(EBItems.CRYSTAL_SILVER_PLATING.get(), EBItems.ETHEREAL_CRYSTAL_WEAVE.get(), EBItems.RESPLENDENT_THREAD.get());
 

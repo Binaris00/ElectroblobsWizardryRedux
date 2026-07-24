@@ -36,10 +36,8 @@ import net.minecraft.world.level.storage.LevelResource;
 
 import java.util.Optional;
 
-/**
- * Simple class to save all the event helper methods
- * This is internal use, you're not supposed to use this for any reason
- */
+/// Simple class to save all the event helper methods
+/// This is internal use, you're not supposed to use this for any reason
 public final class EBEventHelper {
     private EBEventHelper() {
     }

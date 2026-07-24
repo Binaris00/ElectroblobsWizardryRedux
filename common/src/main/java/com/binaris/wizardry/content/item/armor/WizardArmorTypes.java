@@ -12,12 +12,10 @@ import org.jetbrains.annotations.NotNull;
 import java.util.EnumMap;
 import java.util.Map;
 
-/**
- * Enum defining the different classes of wizard armor. Each class has its own armor material, upgrade item, and
- * armor piece names. The armor piece names are used to construct the registry names for the armor items.
- * Implementation note: This enum implements ArmorMaterial so that the armor material can be accessed directly from
- * the enum value.
- */
+/// Enum defining the different classes of wizard armor. Each class has its own armor material, upgrade item, and
+/// armor piece names. The armor piece names are used to construct the registry names for the armor items.
+/// Implementation note: This enum implements ArmorMaterial so that the armor material can be accessed directly from
+/// the enum value.
 public enum WizardArmorTypes implements WizardArmorMaterial {
     WIZARD("wizard", 15, 0.1F, 0, SoundEvents.ARMOR_EQUIP_DIAMOND, new int[]{2, 4, 5, 2}, 15, "hat", "robe", "leggings", "boots"),
     SAGE("sage", 15, 0.2f, 0, EBSounds.ITEM_ARMOR_EQUIP_SAGE.get(), new int[]{2, 5, 6, 3}, 15, "hat", "robe", "leggings", "boots"),

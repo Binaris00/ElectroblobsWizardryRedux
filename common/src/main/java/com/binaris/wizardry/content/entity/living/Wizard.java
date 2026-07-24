@@ -45,10 +45,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * This Wizard class is only concerned with trading behavior. Spell casting or other AI is handled in the
- * AbstractWizard superclass.
- */
+/// This Wizard class is only concerned with trading behavior. Spell casting or other AI is handled in the
+/// AbstractWizard superclass.
 public class Wizard extends AbstractWizard implements Npc, Merchant {
     private static final int[] XP_PER_LEVEL = new int[]{0, 10, 70, 150, 250};
     private static final int MAX_LEVEL = 5;

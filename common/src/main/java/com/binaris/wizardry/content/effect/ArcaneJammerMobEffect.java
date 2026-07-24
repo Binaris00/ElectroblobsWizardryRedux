@@ -13,9 +13,9 @@ import net.minecraft.world.effect.MobEffectCategory;
 import java.util.Random;
 
 public class ArcaneJammerMobEffect extends CurseMobEffect {
-    /** Random number generator used to coordinate whether spellcasting works or not. */
+    /// Random number generator used to coordinate whether spellcasting works or not.
     private static final Random random = new Random();
-    /** The number of ticks between updates of whether spellcasting works or not. */
+    /// The number of ticks between updates of whether spellcasting works or not.
     private static final int UPDATE_INTERVAL = 15;
 
     public ArcaneJammerMobEffect() {

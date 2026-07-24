@@ -47,22 +47,22 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractWizard extends PathfinderMob implements ISpellCaster {
-    /** Cooldown timer for the wizard's self-healing ability. (Using heal spell) */
+    /// Cooldown timer for the wizard's self-healing ability. (Using heal spell)
     private static final EntityDataAccessor<Integer> HEAL_COOLDOWN = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
 
-    /** Wizard's Element, saved because it affects their texture, spells and more data internally. */
+    /// Wizard's Element, saved because it affects their texture, spells and more data internally.
     private static final EntityDataAccessor<String> ELEMENT = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.STRING);
 
-    /** The spell that is currently being cast continuously (e.g. beam spells) or {@code FlameRay}, it could be {@code NoneSpell} */
+    /// The spell that is currently being cast continuously (e.g. beam spells) or `FlameRay`, it could be `NoneSpell`
     private static final EntityDataAccessor<String> CONTINUOUS_SPELL = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.STRING);
 
-    /** Counter for how long the current continuous spell has been cast for. */
+    /// Counter for how long the current continuous spell has been cast for.
     private static final EntityDataAccessor<Integer> SPELL_COUNTER = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
 
-    /** Index of the texture variant used by this wizard. */
+    /// Index of the texture variant used by this wizard.
     private static final EntityDataAccessor<Integer> TEXTURE_INDEX = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
 
-    /** The entity ID of the target of the current spell being cast. Used client-side for continuous spells. */
+    /// The entity ID of the target of the current spell being cast. Used client-side for continuous spells.
     private static final EntityDataAccessor<Integer> SPELL_TARGET_ID = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
 
     protected List<Spell> spells = new ArrayList<>(4);
@@ -96,10 +96,8 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         handleSelfHealing();
     }
 
-    /**
-     * Handles the casting of continuous spells on the client side. This method checks if a continuous spell is being
-     * cast and if so, retrieves the target entity and casts the spell using the appropriate context.
-     */
+    /// Handles the casting of continuous spells on the client side. This method checks if a continuous spell is being
+    /// cast and if so, retrieves the target entity and casts the spell using the appropriate context.
     private void handleContinuousSpellOnClient() {
         if (!level().isClientSide) return;
         Spell continuousSpell = this.getContinuousSpell();
@@ -123,11 +121,9 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         }
     }
 
-    /**
-     * Handles the wizard's self-healing ability using the heal spell. This method checks if the wizard should start
-     * healing, performs the healing, manages the cooldown, and plays the appropriate sound and particle effects. It is
-     * called every {@code aiStep()}.
-     */
+    /// Handles the wizard's self-healing ability using the heal spell. This method checks if the wizard should start
+    /// healing, performs the healing, manages the cooldown, and plays the appropriate sound and particle effects. It is
+    /// called every `aiStep()`.
     private void handleSelfHealing() {
         int healCooldown = this.getHealCooldown();
 
@@ -152,11 +148,9 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         if (healCooldown > 0) this.setHealCooldown(healCooldown - 1);
     }
 
-    /**
-     * Determines whether the wizard should start healing based on its current health, heal cooldown, and status effects.
-     *
-     * @return {@code true} if the wizard should start healing; {@code false} otherwise.
-     */
+    /// Determines whether the wizard should start healing based on its current health, heal cooldown, and status effects.
+    ///
+    /// @return `true` if the wizard should start healing; `false` otherwise.
     private boolean shouldStartHealing() {
         return getHealCooldown() == 0 && getHealth() < getMaxHealth() && getHealth() > 0 && !hasEffect(EBMobEffects.ARCANE_JAMMER.get());
     }
@@ -180,12 +174,10 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         return super.finalizeSpawn(level, difficulty, mobSpawnType, spawnData, tag);
     }
 
-    /**
-     * Select an element for the wizard. There is a 50% chance of it being MAGIC, otherwise it is randomly chosen from
-     * the other elements.
-     *
-     * @return The chosen element.
-     */
+    /// Select an element for the wizard. There is a 50% chance of it being MAGIC, otherwise it is randomly chosen from
+    /// the other elements.
+    ///
+    /// @return The chosen element.
     private Element chooseElement() {
         if (this.random.nextBoolean()) {
             List<Element> elements = new ArrayList<>(Services.REGISTRY_UTIL.getElements());
@@ -195,11 +187,9 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         return Elements.MAGIC;
     }
 
-    /**
-     * Equip the wizard with armor of the given element and disable all armor drops.
-     *
-     * @param element The element of the armor to equip.
-     */
+    /// Equip the wizard with armor of the given element and disable all armor drops.
+    ///
+    /// @param element The element of the armor to equip.
     public void equipArmorAndDisableDrops(Element element) {
         for (EquipmentSlot slot : EntityUtil.ARMOR_SLOTS) {
             this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorTypes.WIZARD, element, slot)));
@@ -209,12 +199,10 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         }
     }
 
-    /**
-     * Prepares a wand containing the wizard's spells and equips it.
-     *
-     * @param element The element of the wand.
-     * @param maxTier The maximum tier of spell the wand can contain.
-     */
+    /// Prepares a wand containing the wizard's spells and equips it.
+    ///
+    /// @param element The element of the wand.
+    /// @param maxTier The maximum tier of spell the wand can contain.
     public void  prepareWandWithSpells(Element element, SpellTier maxTier) {
         ArrayList<Spell> list = new ArrayList<>(spells);
         list.add(Spells.HEAL);

@@ -4,12 +4,11 @@ import com.binaris.wizardry.api.content.event.abstr.WizardryEvent;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.entity.player.Player;
 
-/**
- * This applies to: <br><br>
- * Fabric: {@code ServerPlayConnectionEvents#JOIN} <br>
- * Forge: {@code EntityJoinLevelEvent}
- *
- */
+/// This applies to:
+///
+/// Fabric: `ServerPlayConnectionEvents#JOIN`
+///
+/// Forge: `EntityJoinLevelEvent`
 public class EBPlayerJoinServerEvent extends WizardryEvent {
     Player player;
     MinecraftServer server;
