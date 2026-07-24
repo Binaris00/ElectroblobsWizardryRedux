@@ -4,6 +4,12 @@ import com.binaris.wizardry.api.content.spell.Spell;
 
 import java.util.Map;
 
+/// Per-player data container tracking discovered spells and spell-specific runtime variables.
+///
+/// Stores two categories of data: (1) spell variable storage — arbitrary typed key-value pairs scoped to spells,
+/// ticked every tick by {@code DataEvents.spellDataTick()}, used by spells like Charge (charge time/modifiers)
+/// and Curse of Soulbinding (soulbound creature UUIDs); (2) spell discovery tracking — a set of spells the player
+/// has discovered, checked by the HUD, trading, loot tables, and scroll items. Implementations differ per loader.
 public interface SpellManagerData {
 
     /// Synchronizes this SpellManagerData with the client.

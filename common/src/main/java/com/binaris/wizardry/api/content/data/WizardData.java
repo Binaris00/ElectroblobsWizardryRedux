@@ -12,6 +12,18 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+/// Per-player data container tracking wizard progression, ally designation, spell modifiers, and
+/// recent spell casting history.
+///
+/// Three core responsibilities: (1) tier progression — records the highest spell tier reached and
+/// checks whether a given tier has been unlocked, used by wand upgrades and progression modifiers;
+/// (2) ally management — maintains a set of ally UUIDs and display names, toggled via wand interaction
+/// or the {@code /ally} command, checked by {@code AllyDesignation} to block friendly fire between
+/// allied players; (3) spell modifier lifecycle — stores modifiers computed at cast-start time
+/// ({@code setSpellModifiers}) for retrieval on subsequent tick calls ({@code getSpellModifiers}),
+/// used by {@code WandItem} and {@code ScrollItem} to maintain consistent modifiers throughout a
+/// continuous spell's duration. Also tracks recent spell casts with timestamps to prevent spell spam
+/// and provides a deterministic, per-player {@link Random} instance used by the forfeit system.
 public interface WizardData {
     /// Sets the highest spell tier reached by the player, use this with caution as it can only be increased.
     ///

@@ -11,8 +11,8 @@ import java.util.UUID;
 ///
 /// Implementations handle syncing between server and client automatically when the owner changes.
 ///
-/// @see com.binaris.wizardry.cca.blockentity.ArcaneLockDataHolder (Fabric)
-/// @see com.binaris.wizardry.capabilities.ArcaneLockDataHolder (Forge)
+/// '@see com.binaris.wizardry.cca.blockentity.ArcaneLockDataHolder (Fabric)'
+/// '@see com.binaris.wizardry.capabilities.ArcaneLockDataHolder (Forge)'
 public interface ArcaneLockData {
     String NBT_KEY = "arcaneLockOwner";
 

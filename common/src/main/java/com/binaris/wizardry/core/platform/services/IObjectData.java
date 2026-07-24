@@ -9,6 +9,13 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import org.jetbrains.annotations.Nullable;
 
+/// Platform abstraction providing access to all per-player, per-entity, per-item, and per-block-entity
+/// data objects in the mod's data layer.
+///
+/// Serves as the central dispatch point for retrieving [WizardData], [SpellManagerData],
+/// [CastCommandData], [MinionData], [ConjureData], [ImbuementEnchantData],
+/// [ContainmentData], and [ArcaneLockData]. Each loader provides its own implementation
+/// obtained via the singleton {@code Services.OBJECT_DATA}.
 public interface IObjectData {
     /// Gives you the conjure data to manipulate and view the current status of the conjure item.
     ///
