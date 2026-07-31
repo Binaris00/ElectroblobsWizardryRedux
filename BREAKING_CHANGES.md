@@ -71,3 +71,11 @@ In favor of creating a new mod for entity immunities, deleting not important par
 ## Others
 
 - Deleted `EBClientConstants` and moved constants to `ArcaneWorkbenchScreen`
+
+### SpellProperty codec-based serialization
+
+- Deleted the `IPropertyType`, `PropertyType` and `PropertyTypes` classes from `api.content.spell.properties`.
+- `SpellProperty` now stores a `Codec<T>` (previously an `IPropertyType<T>`) used for serialization via `JsonOps`/`NbtOps`.
+- Custom property types are now provided by passing a `Codec<T>` to `SpellProperty#createProperty(String, T, Codec)`.
+- `SpellProperties#fromNbt`, `fromJson`, `toNbt` and `toJson` now serialize through the property's codec instead of the old functional `IPropertyType` handlers.
+- Decoded context maps (`enabled` property) are now immutable (`ImmutableMap` produced by `Codec.unboundedMap`); code that mutates the result of `SpellProperties#get(DefaultProperties.ENABLED)` will get an `UnsupportedOperationException`.
