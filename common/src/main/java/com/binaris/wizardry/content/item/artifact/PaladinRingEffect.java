@@ -20,7 +20,7 @@ public class PaladinRingEffect implements IArtifactEffect {
         if (!(event.getCaster() instanceof Player player)) return;
 
         if (event.getSpell() instanceof Heal || event.getSpell() instanceof HealAlly || event.getSpell() instanceof GreaterHeal) {
-            float healthGained = event.getSpell().property(DefaultProperties.HEALTH) * event.getModifiers().get(SpellModifiers.POTENCY);
+            float healthGained = event.getModifiers().get(SpellModifiers.POTENCY, event.getSpell().property(DefaultProperties.HEALTH));
 
             EntityUtil.getLivingWithinRadius(4, player.xo, player.yo, player.zo, event.getLevel()).stream().filter(livingEntity -> AllyDesignation.isAllied(player, livingEntity) && livingEntity.getHealth() > 0 && livingEntity.getHealth() < livingEntity.getMaxHealth()).forEach(livingEntity -> {
                 livingEntity.heal(healthGained * 0.2f);

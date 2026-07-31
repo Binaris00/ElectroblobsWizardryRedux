@@ -28,11 +28,11 @@ public class InvigoratingPresence extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
+        int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f));
 
         if (!ctx.world().isClientSide) {
             target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,
-                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
+                    (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
                     property(DefaultProperties.EFFECT_STRENGTH) + bonusAmplifier));
         }
 

@@ -89,13 +89,13 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
         if (armor.getMana(armorStack) == 0) return;
 
         if (spell.getElement() == armor.getElement()) {
-            modifiers.set(SpellModifiers.COST, modifiers.get(SpellModifiers.COST) - armor.getWizardArmorType().getElementalCostReduction());
+            modifiers.add(SpellModifiers.COST, -armor.getWizardArmorType().getElementalCostReduction());
         }
 
         modifiers.set(SpellModifiers.POTENCY, 2);
 
         if (this.getWizardArmorType().getCooldownReduction() > 0) {
-            modifiers.set(SpellModifiers.COOLDOWN, modifiers.get(SpellModifiers.COOLDOWN) - armor.getWizardArmorType().getCooldownReduction());
+            modifiers.add(SpellModifiers.COOLDOWN, -armor.getWizardArmorType().getCooldownReduction());
         }
 
         if (EntityUtil.isWearingFullMagicArmorSet(caster, armor.getElement(), armor.getWizardArmorType()) && EntityUtil.doAllArmorPiecesHaveMana(caster)) {

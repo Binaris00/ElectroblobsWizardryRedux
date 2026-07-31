@@ -22,7 +22,7 @@ public class GroupHeal extends AreaEffectSpell {
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (target.getHealth() < target.getMaxHealth() && target.getHealth() > 0) {
-            Heal.heal(target, property(DefaultProperties.HEALTH) * ctx.modifiers().get(SpellModifiers.POTENCY));
+            Heal.heal(target, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.HEALTH)));
 
             if (ctx.world().isClientSide) ParticleBuilder.spawnHealParticles(ctx.world(), target);
             playSound(ctx.world(), target, 0, -1);

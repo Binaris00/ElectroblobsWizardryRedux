@@ -49,7 +49,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         if (!ctx.world().isClientSide) {
             T arrow = arrowFactory.apply(ctx.world());
             arrow.aim(ctx.caster(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }
@@ -66,7 +66,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             T arrow = arrowFactory.apply(ctx.world());
             int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
             arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight() - (float) MagicArrowEntity.LAUNCH_Y_OFFSET), aimingError);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }
@@ -84,7 +84,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             arrow.setPos(ctx.vec3());
             Vec3 vec = Vec3.atLowerCornerOf(ctx.direction().getNormal());
             arrow.shoot(vec.x(), vec.y(), vec.z(), calculateVelocity(ctx, arrow, 0.375f), 1);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }
@@ -102,7 +102,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
     /// @param launchHeight The vertical height from which the projectile is launched.
     /// @return The velocity value to be used when launching the projectile.
     public float calculateVelocity(CastContext ctx, MagicArrowEntity projectile, float launchHeight) {
-        float range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
+        float range = ctx.modifiers().get(SpellModifiers.RANGE, property(DefaultProperties.RANGE));
 
         if (projectile.isNoGravity()) {
             if (projectile.getLifetime() <= 0) return 2;

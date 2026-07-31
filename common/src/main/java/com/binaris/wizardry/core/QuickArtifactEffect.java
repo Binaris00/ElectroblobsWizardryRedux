@@ -128,11 +128,9 @@ public class QuickArtifactEffect implements IArtifactEffect {
                 if (damageType != null && !s.is(damageType)) return;
 
                 switch (operation) {
-                    case ADD -> amount.set(amount.get() + value);
-                    case MULTIPLY -> amount.set(amount.get() * value);
-                    case SUBTRACT -> amount.set(amount.get() - value);
-                    case DIVIDE -> amount.set(amount.get() / value);
-                    case SET -> amount.set(value);
+                    case ADDITION -> amount.set(amount.get() + value);
+                    case MULTIPLY_TOTAL -> amount.set(amount.get() * (1.0f + value));
+                    default -> {}
                 }
             }
         };

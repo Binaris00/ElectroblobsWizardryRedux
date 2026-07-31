@@ -26,7 +26,7 @@ public class BlindingFlash extends AreaEffectSpell {
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (target instanceof LivingEntity) {
             target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,
-                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)), 0));
+                    (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))), 0));
         }
 
         return true;

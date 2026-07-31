@@ -43,6 +43,7 @@ public class EBForgeDataGenerators {
         generator.addProvider(event.includeServer(), EBLootTableProvider.create(packOutput));
         generator.addProvider(event.includeClient(), new EBBlockStateProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeClient(), new EBItemModelProvider(packOutput, existingFileHelper));
+        generator.addProvider(event.includeClient(), new EBSoundProvider(packOutput, existingFileHelper));
         generator.addProvider(event.includeServer(), new EBSpellsProvider(packOutput));
         generator.addProvider(event.includeServer(), new EBSpellDocsProvider(packOutput));
         generator.addProvider(event.includeServer(), new EBArtifactDocsProvider(packOutput));

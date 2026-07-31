@@ -28,7 +28,7 @@ public class GrowthAura extends Spell {
 
         boolean flag = false;
         Level level = ctx.caster().level();
-        List<BlockPos> sphere = BlockUtil.getBlockSphere(ctx.caster().blockPosition(), property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST));
+        List<BlockPos> sphere = BlockUtil.getBlockSphere(ctx.caster().blockPosition(), ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.EFFECT_RADIUS)));
 
         for (BlockPos pos : sphere) {
             BlockState state = level.getBlockState(pos);

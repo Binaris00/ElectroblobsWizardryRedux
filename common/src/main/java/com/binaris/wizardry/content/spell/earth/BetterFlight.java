@@ -38,8 +38,8 @@ public class BetterFlight extends Spell {
 
         if (ctx.castingTicks() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
-        float speed = property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY);
-        float acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(SpellModifiers.POTENCY);
+        float speed = ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.SPEED));
+        float acceleration = ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.ACCELERATION));
 
         if ((Math.abs(ctx.caster().getDeltaMovement().x) < speed || ctx.caster().getDeltaMovement().x / ctx.caster().getLookAngle().x < 0)
                 && (Math.abs(ctx.caster().getDeltaMovement().z) < speed || ctx.caster().getDeltaMovement().z / ctx.caster().getLookAngle().z < 0)) {

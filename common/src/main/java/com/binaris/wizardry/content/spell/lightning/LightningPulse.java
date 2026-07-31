@@ -30,14 +30,14 @@ public class LightningPulse extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if (!ctx.caster().onGround()) return false;
-        float radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
+        float radius = ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.EFFECT_RADIUS));
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.world());
         targets.removeIf(t -> !AllyDesignation.isValidTarget(ctx.caster(), t));
         for (LivingEntity target : targets) {
             target.hurt(
                     MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
-                    property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY)
+                    ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE))
             );
 
             if (!ctx.world().isClientSide()) {
@@ -62,7 +62,7 @@ public class LightningPulse extends Spell {
         if (ctx.world().isClientSide()) {
             ParticleBuilder.create(EBParticles.LIGHTNING_PULSE)
                     .pos(ctx.caster().getX(), ctx.caster().getY() + ANTI_Z_FIGHTING_OFFSET, ctx.caster().getZ())
-                    .scale(ctx.modifiers().get(SpellModifiers.BLAST))
+                    .scale(ctx.modifiers().get(SpellModifiers.BLAST, 1.0f))
                     .spawn(ctx.world());
         }
 

@@ -20,7 +20,7 @@ public class WitherSkullSpell extends Spell {
         Vec3 look = ctx.caster().getLookAngle();
         WitherSkull witherSkull = new WitherSkull(ctx.world(), ctx.caster(), 1, 1, 1);
         witherSkull.setPos(ctx.caster().getX() + look.x, ctx.caster().getY() + look.y + 1.3, ctx.caster().getZ() + look.z);
-        double acceleration = property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.RANGE);
+        double acceleration = ctx.modifiers().get(SpellModifiers.RANGE, property(DefaultProperties.SPEED));
 
         witherSkull.xPower = look.x * acceleration;
         witherSkull.yPower = look.y * acceleration;

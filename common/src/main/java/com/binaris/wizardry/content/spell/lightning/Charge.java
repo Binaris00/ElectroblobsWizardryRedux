@@ -46,7 +46,7 @@ public class Charge extends Spell {
 
             Vec3 look = player.getLookAngle();
 
-            float speed = Spells.CHARGE.property(Charge.CHARGE_SPEED) * modifiers.get(SpellModifiers.RANGE);
+            float speed = modifiers.get(SpellModifiers.RANGE, Spells.CHARGE.property(Charge.CHARGE_SPEED));
 
             player.setDeltaMovement(look.x * speed, player.getDeltaMovement().y, look.z * speed);
 
@@ -59,7 +59,7 @@ public class Charge extends Spell {
             List<LivingEntity> collided = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1));
 
             collided.remove(player);
-            float damage = Spells.CHARGE.property(DefaultProperties.DAMAGE) * modifiers.get(SpellModifiers.POTENCY);
+            float damage = modifiers.get(SpellModifiers.POTENCY, Spells.CHARGE.property(DefaultProperties.DAMAGE));
             float knockback = Spells.CHARGE.property(DefaultProperties.KNOCKBACK);
 
             collided.forEach(e -> e.hurt(MagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), damage));
@@ -95,7 +95,7 @@ public class Charge extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
-        data.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
+        data.setVariable(CHARGE_TIME, (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION).floatValue())));
         data.setVariable(CHARGE_MODIFIERS, ctx.modifiers());
 
         if (ctx.world().isClientSide)

@@ -122,12 +122,12 @@ public class BuffSpell extends Spell {
     /// @return true if the effects were applied, false if the target already had all the effects or if there was an error
     /// applying the effects.
     protected boolean applyEffects(CastContext ctx, LivingEntity target) {
-        int bonusAmplifier = getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
+        int bonusAmplifier = getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f));
 
         for (MobEffect effect : mobEffects) {
             if (ctx.world().isClientSide) continue;
             target.addEffect(new MobEffectInstance(effect, effect.isInstantenous() ? 1 :
-                    (int) (this.property(getEffectDurationProperty(effect)) * ctx.modifiers().get(SpellModifiers.DURATION)),
+                    (int) (this.property(getEffectDurationProperty(effect)) * ctx.modifiers().get(SpellModifiers.DURATION, 1.0f)),
                     this.property(getEffectStrengthProperty(effect)) + bonusAmplifier,
                     false, true));
         }

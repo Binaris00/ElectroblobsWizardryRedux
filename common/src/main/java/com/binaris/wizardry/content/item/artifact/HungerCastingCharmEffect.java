@@ -24,7 +24,7 @@ public class HungerCastingCharmEffect implements IArtifactEffect {
             if (!(wand.getItem() instanceof ICastItem && wand.getItem() instanceof IManaItem)) return;
         }
 
-        if (((IManaItem) wand.getItem()).getMana(wand) < event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST)) {
+        if (((IManaItem) wand.getItem()).getMana(wand) < event.getModifiers().get(SpellModifiers.COST, event.getSpell().getCost())) {
             int hunger = event.getSpell().getCost() / 5;
 
             if (player.getFoodData().getFoodLevel() >= hunger) {

@@ -33,7 +33,7 @@ public class Detonate extends RaySpell {
             return true;
         }
 
-        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(this.property(DefaultProperties.BLAST_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST),
+        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.BLAST_RADIUS)),
                 blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY(), blockHit.getBlockPos().getZ(), ctx.world());
 
         for (LivingEntity target : targets) {
@@ -42,7 +42,7 @@ public class Detonate extends RaySpell {
 
             target.hurt(source, Math.max(property(DefaultProperties.DAMAGE) -
                     (float) target.distanceToSqr(blockHit.getBlockPos().getX() + 0.5, blockHit.getBlockPos().getY() + 0.5,
-                            blockHit.getBlockPos().getZ() + 0.5) * 4, 0) * ctx.modifiers().get(SpellModifiers.POTENCY));
+                            blockHit.getBlockPos().getZ() + 0.5) * 4, 0) * ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f));
         }
         return true;
     }

@@ -21,7 +21,7 @@ public class Leap extends Spell {
     public boolean cast(PlayerCastContext ctx) {
         if (!ctx.caster().onGround()) return false;
 
-        ctx.caster().setDeltaMovement(ctx.caster().getDeltaMovement().x, property(VERTICAL_SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY), ctx.caster().getDeltaMovement().z);
+        ctx.caster().setDeltaMovement(ctx.caster().getDeltaMovement().x, ctx.modifiers().get(SpellModifiers.POTENCY, property(VERTICAL_SPEED)), ctx.caster().getDeltaMovement().z);
         double horizontalSpeed = property(HORIZONTAL_SPEED);
         ctx.caster().addDeltaMovement(new Vec3(ctx.caster().getLookAngle().x * horizontalSpeed, 0, ctx.caster().getLookAngle().z * horizontalSpeed));
 

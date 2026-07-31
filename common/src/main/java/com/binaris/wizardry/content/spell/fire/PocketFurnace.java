@@ -33,7 +33,7 @@ public class PocketFurnace extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        int usesLeft = (int) (property(ITEMS_SMELTED) * ctx.modifiers().get(SpellModifiers.POTENCY));
+        int usesLeft = (int) (ctx.modifiers().get(SpellModifiers.POTENCY, property(ITEMS_SMELTED)));
         ItemStack stack, result;
         boolean itemsSmelted = false;
 

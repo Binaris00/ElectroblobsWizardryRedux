@@ -34,7 +34,7 @@ public class CurseOfEnfeeblement extends RaySpell {
             if (ctx.world().isClientSide) return true;
             target.addEffect(new MobEffectInstance(EBMobEffects.CURSE_OF_ENFEEBLEMENT.get(),
                     Integer.MAX_VALUE, this.property(DefaultProperties.EFFECT_STRENGTH)
-                    * BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY))));
+                    * BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f))));
 
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.WITHER)
                     : target.damageSources().wither();

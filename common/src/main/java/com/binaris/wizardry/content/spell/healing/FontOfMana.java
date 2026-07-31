@@ -32,8 +32,8 @@ public class FontOfMana extends AreaEffectSpell {
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (!(target instanceof Player)) return true;
 
-        int duration = (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION));
-        int strength = (int) (property(DefaultProperties.EFFECT_STRENGTH) + (ctx.modifiers().get(SpellModifiers.POTENCY) - 1f) * 2f);
+        int duration = (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION)));
+        int strength = (int) (property(DefaultProperties.EFFECT_STRENGTH) + (ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f) * 2f);
 
         // Apply the new Font of Mana mob effect
         if (EBMobEffects.FONT_OF_MANA.get() != null) {

@@ -21,7 +21,7 @@ public class HealAlly extends RaySpell {
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (entityHit.getEntity() instanceof LivingEntity target) {
             if (target.getHealth() < target.getMaxHealth() && target.getHealth() > 0) {
-                target.heal(property(DefaultProperties.HEALTH) * ctx.modifiers().get(SpellModifiers.POTENCY));
+                target.heal(ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.HEALTH)));
                 if (ctx.world().isClientSide) ParticleBuilder.spawnHealParticles(ctx.world(), target);
                 playSound(ctx.world(), target, 0, -1);
             }

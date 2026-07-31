@@ -25,7 +25,7 @@ public class DragonFireball extends Spell {
 
             fireball.setPos(ctx.caster().getX() + look.x, ctx.caster().getY() + look.y + 1.3, ctx.caster().getZ() + look.z);
 
-            double acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(SpellModifiers.RANGE);
+            double acceleration = ctx.modifiers().get(SpellModifiers.RANGE, property(DefaultProperties.ACCELERATION));
 
             fireball.xPower = look.x * acceleration;
             fireball.yPower = look.y * acceleration;

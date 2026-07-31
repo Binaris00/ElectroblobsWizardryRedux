@@ -19,7 +19,7 @@ public class FontOfManaMobEffect extends MagicMobEffect {
     public void onSpellPreCast(SpellCastEvent.Pre event, MobEffectContext context) {
         if (event.getCaster() != null) {
             MobEffectInstance inst = event.getCaster().getEffect(EBMobEffects.FONT_OF_MANA.get());
-            if (inst != null) event.getModifiers().divide(SpellModifiers.COOLDOWN, 2 + inst.getAmplifier());
+            if (inst != null) event.getModifiers().multiply(SpellModifiers.COOLDOWN, 1.0f / (2 + inst.getAmplifier()));
         }
     }
 

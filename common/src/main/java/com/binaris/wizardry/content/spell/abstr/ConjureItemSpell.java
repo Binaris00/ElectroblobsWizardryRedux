@@ -66,7 +66,7 @@ public class ConjureItemSpell extends Spell {
 
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         int duration = property(DefaultProperties.ITEM_LIFETIME);
-        float durationMultiplier = ctx.modifiers().get(SpellModifiers.DURATION);
+        float durationMultiplier = ctx.modifiers().get(SpellModifiers.DURATION, 1.0f);
         long currentGameTime = ctx.world().getGameTime();
 
         data.setExpireTime((long) (currentGameTime + (duration * durationMultiplier)));

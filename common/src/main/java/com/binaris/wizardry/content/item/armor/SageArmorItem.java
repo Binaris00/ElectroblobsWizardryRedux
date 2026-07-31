@@ -33,7 +33,7 @@ public class SageArmorItem extends WizardArmorItem {
     @Override
     public void applyModifiers(LivingEntity entity, SpellModifiers modifiers, WizardArmorItem armor, Spell spell) {
         if (armor.getElement() != spell.getElement() && getEquipmentSlot() == EquipmentSlot.HEAD) {
-            modifiers.set(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION);
+            modifiers.set(SpellModifiers.COST, 1.0f - SAGE_OTHER_COST_REDUCTION);
         }
     }
 }

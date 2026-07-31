@@ -33,7 +33,7 @@ public class RayOfPurification extends RaySpell {
         if (!(entityHit.getEntity() instanceof LivingEntity target)) return false;
 
         if (ctx.castingTicks() % 10 != 0) return true;
-        float damage = property(UNDEAD_DAMAGE_MULTIPLIER) * ctx.modifiers().get(SpellModifiers.POTENCY);
+        float damage = ctx.modifiers().get(SpellModifiers.POTENCY, property(UNDEAD_DAMAGE_MULTIPLIER));
         if (target.isInvertedHealAndHarm()) damage *= property(UNDEAD_DAMAGE_MULTIPLIER);
 
         EntityUtil.attackEntityWithoutKnockback(target,
@@ -41,7 +41,7 @@ public class RayOfPurification extends RaySpell {
 
         if (!ctx.world().isClientSide) {
             target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,
-                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION))));
+                    (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION)))));
         }
 
         return true;

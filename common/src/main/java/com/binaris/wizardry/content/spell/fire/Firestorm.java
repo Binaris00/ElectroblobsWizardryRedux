@@ -63,7 +63,7 @@ public class Firestorm extends AreaEffectSpell {
     private void burnNearbyBlocks(CastContext ctx, Vec3 origin) {
         if (ctx.world().isClientSide || !EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return;
 
-        double radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
+        double radius = ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.EFFECT_RADIUS));
 
         for (int i = -(int) radius; i <= (int) radius; i++) {
             for (int j = -(int) radius; j <= (int) radius; j++) {

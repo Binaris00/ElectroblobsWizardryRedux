@@ -122,7 +122,6 @@ public final class ArcaneLockRender {
                     ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(container);
                     if (data == null || !data.isArcaneLocked()) continue;
 
-                    // Cachear la AABB pre-calculada
                     AABB bb = world.getBlockState(pos)
                             .getShape(world, pos)
                             .bounds()

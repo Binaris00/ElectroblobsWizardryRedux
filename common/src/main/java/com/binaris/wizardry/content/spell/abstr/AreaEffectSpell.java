@@ -123,7 +123,7 @@ public abstract class AreaEffectSpell extends Spell {
     /// @param origin the center point of the area effect
     /// @return true if at least one entity was affected, or if [#alwaysSucceed] is true
     protected boolean findAndAffectEntities(CastContext ctx, Vec3 origin) {
-        double radius = this.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
+        double radius = ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.EFFECT_RADIUS));
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, origin.x, origin.y, origin.z, ctx.world());
 

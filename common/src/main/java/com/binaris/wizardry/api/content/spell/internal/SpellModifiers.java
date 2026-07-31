@@ -1,11 +1,11 @@
 package com.binaris.wizardry.api.content.spell.internal;
 
-import com.google.common.collect.Sets;
 import net.minecraft.nbt.CompoundTag;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 /// Glorified map for storing and saving spell modifier values such as potency, cost, chargeup and many others. This is
 /// a mutable object that is intended to be modified rather than replaced, for example, inside the `SpellCastEvent.Pre`
@@ -35,31 +35,54 @@ public final class SpellModifiers {
     /// Constant string identifier for modifying health of players and mobs, normally used for minions
     public static final String HEALTH_MODIFIER = "ebwizardry.health_modifier";
 
-    private final Map<String, Float> multiplierMap;
+    private final Map<String, ModifiersInstance> modifiersMap;
 
     public SpellModifiers() {
-        multiplierMap = new HashMap<>();
+        modifiersMap = new HashMap<>();
     }
 
-    /// Creates a [SpellModifiers] instance from the given NBT tag. All entries in the tag are treated as
-    /// float multipliers with their keys as the modifier identifiers.
-    ///
-    /// @param tag The NBT tag containing the modifier data.
-    /// @return A [SpellModifiers] instance populated with the data from the tag.
-    public static SpellModifiers fromTag(CompoundTag tag) {
-        SpellModifiers modifiers = new SpellModifiers();
-        tag.getAllKeys().forEach(key -> modifiers.set(key, tag.getFloat(key)));
-        return modifiers;
+    public enum Operation {
+        ADDITION,
+        MULTIPLY_BASE,
+        MULTIPLY_TOTAL
     }
 
-    /// Converts this [SpellModifiers] instance to an NBT tag. All entries in the multiplier map are added
-    /// to the tag as float values with their keys as the modifier identifiers.
-    ///
-    /// @return A [CompoundTag] containing the modifier data.
-    public CompoundTag toTag() {
-        CompoundTag nbt = new CompoundTag();
-        multiplierMap.forEach(nbt::putFloat);
-        return nbt;
+    public record ModifierEntry(Operation operation, float amount) {
+    }
+
+    public float get(String key, float value) {
+        ModifiersInstance instance = modifiersMap.get(key);
+        return instance == null ? value : instance.get(value);
+    }
+
+    public SpellModifiers set(String key, float multiplier) {
+        ModifiersInstance instance = modifiersMap.computeIfAbsent(key, k -> new ModifiersInstance());
+        instance.setBaseValue(multiplier);
+        return this;
+    }
+
+    public SpellModifiers add(String key, float value) {
+        ModifiersInstance instance = modifiersMap.computeIfAbsent(key, k -> new ModifiersInstance());
+        instance.addModifier(Operation.ADDITION, value);
+        return this;
+    }
+
+    public SpellModifiers multiply(String key, float factor) {
+        ModifiersInstance instance = modifiersMap.computeIfAbsent(key, k -> new ModifiersInstance());
+        instance.addModifier(Operation.MULTIPLY_TOTAL, factor - 1.0f);
+        return this;
+    }
+
+    public SpellModifiers multiplyTotal(String key, float factor) {
+        ModifiersInstance instance = modifiersMap.computeIfAbsent(key, k -> new ModifiersInstance());
+        instance.addModifier(Operation.MULTIPLY_TOTAL, factor);
+        return this;
+    }
+
+    public SpellModifiers operate(String key, float value, Operation op) {
+        ModifiersInstance instance = modifiersMap.computeIfAbsent(key, k -> new ModifiersInstance());
+        instance.addModifier(op, value);
+        return this;
     }
 
     /// Combines this [SpellModifiers] instance with another by multiplying their corresponding modifier values.
@@ -69,116 +92,46 @@ public final class SpellModifiers {
     /// @param modifiers The other [SpellModifiers] instance to combine with.
     /// @return This [SpellModifiers] instance after combining.
     public SpellModifiers combine(SpellModifiers modifiers) {
-        for (String key : Sets.union(this.multiplierMap.keySet(), modifiers.multiplierMap.keySet())) {
-            float newValue = this.get(key) * modifiers.get(key);
-            this.set(key, newValue);
+        Set<String> allKeys = new HashSet<>(this.modifiersMap.keySet());
+        allKeys.addAll(modifiers.modifiersMap.keySet());
+        for (String key : allKeys) {
+            float product = this.get(key, 1.0F) * modifiers.get(key, 1.0F);
+            ModifiersInstance fresh = new ModifiersInstance();
+            fresh.setBaseValue(product);
+            this.modifiersMap.put(key, fresh);
         }
         return this;
     }
 
-    /// Operates on the given key with the given value and operation.
-    ///
-    /// @param key The string identifier for the upgrade.
-    /// @param value The value to be used in the operation.
-    /// @param op The operation to be performed.
-    /// @return This [SpellModifiers] instance after operating.
-    public SpellModifiers operate(String key, float value, Operation op) {
-        switch (op) {
-            case SET -> set(key, value);
-            case ADD -> add(key, value);
-            case SUBTRACT -> subtract(key, value);
-            case MULTIPLY -> multiply(key, value);
-            case DIVIDE -> divide(key, value);
-        }
-        return this;
-    }
-
-    /// Sets the multiplier for a specific upgrade identified by the given key.
-    ///
-    /// @param key        The string identifier for the upgrade.
-    /// @param multiplier The multiplier value to set.
-    /// @return This [SpellModifiers] instance after setting the multiplier.
-    public SpellModifiers set(String key, float multiplier) {
-        multiplierMap.put(key, multiplier);
-        return this;
-    }
-
-    /// Adds the value to the given key. In case there's not already a value for this modifier it will be saved as the
-    /// base.
-    ///
-    /// @param key   The string identifier for the upgrade.
-    /// @param value The value that's going to be added to the modifier
-    /// @return This [SpellModifiers] instance after setting the multiplier.
-    public SpellModifiers add(String key, float value) {
-        multiplierMap.merge(key, value, Float::sum);
-        return this;
-    }
-
-    /// Subtract the value based on the given key. In case there's not already a value for this modifier it will be saved
-    /// as the base.
-    ///
-    /// @param key   The string identifier for the upgrade.
-    /// @param value The value that's going to be subtracted to the modifier
-    /// @return This [SpellModifiers] instance after setting the multiplier.
-    public SpellModifiers subtract(String key, float value) {
-        multiplierMap.merge(key, -value, Float::sum);
-        return this;
-    }
-
-    /// Multiply the value based on the given key. In case there's not already a value for this modifier it won't do anything.
-    ///
-    /// @param key    The string identifier for the upgrade.
-    /// @param factor The value that's going to serve as the factor of the multiply
-    /// @return This [SpellModifiers] instance after setting the multiplier.
-    public SpellModifiers multiply(String key, float factor) {
-        if (multiplierMap.containsKey(key)) multiplierMap.compute(key, (k, v) -> v * factor);
-        else multiplierMap.put(key, get(key) * factor);
-        return this;
-    }
-
-    /// Divide the value based on the given key. In case there's not already a value for this modifier it won't do anything.
-    ///
-    /// @param key     The string identifier for the upgrade.
-    /// @param divisor The value that's going to serve as the divisor
-    /// @return This [SpellModifiers] instance after setting the multiplier.
-    public SpellModifiers divide(String key, float divisor) {
-        if (divisor == 0) throw new ArithmeticException("Cannot divide spell modifier by zero: " + key);
-        if (multiplierMap.containsKey(key)) multiplierMap.compute(key, (s, v) -> v / divisor);
-        else multiplierMap.put(key, get(key) / divisor);
-        return this;
-    }
-
-    /// Gets the multiplier for a specific upgrade identified by the given key.
-    ///
-    /// @param key The string identifier for the upgrade.
-    /// @return The multiplier value for the specified upgrade, or 1 if not set.
+    @Deprecated
     public float get(String key) {
-        Float value = multiplierMap.get(key);
-        return value == null ? 1 : value;
+        ModifiersInstance instance = modifiersMap.get(key);
+        return instance == null ? 1 : instance.get();
+    }
+
+    public static SpellModifiers fromTag(CompoundTag tag) {
+        SpellModifiers modifiers = new SpellModifiers();
+        for (String key : tag.getAllKeys())
+            modifiers.modifiersMap.put(key, ModifiersInstance.load(tag.getCompound(key)));
+        return modifiers;
+    }
+
+    public CompoundTag toTag() {
+        CompoundTag tag = new CompoundTag();
+        modifiersMap.forEach((key, inst) -> tag.put(key, inst.save()));
+        return tag;
     }
 
     /// Retrieves the complete map of all multipliers, including those that do not require syncing.
     ///
     /// @return A map containing all modifier identifiers and their corresponding multiplier values.
-    public Map<String, Float> getMultipliers() {
-        return multiplierMap;
+    public Map<String, ModifiersInstance> getMultipliers() {
+        return modifiersMap;
     }
 
     /// Resets all multipliers and synced multipliers, clearing all stored values, including those that do not require
     /// syncing.
     public void reset() {
-        this.multiplierMap.clear();
-    }
-
-    public enum Operation {
-        SET, ADD, SUBTRACT, MULTIPLY, DIVIDE
-    }
-
-    @Override
-    public String toString() {
-        return multiplierMap.entrySet()
-                .stream()
-                .map(e -> e.getKey() + " (" + e.getValue() + "x)")
-                .collect(Collectors.joining(", "));
+        modifiersMap.clear();
     }
 }

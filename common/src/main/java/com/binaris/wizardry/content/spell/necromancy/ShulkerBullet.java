@@ -45,7 +45,7 @@ public class ShulkerBullet extends Spell {
      */
     private boolean shoot(Level world, LivingEntity caster, double x, double y, double z, int castingTicks, SpellModifiers modifiers) {
         if (!world.isClientSide) {
-            double range = property(DefaultProperties.RANGE) * modifiers.get(SpellModifiers.RANGE);
+            double range = modifiers.get(SpellModifiers.RANGE, property(DefaultProperties.RANGE));
 
             List<LivingEntity> possibleTargets = EntityUtil.getLivingWithinRadius(range, x, y, z, world);
 

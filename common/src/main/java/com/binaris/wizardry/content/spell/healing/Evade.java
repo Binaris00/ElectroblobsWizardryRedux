@@ -28,7 +28,7 @@ public class Evade extends Spell {
             evadeDirection = look.yRot(Math.signum(ctx.caster().xxa) * (float) Math.PI / 2f);
         }
 
-        evadeDirection = evadeDirection.scale(this.property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY));
+        evadeDirection = evadeDirection.scale(ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.SPEED)));
         ctx.caster().addDeltaMovement(new Vec3(evadeDirection.x, 0.25f, evadeDirection.z));
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;

@@ -91,7 +91,7 @@ public class Fangs extends Spell {
         } else {
             Vec3 horizontal = VecUtils.flattenToHorizontal(ctx.caster().getLookAngle());
 
-            int count = (int) (this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE));
+            int count = (int) (ctx.modifiers().get(SpellModifiers.RANGE, property(DefaultProperties.RANGE)));
             float yaw = (float) Mth.atan2(horizontal.z, horizontal.x);
 
             for (int i = 0; i < count; i++) {

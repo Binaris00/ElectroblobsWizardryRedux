@@ -234,7 +234,7 @@ public abstract class RaySpell extends Spell {
     /// @return true if the spell was successfully cast (hit an entity, hit a block, or missed), false if the spell
     /// should not be cast (e.g. if it was blocked by an uncollidable block and ignoreUncollidables is true).
     protected boolean shootSpell(CastContext ctx, Vec3 origin, Vec3 direction) {
-        double range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
+        double range = ctx.modifiers().get(SpellModifiers.RANGE, property(DefaultProperties.RANGE));
         Vec3 endpoint = origin.add(direction.scale(range));
 
         HitResult rayTrace = RayTracer.rayTrace(ctx.world(), ctx.caster(), origin, endpoint, aimAssist, hitLiquids, Entity.class, ignoreLivingEntities ? (entity) -> entity instanceof LivingEntity : RayTracer.ignoreEntityFilter(ctx.caster()));

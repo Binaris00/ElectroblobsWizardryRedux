@@ -36,7 +36,7 @@ public class Satiety extends BuffSpell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if (ctx.caster().getFoodData().needsFood()) {
-            ctx.caster().getFoodData().eat((int) (property(ReplenishHunger.HUNGER_POINTS) * ctx.modifiers().get(SpellModifiers.POTENCY)), property(ReplenishHunger.HUNGER_POINTS));
+            ctx.caster().getFoodData().eat((int) (ctx.modifiers().get(SpellModifiers.POTENCY, property(ReplenishHunger.HUNGER_POINTS))), property(ReplenishHunger.HUNGER_POINTS));
         }
         return super.cast(ctx);
     }

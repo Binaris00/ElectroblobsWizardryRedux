@@ -32,7 +32,7 @@ public class Banish extends RaySpell {
         if (entityHit.getEntity() instanceof LivingEntity target) {
             double minRadius = this.property(MINIMUM_TELEPORT);
             double maxRadius = this.property(MAX_TELEPORT);
-            double radius = (minRadius + ctx.world().random.nextDouble() * maxRadius - minRadius) * ctx.modifiers().get(SpellModifiers.BLAST);
+            double radius = (minRadius + ctx.world().random.nextDouble() * maxRadius - minRadius) * ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
 
             teleport(target, ctx.world(), radius);
         }

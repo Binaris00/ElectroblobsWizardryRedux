@@ -40,7 +40,7 @@ public class Whirlwind extends RaySpell {
 
         Vec3 vec = target.getEyePosition(1).subtract(origin).normalize();
         if (!ctx.world().isClientSide) {
-            float velocity = property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY);
+            float velocity = ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.SPEED));
 
             target.setDeltaMovement(vec.x * velocity, vec.y * velocity + 1, vec.z * velocity);
 

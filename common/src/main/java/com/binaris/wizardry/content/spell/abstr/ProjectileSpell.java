@@ -21,7 +21,7 @@ import java.util.function.Function;
 /// This spell can be cast by players (shooting in their look direction), entities (shooting towards a target), and
 /// by location (shooting in the direction of a block face).
 ///
-/// Check [Spells#POISON\_BOMB] and [Spells#ICE\_CHARGE] for examples of projectile spells.
+/// Check [Spells#POISON_BOMB] and [Spells#ICE_CHARGE] for examples of projectile spells.
 ///
 /// You must override the [#properties()] to return an actual instance of [SpellProperties] for this spell or
 /// use [Spell#assignProperties(SpellProperties)], otherwise the spell will have no properties and may not function
@@ -52,9 +52,9 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
         if (!ctx.world().isClientSide) {
             T projectile = projectileFactory.apply(ctx.world());
             projectile.aim(ctx.caster(), calculateVelocity(ctx, projectile, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET));
-            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST);
+                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }
@@ -74,9 +74,9 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
             T projectile = projectileFactory.apply(ctx.world());
             int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
             projectile.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, projectile, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET), aimingError);
-            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST);
+                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }
@@ -93,9 +93,9 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
             projectile.setPos(ctx.vec3());
             Vec3i vec = ctx.direction().getNormal();
             projectile.shoot(vec.getX(), vec.getY(), vec.getZ(), calculateVelocity(ctx, projectile, 0.375f), 1);
-            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST);
+                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }
@@ -114,7 +114,7 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
     /// @param launchHeight the height from which the projectile is launched (used for gravity-affected projectiles)
     /// @return the calculated velocity for launching the projectile
     protected float calculateVelocity(CastContext ctx, MagicProjectileEntity projectile, float launchHeight) {
-        float range = property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
+        float range = ctx.modifiers().get(SpellModifiers.RANGE, property(DefaultProperties.RANGE));
 
         if (projectile.isNoGravity()) {
             if (projectile.getLifeTime() <= 0) return FALLBACK_VELOCITY;

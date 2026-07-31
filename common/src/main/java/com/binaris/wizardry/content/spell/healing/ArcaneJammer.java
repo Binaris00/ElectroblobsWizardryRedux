@@ -27,8 +27,8 @@ public class ArcaneJammer extends RaySpell {
         if (entityHit.getEntity() instanceof LivingEntity target) {
             if (!ctx.world().isClientSide) {
                 target.addEffect(new MobEffectInstance(EBMobEffects.ARCANE_JAMMER.get(),
-                        (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
-                        (int) (property(DefaultProperties.EFFECT_STRENGTH) * ctx.modifiers().get(SpellModifiers.POTENCY) - 1)));
+                        (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
+                        (int) (ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.EFFECT_STRENGTH)) - 1)));
             }
         }
         return true;

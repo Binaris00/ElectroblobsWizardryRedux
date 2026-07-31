@@ -139,7 +139,7 @@ public class MinionSpell<T extends Mob> extends Spell {
             for (int i = 0; i < property(DefaultProperties.MINION_COUNT); i++) {
                 T minion = minionFactory.apply(ctx.world());
                 minion.setPos(ctx.pos().getX() + 0.5, ctx.pos().getY(), ctx.pos().getZ() + 0.5);
-                setLifetime(minion, (int) (property(DefaultProperties.MINION_LIFETIME).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
+                setLifetime(minion, (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.MINION_LIFETIME).floatValue())));
                 this.addMinionExtras(minion, ctx, i);
 
                 ctx.world().addFreshEntity(minion);
@@ -187,15 +187,15 @@ public class MinionSpell<T extends Mob> extends Spell {
             minion.setPos(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5);
             data.setSummoned(true);
             data.setOwnerUUID(ctx.caster().getUUID());
-            setLifetime(minion, (int) (property(DefaultProperties.MINION_LIFETIME) * ctx.modifiers().get(SpellModifiers.DURATION)));
+            setLifetime(minion, (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.MINION_LIFETIME))));
             data.setShouldFollowOwner(shouldFollowOwner);
             data.setShouldDeleteGoals(shouldDeleteBaseGoals);
             data.setSearchNearbyTargets(searchNearbyTargets);
 
             if (minion.getAttribute(Attributes.ATTACK_DAMAGE) != null)
-                minion.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(SpellModifiers.POTENCY, ctx.modifiers().get(SpellModifiers.POTENCY) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                minion.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(SpellModifiers.POTENCY, ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f, AttributeModifier.Operation.MULTIPLY_TOTAL));
             if (minion.getAttribute(Attributes.MAX_HEALTH) != null)
-                minion.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(SpellModifiers.HEALTH_MODIFIER, ctx.modifiers().get(SpellModifiers.HEALTH_MODIFIER) - 1, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                minion.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(SpellModifiers.HEALTH_MODIFIER, ctx.modifiers().get(SpellModifiers.HEALTH_MODIFIER, 1.0f) - 1.0f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
             minion.setHealth(minion.getMaxHealth());
             minion.finalizeSpawn((ServerLevelAccessor) ctx.world(), ctx.world().getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);

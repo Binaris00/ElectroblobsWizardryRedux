@@ -50,7 +50,7 @@ public class TrapSlime extends RaySpell {
             data.setSummoned(true);
             data.setOwnerUUID(ctx.caster().getUUID());
             data.setShouldFollowOwner(false);
-            data.setLifetime((int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
+            data.setLifetime((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION).floatValue())));
 
             ctx.world().addFreshEntity(slime);
         }

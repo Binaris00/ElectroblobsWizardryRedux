@@ -162,7 +162,7 @@ public class Forfeit {
         if (event.getSource() == SpellCastEvent.Sources.SCROLL) {
             if (!player.isCreative()) stack.shrink(1);
         } else if (stack.getItem() instanceof IManaItem manaItem) {
-            int cost = (int) (event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST) + 0.1f);
+            int cost = Math.max(0, (int) (event.getModifiers().get(SpellModifiers.COST, event.getSpell().getCost()) + 0.1f));
             manaItem.consumeMana(stack, cost, player);
         }
     }

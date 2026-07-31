@@ -44,12 +44,12 @@ public class Freeze extends RaySpell {
 
         if (target instanceof Blaze || target instanceof MagmaCube) {
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST) : target.damageSources().magic();
-            target.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
+            target.hurt(source, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE)));
         }
 
         if (ctx.world().isClientSide) return true;
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
-                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
+                (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
                 property(DefaultProperties.EFFECT_STRENGTH)));
         if (target.isOnFire()) target.clearFire();
         return true;

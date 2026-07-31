@@ -44,7 +44,7 @@ public class FrostRay extends RaySpell {
                 property(DefaultProperties.EFFECT_STRENGTH)));
 
         if (ctx.castingTicks() % target.invulnerableDuration == 1) {
-            float damage = property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY);
+            float damage = ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE));
             if (target instanceof Blaze || target instanceof MagmaCube) damage *= 2;
 
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST)

@@ -1,0 +1,2632 @@
+{
+  "block.arcane_workbench.bind_spell": {
+    "sounds": [
+      "ebwizardry:spellbind"
+    ],
+    "subtitle": "subtitles.ebwizardry.block.arcane_workbench.bind_spell"
+  },
+  "block.imbuement_altar.imbue": {
+    "sounds": [
+      "ebwizardry:imbue"
+    ],
+    "subtitle": "subtitles.ebwizardry.block.imbuement_altar.imbue"
+  },
+  "block.lectern.locate_spell": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.block.lectern.locate_spell"
+  },
+  "block.pedestal.activate": {
+    "sounds": [
+      "mob/evocation_illager/prepare_summon"
+    ],
+    "subtitle": "subtitles.ebwizardry.block.pedestal.activate"
+  },
+  "block.pedestal.conquer": {
+    "sounds": [
+      "ui/toast/challenge_complete"
+    ],
+    "subtitle": "subtitles.ebwizardry.block.pedestal.conquer"
+  },
+  "block.receptacle.ignite": {
+    "sounds": [
+      "mob/evocation_illager/cast1",
+      "mob/evocation_illager/cast2"
+    ],
+    "subtitle": "subtitles.ebwizardry.block.receptacle.ignite"
+  },
+  "entity.black_hole.ambient": {
+    "sounds": [
+      "portal/portal"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.black_hole.ambient"
+  },
+  "entity.black_hole.break_block": {
+    "sounds": [
+      "mob/zombie/woodbreak"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.black_hole.break_block"
+  },
+  "entity.black_hole.vanish": {
+    "sounds": [
+      "portal/trigger"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.black_hole.vanish"
+  },
+  "entity.blizzard.ambient": {
+    "sounds": [
+      "ebwizardry:wind"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.blizzard.ambient"
+  },
+  "entity.boulder.break_block": {
+    "sounds": [
+      "mob/zombie/woodbreak"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.boulder.break_block"
+  },
+  "entity.boulder.hit": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.boulder.hit"
+  },
+  "entity.boulder.land": {
+    "sounds": [
+      "ebwizardry:rumble"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.boulder.land"
+  },
+  "entity.boulder.roll": {
+    "sounds": [
+      "ebwizardry:roll"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.boulder.roll"
+  },
+  "entity.bubble.pop": {
+    "sounds": [
+      "random/pop"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.bubble.pop"
+  },
+  "entity.darkness_orb.hit": {
+    "sounds": [
+      "mob/wither/hurt1",
+      "mob/wither/hurt2",
+      "mob/wither/hurt3",
+      "mob/wither/hurt4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.darkness_orb.hit"
+  },
+  "entity.dart.hit": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.dart.hit"
+  },
+  "entity.dart.hit_block": {
+    "sounds": [
+      "random/bowhit1",
+      "random/bowhit2",
+      "random/bowhit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.dart.hit_block"
+  },
+  "entity.decay.ambient": {
+    "sounds": [
+      "liquid/lava"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.decay.ambient"
+  },
+  "entity.entrapment.ambient": {
+    "sounds": [
+      "portal/portal"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.entrapment.ambient"
+  },
+  "entity.entrapment.vanish": {
+    "sounds": [
+      "portal/trigger"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.entrapment.vanish"
+  },
+  "entity.evil_wizard.ambient": {
+    "sounds": [
+      "mob/evocation_illager/idle1",
+      "mob/evocation_illager/idle2",
+      "mob/evocation_illager/idle3",
+      "mob/evocation_illager/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.evil_wizard.ambient"
+  },
+  "entity.evil_wizard.death": {
+    "sounds": [
+      "mob/evocation_illager/death1",
+      "mob/evocation_illager/death2"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.evil_wizard.death"
+  },
+  "entity.evil_wizard.hurt": {
+    "sounds": [
+      "mob/evocation_illager/hurt1",
+      "mob/evocation_illager/hurt2"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.evil_wizard.hurt"
+  },
+  "entity.fire_ring.ambient": {
+    "sounds": [
+      "fire/fire"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.fire_ring.ambient"
+  },
+  "entity.fire_sigil.trigger": {
+    "sounds": [
+      "ebwizardry:combust"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.fire_sigil.trigger"
+  },
+  "entity.firebolt.hit": {
+    "sounds": [
+      "liquid/lavapop"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.firebolt.hit"
+  },
+  "entity.firebomb.fire": {
+    "sounds": [
+      "ebwizardry:combust"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.firebomb.fire"
+  },
+  "entity.firebomb.smash": {
+    "sounds": [
+      "random/glass1",
+      "random/glass2",
+      "random/glass3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.firebomb.smash"
+  },
+  "entity.firebomb.throw": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.firebomb.throw"
+  },
+  "entity.flamecatcher_arrow.hit": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.flamecatcher_arrow.hit"
+  },
+  "entity.force_arrow.hit": {
+    "sounds": [
+      "fireworks/blast1"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.force_arrow.hit"
+  },
+  "entity.force_orb.hit": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.force_orb.hit"
+  },
+  "entity.force_orb.hit_block": {
+    "sounds": [
+      "fireworks/blast1"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.force_orb.hit_block"
+  },
+  "entity.forcefield.ambient": {
+    "sounds": [
+      "ebwizardry:forcefield"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.forcefield.ambient"
+  },
+  "entity.forcefield.deflect": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.forcefield.deflect"
+  },
+  "entity.frost_sigil.trigger": {
+    "sounds": [
+      "ebwizardry:freeze"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.frost_sigil.trigger"
+  },
+  "entity.hammer.attack": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.hammer.attack"
+  },
+  "entity.hammer.explode": {
+    "sounds": [
+      "random/explode1",
+      "random/explode2",
+      "random/explode3",
+      "random/explode4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.hammer.explode"
+  },
+  "entity.hammer.land": {
+    "sounds": [
+      "random/anvil_land"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.hammer.land"
+  },
+  "entity.hammer.throw": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.hammer.throw"
+  },
+  "entity.heal_aura.ambient": {
+    "sounds": [
+      "ebwizardry:sparkle"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.heal_aura.ambient"
+  },
+  "entity.homing_spark.hit": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.homing_spark.hit"
+  },
+  "entity.ice_barrier.deflect": {
+    "sounds": [
+      "random/anvil_land"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_barrier.deflect"
+  },
+  "entity.ice_barrier.extend": {
+    "sounds": [
+      "ebwizardry:slice"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_barrier.extend"
+  },
+  "entity.ice_charge.ice": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_charge.ice"
+  },
+  "entity.ice_charge.smash": {
+    "sounds": [
+      "random/glass1",
+      "random/glass2",
+      "random/glass3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_charge.smash"
+  },
+  "entity.ice_giant.attack": {
+    "sounds": [
+      "mob/irongolem/throw"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_giant.attack"
+  },
+  "entity.ice_giant.despawn": {
+    "sounds": [
+      "ebwizardry:freeze"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_giant.despawn"
+  },
+  "entity.ice_lance.hit": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_lance.hit"
+  },
+  "entity.ice_lance.smash": {
+    "sounds": [
+      "random/glass1",
+      "random/glass2",
+      "random/glass3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_lance.smash"
+  },
+  "entity.ice_shard.hit": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_shard.hit"
+  },
+  "entity.ice_shard.smash": {
+    "sounds": [
+      "random/glass1",
+      "random/glass2",
+      "random/glass3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_shard.smash"
+  },
+  "entity.ice_spike.extend": {
+    "sounds": [
+      "ebwizardry:slice"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_spike.extend"
+  },
+  "entity.ice_wraith.ambient": {
+    "sounds": [
+      "ebwizardry:wind"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.ice_wraith.ambient"
+  },
+  "entity.iceball.hit": {
+    "sounds": [
+      "block/powder_snow/break1",
+      "block/powder_snow/break2",
+      "block/powder_snow/break3",
+      "block/powder_snow/break4",
+      "block/powder_snow/break5",
+      "block/powder_snow/break6",
+      "block/powder_snow/break7"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.iceball.hit"
+  },
+  "entity.lightning_arrow.hit": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.lightning_arrow.hit"
+  },
+  "entity.lightning_disc.hit": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.lightning_disc.hit"
+  },
+  "entity.lightning_sigil.trigger": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.lightning_sigil.trigger"
+  },
+  "entity.magic_missile.hit": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.magic_missile.hit"
+  },
+  "entity.magic_slime.attack": {
+    "sounds": [
+      "mob/slime/attack1",
+      "mob/slime/attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.magic_slime.attack"
+  },
+  "entity.magic_slime.explode": {
+    "sounds": [
+      "fireworks/blast_far1"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.magic_slime.explode"
+  },
+  "entity.magic_slime.splat": {
+    "sounds": [
+      "mob/slime/attack1",
+      "mob/slime/attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.magic_slime.splat"
+  },
+  "entity.meteor.falling": {
+    "sounds": [
+      "ebwizardry:flames_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.meteor.falling"
+  },
+  "entity.phoenix.ambient": {
+    "sounds": [
+      "mob/blaze/breathe1",
+      "mob/blaze/breathe2",
+      "mob/blaze/breathe3",
+      "mob/blaze/breathe4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.phoenix.ambient"
+  },
+  "entity.phoenix.burn": {
+    "sounds": [
+      "fire/fire"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.phoenix.burn"
+  },
+  "entity.phoenix.death": {
+    "sounds": [
+      "mob/blaze/death"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.phoenix.death"
+  },
+  "entity.phoenix.flap": {
+    "sounds": [
+      "mob/enderdragon/wings1",
+      "mob/enderdragon/wings2",
+      "mob/enderdragon/wings3",
+      "mob/enderdragon/wings4",
+      "mob/enderdragon/wings5",
+      "mob/enderdragon/wings6"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.phoenix.flap"
+  },
+  "entity.phoenix.hurt": {
+    "sounds": [
+      "mob/blaze/hit1",
+      "mob/blaze/hit2",
+      "mob/blaze/hit3",
+      "mob/blaze/hit4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.phoenix.hurt"
+  },
+  "entity.poison_bomb.poison": {
+    "sounds": [
+      "random/fizz"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.poison_bomb.poison"
+  },
+  "entity.poison_bomb.smash": {
+    "sounds": [
+      "random/glass1",
+      "random/glass2",
+      "random/glass3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.poison_bomb.smash"
+  },
+  "entity.poison_bomb.throw": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.poison_bomb.throw"
+  },
+  "entity.radiant_totem.ambient": {
+    "sounds": [
+      "ebwizardry:beam_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.radiant_totem.ambient"
+  },
+  "entity.radiant_totem.vanish": {
+    "sounds": [
+      "ebwizardry:beam_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.radiant_totem.vanish"
+  },
+  "entity.remnant.ambient": {
+    "sounds": [
+      "ebwizardry:remnant_hiss"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.remnant.ambient"
+  },
+  "entity.remnant.death": {
+    "sounds": [
+      "ebwizardry:remnant_death"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.remnant.death"
+  },
+  "entity.remnant.hurt": {
+    "sounds": [
+      "ebwizardry:remnant_hurt"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.remnant.hurt"
+  },
+  "entity.shadow_wraith.ambient": {
+    "sounds": [
+      "mob/blaze/breathe1",
+      "mob/blaze/breathe2",
+      "mob/blaze/breathe3",
+      "mob/blaze/breathe4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.shadow_wraith.ambient"
+  },
+  "entity.shadow_wraith.death": {
+    "sounds": [
+      "mob/blaze/death"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.shadow_wraith.death"
+  },
+  "entity.shadow_wraith.hurt": {
+    "sounds": [
+      "mob/blaze/hit1",
+      "mob/blaze/hit2",
+      "mob/blaze/hit3",
+      "mob/blaze/hit4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.shadow_wraith.hurt"
+  },
+  "entity.shadow_wraith.noise": {
+    "sounds": [
+      "portal/portal"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.shadow_wraith.noise"
+  },
+  "entity.shield.deflect": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.shield.deflect"
+  },
+  "entity.smoke_bomb.smash": {
+    "sounds": [
+      "random/glass1",
+      "random/glass2",
+      "random/glass3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.smoke_bomb.smash"
+  },
+  "entity.smoke_bomb.smoke": {
+    "sounds": [
+      "random/fizz"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.smoke_bomb.smoke"
+  },
+  "entity.smoke_bomb.throw": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.smoke_bomb.throw"
+  },
+  "entity.spark_bomb.chain": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.spark_bomb.chain"
+  },
+  "entity.spark_bomb.hit": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.spark_bomb.hit"
+  },
+  "entity.spark_bomb.hit_block": {
+    "sounds": [
+      "fireworks/blast_far1"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.spark_bomb.hit_block"
+  },
+  "entity.spark_bomb.throw": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.spark_bomb.throw"
+  },
+  "entity.spirit_horse.vanish": {
+    "sounds": [
+      "ebwizardry:conjure_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.spirit_horse.vanish"
+  },
+  "entity.spirit_wolf.vanish": {
+    "sounds": [
+      "ebwizardry:conjure_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.spirit_wolf.vanish"
+  },
+  "entity.storm_elemental.ambient": {
+    "sounds": [
+      "mob/blaze/breathe1",
+      "mob/blaze/breathe2",
+      "mob/blaze/breathe3",
+      "mob/blaze/breathe4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.storm_elemental.ambient"
+  },
+  "entity.storm_elemental.burn": {
+    "sounds": [
+      "fire/fire"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.storm_elemental.burn"
+  },
+  "entity.storm_elemental.death": {
+    "sounds": [
+      "mob/blaze/death"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.storm_elemental.death"
+  },
+  "entity.storm_elemental.hurt": {
+    "sounds": [
+      "mob/blaze/hit1",
+      "mob/blaze/hit2",
+      "mob/blaze/hit3",
+      "mob/blaze/hit4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.storm_elemental.hurt"
+  },
+  "entity.storm_elemental.wind": {
+    "sounds": [
+      "ebwizardry:wind"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.storm_elemental.wind"
+  },
+  "entity.stormcloud.attack": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.stormcloud.attack"
+  },
+  "entity.stormcloud.thunder": {
+    "sounds": [
+      "ambient/weather/thunder1",
+      "ambient/weather/thunder2",
+      "ambient/weather/thunder3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.stormcloud.thunder"
+  },
+  "entity.thunderbolt.hit": {
+    "sounds": [
+      "fireworks/largeblast1"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.thunderbolt.hit"
+  },
+  "entity.tornado.ambient": {
+    "sounds": [
+      "ebwizardry:wind"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.tornado.ambient"
+  },
+  "entity.withering_totem.ambient": {
+    "sounds": [
+      "ebwizardry:dark_aura_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.withering_totem.ambient"
+  },
+  "entity.withering_totem.explode": {
+    "sounds": [
+      "mob/wither/death"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.withering_totem.explode"
+  },
+  "entity.wizard.ambient": {
+    "sounds": [
+      "mob/villager/idle1",
+      "mob/villager/idle2",
+      "mob/villager/idle3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.wizard.ambient"
+  },
+  "entity.wizard.death": {
+    "sounds": [
+      "mob/villager/death"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.wizard.death"
+  },
+  "entity.wizard.hohoho": {
+    "sounds": [
+      "ebwizardry:hohoho"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.wizard.hohoho"
+  },
+  "entity.wizard.hurt": {
+    "sounds": [
+      "mob/villager/hit1",
+      "mob/villager/hit2",
+      "mob/villager/hit3",
+      "mob/villager/hit4"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.wizard.hurt"
+  },
+  "entity.wizard.no": {
+    "sounds": [
+      "mob/villager/no1",
+      "mob/villager/no2",
+      "mob/villager/no3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.wizard.no"
+  },
+  "entity.wizard.trading": {
+    "sounds": [
+      "mob/villager/haggle1",
+      "mob/villager/haggle2",
+      "mob/villager/haggle3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.wizard.trading"
+  },
+  "entity.wizard.yes": {
+    "sounds": [
+      "mob/villager/yes1",
+      "mob/villager/yes2",
+      "mob/villager/yes3"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.wizard.yes"
+  },
+  "entity.zombie_spawner.spawn": {
+    "sounds": [
+      "mob/guardian/elder_death"
+    ],
+    "subtitle": "subtitles.ebwizardry.entity.zombie_spawner.spawn"
+  },
+  "forfeit.arrow_rain": {
+    "sounds": [
+      "mob/illusion_illager/prepare_blind"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.arrow_rain"
+  },
+  "forfeit.black_hole": {
+    "sounds": [
+      "mob/evocation_illager/prepare_attack1",
+      "mob/evocation_illager/prepare_attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.black_hole"
+  },
+  "forfeit.blazes": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.blazes"
+  },
+  "forfeit.blind_self": {
+    "sounds": [
+      "mob/guardian/curse"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.blind_self"
+  },
+  "forfeit.blizzard": {
+    "sounds": [
+      "ebwizardry:ice_age"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.blizzard"
+  },
+  "forfeit.burn_self": {
+    "sounds": [
+      "fire/ignite"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.burn_self"
+  },
+  "forfeit.burn_surroundings": {
+    "sounds": [
+      "mob/evocation_illager/prepare_attack1",
+      "mob/evocation_illager/prepare_attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.burn_surroundings"
+  },
+  "forfeit.bury_self": {
+    "sounds": [
+      "ebwizardry:rumble"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.bury_self"
+  },
+  "forfeit.cripple_self": {
+    "sounds": [
+      "mob/wither/death"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.cripple_self"
+  },
+  "forfeit.curse_self": {
+    "sounds": [
+      "mob/guardian/curse"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.curse_self"
+  },
+  "forfeit.damage_self": {
+    "sounds": [
+      "damage/hit1",
+      "damage/hit2",
+      "damage/hit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.damage_self"
+  },
+  "forfeit.explode": {
+    "sounds": [
+      "random/explode1",
+      "random/explode2",
+      "random/explode3",
+      "random/explode4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.explode"
+  },
+  "forfeit.fireball": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.fireball"
+  },
+  "forfeit.firebomb": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.firebomb"
+  },
+  "forfeit.flood": {
+    "sounds": [
+      "item/bucket/empty1",
+      "item/bucket/empty2",
+      "item/bucket/empty3"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.flood"
+  },
+  "forfeit.freeze_self": {
+    "sounds": [
+      "ebwizardry:freeze"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.freeze_self"
+  },
+  "forfeit.freeze_self_2": {
+    "sounds": [
+      "ebwizardry:freeze"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.freeze_self_2"
+  },
+  "forfeit.hailstorm": {
+    "sounds": [
+      "mob/illusion_illager/prepare_blind"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.hailstorm"
+  },
+  "forfeit.hunger": {
+    "sounds": [
+      "mob/guardian/curse"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.hunger"
+  },
+  "forfeit.ice_giant": {
+    "sounds": [
+      "mob/evocation_illager/prepare_summon"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.ice_giant"
+  },
+  "forfeit.ice_wraiths": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.ice_wraiths"
+  },
+  "forfeit.jam_self": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.jam_self"
+  },
+  "forfeit.levitate_self": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.levitate_self"
+  },
+  "forfeit.lightning_sigils": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.lightning_sigils"
+  },
+  "forfeit.lightning_wraiths": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.lightning_wraiths"
+  },
+  "forfeit.meteors": {
+    "sounds": [
+      "mob/illusion_illager/prepare_blind"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.meteors"
+  },
+  "forfeit.nausea": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.nausea"
+  },
+  "forfeit.paralyse_self": {
+    "sounds": [
+      "ebwizardry:shockwave"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.paralyse_self"
+  },
+  "forfeit.poison_self": {
+    "sounds": [
+      "random/fizz"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.poison_self"
+  },
+  "forfeit.shadow_wraiths": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.shadow_wraiths"
+  },
+  "forfeit.snares": {
+    "sounds": [
+      "dig/grass1",
+      "dig/grass2",
+      "dig/grass3",
+      "dig/grass4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.snares"
+  },
+  "forfeit.spill_armour": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.spill_armour"
+  },
+  "forfeit.spill_inventory": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.spill_inventory"
+  },
+  "forfeit.squid": {
+    "sounds": [
+      {
+        "name": "liquid/swim1",
+        "volume": 2.0
+      },
+      {
+        "name": "liquid/swim2",
+        "volume": 2.0
+      },
+      {
+        "name": "liquid/swim3",
+        "volume": 2.0
+      },
+      {
+        "name": "liquid/swim4",
+        "volume": 2.0
+      }
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.squid"
+  },
+  "forfeit.storm": {
+    "sounds": [
+      "ambient/weather/thunder1",
+      "ambient/weather/thunder2",
+      "ambient/weather/thunder3"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.storm"
+  },
+  "forfeit.storm_elementals": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.storm_elementals"
+  },
+  "forfeit.teleport_self": {
+    "sounds": [
+      "mob/endermen/portal",
+      "mob/endermen/portal2"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.teleport_self"
+  },
+  "forfeit.thunder": {
+    "sounds": [
+      "fireworks/largeblast1"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.thunder"
+  },
+  "forfeit.vex_horde": {
+    "sounds": [
+      "mob/evocation_illager/prepare_summon"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.vex_horde"
+  },
+  "forfeit.weaken_self": {
+    "sounds": [
+      "mob/guardian/curse"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.weaken_self"
+  },
+  "forfeit.wither_self": {
+    "sounds": [
+      "mob/wither/hurt1",
+      "mob/wither/hurt2",
+      "mob/wither/hurt3",
+      "mob/wither/hurt4"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.wither_self"
+  },
+  "forfeit.zombie_horde": {
+    "sounds": [
+      "mob/evocation_illager/prepare_summon"
+    ],
+    "subtitle": "subtitles.ebwizardry.forfeit.zombie_horde"
+  },
+  "item.armour.equip_battlemage": {
+    "sounds": [
+      "item/armor/equip_gold1",
+      "item/armor/equip_gold2",
+      "item/armor/equip_gold3",
+      "item/armor/equip_gold4",
+      "item/armor/equip_gold5",
+      "item/armor/equip_gold6"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.armour.equip_battlemage"
+  },
+  "item.armour.equip_sage": {
+    "sounds": [
+      "item/armor/equip_leather1",
+      "item/armor/equip_leather2",
+      "item/armor/equip_leather3",
+      "item/armor/equip_leather4",
+      "item/armor/equip_leather5",
+      "item/armor/equip_leather6"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.armour.equip_sage"
+  },
+  "item.armour.equip_silk": {
+    "sounds": [
+      "item/armor/equip_leather1",
+      "item/armor/equip_leather2",
+      "item/armor/equip_leather3",
+      "item/armor/equip_leather4",
+      "item/armor/equip_leather5",
+      "item/armor/equip_leather6"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.armour.equip_silk"
+  },
+  "item.armour.equip_warlock": {
+    "sounds": [
+      "item/armor/equip_leather1",
+      "item/armor/equip_leather2",
+      "item/armor/equip_leather3",
+      "item/armor/equip_leather4",
+      "item/armor/equip_leather5",
+      "item/armor/equip_leather6"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.armour.equip_warlock"
+  },
+  "item.flamecatcher.flame": {
+    "sounds": [
+      "ebwizardry:combust"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.flamecatcher.flame"
+  },
+  "item.flamecatcher.shoot": {
+    "sounds": [
+      "fireworks/launch1"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.flamecatcher.shoot"
+  },
+  "item.mana_flask.recharge": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.mana_flask.recharge"
+  },
+  "item.mana_flask.use": {
+    "sounds": [
+      "item/bottle/fill1",
+      "item/bottle/fill2",
+      "item/bottle/fill3",
+      "item/bottle/fill4"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.mana_flask.use"
+  },
+  "item.purifying_elixir.drink": {
+    "sounds": [
+      "ebwizardry:buff_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.purifying_elixir.drink"
+  },
+  "item.wand.chargeup": {
+    "sounds": [
+      "ebwizardry:chargeup"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.wand.chargeup"
+  },
+  "item.wand.levelup": {
+    "sounds": [
+      "random/levelup"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.wand.levelup"
+  },
+  "item.wand.melee": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.wand.melee"
+  },
+  "item.wand.switch_spell": {
+    "sounds": [
+      "ebwizardry:select"
+    ],
+    "subtitle": "subtitles.ebwizardry.item.wand.switch_spell"
+  },
+  "misc.book_open": {
+    "sounds": [
+      "ebwizardry:book"
+    ],
+    "subtitle": "subtitles.ebwizardry.misc.book_open"
+  },
+  "misc.discover_spell": {
+    "sounds": [
+      "random/levelup"
+    ],
+    "subtitle": "subtitles.ebwizardry.misc.discover_spell"
+  },
+  "misc.freeze": {
+    "sounds": [
+      "ebwizardry:freeze"
+    ],
+    "subtitle": "subtitles.ebwizardry.misc.freeze"
+  },
+  "misc.page_turn": {
+    "sounds": [
+      "ebwizardry:page1",
+      "ebwizardry:page2",
+      "ebwizardry:page3"
+    ],
+    "subtitle": "subtitles.ebwizardry.misc.page_turn"
+  },
+  "misc.spell_fail": {
+    "sounds": [
+      "random/fizz"
+    ],
+    "subtitle": "subtitles.ebwizardry.misc.spell_fail"
+  },
+  "spell.agility": {
+    "sounds": [
+      "ebwizardry:heal"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.agility"
+  },
+  "spell.arc": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.arc"
+  },
+  "spell.arcane_jammer": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.arcane_jammer"
+  },
+  "spell.arcane_lock": {
+    "sounds": [
+      "entity/endereye/dead1",
+      "entity/endereye/dead2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.arcane_lock"
+  },
+  "spell.arrow_rain": {
+    "sounds": [
+      "mob/illusion_illager/prepare_blind"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.arrow_rain"
+  },
+  "spell.banish": {
+    "sounds": [
+      "mob/endermen/portal",
+      "mob/endermen/portal2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.banish"
+  },
+  "spell.black_hole": {
+    "sounds": [
+      "mob/evocation_illager/prepare_attack1",
+      "mob/evocation_illager/prepare_attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.black_hole"
+  },
+  "spell.blinding_flash": {
+    "sounds": [
+      "ebwizardry:flash"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.blinding_flash"
+  },
+  "spell.blink": {
+    "sounds": [
+      "mob/endermen/portal",
+      "mob/endermen/portal2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.blink"
+  },
+  "spell.blizzard": {
+    "sounds": [
+      "ebwizardry:ice_age"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.blizzard"
+  },
+  "spell.boulder": {
+    "sounds": [
+      "mob/evocation_illager/prepare_attack1",
+      "mob/evocation_illager/prepare_attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.boulder"
+  },
+  "spell.bubble": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.bubble"
+  },
+  "spell.celestial_smite": {
+    "sounds": [
+      "mob/illusion_illager/prepare_blind"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.celestial_smite"
+  },
+  "spell.chain_lightning": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.chain_lightning"
+  },
+  "spell.charge": {
+    "sounds": [
+      "ebwizardry:shockwave"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.charge"
+  },
+  "spell.clairvoyance": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.clairvoyance"
+  },
+  "spell.cobwebs": {
+    "sounds": [
+      "random/fizz"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.cobwebs"
+  },
+  "spell.combustion_rune": {
+    "sounds": [
+      "ebwizardry:combust"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.combustion_rune"
+  },
+  "spell.conjure_armor": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.conjure_armor"
+  },
+  "spell.conjure_block": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.conjure_block"
+  },
+  "spell.conjure_bow": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.conjure_bow"
+  },
+  "spell.conjure_pickaxe": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.conjure_pickaxe"
+  },
+  "spell.conjure_sword": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.conjure_sword"
+  },
+  "spell.containment": {
+    "sounds": [
+      "mob/guardian/curse"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.containment"
+  },
+  "spell.cure_effects": {
+    "sounds": [
+      "ebwizardry:heal"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.cure_effects"
+  },
+  "spell.curse_of_enfeeblement": {
+    "sounds": [
+      "mob/wither/spawn"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.curse_of_enfeeblement"
+  },
+  "spell.curse_of_soulbinding": {
+    "sounds": [
+      "mob/guardian/curse"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.curse_of_soulbinding"
+  },
+  "spell.curse_of_soulbinding.retaliate": {
+    "sounds": [
+      "mob/wither/hurt1",
+      "mob/wither/hurt2",
+      "mob/wither/hurt3",
+      "mob/wither/hurt4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.curse_of_soulbinding.retaliate"
+  },
+  "spell.curse_of_undeath": {
+    "sounds": [
+      "mob/guardian/curse"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.curse_of_undeath"
+  },
+  "spell.dark_vision": {
+    "sounds": [
+      "ebwizardry:heal"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.dark_vision"
+  },
+  "spell.darkness_orb": {
+    "sounds": [
+      "mob/wither/shoot"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.darkness_orb"
+  },
+  "spell.dart": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.dart"
+  },
+  "spell.decay": {
+    "sounds": [
+      "mob/wither/shoot"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.decay"
+  },
+  "spell.decoy": {
+    "sounds": [
+      "mob/illusion_illager/mirror_move1",
+      "mob/illusion_illager/mirror_move2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.decoy"
+  },
+  "spell.detonate": {
+    "sounds": [
+      "random/explode1",
+      "random/explode2",
+      "random/explode3",
+      "random/explode4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.detonate"
+  },
+  "spell.diamondflesh": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.diamondflesh"
+  },
+  "spell.disintegration": {
+    "sounds": [
+      "ebwizardry:firebolt"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.disintegration"
+  },
+  "spell.divination": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.divination"
+  },
+  "spell.dragon_fireball": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.dragon_fireball"
+  },
+  "spell.earthquake": {
+    "sounds": [
+      "ebwizardry:rumble"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.earthquake"
+  },
+  "spell.empowering_presence": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.empowering_presence"
+  },
+  "spell.enrage": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.enrage"
+  },
+  "spell.entrapment": {
+    "sounds": [
+      "mob/evocation_illager/prepare_attack1",
+      "mob/evocation_illager/prepare_attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.entrapment"
+  },
+  "spell.evade": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.evade"
+  },
+  "spell.fangs": {
+    "sounds": [
+      "mob/evocation_illager/prepare_attack1",
+      "mob/evocation_illager/prepare_attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.fangs"
+  },
+  "spell.fire_breath.end": {
+    "sounds": [
+      "ebwizardry:flames_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.fire_breath.end"
+  },
+  "spell.fire_breath.loop": {
+    "sounds": [
+      "ebwizardry:flames_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.fire_breath.loop"
+  },
+  "spell.fire_breath.start": {
+    "sounds": [
+      "ebwizardry:flames_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.fire_breath.start"
+  },
+  "spell.fire_resistance": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.fire_resistance"
+  },
+  "spell.fire_sigil": {
+    "sounds": [
+      "fire/ignite"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.fire_sigil"
+  },
+  "spell.fire_skin": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.fire_skin"
+  },
+  "spell.fireball": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.fireball"
+  },
+  "spell.firebolt": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.firebolt"
+  },
+  "spell.firebomb": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.firebomb"
+  },
+  "spell.firestorm": {
+    "sounds": [
+      "ebwizardry:firestorm"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.firestorm"
+  },
+  "spell.flame_ray.end": {
+    "sounds": [
+      "ebwizardry:flames_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.flame_ray.end"
+  },
+  "spell.flame_ray.loop": {
+    "sounds": [
+      "ebwizardry:flames_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.flame_ray.loop"
+  },
+  "spell.flame_ray.start": {
+    "sounds": [
+      "ebwizardry:flames_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.flame_ray.start"
+  },
+  "spell.flamecatcher": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.flamecatcher"
+  },
+  "spell.flaming_axe": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.flaming_axe"
+  },
+  "spell.flaming_weapon": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.flaming_weapon"
+  },
+  "spell.flight": {
+    "sounds": [
+      "mob/enderdragon/wings1",
+      "mob/enderdragon/wings2",
+      "mob/enderdragon/wings3",
+      "mob/enderdragon/wings4",
+      "mob/enderdragon/wings5",
+      "mob/enderdragon/wings6"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.flight"
+  },
+  "spell.font_of_mana": {
+    "sounds": [
+      "ebwizardry:buff_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.font_of_mana"
+  },
+  "spell.font_of_vitality": {
+    "sounds": [
+      "ebwizardry:buff_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.font_of_vitality"
+  },
+  "spell.force_arrow": {
+    "sounds": [
+      "ebwizardry:force"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.force_arrow"
+  },
+  "spell.force_orb": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.force_orb"
+  },
+  "spell.forcefield": {
+    "sounds": [
+      "ebwizardry:conjure_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.forcefield"
+  },
+  "spell.forest_of_thorns": {
+    "sounds": [
+      "ebwizardry:grow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.forest_of_thorns"
+  },
+  "spell.forests_curse": {
+    "sounds": [
+      "mob/wither/spawn"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.forests_curse"
+  },
+  "spell.freeze": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.freeze"
+  },
+  "spell.freezing_weapon": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.freezing_weapon"
+  },
+  "spell.frost_axe": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.frost_axe"
+  },
+  "spell.frost_ray.end": {
+    "sounds": [
+      "ebwizardry:frost_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.frost_ray.end"
+  },
+  "spell.frost_ray.loop": {
+    "sounds": [
+      "ebwizardry:frost_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.frost_ray.loop"
+  },
+  "spell.frost_ray.start": {
+    "sounds": [
+      "ebwizardry:frost_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.frost_ray.start"
+  },
+  "spell.frost_sigil": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.frost_sigil"
+  },
+  "spell.frost_step": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.frost_step"
+  },
+  "spell.glide": {
+    "sounds": [
+      {
+        "name": "item/elytra/elytra_loop",
+        "volume": 0.6
+      }
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.glide"
+  },
+  "spell.grapple.attach": {
+    "sounds": [
+      "dig/grass1",
+      "dig/grass2",
+      "dig/grass3",
+      "dig/grass4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.grapple.attach"
+  },
+  "spell.grapple.pull": {
+    "sounds": [
+      "ebwizardry:pull1",
+      "ebwizardry:pull2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.grapple.pull"
+  },
+  "spell.grapple.release": {
+    "sounds": [
+      "random/bowhit1",
+      "random/bowhit2",
+      "random/bowhit3"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.grapple.release"
+  },
+  "spell.grapple.shoot": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.grapple.shoot"
+  },
+  "spell.greater_fireball": {
+    "sounds": [
+      "mob/ghast/fireball4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.greater_fireball"
+  },
+  "spell.greater_heal": {
+    "sounds": [
+      "ebwizardry:buff_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.greater_heal"
+  },
+  "spell.greater_telekinesis.end": {
+    "sounds": [
+      "ebwizardry:aura_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.greater_telekinesis.end"
+  },
+  "spell.greater_telekinesis.loop": {
+    "sounds": [
+      "ebwizardry:aura_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.greater_telekinesis.loop"
+  },
+  "spell.greater_telekinesis.start": {
+    "sounds": [
+      "ebwizardry:aura_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.greater_telekinesis.start"
+  },
+  "spell.greater_ward": {
+    "sounds": [
+      "ebwizardry:buff_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.greater_ward"
+  },
+  "spell.group_heal": {
+    "sounds": [
+      "ebwizardry:heal"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.group_heal"
+  },
+  "spell.growth_aura": {
+    "sounds": [
+      "ebwizardry:conjure_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.growth_aura"
+  },
+  "spell.guardian_beam": {
+    "sounds": [
+      "mob/guardian/attack_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.guardian_beam"
+  },
+  "spell.hailstorm": {
+    "sounds": [
+      "mob/illusion_illager/prepare_blind"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.hailstorm"
+  },
+  "spell.heal": {
+    "sounds": [
+      "ebwizardry:heal"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.heal"
+  },
+  "spell.heal_ally": {
+    "sounds": [
+      "ebwizardry:heal"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.heal_ally"
+  },
+  "spell.healing_aura": {
+    "sounds": [
+      "ebwizardry:conjure_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.healing_aura"
+  },
+  "spell.homing_spark": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.homing_spark"
+  },
+  "spell.ice_age": {
+    "sounds": [
+      "ebwizardry:ice_age"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ice_age"
+  },
+  "spell.ice_charge": {
+    "sounds": [
+      "ebwizardry:whoosh1",
+      "ebwizardry:whoosh2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ice_charge"
+  },
+  "spell.ice_lance": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ice_lance"
+  },
+  "spell.ice_shard": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ice_shard"
+  },
+  "spell.ice_shroud": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ice_shroud"
+  },
+  "spell.ice_spikes": {
+    "sounds": [
+      "ebwizardry:whoosh1",
+      "ebwizardry:whoosh2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ice_spikes"
+  },
+  "spell.ice_statue.freeze": {
+    "sounds": [
+      "ebwizardry:freeze"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ice_statue.freeze"
+  },
+  "spell.ice_statue.shoot": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ice_statue.shoot"
+  },
+  "spell.iceball": {
+    "sounds": [
+      "ebwizardry:whoosh1",
+      "ebwizardry:whoosh2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.iceball"
+  },
+  "spell.ignite": {
+    "sounds": [
+      "fire/ignite"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ignite"
+  },
+  "spell.imbue_weapon": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.imbue_weapon"
+  },
+  "spell.intimidate": {
+    "sounds": [
+      "mob/enderdragon/growl1",
+      "mob/enderdragon/growl2",
+      "mob/enderdragon/growl3",
+      "mob/enderdragon/growl4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.intimidate"
+  },
+  "spell.invigorating_presence": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.invigorating_presence"
+  },
+  "spell.invisibility": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.invisibility"
+  },
+  "spell.invoke_weather": {
+    "sounds": [
+      "ambient/weather/thunder1",
+      "ambient/weather/thunder2",
+      "ambient/weather/thunder3"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.invoke_weather"
+  },
+  "spell.ironflesh": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ironflesh"
+  },
+  "spell.leap": {
+    "sounds": [
+      "mob/enderdragon/wings1",
+      "mob/enderdragon/wings2",
+      "mob/enderdragon/wings3",
+      "mob/enderdragon/wings4",
+      "mob/enderdragon/wings5",
+      "mob/enderdragon/wings6"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.leap"
+  },
+  "spell.levitation.end": {
+    "sounds": [
+      "ebwizardry:aura_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.levitation.end"
+  },
+  "spell.levitation.loop": {
+    "sounds": [
+      "ebwizardry:aura_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.levitation.loop"
+  },
+  "spell.levitation.start": {
+    "sounds": [
+      "ebwizardry:aura_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.levitation.start"
+  },
+  "spell.life_drain.end": {
+    "sounds": [
+      "ebwizardry:dark_aura_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.life_drain.end"
+  },
+  "spell.life_drain.loop": {
+    "sounds": [
+      "ebwizardry:dark_aura_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.life_drain.loop"
+  },
+  "spell.life_drain.start": {
+    "sounds": [
+      "ebwizardry:dark_aura_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.life_drain.start"
+  },
+  "spell.light": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.light"
+  },
+  "spell.lightning_arrow": {
+    "sounds": [
+      "mob/evocation_illager/cast1",
+      "mob/evocation_illager/cast2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_arrow"
+  },
+  "spell.lightning_disc": {
+    "sounds": [
+      "ebwizardry:lightning_ray_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_disc"
+  },
+  "spell.lightning_hammer": {
+    "sounds": [
+      "mob/illusion_illager/prepare_blind"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_hammer"
+  },
+  "spell.lightning_pulse": {
+    "sounds": [
+      "ebwizardry:shockwave"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_pulse"
+  },
+  "spell.lightning_ray.end": {
+    "sounds": [
+      "ebwizardry:lightning_ray_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_ray.end"
+  },
+  "spell.lightning_ray.loop": {
+    "sounds": [
+      "ebwizardry:lightning_ray_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_ray.loop"
+  },
+  "spell.lightning_ray.start": {
+    "sounds": [
+      "ebwizardry:lightning_ray_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_ray.start"
+  },
+  "spell.lightning_sigil": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_sigil"
+  },
+  "spell.lightning_web.end": {
+    "sounds": [
+      "ebwizardry:lightning_ray_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_web.end"
+  },
+  "spell.lightning_web.loop": {
+    "sounds": [
+      "ebwizardry:lightning_ray_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_web.loop"
+  },
+  "spell.lightning_web.start": {
+    "sounds": [
+      "ebwizardry:lightning_ray_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.lightning_web.start"
+  },
+  "spell.magic_missile": {
+    "sounds": [
+      "ebwizardry:magic"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.magic_missile"
+  },
+  "spell.mark_sacrifice": {
+    "sounds": [
+      "mob/guardian/curse"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.mark_sacrifice"
+  },
+  "spell.metamorphosis": {
+    "sounds": [
+      "mob/illusion_illager/prepare_mirror"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.metamorphosis"
+  },
+  "spell.meteor": {
+    "sounds": [
+      "mob/illusion_illager/prepare_blind"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.meteor"
+  },
+  "spell.mind_control": {
+    "sounds": [
+      "mob/guardian/elder_death"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.mind_control"
+  },
+  "spell.mind_trick": {
+    "sounds": [
+      "ebwizardry:effect1",
+      "ebwizardry:effect2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.mind_trick"
+  },
+  "spell.mirage": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.mirage"
+  },
+  "spell.muffle": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.muffle"
+  },
+  "spell.oakflesh": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.oakflesh"
+  },
+  "spell.paralysis": {
+    "sounds": [
+      "ebwizardry:shockwave"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.paralysis"
+  },
+  "spell.permafrost.end": {
+    "sounds": [
+      "ebwizardry:frost_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.permafrost.end"
+  },
+  "spell.permafrost.loop": {
+    "sounds": [
+      "ebwizardry:frost_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.permafrost.loop"
+  },
+  "spell.permafrost.start": {
+    "sounds": [
+      "ebwizardry:frost_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.permafrost.start"
+  },
+  "spell.petrify": {
+    "sounds": [
+      "mob/wither/spawn"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.petrify"
+  },
+  "spell.phase_step": {
+    "sounds": [
+      "mob/endermen/portal",
+      "mob/endermen/portal2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.phase_step"
+  },
+  "spell.plague_of_darkness": {
+    "sounds": [
+      "mob/wither/death"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.plague_of_darkness"
+  },
+  "spell.pocket_furnace": {
+    "sounds": [
+      "block/furnace/fire_crackle1",
+      "block/furnace/fire_crackle2",
+      "block/furnace/fire_crackle3",
+      "block/furnace/fire_crackle4",
+      "block/furnace/fire_crackle5"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.pocket_furnace"
+  },
+  "spell.pocket_workbench": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.pocket_workbench"
+  },
+  "spell.poison": {
+    "sounds": [
+      "ebwizardry:whoosh1",
+      "ebwizardry:whoosh2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.poison"
+  },
+  "spell.poison_bomb": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.poison_bomb"
+  },
+  "spell.possession.end": {
+    "sounds": [
+      "mob/guardian/elder_idle1",
+      "mob/guardian/elder_idle2",
+      "mob/guardian/elder_idle3",
+      "mob/guardian/elder_idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.possession.end"
+  },
+  "spell.possession.possess": {
+    "sounds": [
+      "mob/evocation_illager/prepare_attack1",
+      "mob/evocation_illager/prepare_attack2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.possession.possess"
+  },
+  "spell.radiant_totem": {
+    "sounds": [
+      "ebwizardry:beam_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.radiant_totem"
+  },
+  "spell.ray_of_purification.end": {
+    "sounds": [
+      "ebwizardry:beam_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ray_of_purification.end"
+  },
+  "spell.ray_of_purification.loop": {
+    "sounds": [
+      "ebwizardry:beam_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ray_of_purification.loop"
+  },
+  "spell.ray_of_purification.start": {
+    "sounds": [
+      "ebwizardry:beam_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ray_of_purification.start"
+  },
+  "spell.remove_curse": {
+    "sounds": [
+      "ebwizardry:buff_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.remove_curse"
+  },
+  "spell.replenish_hunger": {
+    "sounds": [
+      "ebwizardry:heal"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.replenish_hunger"
+  },
+  "spell.resurrection": {
+    "sounds": [
+      "ebwizardry:buff_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.resurrection"
+  },
+  "spell.reversal": {
+    "sounds": [
+      "mob/wither/hurt1",
+      "mob/wither/hurt2",
+      "mob/wither/hurt3",
+      "mob/wither/hurt4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.reversal"
+  },
+  "spell.ring_of_fire": {
+    "sounds": [
+      "ebwizardry:combust"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ring_of_fire"
+  },
+  "spell.satiety": {
+    "sounds": [
+      "ebwizardry:buff_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.satiety"
+  },
+  "spell.shadow_ward.end": {
+    "sounds": [
+      "ebwizardry:dark_aura_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.shadow_ward.end"
+  },
+  "spell.shadow_ward.loop": {
+    "sounds": [
+      "ebwizardry:dark_aura_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.shadow_ward.loop"
+  },
+  "spell.shadow_ward.start": {
+    "sounds": [
+      "ebwizardry:dark_aura_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.shadow_ward.start"
+  },
+  "spell.shield.end": {
+    "sounds": [
+      "ebwizardry:small_aura_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.shield.end"
+  },
+  "spell.shield.loop": {
+    "sounds": [
+      "ebwizardry:small_aura_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.shield.loop"
+  },
+  "spell.shield.start": {
+    "sounds": [
+      "ebwizardry:small_aura_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.shield.start"
+  },
+  "spell.shockwave": {
+    "sounds": [
+      "ebwizardry:shockwave"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.shockwave"
+  },
+  "spell.shulker_bullet": {
+    "sounds": [
+      "entity/shulker/shoot1",
+      "entity/shulker/shoot2",
+      "entity/shulker/shoot3",
+      "entity/shulker/shoot4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.shulker_bullet"
+  },
+  "spell.silverfish_swarm": {
+    "sounds": [
+      "random/fizz"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.silverfish_swarm"
+  },
+  "spell.sixth_sense": {
+    "sounds": [
+      "mob/wither/shoot"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.sixth_sense"
+  },
+  "spell.slime": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.slime"
+  },
+  "spell.slow_time": {
+    "sounds": [
+      "portal/travel"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.slow_time"
+  },
+  "spell.smoke_bomb": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.smoke_bomb"
+  },
+  "spell.snare": {
+    "sounds": [
+      "dig/grass1",
+      "dig/grass2",
+      "dig/grass3",
+      "dig/grass4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.snare"
+  },
+  "spell.snowball": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.snowball"
+  },
+  "spell.spark_bomb": {
+    "sounds": [
+      "random/bow"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.spark_bomb"
+  },
+  "spell.spectral_pathway": {
+    "sounds": [
+      "ebwizardry:conjure_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.spectral_pathway"
+  },
+  "spell.speed_time.end": {
+    "sounds": [
+      "ebwizardry:aura_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.speed_time.end"
+  },
+  "spell.speed_time.loop": {
+    "sounds": [
+      "ebwizardry:aura_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.speed_time.loop"
+  },
+  "spell.speed_time.start": {
+    "sounds": [
+      "ebwizardry:aura_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.speed_time.start"
+  },
+  "spell.spider_swarm": {
+    "sounds": [
+      "random/fizz"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.spider_swarm"
+  },
+  "spell.static_aura": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.static_aura"
+  },
+  "spell.static_aura.retaliate": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.static_aura.retaliate"
+  },
+  "spell.stormcloud": {
+    "sounds": [
+      "ambient/weather/thunder1",
+      "ambient/weather/thunder2",
+      "ambient/weather/thunder3"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.stormcloud"
+  },
+  "spell.summon_blaze": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_blaze"
+  },
+  "spell.summon_ice_giant": {
+    "sounds": [
+      "mob/evocation_illager/prepare_summon"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_ice_giant"
+  },
+  "spell.summon_ice_wraith": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_ice_wraith"
+  },
+  "spell.summon_iron_golem": {
+    "sounds": [
+      "mob/wither/spawn"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_iron_golem"
+  },
+  "spell.summon_lightning_wraith": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_lightning_wraith"
+  },
+  "spell.summon_phoenix": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_phoenix"
+  },
+  "spell.summon_shadow_wraith": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_shadow_wraith"
+  },
+  "spell.summon_skeleton": {
+    "sounds": [
+      "ebwizardry:summon1",
+      "ebwizardry:summon2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_skeleton"
+  },
+  "spell.summon_skeleton_legion": {
+    "sounds": [
+      "mob/evocation_illager/prepare_summon"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_skeleton_legion"
+  },
+  "spell.summon_snow_golem": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_snow_golem"
+  },
+  "spell.summon_spirit_horse": {
+    "sounds": [
+      "ebwizardry:conjure_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_spirit_horse"
+  },
+  "spell.summon_spirit_wolf": {
+    "sounds": [
+      "ebwizardry:conjure_large"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_spirit_wolf"
+  },
+  "spell.summon_storm_elemental": {
+    "sounds": [
+      "mob/wither/idle1",
+      "mob/wither/idle2",
+      "mob/wither/idle3",
+      "mob/wither/idle4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_storm_elemental"
+  },
+  "spell.summon_wither_skeleton": {
+    "sounds": [
+      "ebwizardry:summon1",
+      "ebwizardry:summon2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_wither_skeleton"
+  },
+  "spell.summon_zombie": {
+    "sounds": [
+      "ebwizardry:summon1",
+      "ebwizardry:summon2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.summon_zombie"
+  },
+  "spell.telekinesis": {
+    "sounds": [
+      "ebwizardry:conjure"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.telekinesis"
+  },
+  "spell.thunderbolt": {
+    "sounds": [
+      "mob/evocation_illager/cast1",
+      "mob/evocation_illager/cast2"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.thunderbolt"
+  },
+  "spell.thunderstorm": {
+    "sounds": [
+      "ebwizardry:arc1",
+      "ebwizardry:arc2",
+      "ebwizardry:arc3"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.thunderstorm"
+  },
+  "spell.tornado": {
+    "sounds": [
+      "ebwizardry:zoom1",
+      "ebwizardry:zoom2",
+      "ebwizardry:zoom3"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.tornado"
+  },
+  "spell.transience": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.transience"
+  },
+  "spell.transportation": {
+    "sounds": [
+      "portal/trigger"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.transportation"
+  },
+  "spell.transportation.travel": {
+    "sounds": [
+      "portal/travel"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.transportation.travel"
+  },
+  "spell.vanishing_box": {
+    "sounds": [
+      "block/enderchest/open"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.vanishing_box"
+  },
+  "spell.vex_swarm": {
+    "sounds": [
+      "mob/evocation_illager/prepare_summon"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.vex_swarm"
+  },
+  "spell.wall_of_frost.end": {
+    "sounds": [
+      "ebwizardry:frost_end"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.wall_of_frost.end"
+  },
+  "spell.wall_of_frost.loop": {
+    "sounds": [
+      "ebwizardry:frost_loop"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.wall_of_frost.loop"
+  },
+  "spell.wall_of_frost.start": {
+    "sounds": [
+      "ebwizardry:frost_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.wall_of_frost.start"
+  },
+  "spell.ward": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.ward"
+  },
+  "spell.water_breathing": {
+    "sounds": [
+      "ebwizardry:buff"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.water_breathing"
+  },
+  "spell.whirlwind": {
+    "sounds": [
+      "ebwizardry:ice"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.whirlwind"
+  },
+  "spell.wither": {
+    "sounds": [
+      "mob/wither/hurt1",
+      "mob/wither/hurt2",
+      "mob/wither/hurt3",
+      "mob/wither/hurt4"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.wither"
+  },
+  "spell.wither_skull": {
+    "sounds": [
+      "mob/wither/shoot"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.wither_skull"
+  },
+  "spell.withering_totem": {
+    "sounds": [
+      "ebwizardry:beam_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.withering_totem"
+  },
+  "spell.zombie_apocalypse": {
+    "sounds": [
+      "ebwizardry:dark_aura_start"
+    ],
+    "subtitle": "subtitles.ebwizardry.spell.zombie_apocalypse"
+  }
+}

@@ -21,7 +21,7 @@ public class GreaterHeal extends BuffSpell {
     @Override
     protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
         if (caster.getHealth() < caster.getMaxHealth() && caster.getHealth() > 0) {
-            Heal.heal(caster, property(DefaultProperties.HEALTH) * ctx.modifiers().get(SpellModifiers.POTENCY));
+            Heal.heal(caster, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.HEALTH)));
             return true;
         }
 

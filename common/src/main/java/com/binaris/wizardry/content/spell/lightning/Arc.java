@@ -42,7 +42,7 @@ public class Arc extends RaySpell {
         }
 
         target.hurt(MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
-                property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
+                ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE)));
 
         return true;
     }

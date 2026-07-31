@@ -182,7 +182,7 @@ public final class CastItemUtils {
     /// @param modifiers The spell modifiers affecting the cast
     /// @return The calculated progression
     public static int calcCastProgression(Spell spell, SpellModifiers modifiers) {
-        return (int) (spell.getCost() * modifiers.get(SpellModifiers.PROGRESSION));
+        return (int) (modifiers.get(SpellModifiers.PROGRESSION, spell.getCost()));
     }
 
     /// Calculates the cooldown of a spell based on its base cooldown and the given spell modifiers.
@@ -191,7 +191,7 @@ public final class CastItemUtils {
     /// @param modifiers The spell modifiers affecting the cast
     /// @return The calculated cooldown
     public static int calcCastCooldown(Spell spell, SpellModifiers modifiers) {
-        return (int) (spell.getCooldown() * modifiers.get(SpellModifiers.COOLDOWN));
+        return (int) (modifiers.get(SpellModifiers.COOLDOWN, spell.getCooldown()));
     }
 
     /// Calculates the mana cost of a spell based on its base cost and the given spell modifiers.
@@ -200,7 +200,7 @@ public final class CastItemUtils {
     /// @param modifiers The spell modifiers affecting the cast
     /// @return The calculated mana cost
     public static int calcCastCost(Spell spell, SpellModifiers modifiers) {
-        return (int) (spell.getCost() * modifiers.get(SpellModifiers.COST) + 0.1f);
+        return Math.max(0, (int) (modifiers.get(SpellModifiers.COST, spell.getCost()) + 0.1f));
     }
 
     /// Calculates the charge time required for a spell based on the spell's base charge and the given spell modifiers.
@@ -209,7 +209,7 @@ public final class CastItemUtils {
     /// @param modifiers The spell modifiers affecting the cast
     /// @return The calculated charge time
     public static int calcCharge(Spell spell, SpellModifiers modifiers) {
-        return (int) (spell.getChargeUp() * modifiers.get(SpellModifiers.CHARGEUP));
+        return (int) (modifiers.get(SpellModifiers.CHARGEUP, spell.getChargeUp()));
     }
 
     private CastItemUtils() {

@@ -308,7 +308,7 @@ public final class SpellGUIDisplay {
 
         Spell spell = castItem.getCurrentSpell(wand);
         int chargeup = spell.getChargeUp();
-        chargeup = (int) (chargeup * Services.OBJECT_DATA.getWizardData(player).getSpellModifiers().get(SpellModifiers.CHARGEUP));
+        chargeup = (int) Services.OBJECT_DATA.getWizardData(player).getSpellModifiers().get(SpellModifiers.CHARGEUP, chargeup);
         if (chargeup <= 0) return;
         if (player.getTicksUsingItem() == 0) return;
 

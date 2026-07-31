@@ -28,7 +28,7 @@ public class Cobwebs extends RaySpell {
         boolean flag = false;
         BlockPos pos = blockHit.getBlockPos().relative(blockHit.getDirection());
 
-        int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST) - 1) / EBServerConfig.RANGE_INCREASE_PER_LEVEL.get() + 0.5f);
+        int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST, 1.0f) - 1.0f) / EBServerConfig.RANGE_INCREASE_PER_LEVEL.get() + 0.5f);
 
         float radius = property(DefaultProperties.BLAST_RADIUS) + 0.73f * blastUpgradeCount;
 
@@ -40,7 +40,7 @@ public class Cobwebs extends RaySpell {
             if (!ctx.world().isClientSide) {
                 ctx.world().setBlockAndUpdate(pos1, EBBlocks.VANISHING_COBWEB.get().defaultBlockState());
                 if (ctx.world().getBlockEntity(pos1) instanceof BlockEntityTimer timer) {
-                    timer.setLifetime((int) (property(DefaultProperties.DURATION).doubleValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
+                    timer.setLifetime((int) (ctx.modifiers().get(SpellModifiers.DURATION, (float) property(DefaultProperties.DURATION).doubleValue())));
                 }
             }
             flag = true;

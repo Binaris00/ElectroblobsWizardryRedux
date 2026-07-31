@@ -19,7 +19,7 @@ public class ForceArrowSpell extends ArrowSpell<ForceArrow> {
 
     @Override
     protected void addArrowExtras(CastContext ctx, ForceArrow arrow) {
-        arrow.setMana((int) (this.getCost() * ctx.modifiers().get(SpellModifiers.COST)));
+        arrow.setMana((int) (ctx.modifiers().get(SpellModifiers.COST, this.getCost())));
     }
 
     @Override
