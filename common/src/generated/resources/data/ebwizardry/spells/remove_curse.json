@@ -1,5 +1,5 @@
 {
-  "type": "defence",
+  "type": "ebwizardry:defence",
   "chargeup": 20,
   "cooldown": 80,
   "cost": 50,

@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.item.IManaItem;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.ChatFormatting;
@@ -32,7 +32,7 @@ public class ManaFlaskItem extends Item {
     public @NotNull InteractionResultHolder<ItemStack> use(@NotNull Level level, Player player, @NotNull InteractionHand usedHand) {
         ItemStack flask = player.getItemInHand(usedHand);
 
-        List<ItemStack> stacks = InventoryUtil.getHotBarAndOffhand(player);
+        List<ItemStack> stacks = EntityUtil.getHotBarAndHandItems(player);
         stacks.addAll(player.getInventory().armor);
 
         if (stacks.stream().anyMatch(s -> s.getItem() instanceof IManaItem manaItem && !manaItem.isManaFull(s))) {
@@ -65,7 +65,7 @@ public class ManaFlaskItem extends Item {
 
     private void findAndChargeItem(ItemStack stack, Player player) {
 
-        List<ItemStack> stacks = InventoryUtil.getHotBarAndOffhand(player);
+        List<ItemStack> stacks = EntityUtil.getHotBarAndHandItems(player);
         stacks.addAll(player.getInventory().armor);
 
         // Find the chargeable item with the least mana

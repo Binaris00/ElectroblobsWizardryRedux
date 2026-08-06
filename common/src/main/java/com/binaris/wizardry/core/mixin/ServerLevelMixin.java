@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public abstract class ServerLevelMixin {
     @Inject(method = "addFreshEntity", at = @At("HEAD"), cancellable = true)
     public void EBWIZARDRY$addEntity(Entity entity, CallbackInfoReturnable<Boolean> cir) {
-        boolean result = WizardryEventBus.getInstance().fire(new EBEntityJoinLevelEvent(entity, (ServerLevel) (Object) this));
+        boolean result = WizardryEventBus.fireEvent(new EBEntityJoinLevelEvent(entity, (ServerLevel) (Object) this));
         if (result) cir.setReturnValue(false);
     }
 }

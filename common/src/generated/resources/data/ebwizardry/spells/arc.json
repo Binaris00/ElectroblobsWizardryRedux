@@ -1,5 +1,5 @@
 {
-  "type": "attack",
+  "type": "ebwizardry:attack",
   "base_properties": {
     "damage": 8.0,
     "range": 3.0

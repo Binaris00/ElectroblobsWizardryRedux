@@ -1,7 +1,7 @@
 package com.binaris.wizardry.client.renderer.entity;
 
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.entity.construct.MagicConstructEntity;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.core.AllyDesignation;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -56,7 +56,7 @@ public class SigilRenderer extends EntityRenderer<MagicConstructEntity> {
 
         if (rotationSpeed != 0) poseStack.mulPose(Axis.ZP.rotationDegrees(entity.tickCount * rotationSpeed));
 
-        float s = entity.getBbWidth() * DrawingUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 10);
+        float s = entity.getBbWidth() * ClientUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 10);
         poseStack.scale(s, s, s);
 
         Tesselator tessellator = Tesselator.getInstance();

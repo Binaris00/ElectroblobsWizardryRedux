@@ -38,9 +38,7 @@ public class DecayMobEffect extends MagicMobEffect {
             if (livingEntity instanceof Player player) decay.setCaster(player);
             decay.setPos(livingEntity.getX(), livingEntity.getY(), livingEntity.getZ());
             livingEntity.level().addFreshEntity(decay);
-
-            if (!MagicDamageSource.isEntityImmune(EBDamageSources.WITHER, livingEntity))
-                livingEntity.hurt(livingEntity.damageSources().wither(), 1);
+            livingEntity.hurt(livingEntity.damageSources().wither(), 1);
         }
     }
 

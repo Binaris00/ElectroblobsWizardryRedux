@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.earth;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
@@ -40,7 +40,7 @@ public class Whirlwind extends RaySpell {
 
         Vec3 vec = target.getEyePosition(1).subtract(origin).normalize();
         if (!ctx.world().isClientSide) {
-            float velocity = property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY);
+            float velocity = ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.SPEED));
 
             target.setDeltaMovement(vec.x * velocity, vec.y * velocity + 1, vec.z * velocity);
 
@@ -85,7 +85,7 @@ public class Whirlwind extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.DEFENCE, SpellAction.POINT, 10, 0, 15)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellTypes.DEFENCE, SpellAction.POINT, 10, 0, 15)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.SPEED, 1.5F)
                 .build();

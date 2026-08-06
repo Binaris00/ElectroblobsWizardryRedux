@@ -1,5 +1,5 @@
 {
-  "type": "attack",
+  "type": "ebwizardry:attack",
   "base_properties": {
     "duration": 200,
     "range": 8.0

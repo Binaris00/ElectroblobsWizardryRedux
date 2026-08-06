@@ -9,18 +9,18 @@ import com.binaris.wizardry.content.spell.healing.GreaterHeal;
 import com.binaris.wizardry.content.spell.healing.Heal;
 import com.binaris.wizardry.content.spell.healing.HealAlly;
 import com.binaris.wizardry.core.AllyDesignation;
+import com.binaris.wizardry.core.ArtifactEffectContext;
 import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 
 public class PaladinRingEffect implements IArtifactEffect {
 
     @Override
-    public void onSpellPostCast(SpellCastEvent.Post event, ItemStack artifact) {
+    public void onSpellPostCast(SpellCastEvent.Post event, ArtifactEffectContext context) {
         if (!(event.getCaster() instanceof Player player)) return;
 
         if (event.getSpell() instanceof Heal || event.getSpell() instanceof HealAlly || event.getSpell() instanceof GreaterHeal) {
-            float healthGained = event.getSpell().property(DefaultProperties.HEALTH) * event.getModifiers().get(SpellModifiers.POTENCY);
+            float healthGained = event.getModifiers().get(SpellModifiers.POTENCY, event.getSpell().property(DefaultProperties.HEALTH));
 
             EntityUtil.getLivingWithinRadius(4, player.xo, player.yo, player.zo, event.getLevel()).stream().filter(livingEntity -> AllyDesignation.isAllied(player, livingEntity) && livingEntity.getHealth() > 0 && livingEntity.getHealth() < livingEntity.getMaxHealth()).forEach(livingEntity -> {
                 livingEntity.heal(healthGained * 0.2f);

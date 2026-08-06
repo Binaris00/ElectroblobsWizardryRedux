@@ -18,10 +18,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Custom argument type for Element objects in commands.
- * This provides proper type safety and validation for Element arguments.
- */
+/// Custom argument type for Element objects in commands.
+/// This provides proper type safety and validation for Element arguments.
 public class ElementArgument implements ArgumentType<Element> {
     private static final Collection<String> EXAMPLES = Arrays.asList("ebwizardry:fire", "ebwizardry:ice");
     private static final DynamicCommandExceptionType ERROR_NOT_FOUND = new DynamicCommandExceptionType(

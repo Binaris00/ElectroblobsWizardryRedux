@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.fire;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -48,12 +48,12 @@ public class FireBreath extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (entityHit.getEntity() instanceof LivingEntity target && !MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
+        if (entityHit.getEntity() instanceof LivingEntity target) {
             if (ctx.castingTicks() % target.invulnerableDuration == 1) {
-                target.setSecondsOnFire((int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)));
+                target.setSecondsOnFire((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))));
                 DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FIRE)
                         : target.damageSources().magic();
-                EntityUtil.attackEntityWithoutKnockback(target, source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
+                EntityUtil.attackEntityWithoutKnockback(target, source, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE)));
             }
         }
 
@@ -89,7 +89,7 @@ public class FireBreath extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT, 15, 15, 70)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellTypes.ATTACK, SpellAction.POINT, 15, 15, 70)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DAMAGE, 6F)
                 .add(DefaultProperties.EFFECT_DURATION, 10)

@@ -1,7 +1,7 @@
 package com.binaris.wizardry.core.integrations;
 
 import com.binaris.wizardry.api.content.item.ArtifactItem;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
@@ -25,11 +25,11 @@ public class VanillaArtifactIntegration implements ArtifactIntegration {
 
     @Override
     public List<ItemStack> getEquippedArtifacts(Player player) {
-        return InventoryUtil.getHotBarAndOffhand(player).stream().distinct().toList();
+        return EntityUtil.getHotBarAndHandItems(player).stream().distinct().toList();
     }
 
     @Override
     public boolean isEquipped(Player player, Item item) {
-        return InventoryUtil.getHotBarAndOffhand(player).stream().anyMatch(stack -> stack.getItem() == item);
+        return EntityUtil.getHotBarAndHandItems(player).stream().anyMatch(stack -> stack.getItem() == item);
     }
 }

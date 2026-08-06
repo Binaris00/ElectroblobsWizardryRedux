@@ -3,7 +3,7 @@ package com.binaris.wizardry.content.spell.earth;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -38,8 +38,8 @@ public class BetterFlight extends Spell {
 
         if (ctx.castingTicks() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
-        float speed = property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY);
-        float acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(SpellModifiers.POTENCY);
+        float speed = ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.SPEED));
+        float acceleration = ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.ACCELERATION));
 
         if ((Math.abs(ctx.caster().getDeltaMovement().x) < speed || ctx.caster().getDeltaMovement().x / ctx.caster().getLookAngle().x < 0)
                 && (Math.abs(ctx.caster().getDeltaMovement().z) < speed || ctx.caster().getDeltaMovement().z / ctx.caster().getLookAngle().z < 0)) {
@@ -63,7 +63,7 @@ public class BetterFlight extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.UTILITY, SpellAction.NONE, 10, 0, 0)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellTypes.UTILITY, SpellAction.NONE, 10, 0, 0)
                 .add(DefaultProperties.ACCELERATION, 0.05F)
                 .add(DefaultProperties.SPEED, 0.5F)
                 .build();

@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 public final class EBMobEffects {
     static Map<String, DeferredObject<MobEffect>> MOB_EFFECTS = new HashMap<>();
 
-    public static final DeferredObject<MobEffect> ARCANE_JAMMER = mobEffect("arcane_jammer", () -> new CurseMobEffect(MobEffectCategory.HARMFUL, 0)); // TODO
+    public static final DeferredObject<MobEffect> ARCANE_JAMMER = mobEffect("arcane_jammer", ArcaneJammerMobEffect::new);
     public static final DeferredObject<MobEffect> FROST = mobEffect("frost", FrostMobEffect::new);
     public static final DeferredObject<MobEffect> PARALYSIS = mobEffect("paralysis", ParalysisMobEffect::new);
     public static final DeferredObject<MobEffect> STATIC_AURA = mobEffect("static_aura", StaticAuraMobEffect::new);

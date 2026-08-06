@@ -1,5 +1,5 @@
 {
-  "type": "attack",
+  "type": "ebwizardry:attack",
   "base_properties": {
     "blast_radius": 3.0,
     "damage": 12.0,

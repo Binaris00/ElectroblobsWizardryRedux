@@ -1,5 +1,5 @@
 {
-  "type": "attack",
+  "type": "ebwizardry:attack",
   "base_properties": {
     "charge_speed": 2.0,
     "damage": 8.0,

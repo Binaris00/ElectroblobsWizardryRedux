@@ -1,6 +1,6 @@
 package com.binaris.wizardry.client.renderer.entity;
 
-import com.binaris.wizardry.api.content.util.DrawingUtils;
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.content.entity.construct.FireRingConstruct;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -40,7 +40,7 @@ public class FireRingRenderer extends EntityRenderer<FireRingConstruct> {
 
         p_114488_.mulPose(Axis.XP.rotationDegrees(-90));
 
-        float s = DrawingUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 10);
+        float s = ClientUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 10);
         p_114488_.scale(entity.getBbWidth() * s, entity.getBbWidth() * s, entity.getBbWidth() * s);
 
         Tesselator tessellator = Tesselator.getInstance();

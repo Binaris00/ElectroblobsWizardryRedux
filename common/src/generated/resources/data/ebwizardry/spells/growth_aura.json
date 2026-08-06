@@ -1,5 +1,5 @@
 {
-  "type": "utility",
+  "type": "ebwizardry:utility",
   "base_properties": {
     "effect_radius": 2
   },

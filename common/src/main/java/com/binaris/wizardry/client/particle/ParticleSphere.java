@@ -63,7 +63,7 @@ public class ParticleSphere extends ParticleWizardry {
     }
 
     @Override
-    public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+    public void render(@NotNull VertexConsumer vertexConsumer, @NotNull Camera camera, float tickDelta) {
         RenderSystem.setShader(GameRenderer::getPositionColorShader);
         PoseStack stack = new PoseStack();
 

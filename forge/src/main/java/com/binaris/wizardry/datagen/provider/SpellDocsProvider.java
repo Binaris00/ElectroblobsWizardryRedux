@@ -1,9 +1,6 @@
 package com.binaris.wizardry.datagen.provider;
 
-import com.binaris.wizardry.api.content.spell.Element;
-import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.SpellTier;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.platform.Services;
@@ -231,7 +228,7 @@ public abstract class SpellDocsProvider implements DataProvider {
     private String formatSpellType(SpellType type) {
         String key = type.getDisplayName();
         String translated = translate(key);
-        return translated.equals(key) ? type.getName() : translated;
+        return translated.equals(key) ? type.getLocation().toString() : translated;
     }
 
     /**

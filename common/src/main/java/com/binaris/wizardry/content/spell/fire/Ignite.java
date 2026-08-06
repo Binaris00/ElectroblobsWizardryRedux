@@ -1,15 +1,13 @@
 package com.binaris.wizardry.content.spell.fire;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
-import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.core.BlockPos;
@@ -35,8 +33,8 @@ public class Ignite extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (entityHit.getEntity() instanceof LivingEntity target && !MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
-            target.setSecondsOnFire((int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)));
+        if (entityHit.getEntity() instanceof LivingEntity target) {
+            target.setSecondsOnFire((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))));
             return true;
         }
 
@@ -56,7 +54,7 @@ public class Ignite extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT, 5, 0, 10)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.FIRE, SpellTypes.ATTACK, SpellAction.POINT, 5, 0, 10)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.EFFECT_DURATION, 10)
                 .build();

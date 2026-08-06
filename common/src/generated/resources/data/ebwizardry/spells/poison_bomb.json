@@ -1,5 +1,5 @@
 {
-  "type": "projectile",
+  "type": "ebwizardry:projectile",
   "base_properties": {
     "damage": 5.0,
     "effect_duration": 150,

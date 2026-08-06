@@ -39,7 +39,7 @@ public abstract class ItemStackMixin {
     @Inject(method = "getTooltipLines", at = @At("RETURN"))
     public void EBWIZARDRY$getTooltipLinesEvent(Player player, TooltipFlag isAdvanced, CallbackInfoReturnable<List<Component>> cir){
         if (NotImplementedItems.notImplemented(stack.getItem())) {
-            cir.getReturnValue().add(Component.literal("Not Implemented").withStyle(ChatFormatting.RED));
+            cir.getReturnValue().add(Component.literal("This item is not working. This has nothing to do with you, your modpack or your modloader. I need to develop the functionality of this item. Please don't ask if this is your fault. It is not").withStyle(ChatFormatting.RED));
         }
 
         if (stack.getItem() instanceof SpellBookItem || stack.getItem() instanceof ScrollItem) {

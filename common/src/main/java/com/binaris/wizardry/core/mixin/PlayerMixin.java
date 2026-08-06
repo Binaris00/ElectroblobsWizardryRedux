@@ -15,7 +15,7 @@ public abstract class PlayerMixin {
 
     @Inject(method = "drop(Lnet/minecraft/world/item/ItemStack;Z)Lnet/minecraft/world/entity/item/ItemEntity;", at = @At("RETURN"), cancellable = true)
     public void EBWIZARDRY$drop(ItemStack itemStack, boolean includeThrowerName, CallbackInfoReturnable<ItemEntity> cir) {
-        boolean result = WizardryEventBus.getInstance().fire(new EBItemTossEvent((Player) (Object) this, itemStack));
+        boolean result = WizardryEventBus.fireEvent(new EBItemTossEvent((Player) (Object) this, itemStack));
         if (result) cir.cancel();
     }
 }

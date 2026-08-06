@@ -3,7 +3,7 @@ package com.binaris.wizardry.content.spell.sorcery;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -41,7 +41,7 @@ public class SpeedTime extends Spell {
         Player caster = ctx.caster();
         boolean didAnything = false;
 
-        float blastMod = ctx.modifiers().get(SpellModifiers.BLAST);
+        float blastMod = ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
         // Advance world time on server
         if (!world.isClientSide) {
             long advance = (long) (property(TIME_INCREMENT) * blastMod);
@@ -50,7 +50,7 @@ public class SpeedTime extends Spell {
         }
 
         double radius = property(DefaultProperties.EFFECT_RADIUS) * blastMod;
-        int potencyLevel = (int) (((ctx.modifiers().get(SpellModifiers.POTENCY) - 1f) * 2f + 1f)
+        int potencyLevel = (int) (((ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f) * 2f + 1f)
                 * property(EXTRA_TICKS));
 
         // Advance non-player entities' ticks within radius
@@ -124,7 +124,7 @@ public class SpeedTime extends Spell {
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY,
-                        SpellType.UTILITY, SpellAction.POINT_UP, 15, 0, 0)
+                        SpellTypes.UTILITY, SpellAction.POINT_UP, 15, 0, 0)
                 .add(DefaultProperties.EFFECT_RADIUS)
                 .add(TIME_INCREMENT)
                 .add(EXTRA_TICKS)

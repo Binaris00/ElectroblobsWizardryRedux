@@ -4,7 +4,6 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.Elements;
@@ -50,22 +49,19 @@ public abstract class SpellInfoScreen extends Screen {
         int left = this.width / 2 - xSize / 2;
         int top = this.height / 2 - this.ySize / 2;
         this.renderBackground(guiGraphics);
-        this.drawBackgroundLayer(left, top, mouseX, mouseY);
+        this.drawBackgroundLayer(guiGraphics, left, top, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
         this.drawForegroundLayer(guiGraphics, left, top, mouseX, mouseY);
         super.render(guiGraphics, mouseX, mouseY, partialTick);
     }
 
-    protected void drawBackgroundLayer(int left, int top, int mouseX, int mouseY) {
+    protected void drawBackgroundLayer(@NotNull GuiGraphics guiGraphics, int left, int top, int mouseX, int mouseY) {
         boolean discovered = ClientUtils.shouldDisplayDiscovered(getSpell(), null);
 
         RenderSystem.setShaderColor(1, 1, 1, 1);
 
-        RenderSystem.setShaderTexture(0, discovered ? getSpell().getIcon() : Spells.NONE.getIcon());
-        DrawingUtils.drawTexturedRect(left + 146, top + 20, 0, 0, 128, 128, 128, 128);
-
-        RenderSystem.setShaderTexture(0, getTexture());
-        DrawingUtils.drawTexturedRect(left, top, 0, 0, xSize, ySize, textureWidth, textureHeight);
+        guiGraphics.blit(discovered ? getSpell().getIcon() : Spells.NONE.getIcon(), left + 146, top + 20, 0, 0, 128, 128, 128, 128);
+        guiGraphics.blit(getTexture(), left, top, 0, 0, xSize, ySize, textureWidth, textureHeight);
     }
 
     protected void drawForegroundLayer(GuiGraphics guiGraphics, int left, int top, int mouseX, int mouseY) {

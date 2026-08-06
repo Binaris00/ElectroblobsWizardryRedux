@@ -3,19 +3,15 @@ package com.binaris.wizardry.api.content.entity.projectile;
 
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.api.content.util.RayTracer;
-import com.binaris.wizardry.client.renderer.entity.MagicArrowRenderer;
 import com.binaris.wizardry.content.spell.abstr.ArrowSpell;
 import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
-import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -23,24 +19,20 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * This class uses the base code from {@link AbstractArrow} and adds some methods to make it easier to use with the mod.
- * This is used as a base class for all the magic arrows spelled by the {@link ArrowSpell} class.
- * <p>
- * The methods {@link #aim(LivingEntity, float)} and {@link #aim(LivingEntity, Entity, float, float)} are used to set
- * the shooter of the projectile and aim it in the direction they are looking. (Originally copied from Ebwizardry 1.12.2)
- * <p>
- * To register the renderer for this entity, use {@link MagicArrowRenderer} and register the respective texture in
- * {@link  MagicArrowEntity#getTexture()}, if you want to use another renderer, you can do so accordingly, but you will
- * have to handle the texture yourself.
- */
+/// This class uses the base code from [AbstractArrow] and adds some methods to make it easier to use with the mod.
+/// This is used as a base class for all the magic arrows spelled by the [ArrowSpell] class.
+///
+/// The methods [#aim(LivingEntity, float)] and [#aim(LivingEntity, Entity, float, float)] are used to set
+/// the shooter of the projectile and aim it in the direction they are looking. (Originally copied from Ebwizardry 1.12.2)
 public abstract class MagicArrowEntity extends AbstractArrow {
     public static final double LAUNCH_Y_OFFSET = 0.3;
     public static final float FORWARD_OFFSET = 0.1f;
@@ -53,10 +45,120 @@ public abstract class MagicArrowEntity extends AbstractArrow {
         super(entityType, world);
     }
 
-    /**
-     * Sets the shooter of the projectile to the given caster, positions the projectile at the given caster's eyes and
-     * aims it in the direction they are looking with the given speed.
-     */
+    /// Returns the damage dealt by this arrow. Keep in mind that the damage multiplier is applied after this value.
+    ///
+    /// @return The base damage dealt by this arrow.
+    public abstract double getDamage(@NotNull EntityHitResult hitResult);
+
+    /// Returns the maximum flight time in ticks before this projectile disappears, or -1 if it can continue indefinitely
+    /// until it hits something. This should be constant.
+    ///
+    /// @return The maximum flight time in ticks.
+    public abstract int getLifetime();
+
+    /// This method is used to get the damage type of the magic arrow. You must override this and return a valid
+    /// `ResourceKey<DamageType>` for your magic arrow's damage type.
+    ///
+    /// @return The damage type of the magic arrow.
+    public abstract ResourceKey<DamageType> getDamageType(@NotNull EntityHitResult hitResult);
+
+    /// Disable/enable deceleration (generally speaking, this isn't noticeable unless gravity is turned off). Making the arrow
+    /// not decelerate will make it move at a constant speed.
+    ///
+    /// @return True if the arrow should decelerate, false otherwise.
+    public boolean doDeceleration() {
+        return true;
+    }
+
+    /// Allow the projectile to pass through mobs intact (the onEntityHit method will still be called
+    /// and damage will still be applied).
+    ///
+    /// @return True if the arrow should pass through mobs, false otherwise.
+    public boolean doOverpenetration() {
+        return false;
+    }
+
+    /// **This isn't for applying damage to the entity**
+    ///
+    /// Here you can apply any extra effects to the entity that was hit by the projectile. (e.g. setting fire, poisoning, etc.)
+    ///
+    /// @param hitResult The result of the hit.
+    public void onHitTargetExtraEffects(@NotNull EntityHitResult hitResult) {
+    }
+
+    /// Returns true if the entity is a valid target for the arrow, by default this is handled by the ally system.
+    ///
+    /// @param entity The entity to check.
+    public boolean isValidTarget(@NotNull Entity entity) {
+        Entity owner = this.getOwner() != null ? this.getOwner() : this;
+        return AllyDesignation.isValidTarget(owner, entity);
+    }
+
+    /// Returns the sound event of the arrow.
+    ///
+    /// @param result The result of the hit.
+    public @NotNull SoundEvent getSoundEvent(HitResult result) {
+        return SoundEvents.EMPTY;
+    }
+
+    /// Plays the sound of the arrow.
+    ///
+    /// @param result The result of the hit.
+    protected void playHitSound(HitResult result) {
+        this.playSound(this.getSoundEvent(result), 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+    }
+
+    /// Returns the seeking strength of this arrow, or the maximum distance from a target the projectile can be
+    /// heading for that will make it curve towards that target.
+    ///
+    /// @return The seeking strength of the magic arrow.
+    public float getSeekingStrength() {
+        return getOwner() instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.RING_SEEKING.get()) ? 2 : 0;
+    }
+
+    /// Ticks when the arrow is in the ground
+    public void tickInGround() {
+    }
+
+    /// Ticks when the arrow is in the air
+    public void ticksInAir() {
+    }
+
+
+    @Override
+    public void tick() {
+        super.tick();
+
+        if (getLifetime() >= 0 && this.tickCount >= getLifetime()) {
+            this.discard();
+        }
+
+        if (inGround) {
+            ticksInGround++;
+            tickInGround();
+        } else {
+            ticksInAir++;
+            ticksInAir();
+        }
+
+//        if (doDeceleration() && tickCount % 10 == 0) {
+//            this.setDeltaMovement(this.getDeltaMovement().scale(0.90));
+//        }
+
+        if (getSeekingStrength() <= 0) return;
+        HitResult hit = RayTracer.rayTrace(level(), this, this.position(), this.position().add(this.getDeltaMovement().scale(SEEKING_TIME)), getSeekingStrength(), false, LivingEntity.class, RayTracer.ignoreEntityFilter(null));
+
+        if (hit instanceof EntityHitResult entityHit && getOwner() instanceof LivingEntity owner && entityHit.getEntity() instanceof LivingEntity entity) {
+            if (AllyDesignation.isValidTarget(owner, entity)) {
+                Vec3 direction = new Vec3(entity.xo, entity.yo + entity.getDimensions(entity.getPose()).height / 2, entity.zo).subtract(this.position()).normalize().scale(this.getDeltaMovement().length());
+                this.setDeltaMovement(this.getDeltaMovement().add(direction.subtract(this.getDeltaMovement()).scale(2.0 / SEEKING_TIME)));
+            }
+        }
+    }
+
+
+    /// Sets the shooter of the projectile to the given caster, positions the projectile at the given caster's eyes and
+    /// aims it in the direction they are looking with the given speed.
     public void aim(LivingEntity caster, float speed) {
         if (getOwner() == null) this.setOwner(caster);
 
@@ -107,20 +209,14 @@ public abstract class MagicArrowEntity extends AbstractArrow {
         }
     }
 
-
     @Override
     protected void onHitEntity(@NotNull EntityHitResult hitResult) {
         if (!(hitResult.getEntity() instanceof LivingEntity target)) return;
-        if (MagicDamageSource.isEntityImmune(getDamageType(), target)) {
-            this.discard();
-            return;
-        }
+        if (!isValidTarget(target)) return;
 
-        // Damage stuff
-        DamageSource damageSource = getOwner() == null ? MagicDamageSource.causeDirectMagicDamage(this, getDamageType())
-                : MagicDamageSource.causeIndirectMagicDamage(this, this.getOwner(), getDamageType());
-
-        target.hurt(damageSource, (float) getDamage() * this.damageMultiplier);
+        MagicDamageSource.causeMagicDamage(this, target, (float) getDamage(hitResult) * damageMultiplier, this.getDamageType(hitResult));
+        this.onHitTargetExtraEffects(hitResult);
+        this.playHitSound(hitResult);
 
         // Knockback and post effects
         if (this.getKnockback() > 0) {
@@ -135,11 +231,17 @@ public abstract class MagicArrowEntity extends AbstractArrow {
             EnchantmentHelper.doPostHurtEffects(target, arrowOwner);
             EnchantmentHelper.doPostDamageEffects(arrowOwner, target);
         }
-        this.discard();
+
+        if (!this.level().isClientSide) {
+            if (!this.doOverpenetration()) this.discard();
+        }
     }
 
-
-    // ======================= NBT =======================
+    @Override
+    protected void onHitBlock(@NotNull BlockHitResult result) {
+        super.onHitBlock(result);
+        this.playHitSound(result);
+    }
 
     @Override
     public void addAdditionalSaveData(@NotNull CompoundTag compound) {
@@ -157,95 +259,6 @@ public abstract class MagicArrowEntity extends AbstractArrow {
         damageMultiplier = compound.getFloat("damageMultiplier");
     }
 
-    // ======================= Property getters (to be overridden by subclasses) =======================
-
-    /**
-     * Subclasses must override this to set their own base damage.
-     */
-    public abstract double getDamage();
-
-    /**
-     * Returns the maximum flight time in ticks before this projectile disappears, or -1 if it can continue indefinitely
-     * until it hits something. This should be constant.
-     */
-    public abstract int getLifetime();
-
-    /**
-     * This method is used to get the damage type of the magic arrow. You must override this and return a valid
-     * {@code ResourceKey<DamageType>} for your magic arrow's damage type.
-     */
-    public ResourceKey<DamageType> getDamageType() {
-        return EBDamageSources.SORCERY;
-    }
-
-    /**
-     * This method is used to get the texture for the magic arrow.
-     * The texture is represented by a ResourceLocation object. You must return a valid ResourceLocation or implement
-     * a different renderer of your own accordingly.
-     */
-    public abstract ResourceLocation getTexture();
-
-    /**
-     * Override this to disable deceleration (generally speaking, this isn't noticeable unless gravity is turned off).
-     * Returns true by default.
-     */
-    @Deprecated
-    public boolean doDeceleration() {
-        return true;
-    }
-
-    /**
-     * Override this to allow the projectile to pass through mobs intact (the onEntityHit method will still be called
-     * and damage will still be applied). Returns false by default.
-     */
-    @Deprecated
-    public boolean doOverpenetration() {
-        return false;
-    }
-
-    /**
-     * Returns the seeking strength of this projectile, or the maximum distance from a target the projectile can be
-     * heading for that will make it curve towards that target. By default, this is 2 if the caster is wearing a ring
-     * of attraction, otherwise it is 0. You can override this method to give different behaviour for different projectiles
-     * and also make it depend on other factors such as the caster's equipment.
-     */
-    public float getSeekingStrength() {
-        return getOwner() instanceof Player player && ArtifactChannel.isEquipped(player, EBItems.RING_SEEKING.get()) ? 2 : 0;
-    }
-
-    @Override
-    public void tick() {
-        super.tick();
-
-        if (getLifetime() >= 0 && this.tickCount >= getLifetime()) {
-            this.discard();
-        }
-
-        if (inGround) {
-            ticksInGround++;
-            tickInGround();
-        } else {
-            ticksInAir++;
-            ticksInAir();
-        }
-
-        if (getSeekingStrength() <= 0) return;
-        HitResult hit = RayTracer.rayTrace(level(), this, this.position(), this.position().add(this.getDeltaMovement().scale(SEEKING_TIME)), getSeekingStrength(), false, LivingEntity.class, RayTracer.ignoreEntityFilter(null));
-
-        if (hit instanceof EntityHitResult entityHit && getOwner() instanceof LivingEntity owner && entityHit.getEntity() instanceof LivingEntity entity) {
-            if (AllyDesignation.isValidTarget(owner, entity)) {
-                Vec3 direction = new Vec3(entity.xo, entity.yo + entity.getDimensions(entity.getPose()).height / 2, entity.zo).subtract(this.position()).normalize().scale(this.getDeltaMovement().length());
-                this.setDeltaMovement(this.getDeltaMovement().add(direction.subtract(this.getDeltaMovement()).scale(2.0 / SEEKING_TIME)));
-            }
-        }
-    }
-
-    public void tickInGround() {
-    }
-
-    public void ticksInAir() {
-    }
-
     @Override
     protected boolean tryPickup(@NotNull Player player) {
         return false;
@@ -254,5 +267,10 @@ public abstract class MagicArrowEntity extends AbstractArrow {
     @Override
     protected @NotNull SoundEvent getDefaultHitGroundSoundEvent() {
         return SoundEvents.EMPTY;
+    }
+
+    @Override
+    protected @NotNull ItemStack getPickupItem() {
+        return ItemStack.EMPTY;
     }
 }

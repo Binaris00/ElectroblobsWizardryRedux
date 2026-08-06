@@ -2,7 +2,6 @@ package com.binaris.wizardry.content.entity.projectile;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.entity.projectile.MagicProjectileEntity;
-import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.EBEntities;
@@ -10,12 +9,12 @@ import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.Spells;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -31,45 +30,50 @@ public class ThunderboltEntity extends MagicProjectileEntity {
     }
 
     @Override
-    protected void onHit(@NotNull HitResult hitResult) {
-        if (hitResult instanceof EntityHitResult entityHitResult) {
-            Entity entity = entityHitResult.getEntity();
-            float damage = Spells.THUNDERBOLT.property(DefaultProperties.DAMAGE) * damageMultiplier;
-            MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.SHOCK);
+    public int getLifeTime() {
+        return 8;
+    }
 
-            if (entity instanceof LivingEntity livingEntity)
-                livingEntity.knockback(Spells.THUNDERBOLT.property(DefaultProperties.KNOCKBACK) * 0.5F,
-                        Mth.sin(this.getYRot() * 0.017453292F), -Mth.cos(this.getYRot() * 0.017453292F));
-        }
+    @Override
+    public void onHitTargetExtraEffects(@NotNull EntityHitResult hitResult) {
+        if (!(hitResult.getEntity() instanceof LivingEntity livingEntity)) return;
+        livingEntity.knockback(Spells.THUNDERBOLT.property(DefaultProperties.KNOCKBACK) * 0.5F,
+                Mth.sin(this.getYRot() * 0.017453292F), -Mth.cos(this.getYRot() * 0.017453292F));
+    }
 
-        this.playSound(EBSounds.ENTITY_THUNDERBOLT_HIT.get(), 1.4F, 0.5F + this.random.nextFloat() * 0.1F);
+    @Override
+    public float getDamage(@NotNull EntityHitResult hitResult) {
+        return Spells.THUNDERBOLT.property(DefaultProperties.DAMAGE);
+    }
 
-        if (!this.level().isClientSide()) {
-            this.level().broadcastEntityEvent(this, (byte) 2);
-            this.discard();
-        }
+    @Override
+    public ResourceKey<DamageType> getDamageType(@NotNull EntityHitResult hitResult) {
+        return EBDamageSources.SHOCK;
+    }
 
-        super.onHit(hitResult);
+    @Override
+    public @NotNull SoundEvent getSoundEvent(HitResult result) {
+        return EBSounds.ENTITY_THUNDERBOLT_HIT.get();
+    }
+
+    @Override
+    protected void spawnHitParticles(HitResult.Type type) {
+        this.level().addParticle(ParticleTypes.EXPLOSION, this.xo, this.yo, this.zo, 0, 0, 0);
     }
 
     @Override
     public void tick() {
         super.tick();
 
-        if (this.tickCount < 3) {
-            return;
-        }
-
+        // Particle when moving
         if (!this.level().isClientSide()) {
-            this.level().broadcastEntityEvent(this, (byte) 3);
+            this.level().broadcastEntityEvent(this, (byte) 5);
         }
     }
 
     @Override
     public void handleEntityEvent(byte status) {
-        if (status == 2) {
-            this.level().addParticle(ParticleTypes.EXPLOSION, this.xo, this.yo, this.zo, 0, 0, 0);
-        } else if (status == 3) {
+        if (status == 5) {
             ParticleBuilder.create(EBParticles.SPARK, level().getRandom(), this.xo, this.yo + this.getBbHeight() / 2, this.zo, 0.1, false).spawn(this.level());
             for (int i = 0; i < 4; i++) {
                 this.level().addParticle(ParticleTypes.LARGE_SMOKE, this.xo + random.nextFloat() * 0.2 - 0.1,
@@ -81,12 +85,6 @@ public class ThunderboltEntity extends MagicProjectileEntity {
     }
 
     @Override
-    public int getLifeTime() {
-        return 8;
-    }
-
-
-    @Override
     public boolean isNoGravity() {
         return true;
     }
@@ -94,10 +92,5 @@ public class ThunderboltEntity extends MagicProjectileEntity {
     @Override
     public boolean isOnFire() {
         return false;
-    }
-
-    @Override
-    protected @NotNull Item getDefaultItem() {
-        return ItemStack.EMPTY.getItem();
     }
 }

@@ -4,7 +4,7 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.model.armor.RobeArmorModel;
 import com.binaris.wizardry.client.model.armor.WizardArmorModel;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.fabricmc.fabric.api.client.rendering.v1.ArmorRenderer;
 import net.minecraft.client.Minecraft;
@@ -24,7 +24,7 @@ public class WizardArmorRenderer implements ArmorRenderer {
     public static String getArmorTexture(WizardArmorItem wizardArmorItem, EquipmentSlot slot) {
         String s = wizardArmorItem.getWizardArmorType().getName() + "_armor";
 
-        if (WizardryMainMod.IS_THE_SEASON && wizardArmorItem.getWizardArmorType() == WizardArmorType.WIZARD) {
+        if (WizardryMainMod.IS_THE_SEASON && wizardArmorItem.getWizardArmorType() == WizardArmorTypes.WIZARD) {
             s = s + "_festive";
         } else {
             if (wizardArmorItem.getElement() != null) s = s + "_" + wizardArmorItem.getElement().getName();
@@ -67,10 +67,10 @@ public class WizardArmorRenderer implements ArmorRenderer {
         robeArmor.left_shoe.visible = slot == EquipmentSlot.FEET;
 
         armorModel = models.computeIfAbsent(wizardItem, key -> {
-            if (wizardItem.getWizardArmorType() == WizardArmorType.WIZARD) return wizardArmor;
-            else if (wizardItem.getWizardArmorType() == WizardArmorType.SAGE) return wizardArmor;
-            else if (wizardItem.getWizardArmorType() == WizardArmorType.BATTLEMAGE) return robeArmor;
-            else if (wizardItem.getWizardArmorType() == WizardArmorType.WARLOCK) return robeArmor;
+            if (wizardItem.getWizardArmorType() == WizardArmorTypes.WIZARD) return wizardArmor;
+            else if (wizardItem.getWizardArmorType() == WizardArmorTypes.SAGE) return wizardArmor;
+            else if (wizardItem.getWizardArmorType() == WizardArmorTypes.BATTLEMAGE) return robeArmor;
+            else if (wizardItem.getWizardArmorType() == WizardArmorTypes.WARLOCK) return robeArmor;
             return null;
         });
 

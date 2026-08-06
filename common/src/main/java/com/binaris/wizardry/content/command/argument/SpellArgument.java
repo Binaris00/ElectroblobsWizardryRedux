@@ -18,10 +18,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Custom argument type for Spell objects in commands.
- * This provides proper type safety and validation for spell arguments.
- */
+/// Custom argument type for Spell objects in commands.
+/// This provides proper type safety and validation for spell arguments.
 public class SpellArgument implements ArgumentType<Spell> {
     private static final Collection<String> EXAMPLES = Arrays.asList("ebwizardry:magic_missile", "ebwizardry:fireball");
     private static final DynamicCommandExceptionType ERROR_SPELL_NOT_FOUND = new DynamicCommandExceptionType(

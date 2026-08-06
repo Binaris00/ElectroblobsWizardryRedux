@@ -2,7 +2,6 @@ package com.binaris.wizardry.client.effect;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.ContainmentData;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.content.effect.ContainmentEffect;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
@@ -47,7 +46,7 @@ public final class ContainmentFieldRender {
         ContainmentData data = Services.OBJECT_DATA.getContainmentData(player);
         if (data.getContainmentPos() == null) return;
 
-        Vec3 centre = GeometryUtil.getCentre(data.getContainmentPos());
+        Vec3 centre = Vec3.atCenterOf(data.getContainmentPos());
         float r = ContainmentEffect.getContainmentDistance(effect.getAmplifier());
 
         Vec3 cameraPos = camera.getPosition();

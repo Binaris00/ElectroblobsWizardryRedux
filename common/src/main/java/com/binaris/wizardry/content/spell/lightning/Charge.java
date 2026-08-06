@@ -2,12 +2,13 @@ package com.binaris.wizardry.content.spell.lightning;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.data.ISpellVar;
-import com.binaris.wizardry.api.content.data.Persistence;
+import com.binaris.wizardry.api.content.data.VarPersistence;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
+import com.binaris.wizardry.api.content.data.SpellVar;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -28,9 +29,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class Charge extends Spell {
-    public static final ISpellVar<SpellModifiers> CHARGE_MODIFIERS = new ISpellVar.SpellVar<>(Persistence.NEVER);
+    public static final ISpellVar<SpellModifiers> CHARGE_MODIFIERS = new SpellVar<>(VarPersistence.NEVER);
     public static final SpellProperty<Float> CHARGE_SPEED = SpellProperty.floatProperty("charge_speed");
-    public static final ISpellVar<Integer> CHARGE_TIME = new ISpellVar.SpellVar<Integer>(Persistence.NEVER).withTicker(Charge::update);
+    public static final ISpellVar<Integer> CHARGE_TIME = new SpellVar<Integer>(VarPersistence.NEVER).withTicker(Charge::update);
 
     public Charge() {
         this.soundValues(0.6f, 1, 0);
@@ -45,7 +46,7 @@ public class Charge extends Spell {
 
             Vec3 look = player.getLookAngle();
 
-            float speed = Spells.CHARGE.property(Charge.CHARGE_SPEED) * modifiers.get(SpellModifiers.RANGE);
+            float speed = modifiers.get(SpellModifiers.RANGE, Spells.CHARGE.property(Charge.CHARGE_SPEED));
 
             player.setDeltaMovement(look.x * speed, player.getDeltaMovement().y, look.z * speed);
 
@@ -58,7 +59,7 @@ public class Charge extends Spell {
             List<LivingEntity> collided = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1));
 
             collided.remove(player);
-            float damage = Spells.CHARGE.property(DefaultProperties.DAMAGE) * modifiers.get(SpellModifiers.POTENCY);
+            float damage = modifiers.get(SpellModifiers.POTENCY, Spells.CHARGE.property(DefaultProperties.DAMAGE));
             float knockback = Spells.CHARGE.property(DefaultProperties.KNOCKBACK);
 
             collided.forEach(e -> e.hurt(MagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), damage));
@@ -94,7 +95,7 @@ public class Charge extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(ctx.caster());
-        data.setVariable(CHARGE_TIME, (int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
+        data.setVariable(CHARGE_TIME, (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION).floatValue())));
         data.setVariable(CHARGE_MODIFIERS, ctx.modifiers());
 
         if (ctx.world().isClientSide)
@@ -107,7 +108,7 @@ public class Charge extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT, 20, 0, 50)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellTypes.ATTACK, SpellAction.POINT, 20, 0, 50)
                 .add(CHARGE_SPEED, 2.0F)
                 .add(DefaultProperties.DURATION, 10)
                 .add(DefaultProperties.DAMAGE, 8F)

@@ -21,11 +21,9 @@ import org.lwjgl.opengl.GL11;
 
 import static com.binaris.wizardry.WizardryMainMod.MOD_ID;
 
-/**
- * Particle Buff is the only particle in Electroblob's Wizardry (at least on Alpha release) that's using the linking
- * mechanism from ParticleWizardry to follow an entity. It represents the buff effect visually by floating upwards
- * from the entity it's linked to. The particle uses a custom texture and rendering method to achieve its appearance.
- */
+/// Particle Buff is the only particle in Electroblob's Wizardry (at least on Alpha release) that's using the linking
+/// mechanism from ParticleWizardry to follow an entity. It represents the buff effect visually by floating upwards
+/// from the entity it's linked to. The particle uses a custom texture and rendering method to achieve its appearance.
 // This render logic is one of the worst I've ever written. So any improvements would be greatly appreciated, specially
 // regarding how to handle the linked entity position better, because I'm sure that part can be improved.
 public class ParticleBuff extends ParticleWizardry {
@@ -58,7 +56,7 @@ public class ParticleBuff extends ParticleWizardry {
     }
 
     @Override
-    public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float partialTicks) {
+    public void render(@NotNull VertexConsumer vertexConsumer, @NotNull Camera camera, float partialTicks) {
         updateEntityLinking(partialTicks);
 
         RenderSystem.enableBlend();

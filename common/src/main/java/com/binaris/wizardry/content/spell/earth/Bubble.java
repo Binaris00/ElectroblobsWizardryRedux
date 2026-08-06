@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.earth;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -48,9 +48,9 @@ public class Bubble extends RaySpell {
         BubbleConstruct bubble = new BubbleConstruct(ctx.world());
         bubble.setPos(target.getX(), target.getY(), target.getZ());
         if (ctx.caster() != null) bubble.setCaster(ctx.caster());
-        bubble.lifetime = ((int) (property(DefaultProperties.DURATION).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
+        bubble.lifetime = ((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION).floatValue())));
         bubble.setDarkOrb(false);
-        bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+        bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
         ctx.world().addFreshEntity(bubble);
         target.startRiding(bubble);
 
@@ -76,7 +76,7 @@ public class Bubble extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.ATTACK, SpellAction.POINT, 15, 0, 20)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellTypes.ATTACK, SpellAction.POINT, 15, 0, 20)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DURATION, 200)
                 .build();

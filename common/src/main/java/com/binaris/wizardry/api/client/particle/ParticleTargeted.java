@@ -16,6 +16,8 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/// Abstract superclass for all particles that links an origin (normally another entity) to a target, updating the position of
+/// the particle to match the target.
 public abstract class ParticleTargeted extends ParticleWizardry {
     private static final double THIRD_PERSON_AXIAL_OFFSET = 1.2;
 
@@ -35,49 +37,41 @@ public abstract class ParticleTargeted extends ParticleWizardry {
         super(world, x, y, z, spriteProvider, updateTextureOnTick);
     }
 
-    /**
-     * Sets the target position for this particle. This will cause it to stretch to touch the given position,
-     * if supported.
-     *
-     * @param x The x-coordinate of the target position.
-     * @param y The y-coordinate of the target position.
-     * @param z The z-coordinate of the target position.
-     */
+    /// Sets the target position for this particle. This will cause it to stretch to touch the given position,
+    /// if supported.
+    ///
+    /// @param x The x-coordinate of the target position.
+    /// @param y The y-coordinate of the target position.
+    /// @param z The z-coordinate of the target position.
     public void setTargetPosition(double x, double y, double z) {
         this.targetX = x;
         this.targetY = y;
         this.targetZ = z;
     }
 
-    /**
-     * Sets the target point velocity for this particle. This will cause the position it stretches to touch to move
-     * at the given velocity.
-     *
-     * @param vx The x velocity of the target point.
-     * @param vy The y velocity of the target point.
-     * @param vz The z velocity of the target point.
-     */
+    /// Sets the target point velocity for this particle. This will cause the position it stretches to touch to move
+    /// at the given velocity.
+    ///
+    /// @param vx The x velocity of the target point.
+    /// @param vy The y velocity of the target point.
+    /// @param vz The z velocity of the target point.
     public void setTargetVelocity(double vx, double vy, double vz) {
         this.targetVelX = vx;
         this.targetVelY = vy;
         this.targetVelZ = vz;
     }
 
-    /**
-     * Links this particle to the given target. This will cause it to stretch to touch the target, if supported.
-     *
-     * @param target The target to link to.
-     */
+    /// Links this particle to the given target. This will cause it to stretch to touch the target, if supported.
+    ///
+    /// @param target The target to link to.
     public void setTargetEntity(@Nullable Entity target) {
         this.target = target;
     }
 
-    /**
-     * Sets the length of this particle. This will cause it to stretch to touch a point this distance along its
-     * linked entity's line of sight.
-     *
-     * @param length The length to set.
-     */
+    /// Sets the length of this particle. This will cause it to stretch to touch a point this distance along its
+    /// linked entity's line of sight.
+    ///
+    /// @param length The length to set.
     public void setLength(double length) {
         this.length = length;
     }
@@ -106,7 +100,7 @@ public abstract class ParticleTargeted extends ParticleWizardry {
     }
 
     @Override
-    public void render(@NotNull VertexConsumer vertexConsumer, Camera camera, float tickDelta) {
+    public void render(@NotNull VertexConsumer vertexConsumer, @NotNull Camera camera, float tickDelta) {
         Entity viewer = camera.getEntity();
         PoseStack stack = new PoseStack();
         double originX, originY, originZ;
@@ -159,6 +153,7 @@ public abstract class ParticleTargeted extends ParticleWizardry {
 
         if (Double.isNaN(finalTargetX) || Double.isNaN(finalTargetY) || Double.isNaN(finalTargetZ)) {
             EBLogger.error("Attempted to render a targeted particle, but neither its target entity nor target position was set, and it either had no length assigned or was not linked to an entity.");
+            this.remove();
             return;
         }
 
@@ -187,7 +182,6 @@ public abstract class ParticleTargeted extends ParticleWizardry {
     protected boolean shouldApplyOriginOffset() {
         return true;
     }
-
 
     protected boolean shouldApplyOriginOffsetInFirstPerson() {
         return false;

@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -47,7 +47,7 @@ public class SummonZombie extends MinionSpell<Zombie> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.NECROMANCY, SpellType.MINION, SpellAction.SUMMON, 10, 0, 40)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.NECROMANCY, SpellTypes.MINION, SpellAction.SUMMON, 10, 0, 40)
                 .add(DefaultProperties.MINION_LIFETIME, 600)
                 .add(DefaultProperties.MINION_COUNT, 1)
                 .add(DefaultProperties.SUMMON_RADIUS, 2)

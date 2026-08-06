@@ -4,14 +4,12 @@ import com.mojang.serialization.Codec;
 
 import java.util.Optional;
 
-/**
- * A class representing a single configuration option. It holds the key, default value,
- * current value, codec for serialization, and type of the option.
- *
- * @param <T> The type of the configuration option.
- *
- * @see ConfigOptionType
- */
+/// A class representing a single configuration option. It holds the key, default value,
+/// current value, codec for serialization, and type of the option.
+///
+/// @param <T> The type of the configuration option.
+///
+/// @see ConfigOptionType
 public abstract class ConfigOption<T> {
     private final String key;
     private final T defaultValue;

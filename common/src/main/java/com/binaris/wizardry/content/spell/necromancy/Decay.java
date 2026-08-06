@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -33,9 +33,9 @@ public class Decay extends ConstructRangedSpell<DecayConstruct> {
         super.spawnConstruct(ctx, vec3, side);
 
         float decayCount = property(PATCHES_SPAWNED);
-        int quantity = (int) (decayCount * ctx.modifiers().get(SpellModifiers.BLAST));
-        int horizontalRange = (int) (0.4 * decayCount * ctx.modifiers().get(SpellModifiers.BLAST));
-        int verticalRange = (int) (6 * ctx.modifiers().get(SpellModifiers.BLAST));
+        int quantity = (int) (decayCount * ctx.modifiers().get(SpellModifiers.BLAST, 1.0f));
+        int horizontalRange = (int) (0.4 * decayCount * ctx.modifiers().get(SpellModifiers.BLAST, 1.0f));
+        int verticalRange = (int) (6 * ctx.modifiers().get(SpellModifiers.BLAST, 1.0f));
 
         for (int i = 0; i < quantity; i++) {
             BlockPos pos = BlockUtil.findNearbyFloorSpace(ctx.world(), origin, horizontalRange, verticalRange, false);
@@ -49,7 +49,7 @@ public class Decay extends ConstructRangedSpell<DecayConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.DEFENCE, SpellAction.POINT, 35, 0, 80)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellTypes.DEFENCE, SpellAction.POINT, 35, 0, 80)
                 .add(DefaultProperties.RANGE, 12F)
                 .add(DefaultProperties.DURATION, 400)
                 .add(DefaultProperties.EFFECT_DURATION, 400)

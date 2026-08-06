@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
@@ -47,7 +47,7 @@ public class ZombieApocalypse extends ConstructSpell<ZombieSpawnerConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellType.CONSTRUCT, SpellAction.SUMMON, 150, 25, 300)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.NECROMANCY, SpellTypes.CONSTRUCT, SpellAction.SUMMON, 150, 25, 300)
                 .add(DefaultProperties.DURATION, 500)
                 .add(DefaultProperties.MINION_LIFETIME, 600)
                 .add(MINION_SPAWN_INTERVAL)

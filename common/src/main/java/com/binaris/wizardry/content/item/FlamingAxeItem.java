@@ -19,8 +19,7 @@ public class FlamingAxeItem extends AxeItem {
 
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity entity) {
-        if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
-            target.setSecondsOnFire(Spells.FLAMING_AXE.property(DefaultProperties.EFFECT_DURATION));
+        target.setSecondsOnFire(Spells.FLAMING_AXE.property(DefaultProperties.EFFECT_DURATION));
         return false;
     }
 

@@ -1,11 +1,12 @@
 package com.binaris.wizardry.content.item;
 
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.*;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.SpellContext;
+import com.binaris.wizardry.api.content.spell.SpellContexts;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
@@ -34,24 +35,22 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Where the magic (normally) happens!! Most of the functions and logic for this item are handled on various utils
- * classes (e.g. {@link CastItemDataHelper} and {@link CastItemUtils}), so refer to those for more details on specific aspects of
- * wand functionality.
- * <p>
- * A wand is a spell-casting item that can store mana, hold multiple spells, and be upgraded in various ways. Wands
- * can cast both instant and continuous spells, with mechanics for charging, cooldowns, and mana consumption. They can be
- * upgraded using special items to enhance their capabilities, such as increasing mana capacity or adding spell slots.
- *
- * @see ICastItem
- * @see ICustomDamageItem
- */
+/// Where the magic (normally) happens!! Most of the functions and logic for this item are handled on various utils
+/// classes (e.g. [CastItemDataHelper] and [CastItemUtils]), so refer to those for more details on specific aspects of
+/// wand functionality.
+///
+/// A wand is a spell-casting item that can store mana, hold multiple spells, and be upgraded in various ways. Wands
+/// can cast both instant and continuous spells, with mechanics for charging, cooldowns, and mana consumption. They can be
+/// upgraded using special items to enhance their capabilities, such as increasing mana capacity or adding spell slots.
+///
+/// @see ICastItem
+/// @see ICustomDamageItem
 public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchItem, ICustomDamageItem, ITierValue, IElementValue {
-    /* Base number of spell slots on a wand without upgrades. */
+    /// Base number of spell slots on a wand without upgrades.
     public static final int BASE_SPELL_SLOTS = 5;
-    /** Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
+    /// Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast)
     public static final int COOLDOWN_FORFEIT_TICKS = 60;
-    /** Maximum use duration for continuous spells. */
+    /// Maximum use duration for continuous spells.
     public static final int MAX_USE_DURATION = 72000;
 
     private final SpellTier tier;
@@ -117,7 +116,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
 
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (CastItemUtils.fireSpellCastEvent(SpellCastEvent.Source.WAND, spell, ctx)) {
+        if (CastItemUtils.fireSpellCastEvent(SpellCastEvent.Sources.WAND, spell, ctx)) {
             CastItemUtils.applyCooldownForfeit(ctx.caster(), COOLDOWN_FORFEIT_TICKS);
             return false;
         }
@@ -136,7 +135,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
         if (ctx.world().isClientSide && spell.isInstantCast() && spell.requiresPacket()) return false;
-        if (!CastItemUtils.executeSpellCast(SpellCastEvent.Source.WAND, spell, ctx)) return false;
+        if (!CastItemUtils.executeSpellCast(SpellCastEvent.Sources.WAND, spell, ctx)) return false;
 
         CastItemUtils.sendSpellCastPacket(ctx.caster(), spell, ctx);
         if (!spell.isInstantCast()) ctx.caster().startUsingItem(ctx.hand());
@@ -172,8 +171,9 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         int accumulatedCost = CastItemUtils.getAccumulatedCastCost(spell, castingTick, totalCost);
 
         if (!spell.isInstantCast() && spell.getTier().getLevel() <= this.tier.getLevel()) {
-            WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.WAND, spell, livingEntity, modifiers, castingTick));
-            spell.endCast(new CastContext(player.level(), player, castingTick, modifiers));
+            CastContext ctx = new CastContext(player.level(), player, castingTick, modifiers);
+            WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Sources.WAND, spell, ctx));
+            spell.endCast(ctx);
 
             if (!level.isClientSide) {
                 this.consumeMana(stack, accumulatedCost, player);
@@ -188,7 +188,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         boolean changed = false;
         if (upgrade.hasItem()) changed = applyUpgradeSlot(player, centre, upgrade);
 
-        changed |= WorkbenchUtils.applySpellBooks(centre, spellBooks, SpellContext.WANDS);
+        changed |= WorkbenchUtils.applySpellBooks(centre, spellBooks, SpellContexts.WANDS);
         changed |= WorkbenchUtils.rechargeManaFromCrystals(centre, crystals);
         return changed;
     }
@@ -213,17 +213,15 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
     // utility methods
     // Mostly related to mana cost calculations for continuous spells
 
-    /**
-     * Handles the logic for instant spell casting on {@code useTick}. If the current {@code useTick} matches the required
-     * {@code charge}, it checks if the spell can be cast, consumes mana, sets cooldown, and casts the spell. Finally,
-     * it stops the player's item use.
-     *
-     * @param stack   The wand item stack
-     * @param spell   The spell being cast
-     * @param ctx     The player cast context
-     * @param useTick The current use tick
-     * @param charge  The required charge time for the spell
-     */
+    /// Handles the logic for instant spell casting on `useTick`. If the current `useTick` matches the required
+    /// `charge`, it checks if the spell can be cast, consumes mana, sets cooldown, and casts the spell. Finally,
+    /// it stops the player's item use.
+    ///
+    /// @param stack   The wand item stack
+    /// @param spell   The spell being cast
+    /// @param ctx     The player cast context
+    /// @param useTick The current use tick
+    /// @param charge  The required charge time for the spell
     protected void handleInstantSpellTick(PlayerCastContext ctx, Spell spell, ItemStack stack, int useTick, int charge) {
         if (useTick != charge) return;
 
@@ -236,17 +234,15 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         ctx.caster().stopUsingItem();
     }
 
-    /**
-     * Handles the logic for continuous spell casting on {@code useTick}. If the current {@code useTick} is greater than
-     * or equal to the required {@code charge}, it checks if the spell can be cast and casts it. If the spell cannot be
-     * cast, it stops the player's item use.
-     *
-     * @param stack   The wand item stack
-     * @param spell   The spell being cast
-     * @param ctx     The player cast context
-     * @param useTick The current use tick
-     * @param charge  The required charge time for the spell
-     */
+    /// Handles the logic for continuous spell casting on `useTick`. If the current `useTick` is greater than
+    /// or equal to the required `charge`, it checks if the spell can be cast and casts it. If the spell cannot be
+    /// cast, it stops the player's item use.
+    ///
+    /// @param stack   The wand item stack
+    /// @param spell   The spell being cast
+    /// @param ctx     The player cast context
+    /// @param useTick The current use tick
+    /// @param charge  The required charge time for the spell
     private void handleContinuousSpellTick(PlayerCastContext ctx, Spell spell, ItemStack stack, int useTick, int charge) {
         if (useTick < charge) return;
 
@@ -257,18 +253,16 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         }
     }
 
-    /**
-     * Starts the charging process for a spell. If the player is not already using an item, it initiates the item use,
-     * sets the spell modifiers in the wizard data, and plays a charge sound if applicable.
-     *
-     * @param level  The current level
-     * @param player The player casting the spell
-     * @param hand   The hand used to cast the spell
-     * @param stack  The wand item stack
-     * @param charge The required charge time for the spell
-     * @param ctx    The player cast context
-     * @return An InteractionResultHolder indicating success or failure of starting the charge
-     */
+    /// Starts the charging process for a spell. If the player is not already using an item, it initiates the item use,
+    /// sets the spell modifiers in the wizard data, and plays a charge sound if applicable.
+    ///
+    /// @param level  The current level
+    /// @param player The player casting the spell
+    /// @param hand   The hand used to cast the spell
+    /// @param stack  The wand item stack
+    /// @param charge The required charge time for the spell
+    /// @param ctx    The player cast context
+    /// @return An InteractionResultHolder indicating success or failure of starting the charge
     private InteractionResultHolder<ItemStack> startCharging(Level level, Player player, InteractionHand hand, ItemStack stack, int charge, PlayerCastContext ctx) {
         if (!player.isUsingItem()) {
             player.startUsingItem(hand);
@@ -281,17 +275,15 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         return InteractionResultHolder.fail(stack);
     }
 
-    /**
-     * Creates a PlayerCastContext for the given parameters, calculating spell modifiers based on the tick count.
-     *
-     * @param level  The current level
-     * @param player The player casting the spell
-     * @param hand   The hand used to cast the spell
-     * @param tick   The current tick count of the casting process
-     * @param stack  The wand item stack
-     * @param spell  The spell being cast
-     * @return A PlayerCastContext with the appropriate modifiers
-     */
+    /// Creates a PlayerCastContext for the given parameters, calculating spell modifiers based on the tick count.
+    ///
+    /// @param level  The current level
+    /// @param player The player casting the spell
+    /// @param hand   The hand used to cast the spell
+    /// @param tick   The current tick count of the casting process
+    /// @param stack  The wand item stack
+    /// @param spell  The spell being cast
+    /// @return A PlayerCastContext with the appropriate modifiers
     protected PlayerCastContext createContext(Level level, Player player, InteractionHand hand, int tick, ItemStack stack, Spell spell) {
         SpellModifiers modifiers = tick == 0
                 ? CastItemUtils.calculateModifiers(stack, player, spell)
@@ -299,14 +291,12 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         return new PlayerCastContext(level, player, hand, tick, modifiers);
     }
 
-    /**
-     * Consumes mana from the wand and sets the cooldown for the spell.
-     *
-     * @param stack     The wand item stack
-     * @param spell     The spell being cast
-     * @param player    The player casting the spell
-     * @param modifiers The spell modifiers affecting the cast
-     */
+    /// Consumes mana from the wand and sets the cooldown for the spell.
+    ///
+    /// @param stack     The wand item stack
+    /// @param spell     The spell being cast
+    /// @param player    The player casting the spell
+    /// @param modifiers The spell modifiers affecting the cast
     private void consumeManaAndSetCooldown(ItemStack stack, Spell spell, Player player, SpellModifiers modifiers) {
         int cost = CastItemUtils.calcCastCost(spell, modifiers);
         consumeMana(stack, cost, player);
@@ -316,29 +306,25 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         }
     }
 
-    /**
-     * Applies an upgrade from the workbench upgrade slot to the wand in the center slot.
-     *
-     * @param player  The player applying the upgrade (can be null)
-     * @param centre  The workbench slot containing the wand
-     * @param upgrade The workbench slot containing the upgrade item
-     * @return true if the wand was changed, false otherwise
-     */
+    /// Applies an upgrade from the workbench upgrade slot to the wand in the center slot.
+    ///
+    /// @param player  The player applying the upgrade (can be null)
+    /// @param centre  The workbench slot containing the wand
+    /// @param upgrade The workbench slot containing the upgrade item
+    /// @return true if the wand was changed, false otherwise
     protected boolean applyUpgradeSlot(Player player, Slot centre, Slot upgrade) {
         ItemStack original = centre.getItem().copy();
         centre.set(applyUpgrade(player, centre.getItem(), upgrade.getItem()));
         return !ItemStack.isSameItem(centre.getItem(), original);
     }
 
-    /**
-     * Applies a tier upgrade to the wand if the tome's tier is higher than the wand's current tier. This method checks
-     * if the player has enough progression to upgrade and updates the wand's tier and progression accordingly.
-     *
-     * @param player    The player applying the upgrade (can be null)
-     * @param wand      The wand item stack to apply the upgrade to
-     * @param tomeStack The arcane tome item stack being used for the upgrade
-     * @return The upgraded wand item stack, or the original wand if no upgrade was applied
-     */
+    /// Applies a tier upgrade to the wand if the tome's tier is higher than the wand's current tier. This method checks
+    /// if the player has enough progression to upgrade and updates the wand's tier and progression accordingly.
+    ///
+    /// @param player    The player applying the upgrade (can be null)
+    /// @param wand      The wand item stack to apply the upgrade to
+    /// @param tomeStack The arcane tome item stack being used for the upgrade
+    /// @return The upgraded wand item stack, or the original wand if no upgrade was applied
     protected ItemStack applyTierUpgrade(@Nullable Player player, ItemStack wand, ItemStack tomeStack) {
         if (tier == SpellTiers.MASTER) return wand;
         if (!(tomeStack.getItem() instanceof ArcaneTomeItem tomeItem)) return wand;
@@ -363,14 +349,12 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         return wand;
     }
 
-    /**
-     * Applies a special upgrade to the wand, such as storage or attunement upgrades. This method checks for upgrade
-     * limits and applies the upgrade effects accordingly.
-     *
-     * @param player  The player applying the upgrade (can be null)
-     * @param wand    The wand item stack to apply the upgrade to
-     * @param upgrade The upgrade item stack being applied
-     */
+    /// Applies a special upgrade to the wand, such as storage or attunement upgrades. This method checks for upgrade
+    /// limits and applies the upgrade effects accordingly.
+    ///
+    /// @param player  The player applying the upgrade (can be null)
+    /// @param wand    The wand item stack to apply the upgrade to
+    /// @param upgrade The upgrade item stack being applied
     protected void applySpecialUpgrade(@Nullable Player player, ItemStack wand, ItemStack upgrade) {
         Item specialUpgrade = upgrade.getItem();
         int maxUpgrades = tier.getUpgradeLimit() + (element == Elements.MAGIC ? EBServerConfig.NON_ELEMENTAL_UPGRADE_BONUS.get() : 0);
@@ -396,12 +380,10 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
             EBAdvancementTriggers.MAX_OUT_WAND.triggerFor(player);
     }
 
-    /**
-     * Expands the spell slots on the wand when an attunement upgrade is applied. This method adjusts the spell list
-     * to accommodate the new slot count.
-     *
-     * @param wand The wand item stack to expand spell slots for
-     */
+    /// Expands the spell slots on the wand when an attunement upgrade is applied. This method adjusts the spell list
+    /// to accommodate the new slot count.
+    ///
+    /// @param wand The wand item stack to expand spell slots for
     protected void expandSpellSlots(ItemStack wand) {
         int newSlotCount = BASE_SPELL_SLOTS + CastItemDataHelper.getUpgradeLevel(wand, EBItems.ATTUNEMENT_UPGRADE.get());
         List<Spell> spells = CastItemDataHelper.getSpells(wand);
@@ -413,14 +395,12 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         CastItemDataHelper.setSpells(wand, List.of(newSpells));
     }
 
-    /**
-     * Handles wand progression when a spell is cast. Progression is only added for non-instant spells and for wands
-     * below master tier. Progression is added every second (20 ticks) during casting.
-     *
-     * @param ctx   The player cast context
-     * @param spell The spell being cast
-     * @param stack The wand item stack
-     */
+    /// Handles wand progression when a spell is cast. Progression is only added for non-instant spells and for wands
+    /// below master tier. Progression is added every second (20 ticks) during casting.
+    ///
+    /// @param ctx   The player cast context
+    /// @param spell The spell being cast
+    /// @param stack The wand item stack
     protected void handleProgression(PlayerCastContext ctx, Spell spell, ItemStack stack) {
         if (tier.getLevel() >= SpellTiers.MASTER.getLevel()) return;
 
@@ -439,14 +419,12 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         checkLevelUp(ctx, stack, progression);
     }
 
-    /**
-     * Checks if the wand has enough progression to level up and notifies the player if it has. This method is called
-     * after progression is added to the wand.
-     *
-     * @param ctx         The player cast context
-     * @param stack       The wand item stack
-     * @param progression The amount of progression just added
-     */
+    /// Checks if the wand has enough progression to level up and notifies the player if it has. This method is called
+    /// after progression is added to the wand.
+    ///
+    /// @param ctx         The player cast context
+    /// @param stack       The wand item stack
+    /// @param progression The amount of progression just added
     protected void checkLevelUp(PlayerCastContext ctx, ItemStack stack, int progression) {
         Player player = ctx.caster();
         SpellTier nextTier = tier.next();
@@ -512,7 +490,7 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
 
     @Override
     public int getBarColor(ItemStack stack) {
-        return DrawingUtils.mix(0xff8bfe, 0x8e2ee4, (float) stack.getDamageValue());
+        return ClientUtils.mixColor(0xff8bfe, 0x8e2ee4, stack.getDamageValue());
     }
 
     @Override

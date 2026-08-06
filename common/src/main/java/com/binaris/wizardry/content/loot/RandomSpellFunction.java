@@ -1,12 +1,9 @@
 package com.binaris.wizardry.content.loot;
 
+import com.binaris.wizardry.api.content.spell.*;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
-import com.binaris.wizardry.api.content.spell.Element;
-import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.spell.SpellContext;
-import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
@@ -38,6 +35,18 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+/// A loot table function that assigns a randomly chosen spell to a spell book or scroll,
+/// with optional filtering by spell lists, elements, tiers, and a bias toward undiscovered
+/// spells for the looting player.
+///
+/// The selection pipeline narrows the full spell registry through four optional filters:
+/// an explicit spell whitelist, a tier whitelist, an element whitelist, and item-context
+/// checks ({@code SpellContexts.BOOK} / {@code SpellContexts.SCROLL}). If the looting
+/// context has a player and {@code undiscoveredBias > 0}, the function reads the player's
+/// {@code SpellManagerData} and applies a bias that can either favor or penalize already-discovered
+/// spells. The bias is amplified by +0.4 (capped at 0.9) if the player has the
+/// spell discovery charm equipped. Falls back to {@code Spells.MAGIC_MISSILE} if no valid
+/// spell remains.
 public class RandomSpellFunction extends LootItemConditionalFunction {
     private final @Nullable List<Spell> spells;
     private final @Nullable List<Element> elements;
@@ -54,6 +63,15 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         this.elements = elements;
     }
 
+    /// Creates a builder for a {@code RandomSpellFunction} with the given parameters.
+    /// Used by data generation to construct loot table entries programmatically.
+    ///
+    /// @param spells optional whitelist of allowed spells, or null/empty for no filter.
+    /// @param ignoreWeighting if true, ignores spell weighting.
+    /// @param undiscoveredBias bias toward undiscovered spells (0 to disable).
+    /// @param tiers optional whitelist of allowed tiers, or null/empty for no filter.
+    /// @param elements optional whitelist of allowed elements, or null/empty for no filter.
+    /// @return a loot function builder configured with these parameters.
     public static LootItemConditionalFunction.Builder<?> setRandomSpell(List<Spell> spells, boolean ignoreWeighting, float undiscoveredBias, List<SpellTier> tiers, List<Element> elements) {
         return simpleBuilder((conditions) ->
                 new RandomSpellFunction(conditions, spells, ignoreWeighting, undiscoveredBias, tiers, elements));
@@ -69,7 +87,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         if (!(stack.getItem() instanceof SpellBookItem) && !(stack.getItem() instanceof ScrollItem))
             EBLogger.warn("Applying the random_spell loot function to an item that isn't a spell book or scroll.");
 
-        SpellContext context = !lootContext.hasParam(LootContextParams.THIS_ENTITY) ? SpellContext.TREASURE : SpellContext.LOOTING;
+        SpellContext context = !lootContext.hasParam(LootContextParams.THIS_ENTITY) ? SpellContexts.TREASURE : SpellContexts.LOOTING;
         Player player = null;
         if (lootContext.hasParam(LootContextParams.THIS_ENTITY) && lootContext.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player player1) {
             player = player1;
@@ -81,6 +99,21 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         return RegistryUtils.setSpell(stack, spell);
     }
 
+    /// Selects a random spell from the registry after applying all configured filters
+    /// and the undiscovered spell bias.
+    ///
+    /// The filtering pipeline applies in order: explicit spell whitelist, context-enabled
+    /// check, tier filter, element filter, item-type context filter (BOOK/SCROLL), and
+    /// finally the undiscovered spell bias. The bias works by randomly keeping either
+    /// only discovered or only undiscovered spells with probability {@code 0.5 + 0.5 * bias}.
+    /// The bias is increased if the player wears the spell discovery charm.
+    ///
+    /// @param stack the loot item (spell book or scroll) being modified.
+    /// @param random the random source for selection.
+    /// @param context the spell context (LOOTING or TREASURE).
+    /// @param player the looting player, or null if no player is involved.
+    /// @return the chosen spell, or Spells.NONE if no spell matched (converted to
+    ///         MAGIC_MISSILE by the caller).
     private Spell pickRandomSpell(ItemStack stack, RandomSource random, SpellContext context, @Nullable Player player) {
         ArrayList<Spell> possibleSpells = new ArrayList<>(Services.REGISTRY_UTIL.getSpells());
 
@@ -100,9 +133,9 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         }
 
         if (stack.getItem() instanceof SpellBookItem)
-            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContext.BOOK));
+            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContexts.BOOK));
         if (stack.getItem() instanceof ScrollItem)
-            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContext.SCROLL));
+            possibleSpells.removeIf(spell -> !spell.isEnabled(SpellContexts.SCROLL));
 
         if (player != null && undiscoveredBias > 0) {
             float bias = undiscoveredBias;
@@ -122,10 +155,27 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
         return possibleSpells.get(random.nextInt(possibleSpells.size()));
     }
 
+    /// Serializer for {@code RandomSpellFunction} that handles JSON (de)serialization
+    /// and is registered as {@code EBLootFunctions.RANDOM_SPELL}.
+    ///
+    /// Supports serializing optional fields: {@code spells}, {@code tiers}, and
+    /// {@code elements} as lists of resource locations (encoded via Codec), and the
+    /// scalar fields {@code ignore_weighting} and {@code undiscovered_bias}. All fields
+    /// are optional — omitted fields default to null/0/false. On deserialization,
+    /// invalid resource locations in the tiers or elements lists are logged as warnings
+    /// and filtered out rather than throwing.
     public static class Serializer extends LootItemConditionalFunction.Serializer<RandomSpellFunction> {
         public Serializer() {
         }
 
+        /// Writes optional {@code spells}, {@code tiers}, and {@code elements} lists
+        /// (each as a JSON array of resource location strings via Codec), plus the
+        /// {@code ignore_weighting} and {@code undiscovered_bias} scalars. Empty lists
+        /// and nulls are omitted.
+        ///
+        /// @param object the JSON object to write to.
+        /// @param function the RandomSpellFunction being serialized.
+        /// @param serializationContext the serialization context.
         @Override
         public void serialize(@NotNull JsonObject object, @NotNull RandomSpellFunction function, @NotNull JsonSerializationContext serializationContext) {
             if (function.spells != null && !function.spells.isEmpty()) {
@@ -147,6 +197,16 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
             }
         }
 
+        /// Reads optional {@code spells}, {@code tiers}, and {@code elements} lists
+        /// (each decoded as resource locations and resolved through the registry),
+        /// {@code ignore_weighting} (default false), and {@code undiscovered_bias}
+        /// (default 0). Invalid resource locations in tiers and elements are logged
+        /// with a warning and removed rather than causing a crash.
+        ///
+        /// @param object the JSON object to parse.
+        /// @param deserializationContext the deserialization context.
+        /// @param conditions the loot conditions applied to this function.
+        /// @return a fully configured RandomSpellFunction.
         @Override
         public @NotNull RandomSpellFunction deserialize(JsonObject object, @NotNull JsonDeserializationContext deserializationContext, LootItemCondition @NotNull [] conditions) {
             List<Spell> spells = null;
@@ -167,7 +227,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
                 if (result.result().isPresent()) {
                     tiers = result.result().get().stream().map(Services.REGISTRY_UTIL::getTier).collect(Collectors.toList());
                     if (tiers.contains(null)) {
-                        EBLogger.warn("One or more invalid spell tiers found when deserializing random_spell loot function from " + object.toString());
+                        EBLogger.warn("One or more invalid spell tiers found when deserializing random_spell loot function from " + object);
                         tiers.removeIf(Objects::isNull);
                     }
                 }
@@ -178,7 +238,7 @@ public class RandomSpellFunction extends LootItemConditionalFunction {
                 if (result.result().isPresent()) {
                     elements = result.result().get().stream().map(Services.REGISTRY_UTIL::getElement).collect(Collectors.toList());
                     if (elements.contains(null)) {
-                        EBLogger.warn("One or more invalid elements found when deserializing random_spell loot function from " + object.toString());
+                        EBLogger.warn("One or more invalid elements found when deserializing random_spell loot function from " + object);
                         elements.removeIf(Objects::isNull);
                     }
                 }
