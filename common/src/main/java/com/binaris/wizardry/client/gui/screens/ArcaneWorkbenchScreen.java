@@ -48,8 +48,6 @@ public class ArcaneWorkbenchScreen extends AbstractContainerScreen<ArcaneWorkben
     public static final int PROGRESSION_BAR_HEIGHT = 3;
 
     public static final ResourceLocation ARCANE_WORKBENCH_CONTAINER_TEXTURE = WizardryMainMod.location("textures/gui/container/arcane_workbench.png");
-    public static final ResourceLocation ARCANE_WORKBENCH_EMPTY_SLOT_CRYSTAL = new ResourceLocation("item/empty_slot_crystal");
-    public static final ResourceLocation ARCANE_WORKBENCH_EMPTY_SLOT_UPGRADE = new ResourceLocation("item/empty_slot_upgrade");
 
     public static final int LINE_SPACING_WIDE = 5;
     public static final int LINE_SPACING_NARROW = 1;
