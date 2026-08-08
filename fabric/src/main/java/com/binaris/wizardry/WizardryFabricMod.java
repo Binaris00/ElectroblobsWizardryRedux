@@ -33,6 +33,7 @@ public final class WizardryFabricMod implements ModInitializer {
     public void onInitialize() {
         WizardryMainMod.init();
 
+        EBMobEffects.register(Registry::register);
         ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> WizardryEventBus.fireEvent(new EBPlayerJoinServerEvent(handler.getPlayer(), server)));
 
         ServerWorldEvents.LOAD.register(((minecraftServer, serverLevel) -> WizardryEventBus.fireEvent(new EBServerLevelLoadEvent(serverLevel))));
@@ -51,7 +52,6 @@ public final class WizardryFabricMod implements ModInitializer {
         Spells.register(EBRegistriesFabric.SPELLS, Registry::register);
 
         EBCreativeTabs.register(Registry::register);
-        EBMobEffects.register(Registry::register);
         EBSounds.register(Registry::register);
         EBEnchantments.register(Registry::register);
         EBLootFunctions.register(Registry::register);

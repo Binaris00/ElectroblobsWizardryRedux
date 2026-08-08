@@ -16,19 +16,19 @@ public abstract class GuiMixin {
 
     @Redirect(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V", ordinal = 0))
     public void EBWIZARDRY$customRenderEffects(GuiGraphics instance, ResourceLocation atlasLocation, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight, @Local MobEffect mobeffect){
-        if (mobeffect instanceof CurseMobEffect) {
-            instance.blit(WizardryMainMod.location("textures/gui/curse.png"), x, y, uOffset, vOffset, uWidth, vHeight);
-            return;
-        }
+//        if (mobeffect instanceof CurseMobEffect) {
+//            instance.blit(WizardryMainMod.location("textures/gui/curse.png"), x, y, uOffset, vOffset, uWidth, vHeight);
+//            return;
+//        }
         instance.blit(atlasLocation, x, y, uOffset, vOffset, uWidth, vHeight);
     }
 
     @Redirect(method = "renderEffects", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/GuiGraphics;blit(Lnet/minecraft/resources/ResourceLocation;IIIIII)V", ordinal = 1))
     public void EBWIZARDRY$customRenderEffects2(GuiGraphics instance, ResourceLocation atlasLocation, int x, int y, int uOffset, int vOffset, int uWidth, int vHeight, @Local MobEffect mobeffect){
-        if (mobeffect instanceof CurseMobEffect) {
-            instance.blit(WizardryMainMod.location("textures/gui/curse.png"), x, y, uOffset, vOffset, uWidth, vHeight);
-            return;
-        }
+//        if (mobeffect instanceof CurseMobEffect) {
+//            instance.blit(WizardryMainMod.location("textures/gui/curse.png"), x, y, uOffset, vOffset, uWidth, vHeight);
+//            return;
+//        }
         instance.blit(atlasLocation, x, y, uOffset, vOffset, uWidth, vHeight);
     }
 }

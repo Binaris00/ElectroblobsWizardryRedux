@@ -1,6 +1,10 @@
-- feat: Curse Container mob effect with GUI overlay
+## Features
+
 - feat: Added item tags for armor upgrades, magic crystal shards, spectral dust, and wand upgrades
 - feat: sounds.json can now be generated with datagen via `EBSoundProvider`
+
+## Refactors
+
 - refactor: `IArtifactEffect` now extends `IEventEffect<ArtifactEffectContext>` for general use in other contexts (e.g., mob effects)
 - refactor: `GeometryUtils` renamed to `VecUtils`, `DrawingUtils` moved to `ClientUtils`
 - refactor: `InventoryUtils` deleted and moved to `EntityUtils`
@@ -29,3 +33,8 @@
 - fix: scaled construct entities now can actually scale, increasing width and height depending on the size multiplier (blast upgrade)
 - fix: Meteor spell can be used to attack direct targets, not just pointing at a block
 - fix: (German translation) fix to Magic Scroll name
+- fix: healing aura doesn't grow too much based on effect radius
+- fix: summons can't pick up loot by default now
+- fix: flash name fix inside arcane workbench
+- fix: wizards can only trade spells of their own element (except neutral wizards)
+- fix: unregistered mob effects in fabric
