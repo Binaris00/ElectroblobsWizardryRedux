@@ -1,4 +1,4 @@
-// 1.20.1	2026-04-17T10:33:24.978283524	Spell Documentation: ebwizardry
+// 1.20.1	2026-08-10T14:46:10.748990025	Spell Documentation: ebwizardry
 1d50810377674211a4aff00d60fafeeb3f615dab docs/spells.md
 b5ed5dfb6422a93452ce6148862262c78c017981 docs/spells/ebwizardry/agility.md
 ab2bb9f5beba5ca49328cf74e07a5089fcc63917 docs/spells/ebwizardry/arc.md
@@ -54,12 +54,12 @@ da2125d5bc0058787b751cf92ee5d763f63da9ab docs/spells/ebwizardry/freeze.md
 b5627ef0a2eab2f8c55454056f47492c765e28b1 docs/spells/ebwizardry/frost_ray.md
 2a2a1054d71c0b3af73272df2e674679a40b416c docs/spells/ebwizardry/frost_sigil.md
 2d1929827f225559700e2b746e78a8c79e58304b docs/spells/ebwizardry/frost_step.md
-ec60e72743ab9664c51d3bcc0533cb89b2174ed4 docs/spells/ebwizardry/greater_heal.md
+1997b0c8051042756023b892a3efc31d12a60802 docs/spells/ebwizardry/greater_heal.md
 eed92435c497d4e30913ebbfee6cf3141e5f0d28 docs/spells/ebwizardry/greater_ward.md
 18587ccd4282f5fc14dad63938803a1cdc502340 docs/spells/ebwizardry/group_heal.md
 b3d6bcbf0d2c154360ccfe538879b699a8622341 docs/spells/ebwizardry/growth_aura.md
 a5e36af797dd1506d175b13bae7ec02f7e9877e0 docs/spells/ebwizardry/hailstorm.md
-ae594a3abf1c7dc727054678e2846b7086c2997e docs/spells/ebwizardry/heal.md
+b281b1051884a078508be888dbcfcab57cad9e7f docs/spells/ebwizardry/heal.md
 ded8d6a4348a0130d1881c759e65f703ac69636d docs/spells/ebwizardry/heal_ally.md
 f5f4c5b01a9f571a4ddb9125fa533354dec75285 docs/spells/ebwizardry/healing_aura.md
 f7ebae33a2ed8447f5360df9115b797414b980c2 docs/spells/ebwizardry/homing_spark.md

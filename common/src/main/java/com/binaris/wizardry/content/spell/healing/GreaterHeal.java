@@ -31,7 +31,7 @@ public class GreaterHeal extends BuffSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.POINT_UP, 15, 10, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.POINT_UP, 30, 20, 60)
                 .add(DefaultProperties.HEALTH, 8F).build();
     }
 }

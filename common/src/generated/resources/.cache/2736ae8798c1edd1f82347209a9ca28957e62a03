@@ -1,4 +1,4 @@
-// 1.20.1	2026-07-18T10:35:23.499274967	Spell Data Provider: ebwizardry
+// 1.20.1	2026-08-10T14:46:10.751484239	Spell Data Provider: ebwizardry
 b17ecdf29fe2e67e3be82f2f82381aa777a4e8dc data/ebwizardry/spells/agility.json
 7173b77f3b77f4a2f728cf330ba6aba33d1ed504 data/ebwizardry/spells/arc.json
 1235533783e5ff5d57511517af8671f436081cef data/ebwizardry/spells/arcane_jammer.json
@@ -53,12 +53,12 @@ ba0d45db4fd922e42230e722115df5b26978b65d data/ebwizardry/spells/font_of_vitality
 42ca41ab0d78db858f761b9ff76458d0ab22ee36 data/ebwizardry/spells/frost_ray.json
 363272f95687449f6a12a25c44da06f64de4b165 data/ebwizardry/spells/frost_sigil.json
 854e8307475d9554bdffbba01532967a5bee62e1 data/ebwizardry/spells/frost_step.json
-57b459c3f3a13064fdf755459cf2954bbe648476 data/ebwizardry/spells/greater_heal.json
+ba106573ccd6dc941500f987232d497b9eabc52e data/ebwizardry/spells/greater_heal.json
 1c1544762bf5f710c5ba2f03e45f5b94d6749f34 data/ebwizardry/spells/greater_ward.json
 2ba4cba23272bcadece6c6a2893caa77988b2eb2 data/ebwizardry/spells/group_heal.json
 4ca7d28a8423f06b44508d990ca69675c7630f8e data/ebwizardry/spells/growth_aura.json
 79920a1af3eb3d9c1aa0596215e01c118a5bf04e data/ebwizardry/spells/hailstorm.json
-f6f10636151bcd73ffad4b3a117e41120662c228 data/ebwizardry/spells/heal.json
+9d86bd2b49983d2cbbe361d5124b66a7574383f2 data/ebwizardry/spells/heal.json
 85e2ae3a0a554ffd852ffdb4405e37363c4f7471 data/ebwizardry/spells/heal_ally.json
 1db88a8b957a62b6be9397736434e1aa27517de8 data/ebwizardry/spells/healing_aura.json
 72a492dface14b5ac85fdf65811ba4b09de11c42 data/ebwizardry/spells/homing_spark.json
