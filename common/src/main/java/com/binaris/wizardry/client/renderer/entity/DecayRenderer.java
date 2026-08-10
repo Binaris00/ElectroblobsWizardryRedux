@@ -1,7 +1,7 @@
 package com.binaris.wizardry.client.renderer.entity;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.content.entity.construct.DecayConstruct;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -40,7 +40,7 @@ public class DecayRenderer extends EntityRenderer<DecayConstruct> {
 
         poseStack.mulPose(Axis.XP.rotationDegrees(-90));
 
-        float s = 2 * DrawingUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 50);
+        float s = 2 * ClientUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 50);
         poseStack.scale(s, s, s);
 
         Tesselator tessellator = Tesselator.getInstance();

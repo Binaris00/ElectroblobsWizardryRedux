@@ -1,5 +1,5 @@
 {
-  "type": "buff",
+  "type": "ebwizardry:buff",
   "base_properties": {
     "effect.minecraft.night_vision_duration": 900,
     "effect.minecraft.night_vision_strength": 1

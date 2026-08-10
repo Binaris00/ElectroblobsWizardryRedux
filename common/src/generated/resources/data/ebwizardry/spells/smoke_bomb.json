@@ -1,5 +1,5 @@
 {
-  "type": "projectile",
+  "type": "ebwizardry:projectile",
   "base_properties": {
     "effect_duration": 120,
     "effect_radius": 2,

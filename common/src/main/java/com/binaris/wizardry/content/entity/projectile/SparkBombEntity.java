@@ -5,15 +5,18 @@ import com.binaris.wizardry.api.content.entity.projectile.BombEntity;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import org.jetbrains.annotations.NotNull;
@@ -21,7 +24,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class SparkBombEntity extends BombEntity {
-    public SparkBombEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level world) {
+    public SparkBombEntity(EntityType<? extends ThrowableProjectile> entityType, Level world) {
         super(entityType, world);
     }
 
@@ -33,23 +36,12 @@ public class SparkBombEntity extends BombEntity {
         super(EBEntities.SPARK_BOMB.get(), livingEntity, world);
     }
 
-    @Override
-    protected void onHit(@NotNull HitResult result) {
-        super.onHit(result);
-        if (result instanceof EntityHitResult entityHitResult && entityHitResult.getEntity() instanceof LivingEntity target) {
-            float damage = Spells.SPARK_BOMB.property(DefaultProperties.DIRECT_DAMAGE);
-
-            target.hurt(MagicDamageSource.causeIndirectMagicDamage(this, this.getOwner(), EBDamageSources.SHOCK), damage);
-        }
-
+    protected void splashEffect() {
         double range = Spells.SPARK_BOMB.property(DefaultProperties.EFFECT_RADIUS);
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(range, getX(), getY(), getZ(), level());
 
-
         for(int i = 0; i < Math.min(targets.size(), Spells.SPARK_BOMB.property(DefaultProperties.MAX_TARGETS)); i++){
-            if (result instanceof EntityHitResult entityHit && targets.get(i) == entityHit.getEntity()) continue;
-            if (this.getOwner() instanceof LivingEntity && (targets.get(i) == this.getOwner() || !AllyDesignation.isAllied((LivingEntity) this.getOwner(), targets.get(i)))) continue;
-            if (targets.get(i) instanceof Player player && player.isCreative()) continue;
+            if (!this.isValidTarget(targets.get(i))) continue;
 
             LivingEntity target = targets.get(i);
 
@@ -59,20 +51,44 @@ public class SparkBombEntity extends BombEntity {
                     .pos(this.position()).target(target).time(1)
                     .allowServer(true).spawn(level());
         }
-
-        this.level().broadcastEntityEvent(this, (byte) 3);
-        this.playSound(EBSounds.ENTITY_SPARK_BOMB_HIT_BLOCK.get(), 0.5f, 0.5f);
-        this.discard();
     }
 
     @Override
-    public void handleEntityEvent(byte id) {
-        if (id == 3) {
-            ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight(), this.getZ());
-        } else if (id == 4) {
-            ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight() / 2, this.getZ());
-        }
+    public int getLifeTime() {
+        return -1;
     }
+
+    @Override
+    public void onHitTargetExtraEffects(@NotNull EntityHitResult hitResult) {
+        splashEffect();
+    }
+
+    @Override
+    public void onHitBlock(@NotNull BlockHitResult result) {
+        super.onHitBlock(result);
+        splashEffect();
+    }
+
+    @Override
+    public float getDamage(@NotNull EntityHitResult hitResult) {
+        return Spells.SPARK_BOMB.property(DefaultProperties.DIRECT_DAMAGE);
+    }
+
+    @Override
+    public ResourceKey<DamageType> getDamageType(@NotNull EntityHitResult hitResult) {
+        return EBDamageSources.SHOCK;
+    }
+
+    @Override
+    public @NotNull SoundEvent getSoundEvent(HitResult result) {
+        return result instanceof BlockHitResult ? EBSounds.ENTITY_SPARK_BOMB_HIT_BLOCK.get() : SoundEvents.EMPTY;
+    }
+
+    @Override
+    protected void spawnHitParticles(HitResult.Type type) {
+        ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight(), this.getZ());
+    }
+
 
     @Override
     public int getRemainingFireTicks() {

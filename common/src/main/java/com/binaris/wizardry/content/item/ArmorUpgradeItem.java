@@ -1,5 +1,7 @@
 package com.binaris.wizardry.content.item;
 
+import com.binaris.wizardry.content.item.armor.IArmorUpgrade;
+import com.binaris.wizardry.content.item.armor.WizardArmorMaterial;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
@@ -12,9 +14,12 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class ArmorUpgradeItem extends Item {
-    public ArmorUpgradeItem(Properties properties) {
+public class ArmorUpgradeItem extends Item implements IArmorUpgrade {
+    private final WizardArmorMaterial material;
+
+    public ArmorUpgradeItem(Properties properties, WizardArmorMaterial material) {
         super(properties);
+        this.material = material;
     }
 
     @Override
@@ -32,5 +37,10 @@ public class ArmorUpgradeItem extends Item {
         String desc = tooltipFlag.isAdvanced() ? ".desc_extended" : ".desc";
 
         tooltip.add(Component.translatable(getOrCreateDescriptionId() + desc).withStyle(ChatFormatting.GRAY));
+    }
+
+    @Override
+    public WizardArmorMaterial getWizardArmorMaterial() {
+        return material;
     }
 }

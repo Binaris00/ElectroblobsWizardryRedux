@@ -27,9 +27,7 @@ public class Element {
     // LOCATION AND FORMATTING
     // ==================================================
 
-    /**
-     * Will return the description for the spell (e.g. "Fireball")
-     */
+    /// Will return the description for the spell (e.g. "Fireball")
     public Component getDescriptionFormatted() {
         return Component.translatable(getOrCreateDescriptionId()).withStyle(this.color);
     }
@@ -40,10 +38,8 @@ public class Element {
         return this.descriptionId;
     }
 
-    /**
-     * Will return the description ID for the spell (e.g. "spell.ebwizardry.fireball")
-     * if you want the location instead, use {@link #getLocation()}
-     */
+    /// Will return the description ID for the spell (e.g. "spell.ebwizardry.fireball")
+    /// if you want the location instead, use [#getLocation()]
     public String getDescriptionId() {
         return this.getOrCreateDescriptionId();
     }
@@ -53,23 +49,17 @@ public class Element {
         return this.location;
     }
 
-    /**
-     * Will return the location for the spell (e.g. "ebwizardry:fireball")
-     */
+    /// Will return the location for the spell (e.g. "ebwizardry:fireball")
     public ResourceLocation getLocation() {
         return this.getOrCreateLocation();
     }
 
-    /**
-     * Will return true if the spell is registered at the given location
-     */
+    /// Will return true if the spell is registered at the given location
     public final boolean is(ResourceLocation location) {
         return location.equals(getLocation());
     }
 
-    /**
-     * Will return true if the spell is registered at the given location
-     */
+    /// Will return true if the spell is registered at the given location
     public final boolean is(String location) {
         return location.equals(getLocation().toString());
     }

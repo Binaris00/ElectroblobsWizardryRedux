@@ -1,5 +1,5 @@
 {
-  "type": "buff",
+  "type": "ebwizardry:buff",
   "base_properties": {
     "effect_duration": 900,
     "effect_radius": 5,

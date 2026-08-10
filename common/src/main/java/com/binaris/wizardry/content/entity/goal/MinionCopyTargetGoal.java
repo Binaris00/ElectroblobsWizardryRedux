@@ -8,13 +8,11 @@ import net.minecraft.world.entity.ai.targeting.TargetingConditions;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * Goal that helps to copy the owner's target for the minion. This is useful when the owner is a mob, allowing to quickly
- * copy the target of the owner and helping it to attack the same target as the owner.
- * <p>
- * This checks if the minion is actually summoned and if the owner is a mob, then it checks if the mob owner has a target
- * and if that target can be attacked by the minion.
- */
+/// Goal that helps to copy the owner's target for the minion. This is useful when the owner is a mob, allowing to quickly
+/// copy the target of the owner and helping it to attack the same target as the owner.
+///
+/// This checks if the minion is actually summoned and if the owner is a mob, then it checks if the mob owner has a target
+/// and if that target can be attacked by the minion.
 public class MinionCopyTargetGoal extends TargetGoal {
     private static final int RECHECK_DELAY_TICKS = 20;
 

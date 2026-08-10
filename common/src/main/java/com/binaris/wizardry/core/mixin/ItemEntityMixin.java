@@ -42,12 +42,12 @@ public abstract class ItemEntityMixin {
 
     @Inject(method = "playerTouch", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/player/Inventory;add(Lnet/minecraft/world/item/ItemStack;)Z", shift = At.Shift.BEFORE), cancellable = true)
     private void EBWIZARDRY$stackBeforePlayerTouch(Player entity, CallbackInfo ci) {
-        if (WizardryEventBus.getInstance().fire(new EBItemPickupEvent(itemEntity, entity))) ci.cancel();
+        if (WizardryEventBus.fireEvent(new EBItemPickupEvent(itemEntity, entity))) ci.cancel();
     }
 
     @Inject(method = "playerTouch", at = @At("TAIL"))
     private void EBWIZARDRY$stackAfterPlayerTouch(Player entity, CallbackInfo ci) {
         if (pickupDelay !=  0) return;
-        WizardryEventBus.getInstance().fire(new EBPlayerItemPickupEvent(itemEntity, entity));
+        WizardryEventBus.fireEvent(new EBPlayerItemPickupEvent(itemEntity, entity));
     }
 }

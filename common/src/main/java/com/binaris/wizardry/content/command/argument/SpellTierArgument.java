@@ -18,10 +18,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.concurrent.CompletableFuture;
 
-/**
- * Custom argument type for spell tier objects in commands.
- * This provides proper type safety and validation for spell tier arguments.
- */
+/// Custom argument type for spell tier objects in commands.
+/// This provides proper type safety and validation for spell tier arguments.
 public class SpellTierArgument implements ArgumentType<SpellTier> {
     private static final Collection<String> EXAMPLES = Arrays.asList("ebwizardry:apprentice", "ebwizardry:advanced");
     private static final DynamicCommandExceptionType ERROR_NOT_FOUND = new DynamicCommandExceptionType(

@@ -4,7 +4,7 @@ import com.binaris.wizardry.content.entity.living.Wizard;
 import net.minecraft.world.entity.ai.goal.LookAtPlayerGoal;
 import net.minecraft.world.entity.player.Player;
 
-/** Makes the wizard look at the player it is trading with. */
+/// Makes the wizard look at the player it is trading with.
 public class WizardLookAtTradePlayer extends LookAtPlayerGoal {
     private final Wizard wizard;
 

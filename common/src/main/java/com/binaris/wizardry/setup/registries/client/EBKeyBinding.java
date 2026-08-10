@@ -46,7 +46,7 @@ public final class EBKeyBinding {
         if (player == null) return;
 
         ItemStack wand = EntityUtil.getWandInUse(player);
-        if (wand == null) return;
+        if (wand.isEmpty()) return;
 
         if (NEXT_SPELL.isDown() && Minecraft.getInstance().mouseHandler.isMouseGrabbed()) {
             if (!nextSpellKeyPressed) {

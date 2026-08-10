@@ -33,7 +33,7 @@ public class ForgeModClientEvents {
             }
 
             ItemStack finalWand = wand;
-            SpellGUIDisplay.renderChargeMeter(guiGraphics.pose(), Minecraft.getInstance().player, finalWand, width, height, partialTicks);
+            SpellGUIDisplay.renderChargeMeter(guiGraphics, Minecraft.getInstance().player, finalWand, width, height, partialTicks);
         });
         event.registerBelow(VanillaGuiOverlay.HOTBAR.id(), "spell_hud", (forgeGui, guiGraphics, partialTicks, width, height) -> {
             Player player = Minecraft.getInstance().player;

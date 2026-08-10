@@ -1,5 +1,5 @@
 {
-  "type": "alteration",
+  "type": "ebwizardry:alteration",
   "base_properties": {
     "damage": 3.0,
     "duration": 600,

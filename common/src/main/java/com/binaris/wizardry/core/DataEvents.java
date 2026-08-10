@@ -2,7 +2,7 @@ package com.binaris.wizardry.core;
 
 import com.binaris.wizardry.api.content.data.*;
 import com.binaris.wizardry.api.content.event.*;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
@@ -17,15 +17,13 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 
 import java.util.Map;
 
-/**
- * This class is used to save all the custom data events used in Electroblob's Wizardry, normally just including player
- * tick and spell cast events.
- *
- * @see ConjureData
- * @see SpellManagerData
- * @see WizardData
- * @see CastCommandData
- */
+/// This class is used to save all the custom data events used in Electroblob's Wizardry, normally just including player
+/// tick and spell cast events.
+///
+/// @see ConjureData
+/// @see SpellManagerData
+/// @see WizardData
+/// @see CastCommandData
 public final class DataEvents {
     private static final int CONJURE_CHECK_INTERVAL = 5;
     private static final int IMBUEMENT_ENCHANTS_CHECK_INTERVAL = 20;
@@ -80,7 +78,7 @@ public final class DataEvents {
         if (player.level().getGameTime() % IMBUEMENT_ENCHANTS_CHECK_INTERVAL != 0) return;
         long currentGameTime = player.level().getGameTime();
 
-        for (ItemStack stack : InventoryUtil.getAllItems(player)) {
+        for (ItemStack stack : EntityUtil.getAllItems(player)) {
             if (stack.isEmpty()) continue;
             if (EnchantmentHelper.getEnchantments(stack).isEmpty())
                 continue; // An item with no enchantments can't have temporary ones
@@ -120,10 +118,8 @@ public final class DataEvents {
         }
     }
 
-    /**
-     * Prevents conjured items from being thrown out of the inventory, as that would cause inconsistency on how the
-     * "temporal" item system should work.
-     */
+    /// Prevents conjured items from being thrown out of the inventory, as that would cause inconsistency on how the
+    /// "temporal" item system should work.
     public static void onConjureToss(EBItemTossEvent event) {
         ItemStack stack = event.getStack();
         if (ConjureItemSpell.isSummoned(stack)) {
@@ -132,33 +128,27 @@ public final class DataEvents {
         }
     }
 
-    /**
-     * When a player dies, all conjured items in their inventory should be removed, as they are not "real" items and
-     * should not be thrown on the ground or kept in the inventory after death. This also prevents potential exploits
-     * with conjured items and death.
-     */
+    /// When a player dies, all conjured items in their inventory should be removed, as they are not "real" items and
+    /// should not be thrown on the ground or kept in the inventory after death. This also prevents potential exploits
+    /// with conjured items and death.
     public static void onConjureEntityDeath(EBLivingDeathEvent event) {
         if (!(event.getEntity() instanceof Player player)) return; // only players can conjure items so...
 
-        InventoryUtil.getAllItemsIncludingCarried(player).stream().filter(ConjureItemSpell::isSummoned)
+        EntityUtil.getAllItemsIncludingCarried(player).stream().filter(ConjureItemSpell::isSummoned)
                 .forEach(stack -> stack.shrink(stack.getCount()));
     }
 
-    /**
-     * Prevents conjured items from being placed in containers, as that would allow them to be stored indefinitely and
-     * potentially cause issues with the conjure item system. Conjured items should only exist in the player's inventory and should not be able to be stored in chests,
-     * hoppers, or other containers. This also prevents potential exploits with conjured items and container storage.
-     */
+    /// Prevents conjured items from being placed in containers, as that would allow them to be stored indefinitely and
+    /// potentially cause issues with the conjure item system. Conjured items should only exist in the player's inventory and should not be able to be stored in chests,
+    /// hoppers, or other containers. This also prevents potential exploits with conjured items and container storage.
     public static void onConjureItemPlaceInContainer(EBItemPlaceInContainerEvent event) {
         ItemStack stack = event.getStack();
         if (ConjureItemSpell.isSummoned(stack) && !(event.getContainer() instanceof Inventory)) event.setCanceled(true);
     }
 
 
-    /**
-     * Every 5 ticks, checks the player's inventory for conjured items and expires them if their time has run out or if
-     * their durability is 0 or less. This includes the item currently being carried by the cursor.
-     */
+    /// Every 5 ticks, checks the player's inventory for conjured items and expires them if their time has run out or if
+    /// their durability is 0 or less. This includes the item currently being carried by the cursor.
     public static void conjureItemTick(Player player) {
         if (player.tickCount % CONJURE_CHECK_INTERVAL != 0) return;
 
@@ -166,7 +156,7 @@ public final class DataEvents {
         boolean inventoryChanged = false;
 
         // Check regular inventory items
-        for (ItemStack stack : InventoryUtil.getAllItems(player)) {
+        for (ItemStack stack : EntityUtil.getAllItems(player)) {
             if (ConjureItemSpell.isSummoned(stack)) {
                 if (checkAndExpireItem(player, stack, currentGameTime)) {
                     inventoryChanged = true;
@@ -192,12 +182,10 @@ public final class DataEvents {
         }
     }
 
-    /**
-     * Checks if the given conjured item stack has expired (based on game time) or the durability is 0 or less, and if so,
-     * marks it as not summoned FIRST, then shrinks the stack by 1.
-     *
-     * @return true if the item was expired and modified, false otherwise
-     */
+    /// Checks if the given conjured item stack has expired (based on game time) or the durability is 0 or less, and if so,
+    /// marks it as not summoned FIRST, then shrinks the stack by 1.
+    ///
+    /// @return true if the item was expired and modified, false otherwise
     private static boolean checkAndExpireItem(Player player, ItemStack stack, long currentGameTime) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if (data != null && (data.hasExpired(currentGameTime) || (stack.isDamageableItem() && stack.getDamageValue() >= stack.getMaxDamage()))) {

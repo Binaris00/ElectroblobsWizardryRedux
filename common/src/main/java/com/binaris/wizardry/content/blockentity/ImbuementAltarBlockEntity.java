@@ -28,38 +28,27 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class ImbuementAltarBlockEntity extends BlockEntity {
-    /**
-     * The duration of the imbuement process in ticks.
-     */
+    /// The duration of the imbuement process in ticks.
     private static final int IMBUEMENT_DURATION = 140;
 
-    /**
-     * The item currently on the altar. This could be any placeable item that's going to be imbued into another item,
-     * so this is also the item resulting from the imbuement process.
-     */
+    /// The item currently on the altar. This could be any placeable item that's going to be imbued into another item,
+    /// so this is also the item resulting from the imbuement process.
     private ItemStack stack;
-    /**
-     * The timer for the imbuement process. When this reaches {@link #IMBUEMENT_DURATION}, the imbuement is complete.
-     * This is set to 0 when there is no item on the altar or when the item is removed.
-     */
+
+    /// The timer for the imbuement process. When this reaches [#IMBUEMENT_DURATION], the imbuement is complete.
+    /// This is set to 0 when there is no item on the altar or when the item is removed.
     private int imbuementTimer;
 
-    /**
-     * The last player to use this altar. This is not saved directly; instead, the UUID is saved and this field is
-     * populated on demand. Used for events, advancements and more utilities for extension mods.
-     */
+    /// The last player to use this altar. This is not saved directly; instead, the UUID is saved and this field is
+    /// populated on demand. Used for events, advancements and more utilities for extension mods.
     private Player lastUser;
 
-    /**
-     * Used just for loading - saving the last user UUID
-     */
+    /// Used just for loading - saving the last user UUID
     private UUID lastUserUUID;
 
-    /**
-     * The element associated with the current imbuement. For imbuements involving multiple elements, this is the selected
-     * element (i.e. random element from the receptacles). Used for particle effects and the imbuement rays.
-     * Can be null if there's no imbuement in process.
-     */
+    /// The element associated with the current imbuement. For imbuements involving multiple elements, this is the selected
+    /// element (i.e. random element from the receptacles). Used for particle effects and the imbuement rays.
+    /// Can be null if there's no imbuement in process.
     private @Nullable Element element;
 
     public ImbuementAltarBlockEntity(BlockPos pos, BlockState blockState) {

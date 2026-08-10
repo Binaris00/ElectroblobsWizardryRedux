@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -37,9 +37,9 @@ public class Permafrost extends RaySpell {
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         boolean flag = false;
         if (!ctx.world().isClientSide) {
-            int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST) - 1) / EBServerConfig.BLAST_RADIUS_INCREASE_PER_LEVEL.get() + 0.5f);
+            int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST, 1.0f) - 1.0f) / EBServerConfig.BLAST_RADIUS_INCREASE_PER_LEVEL.get() + 0.5f);
             float radius = 0.5f + 0.73f * blastUpgradeCount;
-            int duration = (int) (property(DefaultProperties.DURATION) * ctx.modifiers().get(SpellModifiers.DURATION));
+            int duration = (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION)));
             List<BlockPos> sphere = BlockUtil.getBlockSphere(blockHit.getBlockPos().above(), radius);
             for (BlockPos pos1 : sphere) {
                 flag |= tryToPlaceIce(ctx.world(), pos1, ctx.caster(), duration);
@@ -98,7 +98,7 @@ public class Permafrost extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.ALTERATION, SpellAction.POINT, 10, 10, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellTypes.ALTERATION, SpellAction.POINT, 10, 10, 40)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DAMAGE, 3F)
                 .add(DefaultProperties.DURATION, 600)

@@ -15,7 +15,7 @@ import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
 public class ForceArrowRenderer extends EntityRenderer<ForceArrow> {
-    private static final ResourceLocation arrowTextures = new ResourceLocation(WizardryMainMod.MOD_ID, "textures/entity/force_arrow.png");
+    private static final ResourceLocation arrowTextures = WizardryMainMod.location("textures/entity/force_arrow.png");
 
     public ForceArrowRenderer(Context p_174008_) {
         super(p_174008_);

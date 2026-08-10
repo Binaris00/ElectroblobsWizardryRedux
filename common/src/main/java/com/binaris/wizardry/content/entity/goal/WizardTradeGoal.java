@@ -6,7 +6,7 @@ import net.minecraft.world.entity.player.Player;
 
 import java.util.EnumSet;
 
-/** Stops the wizard from moving when trading. */
+/// Stops the wizard from moving when trading.
 public class WizardTradeGoal extends Goal {
     private final Wizard wizard;
 

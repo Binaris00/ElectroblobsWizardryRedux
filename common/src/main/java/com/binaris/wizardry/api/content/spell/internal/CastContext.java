@@ -4,28 +4,27 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 
-/**
- * <b>CastContext - Base Context for Spell Casting</b>
- * <p>
- * Base class that encapsulates the fundamental information needed to cast any spell in the mod.
- * All spell casting context variants inherit from this class, providing a unified interface for the spell system.
- * <p>
- * This class acts as a shared data container between all types of spell casts,
- * regardless of whether the caster is a player, an entity, or a location in the world.
- * <p>
- * <b>Context Hierarchy</b>
- * <pre>
- * CastContext (base)
- *  ├─ PlayerCastContext    - When a player casts from items (wands, scrolls)
- *  ├─ EntityCastContext    - When NPCs/mobs cast spells (with optional target)
- *  └─ LocationCastContext  - When cast from a fixed location (dispensers, constructs)
- * </pre>
- *
- * @see PlayerCastContext For casts initiated by players
- * @see EntityCastContext For casts initiated by entities
- * @see LocationCastContext For casts from fixed locations
- * @see Spell#cast(PlayerCastContext)
- */
+/// **CastContext - Base Context for Spell Casting**
+///
+/// Base class that encapsulates the fundamental information needed to cast any spell in the mod.
+/// All spell casting context variants inherit from this class, providing a unified interface for the spell system.
+///
+/// This class acts as a shared data container between all types of spell casts,
+/// regardless of whether the caster is a player, an entity, or a location in the world.
+///
+/// **Context Hierarchy**
+///
+/// <pre>
+/// CastContext (base)
+///  ├─ PlayerCastContext    - When a player casts from items (wands, scrolls)
+///  ├─ EntityCastContext    - When NPCs/mobs cast spells (with optional target)
+///  └─ LocationCastContext  - When cast from a fixed location (dispensers, constructs)
+/// </pre>
+///
+/// @see PlayerCastContext For casts initiated by players
+/// @see EntityCastContext For casts initiated by entities
+/// @see LocationCastContext For casts from fixed locations
+/// @see Spell#cast(PlayerCastContext)
 public class CastContext {
     protected Level world;
     protected int castingTicks;

@@ -23,6 +23,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     private boolean shouldFollowOwner = false;
     private boolean restartGoals;
     private boolean searchNearbyTargets = true;
+    private int pickUpLootPosibility = 0;
 
     public MinionDataHolder(Mob provider) {
         this.provider = provider;
@@ -110,6 +111,16 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     }
 
     @Override
+    public int getPickUpLootPosibility() {
+        return pickUpLootPosibility;
+    }
+
+    @Override
+    public void setPickUpLootPosibility(int pickUpLootPosibility) {
+        this.pickUpLootPosibility = pickUpLootPosibility;
+    }
+
+    @Override
     public UUID getOwnerUUID() {
         return ownerUUID;
     }
@@ -150,6 +161,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
         this.summoned = tag.getBoolean("summoned");
         this.shouldDeleteGoals = tag.getBoolean("shouldDeleteGoals");
         this.shouldFollowOwner = tag.getBoolean("shouldFollowOwner");
+        this.pickUpLootPosibility = tag.getInt("pickUpLootPosibility");
         if (tag.contains("ownerUUID")) {
             this.ownerUUID = tag.getUUID("ownerUUID");
         }
@@ -161,6 +173,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
         tag.putBoolean("summoned", summoned);
         tag.putBoolean("shouldDeleteGoals", shouldDeleteGoals);
         tag.putBoolean("shouldFollowOwner", shouldFollowOwner);
+        tag.putInt("pickUpLootPosibility", pickUpLootPosibility);
         if (ownerUUID != null) {
             tag.putUUID("ownerUUID", ownerUUID);
         }

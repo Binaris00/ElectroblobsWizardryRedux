@@ -47,17 +47,18 @@ public final class ClientMessageHandler {
 
         Entity e = level.getEntity(m.getCasterID());
         if (!(e instanceof Player caster)) return;
-        m.getSpell().cast(new PlayerCastContext(level, caster, m.getHand(), 0, m.getModifiers()));
+        PlayerCastContext ctx = new PlayerCastContext(level, caster, m.getHand(), 0, m.getModifiers());
+        m.getSpell().cast(ctx);
 
-        SpellCastEvent.Source source = SpellCastEvent.Source.OTHER;
+        SpellCastEvent.Sources source = SpellCastEvent.Sources.OTHER;
         Item item = caster.getItemInHand(m.getHand()).getItem();
 
-        if (item instanceof WandItem) source = SpellCastEvent.Source.WAND;
-        else if (item instanceof ScrollItem) source = SpellCastEvent.Source.SCROLL;
+        if (item instanceof WandItem) source = SpellCastEvent.Sources.WAND;
+        else if (item instanceof ScrollItem) source = SpellCastEvent.Sources.SCROLL;
 
         // No need to check if the spell succeeded, because the packet is only ever sent when it succeeds.
         // The handler for this event now deals with discovery.
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(source, m.getSpell(), caster, m.getModifiers()));
+        WizardryEventBus.fireEvent(new SpellCastEvent.Post(source, m.getSpell(), ctx));
     }
 
     public static void npcSpellCast(NPCSpellCastS2C m) {
@@ -71,8 +72,9 @@ public final class ClientMessageHandler {
         // Safety check, the npc cannot be a non-living entity and the target must be a living entity
         if (!(caster instanceof LivingEntity livingCaster) || !(target instanceof LivingEntity livingTarget)) return;
 
-        m.getSpell().cast(new EntityCastContext(level, livingCaster, m.getHand(), 0, livingTarget, m.getModifiers()));
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, m.getSpell(), livingCaster, m.getModifiers()));
+        EntityCastContext ctx = new EntityCastContext(level, livingCaster, m.getHand(), 0, livingTarget, m.getModifiers());
+        m.getSpell().cast(ctx);
+        WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, m.getSpell(), ctx));
 
         if (caster instanceof ISpellCaster spellCaster) {
             if (!m.getSpell().isInstantCast() || m.getSpell() instanceof NoneSpell) {

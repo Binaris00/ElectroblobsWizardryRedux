@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -34,7 +34,7 @@ public class Reversal extends RaySpell {
                 .filter(effect -> effect.getEffect().getCategory() == MobEffectCategory.HARMFUL)
                 .toList());
 
-        int bonusEffects = (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get() + 0.5F);
+        int bonusEffects = (int) ((ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get() + 0.5F);
         int n = property(DefaultProperties.EFFECT_STRENGTH) + bonusEffects;
 
         for (int i = 0; i < n; i++) {
@@ -72,7 +72,7 @@ public class Reversal extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellType.ALTERATION, SpellAction.POINT, 40, 0, 80)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.NECROMANCY, SpellTypes.ALTERATION, SpellAction.POINT, 40, 0, 80)
                 .add(DefaultProperties.RANGE, 8F)
                 .add(DefaultProperties.EFFECT_STRENGTH, 1)
                 .build();

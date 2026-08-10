@@ -47,8 +47,7 @@ public class FireSigilConstruct extends ScaledConstructEntity {
             MagicDamageSource.causeMagicDamage(this, target, Spells.FIRE_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier, EBDamageSources.FIRE);
 
             target.setDeltaMovement(originalVec);
-            if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
-                target.setSecondsOnFire(Spells.FIRE_SIGIL.property(DefaultProperties.EFFECT_DURATION));
+            target.setSecondsOnFire(Spells.FIRE_SIGIL.property(DefaultProperties.EFFECT_DURATION));
 
             this.playSound(EBSounds.ENTITY_FIRE_SIGIL_TRIGGER.get(), 1, 1);
             this.discard();

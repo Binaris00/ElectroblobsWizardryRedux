@@ -1,12 +1,16 @@
-// 1.20.1	2026-03-31T09:56:47.031172328	Tags for minecraft:item mod id ebwizardry
+// 1.20.1	2026-07-23T22:28:37.117481071	Tags for minecraft:item mod id ebwizardry
 b3c794cc2ff5977589f3cc0e4eb6d5c318553b6f data/accessories/tags/items/charm.json
 4d7295d9563a9726be37d291b741e0b91cebbfa9 data/accessories/tags/items/necklace.json
 08816f782037602f02231f8b1fbc76b1bb1c8848 data/accessories/tags/items/ring.json
 b3c794cc2ff5977589f3cc0e4eb6d5c318553b6f data/curios/tags/items/charm.json
 4d7295d9563a9726be37d291b741e0b91cebbfa9 data/curios/tags/items/necklace.json
 08816f782037602f02231f8b1fbc76b1bb1c8848 data/curios/tags/items/ring.json
+73c77e26bf31e48f7a4921b0c1e659b99c5b5590 data/ebwizardry/tags/items/armor_upgrade.json
 026654df8432db60dca779913e84fd4599e6f648 data/ebwizardry/tags/items/gilded_wood.json
 065a2aee5d675eb3f1ace700e49c1a56274442f3 data/ebwizardry/tags/items/magic_crystal.json
+f531986ca5422b4ff46fbe57a4eb9216097e94f1 data/ebwizardry/tags/items/magic_crystal_shard.json
+ea8a34a8c019ebf772883416cb37d2f4285f6365 data/ebwizardry/tags/items/spectral_dust.json
+4b6119642f276c64a684a75627b66583132823c2 data/ebwizardry/tags/items/wand_upgrade.json
 4d7295d9563a9726be37d291b741e0b91cebbfa9 data/trinkets/tags/items/chest/necklace.json
 b3c794cc2ff5977589f3cc0e4eb6d5c318553b6f data/trinkets/tags/items/hand/glove.json
 08816f782037602f02231f8b1fbc76b1bb1c8848 data/trinkets/tags/items/hand/ring.json

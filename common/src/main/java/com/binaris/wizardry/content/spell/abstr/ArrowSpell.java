@@ -14,22 +14,20 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
-/**
- * Represents a spell that launches a {@link MagicArrowEntity}-based projectile.
- * <p>
- * This class abstracts the logic of casting spells that behave like arrows, handling all the core steps such as entity
- * creation, aiming, velocity calculation, and launch.
- * <p>
- * Check {@link Spells#DART Spells#Dart} - {@link Spells#MAGIC_MISSILE Spells#MagicMissile} for some examples
- * <p>
- * You must override the {@link #properties()} to return an actual instance of {@link SpellProperties} for this spell or
- * use {@link Spell#assignProperties(SpellProperties)}, otherwise the spell will have no properties and may not function
- * as intended.
- *
- * @param <T> The type of {@link MagicArrowEntity} this spell launches.
- */
+/// Represents a spell that launches a [MagicArrowEntity]-based projectile.
+///
+/// This class abstracts the logic of casting spells that behave like arrows, handling all the core steps such as entity
+/// creation, aiming, velocity calculation, and launch.
+///
+/// Check [`Spells#Dart`][Spells#DART] - [`Spells#MagicMissile`][Spells#MAGIC_MISSILE] for some examples
+///
+/// You must override the [#properties()] to return an actual instance of [SpellProperties] for this spell or
+/// use [Spell#assignProperties(SpellProperties)], otherwise the spell will have no properties and may not function
+/// as intended.
+///
+/// @param <T> The type of [MagicArrowEntity] this spell launches.
 public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
-    /** factory function to create instances of the projectile entity. */
+    /// factory function to create instances of the projectile entity.
     protected final Function<Level, T> arrowFactory;
 
     public ArrowSpell(Function<Level, T> arrowFactory) {
@@ -51,7 +49,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         if (!ctx.world().isClientSide) {
             T arrow = arrowFactory.apply(ctx.world());
             arrow.aim(ctx.caster(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }
@@ -68,7 +66,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             T arrow = arrowFactory.apply(ctx.world());
             int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
             arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight() - (float) MagicArrowEntity.LAUNCH_Y_OFFSET), aimingError);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }
@@ -86,7 +84,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             arrow.setPos(ctx.vec3());
             Vec3 vec = Vec3.atLowerCornerOf(ctx.direction().getNormal());
             arrow.shoot(vec.x(), vec.y(), vec.z(), calculateVelocity(ctx, arrow, 0.375f), 1);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }
@@ -97,16 +95,14 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         return true;
     }
 
-    /**
-     * Calculates the velocity of the projectile based on gravity and range.
-     *
-     * @param ctx          Cast Context about how the spell is cast
-     * @param projectile   The projectile entity.
-     * @param launchHeight The vertical height from which the projectile is launched.
-     * @return The velocity value to be used when launching the projectile.
-     */
+    /// Calculates the velocity of the projectile based on gravity and range.
+    ///
+    /// @param ctx          Cast Context about how the spell is cast
+    /// @param projectile   The projectile entity.
+    /// @param launchHeight The vertical height from which the projectile is launched.
+    /// @return The velocity value to be used when launching the projectile.
     public float calculateVelocity(CastContext ctx, MagicArrowEntity projectile, float launchHeight) {
-        float range = this.property(DefaultProperties.RANGE) * ctx.modifiers().get(SpellModifiers.RANGE);
+        float range = ctx.modifiers().get(SpellModifiers.RANGE, property(DefaultProperties.RANGE));
 
         if (projectile.isNoGravity()) {
             if (projectile.getLifetime() <= 0) return 2;
@@ -117,12 +113,10 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         }
     }
 
-    /**
-     * Makes changes to arrows before it's spawned. Override this is subclasses to apply special effects
-     *
-     * @param ctx   The context of the spell cast, which may contain useful information for modifying the arrow.
-     * @param arrow The arrow instance to modify.
-     */
+    /// Makes changes to arrows before it's spawned. Override this is subclasses to apply special effects
+    ///
+    /// @param ctx   The context of the spell cast, which may contain useful information for modifying the arrow.
+    /// @param arrow The arrow instance to modify.
     protected void addArrowExtras(CastContext ctx, T arrow) {
         // Meant to be overridden by subclasses or anonymous spells.
     }

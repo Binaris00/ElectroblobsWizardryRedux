@@ -1,5 +1,5 @@
 {
-  "type": "defence",
+  "type": "ebwizardry:defence",
   "base_properties": {
     "effect.minecraft.absorption_duration": 1200,
     "effect.minecraft.absorption_strength": 1,

@@ -1,5 +1,5 @@
 {
-  "type": "projectile",
+  "type": "ebwizardry:projectile",
   "base_properties": {
     "direct_damage": 6.0,
     "effect_radius": 5,

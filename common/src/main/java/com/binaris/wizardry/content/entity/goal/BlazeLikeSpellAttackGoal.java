@@ -111,7 +111,7 @@ public class BlazeLikeSpellAttackGoal extends Goal {
         EntityCastContext ctx = new EntityCastContext(blaze.level(), blaze, InteractionHand.MAIN_HAND, 0, target, modifiers);
         spell.cast(ctx);
 
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, spell, blaze, modifiers));
+        WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, spell, ctx));
 
         if (!blaze.level().isClientSide && spell.requiresPacket()) {
             NPCSpellCastS2C msg = new NPCSpellCastS2C(blaze.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, modifiers);

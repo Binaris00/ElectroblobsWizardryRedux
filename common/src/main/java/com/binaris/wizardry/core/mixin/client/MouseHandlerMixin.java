@@ -19,7 +19,7 @@ public abstract class MouseHandlerMixin {
     public void EBWIZARDRY$onScroll(long windowPointer, double xOffset, double yOffset, CallbackInfo ci) {
         Player player = Minecraft.getInstance().player;
         ItemStack wand = EntityUtil.getWandInUse(player);
-        if (wand == null) return;
+        if (wand.isEmpty()) return;
 
         if (Minecraft.getInstance().mouseHandler.isMouseGrabbed() && !wand.isEmpty() && yOffset != 0 && player.isShiftKeyDown()) {
             ci.cancel();

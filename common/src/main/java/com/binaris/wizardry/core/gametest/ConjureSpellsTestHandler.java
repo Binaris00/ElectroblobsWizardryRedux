@@ -3,7 +3,7 @@ package com.binaris.wizardry.core.gametest;
 import com.binaris.wizardry.api.content.data.ConjureData;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.DataEvents;
@@ -25,7 +25,7 @@ public final class ConjureSpellsTestHandler {
         Player player = GST.mockPlayer(helper, PLAYER_POS);
         spell.cast(new PlayerCastContext(helper.getLevel(), player, InteractionHand.MAIN_HAND, 0, new SpellModifiers()));
 
-        InventoryUtil.getAllItems(player).stream().filter(stack -> stack.getItem().equals(expectedItem)).findAny()
+        EntityUtil.getAllItems(player).stream().filter(stack -> stack.getItem().equals(expectedItem)).findAny()
                 .ifPresentOrElse(stack -> helper.succeed(),
                         () -> helper.fail("Player did not receive the conjured item (flamecatcher)"));
     }
@@ -35,7 +35,7 @@ public final class ConjureSpellsTestHandler {
         helper.runAtTickTime(30, () -> {
             DataEvents.conjureItemTick(ctx.player);
 
-            if (InventoryUtil.getAllItems(ctx.player).stream().anyMatch(stack -> stack.getItem().equals(itemToConjure))) {
+            if (EntityUtil.getAllItems(ctx.player).stream().anyMatch(stack -> stack.getItem().equals(itemToConjure))) {
                 helper.fail("Conjured item still in player's inventory after duration has expired");
                 return;
             }

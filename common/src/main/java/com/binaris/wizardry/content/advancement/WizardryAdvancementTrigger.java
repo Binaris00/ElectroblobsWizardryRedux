@@ -16,10 +16,8 @@ import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * General version of a {@code SimpleCriterionTrigger} for the mod, we use this to simple call "advancement events"
- * inside the mod code, no need to get/save data for it
- */
+/// General version of a `SimpleCriterionTrigger` for the mod, we use this to simple call "advancement events"
+/// inside the mod code, no need to get/save data for it
 public class WizardryAdvancementTrigger implements CriterionTrigger<WizardryAdvancementTrigger.TriggerInstance> {
     private final ResourceLocation ID;
     private final SetMultimap<PlayerAdvancements, Listener<? extends CriterionTriggerInstance>> listeners = HashMultimap.create();

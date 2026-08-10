@@ -4,7 +4,8 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.api.content.util.CastItemDataHelper;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorMaterial;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.gametest.framework.GameTestHelper;
@@ -19,11 +20,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.phys.Vec3;
 
-/**
- * Why this is called GST...?
- * <p>
- * General GameTest utility methods.
- */
+/// Why this is called GST...?
+///
+/// General GameTest utility methods.
 public class GST {
 
     private GST() {
@@ -36,7 +35,7 @@ public class GST {
         return player;
     }
 
-    public static Player mockPlayerWithArmor(GameTestHelper helper, Vec3 position, Element element, WizardArmorType type) {
+    public static Player mockPlayerWithArmor(GameTestHelper helper, Vec3 position, Element element, WizardArmorMaterial type) {
         Player player = mockPlayer(helper, position);
         player.setItemSlot(EquipmentSlot.HEAD, RegistryUtils.getArmor(type, element, EquipmentSlot.HEAD).getDefaultInstance());
         player.setItemSlot(EquipmentSlot.CHEST, RegistryUtils.getArmor(type, element, EquipmentSlot.CHEST).getDefaultInstance());

@@ -17,7 +17,7 @@ import java.util.List;
 
 public class BattleMageArmorItem extends WizardArmorItem {
     public BattleMageArmorItem(Type type, Element element) {
-        super(WizardArmorType.BATTLEMAGE, type, element);
+        super(WizardArmorTypes.BATTLEMAGE, type, element);
     }
 
     @Override

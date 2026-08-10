@@ -16,7 +16,7 @@ public abstract class ServerPlayerMixin {
 
     @Inject(method = "drop*", at = @At("HEAD"), cancellable = true)
     public void EBWIZARDRY$drop(ItemStack itemStack, boolean bl, boolean bl2, CallbackInfoReturnable<ItemEntity> cir) {
-        boolean result = WizardryEventBus.getInstance().fire(new EBItemTossEvent((Player) (Object) this, itemStack));
+        boolean result = WizardryEventBus.fireEvent(new EBItemTossEvent((Player) (Object) this, itemStack));
         if (result) cir.cancel();
     }
 }

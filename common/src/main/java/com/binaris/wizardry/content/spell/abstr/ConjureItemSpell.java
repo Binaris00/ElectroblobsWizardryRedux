@@ -18,22 +18,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Base class for spells that conjure items. This class provides the core functionality for conjuring an item and managing
- * its lifetime through the use of ConjureData. It also includes a static set of supported items that can be conjured, and
- * utility methods for checking if an item is summonable or currently summoned (you normally won't use this directly when
- * creating a spell). This can only be used by player casts.
- * <p>
- * Adding an item to conjure by this spell makes it to always contain a {@code ConjureData}.
- * <p>
- * Check {@link Spells#CONJURE_SWORD} and {@link Spells#FLAMECATCHER} for examples of how to create conjure item spells.
- * <p>
- * You must override the {@link #properties()} to return an actual instance of {@link SpellProperties} for this spell or
- * use {@link Spell#assignProperties(SpellProperties)}, otherwise the spell will have no properties and may not function
- * as intended.
- *
- * @see ConjureData
- */
+/// Base class for spells that conjure items. This class provides the core functionality for conjuring an item and managing
+/// its lifetime through the use of ConjureData. It also includes a static set of supported items that can be conjured, and
+/// utility methods for checking if an item is summonable or currently summoned (you normally won't use this directly when
+/// creating a spell). This can only be used by player casts.
+///
+/// Adding an item to conjure by this spell makes it to always contain a `ConjureData`.
+///
+/// Check [Spells#CONJURE_SWORD] and [Spells#FLAMECATCHER] for examples of how to create conjure item spells.
+///
+/// You must override the [#properties()] to return an actual instance of [SpellProperties] for this spell or
+/// use [Spell#assignProperties(SpellProperties)], otherwise the spell will have no properties and may not function
+/// as intended.
+///
+/// @see ConjureData
 public class ConjureItemSpell extends Spell {
     public static Set<Item> SUPPORTED_ITEMS = new HashSet<>();
     private final Item item;
@@ -54,23 +52,21 @@ public class ConjureItemSpell extends Spell {
         return false;
     }
 
-    /**
-     * Conjures the item for the caster. This method creates an ItemStack of the specified item, gets the conjure data
-     * for it and establishes the duration and expiration time based on the spell properties and modifiers. The conjure
-     * data is then associated with the item stack, and the item is added to the caster's inventory. If the caster's
-     * inventory is full, a message is sent to the player and the method returns false.
-     *
-     * @param ctx the context of the spell cast, containing information about the caster, the world, and the spell modifiers
-     * @return true if the item was successfully conjured and added to the caster's inventory, false otherwise
-     * @see ConjureData
-     */
+    /// Conjures the item for the caster. This method creates an ItemStack of the specified item, gets the conjure data
+    /// for it and establishes the duration and expiration time based on the spell properties and modifiers. The conjure
+    /// data is then associated with the item stack, and the item is added to the caster's inventory. If the caster's
+    /// inventory is full, a message is sent to the player and the method returns false.
+    ///
+    /// @param ctx the context of the spell cast, containing information about the caster, the world, and the spell modifiers
+    /// @return true if the item was successfully conjured and added to the caster's inventory, false otherwise
+    /// @see ConjureData
     protected boolean conjureItem(PlayerCastContext ctx) {
         ItemStack stack = new ItemStack(item);
         stack = addItemExtras(ctx, stack);
 
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         int duration = property(DefaultProperties.ITEM_LIFETIME);
-        float durationMultiplier = ctx.modifiers().get(SpellModifiers.DURATION);
+        float durationMultiplier = ctx.modifiers().get(SpellModifiers.DURATION, 1.0f);
         long currentGameTime = ctx.world().getGameTime();
 
         data.setExpireTime((long) (currentGameTime + (duration * durationMultiplier)));
@@ -85,61 +81,51 @@ public class ConjureItemSpell extends Spell {
     }
 
 
-    /**
-     * Checks if the given item stack is currently summoned (i.e. conjured and not expired). The item must also be part of
-     * the supported conjure items inside the mod. For a check of whether an item is part of the supported conjure items
-     * (not checking if it is summoned), use {@link #isSummonableItem(ItemStack)}.
-     *
-     * @param stack the item stack to check
-     * @return true if the item stack is currently summoned, false otherwise
-     */
+    /// Checks if the given item stack is currently summoned (i.e. conjured and not expired). The item must also be part of
+    /// the supported conjure items inside the mod. For a check of whether an item is part of the supported conjure items
+    /// (not checking if it is summoned), use [#isSummonableItem(ItemStack)].
+    ///
+    /// @param stack the item stack to check
+    /// @return true if the item stack is currently summoned, false otherwise
     public static boolean isSummoned(ItemStack stack) {
         if (!isSummonableItem(stack)) return false; // It should be part of the supported items
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         return data != null && data.isSummoned();
     }
 
-    /**
-     * Checks if the given item is part of the supported conjure items inside the mod. For a better check of whether an item
-     * is actually summoned, use {@link #isSummoned(ItemStack)}.
-     *
-     * @param item the item to check
-     * @return true if the item is part of the supported conjure items, false otherwise
-     */
+    /// Checks if the given item is part of the supported conjure items inside the mod. For a better check of whether an item
+    /// is actually summoned, use [#isSummoned(ItemStack)].
+    ///
+    /// @param item the item to check
+    /// @return true if the item is part of the supported conjure items, false otherwise
     public static boolean isSummonableItem(Item item) {
         return SUPPORTED_ITEMS.contains(item);
     }
 
-    /**
-     * Checks if the given item stack is part of the supported conjure items inside the mod. For a better check of whether an
-     * item is actually summoned, use {@link #isSummoned(ItemStack)}.
-     *
-     * @param stack the item stack to check
-     * @return true if the item stack is part of the supported conjure items, false otherwise
-     */
+    /// Checks if the given item stack is part of the supported conjure items inside the mod. For a better check of whether an
+    /// item is actually summoned, use [#isSummoned(ItemStack)].
+    ///
+    /// @param stack the item stack to check
+    /// @return true if the item stack is part of the supported conjure items, false otherwise
     public static boolean isSummonableItem(ItemStack stack) {
         return isSummonableItem(stack.getItem());
     }
 
-    /**
-     * Registers an item as a supported conjure item. This should be called in the constructor of any spell that conjures
-     * an item or in your mod's common setup. If an item is not registered as a supported conjure item, it will not be
-     * recognized as a valid and won't have the conjure data associated with it.
-     *
-     * @param item the item to register as a supported conjure item
-     */
+    /// Registers an item as a supported conjure item. This should be called in the constructor of any spell that conjures
+    /// an item or in your mod's common setup. If an item is not registered as a supported conjure item, it will not be
+    /// recognized as a valid and won't have the conjure data associated with it.
+    ///
+    /// @param item the item to register as a supported conjure item
     public static void registerSupportedItem(Item item) {
         SUPPORTED_ITEMS.add(item);
     }
 
-    /**
-     * Spawns spark particles around the caster. This is a client-side visual effect that is called when the spell is cast.
-     * The particles are spawned in a random pattern around the caster's head and have a light blue color.
-     * <p>
-     * You could override this to change the particle effect.
-     *
-     * @param ctx the context of the spell cast, containing information about the caster and the world
-     */
+    /// Spawns spark particles around the caster. This is a client-side visual effect that is called when the spell is cast.
+    /// The particles are spawned in a random pattern around the caster's head and have a light blue color.
+    ///
+    /// You could override this to change the particle effect.
+    ///
+    /// @param ctx the context of the spell cast, containing information about the caster and the world
     protected void spawnParticles(PlayerCastContext ctx) {
         for (int i = 0; i < 10; i++) {
             double x = ctx.caster().xo + ctx.world().random.nextDouble() * 2 - 1;
@@ -150,15 +136,13 @@ public class ConjureItemSpell extends Spell {
         }
     }
 
-    /**
-     * Adds extra properties or NBT data to the conjured item stack before it is given to the caster. This method is called
-     * during the conjuration process and allows you to customize the item stack based on the spell context. By default,
-     * this method returns the original item stack without any modifications.
-     *
-     * @param ctx   the context of the spell cast, containing information about the caster, the world, and the spell modifiers
-     * @param stack the original item stack that is about to be conjured
-     * @return the modified item stack with any additional properties or NBT data added
-     */
+    /// Adds extra properties or NBT data to the conjured item stack before it is given to the caster. This method is called
+    /// during the conjuration process and allows you to customize the item stack based on the spell context. By default,
+    /// this method returns the original item stack without any modifications.
+    ///
+    /// @param ctx   the context of the spell cast, containing information about the caster, the world, and the spell modifiers
+    /// @param stack the original item stack that is about to be conjured
+    /// @return the modified item stack with any additional properties or NBT data added
     protected ItemStack addItemExtras(PlayerCastContext ctx, ItemStack stack) {
         return stack;
     }

@@ -1,0 +1,456 @@
+package com.binaris.wizardry.datagen.provider;
+
+import com.binaris.wizardry.WizardryMainMod;
+import com.binaris.wizardry.setup.registries.EBSounds;
+import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraftforge.common.data.ExistingFileHelper;
+import net.minecraftforge.common.data.SoundDefinition;
+import net.minecraftforge.common.data.SoundDefinitionsProvider;
+import net.minecraftforge.common.data.SoundDefinition.SoundType;
+
+import java.util.function.Supplier;
+
+public class EBSoundProvider extends SoundDefinitionsProvider {
+    public EBSoundProvider(PackOutput output, ExistingFileHelper helper) {
+        super(output, WizardryMainMod.MOD_ID, helper);
+    }
+
+    private void addSimple(Supplier<SoundEvent> event, String... soundPaths) {
+        SoundDefinition def = definition();
+        for (String path : soundPaths) {
+            def.with(sound(new ResourceLocation(path), SoundType.SOUND));
+        }
+        add(event, def.subtitle("subtitles.ebwizardry." + event.get().getLocation().getPath()));
+    }
+
+    private void addWithVolume(Supplier<SoundEvent> event, float volume, String... soundPaths) {
+        SoundDefinition def = definition();
+        for (String path : soundPaths) {
+            def.with(sound(new ResourceLocation(path), SoundType.SOUND).volume(volume));
+        }
+        add(event, def.subtitle("subtitles.ebwizardry." + event.get().getLocation().getPath()));
+    }
+
+    private void addGlide(Supplier<SoundEvent> event, SoundDefinition.Sound... glideSounds) {
+        add(event, definition()
+                .with(glideSounds)
+                .subtitle("subtitles.ebwizardry." + event.get().getLocation().getPath()));
+    }
+
+    private static SoundDefinition.Sound soundRL(String path) {
+        return sound(new ResourceLocation(path), SoundType.SOUND);
+    }
+
+    private static SoundDefinition.Sound volSound(String path, float volume) {
+        return sound(new ResourceLocation(path), SoundType.SOUND).volume(volume);
+    }
+
+    @Override
+    public void registerSounds() {
+
+        // ===== Block Sounds =====
+        addSimple(EBSounds.BLOCK_ARCANE_WORKBENCH_SPELLBIND, "ebwizardry:spellbind");
+        addSimple(EBSounds.BLOCK_IMBUEMENT_ALTAR_IMBUE, "ebwizardry:imbue");
+        addSimple(EBSounds.BLOCK_LECTERN_LOCATE_SPELL, "ebwizardry:conjure");
+        addSimple(EBSounds.BLOCK_PEDESTAL_ACTIVATE, "mob/evocation_illager/prepare_summon");
+        addSimple(EBSounds.BLOCK_PEDESTAL_CONQUER, "ui/toast/challenge_complete");
+        addSimple(EBSounds.BLOCK_RECEPTACLE_IGNITE, "mob/evocation_illager/cast1", "mob/evocation_illager/cast2");
+
+        // ===== Item Sounds =====
+        addSimple(EBSounds.ITEM_ARMOR_EQUIP_BATTLEMAGE, "item/armor/equip_gold1", "item/armor/equip_gold2", "item/armor/equip_gold3", "item/armor/equip_gold4", "item/armor/equip_gold5", "item/armor/equip_gold6");
+        addSimple(EBSounds.ITEM_ARMOR_EQUIP_SAGE, "item/armor/equip_leather1", "item/armor/equip_leather2", "item/armor/equip_leather3", "item/armor/equip_leather4", "item/armor/equip_leather5", "item/armor/equip_leather6");
+        addSimple(EBSounds.ITEM_ARMOUR_EQUIP_SILK, "item/armor/equip_leather1", "item/armor/equip_leather2", "item/armor/equip_leather3", "item/armor/equip_leather4", "item/armor/equip_leather5", "item/armor/equip_leather6");
+        addSimple(EBSounds.ITEM_ARMOR_EQUIP_WARLOCK, "item/armor/equip_leather1", "item/armor/equip_leather2", "item/armor/equip_leather3", "item/armor/equip_leather4", "item/armor/equip_leather5", "item/armor/equip_leather6");
+        addSimple(EBSounds.ITEM_FLAMECATCHER_FLAME, "ebwizardry:combust");
+        addSimple(EBSounds.ITEM_FLAMECATCHER_SHOOT, "fireworks/launch1");
+        addSimple(EBSounds.ITEM_MANA_FLASK_RECHARGE, "ebwizardry:conjure");
+        addSimple(EBSounds.ITEM_MANA_FLASK_USE, "item/bottle/fill1", "item/bottle/fill2", "item/bottle/fill3", "item/bottle/fill4");
+        addSimple(EBSounds.ITEM_PURIFYING_ELIXIR_DRINK, "ebwizardry:buff_large");
+        addSimple(EBSounds.ITEM_WAND_CHARGEUP, "ebwizardry:chargeup");
+        addSimple(EBSounds.ITEM_WAND_LEVELUP, "random/levelup");
+        addSimple(EBSounds.ITEM_WAND_MELEE, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.ITEM_WAND_SWITCH_SPELL, "ebwizardry:select");
+
+        // ===== Entity Sounds =====
+        addSimple(EBSounds.ENTITY_BLACK_HOLE_AMBIENT, "portal/portal");
+        addSimple(EBSounds.ENTITY_BLACK_HOLE_BREAK_BLOCK, "mob/zombie/woodbreak");
+        addSimple(EBSounds.ENTITY_BLACK_HOLE_VANISH, "portal/trigger");
+        addSimple(EBSounds.ENTITY_BLIZZARD_AMBIENT, "ebwizardry:wind");
+        addSimple(EBSounds.ENTITY_BOULDER_BREAK_BLOCK, "mob/zombie/woodbreak");
+        addSimple(EBSounds.ENTITY_BOULDER_HIT, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.ENTITY_BOULDER_LAND, "ebwizardry:rumble");
+        addSimple(EBSounds.ENTITY_BOULDER_ROLL, "ebwizardry:roll");
+        addSimple(EBSounds.ENTITY_BUBBLE_POP, "random/pop");
+        addSimple(EBSounds.ENTITY_DARKNESS_ORB_HIT, "mob/wither/hurt1", "mob/wither/hurt2", "mob/wither/hurt3", "mob/wither/hurt4");
+        addSimple(EBSounds.ENTITY_DART_HIT, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.ENTITY_DART_HIT_BLOCK, "random/bowhit1", "random/bowhit2", "random/bowhit3");
+        addSimple(EBSounds.ENTITY_DECAY_AMBIENT, "liquid/lava");
+        addSimple(EBSounds.ENTITY_ENTRAPMENT_AMBIENT, "portal/portal");
+        addSimple(EBSounds.ENTITY_ENTRAPMENT_VANISH, "portal/trigger");
+        addSimple(EBSounds.ENTITY_EVIL_WIZARD_AMBIENT, "mob/evocation_illager/idle1", "mob/evocation_illager/idle2", "mob/evocation_illager/idle3", "mob/evocation_illager/idle4");
+        addSimple(EBSounds.ENTITY_EVIL_WIZARD_DEATH, "mob/evocation_illager/death1", "mob/evocation_illager/death2");
+        addSimple(EBSounds.ENTITY_EVIL_WIZARD_HURT, "mob/evocation_illager/hurt1", "mob/evocation_illager/hurt2");
+        addSimple(EBSounds.ENTITY_FIRE_RING_AMBIENT, "fire/fire");
+        addSimple(EBSounds.ENTITY_FIRE_SIGIL_TRIGGER, "ebwizardry:combust");
+        addSimple(EBSounds.ENTITY_FIREBOLT_HIT, "liquid/lavapop");
+        addSimple(EBSounds.ENTITY_FIREBOMB_FIRE, "ebwizardry:combust");
+        addSimple(EBSounds.ENTITY_FIREBOMB_SMASH, "random/glass1", "random/glass2", "random/glass3");
+        addSimple(EBSounds.ENTITY_FIREBOMB_THROW, "random/bow");
+        addSimple(EBSounds.ENTITY_FLAMECATCHER_ARROW_HIT, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.ENTITY_FORCE_ARROW_HIT, "fireworks/blast1");
+        addSimple(EBSounds.ENTITY_FORCE_ORB_HIT, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.ENTITY_FORCE_ORB_HIT_BLOCK, "fireworks/blast1");
+        addSimple(EBSounds.ENTITY_FORCEFIELD_AMBIENT, "ebwizardry:forcefield");
+        addSimple(EBSounds.ENTITY_FORCEFIELD_DEFLECT, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.ENTITY_FROST_SIGIL_TRIGGER, "ebwizardry:freeze");
+        addSimple(EBSounds.ENTITY_HAMMER_ATTACK, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.ENTITY_HAMMER_EXPLODE, "random/explode1", "random/explode2", "random/explode3", "random/explode4");
+        addSimple(EBSounds.ENTITY_HAMMER_LAND, "random/anvil_land");
+        addSimple(EBSounds.ENTITY_HAMMER_THROW, "random/bow");
+        addSimple(EBSounds.ENTITY_HEAL_AURA_AMBIENT, "ebwizardry:sparkle");
+        addSimple(EBSounds.ENTITY_HOMING_SPARK_HIT, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.ENTITY_ICE_BARRIER_DEFLECT, "random/anvil_land");
+        addSimple(EBSounds.ENTITY_ICE_BARRIER_EXTEND, "ebwizardry:slice");
+        addSimple(EBSounds.ENTITY_ICE_CHARGE_ICE, "ebwizardry:ice");
+        addSimple(EBSounds.ENTITY_ICE_CHARGE_SMASH, "random/glass1", "random/glass2", "random/glass3");
+        addSimple(EBSounds.ENTITY_ICE_GIANT_ATTACK, "mob/irongolem/throw");
+        addSimple(EBSounds.ENTITY_ICE_GIANT_DESPAWN, "ebwizardry:freeze");
+        addSimple(EBSounds.ENTITY_ICE_LANCE_HIT, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.ENTITY_ICE_LANCE_SMASH, "random/glass1", "random/glass2", "random/glass3");
+        addSimple(EBSounds.ENTITY_ICE_SHARD_HIT, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.ENTITY_ICE_SHARD_SMASH, "random/glass1", "random/glass2", "random/glass3");
+        addSimple(EBSounds.ENTITY_ICE_SPIKE_EXTEND, "ebwizardry:slice");
+        addSimple(EBSounds.ENTITY_ICE_WRAITH_AMBIENT, "ebwizardry:wind");
+        addSimple(EBSounds.ENTITY_ICEBALL_HIT, "block/powder_snow/break1", "block/powder_snow/break2", "block/powder_snow/break3", "block/powder_snow/break4", "block/powder_snow/break5", "block/powder_snow/break6", "block/powder_snow/break7");
+        addSimple(EBSounds.ENTITY_LIGHTNING_ARROW_HIT, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.ENTITY_LIGHTNING_DISC_HIT, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.ENTITY_LIGHTNING_SIGIL_TRIGGER, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.ENTITY_MAGIC_MISSILE_HIT, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.ENTITY_MAGIC_SLIME_ATTACK, "mob/slime/attack1", "mob/slime/attack2");
+        addSimple(EBSounds.ENTITY_MAGIC_SLIME_EXPLODE, "fireworks/blast_far1");
+        addSimple(EBSounds.ENTITY_MAGIC_SLIME_SPLAT, "mob/slime/attack1", "mob/slime/attack2");
+        addSimple(EBSounds.ENTITY_METEOR_FALLING, "ebwizardry:flames_loop");
+        addSimple(EBSounds.ENTITY_PHOENIX_AMBIENT, "mob/blaze/breathe1", "mob/blaze/breathe2", "mob/blaze/breathe3", "mob/blaze/breathe4");
+        addSimple(EBSounds.ENTITY_PHOENIX_BURN, "fire/fire");
+        addSimple(EBSounds.ENTITY_PHOENIX_DEATH, "mob/blaze/death");
+        addSimple(EBSounds.ENTITY_PHOENIX_FLAP, "mob/enderdragon/wings1", "mob/enderdragon/wings2", "mob/enderdragon/wings3", "mob/enderdragon/wings4", "mob/enderdragon/wings5", "mob/enderdragon/wings6");
+        addSimple(EBSounds.ENTITY_PHOENIX_HURT, "mob/blaze/hit1", "mob/blaze/hit2", "mob/blaze/hit3", "mob/blaze/hit4");
+        addSimple(EBSounds.ENTITY_POISON_BOMB_POISON, "random/fizz");
+        addSimple(EBSounds.ENTITY_POISON_BOMB_SMASH, "random/glass1", "random/glass2", "random/glass3");
+        addSimple(EBSounds.ENTITY_POISON_BOMB_THROW, "random/bow");
+        addSimple(EBSounds.ENTITY_RADIANT_TOTEM_AMBIENT, "ebwizardry:beam_loop");
+        addSimple(EBSounds.ENTITY_RADIANT_TOTEM_VANISH, "ebwizardry:beam_end");
+        addSimple(EBSounds.ENTITY_REMNANT_AMBIENT, "ebwizardry:remnant_hiss");
+        addSimple(EBSounds.ENTITY_REMNANT_DEATH, "ebwizardry:remnant_death");
+        addSimple(EBSounds.ENTITY_REMNANT_HURT, "ebwizardry:remnant_hurt");
+        addSimple(EBSounds.ENTITY_SHADOW_WRAITH_AMBIENT, "mob/blaze/breathe1", "mob/blaze/breathe2", "mob/blaze/breathe3", "mob/blaze/breathe4");
+        addSimple(EBSounds.ENTITY_SHADOW_WRAITH_DEATH, "mob/blaze/death");
+        addSimple(EBSounds.ENTITY_SHADOW_WRAITH_HURT, "mob/blaze/hit1", "mob/blaze/hit2", "mob/blaze/hit3", "mob/blaze/hit4");
+        addSimple(EBSounds.ENTITY_SHADOW_WRAITH_NOISE, "portal/portal");
+        addSimple(EBSounds.ENTITY_SHIELD_DEFLECT, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.ENTITY_SMOKE_BOMB_SMASH, "random/glass1", "random/glass2", "random/glass3");
+        addSimple(EBSounds.ENTITY_SMOKE_BOMB_SMOKE, "random/fizz");
+        addSimple(EBSounds.ENTITY_SMOKE_BOMB_THROW, "random/bow");
+        addSimple(EBSounds.ENTITY_SPARK_BOMB_CHAIN, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.ENTITY_SPARK_BOMB_HIT, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.ENTITY_SPARK_BOMB_HIT_BLOCK, "fireworks/blast_far1");
+        addSimple(EBSounds.ENTITY_SPARK_BOMB_THROW, "random/bow");
+        addSimple(EBSounds.ENTITY_SPIRIT_HORSE_VANISH, "ebwizardry:conjure_large");
+        addSimple(EBSounds.ENTITY_SPIRIT_WOLF_VANISH, "ebwizardry:conjure_large");
+        addSimple(EBSounds.ENTITY_STORM_ELEMENTAL_AMBIENT, "mob/blaze/breathe1", "mob/blaze/breathe2", "mob/blaze/breathe3", "mob/blaze/breathe4");
+        addSimple(EBSounds.ENTITY_STORM_ELEMENTAL_BURN, "fire/fire");
+        addSimple(EBSounds.ENTITY_STORM_ELEMENTAL_DEATH, "mob/blaze/death");
+        addSimple(EBSounds.ENTITY_STORM_ELEMENTAL_HURT, "mob/blaze/hit1", "mob/blaze/hit2", "mob/blaze/hit3", "mob/blaze/hit4");
+        addSimple(EBSounds.ENTITY_STORM_ELEMENTAL_WIND, "ebwizardry:wind");
+        addSimple(EBSounds.ENTITY_STORMCLOUD_ATTACK, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.ENTITY_STORMCLOUD_THUNDER, "ambient/weather/thunder1", "ambient/weather/thunder2", "ambient/weather/thunder3");
+        addSimple(EBSounds.ENTITY_THUNDERBOLT_HIT, "fireworks/largeblast1");
+        addSimple(EBSounds.ENTITY_TORNADO_AMBIENT, "ebwizardry:wind");
+        addSimple(EBSounds.ENTITY_WITHERING_TOTEM_AMBIENT, "ebwizardry:dark_aura_loop");
+        addSimple(EBSounds.ENTITY_WITHERING_TOTEM_EXPLODE, "mob/wither/death");
+        addSimple(EBSounds.ENTITY_WIZARD_AMBIENT, "mob/villager/idle1", "mob/villager/idle2", "mob/villager/idle3");
+        addSimple(EBSounds.ENTITY_WIZARD_DEATH, "mob/villager/death");
+        addSimple(EBSounds.ENTITY_WIZARD_HOHOHO, "ebwizardry:hohoho");
+        addSimple(EBSounds.ENTITY_WIZARD_HURT, "mob/villager/hit1", "mob/villager/hit2", "mob/villager/hit3", "mob/villager/hit4");
+        addSimple(EBSounds.ENTITY_WIZARD_NO, "mob/villager/no1", "mob/villager/no2", "mob/villager/no3");
+        addSimple(EBSounds.ENTITY_WIZARD_TRADING, "mob/villager/haggle1", "mob/villager/haggle2", "mob/villager/haggle3");
+        addSimple(EBSounds.ENTITY_WIZARD_YES, "mob/villager/yes1", "mob/villager/yes2", "mob/villager/yes3");
+        addSimple(EBSounds.ENTITY_ZOMBIE_SPAWNER_SPAWN, "mob/guardian/elder_death");
+
+        // ===== Spell Sounds =====
+        addSimple(EBSounds.SPELL_AGILITY, "ebwizardry:heal");
+        addSimple(EBSounds.SPELL_ARC, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.SPELL_ARCANE_JAMMER, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.SPELL_ARCANE_LOCK, "entity/endereye/dead1", "entity/endereye/dead2");
+        addSimple(EBSounds.SPELL_ARROW_RAIN, "mob/illusion_illager/prepare_blind");
+        addSimple(EBSounds.SPELL_BANISH, "mob/endermen/portal", "mob/endermen/portal2");
+        addSimple(EBSounds.SPELL_BLACK_HOLE, "mob/evocation_illager/prepare_attack1", "mob/evocation_illager/prepare_attack2");
+        addSimple(EBSounds.SPELL_BLINDING_FLASH, "ebwizardry:flash");
+        addSimple(EBSounds.SPELL_BLINK, "mob/endermen/portal", "mob/endermen/portal2");
+        addSimple(EBSounds.SPELL_BLIZZARD, "ebwizardry:ice_age");
+        addSimple(EBSounds.SPELL_BOULDER, "mob/evocation_illager/prepare_attack1", "mob/evocation_illager/prepare_attack2");
+        addSimple(EBSounds.SPELL_BUBBLE, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_CELESTIAL_SMITE, "mob/illusion_illager/prepare_blind");
+        addSimple(EBSounds.SPELL_CHAIN_LIGHTNING, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.SPELL_CHARGE, "ebwizardry:shockwave");
+        addSimple(EBSounds.SPELL_CLAIRVOYANCE, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_COBWEBS, "random/fizz");
+        addSimple(EBSounds.SPELL_COMBUSTION_RUNE, "ebwizardry:combust");
+        addSimple(EBSounds.SPELL_CONJURE_ARMOR, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_CONJURE_BLOCK, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_CONJURE_BOW, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_CONJURE_PICKAXE, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_CONJURE_SWORD, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_CONTAINMENT, "mob/guardian/curse");
+        addSimple(EBSounds.SPELL_CURE_EFFECTS, "ebwizardry:heal");
+        addSimple(EBSounds.SPELL_CURSE_OF_ENFEEBLEMENT, "mob/wither/spawn");
+        addSimple(EBSounds.SPELL_CURSE_OF_SOULBINDING, "mob/guardian/curse");
+        addSimple(EBSounds.SPELL_CURSE_OF_SOULBINDING_RETALIATE, "mob/wither/hurt1", "mob/wither/hurt2", "mob/wither/hurt3", "mob/wither/hurt4");
+        addSimple(EBSounds.SPELL_CURSE_OF_UNDEATH, "mob/guardian/curse");
+        addSimple(EBSounds.SPELL_DARK_VISION, "ebwizardry:heal");
+        addSimple(EBSounds.SPELL_DARKNESS_ORB, "mob/wither/shoot");
+        addSimple(EBSounds.SPELL_DART, "random/bow");
+        addSimple(EBSounds.SPELL_DECAY, "mob/wither/shoot");
+        addSimple(EBSounds.SPELL_DECOY, "mob/illusion_illager/mirror_move1", "mob/illusion_illager/mirror_move2");
+        addSimple(EBSounds.SPELL_DETONATE, "random/explode1", "random/explode2", "random/explode3", "random/explode4");
+        addSimple(EBSounds.SPELL_DIAMONDFLESH, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_DISINTEGRATION, "ebwizardry:firebolt");
+        addSimple(EBSounds.SPELL_DIVINATION, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_DRAGON_FIREBALL, "mob/ghast/fireball4");
+        addSimple(EBSounds.SPELL_EARTHQUAKE, "ebwizardry:rumble");
+        addSimple(EBSounds.SPELL_EMPOWERING_PRESENCE, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_ENRAGE, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.SPELL_ENTRAPMENT, "mob/evocation_illager/prepare_attack1", "mob/evocation_illager/prepare_attack2");
+        addSimple(EBSounds.SPELL_EVADE, "random/bow");
+        addSimple(EBSounds.SPELL_FANGS, "mob/evocation_illager/prepare_attack1", "mob/evocation_illager/prepare_attack2");
+        addSimple(EBSounds.SPELL_FIRE_BREATH_END, "ebwizardry:flames_end");
+        addSimple(EBSounds.SPELL_FIRE_BREATH_LOOP, "ebwizardry:flames_loop");
+        addSimple(EBSounds.SPELL_FIRE_BREATH_START, "ebwizardry:flames_start");
+        addSimple(EBSounds.SPELL_FIRE_RESISTANCE, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_FIRE_SIGIL, "fire/ignite");
+        addSimple(EBSounds.SPELL_FIRE_SKIN, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_FIREBALL, "mob/ghast/fireball4");
+        addSimple(EBSounds.SPELL_FIREBOLT, "mob/ghast/fireball4");
+        addSimple(EBSounds.SPELL_FIREBOMB, "random/bow");
+        addSimple(EBSounds.SPELL_FIRESTORM, "ebwizardry:firestorm");
+        addSimple(EBSounds.SPELL_FLAME_RAY_END, "ebwizardry:flames_end");
+        addSimple(EBSounds.SPELL_FLAME_RAY_LOOP, "ebwizardry:flames_loop");
+        addSimple(EBSounds.SPELL_FLAME_RAY_START, "ebwizardry:flames_start");
+        addSimple(EBSounds.SPELL_FLAMECATCHER, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_FLAMING_AXE, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_FLAMING_WEAPON, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_FLIGHT, "mob/enderdragon/wings1", "mob/enderdragon/wings2", "mob/enderdragon/wings3", "mob/enderdragon/wings4", "mob/enderdragon/wings5", "mob/enderdragon/wings6");
+        addSimple(EBSounds.SPELL_FONT_OF_MANA, "ebwizardry:buff_large");
+        addSimple(EBSounds.SPELL_FONT_OF_VITALITY, "ebwizardry:buff_large");
+        addSimple(EBSounds.SPELL_FORCE_ARROW, "ebwizardry:force");
+        addSimple(EBSounds.SPELL_FORCE_ORB, "random/bow");
+        addSimple(EBSounds.SPELL_FORCEFIELD, "ebwizardry:conjure_large");
+        addSimple(EBSounds.SPELL_FOREST_OF_THORNS, "ebwizardry:grow");
+        addSimple(EBSounds.SPELL_FORESTS_CURSE, "mob/wither/spawn");
+        addSimple(EBSounds.SPELL_FREEZE, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_FREEZING_WEAPON, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_FROST_AXE, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_FROST_RAY_END, "ebwizardry:frost_end");
+        addSimple(EBSounds.SPELL_FROST_RAY_LOOP, "ebwizardry:frost_loop");
+        addSimple(EBSounds.SPELL_FROST_RAY_START, "ebwizardry:frost_start");
+        addSimple(EBSounds.SPELL_FROST_SIGIL, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_FROST_STEP, "ebwizardry:buff");
+        addGlide(EBSounds.SPELL_GLIDE, volSound("item/elytra/elytra_loop", 0.6f));
+        addSimple(EBSounds.SPELL_GRAPPLE_ATTACH, "dig/grass1", "dig/grass2", "dig/grass3", "dig/grass4");
+        addSimple(EBSounds.SPELL_GRAPPLE_PULL, "ebwizardry:pull1", "ebwizardry:pull2");
+        addSimple(EBSounds.SPELL_GRAPPLE_RELEASE, "random/bowhit1", "random/bowhit2", "random/bowhit3");
+        addSimple(EBSounds.SPELL_GRAPPLE_SHOOT, "random/bow");
+        addSimple(EBSounds.SPELL_GREATER_FIREBALL, "mob/ghast/fireball4");
+        addSimple(EBSounds.SPELL_GREATER_HEAL, "ebwizardry:buff_large");
+        addSimple(EBSounds.SPELL_GREATER_TELEKINESIS_END, "ebwizardry:aura_end");
+        addSimple(EBSounds.SPELL_GREATER_TELEKINESIS_LOOP, "ebwizardry:aura_loop");
+        addSimple(EBSounds.SPELL_GREATER_TELEKINESIS_START, "ebwizardry:aura_start");
+        addSimple(EBSounds.SPELL_GREATER_WARD, "ebwizardry:buff_large");
+        addSimple(EBSounds.SPELL_GROUP_HEAL, "ebwizardry:heal");
+        addSimple(EBSounds.SPELL_GROWTH_AURA, "ebwizardry:conjure_large");
+        addSimple(EBSounds.SPELL_GUARDIAN_BEAM, "mob/guardian/attack_loop");
+        addSimple(EBSounds.SPELL_HAILSTORM, "mob/illusion_illager/prepare_blind");
+        addSimple(EBSounds.SPELL_HEAL, "ebwizardry:heal");
+        addSimple(EBSounds.SPELL_HEAL_ALLY, "ebwizardry:heal");
+        addSimple(EBSounds.SPELL_HEALING_AURA, "ebwizardry:conjure_large");
+        addSimple(EBSounds.SPELL_HOMING_SPARK, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_ICE_AGE, "ebwizardry:ice_age");
+        addSimple(EBSounds.SPELL_ICE_CHARGE, "ebwizardry:whoosh1", "ebwizardry:whoosh2");
+        addSimple(EBSounds.SPELL_ICE_LANCE, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_ICE_SHARD, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_ICE_SHROUD, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_ICE_SPIKES, "ebwizardry:whoosh1", "ebwizardry:whoosh2");
+        addSimple(EBSounds.SPELL_ICE_STATUE_FREEZE, "ebwizardry:freeze");
+        addSimple(EBSounds.SPELL_ICE_STATUE_SHOOT, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_ICEBALL, "ebwizardry:whoosh1", "ebwizardry:whoosh2");
+        addSimple(EBSounds.SPELL_IGNITE, "fire/ignite");
+        addSimple(EBSounds.SPELL_IMBUE_WEAPON, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_INTIMIDATE, "mob/enderdragon/growl1", "mob/enderdragon/growl2", "mob/enderdragon/growl3", "mob/enderdragon/growl4");
+        addSimple(EBSounds.SPELL_INVIGORATING_PRESENCE, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_INVISIBILITY, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_INVOKE_WEATHER, "ambient/weather/thunder1", "ambient/weather/thunder2", "ambient/weather/thunder3");
+        addSimple(EBSounds.SPELL_IRONFLESH, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_LEAP, "mob/enderdragon/wings1", "mob/enderdragon/wings2", "mob/enderdragon/wings3", "mob/enderdragon/wings4", "mob/enderdragon/wings5", "mob/enderdragon/wings6");
+        addSimple(EBSounds.SPELL_LEVITATION_END, "ebwizardry:aura_end");
+        addSimple(EBSounds.SPELL_LEVITATION_LOOP, "ebwizardry:aura_loop");
+        addSimple(EBSounds.SPELL_LEVITATION_START, "ebwizardry:aura_start");
+        addSimple(EBSounds.SPELL_LIFE_DRAIN_END, "ebwizardry:dark_aura_end");
+        addSimple(EBSounds.SPELL_LIFE_DRAIN_LOOP, "ebwizardry:dark_aura_loop");
+        addSimple(EBSounds.SPELL_LIFE_DRAIN_START, "ebwizardry:dark_aura_start");
+        addSimple(EBSounds.SPELL_LIGHT, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_LIGHTNING_ARROW, "mob/evocation_illager/cast1", "mob/evocation_illager/cast2");
+        addSimple(EBSounds.SPELL_LIGHTNING_DISC, "ebwizardry:lightning_ray_start");
+        addSimple(EBSounds.SPELL_LIGHTNING_HAMMER, "mob/illusion_illager/prepare_blind");
+        addSimple(EBSounds.SPELL_LIGHTNING_PULSE, "ebwizardry:shockwave");
+        addSimple(EBSounds.SPELL_LIGHTNING_RAY_END, "ebwizardry:lightning_ray_end");
+        addSimple(EBSounds.SPELL_LIGHTNING_RAY_LOOP, "ebwizardry:lightning_ray_loop");
+        addSimple(EBSounds.SPELL_LIGHTNING_RAY_START, "ebwizardry:lightning_ray_start");
+        addSimple(EBSounds.SPELL_LIGHTNING_SIGIL, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_LIGHTNING_WEB_END, "ebwizardry:lightning_ray_end");
+        addSimple(EBSounds.SPELL_LIGHTNING_WEB_LOOP, "ebwizardry:lightning_ray_loop");
+        addSimple(EBSounds.SPELL_LIGHTNING_WEB_START, "ebwizardry:lightning_ray_start");
+        addSimple(EBSounds.SPELL_MAGIC_MISSILE, "ebwizardry:magic");
+        addSimple(EBSounds.SPELL_MARK_SACRIFICE, "mob/guardian/curse");
+        addSimple(EBSounds.SPELL_METAMORPHOSIS, "mob/illusion_illager/prepare_mirror");
+        addSimple(EBSounds.SPELL_METEOR, "mob/illusion_illager/prepare_blind");
+        addSimple(EBSounds.SPELL_MIND_CONTROL, "mob/guardian/elder_death");
+        addSimple(EBSounds.SPELL_MIND_TRICK, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.SPELL_MIRAGE, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_MUFFLE, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_OAKFLESH, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_PARALYSIS, "ebwizardry:shockwave");
+        addSimple(EBSounds.SPELL_PERMAFROST_END, "ebwizardry:frost_end");
+        addSimple(EBSounds.SPELL_PERMAFROST_LOOP, "ebwizardry:frost_loop");
+        addSimple(EBSounds.SPELL_PERMAFROST_START, "ebwizardry:frost_start");
+        addSimple(EBSounds.SPELL_PETRIFY, "mob/wither/spawn");
+        addSimple(EBSounds.SPELL_PHASE_STEP, "mob/endermen/portal", "mob/endermen/portal2");
+        addSimple(EBSounds.SPELL_PLAGUE_OF_DARKNESS, "mob/wither/death");
+        addSimple(EBSounds.SPELL_POCKET_FURNACE, "block/furnace/fire_crackle1", "block/furnace/fire_crackle2", "block/furnace/fire_crackle3", "block/furnace/fire_crackle4", "block/furnace/fire_crackle5");
+        addSimple(EBSounds.SPELL_POCKET_WORKBENCH, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_POISON, "ebwizardry:whoosh1", "ebwizardry:whoosh2");
+        addSimple(EBSounds.SPELL_POISON_BOMB, "random/bow");
+        addSimple(EBSounds.SPELL_POSSESSION_END, "mob/guardian/elder_idle1", "mob/guardian/elder_idle2", "mob/guardian/elder_idle3", "mob/guardian/elder_idle4");
+        addSimple(EBSounds.SPELL_POSSESSION_POSSESS, "mob/evocation_illager/prepare_attack1", "mob/evocation_illager/prepare_attack2");
+        addSimple(EBSounds.SPELL_RADIANT_TOTEM, "ebwizardry:beam_start");
+        addSimple(EBSounds.SPELL_RAY_OF_PURIFICATION_END, "ebwizardry:beam_end");
+        addSimple(EBSounds.SPELL_RAY_OF_PURIFICATION_LOOP, "ebwizardry:beam_loop");
+        addSimple(EBSounds.SPELL_RAY_OF_PURIFICATION_START, "ebwizardry:beam_start");
+        addSimple(EBSounds.SPELL_REMOVE_CURSE, "ebwizardry:buff_large");
+        addSimple(EBSounds.SPELL_REPLENISH_HUNGER, "ebwizardry:heal");
+        addSimple(EBSounds.SPELL_RESURRECTION, "ebwizardry:buff_large");
+        addSimple(EBSounds.SPELL_REVERSAL, "mob/wither/hurt1", "mob/wither/hurt2", "mob/wither/hurt3", "mob/wither/hurt4");
+        addSimple(EBSounds.SPELL_RING_OF_FIRE, "ebwizardry:combust");
+        addSimple(EBSounds.SPELL_SATIETY, "ebwizardry:buff_large");
+        addSimple(EBSounds.SPELL_SHADOW_WARD_END, "ebwizardry:dark_aura_end");
+        addSimple(EBSounds.SPELL_SHADOW_WARD_LOOP, "ebwizardry:dark_aura_loop");
+        addSimple(EBSounds.SPELL_SHADOW_WARD_START, "ebwizardry:dark_aura_start");
+        addSimple(EBSounds.SPELL_SHIELD_END, "ebwizardry:small_aura_end");
+        addSimple(EBSounds.SPELL_SHIELD_LOOP, "ebwizardry:small_aura_loop");
+        addSimple(EBSounds.SPELL_SHIELD_START, "ebwizardry:small_aura_start");
+        addSimple(EBSounds.SPELL_SHOCKWAVE, "ebwizardry:shockwave");
+        addSimple(EBSounds.SPELL_SHULKER_BULLET, "entity/shulker/shoot1", "entity/shulker/shoot2", "entity/shulker/shoot3", "entity/shulker/shoot4");
+        addSimple(EBSounds.SPELL_SILVERFISH_SWARM, "random/fizz");
+        addSimple(EBSounds.SPELL_SIXTH_SENSE, "mob/wither/shoot");
+        addSimple(EBSounds.SPELL_SLIME, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_SLOW_TIME, "portal/travel");
+        addSimple(EBSounds.SPELL_SMOKE_BOMB, "random/bow");
+        addSimple(EBSounds.SPELL_SNARE, "dig/grass1", "dig/grass2", "dig/grass3", "dig/grass4");
+        addSimple(EBSounds.SPELL_SNOWBALL, "random/bow");
+        addSimple(EBSounds.SPELL_SPARK_BOMB, "random/bow");
+        addSimple(EBSounds.SPELL_SPECTRAL_PATHWAY, "ebwizardry:conjure_large");
+        addSimple(EBSounds.SPELL_SPEED_TIME_END, "ebwizardry:aura_end");
+        addSimple(EBSounds.SPELL_SPEED_TIME_LOOP, "ebwizardry:aura_loop");
+        addSimple(EBSounds.SPELL_SPEED_TIME_START, "ebwizardry:aura_start");
+        addSimple(EBSounds.SPELL_SPIDER_SWARM, "random/fizz");
+        addSimple(EBSounds.SPELL_STATIC_AURA, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_STATIC_AURA_RETALIATE, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.SPELL_STORMCLOUD, "ambient/weather/thunder1", "ambient/weather/thunder2", "ambient/weather/thunder3");
+        addSimple(EBSounds.SPELL_SUMMON_BLAZE, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.SPELL_SUMMON_ICE_GIANT, "mob/evocation_illager/prepare_summon");
+        addSimple(EBSounds.SPELL_SUMMON_ICE_WRAITH, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.SPELL_SUMMON_IRON_GOLEM, "mob/wither/spawn");
+        addSimple(EBSounds.SPELL_SUMMON_LIGHTNING_WRAITH, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.SPELL_SUMMON_PHOENIX, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.SPELL_SUMMON_SHADOW_WRAITH, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.SPELL_SUMMON_SKELETON, "ebwizardry:summon1", "ebwizardry:summon2");
+        addSimple(EBSounds.SPELL_SUMMON_SKELETON_LEGION, "mob/evocation_illager/prepare_summon");
+        addSimple(EBSounds.SPELL_SUMMON_SNOW_GOLEM, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_SUMMON_SPIRIT_HORSE, "ebwizardry:conjure_large");
+        addSimple(EBSounds.SPELL_SUMMON_SPIRIT_WOLF, "ebwizardry:conjure_large");
+        addSimple(EBSounds.SPELL_SUMMON_STORM_ELEMENTAL, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.SPELL_SUMMON_WITHER_SKELETON, "ebwizardry:summon1", "ebwizardry:summon2");
+        addSimple(EBSounds.SPELL_SUMMON_ZOMBIE, "ebwizardry:summon1", "ebwizardry:summon2");
+        addSimple(EBSounds.SPELL_TELEKINESIS, "ebwizardry:conjure");
+        addSimple(EBSounds.SPELL_THUNDERBOLT, "mob/evocation_illager/cast1", "mob/evocation_illager/cast2");
+        addSimple(EBSounds.SPELL_THUNDERSTORM, "ebwizardry:arc1", "ebwizardry:arc2", "ebwizardry:arc3");
+        addSimple(EBSounds.SPELL_TORNADO, "ebwizardry:zoom1", "ebwizardry:zoom2", "ebwizardry:zoom3");
+        addSimple(EBSounds.SPELL_TRANSIENCE, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_TRANSPORTATION, "portal/trigger");
+        addSimple(EBSounds.SPELL_TRANSPORTATION_TRAVEL, "portal/travel");
+        addSimple(EBSounds.SPELL_VANISHING_BOX, "block/enderchest/open");
+        addSimple(EBSounds.SPELL_VEX_SWARM, "mob/evocation_illager/prepare_summon");
+        addSimple(EBSounds.SPELL_WALL_OF_FROST_END, "ebwizardry:frost_end");
+        addSimple(EBSounds.SPELL_WALL_OF_FROST_LOOP, "ebwizardry:frost_loop");
+        addSimple(EBSounds.SPELL_WALL_OF_FROST_START, "ebwizardry:frost_start");
+        addSimple(EBSounds.SPELL_WARD, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_WATER_BREATHING, "ebwizardry:buff");
+        addSimple(EBSounds.SPELL_WHIRLWIND, "ebwizardry:ice");
+        addSimple(EBSounds.SPELL_WITHER, "mob/wither/hurt1", "mob/wither/hurt2", "mob/wither/hurt3", "mob/wither/hurt4");
+        addSimple(EBSounds.SPELL_WITHER_SKULL, "mob/wither/shoot");
+        addSimple(EBSounds.SPELL_WITHERING_TOTEM, "ebwizardry:beam_start");
+        addSimple(EBSounds.SPELL_ZOMBIE_APOCALYPSE, "ebwizardry:dark_aura_start");
+
+        // ===== Forfeit Sounds =====
+        addSimple(EBSounds.FORFEIT_ARROW_RAIN, "mob/illusion_illager/prepare_blind");
+        addSimple(EBSounds.FORFEIT_BLACK_HOLE, "mob/evocation_illager/prepare_attack1", "mob/evocation_illager/prepare_attack2");
+        addSimple(EBSounds.FORFEIT_BLAZES, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.FORFEIT_BLIND_SELF, "mob/guardian/curse");
+        addSimple(EBSounds.FORFEIT_BLIZZARD, "ebwizardry:ice_age");
+        addSimple(EBSounds.FORFEIT_BURN_SELF, "fire/ignite");
+        addSimple(EBSounds.FORFEIT_BURN_SURROUNDINGS, "mob/evocation_illager/prepare_attack1", "mob/evocation_illager/prepare_attack2");
+        addSimple(EBSounds.FORFEIT_BURY_SELF, "ebwizardry:rumble");
+        addSimple(EBSounds.FORFEIT_CRIPPLE_SELF, "mob/wither/death");
+        addSimple(EBSounds.FORFEIT_CURSE_SELF, "mob/guardian/curse");
+        addSimple(EBSounds.FORFEIT_DAMAGE_SELF, "damage/hit1", "damage/hit2", "damage/hit3");
+        addSimple(EBSounds.FORFEIT_EXPLODE, "random/explode1", "random/explode2", "random/explode3", "random/explode4");
+        addSimple(EBSounds.FORFEIT_FIREBALL, "mob/ghast/fireball4");
+        addSimple(EBSounds.FORFEIT_FIREBOMB, "mob/ghast/fireball4");
+        addSimple(EBSounds.FORFEIT_FLOOD, "item/bucket/empty1", "item/bucket/empty2", "item/bucket/empty3");
+        addSimple(EBSounds.FORFEIT_FREEZE_SELF, "ebwizardry:freeze");
+        addSimple(EBSounds.FORFEIT_FREEZE_SELF_2, "ebwizardry:freeze");
+        addSimple(EBSounds.FORFEIT_HAILSTORM, "mob/illusion_illager/prepare_blind");
+        addSimple(EBSounds.FORFEIT_HUNGER, "mob/guardian/curse");
+        addSimple(EBSounds.FORFEIT_ICE_GIANT, "mob/evocation_illager/prepare_summon");
+        addSimple(EBSounds.FORFEIT_ICE_WRAITHS, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.FORFEIT_JAM_SELF, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.FORFEIT_LEVITATE_SELF, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.FORFEIT_LIGHTNING_SIGILS, "ebwizardry:conjure");
+        addSimple(EBSounds.FORFEIT_LIGHTNING_WRAITHS, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.FORFEIT_METEORS, "mob/illusion_illager/prepare_blind");
+        addSimple(EBSounds.FORFEIT_NAUSEA, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.FORFEIT_PARALYSE_SELF, "ebwizardry:shockwave");
+        addSimple(EBSounds.FORFEIT_POISON_SELF, "random/fizz");
+        addSimple(EBSounds.FORFEIT_SHADOW_WRAITHS, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.FORFEIT_SNARES, "dig/grass1", "dig/grass2", "dig/grass3", "dig/grass4");
+        addSimple(EBSounds.FORFEIT_SPILL_ARMOUR, "ebwizardry:effect1", "ebwizardry:effect2");
+        addSimple(EBSounds.FORFEIT_SPILL_INVENTORY, "ebwizardry:effect1", "ebwizardry:effect2");
+        addWithVolume(EBSounds.FORFEIT_SQUID, 2f, "liquid/swim1", "liquid/swim2", "liquid/swim3", "liquid/swim4");
+        addSimple(EBSounds.FORFEIT_STORM, "ambient/weather/thunder1", "ambient/weather/thunder2", "ambient/weather/thunder3");
+        addSimple(EBSounds.FORFEIT_STORM_ELEMENTALS, "mob/wither/idle1", "mob/wither/idle2", "mob/wither/idle3", "mob/wither/idle4");
+        addSimple(EBSounds.FORFEIT_TELEPORT_SELF, "mob/endermen/portal", "mob/endermen/portal2");
+        addSimple(EBSounds.FORFEIT_THUNDER, "fireworks/largeblast1");
+        addSimple(EBSounds.FORFEIT_VEX_HORDE, "mob/evocation_illager/prepare_summon");
+        addSimple(EBSounds.FORFEIT_WEAKEN_SELF, "mob/guardian/curse");
+        addSimple(EBSounds.FORFEIT_WITHER_SELF, "mob/wither/hurt1", "mob/wither/hurt2", "mob/wither/hurt3", "mob/wither/hurt4");
+        addSimple(EBSounds.FORFEIT_ZOMBIE_HORDE, "mob/evocation_illager/prepare_summon");
+
+        // ===== Misc Sounds =====
+        addSimple(EBSounds.MISC_BOOK_OPEN, "ebwizardry:book");
+        addSimple(EBSounds.MISC_DISCOVER_SPELL, "random/levelup");
+        addSimple(EBSounds.MISC_FREEZE, "ebwizardry:freeze");
+        addSimple(EBSounds.MISC_PAGE_TURN, "ebwizardry:page1", "ebwizardry:page2", "ebwizardry:page3");
+        addSimple(EBSounds.MISC_SPELL_FAIL, "random/fizz");
+    }
+}

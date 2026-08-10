@@ -1,5 +1,5 @@
 {
-  "type": "buff",
+  "type": "ebwizardry:buff",
   "base_properties": {
     "effect.minecraft.invisibility_duration": 600,
     "effect.minecraft.invisibility_strength": 0

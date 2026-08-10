@@ -1,5 +1,5 @@
 {
-  "type": "defence",
+  "type": "ebwizardry:defence",
   "base_properties": {
     "effect.ebwizardry.fireskin_duration": 600,
     "effect.ebwizardry.fireskin_strength": 0,

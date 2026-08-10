@@ -12,15 +12,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
 
-/**
- * Handle all the active sound loops with the {@link SoundLoop#onClientTick(EBClientTickEvent)}
- * Saves all the info for the three basic sounds (start, loop, end) and handle all the logic in the event
- * <br><br>
- * This class only works as a blueprint for situations that you need to play a sound loop, for example:
- * {@link ClientSpellSoundManager SpellSoundManager}, all the logic here is just for simplify
- * the process of doing a sound loop
- *
- */
+/// Handle all the active sound loops with the [SoundLoop#onClientTick(EBClientTickEvent)]
+/// Saves all the info for the three basic sounds (start, loop, end) and handle all the logic in the event
+///
+/// This class only works as a blueprint for situations that you need to play a sound loop, for example:
+/// [ClientSpellSoundManager], all the logic here is just for simplify
+/// the process of doing a sound loop
 public abstract class SoundLoop extends AbstractTickableSoundInstance {
     private static final Set<SoundLoop> activeLoops = new HashSet<>();
     private final SoundInstance startPrimer;
@@ -46,9 +43,7 @@ public abstract class SoundLoop extends AbstractTickableSoundInstance {
         Minecraft.getInstance().getSoundManager().playDelayed(loop.start, 2);
     }
 
-    /**
-     * Checks if there's an active loop matching the given predicate
-     */
+    /// Checks if there's an active loop matching the given predicate
     protected static boolean hasActiveLoopMatching(Predicate<SoundLoop> predicate) {
         return activeLoops.stream().anyMatch(predicate);
     }
@@ -59,11 +54,8 @@ public abstract class SoundLoop extends AbstractTickableSoundInstance {
         activeLoops.forEach(SoundLoop::tick);
     }
 
-    /**
-     * Used to know when the sound is ready to be looped, all the
-     * rest of the tick logic is handled in the client tick {@link SoundLoop#onClientTick(EBClientTickEvent)}
-     *
-     */
+    /// Used to know when the sound is ready to be looped, all the
+    /// rest of the tick logic is handled in the client tick [SoundLoop#onClientTick(EBClientTickEvent)]
     @Override
     public void tick() {
         if (!looping && !Minecraft.getInstance().getSoundManager().isActive(startPrimer)) {

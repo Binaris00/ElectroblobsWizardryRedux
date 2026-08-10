@@ -2,7 +2,7 @@ package com.binaris.wizardry.client.gui.elements;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.item.IManaItem;
-import com.binaris.wizardry.client.EBClientConstants;
+import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
@@ -25,7 +25,7 @@ public class TooltipElementText extends TooltipElement {
 
     @Override
     protected int getHeight(ItemStack stack) {
-        return getFontRenderer(stack).split(getText(stack), EBClientConstants.TOOLTIP_WIDTH - 2 * EBClientConstants.TOOLTIP_BORDER).size() * getFontRenderer(stack).lineHeight;
+        return getFontRenderer(stack).split(getText(stack), ArcaneWorkbenchScreen.TOOLTIP_WIDTH - 2 * ArcaneWorkbenchScreen.TOOLTIP_BORDER).size() * getFontRenderer(stack).lineHeight;
     }
 
     @Override

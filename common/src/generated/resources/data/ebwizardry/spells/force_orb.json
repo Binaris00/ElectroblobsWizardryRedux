@@ -1,5 +1,5 @@
 {
-  "type": "projectile",
+  "type": "ebwizardry:projectile",
   "base_properties": {
     "blast_radius": 4.0,
     "damage": 4.0,

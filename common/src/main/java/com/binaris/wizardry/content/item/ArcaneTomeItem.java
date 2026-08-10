@@ -18,15 +18,13 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/**
- * An item that helps you to upgrade wands to new spell tiers. It has no use other than being a crafting ingredient in the
- * wand upgrade system. The important thing is the possibility of saving the spell tier in the item itself or in the
- * item's NBT. This allows for more flexible things (like having custom spell tier on server side and using it here without
- * having to create a new item for each tier).
- *
- * @see RegistryUtils#createArcaneTome(SpellTier) SpellUtil.createArcaneTome(SpellTier)
- * @see RegistryUtils#getArcaneTome(SpellTier) SpellUtil.getArcaneTome(SpellTier)
- */
+/// An item that helps you to upgrade wands to new spell tiers. It has no use other than being a crafting ingredient in the
+/// wand upgrade system. The important thing is the possibility of saving the spell tier in the item itself or in the
+/// item's NBT. This allows for more flexible things (like having custom spell tier on server side and using it here without
+/// having to create a new item for each tier).
+///
+/// @see RegistryUtils#createArcaneTome(SpellTier) SpellUtil.createArcaneTome(SpellTier)
+/// @see RegistryUtils#getArcaneTome(SpellTier) SpellUtil.getArcaneTome(SpellTier)
 public class ArcaneTomeItem extends Item implements ITierValue {
     @Nullable SpellTier tier;
 

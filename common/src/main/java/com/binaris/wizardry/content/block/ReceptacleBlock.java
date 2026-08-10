@@ -4,7 +4,6 @@ import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.item.IElementValue;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.binaris.wizardry.content.blockentity.ReceptacleBlockEntity;
 import com.binaris.wizardry.core.platform.Services;
@@ -116,7 +115,7 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         Element element = entity.getElement();
         if (element == null) return;
 
-        Vec3 centre = GeometryUtil.getCentre(pos);
+        Vec3 centre = Vec3.atCenterOf(pos);
         int[] colors = element.getColors();
         ParticleBuilder.create(EBParticles.FLASH).pos(centre).scale(0.35f).time(48).color(colors[0]).spawn(level);
 

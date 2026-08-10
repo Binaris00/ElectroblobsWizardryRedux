@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.content.blockentity.ArcaneWorkbenchBlockEntity;
 import com.binaris.wizardry.content.item.*;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -134,7 +134,7 @@ public class ArcaneWorkbenchTestHandler {
         WizardArmorItem upgradedArmor = (WizardArmorItem) ctx.workbench.getItem(ArcaneWorkbenchMenu.CENTRE_SLOT).getItem();
 
         GST.assertTrue(helper, "Armor %s changed equipment slot after upgrade %s".formatted(armor, upgradeItem), upgradedArmor.getEquipmentSlot() == wizardArmorItem.getEquipmentSlot());
-        GST.assertTrue(helper, "Armor %s should be upgraded after applying upgrade item %s.".formatted(armor, upgradeItem), upgradedArmor.getWizardArmorType() != WizardArmorType.WIZARD);
+        GST.assertTrue(helper, "Armor %s should be upgraded after applying upgrade item %s.".formatted(armor, upgradeItem), upgradedArmor.getWizardArmorType() != WizardArmorTypes.WIZARD);
         GST.assertEmpty(helper, "Upgrade item should be consumed.", ctx.workbench.getItem(ArcaneWorkbenchMenu.UPGRADE_SLOT));
     }
 

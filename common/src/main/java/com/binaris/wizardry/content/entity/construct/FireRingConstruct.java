@@ -36,7 +36,7 @@ public class FireRingConstruct extends ScaledConstructEntity {
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(getBbWidth() / 2, this.getX(), this.getY(), this.getZ(), this.level());
 
         for (LivingEntity target : targets) {
-            if (this.isValidTarget(target) && !MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target)) {
+            if (this.isValidTarget(target)) {
                 Vec3 originalVec = target.getDeltaMovement();
                 target.setSecondsOnFire(Spells.RING_OF_FIRE.property(DefaultProperties.EFFECT_DURATION));
 

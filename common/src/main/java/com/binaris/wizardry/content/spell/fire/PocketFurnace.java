@@ -2,12 +2,12 @@ package com.binaris.wizardry.content.spell.fire;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -33,7 +33,7 @@ public class PocketFurnace extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        int usesLeft = (int) (property(ITEMS_SMELTED) * ctx.modifiers().get(SpellModifiers.POTENCY));
+        int usesLeft = (int) (ctx.modifiers().get(SpellModifiers.POTENCY, property(ITEMS_SMELTED)));
         ItemStack stack, result;
         boolean itemsSmelted = false;
 
@@ -81,7 +81,7 @@ public class PocketFurnace extends Spell {
 
                 if (stack.getCount() <= usesLeft) {
                     ItemStack stack2 = new ItemStack(result.getItem(), stack.getCount());
-                    if (InventoryUtil.doesPlayerHaveItem(ctx.caster(), result.getItem())) {
+                    if (EntityUtil.doesPlayerHaveItem(ctx.caster(), result.getItem())) {
                         ctx.caster().addItem(stack2);
                         ctx.caster().getInventory().setItem(i, ItemStack.EMPTY);
                     } else {
@@ -118,7 +118,7 @@ public class PocketFurnace extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 30, 0, 40)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.FIRE, SpellTypes.UTILITY, SpellAction.IMBUE, 30, 0, 40)
                 .add(ITEMS_SMELTED, 5)
                 .build();
     }

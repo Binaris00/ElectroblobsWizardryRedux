@@ -1,11 +1,11 @@
 package com.binaris.wizardry.content.spell.earth;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
+import com.binaris.wizardry.api.content.util.VecUtils;
 import com.binaris.wizardry.content.entity.construct.BoulderConstruct;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.ConstructSpell;
@@ -26,7 +26,7 @@ public class Boulder extends ConstructSpell<BoulderConstruct> {
     @Override
     protected void addConstructExtras(CastContext ctx, BoulderConstruct construct, Direction side) {
         float speed = property(SPEED);
-        Vec3 direction = ctx.caster() == null ? new Vec3(side.step()) : GeometryUtil.horizontalise(ctx.caster().getLookAngle());
+        Vec3 direction = ctx.caster() == null ? new Vec3(side.step()) : VecUtils.flattenToHorizontal(ctx.caster().getLookAngle());
         construct.setHorizontalVelocity(direction.x * speed, direction.z * speed);
         construct.setYRot(ctx.caster() == null ? side.toYRot() : ctx.caster().getYRot());
         double yOffset = ctx.caster() == null ? 0 : 1.6;
@@ -36,7 +36,7 @@ public class Boulder extends ConstructSpell<BoulderConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.ATTACK, SpellAction.SUMMON, 125, 25, 350)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellTypes.ATTACK, SpellAction.SUMMON, 125, 25, 350)
                 .add(DefaultProperties.DURATION, 200)
                 .add(DefaultProperties.DAMAGE, 10F)
                 .add(SPEED)

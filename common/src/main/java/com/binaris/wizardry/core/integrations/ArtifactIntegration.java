@@ -8,38 +8,37 @@ import net.minecraft.world.item.Rarity;
 
 import java.util.List;
 
+/// Service interface for querying and creating artifact items through an equipment-slot mod
+/// (Accessories, Curios, or Trinkets) or a vanilla fallback.
+///
+/// implementations exist across common, Fabric, and Forge modules — one for each supported
+/// mod plus a {@code VanillaArtifactIntegration} fallback that scans the hotbar. {@code ArtifactChannel}
+/// selects the active implementation at runtime based on which mods are loaded. The interface
+/// provides methods to create artifact {@code Item} instances, retrieve all equipped artifacts
+/// for event dispatching, and check whether a specific item is currently equipped by a player.
 public interface ArtifactIntegration {
-
-    /**
-     * Check if the Artifact dependency is loaded.
-     *
-     * @return true if it's loaded, false otherwise
-     */
+    /// Check if the Artifact dependency is loaded.
+    ///
+    /// @return true if it's loaded, false otherwise
     boolean isLoaded();
 
-    /**
-     * Creates an artifact item base on the artifact dependency if loaded.
-     *
-     * @param rarity the rarity of the artifact item
-     * @param effect the artifact effect (event quick access)
-     * @return the created artifact item
-     */
+    /// Creates an artifact item base on the artifact dependency if loaded.
+    ///
+    /// @param rarity the rarity of the artifact item
+    /// @param effect the artifact effect (event quick access)
+    /// @return the created artifact item
     Item createArtifact(Rarity rarity, IArtifactEffect effect);
 
-    /**
-     * Retrieves a list of all equipped items from the artifact dependency if loaded.
-     *
-     * @param player the player whose equipped items are to be retrieved
-     * @return a list of equipped item stacks
-     */
+    /// Retrieves a list of all equipped items from the artifact dependency if loaded.
+    ///
+    /// @param player the player whose equipped items are to be retrieved
+    /// @return a list of equipped item stacks
     List<ItemStack> getEquippedArtifacts(Player player);
 
-    /**
-     * Checks if a specific item is equipped in the artifact dependency if loaded.
-     *
-     * @param player the player to check
-     * @param item   the item to check for
-     * @return true if the item is equipped, false otherwise
-     */
+    /// Checks if a specific item is equipped in the artifact dependency if loaded.
+    ///
+    /// @param player the player to check
+    /// @param item   the item to check for
+    /// @return true if the item is equipped, false otherwise
     boolean isEquipped(Player player, Item item);
 }

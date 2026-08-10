@@ -2,7 +2,6 @@ package com.binaris.wizardry.client.gui.elements;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.util.CastItemDataHelper;
-import com.binaris.wizardry.client.EBClientConstants;
 import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.resources.language.I18n;
@@ -17,7 +16,7 @@ public class TooltipElementUpgradeList extends TooltipElementText {
 
     @Override
     protected int getHeight(ItemStack stack) {
-        return super.getHeight(stack) + EBClientConstants.LINE_SPACING_NARROW;
+        return super.getHeight(stack) + ArcaneWorkbenchScreen.LINE_SPACING_NARROW;
     }
 
     @Override

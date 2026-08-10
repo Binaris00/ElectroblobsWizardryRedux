@@ -47,32 +47,33 @@ public final class CastCommand {
         ServerPlayer player = source.getPlayer();
         SpellModifiers modifiers = new SpellModifiers();
 
-        if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.COMMAND, spell, player, modifiers))) {
+        PlayerCastContext ctx = new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers);
+        if (WizardryEventBus.fireEvent(new SpellCastEvent.Pre(SpellCastEvent.Sources.COMMAND, spell, ctx))) {
             source.sendFailure(Component.translatable("commands.ebwizardry.cast.failure" + spell.getDescriptionId()));
             return 0;
         }
 
         if (!spell.isInstantCast()) {
-            return handleContinuousSpell(source, spell, player, modifiers);
+            return handleContinuousSpell(source, spell, ctx);
         }
 
-        return handleInstantSpell(source, spell, player, modifiers);
+        return handleInstantSpell(source, spell, ctx);
     }
 
-    private static int handleContinuousSpell(CommandSourceStack source, Spell spell, ServerPlayer player, SpellModifiers modifiers) {
-        CastCommandData data = Services.OBJECT_DATA.getCastCommandData(player);
+    private static int handleContinuousSpell(CommandSourceStack source, Spell spell, PlayerCastContext ctx) {
+        CastCommandData data = Services.OBJECT_DATA.getCastCommandData(ctx.caster());
         if (data.isCommandCasting()) {
             data.stopCastingContinuousSpell();
         } else {
-            data.startCastingContinuousSpell(spell, modifiers, DEFAULT_CASTING_DURATION);
+            data.startCastingContinuousSpell(spell, ctx.modifiers(), DEFAULT_CASTING_DURATION);
             source.sendSystemMessage(Component.translatable("commands.ebwizardry.cast.success_continuous", spell.getDescriptionId()));
         }
         return 1;
     }
 
-    private static int handleInstantSpell(CommandSourceStack source, Spell spell, ServerPlayer player, SpellModifiers modifiers) {
-        if (spell.cast(new PlayerCastContext(player.level(), player, InteractionHand.MAIN_HAND, 0, modifiers))) {
-            WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.COMMAND, spell, player, modifiers));
+    private static int handleInstantSpell(CommandSourceStack source, Spell spell, PlayerCastContext ctx) {
+        if (spell.cast(ctx)) {
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.COMMAND, spell, ctx));
             source.sendSystemMessage(Component.translatable("commands.ebwizardry.cast.success", spell.getDescriptionFormatted()));
         }
         return 0;

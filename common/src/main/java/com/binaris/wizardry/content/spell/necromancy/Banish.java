@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -32,7 +32,7 @@ public class Banish extends RaySpell {
         if (entityHit.getEntity() instanceof LivingEntity target) {
             double minRadius = this.property(MINIMUM_TELEPORT);
             double maxRadius = this.property(MAX_TELEPORT);
-            double radius = (minRadius + ctx.world().random.nextDouble() * maxRadius - minRadius) * ctx.modifiers().get(SpellModifiers.BLAST);
+            double radius = (minRadius + ctx.world().random.nextDouble() * maxRadius - minRadius) * ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
 
             teleport(target, ctx.world(), radius);
         }
@@ -88,7 +88,7 @@ public class Banish extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 75, 0, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellTypes.ATTACK, SpellAction.POINT, 75, 0, 40)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(MINIMUM_TELEPORT)
                 .add(MAX_TELEPORT)

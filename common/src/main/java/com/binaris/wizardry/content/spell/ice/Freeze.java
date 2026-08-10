@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -40,17 +40,16 @@ public class Freeze extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (!(entityHit.getEntity() instanceof LivingEntity target)
-                || MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target)) return false;
+        if (!(entityHit.getEntity() instanceof LivingEntity target)) return false;
 
         if (target instanceof Blaze || target instanceof MagmaCube) {
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST) : target.damageSources().magic();
-            target.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
+            target.hurt(source, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE)));
         }
 
         if (ctx.world().isClientSide) return true;
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
-                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
+                (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
                 property(DefaultProperties.EFFECT_STRENGTH)));
         if (target.isOnFire()) target.clearFire();
         return true;
@@ -72,7 +71,7 @@ public class Freeze extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 5, 0, 10)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.ICE, SpellTypes.ATTACK, SpellAction.POINT, 5, 0, 10)
                 .add(DefaultProperties.RANGE, 10f)
                 .add(DefaultProperties.DAMAGE, 3f)
                 .add(DefaultProperties.EFFECT_DURATION, 200)

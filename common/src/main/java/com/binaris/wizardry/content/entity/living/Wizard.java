@@ -2,7 +2,8 @@ package com.binaris.wizardry.content.entity.living;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
-import com.binaris.wizardry.api.content.event.EBDiscoverSpellEvent;
+import com.binaris.wizardry.api.content.event.DiscoverSpellEvent;
+import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.EntityUtil;
@@ -10,7 +11,7 @@ import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.content.entity.goal.WizardLookAtTradePlayer;
 import com.binaris.wizardry.content.entity.goal.WizardTradeGoal;
 import com.binaris.wizardry.content.item.SpellBookItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.binaris.wizardry.core.AllyDesignation;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
@@ -45,10 +46,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * This Wizard class is only concerned with trading behavior. Spell casting or other AI is handled in the
- * AbstractWizard superclass.
- */
+/// This Wizard class is only concerned with trading behavior. Spell casting or other AI is handled in the
+/// AbstractWizard superclass.
 public class Wizard extends AbstractWizard implements Npc, Merchant {
     private static final int[] XP_PER_LEVEL = new int[]{0, 10, 70, 150, 250};
     private static final int MAX_LEVEL = 5;
@@ -135,19 +134,19 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
-        if (this.trades != null) nbt.put("trades", trades.createTag());
-        nbt.putInt("wizardXp", this.wizardXp);
-        nbt.putInt("wizardLevel", this.wizardLevel);
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
+        if (this.trades != null) compoundTag.put("trades", trades.createTag());
+        compoundTag.putInt("wizardXp", this.wizardXp);
+        compoundTag.putInt("wizardLevel", this.wizardLevel);
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        if (nbt.contains("trades")) this.trades = new MerchantOffers(nbt.getCompound("trades"));
-        this.wizardXp = nbt.getInt("wizardXp");
-        this.wizardLevel = nbt.getInt("wizardLevel");
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        if (compoundTag.contains("trades")) this.trades = new MerchantOffers(compoundTag.getCompound("trades"));
+        this.wizardXp = compoundTag.getInt("wizardXp");
+        this.wizardLevel = compoundTag.getInt("wizardLevel");
         if (this.wizardLevel == 0) this.wizardLevel = 1;
     }
 
@@ -181,7 +180,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
 
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(this.getTradingPlayer());
 
-        if (WizardryEventBus.getInstance().fire(new EBDiscoverSpellEvent(this.getTradingPlayer(), spell, EBDiscoverSpellEvent.Source.PURCHASE)))
+        if (WizardryEventBus.fireEvent(new DiscoverSpellEvent(this.getTradingPlayer(), spell, DiscoverSpellEvent.Sources.PURCHASE)))
             return;
 
         if (!level().isClientSide) {
@@ -348,7 +347,7 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         possibleTrades.add(createTrade(
                 new ItemStack(Items.GOLD_INGOT, 13 + random.nextInt(4)),
                 new ItemStack(EBItems.MAGIC_CRYSTAL.get(), 8 + random.nextInt(3)),
-                new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, this.getElement(), this.random)),
+                new ItemStack(RegistryUtils.getArmor(WizardArmorTypes.WIZARD, this.getElement(), this.random)),
                 3, 20, 0.2f
         ));
 
@@ -395,7 +394,9 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
     private MerchantOffer createSpellTrade(SpellTier tier, int goldAmount, int crystalAmount, List<Spell> usedSpells) {
-        List<Spell> spells = RegistryUtils.getSpells((s) -> s.getTier() == tier && !usedSpells.contains(s));
+        Element element = this.getElement();
+        List<Spell> spells = RegistryUtils.getSpells((s) -> s.getTier() == tier && !usedSpells.contains(s)
+                && (element == null || element == Elements.MAGIC || s.getElement() == element));
         if (spells.isEmpty()) return null;
 
         Spell spell = spells.get(random.nextInt(spells.size()));

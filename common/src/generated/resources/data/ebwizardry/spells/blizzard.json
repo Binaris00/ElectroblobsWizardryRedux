@@ -1,5 +1,5 @@
 {
-  "type": "construct",
+  "type": "ebwizardry:construct",
   "base_properties": {
     "duration": 600,
     "effect_radius": 3,

@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
@@ -53,7 +53,7 @@ public class IceAge extends AreaEffectSpell {
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
-                (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
+                (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
                 property(DefaultProperties.EFFECT_STRENGTH)));
 
         target.playSound(EBSounds.MISC_FREEZE.get(), 1.0F, ctx.world().random.nextFloat() * 0.4F + 0.8F);
@@ -96,7 +96,7 @@ public class IceAge extends AreaEffectSpell {
     private void freezeNearbyBlocks(Level world, Vec3 origin, @Nullable LivingEntity caster, SpellModifiers modifiers) {
         if (world.isClientSide() || !EntityUtil.canDamageBlocks(caster, world)) return;
 
-        double radius = property(DefaultProperties.EFFECT_RADIUS).floatValue() * modifiers.get(SpellModifiers.BLAST);
+        double radius = modifiers.get(SpellModifiers.BLAST, property(DefaultProperties.EFFECT_RADIUS).floatValue());
 
         for (int i = -(int) radius; i <= (int) radius; i++) {
             for (int j = -(int) radius; j <= (int) radius; j++) {
@@ -117,7 +117,7 @@ public class IceAge extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.ICE, SpellType.ATTACK, SpellAction.POINT_DOWN, 70, 20, 250)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.ICE, SpellTypes.ATTACK, SpellAction.POINT_DOWN, 70, 20, 250)
                 .add(DefaultProperties.EFFECT_RADIUS, 7)
                 .add(FREEZE_DURATION)
                 .add(DefaultProperties.EFFECT_DURATION, 400)

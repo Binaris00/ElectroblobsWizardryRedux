@@ -3,7 +3,7 @@ package com.binaris.wizardry.content.spell.earth;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -38,7 +38,7 @@ public class Flight extends Spell {
 
         if (ctx.castingTicks() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
-        float potencyModifier = ctx.modifiers().get(SpellModifiers.POTENCY);
+        float potencyModifier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
         float speed = property(DefaultProperties.SPEED) * potencyModifier;
         float acceleration = property(DefaultProperties.ACCELERATION) * potencyModifier;
 
@@ -100,7 +100,7 @@ public class Flight extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.UTILITY, SpellAction.NONE, 10, 0, 0)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellTypes.UTILITY, SpellAction.NONE, 10, 0, 0)
                 .add(DefaultProperties.ACCELERATION, 0.05F)
                 .add(DefaultProperties.SPEED, 0.5F)
                 .build();

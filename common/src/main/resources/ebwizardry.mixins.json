@@ -36,6 +36,7 @@
     "HumanoidModelMixin",
     "MinecraftMixin",
     "client.ConjureBarMixin",
+    "client.GuiMixin",
     "client.LocalPlayerMixin",
     "client.MouseHandlerMixin"
   ],

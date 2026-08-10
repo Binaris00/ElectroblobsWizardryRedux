@@ -5,11 +5,8 @@ import com.binaris.wizardry.core.mixin.MinecraftMixin;
 import net.minecraft.client.Minecraft;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * This applies to loaders with the Mixin
- * {@link MinecraftMixin#EBWIZARDRY$clientTick(CallbackInfo) MinecraftMixin#EBWIZARDRY$clientTick}
- *
- */
+/// This applies to loaders with the Mixin
+/// [`MinecraftMixin#EBWIZARDRY$clientTick`][MinecraftMixin#EBWIZARDRY$clientTick(CallbackInfo)]
 public final class EBClientTickEvent extends WizardryEvent {
     Minecraft minecraft;
 
