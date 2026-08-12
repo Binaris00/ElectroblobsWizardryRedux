@@ -157,9 +157,9 @@ public class ConstructSpell<T extends MagicConstructEntity> extends Spell {
             if (ctx.caster() != null) construct.setCaster(ctx.caster());
 
             construct.lifetime = permanent ? -1 : (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION)));
-            construct.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
+            construct.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
             if (construct instanceof ScaledConstructEntity scaledConstruct)
-                scaledConstruct.setSizeMultiplier(ctx.modifiers().get(SpellModifiers.BLAST, 1.0f));
+                scaledConstruct.setSizeMultiplier(ctx.modifiers().getFactor(SpellModifiers.BLAST));
             addConstructExtras(ctx, construct, side);
 
             if (!allowOverlap && !ctx.world().getEntitiesOfClass(construct.getClass(), construct.getBoundingBox()).isEmpty())

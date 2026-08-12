@@ -41,7 +41,7 @@ public class SpeedTime extends Spell {
         Player caster = ctx.caster();
         boolean didAnything = false;
 
-        float blastMod = ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
+        float blastMod = ctx.modifiers().getFactor(SpellModifiers.BLAST);
         // Advance world time on server
         if (!world.isClientSide) {
             long advance = (long) (property(TIME_INCREMENT) * blastMod);
@@ -50,7 +50,7 @@ public class SpeedTime extends Spell {
         }
 
         double radius = property(DefaultProperties.EFFECT_RADIUS) * blastMod;
-        int potencyLevel = (int) (((ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f) * 2f + 1f)
+        int potencyLevel = (int) (((ctx.modifiers().getFactor(SpellModifiers.POTENCY) - 1.0f) * 2f + 1f)
                 * property(EXTRA_TICKS));
 
         // Advance non-player entities' ticks within radius

@@ -34,7 +34,7 @@ public class Wither extends RaySpell {
             target.hurt(source, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE)));
             target.addEffect(new MobEffectInstance(MobEffects.WITHER,
                     (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
-                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f))));
+                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().getFactor(SpellModifiers.POTENCY))));
         }
 
         return true;

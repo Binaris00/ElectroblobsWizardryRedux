@@ -7,6 +7,7 @@ import com.binaris.wizardry.api.content.event.EBLivingTick;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
+import com.binaris.wizardry.api.content.util.CastItemUtils;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.core.config.EBClientConfig;
 import com.binaris.wizardry.core.platform.Services;
@@ -307,8 +308,7 @@ public final class SpellGUIDisplay {
             throw new IllegalArgumentException("The given stack must contain an ISpellCastingItem!");
 
         Spell spell = castItem.getCurrentSpell(wand);
-        int chargeup = spell.getChargeUp();
-        chargeup = (int) Services.OBJECT_DATA.getWizardData(player).getSpellModifiers().get(SpellModifiers.CHARGEUP, chargeup);
+        int chargeup = CastItemUtils.calcCharge(spell, Services.OBJECT_DATA.getWizardData(player).getSpellModifiers());
         if (chargeup <= 0) return;
         if (player.getTicksUsingItem() == 0) return;
 

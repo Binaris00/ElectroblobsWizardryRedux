@@ -38,7 +38,7 @@ public class Poison extends RaySpell {
             livingTarget.hurt(source, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE)));
             livingTarget.addEffect(new MobEffectInstance(MobEffects.POISON,
                     (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
-                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f))));
+                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().getFactor(SpellModifiers.POTENCY))));
         }
         return true;
     }

@@ -38,7 +38,7 @@ public class Flight extends Spell {
 
         if (ctx.castingTicks() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
-        float potencyModifier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
+        float potencyModifier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
         float speed = property(DefaultProperties.SPEED) * potencyModifier;
         float acceleration = property(DefaultProperties.ACCELERATION) * potencyModifier;
 

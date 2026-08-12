@@ -62,7 +62,7 @@ public class LightningPulse extends Spell {
         if (ctx.world().isClientSide()) {
             ParticleBuilder.create(EBParticles.LIGHTNING_PULSE)
                     .pos(ctx.caster().getX(), ctx.caster().getY() + ANTI_Z_FIGHTING_OFFSET, ctx.caster().getZ())
-                    .scale(ctx.modifiers().get(SpellModifiers.BLAST, 1.0f))
+                    .scale(ctx.modifiers().getFactor(SpellModifiers.BLAST))
                     .spawn(ctx.world());
         }
 

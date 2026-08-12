@@ -193,9 +193,9 @@ public class MinionSpell<T extends Mob> extends Spell {
             data.setSearchNearbyTargets(searchNearbyTargets);
 
             if (minion.getAttribute(Attributes.ATTACK_DAMAGE) != null)
-                minion.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(SpellModifiers.POTENCY, ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                minion.getAttribute(Attributes.ATTACK_DAMAGE).addPermanentModifier(new AttributeModifier(SpellModifiers.POTENCY, ctx.modifiers().getFactor(SpellModifiers.POTENCY) - 1.0f, AttributeModifier.Operation.MULTIPLY_TOTAL));
             if (minion.getAttribute(Attributes.MAX_HEALTH) != null)
-                minion.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(SpellModifiers.HEALTH_MODIFIER, ctx.modifiers().get(SpellModifiers.HEALTH_MODIFIER, 1.0f) - 1.0f, AttributeModifier.Operation.MULTIPLY_TOTAL));
+                minion.getAttribute(Attributes.MAX_HEALTH).addPermanentModifier(new AttributeModifier(SpellModifiers.HEALTH_MODIFIER, ctx.modifiers().getFactor(SpellModifiers.HEALTH_MODIFIER) - 1.0f, AttributeModifier.Operation.MULTIPLY_TOTAL));
 
             minion.setHealth(minion.getMaxHealth());
             minion.finalizeSpawn((ServerLevelAccessor) ctx.world(), ctx.world().getCurrentDifficultyAt(pos), MobSpawnType.MOB_SUMMONED, null, null);

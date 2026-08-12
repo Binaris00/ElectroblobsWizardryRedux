@@ -33,7 +33,7 @@ public class FontOfMana extends AreaEffectSpell {
         if (!(target instanceof Player)) return true;
 
         int duration = (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION)));
-        int strength = (int) (property(DefaultProperties.EFFECT_STRENGTH) + (ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f) * 2f);
+        int strength = (int) (property(DefaultProperties.EFFECT_STRENGTH) + (ctx.modifiers().getFactor(SpellModifiers.POTENCY) - 1.0f) * 2f);
 
         // Apply the new Font of Mana mob effect
         if (EBMobEffects.FONT_OF_MANA.get() != null) {

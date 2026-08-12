@@ -42,7 +42,7 @@ public class Detonate extends RaySpell {
 
             target.hurt(source, Math.max(property(DefaultProperties.DAMAGE) -
                     (float) target.distanceToSqr(blockHit.getBlockPos().getX() + 0.5, blockHit.getBlockPos().getY() + 0.5,
-                            blockHit.getBlockPos().getZ() + 0.5) * 4, 0) * ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f));
+                            blockHit.getBlockPos().getZ() + 0.5) * 4, 0) * ctx.modifiers().getFactor(SpellModifiers.POTENCY));
         }
         return true;
     }
