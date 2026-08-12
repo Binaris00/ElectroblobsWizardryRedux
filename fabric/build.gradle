@@ -122,6 +122,9 @@ publishMods {
         projectId = "1405790"
         minecraftVersions.add("1.20.1")
 
+        client = true
+        server = true
+
         requires { slug = "fabric-api" }
         optional { slug = "accessories" }
         optional { slug = "trinkets" }
@@ -131,6 +134,8 @@ publishMods {
         accessToken = providers.environmentVariable("MODRINTH_TOKEN")
         projectId = "s5qOekOc"
         minecraftVersions.add("1.20.1")
+
+        environment = CLIENT_AND_SERVER
 
         requires { slug = "fabric-api" }
         optional { slug = "accessories" }
