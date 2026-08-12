@@ -34,7 +34,7 @@ public class FlamingWeapon extends Spell {
 
             ImbuementEnchantData data = Services.OBJECT_DATA.getImbuementData(stack);
             if (data == null) continue;
-            int level = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) == 1.0f ? 1 : (int) ((ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get() + 0.5f);
+            int level = ctx.modifiers().getFactor(SpellModifiers.POTENCY) == 1.0f ? 1 : (int) ((ctx.modifiers().getFactor(SpellModifiers.POTENCY) - 1.0f) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get() + 0.5f);
             long duration = (long) (ctx.world().getGameTime() + (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))));
 
             if (stack.getItem() instanceof SwordItem) {

@@ -93,10 +93,10 @@ public final class CastItemUtils {
     public static SpellModifiers calculateModifiers(ItemStack stack, Player player, Spell spell) {
         SpellModifiers modifiers = new SpellModifiers();
 
-        applyModifierUpgrade(stack, modifiers, EBItems.RANGE_UPGRADE, SpellModifiers.RANGE, EBServerConfig.RANGE_INCREASE_PER_LEVEL.get(), false);
-        applyModifierUpgrade(stack, modifiers, EBItems.DURATION_UPGRADE, SpellModifiers.DURATION, EBServerConfig.DURATION_INCREASE_PER_LEVEL.get(), false);
-        applyModifierUpgrade(stack, modifiers, EBItems.BLAST_UPGRADE, SpellModifiers.BLAST, EBServerConfig.BLAST_RADIUS_INCREASE_PER_LEVEL.get(), false);
-        applyModifierUpgrade(stack, modifiers, EBItems.COOLDOWN_UPGRADE, SpellModifiers.COOLDOWN, EBServerConfig.COOLDOWN_REDUCTION_PER_LEVEL.get(), true);
+        applyModifierUpgrade(stack, modifiers, EBItems.RANGE_UPGRADE, SpellModifiers.RANGE, EBServerConfig.RANGE_INCREASE_PER_LEVEL.get());
+        applyModifierUpgrade(stack, modifiers, EBItems.DURATION_UPGRADE, SpellModifiers.DURATION, EBServerConfig.DURATION_INCREASE_PER_LEVEL.get());
+        applyModifierUpgrade(stack, modifiers, EBItems.BLAST_UPGRADE, SpellModifiers.BLAST, EBServerConfig.BLAST_RADIUS_INCREASE_PER_LEVEL.get());
+        applyModifierUpgrade(stack, modifiers, EBItems.COOLDOWN_UPGRADE, SpellModifiers.COOLDOWN, -EBServerConfig.COOLDOWN_REDUCTION_PER_LEVEL.get());
 
         SpellManagerData data = Services.OBJECT_DATA.getSpellManagerData(player);
         WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
@@ -104,7 +104,7 @@ public final class CastItemUtils {
 
         if (stack.getItem() instanceof IElementValue elementValue && stack.getItem() instanceof ITierValue tierValue) {
             if (elementValue.getElement() == spell.getElement()) {
-                modifiers.set(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).getLevel() + 1) * EBServerConfig.POTENCY_INCREASE_PER_TIER.get());
+                modifiers.multiplyTotal(SpellModifiers.POTENCY, 1.0f + (tierValue.getTier(stack).getLevel() + 1) * EBServerConfig.POTENCY_INCREASE_PER_TIER.get());
                 progressionModifier *= 1.2f;
             }
 
@@ -113,24 +113,23 @@ public final class CastItemUtils {
 
         if (!data.hasSpellBeenDiscovered(spell)) progressionModifier *= 5f;
 
-        modifiers.set(SpellModifiers.PROGRESSION, progressionModifier);
+        modifiers.multiplyTotal(SpellModifiers.PROGRESSION, progressionModifier);
         return modifiers;
     }
 
     /// Applies a single upgrade modifier to the given [SpellModifiers] if the upgrade level is greater than 0.
     ///
-    /// The resulting modifier value is `1.0 + level * rate` for normal upgrades,
-    /// or `1.0 - level * rate` for inverse upgrades (e.g. cooldown reduction).
+    /// The resulting modifier value is `1.0 + level * rate` for normal upgrades, or `1.0 - level * rate` when the rate
+    /// is passed as negative (e.g. cooldown reduction).
     ///
-    /// @param stack       The ItemStack to read the upgrade level from.
-    /// @param modifiers   The modifiers object to apply the upgrade to.
-    /// @param upgradeItem The upgrade item to check the level of.
-    /// @param modifier    The modifier key to set.
+    /// @param stack        The ItemStack to read the upgrade level from.
+    /// @param modifiers    The modifiers object to apply the upgrade to.
+    /// @param upgradeItem  The upgrade item to check the level of.
+    /// @param modifier     The modifier key to set.
     /// @param ratePerLevel The rate of change per upgrade level.
-    /// @param inverse     If `true`, the modifier decreases with level (e.g. cooldown reduction).
-    private static void applyModifierUpgrade(ItemStack stack, SpellModifiers modifiers, Supplier<? extends Item> upgradeItem, String modifier, float ratePerLevel, boolean inverse) {
+    private static void applyModifierUpgrade(ItemStack stack, SpellModifiers modifiers, Supplier<? extends Item> upgradeItem, String modifier, float ratePerLevel) {
         int level = CastItemDataHelper.getUpgradeLevel(stack, upgradeItem.get());
-        if (level > 0) modifiers.set(modifier, 1.0f + level * (inverse ? -ratePerLevel : ratePerLevel));
+        if (level > 0) modifiers.multiplyTotal(modifier, 1.0f + level * ratePerLevel);
     }
 
     /// Calculates the accumulated mana cost for a continuous spell based on the casting ticks.

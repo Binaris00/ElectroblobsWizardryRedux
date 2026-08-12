@@ -11,9 +11,15 @@ import java.util.Set;
 /// a mutable object that is intended to be modified rather than replaced, for example, inside the `SpellCastEvent.Pre`
 /// you would use this object to modify specific parts of the spell ("modifiers") rather making some hacky replacement.
 ///
-/// If you try to add a new modifier that's not on the original mod (e.g. custom wand upgrades/modifiers) make sure to
-/// mark them as needing syncing if you want the client to be aware of them and of course make the needed implementations
-/// on your spell casting code to make use of them.
+/// Values are stored as direct factors relative to a base of 1.0: `add` adds a flat amount, while `multiply` and
+/// `multiplyTotal` multiply by the factor they receive (1.3 = +30%, 0.7 = −30%). `set` overrides the base value read
+/// by [#get(String, float)].
+///
+/// The order of operation is as follows (the entries are sorted by operation type before applying):
+/// 1. Base value (float) (when you use [#get(String, float)])
+/// 2. Set values (when you use [#set(String, float)])
+/// 3. Additions (when you use [#add(String, float)])
+/// 4. Multiplies (when you use [#multiply(String, float)] or [#multiplyTotal(String, float)])
 @SuppressWarnings("unused")
 public final class SpellModifiers {
     /// Constant string identifier for the potency modifier.
@@ -55,6 +61,11 @@ public final class SpellModifiers {
         return instance == null ? value : instance.get(value);
     }
 
+    public float getFactor(String key) {
+        ModifiersInstance instance = modifiersMap.get(key);
+        return instance == null ? 1.0f : instance.get(1.0F);
+    }
+
     public SpellModifiers set(String key, float multiplier) {
         ModifiersInstance instance = modifiersMap.computeIfAbsent(key, k -> new ModifiersInstance());
         instance.setBaseValue(multiplier);
@@ -69,7 +80,7 @@ public final class SpellModifiers {
 
     public SpellModifiers multiply(String key, float factor) {
         ModifiersInstance instance = modifiersMap.computeIfAbsent(key, k -> new ModifiersInstance());
-        instance.addModifier(Operation.MULTIPLY_TOTAL, factor - 1.0f);
+        instance.addModifier(Operation.MULTIPLY_TOTAL, factor);
         return this;
     }
 
@@ -85,19 +96,20 @@ public final class SpellModifiers {
         return this;
     }
 
-    /// Combines this [SpellModifiers] instance with another by multiplying their corresponding modifier values.
-    /// If a modifier exists in either instance, it will be included in the result. The syncing status of each modifier
-    /// is preserved if it exists in either instance.
+    /// Combines the modifiers of another [SpellModifiers] instance by merging its modifier lists into this instance.
+    /// For each key, the operations of `modifiers` are added first, followed by the ones already present in `this`,
+    /// and the combined list is sorted by operation type (additions first, then multiplies).
     ///
-    /// @param modifiers The other [SpellModifiers] instance to combine with.
-    /// @return This [SpellModifiers] instance after combining.
+    /// @param modifiers the other instance to combine
+    /// @return this instance, with the other's modifiers merged in
     public SpellModifiers combine(SpellModifiers modifiers) {
         Set<String> allKeys = new HashSet<>(this.modifiersMap.keySet());
         allKeys.addAll(modifiers.modifiersMap.keySet());
         for (String key : allKeys) {
-            float product = this.get(key, 1.0F) * modifiers.get(key, 1.0F);
             ModifiersInstance fresh = new ModifiersInstance();
-            fresh.setBaseValue(product);
+            fresh.merge(modifiers.modifiersMap.get(key));
+            fresh.merge(this.modifiersMap.get(key));
+            fresh.sortByOperation();
             this.modifiersMap.put(key, fresh);
         }
         return this;
@@ -106,7 +118,7 @@ public final class SpellModifiers {
     @Deprecated
     public float get(String key) {
         ModifiersInstance instance = modifiersMap.get(key);
-        return instance == null ? 1 : instance.get();
+        return instance == null ? 1 : instance.get(1.0F);
     }
 
     public static SpellModifiers fromTag(CompoundTag tag) {

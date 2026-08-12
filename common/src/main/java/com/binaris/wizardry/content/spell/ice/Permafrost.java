@@ -37,7 +37,7 @@ public class Permafrost extends RaySpell {
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         boolean flag = false;
         if (!ctx.world().isClientSide) {
-            int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST, 1.0f) - 1.0f) / EBServerConfig.BLAST_RADIUS_INCREASE_PER_LEVEL.get() + 0.5f);
+            int blastUpgradeCount = (int) ((ctx.modifiers().getFactor(SpellModifiers.BLAST) - 1.0f) / EBServerConfig.BLAST_RADIUS_INCREASE_PER_LEVEL.get() + 0.5f);
             float radius = 0.5f + 0.73f * blastUpgradeCount;
             int duration = (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION)));
             List<BlockPos> sphere = BlockUtil.getBlockSphere(blockHit.getBlockPos().above(), radius);

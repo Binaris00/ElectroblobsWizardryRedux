@@ -30,7 +30,7 @@ public class Containment extends RaySpell {
         if (entityHit.getEntity() instanceof LivingEntity target) {
             target.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(),
                     (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
-                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f))));
+                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().getFactor(SpellModifiers.POTENCY))));
         }
 
         return true;

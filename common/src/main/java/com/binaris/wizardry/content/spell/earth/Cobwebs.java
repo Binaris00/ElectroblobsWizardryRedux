@@ -28,7 +28,7 @@ public class Cobwebs extends RaySpell {
         boolean flag = false;
         BlockPos pos = blockHit.getBlockPos().relative(blockHit.getDirection());
 
-        int blastUpgradeCount = (int) ((ctx.modifiers().get(SpellModifiers.BLAST, 1.0f) - 1.0f) / EBServerConfig.RANGE_INCREASE_PER_LEVEL.get() + 0.5f);
+        int blastUpgradeCount = (int) ((ctx.modifiers().getFactor(SpellModifiers.BLAST) - 1.0f) / EBServerConfig.RANGE_INCREASE_PER_LEVEL.get() + 0.5f);
 
         float radius = property(DefaultProperties.BLAST_RADIUS) + 0.73f * blastUpgradeCount;
 

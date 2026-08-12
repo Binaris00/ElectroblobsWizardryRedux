@@ -49,7 +49,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
         if (!ctx.world().isClientSide) {
             T arrow = arrowFactory.apply(ctx.world());
             arrow.aim(ctx.caster(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight()) - (float) MagicArrowEntity.LAUNCH_Y_OFFSET);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
+            arrow.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }
@@ -66,7 +66,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             T arrow = arrowFactory.apply(ctx.world());
             int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
             arrow.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, arrow, ctx.caster().getEyeHeight() - (float) MagicArrowEntity.LAUNCH_Y_OFFSET), aimingError);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
+            arrow.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }
@@ -84,7 +84,7 @@ public class ArrowSpell<T extends MagicArrowEntity> extends Spell {
             arrow.setPos(ctx.vec3());
             Vec3 vec = Vec3.atLowerCornerOf(ctx.direction().getNormal());
             arrow.shoot(vec.x(), vec.y(), vec.z(), calculateVelocity(ctx, arrow, 0.375f), 1);
-            arrow.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
+            arrow.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
             addArrowExtras(ctx, arrow);
             ctx.world().addFreshEntity(arrow);
         }

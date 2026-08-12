@@ -35,7 +35,7 @@ public class ForestsCurse extends AreaEffectSpell {
                     : target.damageSources().magic();
             target.hurt(source, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE)));
 
-            int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f));
+            int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().getFactor(SpellModifiers.POTENCY));
             int duration = (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION)));
             int amplifier = property(DefaultProperties.EFFECT_STRENGTH) + bonusAmplifier;
 
