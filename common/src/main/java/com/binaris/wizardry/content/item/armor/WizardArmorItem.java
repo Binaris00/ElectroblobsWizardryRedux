@@ -42,9 +42,9 @@ import java.util.List;
 ///   - [#applyModifiers] — spell modifiers applied when wearing the full set
 ///   - [#appendHoverText] - tooltip lines shown for the item
 ///
-/// By default, this already handles the cost reduction when cast a spell with the same element as the armor, increment
-/// potency, check cooldown reduction based on the armor type and include the tooltip lines for these bonuses. But you
-/// can override these methods to customize/delete any of these behaviors.
+/// By default, this already handles the cost reduction when cast a spell with the same element as the armor, check
+/// cooldown reduction based on the armor type and include the tooltip lines for these bonuses. But you can override
+/// these methods to customize/delete any of these behaviors.
 public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDamageItem, IWorkbenchItem, IElementValue, ICustomAttributesItem {
     private final Element element;
     private final WizardArmorMaterial wizardArmorType;
@@ -89,13 +89,11 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
         if (armor.getMana(armorStack) == 0) return;
 
         if (spell.getElement() == armor.getElement()) {
-            modifiers.add(SpellModifiers.COST, -armor.getWizardArmorType().getElementalCostReduction());
+            modifiers.multiplyTotal(SpellModifiers.COST, 1.0f - armor.getWizardArmorType().getElementalCostReduction());
         }
 
-        modifiers.set(SpellModifiers.POTENCY, 2);
-
         if (this.getWizardArmorType().getCooldownReduction() > 0) {
-            modifiers.add(SpellModifiers.COOLDOWN, -armor.getWizardArmorType().getCooldownReduction());
+            modifiers.multiplyTotal(SpellModifiers.COOLDOWN, 1.0f - armor.getWizardArmorType().getCooldownReduction());
         }
 
         if (EntityUtil.isWearingFullMagicArmorSet(caster, armor.getElement(), armor.getWizardArmorType()) && EntityUtil.doAllArmorPiecesHaveMana(caster)) {

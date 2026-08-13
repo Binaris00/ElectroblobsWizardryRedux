@@ -27,10 +27,11 @@ public class Meteor extends RaySpell {
         if (!(ArtifactChannel.isEquipped(ctx.caster(), EBItems.RING_METEOR.get()))) return super.cast(ctx);
 
         if (!ctx.world().isClientSide) {
-            MeteorEntity meteor = new MeteorEntity(ctx.world(), ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight(), ctx.caster().getZ(),
-                    ctx.modifiers().get(SpellModifiers.BLAST, 1.0f), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+            MeteorEntity meteor = new MeteorEntity(ctx.world(), ctx.caster().getX(), ctx.caster().getY() + 2 + ctx.caster().getEyeHeight(), ctx.caster().getZ(),
+                    ctx.modifiers().getFactor(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
 
-            Vec3 direction = ctx.caster().getLookAngle().scale(ctx.modifiers().get(SpellModifiers.RANGE, 2f));
+            // This is a hardcoded value (4) but at the moment it will stay like that, at least until the spell modifiers are fixed
+            Vec3 direction = ctx.caster().getLookAngle().scale(ctx.modifiers().get(SpellModifiers.RANGE, 4f));
             meteor.setDeltaMovement(direction);
 
             ctx.world().addFreshEntity(meteor);
@@ -45,7 +46,7 @@ public class Meteor extends RaySpell {
         if (ctx.world().canSeeSky(blockHit.getBlockPos().above())) {
             if (!ctx.world().isClientSide()) {
                 MeteorEntity meteor = new MeteorEntity(ctx.world(), blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY() + 50, blockHit.getBlockPos().getZ(),
-                        ctx.modifiers().get(SpellModifiers.BLAST, 1.0f), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                        ctx.modifiers().getFactor(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
                 ctx.world().addFreshEntity(meteor);
             }
             return true;
@@ -60,7 +61,7 @@ public class Meteor extends RaySpell {
         if (ctx.world().canSeeSky(pos.above())){
             if (!ctx.world().isClientSide()) {
                 MeteorEntity meteor = new MeteorEntity(ctx.world(), pos.getX(), pos.getY() + 50, pos.getZ(),
-                        ctx.modifiers().get(SpellModifiers.BLAST, 1.0f), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                        ctx.modifiers().getFactor(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
                 ctx.world().addFreshEntity(meteor);
             }
             return true;

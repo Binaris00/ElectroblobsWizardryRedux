@@ -34,7 +34,7 @@ public class Reversal extends RaySpell {
                 .filter(effect -> effect.getEffect().getCategory() == MobEffectCategory.HARMFUL)
                 .toList());
 
-        int bonusEffects = (int) ((ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f) - 1.0f) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get() + 0.5F);
+        int bonusEffects = (int) ((ctx.modifiers().getFactor(SpellModifiers.POTENCY) - 1.0f) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get() + 0.5F);
         int n = property(DefaultProperties.EFFECT_STRENGTH) + bonusEffects;
 
         for (int i = 0; i < n; i++) {

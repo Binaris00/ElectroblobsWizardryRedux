@@ -10,7 +10,7 @@ public class FullMoonRingEffect implements IArtifactEffect {
     @Override
     public void onSpellPreCast(SpellCastEvent.Pre e, ArtifactEffectContext context) {
         if (e.getSpell().getElement() == Elements.EARTH && !e.getCaster().level().isDay() && e.getCaster().level().getMoonPhase() == 0) {
-            e.getModifiers().multiply(SpellModifiers.COOLDOWN, 0.3f);
+            e.getModifiers().multiply(SpellModifiers.COOLDOWN, 0.2f);
         }
     }
 }

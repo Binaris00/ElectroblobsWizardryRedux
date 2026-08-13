@@ -36,6 +36,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     private @Nullable UUID ownerUUID = null;
     private boolean shouldRestartGoals;
     private boolean searchNearbyTargets = true;
+    private int pickUpLootPosibility = 0;
 
     public MinionDataHolder(Mob mob) {
         this.provider = mob;
@@ -128,6 +129,16 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     }
 
     @Override
+    public int getPickUpLootPosibility() {
+        return pickUpLootPosibility;
+    }
+
+    @Override
+    public void setPickUpLootPosibility(int pickUpLootPosibility) {
+        this.pickUpLootPosibility = pickUpLootPosibility;
+    }
+
+    @Override
     public @Nullable UUID getOwnerUUID() {
         return ownerUUID;
     }
@@ -170,6 +181,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
         tag.putBoolean("summoned", summoned);
         tag.putBoolean("shouldDeleteGoals", shouldDeleteGoals);
         tag.putBoolean("shouldFollowOwner", shouldFollowOwner);
+        tag.putInt("pickUpLootPosibility", pickUpLootPosibility);
         if (ownerUUID != null) {
             tag.putUUID("ownerUUID", ownerUUID);
         }
@@ -182,6 +194,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
         this.summoned = tag.getBoolean("summoned");
         this.shouldDeleteGoals = tag.getBoolean("shouldDeleteGoals");
         this.shouldFollowOwner = tag.getBoolean("shouldFollowOwner");
+        this.pickUpLootPosibility = tag.getInt("pickUpLootPosibility");
         if (tag.contains("ownerUUID")) {
             this.ownerUUID = tag.getUUID("ownerUUID");
         }

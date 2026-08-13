@@ -52,9 +52,9 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
         if (!ctx.world().isClientSide) {
             T projectile = projectileFactory.apply(ctx.world());
             projectile.aim(ctx.caster(), calculateVelocity(ctx, projectile, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET));
-            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
+            projectile.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
+                bomb.blastMultiplier = ctx.modifiers().getFactor(SpellModifiers.BLAST);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }
@@ -74,9 +74,9 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
             T projectile = projectileFactory.apply(ctx.world());
             int aimingError = EntityUtil.getDefaultAimingError(ctx.world().getDifficulty());
             projectile.aim(ctx.caster(), ctx.target(), calculateVelocity(ctx, projectile, ctx.caster().getEyeHeight() - (float) MagicProjectileEntity.LAUNCH_Y_OFFSET), aimingError);
-            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
+            projectile.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
+                bomb.blastMultiplier = ctx.modifiers().getFactor(SpellModifiers.BLAST);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }
@@ -93,9 +93,9 @@ public class ProjectileSpell<T extends MagicProjectileEntity> extends Spell {
             projectile.setPos(ctx.vec3());
             Vec3i vec = ctx.direction().getNormal();
             projectile.shoot(vec.getX(), vec.getY(), vec.getZ(), calculateVelocity(ctx, projectile, 0.375f), 1);
-            projectile.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY, 1.0f);
+            projectile.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
             if (projectile instanceof BombEntity bomb)
-                bomb.blastMultiplier = ctx.modifiers().get(SpellModifiers.BLAST, 1.0f);
+                bomb.blastMultiplier = ctx.modifiers().getFactor(SpellModifiers.BLAST);
             addProjectileExtras(ctx, projectile);
             ctx.world().addFreshEntity(projectile);
         }

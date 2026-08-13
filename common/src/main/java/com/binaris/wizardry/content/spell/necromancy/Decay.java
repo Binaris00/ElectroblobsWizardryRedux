@@ -33,9 +33,9 @@ public class Decay extends ConstructRangedSpell<DecayConstruct> {
         super.spawnConstruct(ctx, vec3, side);
 
         float decayCount = property(PATCHES_SPAWNED);
-        int quantity = (int) (decayCount * ctx.modifiers().get(SpellModifiers.BLAST, 1.0f));
-        int horizontalRange = (int) (0.4 * decayCount * ctx.modifiers().get(SpellModifiers.BLAST, 1.0f));
-        int verticalRange = (int) (6 * ctx.modifiers().get(SpellModifiers.BLAST, 1.0f));
+        int quantity = (int) (decayCount * ctx.modifiers().getFactor(SpellModifiers.BLAST));
+        int horizontalRange = (int) (0.4 * decayCount * ctx.modifiers().getFactor(SpellModifiers.BLAST));
+        int verticalRange = (int) (6 * ctx.modifiers().getFactor(SpellModifiers.BLAST));
 
         for (int i = 0; i < quantity; i++) {
             BlockPos pos = BlockUtil.findNearbyFloorSpace(ctx.world(), origin, horizontalRange, verticalRange, false);

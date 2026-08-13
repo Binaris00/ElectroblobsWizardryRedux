@@ -32,6 +32,9 @@ public interface MinionData {
     /// Clears all existing goals from the minion's target selectors and optionally the goal selectors, then adds the
     /// standard minion goals to follow/defend its owner as appropriate.
     default void updateGoals() {
+        int pickUpLootPosibility = getPickUpLootPosibility();
+        if (pickUpLootPosibility != -1) getProvider().setCanPickUpLoot(pickUpLootPosibility != 0);
+
         ((MobGoalsAccessor) getProvider()).getTargetSelector().removeAllGoals((goal) -> true);
         if (shouldDeleteGoals()) ((MobGoalsAccessor) getProvider()).getGoalSelector().removeAllGoals((goal) -> true);
 
@@ -79,6 +82,17 @@ public interface MinionData {
     ///
     /// @param shouldDeleteGoals true to delete the goals, false otherwise
     void setShouldDeleteGoals(boolean shouldDeleteGoals);
+
+    /// Sets the minion's pickup loot posibility. By default this is 0, which prevents the minion from picking
+    /// up loot. Pass -1 to keep the vanilla behavior of the entity.
+    ///
+    /// @param pickUpLootPosibility the pickup loot posibility: 0 to disable, -1 to keep vanilla behavior
+    void setPickUpLootPosibility(int pickUpLootPosibility);
+
+    /// Gets the minion's pickup loot posibility.
+    ///
+    /// @return the pickup loot posibility
+    int getPickUpLootPosibility();
 
     /// Determines whether the minion should follow its owner.
     ///

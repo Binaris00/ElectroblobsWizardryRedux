@@ -3,6 +3,7 @@ package com.binaris.wizardry.content.entity.living;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.event.DiscoverSpellEvent;
+import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.EntityUtil;
@@ -393,7 +394,9 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     }
 
     private MerchantOffer createSpellTrade(SpellTier tier, int goldAmount, int crystalAmount, List<Spell> usedSpells) {
-        List<Spell> spells = RegistryUtils.getSpells((s) -> s.getTier() == tier && !usedSpells.contains(s));
+        Element element = this.getElement();
+        List<Spell> spells = RegistryUtils.getSpells((s) -> s.getTier() == tier && !usedSpells.contains(s)
+                && (element == null || element == Elements.MAGIC || s.getElement() == element));
         if (spells.isEmpty()) return null;
 
         Spell spell = spells.get(random.nextInt(spells.size()));
