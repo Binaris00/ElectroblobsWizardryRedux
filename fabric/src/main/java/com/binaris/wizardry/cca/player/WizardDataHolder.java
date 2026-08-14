@@ -5,7 +5,7 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.cca.EBComponents;
-import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
@@ -28,7 +28,7 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
     public Set<String> allyNames = new HashSet<>();
     public SpellModifiers itemModifiers = new SpellModifiers();
     private SpellTier maxTierReached = SpellTiers.NOVICE;
-    private final Deque<RecentSpellCast> recentSpells = new ArrayDeque<>(EBConstants.MAX_RECENT_SPELLS);
+    private final Deque<RecentSpellCast> recentSpells = new ArrayDeque<>(EBServerConfig.MAX_RECENT_SPELLS.get());
     private Random random = new Random();
 
     public WizardDataHolder(Player provider) {
@@ -92,7 +92,12 @@ public class WizardDataHolder implements WizardData, ComponentV3, AutoSyncedComp
 
     @Override
     public void trackRecentSpell(Spell spell, long timestamp) {
-        recentSpells.add(new RecentSpellCast(spell, timestamp));
+        recentSpells.addLast(new RecentSpellCast(spell, timestamp));
+
+        while (recentSpells.size() > EBServerConfig.MAX_RECENT_SPELLS.get()) {
+            recentSpells.removeFirst();
+        }
+
         sync();
     }
 

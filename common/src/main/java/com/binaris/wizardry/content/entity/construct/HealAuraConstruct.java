@@ -21,11 +21,12 @@ import java.util.List;
 public class HealAuraConstruct extends ScaledConstructEntity {
     public HealAuraConstruct(EntityType<?> type, Level world) {
         super(type, world);
+        this.setBaseSize(Spells.HEALING_AURA.property(DefaultProperties.EFFECT_RADIUS) * 5, 1);
     }
 
     public HealAuraConstruct(Level world) {
         super(EBEntities.HEAL_AURA.get(), world);
-        setSize(Spells.HEALING_AURA.property(DefaultProperties.EFFECT_RADIUS) * 5, 1);
+        this.setBaseSize(Spells.HEALING_AURA.property(DefaultProperties.EFFECT_RADIUS) * 5, 1);
     }
 
     @Override

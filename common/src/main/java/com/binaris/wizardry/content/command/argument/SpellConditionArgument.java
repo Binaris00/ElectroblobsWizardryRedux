@@ -9,9 +9,7 @@ import com.mojang.brigadier.exceptions.DynamicCommandExceptionType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.network.chat.Component;
 
-/**
- * An argument type for parsing {@link SpellCondition} instances from command input.
- */
+/// An argument type for parsing [SpellCondition] instances from command input.
 public class SpellConditionArgument implements ArgumentType<SpellCondition> {
     private static final DynamicCommandExceptionType ERROR = new DynamicCommandExceptionType(msg -> Component.literal((String) msg));
 
@@ -23,14 +21,12 @@ public class SpellConditionArgument implements ArgumentType<SpellCondition> {
         return ctx.getArgument(name, SpellCondition.class);
     }
 
-    /**
-     * Parses a {@link SpellCondition} from the provided {@link StringReader}.
-     * Reads the input until a space or the end of the input is reached, then attempts to parse it using {@link SpellCondition#parse(String)}.
-     *
-     * @param reader the string reader containing the input to parse
-     * @return the parsed {@link SpellCondition}
-     * @throws CommandSyntaxException if the input cannot be parsed into a valid {@link SpellCondition}
-     */
+    /// Parses a [SpellCondition] from the provided [StringReader].
+    /// Reads the input until a space or the end of the input is reached, then attempts to parse it using [SpellCondition#parse(String)].
+    ///
+    /// @param reader the string reader containing the input to parse
+    /// @return the parsed [SpellCondition]
+    /// @throws CommandSyntaxException if the input cannot be parsed into a valid [SpellCondition]
     @Override
     public SpellCondition parse(StringReader reader) throws CommandSyntaxException {
         // Read until end of input or a space (Brigadier will stop the reader for us)

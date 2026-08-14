@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
@@ -36,7 +36,7 @@ public class Satiety extends BuffSpell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if (ctx.caster().getFoodData().needsFood()) {
-            ctx.caster().getFoodData().eat((int) (property(ReplenishHunger.HUNGER_POINTS) * ctx.modifiers().get(SpellModifiers.POTENCY)), property(ReplenishHunger.HUNGER_POINTS));
+            ctx.caster().getFoodData().eat((int) (ctx.modifiers().get(SpellModifiers.POTENCY, property(ReplenishHunger.HUNGER_POINTS))), property(ReplenishHunger.HUNGER_POINTS));
         }
         return super.cast(ctx);
     }
@@ -44,7 +44,7 @@ public class Satiety extends BuffSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.DEFENCE, SpellAction.POINT_UP, 40, 15, 50)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.POINT_UP, 40, 15, 50)
                 .add(ReplenishHunger.HUNGER_POINTS, 16)
                 .add(ReplenishHunger.SATURATION_MODIFIER, 0.1F)
                 .build();

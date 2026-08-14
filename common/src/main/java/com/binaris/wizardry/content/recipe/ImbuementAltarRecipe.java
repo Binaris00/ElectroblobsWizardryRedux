@@ -18,20 +18,38 @@ import net.minecraft.world.item.crafting.*;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+/// Defines a crafting recipe for the Imbuement Altar, requiring a center item placed on the
+/// altar block and exactly four receptacle ingredients placed in surrounding Wall Receptacle
+/// pedestals to produce a result.
+///
+/// The recipe uses custom matching logic separate from Minecraft's standard shaped/shapeless
+/// recipes. Items are placed in the altar's five slots (one center plus four receptacle
+/// pedestals). Matching greedily pairs each receptacle item with the first available unmatched
+/// recipe ingredient, rejecting any arrangement where any pedestal is empty or any recipe
+/// ingredient goes unmatched.
+///
+/// This recipe type is looked up at runtime by {@code ImbuementAltarBlockEntity} via
+/// {@code EBRecipeTypes.IMBUEMENT_ALTAR} during both {@code checkRecipe()} (to validate
+/// and start the imbuement timer) and {@code craftRecipe()} (to re-validate and produce
+/// the output).
 public class ImbuementAltarRecipe implements Recipe<Container> {
     private final ResourceLocation id;
     private final NonNullList<Ingredient> receptacleIngredients;
     private final Ingredient centerIngredient;
     private final ItemStack output;
 
-    public ImbuementAltarRecipe(ResourceLocation id, NonNullList<Ingredient> receptacleIngredients,
-                                Ingredient centerIngredient, ItemStack output) {
+    public ImbuementAltarRecipe(ResourceLocation id, NonNullList<Ingredient> receptacleIngredients, Ingredient centerIngredient, ItemStack output) {
         this.id = id;
         this.receptacleIngredients = receptacleIngredients;
         this.centerIngredient = centerIngredient;
         this.output = output;
     }
 
+    /// Reads an item stack from a JSON object.
+    ///
+    /// Checks for a valid item, optional count (default 1), an optional nbt data from that item and
+    /// then returns the item stack. This is specially made by hand because Minecraft doesn't support
+    /// nbt data in recipe JSONs for items.
     private static ItemStack itemStackFromJson(JsonObject stackObject) {
         Item item = ShapedRecipe.itemFromJson(stackObject);
         int count = GsonHelper.getAsInt(stackObject, "count", 1);
@@ -42,7 +60,6 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
 
         ItemStack stack = new ItemStack(item, count);
 
-        // Soporte para NBT data
         if (stackObject.has("nbt")) {
             try {
                 CompoundTag nbt = TagParser.parseTag(GsonHelper.getAsString(stackObject, "nbt"));
@@ -55,6 +72,18 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
         return stack;
     }
 
+    /// Checks whether the given center item and four receptacle items satisfy this recipe's
+    /// ingredient requirements.
+    ///
+    /// Immediately rejects if fewer than exactly four receptacle items are provided or the
+    /// center fails the ingredient test. Each receptacle item is greedily paired with the
+    /// first available (unmatched) recipe ingredient that accepts it, requiring every recipe
+    /// ingredient to be matched exactly once and every receptacle pedestal to be non-empty.
+    ///
+    /// @param centerStack the item placed in the altar's center slot.
+    /// @param receptacleStacks an array of exactly four items from the surrounding receptacle
+    ///                          pedestals.
+    /// @return true if all ingredients are satisfied, false otherwise.
     public boolean matches(ItemStack centerStack, ItemStack[] receptacleStacks) {
         if (receptacleStacks.length != 4) return false;
         if (!centerIngredient.test(centerStack)) return false;
@@ -118,15 +147,40 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
         return true;
     }
 
+    /// Returns the list of four receptacle ingredients required by this recipe.
+    ///
+    /// @return the NonNullList of receptacle ingredients, never null.
     public NonNullList<Ingredient> getReceptacleIngredients() {
         return receptacleIngredients;
     }
 
+    /// Returns the center ingredient required by this recipe.
+    ///
+    /// @return the center Ingredient, never null.
     public Ingredient getCenterIngredient() {
         return centerIngredient;
     }
 
+    /// Reads and writes {@code ImbuementAltarRecipe} instances from JSON, network packets, and
+    /// data generation output.
+    ///
+    /// Registered as the map value behind {@code EBRecipeTypes.IMBUEMENT_ALTAR_SERIALIZER}
+    /// (key {@code "imbuement_altar"}). Minecraft's recipe loader calls {@code fromJson} to
+    /// parse JSON recipe files from data packs and generated resources, while {@code toNetwork}
+    /// and {@code fromNetwork} synchronize recipes between server and client during login and
+    /// datapack reloads. The Forge data generation pipeline ({@code ImbuementAltarRecipeBuilder})
+    /// serializes recipe definitions to JSON using the same field names expected by
+    /// {@code fromJson}.
     public static class Serializer implements RecipeSerializer<ImbuementAltarRecipe> {
+        /// Expects a {@code "receptacles"} JSON array (exactly 4 entries), a {@code "center"}
+        /// ingredient object, and a {@code "result"} item object. The result may optionally
+        /// include an {@code "nbt"} string for NBT-tagged outputs (used by ruined spell book
+        /// repair recipes that attach a loot table). Throws {@link JsonParseException} if the
+        /// receptacle count is not exactly 4 or if the NBT data is malformed.
+        ///
+        /// @param id the resource location for this recipe.
+        /// @param json the JSON object to parse.
+        /// @return a fully constructed ImbuementAltarRecipe.
         @Override
         public @NotNull ImbuementAltarRecipe fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
             NonNullList<Ingredient> receptacleIngredients = NonNullList.withSize(4, Ingredient.EMPTY);
@@ -146,6 +200,12 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
             return new ImbuementAltarRecipe(id, receptacleIngredients, centerIngredient, output);
         }
 
+        /// Reads four receptacle Ingredients, the center Ingredient, and the output ItemStack
+        /// in the exact fixed order written by {@code toNetwork}.
+        ///
+        /// @param id the resource location for this recipe.
+        /// @param buf the packet buffer to read from.
+        /// @return a fully constructed ImbuementAltarRecipe.
         @Override
         public @NotNull ImbuementAltarRecipe fromNetwork(@NotNull ResourceLocation id, @NotNull FriendlyByteBuf buf) {
             NonNullList<Ingredient> receptacleIngredients = NonNullList.withSize(4, Ingredient.EMPTY);
@@ -159,6 +219,11 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
             return new ImbuementAltarRecipe(id, receptacleIngredients, centerIngredient, output);
         }
 
+        /// Writes the four receptacle Ingredients, the center Ingredient, and the output
+        /// ItemStack in a fixed order. Must match the read order in {@code fromNetwork}.
+        ///
+        /// @param buf the packet buffer to write to.
+        /// @param recipe the recipe to serialize.
         @Override
         public void toNetwork(@NotNull FriendlyByteBuf buf, ImbuementAltarRecipe recipe) {
             for (Ingredient ingredient : recipe.receptacleIngredients) {

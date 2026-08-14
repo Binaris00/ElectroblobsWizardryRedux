@@ -12,12 +12,12 @@ import net.minecraft.world.level.Level;
 public class ArrowRainConstruct extends ScaledConstructEntity {
     public ArrowRainConstruct(Level world) {
         super(EBEntities.ARROW_RAIN.get(), world);
-        setSizeMultiplier(Spells.ARROW_RAIN.property(DefaultProperties.EFFECT_RADIUS) * 4);
+        this.setBaseSize(Spells.ARROW_RAIN.property(DefaultProperties.EFFECT_RADIUS) * 4, 0.5f);
     }
 
     public ArrowRainConstruct(EntityType<ArrowRainConstruct> entityType, Level level) {
         super(entityType, level);
-        setSizeMultiplier(Spells.ARROW_RAIN.property(DefaultProperties.EFFECT_RADIUS) * 4);
+        this.setBaseSize(Spells.ARROW_RAIN.property(DefaultProperties.EFFECT_RADIUS) * 4, 0.5f);
     }
 
     @Override

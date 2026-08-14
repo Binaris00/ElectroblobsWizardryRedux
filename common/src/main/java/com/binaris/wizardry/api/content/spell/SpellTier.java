@@ -29,12 +29,10 @@ public class SpellTier {
         this.progression = progression;
     }
 
-    /**
-     * Returns a random tier based on the standard weighting. Currently, the standard weighting is: Basic (Novice) 60%,
-     * Apprentice 25%, Advanced 10%, Master 5%. If an array of tiers is given, it picks a tier from the array, with the
-     * same relative weights for each. For example, if the array contains APPRENTICE and MASTER, then the weighting will
-     * become: Apprentice 83.3%, Master 16.7%.
-     */
+    /// Returns a random tier based on the standard weighting. Currently, the standard weighting is: Basic (Novice) 60%,
+    /// Apprentice 25%, Advanced 10%, Master 5%. If an array of tiers is given, it picks a tier from the array, with the
+    /// same relative weights for each. For example, if the array contains APPRENTICE and MASTER, then the weighting will
+    /// become: Apprentice 83.3%, Master 16.7%.
     public static SpellTier getWeightedRandomTier(RandomSource random, SpellTier... tiers) {
         // TODO
         //if(tiers.length == 0) tiers = values();
@@ -55,9 +53,7 @@ public class SpellTier {
         return tiers[tiers.length - 1];
     }
 
-    /**
-     * Returns the tier above this one, or the same tier if this is the highest tier.
-     */
+    /// Returns the tier above this one, or the same tier if this is the highest tier.
     public SpellTier next() {
         List<SpellTier> tiers = Services.REGISTRY_UTIL.getTiers().stream().toList();
         int thisTierID = tiers.indexOf(this);
@@ -71,9 +67,7 @@ public class SpellTier {
     // NAME AND FORMATTING
     // ==================================================
 
-    /**
-     * Returns the tier below this one, or the same tier if this is the lowest tier.
-     */
+    /// Returns the tier below this one, or the same tier if this is the lowest tier.
     public SpellTier previous() {
         List<SpellTier> tiers = Services.REGISTRY_UTIL.getTiers().stream().toList();
         int thisTierID = tiers.indexOf(this);
@@ -83,9 +77,7 @@ public class SpellTier {
                 : tiers.get(0); // First tier
     }
 
-    /**
-     * Returns the description/name translatable for this tier formatted with the color
-     */
+    /// Returns the description/name translatable for this tier formatted with the color
     public Component getDescriptionFormatted() {
         return Component.translatable(getOrCreateDescriptionId()).withStyle(this.color);
     }
@@ -96,34 +88,26 @@ public class SpellTier {
         return this.descriptionId;
     }
 
-    /**
-     * Will return the description ID for the tier (e.g. "tier.ebwizardry.novice")
-     * if you want the location instead, use {@link #getOrCreateLocation()}
-     */
+    /// Will return the description ID for the tier (e.g. "tier.ebwizardry.novice")
+    /// if you want the location instead, use [#getOrCreateLocation()]
     public String getDescriptionId() {
         return this.getOrCreateDescriptionId();
     }
 
-    /**
-     * Will return the location for the tier, or null if it hasn't been registered yet (e.g. "ebwizardry:novice")
-     */
+    /// Will return the location for the tier, or null if it hasn't been registered yet (e.g. "ebwizardry:novice")
     public @Nullable ResourceLocation getOrCreateLocation() {
         if (this.location == null) this.location = Services.REGISTRY_UTIL.getTier(this);
         return this.location;
     }
 
-    /**
-     * Will return the location for the tier (e.g. "ebwizardry:novice")
-     */
+    /// Will return the location for the tier (e.g. "ebwizardry:novice")
     public ResourceLocation getLocation() {
         return this.getOrCreateLocation();
     }
 
-    /**
-     * Sets the location for this tier. This should only be called during registration.
-     *
-     * @param location The resource location for this tier
-     */
+    /// Sets the location for this tier. This should only be called during registration.
+    ///
+    /// @param location The resource location for this tier
     public void setLocation(ResourceLocation location) {
         if (this.location != null) {
             throw new IllegalStateException("Location already set for tier");
@@ -131,9 +115,7 @@ public class SpellTier {
         this.location = location;
     }
 
-    /**
-     * Will return true if the tier is registered at the given location
-     */
+    /// Will return true if the tier is registered at the given location
     public final boolean is(ResourceLocation location) {
         return location.equals(getLocation());
     }

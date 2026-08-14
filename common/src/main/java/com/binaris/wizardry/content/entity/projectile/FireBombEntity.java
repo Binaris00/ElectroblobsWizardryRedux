@@ -8,10 +8,11 @@ import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.core.particles.ParticleTypes;
-import net.minecraft.world.entity.Entity;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.damagesource.DamageType;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
@@ -22,7 +23,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class FireBombEntity extends BombEntity {
-    public FireBombEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+    public FireBombEntity(EntityType<? extends ThrowableProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
@@ -35,49 +36,60 @@ public class FireBombEntity extends BombEntity {
     }
 
     @Override
-    protected void onHit(@NotNull HitResult hitResult) {
-        super.onHit(hitResult);
-        if (hitResult instanceof EntityHitResult entityHitResult) {
-            Entity entity = entityHitResult.getEntity();
+    public int getLifeTime() {
+        return -1;
+    }
 
-            float damage = Spells.FIREBOMB.property(DefaultProperties.DAMAGE);
-            MagicDamageSource.causeMagicDamage(this, entity, damage, EBDamageSources.FIRE);
-        } else if (hitResult instanceof BlockHitResult) {
-            List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), Spells.FIREBOMB.property(DefaultProperties.EFFECT_RADIUS));
+    @Override
+    public void onHitTargetExtraEffects(@NotNull EntityHitResult hitResult) {
+        splashEffect();
+    }
 
-            for (LivingEntity entity : livingEntities) {
-                MagicDamageSource.causeMagicDamage(this, entity, Spells.FIREBOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE);
-                if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, entity))
-                    entity.setSecondsOnFire(Spells.FIREBOMB.property(DefaultProperties.EFFECT_DURATION));
-            }
-        }
+    @Override
+    protected void onHitBlock(@NotNull BlockHitResult result) {
+        super.onHitBlock(result);
+        splashEffect();
+    }
 
-        if (!level().isClientSide()) {
-            this.playSound(EBSounds.ENTITY_FIREBOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
-            this.playSound(EBSounds.ENTITY_FIREBOMB_FIRE.get(), 1, 1);
+    @Override
+    public float getDamage(@NotNull EntityHitResult hitResult) {
+        return Spells.FIREBOMB.property(DefaultProperties.DAMAGE);
+    }
 
-            // Spawn particles
-            this.level().broadcastEntityEvent(this, (byte) 3);
-            this.discard();
+    @Override
+    public ResourceKey<DamageType> getDamageType(@NotNull EntityHitResult hitResult) {
+        return EBDamageSources.FIRE;
+    }
+
+    public void splashEffect() {
+        List<LivingEntity> livingEntities = EntityUtil.getLivingEntitiesInRange(level(), getX(), getY(), getZ(), Spells.FIREBOMB.property(DefaultProperties.EFFECT_RADIUS));
+
+        for (LivingEntity entity : livingEntities) {
+            if (!isValidTarget(entity)) continue;
+            MagicDamageSource.causeMagicDamage(this, entity, Spells.FIREBOMB.property(DefaultProperties.SPLASH_DAMAGE) * blastMultiplier, EBDamageSources.FIRE);
+            entity.setSecondsOnFire(Spells.FIREBOMB.property(DefaultProperties.EFFECT_DURATION));
         }
     }
 
     @Override
-    public void handleEntityEvent(byte b) {
-        if (b == 3) {
-            ParticleBuilder.create(EBParticles.FLASH).pos(this.position()).scale(5 * blastMultiplier).color(1, 0.6f, 0).spawn(level());
-
-            for (int i = 0; i < 60 * blastMultiplier; i++) {
-                ParticleBuilder.create(EBParticles.MAGIC_FIRE, level().getRandom(), xo, yo, zo, 2 * blastMultiplier, false)
-                        .time(10 + random.nextInt(4)).scale(1 + random.nextFloat()).spawn(level());
-
-                ParticleBuilder.create(EBParticles.DARK_MAGIC, level().getRandom(), xo, yo, zo, 2 * blastMultiplier, false)
-                        .color(1.0f, 0.2f + random.nextFloat() * 0.4f, 0.0f).spawn(level());
-            }
-            level().addParticle(ParticleTypes.EXPLOSION, xo, yo, zo, 0, 0, 0);
-        }
+    protected void playHitSound(HitResult result) {
+        this.playSound(EBSounds.ENTITY_FIREBOMB_SMASH.get(), 1.5F, random.nextFloat() * 0.4F + 0.6F);
+        this.playSound(EBSounds.ENTITY_FIREBOMB_FIRE.get(), 1, 1);
     }
 
+    @Override
+    protected void spawnHitParticles(HitResult.Type type) {
+        ParticleBuilder.create(EBParticles.FLASH).pos(this.position()).scale(5 * blastMultiplier).color(1, 0.6f, 0).spawn(level());
+
+        for (int i = 0; i < 60 * blastMultiplier; i++) {
+            ParticleBuilder.create(EBParticles.MAGIC_FIRE, level().getRandom(), xo, yo, zo, 2 * blastMultiplier, false)
+                    .time(10 + random.nextInt(4)).scale(1 + random.nextFloat()).spawn(level());
+
+            ParticleBuilder.create(EBParticles.DARK_MAGIC, level().getRandom(), xo, yo, zo, 2 * blastMultiplier, false)
+                    .color(1.0f, 0.2f + random.nextFloat() * 0.4f, 0.0f).spawn(level());
+        }
+        level().addParticle(ParticleTypes.EXPLOSION, xo, yo, zo, 0, 0, 0);
+    }
 
     @Override
     public int getRemainingFireTicks() {

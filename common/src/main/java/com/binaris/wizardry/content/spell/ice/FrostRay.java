@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -34,7 +34,7 @@ public class FrostRay extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (!(entityHit.getEntity() instanceof LivingEntity target) || MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
+        if (!(entityHit.getEntity() instanceof LivingEntity target))
             return false;
         if (target.isOnFire()) target.clearFire();
         if (ctx.world().isClientSide) return true;
@@ -44,7 +44,7 @@ public class FrostRay extends RaySpell {
                 property(DefaultProperties.EFFECT_STRENGTH)));
 
         if (ctx.castingTicks() % target.invulnerableDuration == 1) {
-            float damage = property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY);
+            float damage = ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE));
             if (target instanceof Blaze || target instanceof MagmaCube) damage *= 2;
 
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.FROST)
@@ -95,7 +95,7 @@ public class FrostRay extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 5, 0, 0)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.ICE, SpellTypes.ATTACK, SpellAction.POINT, 5, 0, 0)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DAMAGE, 3F)
                 .add(DefaultProperties.EFFECT_DURATION, 200)

@@ -1,5 +1,5 @@
 {
-  "type": "attack",
+  "type": "ebwizardry:attack",
   "base_properties": {
     "damage": 5.0,
     "effect_duration": 100,

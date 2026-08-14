@@ -3,11 +3,11 @@ package com.binaris.wizardry.content.spell.sorcery;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.core.config.EBConfig;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -22,7 +22,7 @@ public class Levitation extends Spell {
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        if (!EBConfig.REPLACE_VANILLA_FALL_DAMAGE.get()) ctx.caster().fallDistance = 0;
+        if (!EBServerConfig.REPLACE_VANILLA_FALL_DAMAGE.get()) ctx.caster().fallDistance = 0;
 
         ctx.caster().setDeltaMovement(ctx.caster().getDeltaMovement().x, ctx.caster().getDeltaMovement().y < property(DefaultProperties.SPEED) ?
                 ctx.caster().getDeltaMovement().y
@@ -59,7 +59,7 @@ public class Levitation extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.NONE, 10, 0, 0)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.NONE, 10, 0, 0)
                 .add(DefaultProperties.SPEED, 0.5F)
                 .add(DefaultProperties.ACCELERATION, 0.1F)
                 .build();

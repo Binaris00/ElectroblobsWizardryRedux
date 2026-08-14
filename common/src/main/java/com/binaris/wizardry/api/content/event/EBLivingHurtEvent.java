@@ -6,14 +6,9 @@ import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/**
- * This applies to loaders with the Mixin
- * {@link LivingEntityMixin#EBWIZARDRY$livingEntityHurt(DamageSource, float, CallbackInfoReturnable) LivingEntityMixin#EBWIZARDRY$livingEntityHurt}
- *
- */
 public class EBLivingHurtEvent extends WizardryCancelableEvent {
-    private LivingEntity damagedEntity;
-    private DamageSource source;
+    private final LivingEntity damagedEntity;
+    private final DamageSource source;
     private float amount;
 
     public EBLivingHurtEvent(LivingEntity damagedEntity, DamageSource source, float amount) {
@@ -26,16 +21,8 @@ public class EBLivingHurtEvent extends WizardryCancelableEvent {
         return damagedEntity;
     }
 
-    public void setDamagedEntity(LivingEntity damagedEntity) {
-        this.damagedEntity = damagedEntity;
-    }
-
     public DamageSource getSource() {
         return source;
-    }
-
-    public void setSource(DamageSource source) {
-        this.source = source;
     }
 
     public float getAmount() {

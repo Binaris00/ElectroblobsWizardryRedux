@@ -1,5 +1,5 @@
 {
-  "type": "projectile",
+  "type": "ebwizardry:projectile",
   "base_properties": {
     "damage": 7.0,
     "range": 25.0

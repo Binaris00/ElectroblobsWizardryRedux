@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.sorcery;
 
 import com.binaris.wizardry.api.content.data.ConjureData;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.platform.Services;
@@ -34,9 +34,9 @@ public class ConjureArmor extends ConjureItemSpell {
         ItemStack armor;
         boolean flag = false;
 
-        for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) {
+        for (EquipmentSlot slot : EntityUtil.ARMOR_SLOTS) {
             // Player already has this piece of armor, skip to next slot
-            if (!ctx.caster().getItemBySlot(slot).isEmpty() && InventoryUtil.doesPlayerHaveItem(ctx.caster(), SPECTRAL_ARMOUR_MAP.get(slot))) {
+            if (!ctx.caster().getItemBySlot(slot).isEmpty() && EntityUtil.doesPlayerHaveItem(ctx.caster(), SPECTRAL_ARMOUR_MAP.get(slot))) {
                 continue;
             }
 

@@ -1,0 +1,13 @@
+{
+  "values": [
+    "ebwizardry:attunement_upgrade",
+    "ebwizardry:blast_upgrade",
+    "ebwizardry:condenser_upgrade",
+    "ebwizardry:cooldown_upgrade",
+    "ebwizardry:duration_upgrade",
+    "ebwizardry:melee_upgrade",
+    "ebwizardry:range_upgrade",
+    "ebwizardry:siphon_upgrade",
+    "ebwizardry:storage_upgrade"
+  ]
+}

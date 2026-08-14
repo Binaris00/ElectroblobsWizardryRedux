@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -51,9 +51,9 @@ public class Entrapment extends RaySpell {
         BubbleConstruct bubble = new BubbleConstruct(ctx.world());
         bubble.setPos(target.getX(), target.getY(), target.getZ());
         bubble.setCaster(ctx.caster());
-        bubble.lifetime = ((int) (property(DefaultProperties.EFFECT_DURATION).floatValue() * ctx.modifiers().get(SpellModifiers.DURATION)));
+        bubble.lifetime = ((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION).floatValue())));
         bubble.setDarkOrb(true);
-        bubble.damageMultiplier = ctx.modifiers().get(SpellModifiers.POTENCY);
+        bubble.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
 
         ctx.world().addFreshEntity(bubble);
         target.startRiding(bubble);
@@ -81,7 +81,7 @@ public class Entrapment extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.POINT, 35, 10, 75)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellTypes.ATTACK, SpellAction.POINT, 35, 10, 75)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.EFFECT_DURATION, 120)
                 .add(DAMAGE_INTERVAL)

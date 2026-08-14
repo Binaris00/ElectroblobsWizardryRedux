@@ -19,7 +19,7 @@ public class SageArmorItem extends WizardArmorItem {
     private static final float SAGE_OTHER_COST_REDUCTION = 0.2f;
 
     public SageArmorItem(Type type, Element element) {
-        super(WizardArmorType.SAGE, type, element);
+        super(WizardArmorTypes.SAGE, type, element);
     }
 
     @Override
@@ -33,7 +33,7 @@ public class SageArmorItem extends WizardArmorItem {
     @Override
     public void applyModifiers(LivingEntity entity, SpellModifiers modifiers, WizardArmorItem armor, Spell spell) {
         if (armor.getElement() != spell.getElement() && getEquipmentSlot() == EquipmentSlot.HEAD) {
-            modifiers.set(SpellModifiers.COST, 1 - SAGE_OTHER_COST_REDUCTION);
+            modifiers.multiplyTotal(SpellModifiers.COST, 1.0f - SAGE_OTHER_COST_REDUCTION);
         }
     }
 }

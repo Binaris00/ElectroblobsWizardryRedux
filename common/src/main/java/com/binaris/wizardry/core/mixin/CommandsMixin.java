@@ -1,5 +1,6 @@
 package com.binaris.wizardry.core.mixin;
 
+import com.binaris.wizardry.core.config.EBCommonConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBCommands;
 import com.mojang.brigadier.CommandDispatcher;
@@ -15,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 /**
  * Check {@link EBCommands}
- *
  */
 @Mixin(Commands.class)
 public abstract class CommandsMixin {
@@ -26,7 +26,7 @@ public abstract class CommandsMixin {
             at = @At(value = "RETURN"))
     public void EBWIZARDRY$commands(Commands.CommandSelection commandSelection, CommandBuildContext commandBuildContext, CallbackInfo ci) {
         EBCommands.COMMANDS_TO_REGISTER.forEach(c -> c.accept(dispatcher, commandBuildContext));
-        if (Services.PLATFORM.isDevelopmentEnvironment()) {
+        if (Services.PLATFORM.isDevelopmentEnvironment() || EBCommonConfig.ENABLE_DEBUG_COMMANDS.get()) {
             EBCommands.DEBUG_COMMANDS.forEach(c -> c.accept(dispatcher, commandBuildContext));
         }
     }

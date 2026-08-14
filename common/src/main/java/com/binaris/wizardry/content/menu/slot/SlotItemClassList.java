@@ -7,10 +7,8 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Arcane Workbench Slot that only allows items whose class matches one of the specified allowed item classes.
- * The slot also enforces a configurable stack size limit.
- */
+/// Arcane Workbench Slot that only allows items whose class matches one of the specified allowed item classes.
+/// The slot also enforces a configurable stack size limit.
 public class SlotItemClassList extends Slot {
     private final Class<? extends Item>[] itemClasses;
     private final int stackLimit;

@@ -19,6 +19,7 @@ public class WizardryForgeClient {
 
     @SuppressWarnings({"unchecked", "deprecation"})
     public static void clientSetup(final FMLClientSetupEvent event) {
+        WizardryClientMod.init();
         EBClientEventHelper.register();
         SpellAction.register();
         EBRenderers.registerRenderers();

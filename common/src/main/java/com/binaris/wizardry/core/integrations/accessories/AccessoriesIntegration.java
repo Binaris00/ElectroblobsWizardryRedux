@@ -1,7 +1,7 @@
 package com.binaris.wizardry.core.integrations.accessories;
 
 import com.binaris.wizardry.api.content.item.ArtifactItem;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.core.IArtifactEffect;
 import com.binaris.wizardry.core.integrations.ArtifactIntegration;
 import com.binaris.wizardry.core.platform.Services;
@@ -42,7 +42,7 @@ public class AccessoriesIntegration implements ArtifactIntegration {
             }
         }
 
-        return InventoryUtil.getHotBarAndOffhand(player).stream().distinct().toList();
+        return EntityUtil.getHotBarAndHandItems(player).stream().distinct().toList();
     }
 
     @Override
@@ -54,7 +54,7 @@ public class AccessoriesIntegration implements ArtifactIntegration {
                 // Fallback if Accessories classes are not available
             }
         }
-        return InventoryUtil.getHotBarAndOffhand(player).stream().anyMatch(stack -> stack.getItem() == item);
+        return EntityUtil.getHotBarAndHandItems(player).stream().anyMatch(stack -> stack.getItem() == item);
     }
 
     private AccessoriesIntegration() {

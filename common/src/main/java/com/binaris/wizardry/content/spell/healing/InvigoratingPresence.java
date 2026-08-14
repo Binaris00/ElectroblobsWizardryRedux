@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -28,11 +28,11 @@ public class InvigoratingPresence extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY));
+        int bonusAmplifier = BuffSpell.getStandardBonusAmplifier(ctx.modifiers().getFactor(SpellModifiers.POTENCY));
 
         if (!ctx.world().isClientSide) {
             target.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST,
-                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
+                    (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
                     property(DefaultProperties.EFFECT_STRENGTH) + bonusAmplifier));
         }
 
@@ -48,7 +48,7 @@ public class InvigoratingPresence extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellType.BUFF, SpellAction.POINT_UP, 30, 0, 60)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.HEALING, SpellTypes.BUFF, SpellAction.POINT_UP, 30, 0, 60)
                 .add(DefaultProperties.EFFECT_RADIUS, 5)
                 .add(DefaultProperties.EFFECT_DURATION, 900)
                 .add(DefaultProperties.EFFECT_STRENGTH, 1)

@@ -12,10 +12,11 @@ import com.binaris.wizardry.content.entity.goal.AttackSpellBasicGoal;
 import com.binaris.wizardry.content.entity.goal.HardLookAtTargetGoal;
 import com.binaris.wizardry.content.entity.goal.RangedKitingGoal;
 import com.binaris.wizardry.content.item.WandItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
 import net.minecraft.nbt.StringTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.chat.Component;
@@ -46,22 +47,22 @@ import java.util.Arrays;
 import java.util.List;
 
 public abstract class AbstractWizard extends PathfinderMob implements ISpellCaster {
-    /** Cooldown timer for the wizard's self-healing ability. (Using heal spell) */
+    /// Cooldown timer for the wizard's self-healing ability. (Using heal spell)
     private static final EntityDataAccessor<Integer> HEAL_COOLDOWN = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
 
-    /** Wizard's Element, saved because it affects their texture, spells and more data internally. */
+    /// Wizard's Element, saved because it affects their texture, spells and more data internally.
     private static final EntityDataAccessor<String> ELEMENT = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.STRING);
 
-    /** The spell that is currently being cast continuously (e.g. beam spells) or {@code FlameRay}, it could be {@code NoneSpell} */
+    /// The spell that is currently being cast continuously (e.g. beam spells) or `FlameRay`, it could be `NoneSpell`
     private static final EntityDataAccessor<String> CONTINUOUS_SPELL = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.STRING);
 
-    /** Counter for how long the current continuous spell has been cast for. */
+    /// Counter for how long the current continuous spell has been cast for.
     private static final EntityDataAccessor<Integer> SPELL_COUNTER = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
 
-    /** Index of the texture variant used by this wizard. */
+    /// Index of the texture variant used by this wizard.
     private static final EntityDataAccessor<Integer> TEXTURE_INDEX = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
 
-    /** The entity ID of the target of the current spell being cast. Used client-side for continuous spells. */
+    /// The entity ID of the target of the current spell being cast. Used client-side for continuous spells.
     private static final EntityDataAccessor<Integer> SPELL_TARGET_ID = SynchedEntityData.defineId(AbstractWizard.class, EntityDataSerializers.INT);
 
     protected List<Spell> spells = new ArrayList<>(4);
@@ -95,10 +96,8 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         handleSelfHealing();
     }
 
-    /**
-     * Handles the casting of continuous spells on the client side. This method checks if a continuous spell is being
-     * cast and if so, retrieves the target entity and casts the spell using the appropriate context.
-     */
+    /// Handles the casting of continuous spells on the client side. This method checks if a continuous spell is being
+    /// cast and if so, retrieves the target entity and casts the spell using the appropriate context.
     private void handleContinuousSpellOnClient() {
         if (!level().isClientSide) return;
         Spell continuousSpell = this.getContinuousSpell();
@@ -122,11 +121,9 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         }
     }
 
-    /**
-     * Handles the wizard's self-healing ability using the heal spell. This method checks if the wizard should start
-     * healing, performs the healing, manages the cooldown, and plays the appropriate sound and particle effects. It is
-     * called every {@code aiStep()}.
-     */
+    /// Handles the wizard's self-healing ability using the heal spell. This method checks if the wizard should start
+    /// healing, performs the healing, manages the cooldown, and plays the appropriate sound and particle effects. It is
+    /// called every `aiStep()`.
     private void handleSelfHealing() {
         int healCooldown = this.getHealCooldown();
 
@@ -151,11 +148,9 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         if (healCooldown > 0) this.setHealCooldown(healCooldown - 1);
     }
 
-    /**
-     * Determines whether the wizard should start healing based on its current health, heal cooldown, and status effects.
-     *
-     * @return {@code true} if the wizard should start healing; {@code false} otherwise.
-     */
+    /// Determines whether the wizard should start healing based on its current health, heal cooldown, and status effects.
+    ///
+    /// @return `true` if the wizard should start healing; `false` otherwise.
     private boolean shouldStartHealing() {
         return getHealCooldown() == 0 && getHealth() < getMaxHealth() && getHealth() > 0 && !hasEffect(EBMobEffects.ARCANE_JAMMER.get());
     }
@@ -179,12 +174,10 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         return super.finalizeSpawn(level, difficulty, mobSpawnType, spawnData, tag);
     }
 
-    /**
-     * Select an element for the wizard. There is a 50% chance of it being MAGIC, otherwise it is randomly chosen from
-     * the other elements.
-     *
-     * @return The chosen element.
-     */
+    /// Select an element for the wizard. There is a 50% chance of it being MAGIC, otherwise it is randomly chosen from
+    /// the other elements.
+    ///
+    /// @return The chosen element.
     private Element chooseElement() {
         if (this.random.nextBoolean()) {
             List<Element> elements = new ArrayList<>(Services.REGISTRY_UTIL.getElements());
@@ -194,26 +187,22 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
         return Elements.MAGIC;
     }
 
-    /**
-     * Equip the wizard with armor of the given element and disable all armor drops.
-     *
-     * @param element The element of the armor to equip.
-     */
+    /// Equip the wizard with armor of the given element and disable all armor drops.
+    ///
+    /// @param element The element of the armor to equip.
     public void equipArmorAndDisableDrops(Element element) {
-        for (EquipmentSlot slot : InventoryUtil.ARMOR_SLOTS) {
-            this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorType.WIZARD, element, slot)));
+        for (EquipmentSlot slot : EntityUtil.ARMOR_SLOTS) {
+            this.setItemSlot(slot, new ItemStack(RegistryUtils.getArmor(WizardArmorTypes.WIZARD, element, slot)));
         }
         for (EquipmentSlot slot : EquipmentSlot.values()) {
             this.setDropChance(slot, 0.0f);
         }
     }
 
-    /**
-     * Prepares a wand containing the wizard's spells and equips it.
-     *
-     * @param element The element of the wand.
-     * @param maxTier The maximum tier of spell the wand can contain.
-     */
+    /// Prepares a wand containing the wizard's spells and equips it.
+    ///
+    /// @param element The element of the wand.
+    /// @param maxTier The maximum tier of spell the wand can contain.
     public void  prepareWandWithSpells(Element element, SpellTier maxTier) {
         ArrayList<Spell> list = new ArrayList<>(spells);
         list.add(Spells.HEAL);
@@ -255,21 +244,35 @@ public abstract class AbstractWizard extends PathfinderMob implements ISpellCast
 
 
     @Override
-    public void addAdditionalSaveData(@NotNull CompoundTag nbt) {
-        super.addAdditionalSaveData(nbt);
+    public void addAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.addAdditionalSaveData(compoundTag);
         Element element = this.getElement();
-        if (element != null) nbt.putString("element", element.getLocation().toString());
-        nbt.putInt("skin", this.getTextureIndex());
-        NBTExtras.storeTagSafely(nbt, "spells", NBTExtras.listToTag(spells, spell -> StringTag.valueOf(spell.getLocation().toString())));
+        if (element != null) compoundTag.putString("element", element.getLocation().toString());
+        compoundTag.putInt("skin", this.getTextureIndex());
+        ListTag spellsTag = new ListTag();
+        spells.forEach((s) -> spellsTag.add(StringTag.valueOf(s.getLocation().toString())));
+        compoundTag.put("spells", spellsTag);
     }
 
     @Override
-    public void readAdditionalSaveData(@NotNull CompoundTag nbt) {
-        super.readAdditionalSaveData(nbt);
-        Element element = Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(nbt.getString("element")));
+    public void readAdditionalSaveData(@NotNull CompoundTag compoundTag) {
+        super.readAdditionalSaveData(compoundTag);
+        Element element = Services.REGISTRY_UTIL.getElement(ResourceLocation.tryParse(compoundTag.getString("element")));
         if (element != null) this.setElement(element);
-        this.setTextureIndex(nbt.getInt("skin"));
-        this.spells = (List<Spell>) NBTExtras.tagToList(nbt.getList("spells", Tag.TAG_STRING), (StringTag tag) -> Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getAsString())));
+        this.setTextureIndex(compoundTag.getInt("skin"));
+
+        if(compoundTag.contains("spells", Tag.TAG_LIST)) {
+            this.spells.clear();
+            compoundTag.getList("spells", Tag.TAG_STRING).forEach((tag) -> {
+                Spell spell = Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getAsString()));
+                if (spell != null) this.spells.add(spell);
+            });
+        }
+    }
+
+    @Override
+    public float maxUpStep() {
+        return 1.0F;
     }
 
     private int getHealCooldown() {

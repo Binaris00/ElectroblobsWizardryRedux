@@ -1,5 +1,5 @@
 {
-  "type": "minion",
+  "type": "ebwizardry:minion",
   "base_properties": {
     "minion_count": 5,
     "minion_lifetime": 600,

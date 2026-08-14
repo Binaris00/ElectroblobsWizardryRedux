@@ -1,9 +1,7 @@
 package com.binaris.wizardry.client.gui.button;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
-import com.binaris.wizardry.client.EBClientConstants;
-import com.mojang.blaze3d.systems.RenderSystem;
+import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.network.chat.Component;
@@ -29,8 +27,6 @@ public class GuiButtonApply extends Button {
         } else {
             k += this.width;
         }
-
-        RenderSystem.setShaderTexture(0, EBClientConstants.ARCANE_WORKBENCH_CONTAINER_TEXTURE);
-        DrawingUtils.drawTexturedRect(this.getX(), this.getY(), k, l, this.width, this.height, 512, 512);
+        guiGraphics.blit(ArcaneWorkbenchScreen.ARCANE_WORKBENCH_CONTAINER_TEXTURE, this.getX(), getY(), k, l, this.width, this.height, 512, 512);
     }
 }

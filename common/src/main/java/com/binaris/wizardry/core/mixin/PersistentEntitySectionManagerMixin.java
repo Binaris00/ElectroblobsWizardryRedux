@@ -16,7 +16,7 @@ public abstract class PersistentEntitySectionManagerMixin {
     @Inject(method = "addEntity", at = @At("HEAD"), cancellable = true)
     public void EBWIZARDRY$addEntity(EntityAccess entity, boolean worldGenSpawned, CallbackInfoReturnable<Boolean> cir) {
         if (entity instanceof Entity e) {
-            boolean result = WizardryEventBus.getInstance().fire(new EBEntityJoinLevelEvent(e, e.level()));
+            boolean result = WizardryEventBus.fireEvent(new EBEntityJoinLevelEvent(e, e.level()));
             if (result) cir.setReturnValue(false);
         }
     }

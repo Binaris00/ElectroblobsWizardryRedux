@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
@@ -45,7 +45,7 @@ public class ShulkerBullet extends Spell {
      */
     private boolean shoot(Level world, LivingEntity caster, double x, double y, double z, int castingTicks, SpellModifiers modifiers) {
         if (!world.isClientSide) {
-            double range = property(DefaultProperties.RANGE) * modifiers.get(SpellModifiers.RANGE);
+            double range = modifiers.get(SpellModifiers.RANGE, property(DefaultProperties.RANGE));
 
             List<LivingEntity> possibleTargets = EntityUtil.getLivingWithinRadius(range, x, y, z, world);
 
@@ -69,7 +69,7 @@ public class ShulkerBullet extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.PROJECTILE, SpellAction.POINT_DOWN, 25, 0, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellTypes.PROJECTILE, SpellAction.POINT_DOWN, 25, 0, 40)
                 .add(DefaultProperties.RANGE, 10F)
                 .build();
     }

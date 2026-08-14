@@ -61,8 +61,9 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
                                 .add(LootItem.lootTableItem(EBItems.AMULET_ICE_IMMUNITY.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_WITHER_IMMUNITY.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_ABSORPTION.get()).setWeight(1))
+                                .add(LootItem.lootTableItem(EBItems.RING_METEOR.get()).setWeight(1))
+                                .add(LootItem.lootTableItem(EBItems.CHARM_LAVA_WALKING.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_EXPERIENCE_TOME.get()).setWeight(1))
-                                .add(LootItem.lootTableItem(EBItems.CHARM_STOP_TIME.get()).setWeight(1))
                         ));
 
         biConsumer.accept(EBLootTables.SUBSET_RARE_ARTIFACTS,
@@ -84,7 +85,10 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
                                 .add(LootItem.lootTableItem(EBItems.AMULET_POTENTIAL.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_TRANSIENCE.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_HAGGLER.get()).setWeight(1))
+                                .add(LootItem.lootTableItem(EBItems.CHARM_STORM.get()).setWeight(1))
+                                .add(LootItem.lootTableItem(EBItems.CHARM_UNDEAD_HELMETS.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_MOVE_SPEED.get()).setWeight(1))
+                                .add(LootItem.lootTableItem(EBItems.CHARM_AUTO_SMELT.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_FLIGHT.get()).setWeight(1))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_MOUNT_TELEPORTING.get()).setWeight(1))
 
@@ -112,6 +116,8 @@ public final class EBSubsetsLootTables implements LootTableSubProvider {
                                 .add(LootItem.lootTableItem(EBItems.AMULET_ICE_PROTECTION.get()))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_CHANNELING.get()))
                                 .add(LootItem.lootTableItem(EBItems.AMULET_LICH.get()))
+                                .add(LootItem.lootTableItem(EBItems.CHARM_MINION_HEALTH.get()))
+                                .add(LootItem.lootTableItem(EBItems.AMULET_RECOVERY.get()))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_SPELL_DISCOVERY.get()))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_MINION_VARIANTS.get()))
                                 .add(LootItem.lootTableItem(EBItems.CHARM_GROWTH.get()))

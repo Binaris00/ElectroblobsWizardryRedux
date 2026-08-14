@@ -8,6 +8,11 @@ import net.minecraft.world.level.block.Block;
 
 public final class EBTags {
     public static final TagKey<Item> MAGIC_CRYSTAL_ITEM = createItemTag("magic_crystal");
+    public static final TagKey<Item> MAGIC_SHARD_ITEM = createItemTag("magic_crystal_shard");
+    public static final TagKey<Item> WAND_UPGRADES = createItemTag("wand_upgrade");
+    public static final TagKey<Item> ARMOR_UPGRADE = createItemTag("armor_upgrade");
+    public static final TagKey<Item> SPECTRAL_DUSTS = createItemTag("spectral_dust");
+
     public static final TagKey<Item> GILDED_WOOD_ITEM = createItemTag("gilded_wood");
     public static final TagKey<Item> RING_ACCESSORIES = createItemTag("accessories", "ring");
     public static final TagKey<Item> CHARM_ACCESSORIES = createItemTag("accessories", "charm");

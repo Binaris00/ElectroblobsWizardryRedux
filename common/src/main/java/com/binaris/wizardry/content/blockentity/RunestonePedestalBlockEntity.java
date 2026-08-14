@@ -7,7 +7,7 @@ import com.binaris.wizardry.api.content.data.ContainmentData;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.block.RunestonePedestalBlock;
 import com.binaris.wizardry.content.entity.living.EvilWizard;
-import com.binaris.wizardry.core.config.EBConfig;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.mixin.accessor.RCBEAccessor;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.*;
@@ -39,48 +39,34 @@ import java.util.List;
 import java.util.UUID;
 
 public class RunestonePedestalBlockEntity extends BlockEntity {
-    /** Radius around the pedestal to check for nearby players to activate the event */
+    /// Radius around the pedestal to check for nearby players to activate the event
     private static final double ACTIVATION_RADIUS = 7;
-    /** Number of evil wizards to spawn when the pedestal event is activated */
+    /// Number of evil wizards to spawn when the pedestal event is activated
     private static final int WIZARD_SPAWN_COUNT = 3;
-    /** Radius around the pedestal to spawn evil wizards */
+    /// Radius around the pedestal to spawn evil wizards
     private static final int WIZARD_SPAWN_RADIUS = 5;
-    /** Delay before the pedestal regenerates after being conquered (in ticks) */
+    /// Delay before the pedestal regenerates after being conquered (in ticks)
     private static final int REGENERATION_DELAY_TICKS = 216000; // 3 hours in ticks
-    /**
-     * List of UUIDs of spawned evil wizards for this pedestal event, used to check if they are alive and manage the event state,
-     * if all wizards are dead, the players will be released from containment and finish the event.
-     */
+    /// List of UUIDs of spawned evil wizards for this pedestal event, used to check if they are alive and manage the event state,
+    /// if all wizards are dead, the players will be released from containment and finish the event.
     private final List<UUID> spawnedWizards;
-    /**
-     * List of UUIDs of players currently affected by the containment effect from this pedestal. Used to apply the effect
-     * and release them when the event ends.
-     */
+    /// List of UUIDs of players currently affected by the containment effect from this pedestal. Used to apply the effect
+    /// and release them when the event ends.
     private final List<UUID> playersInContainment;
-    /**
-     * BlockPos of the linked container (chest, barrel, etc.) above the pedestal, this could be null if the logic didn't
-     * find a {@code RandomizableContainerBlockEntity} with a loot table above the pedestal.
-     */
+    /// BlockPos of the linked container (chest, barrel, etc.) above the pedestal, this could be null if the logic didn't
+    /// find a `RandomizableContainerBlockEntity` with a loot table above the pedestal.
     private @Nullable BlockPos linkedPos;
-    /**
-     * Whether this pedestal was naturally generated. Used for special functionality.
-     * If false, the block entity will be deleted automatically on the tick.
-     */
+    /// Whether this pedestal was naturally generated. Used for special functionality.
+    /// If false, the block entity will be deleted automatically on the tick.
     private boolean natural;
-    /**
-     * Whether the pedestal has been activated (i.e. players are nearby and event has started), Spawning evil wizards
-     * and applying containment effect to nearby players.
-     */
+    /// Whether the pedestal has been activated (i.e. players are nearby and event has started), Spawning evil wizards
+    /// and applying containment effect to nearby players.
     private boolean activated;
-    /**
-     * Whether the pedestal event has been conquered (i.e. all evil wizards have been defeated), players are released
-     * from containment and the pedestal is set to regenerate after a delay.
-     */
+    /// Whether the pedestal event has been conquered (i.e. all evil wizards have been defeated), players are released
+    /// from containment and the pedestal is set to regenerate after a delay.
     private boolean conquered;
-    /**
-     * Game time at which the pedestal will regenerate if conquered is true. Used to schedule regeneration of the
-     * pedestal and its linked container.
-     */
+    /// Game time at which the pedestal will regenerate if conquered is true. Used to schedule regeneration of the
+    /// pedestal and its linked container.
     private long regenerationTime;
 
     public RunestonePedestalBlockEntity(BlockPos pos, BlockState blockState) {
@@ -92,7 +78,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T entity) {
         if (!(entity instanceof RunestonePedestalBlockEntity pedestal) || level == null || level.isClientSide) return;
 
-        if (pedestal.conquered && EBConfig.SHRINE_REGENERATION_ENABLED.get() && pedestal.regenerationTime > 0) {
+        if (pedestal.conquered && EBServerConfig.SHRINE_REGENERATION_ENABLED.get() && pedestal.regenerationTime > 0) {
             if (level.getGameTime() >= pedestal.regenerationTime) {
                 regenerate(pedestal, pos);
                 return;
@@ -170,10 +156,8 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         sync();
     }
 
-    /**
-     * Spawns evil wizards around the pedestal at random positions within a defined radius, they are assigned an element
-     * based on the pedestal's runestone element. The UUIDs of the spawned wizards are stored for event management.
-     */
+    /// Spawns evil wizards around the pedestal at random positions within a defined radius, they are assigned an element
+    /// based on the pedestal's runestone element. The UUIDs of the spawned wizards are stored for event management.
     private void spawnEvilWizards() {
         if (level.isClientSide) return;
 
@@ -188,7 +172,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         }
     }
 
-    /** Applies the containment effect to all players and wizards within the containment area. */
+    /// Applies the containment effect to all players and wizards within the containment area.
     private void containmentEffect() {
         if (!(level instanceof ServerLevel serverLevel)) return;
 
@@ -211,10 +195,8 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         });
     }
 
-    /**
-     * Checks if all spawned evil wizards are dead, if so, calls {@link #conquered()} to release players from containment
-     * and end the event.
-     */
+    /// Checks if all spawned evil wizards are dead, if so, calls [#conquered()] to release players from containment
+    /// and end the event.
     private void checkWizardsAlive() {
         if (!(level instanceof ServerLevel serverLevel)) return;
 
@@ -232,10 +214,8 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         }
     }
 
-    /**
-     * Handles the logic for when the pedestal event is conquered, releasing players from containment,
-     * playing particle effects, and resetting the pedestal state for regeneration.
-     */
+    /// Handles the logic for when the pedestal event is conquered, releasing players from containment,
+    /// playing particle effects, and resetting the pedestal state for regeneration.
     private void conquered() {
         if (!(level instanceof ServerLevel serverLevel)) return;
         serverLevel.playSound(null, getBlockPos(), EBSounds.BLOCK_PEDESTAL_CONQUER.get(), SoundSource.BLOCKS, 1.5f, 1);
@@ -268,12 +248,10 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         }
     }
 
-    /**
-     * Finds a suitable spawn position for an evil wizard around the pedestal based on a given angle.
-     *
-     * @param angle Angle in radians to determine the spawn position around the pedestal.
-     * @return BlockPos representing the spawn position for the evil wizard.
-     */
+    /// Finds a suitable spawn position for an evil wizard around the pedestal based on a given angle.
+    ///
+    /// @param angle Angle in radians to determine the spawn position around the pedestal.
+    /// @return BlockPos representing the spawn position for the evil wizard.
     private BlockPos findSpawnPositionWizard(float angle) {
         int x = (int) (getBlockPos().getX() + 0.5 + WIZARD_SPAWN_RADIUS * Mth.sin(angle));
         int z = (int) (getBlockPos().getZ() + 0.5 + WIZARD_SPAWN_RADIUS * Mth.cos(angle));
@@ -337,11 +315,9 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         return tag;
     }
 
-    /**
-     * All players and wizards affected by the containment effect have their containment position set to this pedestal's
-     * position, avoiding the problem of them having different containment origins depending on where they were when the
-     * effect was applied.
-     */
+    /// All players and wizards affected by the containment effect have their containment position set to this pedestal's
+    /// position, avoiding the problem of them having different containment origins depending on where they were when the
+    /// effect was applied.
     private void setContainmentPos(LivingEntity entity) {
         ContainmentData data = Services.OBJECT_DATA.getContainmentData(entity);
         data.setContainmentPos(this.worldPosition);

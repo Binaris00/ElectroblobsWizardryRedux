@@ -62,7 +62,19 @@
         },
         {
           "type": "minecraft:item",
+          "name": "ebwizardry:charm_storm"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_undead_helmets"
+        },
+        {
+          "type": "minecraft:item",
           "name": "ebwizardry:charm_move_speed"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:charm_auto_smelt"
         },
         {
           "type": "minecraft:item",

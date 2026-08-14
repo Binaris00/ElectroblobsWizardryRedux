@@ -1,5 +1,5 @@
 {
-  "type": "construct",
+  "type": "ebwizardry:construct",
   "base_properties": {
     "blast_radius": 2.0,
     "range": 10.0

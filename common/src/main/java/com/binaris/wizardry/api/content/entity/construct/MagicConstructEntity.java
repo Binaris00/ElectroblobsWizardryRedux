@@ -18,20 +18,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
 
-/**
- * This class is for all inanimate magical constructs that are not projectiles. Generally speaking, subclasses of this
- * class are areas of effect which deal with damage or apply effects over time, including black hole, blizzard, tornado and
- * a few others. The caster UUID, lifetime and damage multiplier are stored here, and lifetime is also synced here.
- */
+/// This class is for all inanimate magical constructs that are not projectiles. Generally speaking, subclasses of this
+/// class are areas of effect which deal with damage or apply effects over time, including black hole, blizzard, tornado and
+/// a few others. The caster UUID, lifetime and damage multiplier are stored here, and lifetime is also synced here.
 public abstract class MagicConstructEntity extends Entity implements OwnableEntity {
-    /**
-     * The time in ticks this magical construct lasts for; defaults to 600 (30 seconds). If this is -1 the construct
-     * doesn't despawn.
-     */
+    /// The time in ticks this magical construct lasts for; defaults to 600 (30 seconds). If this is -1 the construct
+    /// doesn't despawn.
     public int lifetime = 600;
-    /**
-     * The damage multiplier for this construct, determined by the wand with which it was cast.
-     */
+    /// The damage multiplier for this construct, determined by the wand with which it was cast.
     public float damageMultiplier = 1.0f;
     private UUID casterUUID;
 
@@ -49,12 +43,10 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
         return super.interactAt(player, vec3, hand);
     }
 
-    /**
-     * Defaults to just setDead() in EntityMagicConstruct, but is provided to allow subclasses to override this e.g.
-     * bubble uses it to dismount the entity inside it and play the 'pop' sound before calling super(). You should
-     * always call super() when overriding this method, in case it changes. There is no need, therefore, to call
-     * setDead() when overriding.
-     */
+    /// Defaults to just setDead() in EntityMagicConstruct, but is provided to allow subclasses to override this e.g.
+    /// bubble uses it to dismount the entity inside it and play the 'pop' sound before calling super(). You should
+    /// always call super() when overriding this method, in case it changes. There is no need, therefore, to call
+    /// setDead() when overriding.
     public void despawn() {
         this.discard();
     }

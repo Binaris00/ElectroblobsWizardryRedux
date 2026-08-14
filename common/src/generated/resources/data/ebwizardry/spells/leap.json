@@ -1,5 +1,5 @@
 {
-  "type": "utility",
+  "type": "ebwizardry:utility",
   "base_properties": {
     "horizontal_speed": 0.3,
     "vertical_speed": 0.65

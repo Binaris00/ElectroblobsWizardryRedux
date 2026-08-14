@@ -3,13 +3,12 @@ package com.binaris.wizardry.content.spell.lightning;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.AllyDesignation;
@@ -25,19 +24,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class LightningPulse extends Spell {
+    private static final double ANTI_Z_FIGHTING_OFFSET = 0.005;
     private static final SpellProperty<Float> REPULSION_VELOCITY = SpellProperty.floatProperty("repulsion_velocity", 0.8f);
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
         if (!ctx.caster().onGround()) return false;
-        float radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
+        float radius = ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.EFFECT_RADIUS));
 
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(radius, ctx.caster().getX(), ctx.caster().getY(), ctx.caster().getZ(), ctx.world());
         targets.removeIf(t -> !AllyDesignation.isValidTarget(ctx.caster(), t));
         for (LivingEntity target : targets) {
             target.hurt(
                     MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.SHOCK),
-                    property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY)
+                    ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE))
             );
 
             if (!ctx.world().isClientSide()) {
@@ -61,8 +61,8 @@ public class LightningPulse extends Spell {
 
         if (ctx.world().isClientSide()) {
             ParticleBuilder.create(EBParticles.LIGHTNING_PULSE)
-                    .pos(ctx.caster().getX(), ctx.caster().getY() + GeometryUtil.ANTI_Z_FIGHTING_OFFSET, ctx.caster().getZ())
-                    .scale(ctx.modifiers().get(SpellModifiers.BLAST))
+                    .pos(ctx.caster().getX(), ctx.caster().getY() + ANTI_Z_FIGHTING_OFFSET, ctx.caster().getZ())
+                    .scale(ctx.modifiers().getFactor(SpellModifiers.BLAST))
                     .spawn(ctx.world());
         }
 
@@ -73,7 +73,7 @@ public class LightningPulse extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellType.ATTACK, SpellAction.POINT_DOWN, 25, 0, 75)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.LIGHTNING, SpellTypes.ATTACK, SpellAction.POINT_DOWN, 25, 0, 75)
                 .add(DefaultProperties.DAMAGE, 8.0F)
                 .add(DefaultProperties.EFFECT_RADIUS, 3)
                 .add(REPULSION_VELOCITY)

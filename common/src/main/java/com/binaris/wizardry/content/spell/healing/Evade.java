@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -28,7 +28,7 @@ public class Evade extends Spell {
             evadeDirection = look.yRot(Math.signum(ctx.caster().xxa) * (float) Math.PI / 2f);
         }
 
-        evadeDirection = evadeDirection.scale(this.property(DefaultProperties.SPEED) * ctx.modifiers().get(SpellModifiers.POTENCY));
+        evadeDirection = evadeDirection.scale(ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.SPEED)));
         ctx.caster().addDeltaMovement(new Vec3(evadeDirection.x, 0.25f, evadeDirection.z));
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
         return true;
@@ -42,7 +42,7 @@ public class Evade extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellType.DEFENCE, SpellAction.NONE, 5, 0, 5)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.NONE, 5, 0, 5)
                 .add(DefaultProperties.SPEED, 1F).build();
     }
 }

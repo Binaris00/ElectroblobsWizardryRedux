@@ -3,12 +3,14 @@ package com.binaris.wizardry.client;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.client.effect.ArcaneLockRender;
 import com.binaris.wizardry.client.effect.ContainmentFieldRender;
+import com.binaris.wizardry.core.config.ConfigManager;
 import com.binaris.wizardry.network.EBFabricClientNetwork;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import com.binaris.wizardry.setup.registries.client.*;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.*;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -20,6 +22,7 @@ import net.minecraft.world.entity.Entity;
 public final class WizardryFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
+        WizardryClientMod.init();
         EBFabricClientNetwork.registerS2CMessages();
         EBClientEventHelper.register();
 
@@ -62,6 +65,10 @@ public final class WizardryFabricClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.IMBUEMENT_ALTAR.get(), RenderType.cutoutMipped());
 
         WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderContainmentField);
+
+        ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
+            ConfigManager.restoreLocalConfigs();
+        });
     }
 
     private void renderContainmentField(WorldRenderContext ctx) {

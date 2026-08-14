@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.fire;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
@@ -14,6 +14,7 @@ import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
+import net.minecraft.core.BlockPos;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
@@ -26,10 +27,11 @@ public class Meteor extends RaySpell {
         if (!(ArtifactChannel.isEquipped(ctx.caster(), EBItems.RING_METEOR.get()))) return super.cast(ctx);
 
         if (!ctx.world().isClientSide) {
-            MeteorEntity meteor = new MeteorEntity(ctx.world(), ctx.caster().getX(), ctx.caster().getY() + ctx.caster().getEyeHeight(), ctx.caster().getZ(),
-                    ctx.modifiers().get(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+            MeteorEntity meteor = new MeteorEntity(ctx.world(), ctx.caster().getX(), ctx.caster().getY() + 2 + ctx.caster().getEyeHeight(), ctx.caster().getZ(),
+                    ctx.modifiers().getFactor(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
 
-            Vec3 direction = ctx.caster().getLookAngle().scale(2 * ctx.modifiers().get(SpellModifiers.RANGE));
+            // This is a hardcoded value (4) but at the moment it will stay like that, at least until the spell modifiers are fixed
+            Vec3 direction = ctx.caster().getLookAngle().scale(ctx.modifiers().get(SpellModifiers.RANGE, 4f));
             meteor.setDeltaMovement(direction);
 
             ctx.world().addFreshEntity(meteor);
@@ -42,9 +44,24 @@ public class Meteor extends RaySpell {
     @Override
     protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
         if (ctx.world().canSeeSky(blockHit.getBlockPos().above())) {
-            if (!ctx.world().isClientSide) {
+            if (!ctx.world().isClientSide()) {
                 MeteorEntity meteor = new MeteorEntity(ctx.world(), blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY() + 50, blockHit.getBlockPos().getZ(),
-                        ctx.modifiers().get(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                        ctx.modifiers().getFactor(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
+                ctx.world().addFreshEntity(meteor);
+            }
+            return true;
+        }
+        return false;
+    }
+
+
+    @Override
+    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
+        BlockPos pos = entityHit.getEntity().blockPosition();
+        if (ctx.world().canSeeSky(pos.above())){
+            if (!ctx.world().isClientSide()) {
+                MeteorEntity meteor = new MeteorEntity(ctx.world(), pos.getX(), pos.getY() + 50, pos.getZ(),
+                        ctx.modifiers().getFactor(SpellModifiers.BLAST), EntityUtil.canDamageBlocks(ctx.caster(), ctx.world()));
                 ctx.world().addFreshEntity(meteor);
             }
             return true;
@@ -58,11 +75,6 @@ public class Meteor extends RaySpell {
     }
 
     @Override
-    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        return false;
-    }
-
-    @Override
     public boolean requiresPacket() {
         return false;
     }
@@ -70,7 +82,7 @@ public class Meteor extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT, 100, 20, 200)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellTypes.ATTACK, SpellAction.POINT, 100, 20, 200)
                 .add(DefaultProperties.RANGE, 40F)
                 .add(DefaultProperties.DAMAGE, 2F)
                 .build();

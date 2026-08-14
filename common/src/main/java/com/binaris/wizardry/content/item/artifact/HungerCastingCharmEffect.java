@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
+import com.binaris.wizardry.core.ArtifactEffectContext;
 import com.binaris.wizardry.core.IArtifactEffect;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -11,9 +12,9 @@ import net.minecraft.world.item.ItemStack;
 public class HungerCastingCharmEffect implements IArtifactEffect {
 
     @Override
-    public void onSpellPreCast(SpellCastEvent.Pre event, ItemStack stack) {
+    public void onSpellPreCast(SpellCastEvent.Pre event, ArtifactEffectContext context) {
         if (!(event.getCaster() instanceof Player player)) return;
-        if (player.isCreative() || event.getSource() != SpellCastEvent.Source.WAND || !event.getSpell().isInstantCast())
+        if (player.isCreative() || event.getSource() != SpellCastEvent.Sources.WAND || !event.getSpell().isInstantCast())
             return;
 
         ItemStack wand = player.getMainHandItem();
@@ -23,12 +24,12 @@ public class HungerCastingCharmEffect implements IArtifactEffect {
             if (!(wand.getItem() instanceof ICastItem && wand.getItem() instanceof IManaItem)) return;
         }
 
-        if (((IManaItem) wand.getItem()).getMana(wand) < event.getSpell().getCost() * event.getModifiers().get(SpellModifiers.COST)) {
+        if (((IManaItem) wand.getItem()).getMana(wand) < event.getModifiers().get(SpellModifiers.COST, event.getSpell().getCost())) {
             int hunger = event.getSpell().getCost() / 5;
 
             if (player.getFoodData().getFoodLevel() >= hunger) {
                 player.getFoodData().eat(-hunger, 0);
-                event.getModifiers().set(SpellModifiers.COST, 0);
+                event.getModifiers().multiplyTotal(SpellModifiers.COST, 0); // Set cost to 0 :)
             }
         }
     }

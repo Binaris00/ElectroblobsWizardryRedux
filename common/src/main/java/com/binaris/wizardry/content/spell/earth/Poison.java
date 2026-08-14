@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.earth;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -31,15 +31,14 @@ public class Poison extends RaySpell {
 
     @Override
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        if (entityHit.getEntity() instanceof LivingEntity livingTarget &&
-                !MagicDamageSource.isEntityImmune(EBDamageSources.POISON, livingTarget) && !ctx.world().isClientSide) {
+        if (entityHit.getEntity() instanceof LivingEntity livingTarget && !ctx.world().isClientSide) {
             DamageSource source = ctx.caster() != null ? MagicDamageSource.causeDirectMagicDamage(ctx.caster(), EBDamageSources.POISON)
                     : livingTarget.damageSources().magic();
 
-            livingTarget.hurt(source, property(DefaultProperties.DAMAGE) * ctx.modifiers().get(SpellModifiers.POTENCY));
+            livingTarget.hurt(source, ctx.modifiers().get(SpellModifiers.POTENCY, property(DefaultProperties.DAMAGE)));
             livingTarget.addEffect(new MobEffectInstance(MobEffects.POISON,
-                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)),
-                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().get(SpellModifiers.POTENCY))));
+                    (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))),
+                    property(DefaultProperties.EFFECT_STRENGTH) + BuffSpell.getStandardBonusAmplifier(ctx.modifiers().getFactor(SpellModifiers.POTENCY))));
         }
         return true;
     }
@@ -63,7 +62,7 @@ public class Poison extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellType.ATTACK, SpellAction.POINT, 10, 0, 20)
+                .assignBaseProperties(SpellTiers.APPRENTICE, Elements.EARTH, SpellTypes.ATTACK, SpellAction.POINT, 10, 0, 20)
                 .add(DefaultProperties.RANGE, 10F)
                 .add(DefaultProperties.DAMAGE, 1F)
                 .add(DefaultProperties.EFFECT_DURATION, 200)

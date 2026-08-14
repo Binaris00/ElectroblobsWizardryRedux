@@ -2,7 +2,6 @@ package com.binaris.wizardry.content.block;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.Element;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.content.blockentity.ReceptacleBlockEntity;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import com.google.common.collect.ImmutableMap;
@@ -93,7 +92,7 @@ public class WallReceptacleBlock extends ReceptacleBlock {
         if (element == null) return;
 
         Direction facing = state.getValue(FACING).getOpposite();
-        Vec3 centre = GeometryUtil.getCentre(pos);
+        Vec3 centre = Vec3.atCenterOf(pos);
         centre = centre.add(new Vec3(facing.step()).scale(WALL_PARTICLE_OFFSET)).add(0, 0.125, 0);
 
         int[] colors = element.getColors();

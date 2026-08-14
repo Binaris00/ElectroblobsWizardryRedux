@@ -1,6 +1,7 @@
 package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.client.util.ClientUtils;
+import com.binaris.wizardry.api.content.data.WizardData;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
@@ -30,16 +31,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-/**
- * <b>Scroll Item!! Fast and easy way to use spells</b>
- * <p>
- * Compared to wands, scrolls are single use items that allow the player to cast a single spell without any mana/charge
- * cost. They are consumed upon use. You can think of them as disposable spellcasting items.
- */
+/// **Scroll Item!! Fast and easy way to use spells**
+///
+/// Compared to wands, scrolls are single use items that allow the player to cast a single spell without any mana/charge
+/// cost. They are consumed upon use. You can think of them as disposable spellcasting items.
 public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
-    /** The limit time for a continuous spell cast from a scroll. */
+    /// The limit time for a continuous spell cast from a scroll.
     public static final int CASTING_TIME = 120;
-    /** Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast) */
+    /// Cooldown applied when a spell cast is canceled by forfeit (or any listener from SpellPreCast/SpellTickCast)
     public static final int COOLDOWN_FORFEIT_TICKS = 60;
 
     public ScrollItem(Properties properties) {
@@ -95,7 +94,7 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
 
     @Override
     public boolean canCast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (CastItemUtils.fireSpellCastEvent(SpellCastEvent.Source.SCROLL, spell, ctx)) {
+        if (CastItemUtils.fireSpellCastEvent(SpellCastEvent.Sources.SCROLL, spell, ctx)) {
             CastItemUtils.applyCooldownForfeit(ctx.caster(), COOLDOWN_FORFEIT_TICKS);
             return false;
         }
@@ -104,15 +103,11 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
 
     @Override
     public boolean cast(ItemStack stack, Spell spell, PlayerCastContext ctx) {
-        if (!CastItemUtils.executeSpellCast(SpellCastEvent.Source.SCROLL, spell, ctx)) return false;
+        if (!CastItemUtils.executeSpellCast(SpellCastEvent.Sources.SCROLL, spell, ctx)) return false;
 
         if (spell.isInstantCast() && !ctx.caster().isCreative()) {
             stack.shrink(1);
             ctx.caster().getCooldowns().addCooldown(this, CastItemUtils.calcCastCooldown(spell, ctx.modifiers()));
-        }
-
-        if (ctx.castingTicks() == 0) {
-            CastItemUtils.trackSpellUsage(ctx.caster(), spell);
         }
 
         return true;
@@ -121,6 +116,8 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
     private void finishCast(ItemStack stack, Level world, LivingEntity entity, int timeCharged) {
         if (!(entity instanceof Player player)) return;
         Spell spell = RegistryUtils.getSpell(stack);
+        WizardData wizardData = Services.OBJECT_DATA.getWizardData(player);
+        if (!world.isClientSide) CastItemUtils.trackSpellUsage(player, spell);
         if (spell.isInstantCast()) return;
 
         if (!player.isCreative()) {
@@ -129,10 +126,11 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
         }
 
         int castingTick = stack.getUseDuration() - timeCharged;
-        SpellModifiers modifiers = Services.OBJECT_DATA.getWizardData(player).getSpellModifiers();
+        SpellModifiers modifiers = wizardData.getSpellModifiers();
 
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Finish(SpellCastEvent.Source.SCROLL, spell, entity, modifiers, castingTick));
-        spell.endCast(new CastContext(world, entity, castingTick, modifiers));
+        CastContext ctx = new CastContext(world, entity, castingTick, modifiers);
+        WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Sources.SCROLL, spell, ctx));
+        spell.endCast(ctx);
     }
 
     @Override
@@ -143,7 +141,7 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
         if (ClientUtils.shouldDisplayDiscovered(spell, stack) && tooltipFlag.isAdvanced()) {
             list.add(Component.translatable(spell.getTier().getDescriptionId()).withStyle(ChatFormatting.GRAY));
             list.add(Component.translatable(spell.getElement().getDescriptionId()).withStyle(ChatFormatting.GRAY));
-            list.add(Component.translatable(spell.getType().getName()).withStyle(ChatFormatting.GRAY));
+            list.add(Component.translatable(spell.getType().getDisplayName()).withStyle(ChatFormatting.GRAY));
         }
     }
 

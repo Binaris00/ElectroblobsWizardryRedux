@@ -3,7 +3,8 @@ package com.binaris.wizardry.content.block;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.item.IElementValue;
 import com.binaris.wizardry.api.content.spell.Element;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
+import com.binaris.wizardry.api.content.util.BlockUtil;
+import com.binaris.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.binaris.wizardry.content.blockentity.ReceptacleBlockEntity;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBSounds;
@@ -44,16 +45,6 @@ public class ReceptacleBlock extends Block implements EntityBlock {
     }
 
     @Override
-    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
-        return AABB;
-    }
-
-    @Override
-    public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
-        return direction == Direction.DOWN && !this.canSurvive(state, level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, neighborState, level, pos, neighborPos);
-    }
-
-    @Override
     public boolean canSurvive(@NotNull BlockState state, @NotNull LevelReader level, @NotNull BlockPos pos) {
         return canSupportCenter(level, pos.below(), Direction.UP);
     }
@@ -61,20 +52,40 @@ public class ReceptacleBlock extends Block implements EntityBlock {
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
         if (!(level.getBlockEntity(pos) instanceof ReceptacleBlockEntity blockEntity)) return InteractionResult.PASS;
-
+        if (blockEntity.getAltarPos() == null) blockEntity.setAltarPos(findAltar(level, pos));
+        boolean changed = false;
         ItemStack heldItem = player.getItemInHand(hand);
         ItemStack stack = blockEntity.getStack();
+
+        if (blockEntity.getAltarPos() != null) {
+            BlockEntity te = level.getBlockEntity(blockEntity.getAltarPos());
+            if (te instanceof ImbuementAltarBlockEntity altar && altar.isCrafting()) {
+                return InteractionResult.PASS;
+            }
+        }
 
         // If wanting to add an item to an empty receptacle
         if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof IElementValue value && value.validForReceptacle()) {
             ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
             blockEntity.setStack(receptacleItem.split(1));
             level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f, false);
+            changed = true;
         }
+
         // If wanting to take an item out of a filled receptacle
         if (!stack.isEmpty() && !player.getInventory().add(stack)) {
             player.drop(stack, false);
+            changed = true;
         }
+
+
+        if (changed && blockEntity.getAltarPos() != null) {
+            BlockEntity te = level.getBlockEntity(blockEntity.getAltarPos());
+            if (te instanceof ImbuementAltarBlockEntity altar) {
+                altar.checkRecipe();
+            }
+        }
+
         return InteractionResult.SUCCESS;
     }
 
@@ -88,12 +99,23 @@ public class ReceptacleBlock extends Block implements EntityBlock {
     }
 
     @Override
+    public void onPlace(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull BlockState oldState, boolean movedByPiston) {
+        if (level.getBlockEntity(pos) instanceof ReceptacleBlockEntity entity) {
+            entity.setAltarPos(findAltar(level, pos));
+        }
+        super.onPlace(state, level, pos, oldState, movedByPiston);
+    }
+
+
+    // Client side methods / methods to satisfy Block class
+
+    @Override
     public void animateTick(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull RandomSource random) {
         if (!(level.getBlockEntity(pos) instanceof ReceptacleBlockEntity entity)) return;
         Element element = entity.getElement();
         if (element == null) return;
 
-        Vec3 centre = GeometryUtil.getCentre(pos);
+        Vec3 centre = Vec3.atCenterOf(pos);
         int[] colors = element.getColors();
         ParticleBuilder.create(EBParticles.FLASH).pos(centre).scale(0.35f).time(48).color(colors[0]).spawn(level);
 
@@ -123,6 +145,17 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         return 0;
     }
 
+    public @Nullable BlockPos findAltar(@NotNull Level level, @NotNull BlockPos pos) {
+        for (int i = 0; i < 4; i++) {
+            BlockPos position = pos.relative(BlockUtil.getHorizontals()[i]);
+            BlockEntity te = level.getBlockEntity(position);
+            if (te instanceof ImbuementAltarBlockEntity altar) {
+                return position;
+            }
+        }
+        return null;
+    }
+
     @Override
     public boolean hasAnalogOutputSignal(@NotNull BlockState state) {
         return true;
@@ -136,5 +169,15 @@ public class ReceptacleBlock extends Block implements EntityBlock {
             return element == null ? 0 : Services.REGISTRY_UTIL.getElements().stream().toList().indexOf(element) + 1;
         }
         return super.getAnalogOutputSignal(state, level, pos);
+    }
+
+    @Override
+    public @NotNull VoxelShape getShape(@NotNull BlockState state, @NotNull BlockGetter level, @NotNull BlockPos pos, @NotNull CollisionContext context) {
+        return AABB;
+    }
+
+    @Override
+    public @NotNull BlockState updateShape(@NotNull BlockState state, @NotNull Direction direction, @NotNull BlockState neighborState, @NotNull LevelAccessor level, @NotNull BlockPos pos, @NotNull BlockPos neighborPos) {
+        return direction == Direction.DOWN && !this.canSurvive(state, level, pos) ? Blocks.AIR.defaultBlockState() : super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     }
 }

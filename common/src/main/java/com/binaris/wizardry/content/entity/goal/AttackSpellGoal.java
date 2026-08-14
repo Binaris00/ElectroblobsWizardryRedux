@@ -19,43 +19,40 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 
-/**
- * A goal which allows a spell-casting mob to attack its target with spells. The mob will move towards the target
- * until it is within a specified distance and has line of sight, at which point it will stop and cast spells at it.
- * It can cast both instant and continuous spells.
- * <p>
- * For reference (specially related to continuous spells), check {@link AbstractWizard}
- * for an example of how to implement the {@link ISpellCaster} and handle spell casting properly.
- *
- * @param <T> The type of mob that is also a spell caster.
- */
+/// A goal which allows a spell-casting mob to attack its target with spells. The mob will move towards the target
+/// until it is within a specified distance and has line of sight, at which point it will stop and cast spells at it.
+/// It can cast both instant and continuous spells.
+///
+/// For reference (specially related to continuous spells), check [AbstractWizard]
+/// for an example of how to implement the [ISpellCaster] and handle spell casting properly.
+///
+/// @param <T> The type of mob that is also a spell caster.
 public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
-
-    /** The mob that is casting the spell that's also implementing {@code ISpellCaster}. */
+    /// The mob that is casting the spell that's also implementing `ISpellCaster`.
     private final T attacker;
 
-    /** The base cooldown between spell casts, in ticks (not including spell-specific cooldowns). */
+    /// The base cooldown between spell casts, in ticks (not including spell-specific cooldowns).
     private final int baseCooldown;
 
-    /** The duration for which continuous spells are cast, in ticks. */
+    /// The duration for which continuous spells are cast, in ticks.
     private final int continuousSpellDuration;
 
-    /** The movement speed of the mob towards its target. */
+    /// The movement speed of the mob towards its target.
     private final double speed;
 
-    /** The maximum distance at which the mob can cast spells, squared. */
+    /// The maximum distance at which the mob can cast spells, squared.
     private final float maxAttackDistance;
 
-    /** The current target of the mob. {@link AttackSpellGoal#attacker} */
+    /// The current target of the mob. [AttackSpellGoal#attacker]
     private LivingEntity target;
 
-    /** The current cooldown before the next spell can be cast, in ticks. */
+    /// The current cooldown before the next spell can be cast, in ticks.
     private int cooldown;
 
-    /** The timer for continuous spell casting, in ticks. */
+    /// The timer for continuous spell casting, in ticks.
     private int continuousSpellTimer;
 
-    /** The number of ticks that are needed to see the target before casting. */
+    /// The number of ticks that are needed to see the target before casting.
     private int seeTime;
 
     public AttackSpellGoal(T attacker, double speed, float maxDistance, int baseCooldown, int continuousSpellDuration) {
@@ -124,7 +121,7 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
             attacker.setSpellCounter(currentTick);
 
             if (distanceSq > (double) this.maxAttackDistance
-                    || !targetIsVisible || WizardryEventBus.getInstance().fire(new SpellCastEvent.Tick(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers(), currentTick))
+                    || !targetIsVisible || WizardryEventBus.fireEvent(new SpellCastEvent.Tick(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), ctx))
                     || !attacker.getContinuousSpell().cast(ctx)
                     || this.continuousSpellTimer == 0) {
                 this.continuousSpellTimer = 0;
@@ -134,7 +131,7 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
                 return;
 
             } else if (currentTick == 1) {
-                WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, attacker.getContinuousSpell(), attacker, attacker.getModifiers()));
+                WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, attacker.getContinuousSpell(), ctx));
             }
 
         } else if (--this.cooldown == 0) {
@@ -156,9 +153,9 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
                 while (!spells.isEmpty()) {
                     spell = spells.get(attacker.level().random.nextInt(spells.size()));
 
-                    SpellModifiers modifiers = attacker.getModifiers();
+                    EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, 0, target, attacker.getModifiers());
 
-                    if (spell != null && attemptCastSpell(spell, modifiers)) {
+                    if (spell != null && attemptCastSpell(spell, ctx)) {
                         attacker.setYRot((float) (Math.atan2(dz, dx) * 180.0D / Math.PI) - 90.0F);
                         return;
                     } else {
@@ -175,28 +172,26 @@ public class AttackSpellGoal<T extends Mob & ISpellCaster> extends Goal {
         }
     }
 
-    private boolean attemptCastSpell(Spell spell, SpellModifiers modifiers) {
-        if (WizardryEventBus.getInstance().fire(new SpellCastEvent.Pre(SpellCastEvent.Source.NPC, spell, attacker, modifiers)))
+    private boolean attemptCastSpell(Spell spell, EntityCastContext ctx) {
+        if (WizardryEventBus.fireEvent(new SpellCastEvent.Pre(SpellCastEvent.Sources.NPC, spell, ctx)))
             return false;
-
-        EntityCastContext ctx = new EntityCastContext(attacker.level(), attacker, InteractionHand.MAIN_HAND, 0, target, modifiers);
 
         if (!spell.cast(ctx)) return false;
 
         // Send spell cast packet and post cast event to clients for instant spells
         if (spell.isInstantCast()) {
-            WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, spell, attacker, modifiers));
+            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, spell, ctx));
             this.cooldown = this.baseCooldown + spell.getCooldown();
 
             if (!attacker.level().isClientSide && spell.requiresPacket()) {
-                NPCSpellCastS2C msg = new NPCSpellCastS2C(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, modifiers);
+                NPCSpellCastS2C msg = new NPCSpellCastS2C(attacker.getId(), target.getId(), InteractionHand.MAIN_HAND, spell, ctx.modifiers());
                 Services.NETWORK_HELPER.sendToTracking(attacker, msg);
             }
 
         } else {
             // Start continuous spell casting if applicable
             this.continuousSpellTimer = this.continuousSpellDuration - 1;
-            setContinuousSpellAndNotify(spell, modifiers);
+            setContinuousSpellAndNotify(spell, ctx.modifiers());
             // FIXME - this could be better, the target isn't available on client (aiStep) so we're saving the entity ID here
             attacker.setTarget(target);
             if (attacker instanceof AbstractWizard wizard) wizard.setSpellTargetId(target.getId());

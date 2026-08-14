@@ -4,7 +4,6 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.event.EBServerLevelLoadEvent;
 import com.binaris.wizardry.api.content.spell.Spell;
-import com.binaris.wizardry.api.content.util.NBTExtras;
 import com.binaris.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.nbt.CompoundTag;
@@ -24,29 +23,25 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * This class is responsible for storing and managing the random names and descriptions assigned to spell glyphs, this
- * is when the player don't know what a spell does and they have to identify it first, all the scrolls/books showing
- * that spell will then have the same random name/description. The names and descriptions are generated randomly when
- * the world is first created and saved to disk.
- * <p>
- * Note that this data is stored per-world, not per-player, so all players in the same world will see the same random
- * names/descriptions for spell glyphs.
- */
+/// This class is responsible for storing and managing the random names and descriptions assigned to spell glyphs, this
+/// is when the player don't know what a spell does and they have to identify it first, all the scrolls/books showing
+/// that spell will then have the same random name/description. The names and descriptions are generated randomly when
+/// the world is first created and saved to disk.
+///
+/// Note that this data is stored per-world, not per-player, so all players in the same world will see the same random
+/// names/descriptions for spell glyphs.
 public class SpellGlyphData extends SavedData {
     private static final String NAME = WizardryMainMod.MOD_ID + "_glyphData";
 
     public Map<Spell, String> randomNames = new HashMap<>();
     public Map<Spell, String> randomDescriptions = new HashMap<>();
 
-    /**
-     * Retrieves the SpellGlyphData instance for the given world, creating and populating it if it doesn't already
-     * exist. This also ensures that all registered spells have entries in the data, adding any that are missing (for
-     * example, due to addons being installed or spells being renamed).
-     *
-     * @param world The server level to get the SpellGlyphData for.
-     * @return The SpellGlyphData instance for the given world.
-     */
+    /// Retrieves the SpellGlyphData instance for the given world, creating and populating it if it doesn't already
+    /// exist. This also ensures that all registered spells have entries in the data, adding any that are missing (for
+    /// example, due to addons being installed or spells being renamed).
+    ///
+    /// @param world The server level to get the SpellGlyphData for.
+    /// @return The SpellGlyphData instance for the given world.
     public static SpellGlyphData get(ServerLevel world) {
         SpellGlyphData instance = world.getDataStorage().get(SpellGlyphData::load, NAME);
         if (instance == null) instance = new SpellGlyphData();
@@ -193,7 +188,7 @@ public class SpellGlyphData extends SavedData {
             tagList.add(tag);
         }
 
-        NBTExtras.storeTagSafely(nbt, "spellGlyphData", tagList);
+        nbt.put("spellGlyphData", tagList);
         return nbt;
     }
 }

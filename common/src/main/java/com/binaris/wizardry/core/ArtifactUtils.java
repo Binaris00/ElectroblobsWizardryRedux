@@ -1,13 +1,12 @@
 package com.binaris.wizardry.core;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
-import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.content.spell.DefaultProperties;
@@ -26,28 +25,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-/**
- * Various utility methods for use by artifacts. These are all static methods, so there is no need to ever instantiate
- * this class. Normally we use these methods to make more good-looking {@link QuickArtifactEffect} lambdas and avoid
- * creating loads of classes with the same logic (specially referred to predicates and similar).
- */
+/// Various utility methods for use by artifacts.
 public final class ArtifactUtils {
-    private ArtifactUtils() {
-    }
-
-    /**
-     * Check if the source isn't melee (like a projectile, explosion or something like that), the direct entity isn't
-     * null and if it's a living one, and finally check the main hand for seeing the wand element. Quite weird but this
-     * logic is shared for a lot of artifacts
-     */
+    /// Check if the source isn't melee (like a projectile, explosion or something like that), the direct entity isn't
+    /// null and if it's a living one, and finally check the main hand for seeing the wand element. Quite weird but this
+    /// logic is shared for a lot of artifacts
     public static boolean meleeRing(DamageSource source, Element element) {
         return !source.isIndirect() && source.getEntity() instanceof LivingEntity living && living.getMainHandItem().getItem() instanceof WandItem wand && wand.getElement() == element;
     }
 
-    /**
-     * Helper method that scans through all wands on the given player's hotbar and offhand and casts the given spell if
-     * it is bound to any of them. This is a useful code pattern for artifact effects.
-     */
+    /// Helper method that scans through all wands on the given player's hotbar and offhand and casts the given spell if
+    /// it is bound to any of them. This is a useful code pattern for artifact effects.
     public static boolean findMatchingWandAndCast(Player player, Spell spell) {
         return findMatchingWandAndExecute(player, spell, wand -> {
             ICastItem spellCastItem = (ICastItem) wand.getItem();
@@ -59,14 +47,12 @@ public final class ArtifactUtils {
         });
     }
 
-    /**
-     * Helper method that scans through all wands on the given player's hotbar and offhand and executes the given action
-     * if any of them have the given spell bound to them. This is a useful code pattern for artifact effects.
-     */
+    /// Helper method that scans through all wands on the given player's hotbar and offhand and executes the given action
+    /// if any of them have the given spell bound to them. This is a useful code pattern for artifact effects.
     public static boolean findMatchingWandAndExecute(Player player, Spell spell, Consumer<? super ItemStack> action) {
-        List<ItemStack> hotbar = InventoryUtil.getHotBarAndOffhand(player);
+        List<ItemStack> hotbar = EntityUtil.getHotBarAndHandItems(player);
         for (ItemStack stack : hotbar) {
-            if (stack.getItem() instanceof ICastItem spellCastingItem && Arrays.asList(spellCastingItem.getSpells(stack)).contains(spell)) {
+            if (stack.getItem() instanceof ICastItem castItem && Arrays.asList(castItem.getSpells(stack)).contains(spell)) {
                 action.accept(stack);
                 return true;
             }
@@ -75,13 +61,16 @@ public final class ArtifactUtils {
         return false;
     }
 
-    public static void handleLightningEffect(Entity player, LivingEntity target, EBLivingHurtEvent event) {
+    public static void handleLightningEffect(Entity player, LivingEntity target, LivingEntity damaged) {
         if (player.level().isClientSide) {
-            ParticleBuilder.create(EBParticles.LIGHTNING).entity(event.getDamagedEntity()).pos(0, event.getDamagedEntity().getBbHeight() / 2, 0).target(target).spawn(player.level());
+            ParticleBuilder.create(EBParticles.LIGHTNING).entity(damaged).pos(0, damaged.getBbHeight() / 2, 0).target(target).spawn(player.level());
             ParticleBuilder.spawnShockParticles(player.level(), target.getX(), target.getY() + target.getBbHeight() / 2, target.getZ());
         }
 
         target.hurt(MagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), Spells.STATIC_AURA.property(DefaultProperties.DAMAGE));
         target.playSound(EBSounds.SPELL_STATIC_AURA_RETALIATE.get(), 1.0F, player.level().random.nextFloat() * 0.4F + 1.5F);
+    }
+
+    private ArtifactUtils() {
     }
 }

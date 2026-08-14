@@ -1,6 +1,6 @@
 package com.binaris.wizardry.gametest;
 
-import com.binaris.wizardry.core.gametest.ConjureItemSpellsTestHandler;
+import com.binaris.wizardry.core.gametest.EBTestCentral;
 import net.minecraft.gametest.framework.GameTest;
 import net.minecraft.gametest.framework.GameTestHelper;
 
@@ -8,16 +8,16 @@ import net.minecraft.gametest.framework.GameTestHelper;
 public class ConjureItemTest {
     @GameTest(template = "ebwizardry:empty_3x3x3")
     public static void spawnConjureItem(GameTestHelper helper) {
-        ConjureItemSpellsTestHandler.spawnConjureItem(helper);
+        EBTestCentral.ConjureSpells.spawnConjureItem(helper);
     }
 
     @GameTest(template = "ebwizardry:empty_3x3x3")
     public static void conjureItemDespawn(GameTestHelper helper) {
-        ConjureItemSpellsTestHandler.conjureItemDespawn(helper);
+        EBTestCentral.ConjureSpells.conjureItemDespawn(helper);
     }
 
     @GameTest(template = "ebwizardry:empty_3x3x3")
     public static void balanceTable(GameTestHelper helper) {
-        ConjureItemSpellsTestHandler.buildTable(helper);
+        EBTestCentral.ConjureSpells.buildTable(helper);
     }
 }

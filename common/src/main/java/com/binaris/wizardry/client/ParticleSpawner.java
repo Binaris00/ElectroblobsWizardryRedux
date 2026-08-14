@@ -12,16 +12,12 @@ import net.minecraft.world.phys.Vec3;
 
 import java.util.function.BiFunction;
 
-/**
- * Client-only class that handles actual particle spawning. This class should only be loaded on the client side to
- * avoid classloading issues.
- */
+/// Client-only class that handles actual particle spawning. This class should only be loaded on the client side to
+/// avoid classloading issues.
 public final class ParticleSpawner {
 
-    /**
-     * Spawns a particle on the client side using the provided data. This method should only be called from client-side
-     * code.
-     */
+    /// Spawns a particle on the client side using the provided data. This method should only be called from client-side
+    /// code.
     public static void spawnClientParticle(ParticleBuilder.ParticleData data) {
         ClientLevel level = Minecraft.getInstance().level;
         SimpleParticleType type = (SimpleParticleType) BuiltInRegistries.PARTICLE_TYPE.get(data.particleType);
@@ -36,7 +32,7 @@ public final class ParticleSpawner {
 
         if (!Double.isNaN(data.vx + data.vy + data.vz)) p.setParticleSpeed(data.vx, data.vy, data.vz);
         if (data.r >= 0) p.setColor(data.r, data.g, data.b);
-        if (data.fr >= 0) p.setFadeColour(data.fr, data.fg, data.fb);
+        if (data.fr >= 0) p.setFadeColor(data.fr, data.fg, data.fb);
         if (data.lifetime >= 0) p.setLifetime(data.lifetime);
         if (data.radius > 0) p.setSpin(data.radius, data.rpt);
         if (!Float.isNaN(data.yaw + data.pitch)) p.setFacing(data.yaw, data.pitch);

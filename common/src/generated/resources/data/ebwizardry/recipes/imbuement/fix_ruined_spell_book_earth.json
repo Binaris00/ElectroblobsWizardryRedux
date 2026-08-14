@@ -20,6 +20,6 @@
   "result": {
     "count": 1,
     "item": "ebwizardry:random_spell_book",
-    "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_sorcery\"}"
+    "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_earth\"}"
   }
 }

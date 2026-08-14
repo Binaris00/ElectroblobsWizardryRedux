@@ -1,8 +1,8 @@
 package com.binaris.wizardry.client.renderer.entity;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
+import com.binaris.wizardry.api.client.util.ClientUtils;
+import com.binaris.wizardry.api.content.util.VecUtils;
 import com.binaris.wizardry.content.entity.construct.ZombieSpawnerConstruct;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
@@ -19,7 +19,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class ZombieSpawnerRenderer extends EntityRenderer<ZombieSpawnerConstruct> {
     private static final ResourceLocation TEXTURE = WizardryMainMod.location("textures/entity/zombie_spawner.png");
-    private static final Vec3[] HIDDEN_BOX = GeometryUtil.getVertices(new AABB(-1, 0, -1, 1, 2.5, 1));
+    private static final Vec3[] HIDDEN_BOX = VecUtils.getVertices(new AABB(-1, 0, -1, 1, 2.5, 1));
 
     public ZombieSpawnerRenderer(Context context) {
         super(context);
@@ -55,14 +55,14 @@ public class ZombieSpawnerRenderer extends EntityRenderer<ZombieSpawnerConstruct
 
         poseStack.pushPose();
 
-        float s = DrawingUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 10);
+        float s = ClientUtils.smoothScaleFactor(entity.lifetime, entity.tickCount, partialTicks, 10, 10);
         poseStack.scale(s, s, s);
 
         poseStack.mulPose(Axis.YP.rotationDegrees((entity.tickCount + partialTicks) * 2));
 
         RenderSystem.setShaderTexture(0, TEXTURE);
 
-        Vec3[] vertices = GeometryUtil.getVertices(entity.getBoundingBox().move(entity.position().scale(-1)));
+        Vec3[] vertices = VecUtils.getVertices(entity.getBoundingBox().move(entity.position().scale(-1)));
 
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         buffer.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);

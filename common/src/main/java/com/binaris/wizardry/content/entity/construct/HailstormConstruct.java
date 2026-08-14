@@ -6,21 +6,20 @@ import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.setup.registries.EBEntities;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.util.Mth;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 public class HailstormConstruct extends ScaledConstructEntity {
 
     public HailstormConstruct(EntityType<?> entityType, Level level) {
         super(entityType, level);
+        this.setBaseSize(4, 5);
     }
 
     public HailstormConstruct(Level level) {
         super(EBEntities.HAILSTORM.get(), level);
         this.lifetime = Spells.HAILSTORM.property(DefaultProperties.DURATION);
+        this.setBaseSize(4, 5);
     }
 
     @Override
@@ -43,11 +42,6 @@ public class HailstormConstruct extends ScaledConstructEntity {
 
             this.level().addFreshEntity(iceshard);
         }
-    }
-
-    @Override
-    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return EntityDimensions.scalable(2 * 2, 5);
     }
 
     @Override

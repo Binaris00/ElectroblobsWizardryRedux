@@ -1,6 +1,5 @@
 package com.binaris.wizardry.core.networking;
 
-import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
 import com.binaris.wizardry.api.content.entity.living.ISpellCaster;
@@ -15,12 +14,14 @@ import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.core.EBLogger;
-import com.binaris.wizardry.core.config.ConfigOption;
-import com.binaris.wizardry.core.config.EBConfigManager;
+import com.binaris.wizardry.core.config.ConfigManager;
+import com.binaris.wizardry.core.config.ConfigProvider;
+import com.binaris.wizardry.core.config.option.ConfigOption;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.networking.s2c.*;
 import com.binaris.wizardry.core.platform.Services;
 import com.google.gson.JsonElement;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.network.chat.Component;
@@ -46,17 +47,18 @@ public final class ClientMessageHandler {
 
         Entity e = level.getEntity(m.getCasterID());
         if (!(e instanceof Player caster)) return;
-        m.getSpell().cast(new PlayerCastContext(level, caster, m.getHand(), 0, m.getModifiers()));
+        PlayerCastContext ctx = new PlayerCastContext(level, caster, m.getHand(), 0, m.getModifiers());
+        m.getSpell().cast(ctx);
 
-        SpellCastEvent.Source source = SpellCastEvent.Source.OTHER;
+        SpellCastEvent.Sources source = SpellCastEvent.Sources.OTHER;
         Item item = caster.getItemInHand(m.getHand()).getItem();
 
-        if (item instanceof WandItem) source = SpellCastEvent.Source.WAND;
-        else if (item instanceof ScrollItem) source = SpellCastEvent.Source.SCROLL;
+        if (item instanceof WandItem) source = SpellCastEvent.Sources.WAND;
+        else if (item instanceof ScrollItem) source = SpellCastEvent.Sources.SCROLL;
 
         // No need to check if the spell succeeded, because the packet is only ever sent when it succeeds.
         // The handler for this event now deals with discovery.
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(source, m.getSpell(), caster, m.getModifiers()));
+        WizardryEventBus.fireEvent(new SpellCastEvent.Post(source, m.getSpell(), ctx));
     }
 
     public static void npcSpellCast(NPCSpellCastS2C m) {
@@ -70,8 +72,9 @@ public final class ClientMessageHandler {
         // Safety check, the npc cannot be a non-living entity and the target must be a living entity
         if (!(caster instanceof LivingEntity livingCaster) || !(target instanceof LivingEntity livingTarget)) return;
 
-        m.getSpell().cast(new EntityCastContext(level, livingCaster, m.getHand(), 0, livingTarget, m.getModifiers()));
-        WizardryEventBus.getInstance().fire(new SpellCastEvent.Post(SpellCastEvent.Source.NPC, m.getSpell(), livingCaster, m.getModifiers()));
+        EntityCastContext ctx = new EntityCastContext(level, livingCaster, m.getHand(), 0, livingTarget, m.getModifiers());
+        m.getSpell().cast(ctx);
+        WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.NPC, m.getSpell(), ctx));
 
         if (caster instanceof ISpellCaster spellCaster) {
             if (!m.getSpell().isInstantCast() || m.getSpell() instanceof NoneSpell) {
@@ -120,31 +123,31 @@ public final class ClientMessageHandler {
     }
 
     public static void configSync(ConfigSyncS2C m) {
-        // Find the config manager for this mod
-        EBConfigManager manager = WizardryMainMod.getConfigManagers().stream()
-                .filter(mgr -> mgr.getModId().equals(m.getModId()))
+        ConfigProvider provider = ConfigManager.getConfigProviders().stream()
+                .filter(p -> p.getConfigName().equals(m.getName()))
                 .findFirst()
                 .orElse(null);
 
-        if (manager == null) {
-            EBLogger.warn("Received config sync for unknown mod: {}", m.getModId());
+        if (provider == null) {
+            EBLogger.warn("Received config sync for unknown provider: {}",  m.getName());
             return;
         }
 
-        // Apply the synced config data
-        for (ConfigOption<?> option : manager.getConfigProvider().getOptions()) {
-            if (m.getConfigData().containsKey(option.getKey())) {
-                loadOption(option, m.getConfigData().get(option.getKey()));
-            }
-        }
+        provider.build().stream()
+                .filter(option -> m.getConfigData().containsKey(option.getKey()))
+                .forEach(option -> loadOption(option, m.getConfigData().get(option.getKey())));
 
-        EBLogger.info("Synced config for mod: {}", m.getModId());
+        EBLogger.info("Synced config for provider: {}", m.getName());
     }
 
     private static <T> void loadOption(ConfigOption<T> option, JsonElement element) {
-        option.getCodec()
-                .parse(com.mojang.serialization.JsonOps.INSTANCE, element)
-                .result()
-                .ifPresent(option::set);
+        option.getCodec().parse(JsonOps.INSTANCE, element).result().ifPresent(val -> {
+            if (option.validate(val).isEmpty()) {
+                option.set(val);
+            } else {
+                EBLogger.warn("Invalid value for {}: {}, settings defaults.", option.getKey(), val);
+                option.set(option.getDefault());
+            }
+        });
     }
 }

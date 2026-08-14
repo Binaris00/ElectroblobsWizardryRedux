@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.sorcery;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
@@ -111,7 +111,7 @@ public class PhaseStep extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT, 35, 0, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.POINT, 35, 0, 40)
                 .add(WALL_THICKNESS)
                 .add(DefaultProperties.RANGE, 8F)
                 .build();

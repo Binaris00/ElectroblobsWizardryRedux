@@ -1,7 +1,6 @@
 package com.binaris.wizardry.content.entity.construct;
 
 import com.binaris.wizardry.api.content.entity.construct.ScaledConstructEntity;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.setup.registries.*;
@@ -19,10 +18,12 @@ public class IceSpikeConstruct extends ScaledConstructEntity {
 
     public IceSpikeConstruct(EntityType<?> entityType, Level level) {
         super(entityType, level);
+        this.setBaseSize(0.5f, 1.0f);
     }
 
     public IceSpikeConstruct(Level world) {
         super(EBEntities.ICE_SPICKES.get(), world);
+        this.setBaseSize(0.5f, 1.0f);
     }
 
     @Override
@@ -59,11 +60,15 @@ public class IceSpikeConstruct extends ScaledConstructEntity {
 
     public void setFacing(Direction facing) {
         this.facing = facing;
-        this.setRot(-facing.toYRot(), GeometryUtil.getPitch(facing));
+        this.setRot(-facing.toYRot(), getPitch(facing));
         float yaw = (-facing.toYRot()) * (float) Math.PI / 180;
-        float pitch = (GeometryUtil.getPitch(facing) - 90) * (float) Math.PI / 180;
+        float pitch = (getPitch(facing) - 90) * (float) Math.PI / 180;
         Vec3 min = this.position().add(new Vec3(-getBbWidth() / 2, 0, -getBbWidth() / 2).xRot(pitch).yRot(yaw));
         Vec3 max = this.position().add(new Vec3(getBbWidth() / 2, getBbHeight(), getBbWidth() / 2).xRot(pitch).yRot(yaw));
         this.setBoundingBox(new AABB(min.x, min.y, min.z, max.x, max.y, max.z));
+    }
+
+    private static float getPitch(Direction facing) {
+        return facing == Direction.UP ? 90 : facing == Direction.DOWN ? -90 : 0;
     }
 }

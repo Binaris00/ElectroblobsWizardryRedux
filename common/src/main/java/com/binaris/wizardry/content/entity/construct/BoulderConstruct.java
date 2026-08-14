@@ -14,6 +14,7 @@ import net.minecraft.core.particles.BlockParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
@@ -36,6 +37,7 @@ public class BoulderConstruct extends ScaledConstructEntity {
         this.noPhysics = false;
         this.setNoGravity(false);
         lifetime = Spells.BOULDER.property(DefaultProperties.DURATION);
+        this.setBaseSize(2.375f, 2.375f);
     }
 
     public BoulderConstruct(Level world) {
@@ -43,6 +45,7 @@ public class BoulderConstruct extends ScaledConstructEntity {
         this.noPhysics = false;
         this.setNoGravity(false);
         lifetime = Spells.BOULDER.property(DefaultProperties.DURATION);
+        this.setBaseSize(2.375f, 2.375f);
     }
 
     public void setHorizontalVelocity(double velX, double velZ) {
@@ -83,7 +86,7 @@ public class BoulderConstruct extends ScaledConstructEntity {
                     && entity.getBoundingBox().maxZ < this.getBoundingBox().maxZ;
 
             if (EntityUtil.attackEntityWithoutKnockback(entity, MagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.SORCERY), crushBonus ? damage * 1.5f : damage) && !crushBonus) {
-                EntityUtil.applyStandardKnockback(this, entity, knockback);
+                applyStandardKnockback(this, entity, knockback);
                 entity.setDeltaMovement(entity.getDeltaMovement().add(motion.x, 0, motion.z));
             }
             entity.playSound(EBSounds.ENTITY_BOULDER_HIT.get(), 1, 1);
@@ -113,6 +116,15 @@ public class BoulderConstruct extends ScaledConstructEntity {
         }
     }
 
+
+    private static void applyStandardKnockback(Entity attacker, LivingEntity target, float strength) {
+        double dx = attacker.getX() - target.getX();
+        double dz;
+        for (dz = attacker.getZ() - target.getZ(); dx * dx + dz * dz < 1.0E-4D; dz = (Math.random() - Math.random()) * 0.01D) {
+            dx = (Math.random() - Math.random()) * 0.01D;
+        }
+        target.knockback(strength, dx, dz);
+    }
 
     private void shakeNearbyPlayers() {
         // TODO Shake screen

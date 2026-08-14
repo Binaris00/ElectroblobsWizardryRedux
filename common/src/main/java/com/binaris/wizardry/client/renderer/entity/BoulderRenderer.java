@@ -1,7 +1,7 @@
 package com.binaris.wizardry.client.renderer.entity;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.client.model.BoulderModel;
 import com.binaris.wizardry.content.entity.construct.BoulderConstruct;
 import com.mojang.blaze3d.vertex.PoseStack;
@@ -32,7 +32,7 @@ public class BoulderRenderer extends EntityRenderer<BoulderConstruct> {
         poseStack.mulPose(Axis.ZP.rotationDegrees(entity.xRotO + (entity.getXRot() - entity.xRotO) * partialTicks));
         poseStack.translate(0, -entity.getBbHeight() / 2, 0);
 
-        float s = DrawingUtils.smoothScaleFactor(-1, entity.tickCount, partialTicks, 10, 10);
+        float s = ClientUtils.smoothScaleFactor(-1, entity.tickCount, partialTicks, 10, 10);
         s *= entity.getSizeMultiplier();
         poseStack.scale(s, s, s);
 

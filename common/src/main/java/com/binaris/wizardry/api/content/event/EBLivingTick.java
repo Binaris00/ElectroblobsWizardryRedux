@@ -6,11 +6,8 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/**
- * This applies to loaders with the Mixin
- * {@link LivingEntityMixin#EBWIZARDRY$tick(CallbackInfo) LivingEntityMixin#EBWIZARDRY$tick}
- *
- */
+/// This applies to loaders with the Mixin
+/// [`LivingEntityMixin#EBWIZARDRY$tick`][LivingEntityMixin#EBWIZARDRY$tick(CallbackInfo)]
 public final class EBLivingTick extends WizardryEvent {
     LivingEntity entity;
     Level level;

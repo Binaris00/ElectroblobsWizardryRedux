@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import net.minecraft.world.entity.player.Player;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
@@ -11,103 +12,95 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.function.Predicate;
 
+/// Per-player data container tracking wizard progression, ally designation, spell modifiers, and
+/// recent spell casting history.
+///
+/// Three core responsibilities: (1) tier progression — records the highest spell tier reached and
+/// checks whether a given tier has been unlocked, used by wand upgrades and progression modifiers;
+/// (2) ally management — maintains a set of ally UUIDs and display names, toggled via wand interaction
+/// or the {@code /ally} command, checked by {@code AllyDesignation} to block friendly fire between
+/// allied players; (3) spell modifier lifecycle — stores modifiers computed at cast-start time
+/// ({@code setSpellModifiers}) for retrieval on subsequent tick calls ({@code getSpellModifiers}),
+/// used by {@code WandItem} and {@code ScrollItem} to maintain consistent modifiers throughout a
+/// continuous spell's duration. Also tracks recent spell casts with timestamps to prevent spell spam
+/// and provides a deterministic, per-player {@link Random} instance used by the forfeit system.
 public interface WizardData {
-    /**
-     * Sets the highest spell tier reached by the player, use this with caution as it can only be increased.
-     *
-     * @param tier The SpellTier to set as reached.
-     */
+    /// Sets the highest spell tier reached by the player, use this with caution as it can only be increased.
+    ///
+    /// @param tier The SpellTier to set as reached.
     void setTierReached(SpellTier tier);
 
-    /**
-     * Checks if the player has reached the specified spell tier.
-     *
-     * @param tier The SpellTier to check.
-     * @return true if the player has reached the specified tier, false otherwise.
-     */
+    /// Checks if the player has reached the specified spell tier.
+    ///
+    /// @param tier The SpellTier to check.
+    /// @return true if the player has reached the specified tier, false otherwise.
     boolean hasReachedTier(SpellTier tier);
 
-    /**
-     * Toggles the ally status of a friend for the original player.
-     *
-     * @param friend The player whose ally status is being toggled.
-     * @return true if the friend was added as an ally, false if they were removed.
-     */
+    /// Toggles the ally status of a friend for the original player.
+    ///
+    /// @param friend The player whose ally status is being toggled.
+    /// @return true if the friend was added as an ally, false if they were removed.
     boolean toggleAlly(Player friend);
 
-    /**
-     * Checks if the given player is an ally of the original player.
-     * This checks both the list of ally UUIDs and the original player's team.
-     *
-     * @param ally the Player to check
-     * @return true if the player is an ally, false otherwise
-     */
+    /// Checks if the given player is an ally of the original player.
+    /// This checks both the list of ally UUIDs and the original player's team.
+    ///
+    /// @param ally the Player to check
+    /// @return true if the player is an ally, false otherwise
     boolean isPlayerAlly(Player ally);
 
-    /**
-     * Checks if the given player UUID is an ally of the original player.
-     * This checks both the list of ally UUIDs and the original player's team.
-     *
-     * @param playerUUID the UUID of the player to check
-     * @return true if the player is an ally, false otherwise
-     */
+    /// Checks if the given player UUID is an ally of the original player.
+    /// This checks both the list of ally UUIDs and the original player's team.
+    ///
+    /// @param playerUUID the UUID of the player to check
+    /// @return true if the player is an ally, false otherwise
     boolean isPlayerAlly(UUID playerUUID);
 
-    /**
-     * Gets the spell modifiers associated with the player.
-     *
-     * @return The SpellModifiers for the player.
-     */
+    /// Gets the spell modifiers associated with the player.
+    ///
+    /// @return The SpellModifiers for the player.
     SpellModifiers getSpellModifiers();
 
     void setSpellModifiers(SpellModifiers modifiers);
 
-    /**
-     * Records a spell cast for tracking recent spells by the player, used especially to avoid spell spam for quick
-     * wand level progression and similar things.
-     *
-     * @param spell     The Spell that was just cast.
-     * @param timestamp The time at which the spell was cast, in game ticks.
-     */
+    /// Records a spell cast for tracking recent spells by the player, used especially to avoid spell spam for quick
+    /// wand level progression and similar things.
+    ///
+    /// @param spell     The Spell that was just cast.
+    /// @param timestamp The time at which the spell was cast, in game ticks.
     void trackRecentSpell(Spell spell, long timestamp);
 
-    /**
-     * Counts how many times a spell has been cast recently by the player. It could be 0 if it hasn't been cast recently.
-     *
-     * @param spell The Spell to count recent casts of.
-     * @return The number of times the spell has been cast recently.
-     */
+    /// Counts how many times a spell has been cast recently by the player. It could be 0 if it hasn't been cast recently.
+    ///
+    /// @param spell The Spell to count recent casts of.
+    /// @return The number of times the spell has been cast recently.
     int countRecentCasts(Spell spell);
 
-    /**
-     * Gets the recent spells cast by the player.
-     *
-     * @return A list of recent spells cast by the player.
-     */
+    /// Gets the recent spells cast by the player.
+    ///
+    /// @return A list of recent spells cast by the player.
     List<RecentSpellCast> getRecentSpells();
 
-    /**
-     * Gets the most recently cast spell by the player.
-     *
-     * @return The most recently cast spell by the player, or null if no spells have been cast recently.
-     */
+    /// Gets the most recently cast spell by the player.
+    ///
+    /// @return The most recently cast spell by the player, or null if no spells have been cast recently.
     @Nullable RecentSpellCast getRecentlyCastSpell();
 
-    /**
-     * Removes recent spell casts that match the given predicate, allowing for custom filtering of which entries to remove.
-     *
-     * @param predicate A Predicate that tests AbstractMap.SimpleEntry&lt;Spell, Long&gt; objects representing
-     *                  recent spell casts. If the predicate returns true for an entry, that entry will be removed.
-     */
+    /// Removes recent spell casts that match the given predicate, allowing for custom filtering of which entries to remove.
+    ///
+    /// @param predicate A Predicate that tests AbstractMap.SimpleEntry<Spell, Long> objects representing
+    ///                  recent spell casts. If the predicate returns true for an entry, that entry will be removed.
     void removeRecentCasts(Predicate<RecentSpellCast> predicate);
 
-    /**
-     * Gets a Random instance associated with this WizardData.
-     *
-     * @return A Random instance.
-     */
+    /// Gets a Random instance associated with this WizardData.
+    ///
+    /// @return A Random instance.
     Random getRandom();
 
     record RecentSpellCast(Spell spell, long timestamp) {
+        @Override
+        public @NotNull String toString() {
+            return spell.getLocation().getNamespace() + ":" + timestamp;
+        }
     }
 }

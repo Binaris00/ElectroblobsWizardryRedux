@@ -13,16 +13,16 @@ import java.util.Map;
 
 public class ConfigSyncS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("config_sync");
-    private final String modId;
+    private final String name;
     private final Map<String, JsonElement> configData;
 
-    public ConfigSyncS2C(String modId, Map<String, JsonElement> configData) {
-        this.modId = modId;
+    public ConfigSyncS2C(String name, Map<String, JsonElement> configData) {
+        this.name = name;
         this.configData = configData;
     }
 
     public ConfigSyncS2C(FriendlyByteBuf buf) {
-        this.modId = buf.readUtf();
+        this.name = buf.readUtf();
         int size = buf.readInt();
         this.configData = new HashMap<>();
         for (int i = 0; i < size; i++) {
@@ -35,7 +35,7 @@ public class ConfigSyncS2C implements Message {
 
     @Override
     public void encode(FriendlyByteBuf buf) {
-        buf.writeUtf(modId);
+        buf.writeUtf(name);
         buf.writeInt(configData.size());
         for (Map.Entry<String, JsonElement> entry : configData.entrySet()) {
             buf.writeUtf(entry.getKey());
@@ -53,8 +53,8 @@ public class ConfigSyncS2C implements Message {
         return ID;
     }
 
-    public String getModId() {
-        return modId;
+    public String getName() {
+        return name;
     }
 
     public Map<String, JsonElement> getConfigData() {

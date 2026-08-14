@@ -1,6 +1,6 @@
 package com.binaris.wizardry.content.spell;
 
-import com.binaris.wizardry.api.content.spell.SpellContext;
+import com.binaris.wizardry.api.content.spell.SpellContexts;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperty;
 
 import java.util.Map;
@@ -13,7 +13,7 @@ public final class DefaultProperties {
     public static final SpellProperty<String> ELEMENT = SpellProperty.stringProperty("element");
     public static final SpellProperty<String> SPELL_ACTION = SpellProperty.stringProperty("spell_action");
     public static final SpellProperty<String> SPELL_TYPE = SpellProperty.stringProperty("type");
-    public static final SpellProperty<Map<String, Boolean>> ENABLED = SpellProperty.contextMapProperty("enabled", SpellContext.createDefaultMap());
+    public static final SpellProperty<Map<String, Boolean>> ENABLED = SpellProperty.contextMapProperty("enabled", SpellContexts.createDefaultMap());
 
     public static final SpellProperty<Integer> ENTITIES = SpellProperty.intProperty("entities");
     public static final SpellProperty<Float> DAMAGE = SpellProperty.floatProperty("damage");

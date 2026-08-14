@@ -9,10 +9,8 @@ import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * Arcane Workbench slot that only accepts items implementing {@link IWorkbenchItem}.
- * Notifies the menu when its contents change.
- */
+/// Arcane Workbench slot that only accepts items implementing [IWorkbenchItem].
+/// Notifies the menu when its contents change.
 public class SlotWorkbenchItem extends Slot {
     private final ArcaneWorkbenchMenu menu;
 
@@ -24,7 +22,7 @@ public class SlotWorkbenchItem extends Slot {
     @Override
     public void set(@NotNull ItemStack stack) {
         super.set(stack);
-        this.menu.onSlotChanged(index, stack, null);
+        this.menu.onSlotChanged(index, stack);
     }
 
     @Override

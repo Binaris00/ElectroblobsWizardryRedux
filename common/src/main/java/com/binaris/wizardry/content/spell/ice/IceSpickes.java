@@ -1,18 +1,17 @@
 package com.binaris.wizardry.content.spell.ice;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.GeometryUtil;
+import com.binaris.wizardry.api.content.util.VecUtils;
 import com.binaris.wizardry.content.entity.construct.IceSpikeConstruct;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.ConstructRangedSpell;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
-import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.BlockGetter;
@@ -37,14 +36,14 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
         Vec3 pos = origin.add(new Vec3(side.getOpposite().step()));
         super.spawnConstruct(ctx, pos, side);
 
-        int quantity = (int) (Spells.ICE_SPIKES.property(DefaultProperties.ENTITIES) * ctx.modifiers().get(SpellModifiers.BLAST) - 1);
-        float maxRadius = Spells.ICE_SPIKES.property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
+        int quantity = (int) (ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.ENTITIES)) - 1);
+        float maxRadius = ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.EFFECT_RADIUS));
 
         for (int i = 0; i < quantity; i++) {
             double radius = 0.5 + ctx.world().random.nextDouble() * (maxRadius - 0.5);
 
             Vec3 offset = Vec3.directionFromRotation(ctx.world().random.nextFloat() * 180 - 90, ctx.world().random.nextBoolean() ? 0 : 180)
-                    .scale(radius).yRot(side.toYRot() * (float) Math.PI / 180).xRot(GeometryUtil.getPitch(side) * (float) Math.PI / 180);
+                    .scale(radius).yRot(side.toYRot() * (float) Math.PI / 180).xRot(getPitch(side) * (float) Math.PI / 180);
 
             if (side.getAxis().isHorizontal()) offset = offset.yRot((float) Math.PI / 2);
 
@@ -52,7 +51,7 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
                     (int) maxRadius, true, BlockUtil.SurfaceCriteria.basedOn(this::isCollisionShapeFullBlock));
 
             if (surface != null) {
-                Vec3 vec = GeometryUtil.replaceComponent(origin.add(offset), side.getAxis(), surface).subtract(new Vec3(side.step()));
+                Vec3 vec = VecUtils.replaceComponent(origin.add(offset), side.getAxis(), surface).subtract(new Vec3(side.step()));
                 super.spawnConstruct(ctx, vec, side);
             }
         }
@@ -73,7 +72,7 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellType.ATTACK, SpellAction.POINT, 30, 0, 75)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.ICE, SpellTypes.ATTACK, SpellAction.POINT, 30, 0, 75)
                 .add(DefaultProperties.RANGE, 20F)
                 .add(DefaultProperties.EFFECT_RADIUS, 3)
                 .add(DefaultProperties.ENTITIES, 18)
@@ -81,5 +80,9 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
                 .add(DefaultProperties.EFFECT_DURATION, 100)
                 .add(DefaultProperties.EFFECT_STRENGTH, 0)
                 .build();
+    }
+
+    private static float getPitch(Direction facing) {
+        return facing == Direction.UP ? 90 : facing == Direction.DOWN ? -90 : 0;
     }
 }

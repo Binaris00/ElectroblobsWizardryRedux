@@ -6,18 +6,16 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * <b>EntityCastContext - Casting Context for Entities</b>
- * <p>
- * Specialized context used when a <b>non-player entity</b> (NPC, mob, minion) casts a spell.
- * This context is essential for spells that can be used by both players and hostile or allied entities.
- * <p>
- * It provides information about the casting entity, the hand used for casting, and an optional target entity.
- *
- * @see CastContext The base class with shared information
- * @see PlayerCastContext For player casts
- * @see Spell#canCastByEntity() Indicates if a spell can be cast by entities
- */
+/// **EntityCastContext - Casting Context for Entities**
+///
+/// Specialized context used when a **non-player entity** (NPC, mob, minion) casts a spell.
+/// This context is essential for spells that can be used by both players and hostile or allied entities.
+///
+/// It provides information about the casting entity, the hand used for casting, and an optional target entity.
+///
+/// @see CastContext The base class with shared information
+/// @see PlayerCastContext For player casts
+/// @see Spell#canCastByEntity() Indicates if a spell can be cast by entities
 public class EntityCastContext extends CastContext {
     protected InteractionHand hand;
     // What if I'm a wizard that just want to chill out casting funny spells without damaging someone?

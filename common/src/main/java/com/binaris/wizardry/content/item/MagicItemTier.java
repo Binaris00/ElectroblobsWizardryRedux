@@ -4,6 +4,8 @@ import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 
+/// A singleton {@code Tier} used by magic axe items (Frost Axe, Flaming Axe), providing
+/// diamond-level mining, high efficiency, and no repair ingredient.
 public class MagicItemTier implements Tier {
     public static final Tier TIER = new MagicItemTier();
 

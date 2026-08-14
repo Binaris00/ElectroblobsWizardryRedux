@@ -21,6 +21,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TieredItem;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
@@ -39,6 +40,7 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.event.level.ChunkWatchEvent;
 import net.minecraftforge.event.level.LevelEvent;
+import net.minecraftforge.event.server.ServerAboutToStartEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
@@ -56,14 +58,19 @@ public class WizardryForgeEvents {
     @Mod.EventBusSubscriber(modid = WizardryMainMod.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public static class ForgeBusEvents {
         @SubscribeEvent
+        public static void onServerAboutToStart(ServerAboutToStartEvent event) {
+            WizardryEventBus.fireEvent(new EBServerLoad(event.getServer()));
+        }
+
+        @SubscribeEvent
         public static void onWorldLoadEvent(final LevelEvent.Load event) {
             if (event.getLevel().isClientSide()) return;
-            WizardryEventBus.getInstance().fire(new EBServerLevelLoadEvent((ServerLevel) event.getLevel()));
+            WizardryEventBus.fireEvent(new EBServerLevelLoadEvent((ServerLevel) event.getLevel()));
         }
 
         @SubscribeEvent
         public static void onPlayerLoggedInEvent(PlayerEvent.PlayerLoggedInEvent event) {
-            WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(event.getEntity(), event.getEntity().getServer()));
+            WizardryEventBus.fireEvent(new EBPlayerJoinServerEvent(event.getEntity(), event.getEntity().getServer()));
             Player player = event.getEntity();
             if (!player.level().isClientSide()) {
                 player.getCapability(WizardDataHolder.INSTANCE).ifPresent(WizardDataHolder::sync);
@@ -88,19 +95,19 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void onEntityInteract(PlayerInteractEvent.EntityInteract event) {
-            if (WizardryEventBus.getInstance().fire(new EBPlayerInteractEntityEvent(event.getEntity(), event.getTarget())))
+            if (WizardryEventBus.fireEvent(new EBPlayerInteractEntityEvent(event.getEntity(), event.getTarget())))
                 event.setCanceled(true);
         }
 
         @SubscribeEvent
         public static void onBlockUse(PlayerInteractEvent.RightClickBlock event) {
-            if (WizardryEventBus.getInstance().fire(new EBPlayerUseBlockEvent(event.getEntity(), event.getLevel(), event.getPos(), event.getHand())))
+            if (WizardryEventBus.fireEvent(new EBPlayerUseBlockEvent(event.getEntity(), event.getLevel(), event.getPos(), event.getHand())))
                 event.setCanceled(true);
         }
 
         @SubscribeEvent
         public static void onBlockBreak(BlockEvent.BreakEvent event) {
-            if (WizardryEventBus.getInstance().fire(new EBPlayerBreakBlockEvent(event.getPlayer(), (net.minecraft.world.level.Level) event.getLevel(), event.getPos())))
+            if (WizardryEventBus.fireEvent(new EBPlayerBreakBlockEvent(event.getPlayer(), (Level) event.getLevel(), event.getPos())))
                 event.setCanceled(true);
         }
 

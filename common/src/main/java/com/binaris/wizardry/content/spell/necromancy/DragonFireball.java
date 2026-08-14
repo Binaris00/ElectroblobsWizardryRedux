@@ -2,7 +2,7 @@ package com.binaris.wizardry.content.spell.necromancy;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
@@ -25,7 +25,7 @@ public class DragonFireball extends Spell {
 
             fireball.setPos(ctx.caster().getX() + look.x, ctx.caster().getY() + look.y + 1.3, ctx.caster().getZ() + look.z);
 
-            double acceleration = property(DefaultProperties.ACCELERATION) * ctx.modifiers().get(SpellModifiers.RANGE);
+            double acceleration = ctx.modifiers().get(SpellModifiers.RANGE, property(DefaultProperties.ACCELERATION));
 
             fireball.xPower = look.x * acceleration;
             fireball.yPower = look.y * acceleration;
@@ -71,7 +71,7 @@ public class DragonFireball extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellType.ATTACK, SpellAction.NONE, 30, 0, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.NECROMANCY, SpellTypes.ATTACK, SpellAction.NONE, 30, 0, 40)
                 .add(DefaultProperties.ACCELERATION, 0.1F).build();
     }
 }

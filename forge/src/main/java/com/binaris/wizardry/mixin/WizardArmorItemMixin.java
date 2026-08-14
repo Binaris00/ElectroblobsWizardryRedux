@@ -5,7 +5,7 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.client.model.armor.RobeArmorModel;
 import com.binaris.wizardry.client.model.armor.WizardArmorModel;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
-import com.binaris.wizardry.content.item.armor.WizardArmorType;
+import com.binaris.wizardry.content.item.armor.WizardArmorTypes;
 import com.google.common.collect.Multimap;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.HumanoidModel;
@@ -71,22 +71,16 @@ public abstract class WizardArmorItemMixin extends ArmorItem {
                 robeArmor.right_shoe.visible = equipmentSlot == EquipmentSlot.FEET;
                 robeArmor.left_shoe.visible = equipmentSlot == EquipmentSlot.FEET;
 
-                switch (wizardArmorItem.getWizardArmorType()) {
-                    case WIZARD:
-                        model = wizardArmor;
-                        break;
-                    case SAGE:
-                        model = wizardArmor;
-                        break;
-                    case BATTLEMAGE:
-                        model = robeArmor;
-                        break;
-                    case WARLOCK:
-                        model = robeArmor;
-                        break;
-                    default:
-                        model = wizardArmor;
-                        break;
+                if (wizardArmorItem.getWizardArmorType().equals(WizardArmorTypes.WIZARD)) {
+                    model = wizardArmor;
+                } else if (wizardArmorItem.getWizardArmorType().equals(WizardArmorTypes.SAGE)) {
+                    model = wizardArmor;
+                } else if (wizardArmorItem.getWizardArmorType().equals(WizardArmorTypes.BATTLEMAGE)) {
+                    model = robeArmor;
+                } else if (wizardArmorItem.getWizardArmorType().equals(WizardArmorTypes.WARLOCK)) {
+                    model = robeArmor;
+                } else {
+                    model = wizardArmor;
                 }
                 return model;
             }
@@ -97,7 +91,7 @@ public abstract class WizardArmorItemMixin extends ArmorItem {
     public @Nullable String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
         String s = wizardArmorItem.getWizardArmorType().getName() + "_armor";
 
-        if (WizardryMainMod.IS_THE_SEASON && wizardArmorItem.getWizardArmorType() == WizardArmorType.WIZARD) {
+        if (WizardryMainMod.IS_THE_SEASON && wizardArmorItem.getWizardArmorType() == WizardArmorTypes.WIZARD) {
             s = s + "_festive";
         } else {
             if (this.element != null) s = s + "_" + this.element.getName();

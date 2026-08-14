@@ -21,7 +21,7 @@ public class FrostAxeItem extends AxeItem {
 
     @Override
     public boolean hurtEnemy(@NotNull ItemStack stack, @NotNull LivingEntity target, @NotNull LivingEntity entity) {
-        if (!MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target) && !entity.level().isClientSide)
+        if (!entity.level().isClientSide)
             target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(),
                     Spells.FROST_AXE.property(DefaultProperties.EFFECT_DURATION),
                     Spells.FROST_AXE.property(DefaultProperties.EFFECT_STRENGTH)));

@@ -3,7 +3,7 @@ package com.binaris.wizardry.content.spell.healing;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -16,7 +16,6 @@ import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
-import net.minecraft.network.chat.Component;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
@@ -33,15 +32,8 @@ public class RayOfPurification extends RaySpell {
     protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
         if (!(entityHit.getEntity() instanceof LivingEntity target)) return false;
 
-        if (MagicDamageSource.isEntityImmune(EBDamageSources.RADIANT, target)) {
-            if (!ctx.world().isClientSide() && ctx.castingTicks() == 1)
-                ctx.caster().sendSystemMessage(Component.translatable("spell.resist", target.getName(),
-                        this.getDescriptionFormatted())
-                );
-            return false;
-        }
         if (ctx.castingTicks() % 10 != 0) return true;
-        float damage = property(UNDEAD_DAMAGE_MULTIPLIER) * ctx.modifiers().get(SpellModifiers.POTENCY);
+        float damage = ctx.modifiers().get(SpellModifiers.POTENCY, property(UNDEAD_DAMAGE_MULTIPLIER));
         if (target.isInvertedHealAndHarm()) damage *= property(UNDEAD_DAMAGE_MULTIPLIER);
 
         EntityUtil.attackEntityWithoutKnockback(target,
@@ -49,7 +41,7 @@ public class RayOfPurification extends RaySpell {
 
         if (!ctx.world().isClientSide) {
             target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS,
-                    (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION))));
+                    (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION)))));
         }
 
         return true;
@@ -96,7 +88,7 @@ public class RayOfPurification extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellType.ATTACK, SpellAction.POINT, 10, 10, 40)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.HEALING, SpellTypes.ATTACK, SpellAction.POINT, 10, 10, 40)
                 .add(DefaultProperties.DAMAGE, 2.0F)
                 .add(DefaultProperties.EFFECT_DURATION, 100)
                 .add(DefaultProperties.RANGE, 10F)

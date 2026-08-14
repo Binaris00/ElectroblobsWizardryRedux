@@ -1,9 +1,8 @@
 package com.binaris.wizardry.content.spell.healing;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
-import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -29,20 +28,12 @@ public class FontOfMana extends AreaEffectSpell {
         this.particleDensity(1.25f);
     }
 
-    // Event handler to reduce cooldowns when caster has the buff
-    public static void onSpellCastPreEvent(SpellCastEvent.Pre event) {
-        if (event.getCaster() != null && event.getCaster().hasEffect(EBMobEffects.FONT_OF_MANA.get())) {
-            MobEffectInstance inst = event.getCaster().getEffect(EBMobEffects.FONT_OF_MANA.get());
-            if (inst != null) event.getModifiers().divide(SpellModifiers.COOLDOWN, 2 + inst.getAmplifier());
-        }
-    }
-
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
         if (!(target instanceof Player)) return true;
 
-        int duration = (int) (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION));
-        int strength = (int) (property(DefaultProperties.EFFECT_STRENGTH) + (ctx.modifiers().get(SpellModifiers.POTENCY) - 1f) * 2f);
+        int duration = (int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION)));
+        int strength = (int) (property(DefaultProperties.EFFECT_STRENGTH) + (ctx.modifiers().getFactor(SpellModifiers.POTENCY) - 1.0f) * 2f);
 
         // Apply the new Font of Mana mob effect
         if (EBMobEffects.FONT_OF_MANA.get() != null) {
@@ -61,7 +52,7 @@ public class FontOfMana extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.HEALING, SpellType.UTILITY, SpellAction.POINT_UP, 100, 15, 250)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.HEALING, SpellTypes.UTILITY, SpellAction.POINT_UP, 100, 15, 250)
                 .add(DefaultProperties.EFFECT_RADIUS, 5)
                 .add(DefaultProperties.EFFECT_DURATION, 600)
                 .add(DefaultProperties.EFFECT_STRENGTH, 0)

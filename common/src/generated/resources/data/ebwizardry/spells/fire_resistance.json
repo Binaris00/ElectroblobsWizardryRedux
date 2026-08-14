@@ -1,5 +1,5 @@
 {
-  "type": "defence",
+  "type": "ebwizardry:defence",
   "base_properties": {
     "effect.minecraft.fire_resistance_duration": 600,
     "effect.minecraft.fire_resistance_strength": 0

@@ -1,7 +1,7 @@
 package com.binaris.wizardry.setup.registries;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.core.config.EBConfig;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -57,7 +57,7 @@ public final class EBLootTables {
      * You should add your injections here, not only add them to the list or just creating the members.
      */
     public static void initInjections() {
-        EBConfig.LOOT_INJECTION_LOCATIONS_TO_STRUCTURES.get().forEach(
+        EBServerConfig.LOOT_INJECTION_LOCATIONS_TO_STRUCTURES.get().forEach(
                 location -> LOOT_INJECTIONS.add(Pair.of(location, createAdditivePool(DUNGEON_ADDITIONS, 1)))
         );
 
@@ -69,12 +69,12 @@ public final class EBLootTables {
         for (EntityType<?> entityType : BuiltInRegistries.ENTITY_TYPE) {
             ResourceLocation lootTable = entityType.getDefaultLootTable();
             ResourceLocation entityName = BuiltInRegistries.ENTITY_TYPE.getKey(entityType);
-            if (EBConfig.INJECT_LOOT_TO_HOSTILE_MOBS.get() && !entityType.getCategory().isFriendly()) {
+            if (EBServerConfig.INJECT_LOOT_TO_HOSTILE_MOBS.get() && !entityType.getCategory().isFriendly()) {
                 LOOT_INJECTIONS.add(Pair.of(lootTable, createAdditivePool(WizardryMainMod.location("entities/mob_additions"), 1)));
                 continue;
             }
 
-            if (EBConfig.LOOT_INJECTION_TO_MOBS.get().contains(entityName)) {
+            if (EBServerConfig.LOOT_INJECTION_TO_MOBS.get().contains(entityName)) {
                 LOOT_INJECTIONS.add(Pair.of(lootTable, createAdditivePool(WizardryMainMod.location("entities/mob_additions"), 1)));
             }
         }

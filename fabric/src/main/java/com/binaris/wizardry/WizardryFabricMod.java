@@ -11,6 +11,7 @@ import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerWorldEvents;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
@@ -32,9 +33,12 @@ public final class WizardryFabricMod implements ModInitializer {
     public void onInitialize() {
         WizardryMainMod.init();
 
-        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> WizardryEventBus.getInstance().fire(new EBPlayerJoinServerEvent(handler.getPlayer(), server)));
+        EBMobEffects.register(Registry::register);
+        ServerPlayConnectionEvents.JOIN.register((handler, sender, server) -> WizardryEventBus.fireEvent(new EBPlayerJoinServerEvent(handler.getPlayer(), server)));
 
-        ServerWorldEvents.LOAD.register(((minecraftServer, serverLevel) -> WizardryEventBus.getInstance().fire(new EBServerLevelLoadEvent(serverLevel))));
+        ServerWorldEvents.LOAD.register(((minecraftServer, serverLevel) -> WizardryEventBus.fireEvent(new EBServerLevelLoadEvent(serverLevel))));
+
+        ServerLifecycleEvents.SERVER_STARTING.register((server) -> WizardryEventBus.fireEvent(new EBServerLoad(server)));
 
         EBBlocks.register(Registry::register);
         EBBlockEntities.register(Registry::register);
@@ -48,7 +52,6 @@ public final class WizardryFabricMod implements ModInitializer {
         Spells.register(EBRegistriesFabric.SPELLS, Registry::register);
 
         EBCreativeTabs.register(Registry::register);
-        EBMobEffects.register(Registry::register);
         EBSounds.register(Registry::register);
         EBEnchantments.register(Registry::register);
         EBLootFunctions.register(Registry::register);
@@ -74,20 +77,20 @@ public final class WizardryFabricMod implements ModInitializer {
         BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.CREEPER), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
-            if (WizardryEventBus.getInstance().fire(new EBPlayerInteractEntityEvent(player, entity))) {
+            if (WizardryEventBus.fireEvent(new EBPlayerInteractEntityEvent(player, entity))) {
                 return InteractionResult.FAIL;
             }
             return InteractionResult.PASS;
         });
 
         UseBlockCallback.EVENT.register((player, world, hand, hitResult) -> {
-            if (WizardryEventBus.getInstance().fire(new EBPlayerUseBlockEvent(player, world, hitResult.getBlockPos(), hand))) {
+            if (WizardryEventBus.fireEvent(new EBPlayerUseBlockEvent(player, world, hitResult.getBlockPos(), hand))) {
                 return InteractionResult.FAIL;
             }
             return InteractionResult.PASS;
         });
 
-        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> !WizardryEventBus.getInstance().fire(new EBPlayerBreakBlockEvent(player, world, pos)));
+        PlayerBlockBreakEvents.BEFORE.register((world, player, pos, state, blockEntity) -> !WizardryEventBus.fireEvent(new EBPlayerBreakBlockEvent(player, world, pos)));
 
         EBFabricServerNetwork.registerC2SMessages();
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new PropertiesFabricDataManager());

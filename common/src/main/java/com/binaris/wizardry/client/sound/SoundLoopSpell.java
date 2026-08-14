@@ -12,10 +12,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.DispenserBlockEntity;
 
-/**
- * Encapsulate all the work and info needed to cast spells in the mod, this contains 3 subclasses
- * that are used depending on how you're casting a spell
- */
+/// Encapsulate all the work and info needed to cast spells in the mod, this contains 3 subclasses
+/// that are used depending on how you're casting a spell
 public abstract class SoundLoopSpell extends SoundLoop {
     final Spell spell;
 
@@ -24,9 +22,7 @@ public abstract class SoundLoopSpell extends SoundLoop {
         this.spell = spell;
     }
 
-    /**
-     * Checks if a sound loop for the given entity and spell already exists
-     */
+    /// Checks if a sound loop for the given entity and spell already exists
     public static boolean hasActiveLoop(LivingEntity entity, Spell spell) {
         return SoundLoop.hasActiveLoopMatching(loop ->
                 loop instanceof SoundLoopSpellEntity spellLoop &&
@@ -46,9 +42,7 @@ public abstract class SoundLoopSpell extends SoundLoop {
         }
     }
 
-    /**
-     * Sound loop from a spell cast by an entity
-     **/
+    /// Sound loop from a spell cast by an entity
     public static class SoundLoopSpellEntity extends SoundLoopSpell {
         private final LivingEntity source;
 
@@ -79,9 +73,7 @@ public abstract class SoundLoopSpell extends SoundLoop {
         }
     }
 
-    /**
-     * Sound loop from a spell cast by a dispenser
-     **/
+    /// Sound loop from a spell cast by a dispenser
     public static class SoundLoopSpellDispenser extends SoundLoopSpellLocation {
         private final DispenserBlockEntity source;
 
@@ -103,9 +95,7 @@ public abstract class SoundLoopSpell extends SoundLoop {
         }
     }
 
-    /**
-     * Sound loop from a spell cast just by the location, normally a /cast command
-     **/
+    /// Sound loop from a spell cast just by the location, normally a /cast command
     public static class SoundLoopSpellPosTimed extends SoundLoopSpellLocation {
         private int timeLeft;
 

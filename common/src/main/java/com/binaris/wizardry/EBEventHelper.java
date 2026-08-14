@@ -3,35 +3,41 @@ package com.binaris.wizardry;
 import com.binaris.wizardry.api.content.effect.MagicMobEffect;
 import com.binaris.wizardry.api.content.event.*;
 import com.binaris.wizardry.api.content.item.ArtifactItem;
-import com.binaris.wizardry.api.content.spell.SpellContext;
+import com.binaris.wizardry.api.content.spell.SpellContexts;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.Forfeit;
 import com.binaris.wizardry.content.WizardryAttributeModifier;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.content.effect.ContainmentEffect;
-import com.binaris.wizardry.content.effect.FireSkinMobEffect;
-import com.binaris.wizardry.content.effect.StaticAuraMobEffect;
-import com.binaris.wizardry.content.effect.WardMobEffect;
 import com.binaris.wizardry.content.entity.construct.BubbleConstruct;
+import com.binaris.wizardry.content.item.RandomSpellBookItem;
 import com.binaris.wizardry.content.item.WandUpgradeItem;
 import com.binaris.wizardry.content.item.armor.WizardArmorItem;
-import com.binaris.wizardry.content.spell.healing.ArcaneJammer;
-import com.binaris.wizardry.content.spell.healing.FontOfMana;
 import com.binaris.wizardry.content.spell.lightning.Charge;
 import com.binaris.wizardry.content.spell.necromancy.CurseOfSoulbinding;
 import com.binaris.wizardry.content.spell.sorcery.ArcaneLockSpell;
 import com.binaris.wizardry.core.AllyDesignation;
+import com.binaris.wizardry.core.ArtifactUtils;
 import com.binaris.wizardry.core.DataEvents;
+import com.binaris.wizardry.core.config.ConfigManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
+import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBAdvancementTriggers;
+import com.binaris.wizardry.setup.registries.EBItems;
+import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.minecraft.world.item.crafting.SmeltingRecipe;
+import net.minecraft.world.level.storage.LevelResource;
 
-/**
- * Simple class to save all the event helper methods
- * This is internal use, you're not supposed to use this for any reason
- */
+import java.util.Optional;
+
+/// Simple class to save all the event helper methods
+/// This is internal use, you're not supposed to use this for any reason
 public final class EBEventHelper {
     private EBEventHelper() {
     }
@@ -53,22 +59,25 @@ public final class EBEventHelper {
         onItemPlaceInContainer(bus);
         onPlayerUseBlock(bus);
         onPlayerBreakBlock(bus);
+        onServerLoad(bus);
+        onItemPickup(bus);
+        onPlayerItemPickup(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
         bus.register(EBLivingHurtEvent.class, Charge::onLivingHurt);
-        bus.register(EBLivingHurtEvent.class, StaticAuraMobEffect::onLivingHurt);
-        bus.register(EBLivingHurtEvent.class, FireSkinMobEffect::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, CurseOfSoulbinding::onLivingHurt);
-        bus.register(EBLivingHurtEvent.class, WardMobEffect::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, BubbleConstruct::onLivingHurt);
         bus.register(EBLivingHurtEvent.class, ArtifactItem::onHurtEntity);
         bus.register(EBLivingHurtEvent.class, ArtifactItem::onPlayerHurt);
+        bus.register(EBLivingHurtEvent.class, MagicMobEffect.EventCaller::callHurtEntityEvent);
+        bus.register(EBLivingHurtEvent.class, MagicMobEffect.EventCaller::callUserHurtEvent);
         bus.register(EBLivingHurtEvent.class, AllyDesignation::onLivingHurt);
     }
 
     private static void onLivingTickEvent(WizardryEventBus bus) {
-        bus.register(EBLivingTick.class, MagicMobEffect::onLivingTick);
+        bus.register(EBLivingTick.class, MagicMobEffect::onParticleTick);
+        bus.register(EBLivingTick.class, MagicMobEffect.EventCaller::callTickEvent);
         bus.register(EBLivingTick.class, ArtifactItem::onTick);
         bus.register(EBLivingTick.class, DataEvents::onMinionTick);
         bus.register(EBLivingTick.class, DataEvents::onPlayerTick);
@@ -76,7 +85,7 @@ public final class EBEventHelper {
     }
 
     private static void onSpellDiscovery(WizardryEventBus bus) {
-        bus.register(EBDiscoverSpellEvent.class, (event -> {
+        bus.register(DiscoverSpellEvent.class, (event -> {
             if (!event.getPlayer().level().isClientSide)
                 EBAdvancementTriggers.DISCOVER_SPELL.trigger((ServerPlayer) event.getPlayer(), event.getSpell(), event.getSource());
         }));
@@ -85,11 +94,18 @@ public final class EBEventHelper {
     private static void onPlayerJoin(WizardryEventBus bus) {
         bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
         bus.register(EBPlayerJoinServerEvent.class, (SpellProperties::onPlayerJoin));
-        bus.register(EBPlayerJoinServerEvent.class, com.binaris.wizardry.core.config.EBConfigManager::onPlayerJoin);
+        bus.register(EBPlayerJoinServerEvent.class, ConfigManager::onPlayerJoin);
     }
 
     private static void onServerLevelLoad(WizardryEventBus bus) {
         bus.register(EBServerLevelLoadEvent.class, SpellGlyphData::onServerLevelLoad);
+        bus.register(EBServerLevelLoadEvent.class, (e) -> {
+            ConfigManager.loadServerConfigs(e.getLevel().getServer().getWorldPath(LevelResource.ROOT));
+        });
+    }
+
+    private static void onServerLoad(WizardryEventBus bus) {
+
     }
 
     private static void onEntityJoinLevel(WizardryEventBus bus) {
@@ -102,6 +118,7 @@ public final class EBEventHelper {
 
     private static void onLivingDeathEvent(WizardryEventBus bus) {
         bus.register(EBLivingDeathEvent.class, ArtifactItem::onKillEntity);
+        bus.register(EBLivingDeathEvent.class, MagicMobEffect.EventCaller::callKillEntity);
         bus.register(EBLivingDeathEvent.class, DataEvents::onConjureEntityDeath);
         bus.register(EBLivingDeathEvent.class, WandUpgradeItem::onPlayerKillMob);
     }
@@ -115,14 +132,14 @@ public final class EBEventHelper {
         bus.register(SpellCastEvent.Pre.class, Forfeit::onSpellCastPreEvent);
         bus.register(SpellCastEvent.Pre.class, ArtifactItem::onSpellPreCast);
         bus.register(SpellCastEvent.Pre.class, EBEventHelper::castContextCheck);
-        bus.register(SpellCastEvent.Pre.class, FontOfMana::onSpellCastPreEvent);
-        bus.register(SpellCastEvent.Pre.class, ArcaneJammer::onSpellCastPreEvent);
         bus.register(SpellCastEvent.Pre.class, WizardryAttributeModifier::onPreCast);
+        bus.register(SpellCastEvent.Pre.class, MagicMobEffect.EventCaller::callSpellPreCast);
     }
 
     private static void onSpellPostCast(WizardryEventBus bus) {
         bus.register(SpellCastEvent.Post.class, Forfeit::onSpellCastPostEvent);
         bus.register(SpellCastEvent.Post.class, ArtifactItem::onSpellPostCast);
+        bus.register(SpellCastEvent.Post.class, MagicMobEffect.EventCaller::callSpellPostCast);
     }
 
     private static void onSpellTickCast(WizardryEventBus bus) {
@@ -140,21 +157,39 @@ public final class EBEventHelper {
         bus.register(EBPlayerBreakBlockEvent.class, ArcaneLockSpell::onPlayerBreakBlock);
     }
 
-    private static void castContextCheck(SpellCastEvent.Pre event) {
-        boolean enabled = switch (event.getSource()) {
-            case WAND -> event.getSpell().isEnabled(SpellContext.WANDS);
-            case SCROLL -> event.getSpell().isEnabled(SpellContext.SCROLL);
-            case COMMAND -> event.getSpell().isEnabled(SpellContext.COMMANDS);
-            case NPC -> event.getSpell().isEnabled(SpellContext.NPCS);
-            case DISPENSER -> event.getSpell().isEnabled(SpellContext.DISPENSERS);
-            default -> true;
-        };
+    private static void onItemPickup(WizardryEventBus bus) {
+        bus.register(EBItemPickupEvent.class, RandomSpellBookItem::onPickup);
+    }
 
-        // If a spell is disabled in the config, it will not work.
-        if (!enabled) {
-            if (event.getCaster() != null && !event.getCaster().level().isClientSide)
-                event.getCaster().sendSystemMessage(Component.translatable("spell.disabled", event.getSpell().getDescriptionFormatted()));
-            event.setCanceled(true);
+
+    private static void onPlayerItemPickup(WizardryEventBus bus) {
+        bus.register(EBPlayerItemPickupEvent.class, (e) -> {
+            if (ArtifactChannel.isEquipped(e.getEntity(), EBItems.CHARM_AUTO_SMELT.get())) {
+                Container dummyInv = new SimpleContainer(1);
+                dummyInv.setItem(0, e.getItemEntity().getItem());
+                Optional<SmeltingRecipe> optionalSmeltingRecipe = e.getEntity().level().getRecipeManager().getRecipeFor(RecipeType.SMELTING, dummyInv, e.getEntity().level());
+                if (optionalSmeltingRecipe.isPresent()) ArtifactUtils.findMatchingWandAndCast(e.getEntity(), Spells.POCKET_FURNACE);
+            }
+        });
+    }
+
+    private static void castContextCheck(SpellCastEvent.Pre event) {
+        if (event.getSource() instanceof SpellCastEvent.Sources legalSource) {
+            boolean enabled = switch (legalSource) {
+                case WAND -> event.getSpell().isEnabled(SpellContexts.WANDS);
+                case SCROLL -> event.getSpell().isEnabled(SpellContexts.SCROLL);
+                case COMMAND -> event.getSpell().isEnabled(SpellContexts.COMMANDS);
+                case NPC -> event.getSpell().isEnabled(SpellContexts.NPCS);
+                case DISPENSER -> event.getSpell().isEnabled(SpellContexts.DISPENSERS);
+                default -> true;
+            };
+
+            // If a spell is disabled in the config, it will not work.
+            if (!enabled) {
+                if (event.getCaster() != null && !event.getCaster().level().isClientSide)
+                    event.getCaster().sendSystemMessage(Component.translatable("spell.disabled", event.getSpell().getDescriptionFormatted()));
+                event.setCanceled(true);
+            }
         }
     }
 }

@@ -3,12 +3,12 @@ package com.binaris.wizardry.content.spell.earth;
 import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
-import com.binaris.wizardry.core.config.EBConfig;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -38,7 +38,7 @@ public class Flight extends Spell {
 
         if (ctx.castingTicks() % 24 == 0) playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
 
-        float potencyModifier = ctx.modifiers().get(SpellModifiers.POTENCY);
+        float potencyModifier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
         float speed = property(DefaultProperties.SPEED) * potencyModifier;
         float acceleration = property(DefaultProperties.ACCELERATION) * potencyModifier;
 
@@ -87,7 +87,7 @@ public class Flight extends Spell {
 
         ctx.caster().setDeltaMovement(newVelX, newVelY, newVelZ);
 
-        if (!EBConfig.REPLACE_VANILLA_FALL_DAMAGE.get()) ctx.caster().fallDistance = 0.0f;
+        if (!EBServerConfig.REPLACE_VANILLA_FALL_DAMAGE.get()) ctx.caster().fallDistance = 0.0f;
 
         return true;
     }
@@ -100,7 +100,7 @@ public class Flight extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellType.UTILITY, SpellAction.NONE, 10, 0, 0)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.EARTH, SpellTypes.UTILITY, SpellAction.NONE, 10, 0, 0)
                 .add(DefaultProperties.ACCELERATION, 0.05F)
                 .add(DefaultProperties.SPEED, 0.5F)
                 .build();

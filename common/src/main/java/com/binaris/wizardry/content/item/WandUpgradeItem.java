@@ -2,9 +2,9 @@ package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
 import com.binaris.wizardry.api.content.item.IManaItem;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.CastItemDataHelper;
-import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
 import net.minecraft.ChatFormatting;
@@ -32,13 +32,13 @@ public class WandUpgradeItem extends Item {
 
         // Need to be a ManaStoringItem and without full mana
         // only can recharge 1 item for death
-        for (ItemStack itemStack : InventoryUtil.getHotBarAndOffhand(player)) {
+        for (ItemStack itemStack : EntityUtil.getHotBarAndHandItems(player)) {
             if (itemStack.getItem() instanceof IManaItem manaItem && !manaItem.isManaFull(itemStack)) {
                 if (CastItemDataHelper.getUpgradeLevel(itemStack, EBItems.SIPHON_UPGRADE.get()) <= 0) continue;
 
-                float mana = EBConstants.SIPHON_MANA_PER_LEVEL
+                float mana = EBServerConfig.SIPHON_MANA_PER_LEVEL.get()
                         * CastItemDataHelper.getUpgradeLevel(itemStack, EBItems.SIPHON_UPGRADE.get())
-                        + player.level().random.nextInt(EBConstants.SIPHON_MANA_PER_LEVEL);
+                        + player.level().random.nextInt(EBServerConfig.SIPHON_MANA_PER_LEVEL.get());
 
                 if (ArtifactChannel.isEquipped(player, EBItems.RING_SIPHONING.get())) mana *= RING_SIPHONING_BONUS;
                 manaItem.rechargeMana(itemStack, (int) mana);

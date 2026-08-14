@@ -1,17 +1,15 @@
 package com.binaris.wizardry.content.spell.fire;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
+import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.*;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.api.content.util.MagicDamageSource;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.AreaEffectSpell;
-import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -58,15 +56,14 @@ public class Firestorm extends AreaEffectSpell {
 
     @Override
     protected boolean affectEntity(CastContext ctx, Vec3 origin, LivingEntity target, int targetCount) {
-        if (!MagicDamageSource.isEntityImmune(EBDamageSources.FIRE, target))
-            target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
+        target.setSecondsOnFire(property(DefaultProperties.EFFECT_DURATION));
         return true;
     }
 
     private void burnNearbyBlocks(CastContext ctx, Vec3 origin) {
         if (ctx.world().isClientSide || !EntityUtil.canDamageBlocks(ctx.caster(), ctx.world())) return;
 
-        double radius = property(DefaultProperties.EFFECT_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST);
+        double radius = ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.EFFECT_RADIUS));
 
         for (int i = -(int) radius; i <= (int) radius; i++) {
             for (int j = -(int) radius; j <= (int) radius; j++) {
@@ -105,7 +102,7 @@ public class Firestorm extends AreaEffectSpell {
             double speed = 0.02 / r * (1 + ctx.world().random.nextDouble());
             ParticleBuilder.create(EBParticles.CLOUD)
                     .pos(origin.x, origin.y + ctx.world().random.nextDouble() * 2.5, origin.z)
-                    .color(DrawingUtils.mix(DrawingUtils.mix(0xffbe00, 0xff3600, r / 0.6f), 0x222222, (r - 0.6f) / 0.4f))
+                    .color(ClientUtils.mixColor(ClientUtils.mixColor(0xffbe00, 0xff3600, r / 0.6f), 0x222222, (r - 0.6f) / 0.4f))
                     .spin(r * (radius - 1) + 0.5, speed)
                     .spawn(ctx.world());
         }
@@ -114,7 +111,7 @@ public class Firestorm extends AreaEffectSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT_DOWN, 80, 20, 250)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.FIRE, SpellTypes.ATTACK, SpellAction.POINT_DOWN, 80, 20, 250)
                 .add(DefaultProperties.EFFECT_RADIUS, 6)
                 .add(DefaultProperties.EFFECT_DURATION, 15)
                 .build();

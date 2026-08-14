@@ -4,14 +4,14 @@ import com.binaris.wizardry.api.client.ParticleBuilder;
 import com.binaris.wizardry.api.content.data.ImbuementEnchantData;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.sorcery.ImbueWeapon;
-import com.binaris.wizardry.core.EBConstants;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -25,7 +25,7 @@ import org.jetbrains.annotations.NotNull;
 public class FlamingWeapon extends Spell {
     @Override
     public boolean cast(PlayerCastContext ctx) {
-        for (ItemStack stack : InventoryUtil.getHotBarAndOffhand(ctx.caster())) {
+        for (ItemStack stack : EntityUtil.getHotBarAndHandItems(ctx.caster())) {
             // If the item isn't a sword or a bow, or if it already has Fire Aspect or Flaming Arrows, skip it
             if ((!ImbueWeapon.isSword(stack) && !ImbueWeapon.isBow(stack)) ||
                     EnchantmentHelper.getEnchantments(stack).containsKey(Enchantments.FLAMING_ARROWS) ||
@@ -34,8 +34,8 @@ public class FlamingWeapon extends Spell {
 
             ImbuementEnchantData data = Services.OBJECT_DATA.getImbuementData(stack);
             if (data == null) continue;
-            int level = ctx.modifiers().get(SpellModifiers.POTENCY) == 1.0f ? 1 : (int) ((ctx.modifiers().get(SpellModifiers.POTENCY) - 1.0f) / EBConstants.POTENCY_INCREASE_PER_TIER + 0.5f);
-            long duration = (long) (ctx.world().getGameTime() + (property(DefaultProperties.EFFECT_DURATION) * ctx.modifiers().get(SpellModifiers.DURATION)));
+            int level = ctx.modifiers().getFactor(SpellModifiers.POTENCY) == 1.0f ? 1 : (int) ((ctx.modifiers().getFactor(SpellModifiers.POTENCY) - 1.0f) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get() + 0.5f);
+            long duration = (long) (ctx.world().getGameTime() + (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION))));
 
             if (stack.getItem() instanceof SwordItem) {
                 stack.enchant(Enchantments.FIRE_ASPECT, level);
@@ -64,7 +64,7 @@ public class FlamingWeapon extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.UTILITY, SpellAction.IMBUE, 35, 0, 70)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.UTILITY, SpellAction.IMBUE, 35, 0, 70)
                 .add(DefaultProperties.EFFECT_DURATION, 900)
                 .build();
     }

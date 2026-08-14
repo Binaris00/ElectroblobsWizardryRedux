@@ -1,5 +1,5 @@
 {
-  "type": "utility",
+  "type": "ebwizardry:utility",
   "base_properties": {
     "acceleration": 0.05,
     "speed": 0.5

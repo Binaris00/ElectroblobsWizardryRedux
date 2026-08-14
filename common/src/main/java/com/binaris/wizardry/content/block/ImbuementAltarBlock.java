@@ -1,9 +1,10 @@
 package com.binaris.wizardry.content.block;
 
 import com.binaris.wizardry.api.content.util.BlockUtil;
-import com.binaris.wizardry.api.content.util.InventoryUtil;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.binaris.wizardry.content.item.RandomSpellBookItem;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.setup.registries.EBBlockEntities;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import net.minecraft.core.BlockPos;
@@ -50,13 +51,16 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
 
     @Override
     public @NotNull InteractionResult use(@NotNull BlockState state, @NotNull Level level, @NotNull BlockPos pos, @NotNull Player player, @NotNull InteractionHand hand, @NotNull BlockHitResult hit) {
-        if (level.isClientSide) return InteractionResult.SUCCESS;
         if (!(level.getBlockEntity(pos) instanceof ImbuementAltarBlockEntity entity) || player.isShiftKeyDown()) {
             return InteractionResult.FAIL;
         }
 
         ItemStack currentStack = entity.getStack();
         ItemStack toInsert = player.getItemInHand(hand);
+
+        if (entity.isCrafting()) {
+            return InteractionResult.FAIL;
+        }
 
         if (currentStack.isEmpty()) {
             ItemStack stack = toInsert.copy();
@@ -72,7 +76,7 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
             return InteractionResult.SUCCESS;
         }
 
-        if (!(player.isCreative() && InventoryUtil.doesPlayerHaveItem(player, currentStack.getItem()))) {
+        if (!(player.isCreative() && EntityUtil.doesPlayerHaveItem(player, currentStack.getItem()))) {
             if (!player.addItem(currentStack)) {
                 player.drop(currentStack, false);
             }
@@ -86,6 +90,8 @@ public class ImbuementAltarBlock extends BaseEntityBlock {
 
     @Override
     public void neighborChanged(@NotNull BlockState state, Level level, @NotNull BlockPos pos, @NotNull Block neighborBlock, @NotNull BlockPos neighborPos, boolean movedByPiston) {
+        EBLogger.info("ImbuementAltarBlock.neighborChanged() called");
+
         boolean shouldBeActive = Arrays.stream(BlockUtil.getHorizontals())
                 .allMatch(s -> level.getBlockState(pos.relative(s)).getBlock() == EBBlocks.WALL_RECEPTACLE.get()
                         && level.getBlockState(pos.relative(s)).getValue(WallReceptacleBlock.FACING) == s);

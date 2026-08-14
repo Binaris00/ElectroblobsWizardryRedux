@@ -2,7 +2,7 @@ package com.binaris.wizardry.content;
 
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.api.content.spell.Element;
-import com.binaris.wizardry.api.content.spell.SpellContext;
+import com.binaris.wizardry.api.content.spell.SpellContexts;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.api.content.util.EntityUtil;
@@ -151,7 +151,7 @@ public class ForfeitRegistry {
         });
 
         create("storm", SpellTiers.APPRENTICE, Elements.LIGHTNING, (w, p) -> {
-            if (!Spells.INVOKE_WEATHER.isEnabled(SpellContext.WANDS)) return;
+            if (!Spells.INVOKE_WEATHER.isEnabled(SpellContexts.WANDS)) return;
             int shortWeatherTime = (100 + (new Random()).nextInt(200)) * 20;
             if (!w.isClientSide) ((ServerLevel) w).setWeatherParameters(0, shortWeatherTime, true, true);
         });

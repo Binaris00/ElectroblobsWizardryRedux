@@ -1,5 +1,5 @@
 {
-  "type": "utility",
+  "type": "ebwizardry:utility",
   "base_properties": {
     "effect.ebwizardry.frost_step_duration": 600,
     "effect.ebwizardry.frost_step_strength": 0

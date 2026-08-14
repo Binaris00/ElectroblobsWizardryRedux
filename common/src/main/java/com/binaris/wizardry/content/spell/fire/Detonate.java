@@ -1,7 +1,7 @@
 package com.binaris.wizardry.content.spell.fire;
 
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
@@ -33,7 +33,7 @@ public class Detonate extends RaySpell {
             return true;
         }
 
-        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(this.property(DefaultProperties.BLAST_RADIUS) * ctx.modifiers().get(SpellModifiers.BLAST),
+        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(ctx.modifiers().get(SpellModifiers.BLAST, property(DefaultProperties.BLAST_RADIUS)),
                 blockHit.getBlockPos().getX(), blockHit.getBlockPos().getY(), blockHit.getBlockPos().getZ(), ctx.world());
 
         for (LivingEntity target : targets) {
@@ -42,7 +42,7 @@ public class Detonate extends RaySpell {
 
             target.hurt(source, Math.max(property(DefaultProperties.DAMAGE) -
                     (float) target.distanceToSqr(blockHit.getBlockPos().getX() + 0.5, blockHit.getBlockPos().getY() + 0.5,
-                            blockHit.getBlockPos().getZ() + 0.5) * 4, 0) * ctx.modifiers().get(SpellModifiers.POTENCY));
+                            blockHit.getBlockPos().getZ() + 0.5) * 4, 0) * ctx.modifiers().getFactor(SpellModifiers.POTENCY));
         }
         return true;
     }
@@ -65,7 +65,7 @@ public class Detonate extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellType.ATTACK, SpellAction.POINT, 45, 0, 50)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.FIRE, SpellTypes.ATTACK, SpellAction.POINT, 45, 0, 50)
                 .add(DefaultProperties.RANGE, 16F)
                 .add(DefaultProperties.DAMAGE, 12F)
                 .add(DefaultProperties.BLAST_RADIUS, 3F)

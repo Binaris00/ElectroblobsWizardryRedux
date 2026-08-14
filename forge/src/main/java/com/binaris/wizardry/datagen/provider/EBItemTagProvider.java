@@ -45,6 +45,39 @@ public final class EBItemTagProvider extends ItemTagsProvider {
                 .add(EBItems.MAGIC_CRYSTAL_NECROMANCY.get())
                 .replace(false);
 
+        this.tag(EBTags.MAGIC_SHARD_ITEM)
+                .add(EBItems.MAGIC_CRYSTAL_SHARD.get())
+                .replace(false);
+
+        this.tag(EBTags.WAND_UPGRADES)
+                .add(EBItems.ATTUNEMENT_UPGRADE.get())
+                .add(EBItems.BLAST_UPGRADE.get())
+                .add(EBItems.CONDENSER_UPGRADE.get())
+                .add(EBItems.COOLDOWN_UPGRADE.get())
+                .add(EBItems.DURATION_UPGRADE.get())
+                .add(EBItems.MELEE_UPGRADE.get())
+                .add(EBItems.RANGE_UPGRADE.get())
+                .add(EBItems.SIPHON_UPGRADE.get())
+                .add(EBItems.STORAGE_UPGRADE.get())
+                .replace(false);
+
+        this.tag(EBTags.SPECTRAL_DUSTS)
+                .add(EBItems.SPECTRAL_DUST.get())
+                .add(EBItems.SPECTRAL_DUST_EARTH.get())
+                .add(EBItems.SPECTRAL_DUST_FIRE.get())
+                .add(EBItems.SPECTRAL_DUST_HEALING.get())
+                .add(EBItems.SPECTRAL_DUST_ICE.get())
+                .add(EBItems.SPECTRAL_DUST_LIGHTNING.get())
+                .add(EBItems.SPECTRAL_DUST_NECROMANCY.get())
+                .add(EBItems.SPECTRAL_DUST_SORCERY.get())
+                .replace(false);
+
+        this.tag(EBTags.ARMOR_UPGRADE)
+                .add(EBItems.CRYSTAL_SILVER_PLATING.get())
+                .add(EBItems.ETHEREAL_CRYSTAL_WEAVE.get())
+                .add(EBItems.RESPLENDENT_THREAD.get())
+                .replace(false);
+
         for (Map.Entry<DeferredObject<? extends Item>, ArtifactItem.Type> entry : EBItems.getArtifacts().entrySet()) {
             if (entry.getValue() == ArtifactItem.Type.CHARM) {
                 this.tag(EBTags.CHARM_ACCESSORIES).add(entry.getKey().get()).replace(false);

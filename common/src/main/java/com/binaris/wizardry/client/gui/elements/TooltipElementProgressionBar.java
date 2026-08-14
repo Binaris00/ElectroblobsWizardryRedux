@@ -1,9 +1,8 @@
 package com.binaris.wizardry.client.gui.elements;
 
 import com.binaris.wizardry.api.content.spell.SpellTier;
-import com.binaris.wizardry.api.content.util.DrawingUtils;
 import com.binaris.wizardry.api.content.util.CastItemDataHelper;
-import com.binaris.wizardry.client.EBClientConstants;
+import com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen;
 import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.ChatFormatting;
@@ -13,8 +12,8 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.Nullable;
 
-import static com.binaris.wizardry.client.EBClientConstants.TOOLTIP_BORDER;
-import static com.binaris.wizardry.client.EBClientConstants.TOOLTIP_WIDTH;
+import static com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen.TOOLTIP_BORDER;
+import static com.binaris.wizardry.client.gui.screens.ArcaneWorkbenchScreen.TOOLTIP_WIDTH;
 
 public class TooltipElementProgressionBar extends TooltipElement {
     private final int height;
@@ -31,22 +30,31 @@ public class TooltipElementProgressionBar extends TooltipElement {
 
     @Override
     protected int getHeight(ItemStack stack) {
-        return Minecraft.getInstance().font.lineHeight + EBClientConstants.LINE_SPACING_NARROW + EBClientConstants.PROGRESSION_BAR_HEIGHT;
+        return Minecraft.getInstance().font.lineHeight + ArcaneWorkbenchScreen.LINE_SPACING_NARROW + ArcaneWorkbenchScreen.PROGRESSION_BAR_HEIGHT;
     }
 
     @Override
     protected void drawBackground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, float partialTicks, int mouseX, int mouseY) {
-        y += Minecraft.getInstance().font.lineHeight + EBClientConstants.LINE_SPACING_NARROW;
-        float progressFraction = 1;
+        y += Minecraft.getInstance().font.lineHeight + ArcaneWorkbenchScreen.LINE_SPACING_NARROW;
 
+        float progressFraction = 1;
         SpellTier nextTier = getNextTier(stack);
         if (nextTier != null) {
             progressFraction = (float) CastItemDataHelper.getProgression(stack) / nextTier.getProgression();
         }
 
-        DrawingUtils.drawTexturedRect(x, y, EBClientConstants.MAIN_GUI_WIDTH, height + EBClientConstants.PROGRESSION_BAR_HEIGHT, EBClientConstants.PROGRESSION_BAR_WIDTH, EBClientConstants.PROGRESSION_BAR_HEIGHT, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
-        int width = (int) (EBClientConstants.PROGRESSION_BAR_WIDTH * progressFraction);
-        DrawingUtils.drawTexturedRect(x, y, EBClientConstants.MAIN_GUI_WIDTH, height, width, EBClientConstants.PROGRESSION_BAR_HEIGHT, EBClientConstants.TEXTURE_WIDTH, EBClientConstants.TEXTURE_HEIGHT);
+        // Empty bar (background)
+        guiGraphics.blit(ArcaneWorkbenchScreen.ARCANE_WORKBENCH_CONTAINER_TEXTURE, x, y,
+                ArcaneWorkbenchScreen.MAIN_GUI_WIDTH, height + ArcaneWorkbenchScreen.PROGRESSION_BAR_HEIGHT,
+                ArcaneWorkbenchScreen.PROGRESSION_BAR_WIDTH, ArcaneWorkbenchScreen.PROGRESSION_BAR_HEIGHT,
+                ArcaneWorkbenchScreen.TEXTURE_WIDTH, ArcaneWorkbenchScreen.TEXTURE_HEIGHT);
+
+        // Filled bar (progress)
+        int filledWidth = (int) (ArcaneWorkbenchScreen.PROGRESSION_BAR_WIDTH * progressFraction);
+        guiGraphics.blit(ArcaneWorkbenchScreen.ARCANE_WORKBENCH_CONTAINER_TEXTURE, x, y,
+                ArcaneWorkbenchScreen.MAIN_GUI_WIDTH, height,
+                filledWidth, ArcaneWorkbenchScreen.PROGRESSION_BAR_HEIGHT,
+                ArcaneWorkbenchScreen.TEXTURE_WIDTH, ArcaneWorkbenchScreen.TEXTURE_HEIGHT);
     }
 
     @Override

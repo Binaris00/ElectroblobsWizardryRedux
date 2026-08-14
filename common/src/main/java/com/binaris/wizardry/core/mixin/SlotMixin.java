@@ -20,7 +20,7 @@ public abstract class SlotMixin {
 
     @Inject(method = "mayPlace", at = @At("HEAD"), cancellable = true)
     public void EBWIZARDRY$preventConjureItemInContainer(ItemStack stack, CallbackInfoReturnable<Boolean> cir) {
-        if (WizardryEventBus.getInstance().fire(new EBItemPlaceInContainerEvent(stack, this.container)))
+        if (WizardryEventBus.fireEvent(new EBItemPlaceInContainerEvent(stack, this.container)))
             cir.setReturnValue(false);
     }
 }

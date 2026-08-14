@@ -1,5 +1,5 @@
 {
-  "type": "defence",
+  "type": "ebwizardry:defence",
   "base_properties": {
     "speed": 1.0
   },

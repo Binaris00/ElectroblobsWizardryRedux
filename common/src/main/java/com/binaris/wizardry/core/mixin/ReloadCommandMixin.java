@@ -22,7 +22,8 @@ public abstract class ReloadCommandMixin {
 
     @Inject(method = "reloadPacks", at = @At("HEAD"))
     private static void EBWRIZARDRY$reloadPacks(Collection<String> selectedIds, CommandSourceStack source, CallbackInfo ci) {
-        WizardryMainMod.reloadConfigs();
+        // TODO
+        //WizardryMainMod.reloadConfigs();
         LOGGER.info("Reloading Electroblob's Wizardry configs");
     }
 }

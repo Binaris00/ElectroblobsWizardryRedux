@@ -3,21 +3,24 @@ package com.binaris.wizardry.api.content.entity.projectile;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.projectile.ThrowableItemProjectile;
+import net.minecraft.world.entity.projectile.ThrowableProjectile;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
-public abstract class BombEntity extends MagicProjectileEntity {
-    /**
-     * The entity blast multiplier. This is now synced and saved centrally from {@link BombEntity}.
-     */
+/// Abstract base class for throwable projectiles that scale their effects with a blast multiplier.
+///
+/// Provides a {@code blastMultiplier} field that is synced to tags and automatically set from {@code SpellModifiers.BLAST}
+/// by {@code ProjectileSpell} when the entity is spawned. Subclasses such as FireBombEntity and PoisonBombEntity
+/// read this multiplier to scale particle effects, splash damage, or blast radius on impact.
+public abstract class BombEntity extends MagicItemProjectileEntity {
+    /// The entity blast multiplier. This is now synced and saved centrally from [BombEntity].
     public float blastMultiplier = 1.0f;
 
-    public BombEntity(EntityType<? extends ThrowableItemProjectile> entityType, Level level) {
+    public BombEntity(EntityType<? extends ThrowableProjectile> entityType, Level level) {
         super(entityType, level);
     }
 
-    public BombEntity(EntityType<? extends ThrowableItemProjectile> entityType, LivingEntity livingEntity, Level level) {
+    public BombEntity(EntityType<? extends ThrowableProjectile> entityType, LivingEntity livingEntity, Level level) {
         super(entityType, livingEntity, level);
     }
 

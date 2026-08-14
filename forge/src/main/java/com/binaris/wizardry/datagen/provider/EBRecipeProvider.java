@@ -202,7 +202,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_gunpowder", has(Items.GUNPOWDER))
                 .save(consumer);
 
-        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_EARTH.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_sorcery"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_earth"), consumer);
+        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_EARTH.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_earth"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_earth"), consumer);
         imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_FIRE.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_fire"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_fire"), consumer);
         imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_HEALING.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_healing"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_healing"), consumer);
         imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_ICE.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_ice"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_ice"), consumer);

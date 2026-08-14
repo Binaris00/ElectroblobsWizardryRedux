@@ -9,22 +9,21 @@ import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.Level;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public class FrostSigilConstruct extends ScaledConstructEntity {
     public FrostSigilConstruct(EntityType<?> entityType, Level level) {
         super(entityType, level);
+        this.setBaseSize(Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_RADIUS).floatValue() * 2, 0.2f);
     }
 
     public FrostSigilConstruct(Level world) {
         super(EBEntities.FROST_SIGIL.get(), world);
+        this.setBaseSize(Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_RADIUS).floatValue() * 2, 0.2f);
     }
 
     @Override
@@ -45,18 +44,12 @@ public class FrostSigilConstruct extends ScaledConstructEntity {
                     MagicDamageSource.causeIndirectMagicDamage(this, getCaster(), EBDamageSources.FROST) :
                     MagicDamageSource.causeDirectMagicDamage(this, EBDamageSources.SORCERY), Spells.FROST_SIGIL.property(DefaultProperties.DAMAGE) * damageMultiplier);
 
-            if (!MagicDamageSource.isEntityImmune(EBDamageSources.FROST, target))
-                target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_DURATION),
-                        Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_STRENGTH)));
+            target.addEffect(new MobEffectInstance(EBMobEffects.FROST.get(), Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_DURATION),
+                    Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_STRENGTH)));
 
             this.playSound(EBSounds.ENTITY_FROST_SIGIL_TRIGGER.get(), 1.0f, 1.0f);
             this.discard();
         }
-    }
-
-    @Override
-    public @NotNull EntityDimensions getDimensions(@NotNull Pose pose) {
-        return EntityDimensions.scalable(Spells.FROST_SIGIL.property(DefaultProperties.EFFECT_RADIUS) * 2, 0.2f);
     }
 
     @Override

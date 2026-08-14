@@ -4,11 +4,13 @@ import com.binaris.wizardry.api.content.data.ArcaneLockData;
 import com.binaris.wizardry.api.content.event.EBPlayerBreakBlockEvent;
 import com.binaris.wizardry.api.content.event.EBPlayerUseBlockEvent;
 import com.binaris.wizardry.api.content.spell.SpellAction;
-import com.binaris.wizardry.api.content.spell.SpellType;
+import com.binaris.wizardry.api.content.spell.SpellTypes;
 import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.abstr.RaySpell;
+import com.binaris.wizardry.core.AllyDesignation;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
@@ -27,6 +29,34 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class ArcaneLockSpell extends RaySpell {
+    @Override
+    protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
+        if (!(ctx.caster() instanceof Player player)) return false;
+
+        if (!ctx.world().isClientSide) {
+            BlockPos pos = blockHit.getBlockPos();
+
+            if (toggleLock(ctx, pos, player)) {
+                // Handle double chests
+                BlockPos otherHalf = getConnectedChest(ctx.world(), pos);
+                if (otherHalf != null) toggleLock(ctx, otherHalf, player);
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    @Override
+    protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
+        return false;
+    }
+
+    @Override
+    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
+        return false;
+    }
+
     /**
      * Checks if a player is allowed to use a block with arcane lock.
      * Called from the block use event listener.
@@ -42,13 +72,15 @@ public class ArcaneLockSpell extends RaySpell {
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
         if (data == null) return;
 
-        if (data.isArcaneLocked()) {
-            // Check if the player is the owner
-            if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID())) {
-                event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning")
-                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
-                event.setCanceled(true);
-            }
+        if (!data.isArcaneLocked()) return;
+
+        boolean isOwnerOrAlly = data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID()) || AllyDesignation.isPlayerAlly(event.getPlayer(), data.getArcaneLockOwnerUUID());
+        boolean hasPermission = event.getPlayer().hasPermissions(EBServerConfig.OP_PERMISSION_BYPASS_ARCANE_LOCK.get());
+        boolean canCreativeBypass = event.getPlayer().isCreative() && EBServerConfig.CREATIVE_MODE_BYPASS_ARCANE_LOCK.get();
+
+        if (!isOwnerOrAlly && !hasPermission && !canCreativeBypass) {
+            event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            event.setCanceled(true);
         }
     }
 
@@ -67,44 +99,16 @@ public class ArcaneLockSpell extends RaySpell {
         ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(containerBlock);
         if (data == null) return;
 
-        if (data.isArcaneLocked()) {
-            // Check if the player is the owner
-            if (!data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID())) {
-                event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning")
-                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
-                event.setCanceled(true);
-            }
+        if (!data.isArcaneLocked()) return;
+
+        boolean isOwnerOrAlly = data.getArcaneLockOwnerUUID().equals(event.getPlayer().getUUID()) || AllyDesignation.isPlayerAlly(event.getPlayer(), data.getArcaneLockOwnerUUID());
+        boolean hasPermission = event.getPlayer().hasPermissions(EBServerConfig.OP_PERMISSION_BYPASS_ARCANE_LOCK.get());
+        boolean canCreativeBypass = event.getPlayer().isCreative() && EBServerConfig.CREATIVE_MODE_BYPASS_ARCANE_LOCK.get();
+
+        if (!isOwnerOrAlly && !hasPermission && !canCreativeBypass) {
+            event.getPlayer().displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            event.setCanceled(true);
         }
-    }
-
-    @Override
-    protected boolean onBlockHit(CastContext ctx, BlockHitResult blockHit, Vec3 origin) {
-        if (!(ctx.caster() instanceof Player player)) return false;
-
-        if (!ctx.world().isClientSide) {
-            BlockPos pos = blockHit.getBlockPos();
-
-            if (toggleLock(ctx, pos, player)) {
-                // Handle double chests
-                BlockPos otherHalf = getConnectedChest(ctx.world(), pos);
-                if (otherHalf != null) {
-                    toggleLock(ctx, otherHalf, player);
-                }
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    @Override
-    protected boolean onMiss(CastContext ctx, Vec3 origin, Vec3 direction) {
-        return false;
-    }
-
-    @Override
-    protected boolean onEntityHit(CastContext ctx, EntityHitResult entityHit, Vec3 origin) {
-        return false;
     }
 
     private boolean toggleLock(CastContext ctx, BlockPos pos, Player player) {
@@ -118,8 +122,7 @@ public class ArcaneLockSpell extends RaySpell {
             if (data.getArcaneLockOwnerUUID().equals(player.getUUID())) {
                 // Unlocking
                 data.setArcaneLockOwner(null);
-                player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking")
-                        .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+                player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.unlocking").withStyle(ChatFormatting.LIGHT_PURPLE), true);
                 return true;
             } else {
                 player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.not_owning").withStyle(this.getElement().getColor()), true);
@@ -130,8 +133,7 @@ public class ArcaneLockSpell extends RaySpell {
             data.setArcaneLockOwner(player.getUUID().toString());
             blockEntity.setChanged();
             ctx.world().sendBlockUpdated(pos, ctx.world().getBlockState(pos), ctx.world().getBlockState(pos), 3);
-            player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.locking")
-                    .withStyle(ChatFormatting.LIGHT_PURPLE), true);
+            player.displayClientMessage(Component.translatable("spell.ebwizardry.arcane_lock.locking").withStyle(ChatFormatting.LIGHT_PURPLE), true);
             return true;
         }
     }
@@ -150,7 +152,7 @@ public class ArcaneLockSpell extends RaySpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellType.UTILITY, SpellAction.POINT, 50, 0, 100)
+                .assignBaseProperties(SpellTiers.ADVANCED, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.POINT, 50, 0, 100)
                 .add(DefaultProperties.RANGE, 8.0F)
                 .build();
     }

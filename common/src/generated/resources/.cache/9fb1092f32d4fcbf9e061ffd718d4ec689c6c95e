@@ -1,4 +1,4 @@
-// 1.20.1	2026-03-06T12:08:16.703294963	Recipes
+// 1.20.1	2026-05-08T09:07:56.645090199	Recipes
 23224d9c2388596456501eb97ac5786a18708661 data/ebwizardry/advancements/recipes/combat/wizard_boots.json
 99840a57e228f6d0418bbb03201affc92c9d9cc2 data/ebwizardry/advancements/recipes/combat/wizard_hat.json
 531fe30778d81f93ed57c8cc29a1793bc2da68a1 data/ebwizardry/advancements/recipes/combat/wizard_leggings.json
@@ -108,7 +108,7 @@ b167d4ba6ac526af76fdb4ef8ac3bb68ee5c1280 data/ebwizardry/recipes/imbuement/battl
 24e7f6bcea2086ffbcd73f85cfc38758d7878fbc data/ebwizardry/recipes/imbuement/battlemage_leggings_lightning.json
 8ebcce4ba82cb06d0ffe245e6609f44440c25d3b data/ebwizardry/recipes/imbuement/battlemage_leggings_necromancy.json
 8df7db3e0186f00c63b669bca1645d93695c2a28 data/ebwizardry/recipes/imbuement/battlemage_leggings_sorcery.json
-dfeaee63bad6e5f19287d2861ec915f77ef85e43 data/ebwizardry/recipes/imbuement/fix_ruined_spell_book_earth.json
+b19daeb7fa84dbcbda467616cfa1b10d0e669b62 data/ebwizardry/recipes/imbuement/fix_ruined_spell_book_earth.json
 6585bcc40af0d802a6dccf2cec06b56bb1f33e24 data/ebwizardry/recipes/imbuement/fix_ruined_spell_book_fire.json
 5816f7bd077578b39f3083a18ad5578d9b7869ff data/ebwizardry/recipes/imbuement/fix_ruined_spell_book_healing.json
 fa68a76e0f37a25ff3a30c977895247614b67d79 data/ebwizardry/recipes/imbuement/fix_ruined_spell_book_ice.json

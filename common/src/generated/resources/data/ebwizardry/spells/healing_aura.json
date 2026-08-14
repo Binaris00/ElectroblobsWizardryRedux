@@ -1,5 +1,5 @@
 {
-  "type": "construct",
+  "type": "ebwizardry:construct",
   "base_properties": {
     "damage": 1.0,
     "duration": 600,
