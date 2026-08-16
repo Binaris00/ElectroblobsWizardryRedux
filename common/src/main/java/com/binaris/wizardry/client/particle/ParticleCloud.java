@@ -28,7 +28,6 @@ public class ParticleCloud extends ParticleWizardry {
             RenderSystem.depthMask(false);
             RenderSystem.enableBlend();
             RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-            textureManager.getTexture(TextureAtlas.LOCATION_PARTICLES).setFilter(false, false);
             RenderSystem.setShaderTexture(0, TextureAtlas.LOCATION_PARTICLES);
 
             bufferBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
@@ -38,6 +37,7 @@ public class ParticleCloud extends ParticleWizardry {
         @Override
         public void end(Tesselator tesselator) {
             tesselator.end();
+            RenderSystem.depthMask(true);
         }
 
         @Override

@@ -37,17 +37,19 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     private boolean shouldRestartGoals;
     private boolean searchNearbyTargets = true;
     private int pickUpLootPosibility = 0;
+    private boolean dirty = false;
 
     public MinionDataHolder(Mob mob) {
         this.provider = mob;
     }
 
     private void sync() {
-        if (!this.provider.level().isClientSide()) {
+        if (!this.provider.level().isClientSide() && dirty) {
             CompoundTag tag = this.serializeNBT();
 
             MinionSyncPacketS2C packet = new MinionSyncPacketS2C(this.provider.getId(), tag);
             Services.NETWORK_HELPER.sendToTracking(this.provider, packet);
+            dirty = false;
         }
     }
 
@@ -85,6 +87,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setLifetime(int lifetime) {
         this.lifetime = lifetime;
+        this.dirty = true;
     }
 
     @Override
@@ -95,7 +98,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setSummoned(boolean summoned) {
         this.summoned = summoned;
-        sync();
+        this.dirty = true;
     }
 
     @Override
@@ -106,6 +109,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setShouldDeleteGoals(boolean shouldDeleteGoals) {
         this.shouldDeleteGoals = shouldDeleteGoals;
+        this.dirty = true;
     }
 
     @Override
@@ -116,6 +120,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setShouldFollowOwner(boolean shouldFollowOwner) {
         this.shouldFollowOwner = shouldFollowOwner;
+        this.dirty = true;
     }
 
     @Override
@@ -126,6 +131,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setSearchNearbyTargets(boolean searchNearbyTargets) {
         this.searchNearbyTargets = searchNearbyTargets;
+        this.dirty = true;
     }
 
     @Override
@@ -136,6 +142,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setPickUpLootPosibility(int pickUpLootPosibility) {
         this.pickUpLootPosibility = pickUpLootPosibility;
+        this.dirty = true;
     }
 
     @Override
@@ -146,7 +153,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setOwnerUUID(@Nullable UUID ownerUUID) {
         this.ownerUUID = ownerUUID;
-        sync();
+        this.dirty = true;
     }
 
     @Override
@@ -160,7 +167,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
     @Override
     public void setOwner(LivingEntity owner) {
         this.ownerUUID = owner.getUUID();
-        sync();
+        this.dirty = true;
     }
 
     @Override
@@ -198,6 +205,7 @@ public class MinionDataHolder implements INBTSerializable<CompoundTag>, MinionDa
         if (tag.contains("ownerUUID")) {
             this.ownerUUID = tag.getUUID("ownerUUID");
         }
+        this.dirty = true;
     }
 
     public static class Provider implements ICapabilityProvider, INBTSerializable<CompoundTag> {

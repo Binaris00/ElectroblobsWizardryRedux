@@ -25,8 +25,10 @@ import net.minecraft.world.level.Level;
 public class ZombieSpawnerConstruct extends MagicConstructEntity {
 
     private static final double MAX_NUDGE_DISTANCE = 0.1;
+    private static final int PARTICLE_INTERVAL = 8;
     public boolean spawnHusks;
     private int spawnTimer = 10;
+    private int particleTimer = 0;
 
     public ZombieSpawnerConstruct(EntityType<?> type, Level level) {
         super(type, level);
@@ -76,7 +78,10 @@ public class ZombieSpawnerConstruct extends MagicConstructEntity {
             spawnTimer += Spells.ZOMBIE_APOCALYPSE.property(ZombieApocalypse.MINION_SPAWN_INTERVAL) + random.nextInt(20);
         }
 
-        this.level().broadcastEntityEvent(this, (byte) 3);
+        if (--this.particleTimer <= 0) {
+            this.level().broadcastEntityEvent(this, (byte) 3);
+            this.particleTimer = PARTICLE_INTERVAL;
+        }
     }
 
     @Override
@@ -84,13 +89,14 @@ public class ZombieSpawnerConstruct extends MagicConstructEntity {
         super.handleEntityEvent(id);
         if (id == 3) {
             float colorFactor = 0.15f;
-            for (double r = 1.5; r < 4; r += 0.2) {
+            for (double r = 1.5; r < 3.5; r += 0.5) {
                 colorFactor -= 0.02F;
                 ParticleBuilder.create(EBParticles.CLOUD)
                         .color(colorFactor, 0, 0)
                         .pos(getX(), getY() - 0.3, getZ())
-                        .scale(0.5f / (float) r)
+                        .scale(1.0f / (float) r)
                         .spin(r, 0.02 / r * (1 + level().random.nextDouble()))
+                        .time(120 + level().random.nextInt(80))
                         .spawn(level());
             }
         }
@@ -100,6 +106,7 @@ public class ZombieSpawnerConstruct extends MagicConstructEntity {
     protected void addAdditionalSaveData(CompoundTag nbt) {
         super.addAdditionalSaveData(nbt);
         nbt.putInt("spawnTimer", spawnTimer);
+        nbt.putInt("particleTimer", particleTimer);
         nbt.putBoolean("spawnHusks", spawnHusks);
     }
 
@@ -107,6 +114,7 @@ public class ZombieSpawnerConstruct extends MagicConstructEntity {
     protected void readAdditionalSaveData(CompoundTag nbt) {
         super.readAdditionalSaveData(nbt);
         spawnTimer = nbt.getInt("spawnTimer");
+        particleTimer = nbt.getInt("particleTimer");
         spawnHusks = nbt.getBoolean("spawnHusks");
     }
 }
