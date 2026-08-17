@@ -18,11 +18,10 @@ public class SpellSubtypeInterpreter implements IIngredientSubtypeInterpreter<It
     @Override
     public @NotNull String apply(@NotNull ItemStack itemStack, @NotNull UidContext context) {
         if (!itemStack.hasTag()) return IIngredientSubtypeInterpreter.NONE;
-        Spell spell = RegistryUtils.getSpell(itemStack);
-        String spellType = spell.getDescriptionId();
+        String spellType = RegistryUtils.getSpell(itemStack).getDescriptionId();
         StringBuilder builder = new StringBuilder(spellType);
-        for (Spell spell1 : RegistryUtils.getSpells(Spell::isInstantCast)) {
-            builder.append(";").append(spell1);
+        for (Spell spell : RegistryUtils.getSpells(Spell::isInstantCast)) {
+            builder.append(";").append(spell);
         }
         return builder.toString();
     }
