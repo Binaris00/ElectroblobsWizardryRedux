@@ -102,6 +102,8 @@
   "gui.ebwizardry.spell_book.mana_cost": "Mana Cost: %s",
   "gui.ebwizardry.spell_book.mana_cost_continuous": "Mana Cost: %s/second",
   "gui.ebwizardry.spell_book.mana_cost_undiscovered": "Mana Cost: ?",
+  "gui.better_ebwizardry.arcane_workbench.title": "Arcane Workbench",
+  "gui.better_ebwizardry.imbuement_altar.title": "Imbuement Altar",
   "ebwizardry.raw_line_8": "========================================================",
   "ebwizardry.tiers.desc": "EBWIZARDRY TIERS",
   "ebwizardry.raw_line_9": "========================================================",
