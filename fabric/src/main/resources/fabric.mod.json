@@ -29,9 +29,6 @@
       "com.binaris.wizardry.gametest.WandTest",
       "com.binaris.wizardry.gametest.ConjureItemTest",
       "com.binaris.wizardry.gametest.ImbuementEnchantsTest"
-    ],
-    "jei_mod_plugin": [
-      "com.binaris.wizardry.client.compat.WizardryJeiPlugin"
     ]
   },
   "mixins": [
