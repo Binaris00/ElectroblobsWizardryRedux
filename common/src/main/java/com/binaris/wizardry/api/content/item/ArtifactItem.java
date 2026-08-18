@@ -39,7 +39,10 @@ public class ArtifactItem extends Item {
     public enum Type {
         RING,
         NECKLACE,
-        CHARM
+        CHARM,
+        BELT,
+        BODY,
+        HEAD
     }
 
     public ArtifactItem(Rarity rarity) {
