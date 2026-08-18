@@ -106,6 +106,8 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
         List<ItemStack> crystals = recipe.getCrystals();
         // Upgrade Item
         List<ItemStack> upgrades = recipe.getUpgrades();
+        // Book Item
+        List<ItemStack> books = recipe.getBooks();
         // Input Item
         List<List<ItemStack>> input = recipe.getInputs();
         // Result Item
@@ -127,9 +129,15 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
         while (i < bookSlots) {
             int x = CENTRE_SLOT_X + ArcaneWorkbenchMenu.getBookSlotXOffset(i, bookSlots);
             int y = CENTRE_SLOT_Y + ArcaneWorkbenchMenu.getBookSlotYOffset(i, bookSlots);
-            builder.addSlot(RecipeIngredientRole.CATALYST, x ,y)
-                    .addItemStacks(input.get(i));
             i++;
+            builder.addSlot(RecipeIngredientRole.CATALYST, x, y);
+        }
+
+        if (bookSlots == 1 && !books.isEmpty()) {
+            int bookSlotX = CENTRE_SLOT_X + ArcaneWorkbenchMenu.getBookSlotXOffset(1, 1);
+            int bookSlotY = CENTRE_SLOT_Y + ArcaneWorkbenchMenu.getBookSlotYOffset(1, 1);
+            builder.addSlot(RecipeIngredientRole.CATALYST, bookSlotX, bookSlotY)
+                    .addItemStacks(input.get(0));
         }
 
         // Crystal Slot
