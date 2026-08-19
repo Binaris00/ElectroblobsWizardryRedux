@@ -3,6 +3,7 @@ package com.binaris.wizardry.content.entity.living;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.data.SpellManagerData;
 import com.binaris.wizardry.api.content.event.DiscoverSpellEvent;
+import com.binaris.wizardry.api.content.event.WizardTradeSetupEvent;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
@@ -216,6 +217,10 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         return this.trades;
     }
 
+    public int getWizardLevel() {
+        return this.wizardLevel;
+    }
+
     private void updateTrades() {
         if (this.trades == null) this.trades = new MerchantOffers();
 
@@ -230,6 +235,8 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
             case 4 -> addMasterTrades(usedSpells, usedItems, false);
             case 5 -> addMasterTrades(usedSpells, usedItems, true);
         }
+
+        WizardryEventBus.fireEvent(new WizardTradeSetupEvent(this, this.trades));
     }
 
     private void addNoviceTrades(List<Spell> usedSpells, List<Item> usedItems) {
