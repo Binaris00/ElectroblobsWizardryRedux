@@ -1,0 +1,21 @@
+{
+  "replace": false,
+  "values": [
+    "#c:aquatic",
+    "#c:beach",
+    "#c:swamp",
+    "#c:plains",
+    "#c:forest",
+    "#c:taiga",
+    "#c:jungle",
+    "#c:savanna",
+    "#c:mesa",
+    "#c:desert",
+    "#c:floral",
+    "#c:mountain",
+    "#c:icy",
+    "#c:snowy",
+    "#c:windswept",
+    "#c:caves"
+  ]
+}
