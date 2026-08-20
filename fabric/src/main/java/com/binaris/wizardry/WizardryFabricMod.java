@@ -97,5 +97,6 @@ public final class WizardryFabricMod implements ModInitializer {
         WandUpgrades.initUpgrades();
         NotImplementedItems.init();
         EBParticles.registerType(Registry::register);
+        EBBannerPatterns.register(Registry::register);
     }
 }

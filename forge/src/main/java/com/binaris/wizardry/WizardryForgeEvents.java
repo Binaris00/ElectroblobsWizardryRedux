@@ -241,7 +241,8 @@ public class WizardryForgeEvents {
                 register(event, EBEntities::register);
             else if (event.getRegistryKey() == Registries.ITEM)
                 register(event, EBItems::register);
-            else if (event.getRegistryKey() == Registries.PARTICLE_TYPE) register(event, EBParticles::registerType);
+            else if (event.getRegistryKey() == Registries.PARTICLE_TYPE)
+                register(event, EBParticles::registerType);
             else if (event.getRegistryKey() == Registries.SOUND_EVENT)
                 register(event, EBSounds::register);
             else if (event.getRegistryKey() == Registries.LOOT_FUNCTION_TYPE)
@@ -256,11 +257,14 @@ public class WizardryForgeEvents {
                 register(event, EBRecipeTypes::register);
             else if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER)
                 register(event, EBRecipeTypes::registerSerializers);
-            else if (event.getRegistryKey() == EBRegistries.ELEMENT) registerForge(event, Elements::registerNull);
+            else if (event.getRegistryKey() == EBRegistries.ELEMENT)
+                registerForge(event, Elements::registerNull);
             else if (event.getRegistryKey() == EBRegistries.TIER)
                 registerForge(event, SpellTiers::registerNull);
             else if (event.getRegistryKey() == EBRegistries.SPELL)
                 registerForge(event, Spells::registerNull);
+            else if (event.getRegistryKey() == Registries.BANNER_PATTERN)
+                register(event, EBBannerPatterns::register);
         }
 
         /**

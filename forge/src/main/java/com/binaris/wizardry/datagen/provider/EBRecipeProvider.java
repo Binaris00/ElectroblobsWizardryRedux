@@ -142,6 +142,35 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .requires(Items.GUNPOWDER)
                 .unlockedBy("has_gunpowder", has(Items.GUNPOWDER)).save(consumer);
 
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.EARTH_BANNER_PATTERN.get(), 1)
+                .requires(EBItems.MAGIC_CRYSTAL_EARTH.get())
+                .requires(Items.PAPER)
+                .unlockedBy("has_magic_crystal_earth", has(EBItems.MAGIC_CRYSTAL_EARTH.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.FIRE_BANNER_PATTERN.get(), 1)
+                .requires(EBItems.MAGIC_CRYSTAL_FIRE.get())
+                .requires(Items.PAPER)
+                .unlockedBy("has_magic_crystal_fire", has(EBItems.MAGIC_CRYSTAL_FIRE.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.HEALING_BANNER_PATTERN.get(), 1)
+                .requires(EBItems.MAGIC_CRYSTAL_HEALING.get())
+                .requires(Items.PAPER)
+                .unlockedBy("has_magic_crystal_healing", has(EBItems.MAGIC_CRYSTAL_HEALING.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.ICE_BANNER_PATTERN.get(), 1)
+                .requires(EBItems.MAGIC_CRYSTAL_ICE.get())
+                .requires(Items.PAPER)
+                .unlockedBy("has_magic_crystal_ice", has(EBItems.MAGIC_CRYSTAL_ICE.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.LIGHTNING_BANNER_PATTERN.get(), 1)
+                .requires(EBItems.MAGIC_CRYSTAL_LIGHTNING.get())
+                .requires(Items.PAPER)
+                .unlockedBy("has_magic_crystal_lightning", has(EBItems.MAGIC_CRYSTAL_LIGHTNING.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.NECROMANCY_BANNER_PATTERN.get(), 1)
+                .requires(EBItems.MAGIC_CRYSTAL_NECROMANCY.get())
+                .requires(Items.PAPER)
+                .unlockedBy("has_magic_crystal_necromancy", has(EBItems.MAGIC_CRYSTAL_NECROMANCY.get())).save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.SORCERY_BANNER_PATTERN.get(), 1)
+                .requires(EBItems.MAGIC_CRYSTAL_SORCERY.get())
+                .requires(Items.PAPER)
+                .unlockedBy("has_magic_crystal_sorcery", has(EBItems.MAGIC_CRYSTAL_SORCERY.get())).save(consumer);
+
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EBItems.MAGIC_SILK.get(), 2)
                 .pattern(" x ")
                 .pattern("xyx")
