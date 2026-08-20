@@ -17,8 +17,6 @@ import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.core.registries.Registries;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;

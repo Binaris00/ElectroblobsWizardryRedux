@@ -16,7 +16,7 @@ public class EBBannerPatterns {
     public static final DeferredObject<BannerPattern> FIRE = bannerPattern("fire", () -> new BannerPattern("ebf"));
     public static final DeferredObject<BannerPattern> HEALING = bannerPattern("healing", () -> new BannerPattern("ebh"));
     public static final DeferredObject<BannerPattern> ICE = bannerPattern("ice", () -> new BannerPattern("ebi"));
-    public static final DeferredObject<BannerPattern> LIGHTING = bannerPattern("lightning", () -> new BannerPattern("ebl"));
+    public static final DeferredObject<BannerPattern> LIGHTNING = bannerPattern("lightning", () -> new BannerPattern("ebl"));
     public static final DeferredObject<BannerPattern> NECROMANCY = bannerPattern("necromancy", () -> new BannerPattern("ebn"));
     public static final DeferredObject<BannerPattern> SORCERY = bannerPattern("sorcery", () -> new BannerPattern("ebs"));
 
