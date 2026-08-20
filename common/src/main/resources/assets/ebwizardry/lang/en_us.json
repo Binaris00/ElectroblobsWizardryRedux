@@ -1210,7 +1210,7 @@
   "attribute.name.cast.range": "Cast Range",
   "attribute.name.cast.cooldown": "Cast Cooldown",
   "ebwizardry.raw_line_32": "========================================================",
-  "ebwizardry.attributes_names.desc": "EBWIZARDRY BANNER NAMES",
+  "ebwizardry.banner_names.desc": "EBWIZARDRY BANNER NAMES",
   "ebwizardry.raw_line_33": "========================================================",
   "item.ebwizardry.earth_banner_pattern": "Banner Pattern",
   "item.ebwizardry.earth_banner_pattern.desc": "Earth",
