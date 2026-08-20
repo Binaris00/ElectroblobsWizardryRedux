@@ -25,7 +25,10 @@ import net.minecraft.server.packs.PackType;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class WizardryFabricMod implements ModInitializer {
     @Override
@@ -61,6 +64,15 @@ public final class WizardryFabricMod implements ModInitializer {
         EBAttributes.register(Registry::register);
 
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+            if (BuiltInLootTables.FISHING.equals(id)) {
+                AtomicBoolean injected = new AtomicBoolean();
+                tableBuilder.modifyPools(pool -> {
+                    if (injected.compareAndSet(false, true)) {
+                        pool.add(EBLootTables.fishingEntry(40));
+                    }
+                });
+            }
+
             LootPool.Builder poolBuilder = new LootPool.Builder();
 
             EBLootTables.applyInjections((location, pool) -> {
