@@ -43,6 +43,7 @@ public final class WizardryFabricMod implements ModInitializer {
         EBBlocks.register(Registry::register);
         EBBlockEntities.register(Registry::register);
         EBItems.register(Registry::register);
+        EBBannerPatterns.register(Registry::register);
         EBEntities.register(Registry::register);
         EBEntities.registerAttributes(FabricDefaultAttributeRegistry::register);
         BookshelfMenu.initBookItems();

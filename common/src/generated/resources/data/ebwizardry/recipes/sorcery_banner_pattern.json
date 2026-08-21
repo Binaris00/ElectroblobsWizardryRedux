@@ -1,0 +1,15 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "ebwizardry:magic_crystal_sorcery"
+    }
+  ],
+  "result": {
+    "item": "ebwizardry:sorcery_banner_pattern"
+  }
+}

@@ -123,6 +123,14 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .requires(EBItems.MAGIC_CRYSTAL.get())
                 .unlockedBy("has_crystal", has(EBTags.MAGIC_CRYSTAL_ITEM)).save(consumer);
 
+        bannerPattern(EBItems.EARTH_BANNER_PATTERN.get(), EBItems.MAGIC_CRYSTAL_EARTH.get(), consumer);
+        bannerPattern(EBItems.FIRE_BANNER_PATTERN.get(), EBItems.MAGIC_CRYSTAL_FIRE.get(), consumer);
+        bannerPattern(EBItems.HEALING_BANNER_PATTERN.get(), EBItems.MAGIC_CRYSTAL_HEALING.get(), consumer);
+        bannerPattern(EBItems.ICE_BANNER_PATTERN.get(), EBItems.MAGIC_CRYSTAL_ICE.get(), consumer);
+        bannerPattern(EBItems.LIGHTNING_BANNER_PATTERN.get(), EBItems.MAGIC_CRYSTAL_LIGHTNING.get(), consumer);
+        bannerPattern(EBItems.NECROMANCY_BANNER_PATTERN.get(), EBItems.MAGIC_CRYSTAL_NECROMANCY.get(), consumer);
+        bannerPattern(EBItems.SORCERY_BANNER_PATTERN.get(), EBItems.MAGIC_CRYSTAL_SORCERY.get(), consumer);
+
         ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.FIREBOMB.get(), 3)
                 .requires(Items.BLAZE_POWDER, 2)
                 .requires(Items.GLASS_BOTTLE)
@@ -318,6 +326,14 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .pattern(" y ")
                 .pattern("x  ")
                 .unlockedBy("has_magic_crystal", has(EBTags.MAGIC_CRYSTAL_ITEM))
+                .save(consumer);
+    }
+
+    private void bannerPattern(Item pattern, Item crystal, @NotNull Consumer<FinishedRecipe> consumer) {
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, pattern)
+                .requires(Items.PAPER)
+                .requires(crystal)
+                .unlockedBy("has_crystal", has(crystal))
                 .save(consumer);
     }
 

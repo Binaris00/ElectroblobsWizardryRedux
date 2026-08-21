@@ -241,6 +241,8 @@ public class WizardryForgeEvents {
                 register(event, EBEntities::register);
             else if (event.getRegistryKey() == Registries.ITEM)
                 register(event, EBItems::register);
+            else if (event.getRegistryKey() == Registries.BANNER_PATTERN)
+                register(event, EBBannerPatterns::register);
             else if (event.getRegistryKey() == Registries.PARTICLE_TYPE) register(event, EBParticles::registerType);
             else if (event.getRegistryKey() == Registries.SOUND_EVENT)
                 register(event, EBSounds::register);

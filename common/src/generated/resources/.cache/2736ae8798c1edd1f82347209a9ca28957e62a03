@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-10T14:46:10.751484239	Spell Data Provider: ebwizardry
+// 1.20.1	2026-08-20T20:25:34.470157416	Spell Data Provider: ebwizardry
 b17ecdf29fe2e67e3be82f2f82381aa777a4e8dc data/ebwizardry/spells/agility.json
 7173b77f3b77f4a2f728cf330ba6aba33d1ed504 data/ebwizardry/spells/arc.json
 1235533783e5ff5d57511517af8671f436081cef data/ebwizardry/spells/arcane_jammer.json
@@ -115,7 +115,7 @@ fcb65c3094ba430066e867722eb81d58526ff411 data/ebwizardry/spells/summon_wither_sk
 3bd5050cd87b18ff5d2fd750bc39c76be5f979bf data/ebwizardry/spells/vex_swarm.json
 3ce6bb617ca1a793005848cfb5bcbd4ac1880070 data/ebwizardry/spells/ward.json
 38c0b98853817d4d4a9b11867609aebe7ebd2402 data/ebwizardry/spells/water_breathing.json
-1ee46671f84a56332ff1879008909629a60e4c13 data/ebwizardry/spells/whirlwind.json
+4c0e6960b6b7ddc1981599e755d85dfab10d0a8b data/ebwizardry/spells/whirlwind.json
 30445c798003b9a3c7169a8d585f61729c2e9b7b data/ebwizardry/spells/wither.json
 e7b8b3d58c79fe4419d364994129d4ecbe74a611 data/ebwizardry/spells/wither_skull.json
 8bada723fe93df3909dac8527b390362deafbeac data/ebwizardry/spells/zombie_apocalypse.json

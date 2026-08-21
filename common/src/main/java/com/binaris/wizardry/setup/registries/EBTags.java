@@ -5,6 +5,7 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BannerPattern;
 
 public final class EBTags {
     public static final TagKey<Item> MAGIC_CRYSTAL_ITEM = createItemTag("magic_crystal");
@@ -26,11 +27,25 @@ public final class EBTags {
 
     public static final TagKey<Block> GILDED_WOOD_BLOCK = createBlockTag("gilded_wood");
 
+    // Banner pattern tags: each stencil item references one of these; the loom shows every
+    // banner pattern contained in the referenced tag.
+    public static final TagKey<BannerPattern> EARTH_PATTERN_ITEM = createBannerPatternTag("pattern_item/earth");
+    public static final TagKey<BannerPattern> FIRE_PATTERN_ITEM = createBannerPatternTag("pattern_item/fire");
+    public static final TagKey<BannerPattern> HEALING_PATTERN_ITEM = createBannerPatternTag("pattern_item/healing");
+    public static final TagKey<BannerPattern> ICE_PATTERN_ITEM = createBannerPatternTag("pattern_item/ice");
+    public static final TagKey<BannerPattern> LIGHTNING_PATTERN_ITEM = createBannerPatternTag("pattern_item/lightning");
+    public static final TagKey<BannerPattern> NECROMANCY_PATTERN_ITEM = createBannerPatternTag("pattern_item/necromancy");
+    public static final TagKey<BannerPattern> SORCERY_PATTERN_ITEM = createBannerPatternTag("pattern_item/sorcery");
+
     private EBTags() {
     }
 
     public static TagKey<Block> createBlockTag(String name) {
         return TagKey.create(Registries.BLOCK, WizardryMainMod.location(name));
+    }
+
+    public static TagKey<BannerPattern> createBannerPatternTag(String name) {
+        return TagKey.create(Registries.BANNER_PATTERN, WizardryMainMod.location(name));
     }
 
     public static TagKey<Item> createItemTag(String name) {

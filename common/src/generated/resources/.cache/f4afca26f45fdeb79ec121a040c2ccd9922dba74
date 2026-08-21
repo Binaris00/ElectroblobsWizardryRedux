@@ -1,0 +1,8 @@
+// 1.20.1	2026-08-20T20:25:34.464628537	Tags for minecraft:banner_pattern mod id ebwizardry
+7838a873837e013d52b6517bf8f2b2e355d9d00d data/ebwizardry/tags/banner_pattern/pattern_item/earth.json
+4ccb6b24c0e2927889aa38d278a54c0d96122de7 data/ebwizardry/tags/banner_pattern/pattern_item/fire.json
+a77a286f511f7928cb4885dfcdee9b8bb23922a3 data/ebwizardry/tags/banner_pattern/pattern_item/healing.json
+deaea27a15b2c93b9108e2bb93c04fc12397c8cf data/ebwizardry/tags/banner_pattern/pattern_item/ice.json
+0266bd0b02705828e26ae03b4ea8fd2e7548a48e data/ebwizardry/tags/banner_pattern/pattern_item/lightning.json
+c1bce296972e3a8a13bc9a5fb77f5d05adcf1cad data/ebwizardry/tags/banner_pattern/pattern_item/necromancy.json
+97c19359e49f13c0b3d90d1073903768b4deef2f data/ebwizardry/tags/banner_pattern/pattern_item/sorcery.json
