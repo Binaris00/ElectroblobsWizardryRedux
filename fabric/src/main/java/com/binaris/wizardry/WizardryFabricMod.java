@@ -23,10 +23,12 @@ import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
 import net.minecraft.core.Registry;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.minecraft.world.level.levelgen.GenerationStep;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public final class WizardryFabricMod implements ModInitializer {
     @Override
@@ -62,6 +64,15 @@ public final class WizardryFabricMod implements ModInitializer {
         EBAttributes.register(Registry::register);
 
         LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+            if (BuiltInLootTables.FISHING.equals(id)) {
+                AtomicBoolean injected = new AtomicBoolean();
+                tableBuilder.modifyPools(pool -> {
+                    if (injected.compareAndSet(false, true)) {
+                        pool.add(EBLootTables.fishingEntry(40));
+                    }
+                });
+            }
+
             LootPool.Builder poolBuilder = new LootPool.Builder();
 
             EBLootTables.applyInjections((location, pool) -> {
@@ -72,9 +83,9 @@ public final class WizardryFabricMod implements ModInitializer {
             tableBuilder.withPool(poolBuilder);
         });
 
-        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.UNDERGROUND_ORES, EBWorldGen.CRYSTAL_ORE);
-        BiomeModifications.addFeature(BiomeSelectors.foundInOverworld(), GenerationStep.Decoration.VEGETAL_DECORATION, EBWorldGen.CRYSTAL_FLOWER);
-        BiomeModifications.addSpawn(BiomeSelectors.spawnsOneOf(EntityType.CREEPER), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
+        BiomeModifications.addFeature(BiomeSelectors.tag(EBWorldGen.SPAWNS_CRYSTAL_ORE), GenerationStep.Decoration.UNDERGROUND_ORES, EBWorldGen.CRYSTAL_ORE);
+        BiomeModifications.addFeature(BiomeSelectors.tag(EBWorldGen.SPAWNS_CRYSTAL_FLOWER), GenerationStep.Decoration.VEGETAL_DECORATION, EBWorldGen.CRYSTAL_FLOWER);
+        BiomeModifications.addSpawn(BiomeSelectors.tag(EBWorldGen.SPAWNS_EVIL_WIZARD), MobCategory.MONSTER, EBEntities.EVIL_WIZARD.get(), 8, 1, 1);
 
         UseEntityCallback.EVENT.register((player, world, hand, entity, hitResult) -> {
             if (WizardryEventBus.fireEvent(new EBPlayerInteractEntityEvent(player, entity))) {

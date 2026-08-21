@@ -8,6 +8,7 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.entries.LootPoolSingletonContainer;
 import net.minecraft.world.level.storage.loot.entries.LootTableReference;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
@@ -21,8 +22,7 @@ public final class EBLootTables {
     private static final Set<ResourceLocation> LOOT_TABLES = Sets.newHashSet();
     public static final ResourceLocation DUNGEON_ADDITIONS = register("chests/dungeon_additions");
     public static final ResourceLocation DISPENSER_ADDITIONS = register("chests/jungle_dispenser_additions");
-    public static final ResourceLocation JUNK_FISHING_ADDITIONS = register("gameplay/fishing/junk_additions");
-    public static final ResourceLocation TREASURE_FISHING_ADDITIONS = register("gameplay/fishing/treasure_additions");
+    public static final ResourceLocation FISHING_ADDITIONS = register("gameplay/fishing/ebwizardry");
     public static final ResourceLocation SUBSET_ARCANE_TOMES = register("subsets/arcane_tomes");
     public static final ResourceLocation SUBSET_ARMOR_UPGRADES = register("subsets/armor_upgrades");
     public static final ResourceLocation SUBSET_ELEMENTAL_CRYSTALS = register("subsets/elemental_crystals");
@@ -61,8 +61,6 @@ public final class EBLootTables {
                 location -> LOOT_INJECTIONS.add(Pair.of(location, createAdditivePool(DUNGEON_ADDITIONS, 1)))
         );
 
-        LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/gameplay/fishing/junk"), createAdditivePool(JUNK_FISHING_ADDITIONS, 4)));
-        LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/gameplay/fishing/treasure"), createAdditivePool(TREASURE_FISHING_ADDITIONS, 4)));
         LOOT_INJECTIONS.add(Pair.of(new ResourceLocation("chests/jungle_temple_dispenser"), createAdditivePool(DISPENSER_ADDITIONS, 1)));
 
         // For each entity, if it's in the modifiableMobs or a hostile mob, add the loot pool
@@ -87,5 +85,9 @@ public final class EBLootTables {
 
     private static LootPool createAdditivePool(ResourceLocation entry, int weight) {
         return LootPool.lootPool().add(LootTableReference.lootTableReference(entry).setWeight(weight).setQuality(0)).setRolls(ConstantValue.exactly(1)).setBonusRolls(UniformGenerator.between(0, 1)).build();
+    }
+
+    public static LootPoolSingletonContainer.Builder<?> fishingEntry(int weight) {
+        return LootTableReference.lootTableReference(FISHING_ADDITIONS).setWeight(weight).setQuality(0);
     }
 }

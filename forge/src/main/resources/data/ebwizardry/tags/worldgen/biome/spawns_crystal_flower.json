@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    "#forge:is_swamp",
+    "#forge:is_plains",
+    "#forge:is_peak",
+    "#forge:is_coniferous",
+    "#forge:is_dense/overworld",
+    "#forge:is_sparse/overworld",
+    "#forge:is_hot/overworld",
+    "#forge:is_cold/overworld",
+    "minecraft:stony_shore",
+    "minecraft:windswept_hills",
+    "minecraft:forest",
+    "minecraft:birch_forest",
+    "minecraft:flower_forest",
+    "minecraft:cherry_grove"
+  ]
+}
