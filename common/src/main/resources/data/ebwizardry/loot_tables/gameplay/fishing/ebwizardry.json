@@ -1,0 +1,142 @@
+{
+  "type": "minecraft:fishing",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:magic_crystal_shard",
+          "quality": -2,
+          "weight": 40,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 4.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:magic_crystal",
+          "quality": -2,
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:ruined_spell_book",
+          "quality": -2,
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:magic_silk",
+          "quality": -2,
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "ebwizardry:blank_scroll",
+          "quality": -2,
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 1.0,
+                "max": 2.0
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "type_specific": {
+                  "type": "fishing_hook",
+                  "in_open_water": true
+                }
+              }
+            }
+          ],
+          "name": "ebwizardry:spell_book",
+          "quality": 2,
+          "weight": 5,
+          "functions": [
+            {
+              "function": "ebwizardry:random_spell",
+              "undiscovered_bias": 0.3
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "type_specific": {
+                  "type": "fishing_hook",
+                  "in_open_water": true
+                }
+              }
+            }
+          ],
+          "name": "ebwizardry:mana_flask_small",
+          "quality": 2,
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "conditions": [
+            {
+              "condition": "minecraft:entity_properties",
+              "entity": "this",
+              "predicate": {
+                "type_specific": {
+                  "type": "fishing_hook",
+                  "in_open_water": true
+                }
+              }
+            }
+          ],
+          "name": "ebwizardry:mana_flask_medium",
+          "quality": 2,
+          "weight": 4
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "ebwizardry:gameplay/fishing/ebwizardry"
+}

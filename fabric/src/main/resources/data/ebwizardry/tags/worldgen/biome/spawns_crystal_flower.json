@@ -1,0 +1,17 @@
+{
+  "replace": false,
+  "values": [
+    "#c:beach",
+    "#c:swamp",
+    "#c:plains",
+    "#c:forest",
+    "#c:taiga",
+    "#c:jungle",
+    "#c:savanna",
+    "#c:mesa",
+    "#c:floral",
+    "#c:mountain",
+    "#c:snowy",
+    "#c:windswept"
+  ]
+}

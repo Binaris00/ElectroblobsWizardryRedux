@@ -1,6 +1,6 @@
 {
   "type": "forge:add_features",
-  "biomes": "#minecraft:is_overworld",
+  "biomes": "#ebwizardry:spawns_crystal_ore",
   "features": "ebwizardry:crystal_ore",
   "step": "underground_ores"
 }

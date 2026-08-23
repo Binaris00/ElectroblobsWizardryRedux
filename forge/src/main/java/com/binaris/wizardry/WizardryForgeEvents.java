@@ -13,6 +13,9 @@ import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticleProviders;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import com.binaris.wizardry.setup.registries.client.EBRenderers;
+import com.binaris.wizardry.core.EBLogger;
+import com.binaris.wizardry.mixin.LootPoolAccessor;
+import com.binaris.wizardry.mixin.LootTableAccessor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -25,6 +28,10 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BaseContainerBlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.chunk.LevelChunk;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootPoolEntryContainer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterParticleProvidersEvent;
@@ -45,6 +52,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.RegisterEvent;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -81,7 +90,19 @@ public class WizardryForgeEvents {
 
         @SubscribeEvent
         public static void onLootTableLoadEvent(LootTableLoadEvent event) {
-            com.binaris.wizardry.setup.registries.EBLootTables.applyInjections((location, pool) -> {
+            if (event.getName().equals(BuiltInLootTables.FISHING)) {
+                LootTable table = event.getTable();
+                List<LootPool> pools = ((LootTableAccessor) table).getPools();
+                if (!pools.isEmpty()) {
+                    LootPool pool = pools.get(0);
+                    LootPoolEntryContainer[] oldEntries = ((LootPoolAccessor) pool).getEntries();
+                    LootPoolEntryContainer[] newEntries = Arrays.copyOf(oldEntries, oldEntries.length + 1);
+                    newEntries[newEntries.length - 1] = EBLootTables.fishingEntry(40).build();
+                    ((LootPoolAccessor) pool).setEntries(newEntries);
+                }
+            }
+
+            EBLootTables.applyInjections((location, pool) -> {
                 if (event.getName().equals(location)) {
                     event.getTable().addPool(pool);
                 }
