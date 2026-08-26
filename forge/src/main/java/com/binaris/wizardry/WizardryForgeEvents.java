@@ -1,21 +1,19 @@
 package com.binaris.wizardry;
 
 import com.binaris.wizardry.api.content.event.*;
-import com.binaris.wizardry.setup.registries.RegisterFunction;
 import com.binaris.wizardry.capabilities.*;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.PropertiesForgeDataManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.core.registry.EBRegistries;
+import com.binaris.wizardry.mixin.LootPoolAccessor;
+import com.binaris.wizardry.mixin.LootTableAccessor;
 import com.binaris.wizardry.network.ArcaneLockSyncPacketS2C;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticleProviders;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import com.binaris.wizardry.setup.registries.client.EBRenderers;
-import com.binaris.wizardry.core.EBLogger;
-import com.binaris.wizardry.mixin.LootPoolAccessor;
-import com.binaris.wizardry.mixin.LootTableAccessor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -284,8 +282,6 @@ public class WizardryForgeEvents {
                 registerForge(event, SpellTiers::registerNull);
             else if (event.getRegistryKey() == EBRegistries.SPELL)
                 registerForge(event, Spells::registerNull);
-            else if (event.getRegistryKey() == Registries.BANNER_PATTERN)
-                register(event, EBBannerPatterns::register);
         }
 
         /**
