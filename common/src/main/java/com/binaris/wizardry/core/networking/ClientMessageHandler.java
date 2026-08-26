@@ -10,6 +10,7 @@ import com.binaris.wizardry.api.content.spell.internal.EntityCastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.client.ParticleSpawner;
+import com.binaris.wizardry.client.gui.screens.handbook.HandBookScreen;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.content.item.ScrollItem;
 import com.binaris.wizardry.content.item.WandItem;
@@ -115,6 +116,12 @@ public final class ClientMessageHandler {
             }
             spell.get().assignProperties(entry.getValue());
         }
+    }
+
+    public static void handleAdvancementSyncPacket(AdvancementSyncPacketS2C m) {
+        EBLogger.warn("弹出提醒功能发包开始执行");
+        HandBookScreen.updateUnlockStatus(m.showToasts, m.completedAdvancements);
+        EBLogger.warn("弹出提醒功能发包结束执行");
     }
 
     public static void particleBuilder(ParticleBuilderS2C m) {

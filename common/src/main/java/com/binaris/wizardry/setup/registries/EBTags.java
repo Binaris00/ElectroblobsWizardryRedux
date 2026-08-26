@@ -5,7 +5,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BannerPattern;
 
 public final class EBTags {
     public static final TagKey<Item> MAGIC_CRYSTAL_ITEM = createItemTag("magic_crystal");
@@ -24,14 +23,6 @@ public final class EBTags {
     public static final TagKey<Item> MAIN_HAND_RING_TRINKETS = createItemTag("trinkets", "hand/ring");
     public static final TagKey<Item> GLOVE_TRINKETS = createItemTag("trinkets", "hand/glove");
     public static final TagKey<Item> NECKLACE_TRINKETS = createItemTag("trinkets", "chest/necklace");
-    // Banner Pattern
-    public static final TagKey<BannerPattern> EARTH = createBannerPattern("earth");
-    public static final TagKey<BannerPattern> FIRE = createBannerPattern("fire");
-    public static final TagKey<BannerPattern> HEALING = createBannerPattern("healing");
-    public static final TagKey<BannerPattern> ICE = createBannerPattern("ice");
-    public static final TagKey<BannerPattern> LIGHTNING = createBannerPattern("lightning");
-    public static final TagKey<BannerPattern> NECROMANCY = createBannerPattern("necromancy");
-    public static final TagKey<BannerPattern> SORCERY = createBannerPattern("sorcery");
 
     public static final TagKey<Block> GILDED_WOOD_BLOCK = createBlockTag("gilded_wood");
 
@@ -40,10 +31,6 @@ public final class EBTags {
 
     public static TagKey<Block> createBlockTag(String name) {
         return TagKey.create(Registries.BLOCK, WizardryMainMod.location(name));
-    }
-
-    public static TagKey<BannerPattern> createBannerPattern(String name) {
-        return TagKey.create(Registries.BANNER_PATTERN, WizardryMainMod.location("minecraft", "pattern_item/" + name));
     }
 
     public static TagKey<Item> createItemTag(String name) {

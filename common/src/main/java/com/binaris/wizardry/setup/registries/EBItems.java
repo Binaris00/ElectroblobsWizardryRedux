@@ -17,10 +17,8 @@ import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
-import net.minecraft.world.level.block.entity.BannerPattern;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -66,7 +64,7 @@ public final class EBItems {
     public static final DeferredObject<Item> RUINED_SPELL_BOOK = item("ruined_spell_book");
     public static final DeferredObject<Item> SCROLL = item("scroll", () -> new ScrollItem(new Item.Properties().stacksTo(16)));
     public static final DeferredObject<Item> SPELL_BOOK = item("spell_book", () -> new SpellBookItem(new Item.Properties().stacksTo(16)));
-    public static final DeferredObject<Item> WIZARD_HANDBOOK = item("wizard_handbook");
+    public static final DeferredObject<Item> WIZARD_HANDBOOK = item("wizard_handbook", () -> new HandBookItem(new Item.Properties().stacksTo(1)));
     public static final DeferredObject<Item> RANDOM_SPELL_BOOK = item("random_spell_book", () -> new RandomSpellBookItem(new Item.Properties().stacksTo(1)), true, false);
     public static final DeferredObject<Item> ASTRAL_DIAMOND = item("astral_diamond");
     public static final DeferredObject<Item> CRYSTAL_SILVER_PLATING = armorUpgrade("crystal_silver_plating", WizardArmorTypes.BATTLEMAGE);
@@ -374,14 +372,6 @@ public final class EBItems {
     public static final DeferredObject<Item> WIZARD_SPAWN_EGG = item("wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.WIZARD.get(), 0x19295e, 0xee9312, new Item.Properties()), false, true);
     public static final DeferredObject<Item> EVIL_WIZARD_SPAWN_EGG = item("evil_wizard_spawn_egg", () -> new SpawnEggItem(EBEntities.EVIL_WIZARD.get(), 0x290404, 0xee9312, new Item.Properties()), false, true);
     public static final DeferredObject<Item> REMNANT_SPAWN_EGG = item("remnant_spawn_egg", () -> new SpawnEggItem(EBEntities.REMNANT.get(), 0x414141, 0xe5daae, new Item.Properties()), false, true);
-    // Banner Pattern
-    public static final DeferredObject<BannerPatternItem> EARTH_BANNER_PATTERN = bannerPattern("earth_banner_pattern", EBTags.EARTH);
-    public static final DeferredObject<BannerPatternItem> FIRE_BANNER_PATTERN = bannerPattern("fire_banner_pattern", EBTags.FIRE);
-    public static final DeferredObject<BannerPatternItem> HEALING_BANNER_PATTERN = bannerPattern("healing_banner_pattern", EBTags.HEALING);
-    public static final DeferredObject<BannerPatternItem> ICE_BANNER_PATTERN = bannerPattern("ice_banner_pattern", EBTags.ICE);
-    public static final DeferredObject<BannerPatternItem> LIGHTNING_BANNER_PATTERN = bannerPattern("lightning_banner_pattern", EBTags.LIGHTNING);
-    public static final DeferredObject<BannerPatternItem> NECROMANCY_BANNER_PATTERN = bannerPattern("necromancy_banner_pattern", EBTags.NECROMANCY);
-    public static final DeferredObject<BannerPatternItem> SORCERY_BANNER_PATTERN = bannerPattern("sorcery_banner_pattern", EBTags.SORCERY);
 
     public static final DeferredObject<Item> RECEPTACLE = item("receptacle", () -> new StandingAndWallBlockItem(EBBlocks.RECEPTACLE.get(), EBBlocks.WALL_RECEPTACLE.get(), new Item.Properties(), Direction.DOWN), false, false);
 
@@ -496,10 +486,6 @@ public final class EBItems {
 
     static DeferredObject<Item> artifact(String name, Rarity rarity, ArtifactItem.Type type, @Nullable IArtifactEffect effect) {
         return artifact(name, () -> ArtifactChannel.createArtifact(rarity, effect), type);
-    }
-
-    static DeferredObject<BannerPatternItem> bannerPattern(String name, TagKey<BannerPattern> tag) {
-        return item(name, () -> new BannerPatternItem(tag, new Item.Properties().stacksTo(1)));
     }
 
     /**

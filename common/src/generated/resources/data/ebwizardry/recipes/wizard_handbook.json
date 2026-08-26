@@ -3,13 +3,13 @@
   "category": "misc",
   "ingredients": [
     {
-      "item": "ebwizardry:magic_crystal_fire"
+      "item": "ebwizardry:magic_crystal"
     },
     {
-      "item": "minecraft:paper"
+      "item": "minecraft:book"
     }
   ],
   "result": {
-    "item": "ebwizardry:fire_banner_pattern"
+    "item": "ebwizardry:wizard_handbook"
   }
 }

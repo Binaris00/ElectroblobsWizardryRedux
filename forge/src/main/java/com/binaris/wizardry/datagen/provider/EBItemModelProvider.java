@@ -32,14 +32,6 @@ public final class EBItemModelProvider extends ItemModelProvider {
         simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.ADVANCED_ARCANE_TOME.get()).getPath(), "arcane_tome");
         simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.MASTER_ARCANE_TOME.get()).getPath(), "arcane_tome");
 
-        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.EARTH_BANNER_PATTERN.get()).getPath(), "banner_pattern");
-        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.FIRE_BANNER_PATTERN.get()).getPath(), "banner_pattern");
-        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.HEALING_BANNER_PATTERN.get()).getPath(), "banner_pattern");
-        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.ICE_BANNER_PATTERN.get()).getPath(), "banner_pattern");
-        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.LIGHTNING_BANNER_PATTERN.get()).getPath(), "banner_pattern");
-        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.NECROMANCY_BANNER_PATTERN.get()).getPath(), "banner_pattern");
-        simpleItem(BuiltInRegistries.ITEM.getKey(EBItems.SORCERY_BANNER_PATTERN.get()).getPath(), "banner_pattern");
-
         spawnEgg(EBItems.WIZARD_SPAWN_EGG);
         spawnEgg(EBItems.EVIL_WIZARD_SPAWN_EGG);
         spawnEgg(EBItems.REMNANT_SPAWN_EGG);
