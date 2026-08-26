@@ -136,85 +136,85 @@
       "locations": [ "ebwizardry:arcane_workbench" ]
     },
     "magic_wand": {
-      "locations": [ "ebwizardry:magic_wand" ]
+      "locations": [ "ebwizardry:wand_novice" ]
     },
     "novice_wands": {
       "locations": [
-        "ebwizardry:magic_wand",
-        "ebwizardry:wand_fire",
-        "ebwizardry:wand_ice",
-        "ebwizardry:wand_lightning",
-        "ebwizardry:wand_necromancy",
-        "ebwizardry:wand_earth",
-        "ebwizardry:wand_sorcery",
-        "ebwizardry:wand_healing"
+        "ebwizardry:wand_novice",
+        "ebwizardry:wand_novice_fire",
+        "ebwizardry:wand_novice_ice",
+        "ebwizardry:wand_novice_lightning",
+        "ebwizardry:wand_novice_necromancy",
+        "ebwizardry:wand_novice_earth",
+        "ebwizardry:wand_novice_sorcery",
+        "ebwizardry:wand_novice_healing"
       ]
     },
     "magic_missile_spell_book": {
-      "locations": [ "ebwizardry:magic_missile_spell_book" ]
+      "locations": [ "ebwizardry:spell_book" ]
     },
     "wizard_handbook": {
       "locations": [ "ebwizardry:wizard_handbook" ]
     },
     "crystal_flower_to_crystals": {
-      "locations": [ "ebwizardry:crystal_flower_to_crystals" ]
+      "locations": [ "ebwizardry:magic_crystal" ]
     },
     "crystal_blocks": {
       "locations": [
-        "ebwizardry:crystal_block",
-        "ebwizardry:crystal_block_fire",
-        "ebwizardry:crystal_block_ice",
-        "ebwizardry:crystal_block_lightning",
-        "ebwizardry:crystal_block_necromancy",
-        "ebwizardry:crystal_block_earth",
-        "ebwizardry:crystal_block_sorcery",
-        "ebwizardry:crystal_block_healing"
+        "minecraft:crystal_block_magic",
+        "minecraft:crystal_block_fire",
+        "minecraft:crystal_block_ice",
+        "minecraft:crystal_block_lightning",
+        "minecraft:crystal_block_necromancy",
+        "minecraft:crystal_block_earth",
+        "minecraft:crystal_block_sorcery",
+        "minecraft:crystal_block_healing"
       ]
     },
     "crystal_blocks_to_crystals": {
       "locations": [
-        "ebwizardry:crystal_block_to_crystals",
-        "ebwizardry:crystal_block_to_crystals_fire",
-        "ebwizardry:crystal_block_to_crystals_ice",
-        "ebwizardry:crystal_block_to_crystals_lightning",
-        "ebwizardry:crystal_block_to_crystals_necromancy",
-        "ebwizardry:crystal_block_to_crystals_earth",
-        "ebwizardry:crystal_block_to_crystals_sorcery",
-        "ebwizardry:crystal_block_to_crystals_healing"
+        "minecraft:magic_crystal_from_magic_crystal_block",
+        "minecraft:magic_crystal_fire_from_magic_crystal_fire_block",
+        "minecraft:magic_crystal_ice_from_magic_crystal_ice_block",
+        "minecraft:magic_crystal_lightning_from_magic_crystal_lightning_block",
+        "minecraft:magic_crystal_necromancy_from_magic_crystal_necromancy_block",
+        "minecraft:magic_crystal_earth_from_magic_crystal_earth_block",
+        "minecraft:magic_crystal_sorcery_from_magic_crystal_sorcery_block",
+        "minecraft:magic_crystal_healing_from_magic_crystal_healing_block"
       ]
     },
     "crystal_shard": {
-      "locations": [ "ebwizardry:crystal_shard" ]
+      "locations": [ "ebwizardry:magic_crystal_shard" ]
     },
     "small_mana_flask": {
-      "locations": [ "ebwizardry:small_mana_flask" ]
+      "locations": [ "ebwizardry:mana_flask_small" ]
     },
     "medium_mana_flask": {
-      "locations": [ "ebwizardry:medium_mana_flask" ]
+      "locations": [ "ebwizardry:mana_flask_medium" ]
     },
     "large_mana_flask": {
-      "locations": [ "ebwizardry:large_mana_flask" ]
+      "locations": [ "ebwizardry:mana_flask_large" ]
     },
     "runestone": {
       "locations": [
-        "ebwizardry:runestone_fire",
-        "ebwizardry:runestone_ice",
-        "ebwizardry:runestone_lightning",
-        "ebwizardry:runestone_necromancy",
-        "ebwizardry:runestone_earth",
-        "ebwizardry:runestone_sorcery",
-        "ebwizardry:runestone_healing"
+        "ebwizardry:fire_runestone",
+        "ebwizardry:ice_runestone",
+        "ebwizardry:lightning_runestone",
+        "ebwizardry:necromancy_runestone",
+        "ebwizardry:earth_runestone",
+        "ebwizardry:sorcery_runestone",
+        "ebwizardry:healing_runestone"
       ]
     },
     "runestone_pedestal": {
       "locations": [
-        "ebwizardry:runestone_pedestal_fire",
-        "ebwizardry:runestone_pedestal_ice",
-        "ebwizardry:runestone_pedestal_lightning",
-        "ebwizardry:runestone_pedestal_necromancy",
-        "ebwizardry:runestone_pedestal_earth",
-        "ebwizardry:runestone_pedestal_sorcery",
-        "ebwizardry:runestone_pedestal_healing"
+        "ebwizardry:fire_runestone_pedestal",
+        "ebwizardry:ice_runestone_pedestal",
+        "ebwizardry:lightning_runestone_pedestal",
+        "ebwizardry:necromancy_runestone_pedestal",
+        "ebwizardry:earth_runestone_pedestal",
+        "ebwizardry:sorcery_runestone_pedestal",
+        "ebwizardry:healing_runestone_pedestal"
       ]
     },
     "magic_silk": {

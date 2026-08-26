@@ -1,6 +1,7 @@
 package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.client.util.ClientUtils;
+import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
@@ -27,6 +28,6 @@ public class HandBookItem extends Item {
 
     @Override
     public void appendHoverText(ItemStack stack, @Nullable Level level, List<Component> list, TooltipFlag isAdvanced) {
-        list.add(Component.translatable("item.ebwizardry.wizard_handbook.author"));
+        list.add(Component.translatable("item.ebwizardry.wizard_handbook.author").withStyle(ChatFormatting.GRAY));
     }
 }
