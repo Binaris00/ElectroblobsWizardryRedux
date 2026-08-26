@@ -119,9 +119,7 @@ public final class ClientMessageHandler {
     }
 
     public static void handleAdvancementSyncPacket(AdvancementSyncPacketS2C m) {
-        EBLogger.warn("弹出提醒功能发包开始执行");
         HandBookScreen.updateUnlockStatus(m.showToasts, m.completedAdvancements);
-        EBLogger.warn("弹出提醒功能发包结束执行");
     }
 
     public static void particleBuilder(ParticleBuilderS2C m) {

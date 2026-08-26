@@ -70,6 +70,15 @@
       "width": 90,
       "height": 90
     },
+    "classes": {
+      "location": "ebwizardry:textures/gui/handbook/pictures/classes.png",
+      "caption": "The Three Classes",
+      "u": 0,
+      "v": 0,
+      "width": 96,
+      "height": 32,
+      "border": false
+    },
     "obelisk": {
       "location": "ebwizardry:textures/gui/handbook/pictures/obelisk.png",
       "caption": "方尖碑",
@@ -104,7 +113,7 @@
     },
     "tiers": {
       "location": "ebwizardry:textures/gui/handbook/pictures/tiers.png",
-      "caption": "大师级魔杖",
+      "caption": "四种等级魔杖",
       "u": 0,
       "v": 0,
       "width": 96,
@@ -493,7 +502,22 @@
 
         "那些沉迷于练习单系魔法的巫师，有时会穿上可以给予额外魔法增益的护具。全套这样的护具在巫师群体中极为抢手，所以并不容易获得。",
 
-        "在传说中，最强大的巫师使用一种神秘的封印来提高他们护甲的能力。"
+        "在传说中，最强大的巫师使用一种神秘的封印来提高他们护甲的能力。",
+
+        "#image classes",
+
+        "The Sage",
+
+        "By devoting their life to the pursuit of knowledge, the sage has perfected the art of efficient spellcasting, allowing them to cast spells using the smallest possible amount of mana. The finery of their silken robes belies the substantial protection they provide, as the sage is also an adept enchanter - though they are still no match for solid metal plating. Spending such long periods in the safety of a library does, however, make them rather sluggish in combat.",
+
+        "The Battlemage",
+
+        "The battlemage is geared for combat, clad in a combination of toughened cloth and crystal-silver plating sourced from the most skilled of foundries. Through discipline and training, the battlemage has also improved their speed and reactions, allowing them to cast spells more often. This does not come cheap, however, and a battlemage must be careful not to burn through mana too quickly.",
+
+        "The Warlock",
+
+        "The warlock lives for exploration, pushing the boundaries of what is possible to unearth lost arcane secrets. This, along with a willingness to experiment with what others may deem forbidden, has allowed them to break the constraints of traditional training and cast spells at a formidable rate, as well as reducing their mana usage. Their lightweight robes, though good for exploration, provide less protection in combat than their counterparts."
+
       ]
     },
 
