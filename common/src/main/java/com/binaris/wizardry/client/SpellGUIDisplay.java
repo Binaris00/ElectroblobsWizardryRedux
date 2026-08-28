@@ -123,10 +123,7 @@ public final class SpellGUIDisplay {
                 discovered = Services.OBJECT_DATA.getSpellManagerData(player).hasSpellBeenDiscovered(spell);
             }
 
-            ResourceLocation location = spell.getLocation();
-            ResourceLocation icon = discovered ?
-                    WizardryMainMod.location(location.getNamespace(), "textures/spells/%s.png".formatted(location.getPath()))
-                    : WizardryMainMod.location("textures/spells/none.png");
+            ResourceLocation icon = getSpellIcon(spell, discovered);
 
             float progress = 1;
             if (!player.isCreative()) {
@@ -137,6 +134,13 @@ public final class SpellGUIDisplay {
         }
 
         stack.popPose();
+    }
+
+    private static ResourceLocation getSpellIcon(Spell spell, boolean isDiscovered) {
+        ResourceLocation location = spell.getLocation();
+        return isDiscovered ?
+                WizardryMainMod.location(location.getNamespace(), "textures/spells/%s.png".formatted(location.getPath()))
+                : WizardryMainMod.location("textures/spells/none.png");
     }
 
     private static void drawBackground(GuiGraphics guiGraphics, int x, int y, boolean flipX, boolean flipY, ResourceLocation icon, float cooldownBarProgress, boolean creativeMode, boolean jammed) {
