@@ -1,4 +1,4 @@
-// 1.20.1	2026-04-17T10:33:24.978283524	Spell Documentation: ebwizardry
+// 1.20.1	2026-08-28T12:08:47.137932436	Spell Documentation: ebwizardry
 1d50810377674211a4aff00d60fafeeb3f615dab docs/spells.md
 b5ed5dfb6422a93452ce6148862262c78c017981 docs/spells/ebwizardry/agility.md
 ab2bb9f5beba5ca49328cf74e07a5089fcc63917 docs/spells/ebwizardry/arc.md
@@ -98,7 +98,7 @@ d049eedf2db33637d02361ef7ce2b55fac8bf939 docs/spells/ebwizardry/reversal.md
 9d7d902a55295508cc0e41cbeda6cd65cb02257e docs/spells/ebwizardry/slime.md
 f5de4b19b03e662b7c88484a897ee682bb0bc672 docs/spells/ebwizardry/smoke_bomb.md
 3e5efb288e3e3dfa9e2c72a67dbf6c11754ff621 docs/spells/ebwizardry/spark_bomb.md
-d5460f3dc9a3d4589bd0c570c9afda5e1bc2182b docs/spells/ebwizardry/speed_time.md
+b0282fee327bb79de1feb92f441ccc3fa85237f5 docs/spells/ebwizardry/speed_time.md
 8e451f779ea6c10134791fce1e4634854d9482de docs/spells/ebwizardry/spider_swarm.md
 5363bc28a9afe79872fe444cc924bcf7888e198c docs/spells/ebwizardry/static_aura.md
 f3e7f67b0f18f0cf0e48008602a9e5d13415e584 docs/spells/ebwizardry/summon_blaze.md
@@ -108,7 +108,7 @@ c45d4825fb7d2db812092c78a9ef9da98064f7fc docs/spells/ebwizardry/summon_skeleton_
 726219f38a36a7b141e8517a7364fa5cdcd33982 docs/spells/ebwizardry/summon_snow_golem.md
 6f09ce38883929b1fbb49a05260dc30b93c69121 docs/spells/ebwizardry/summon_wither_skeleton.md
 52e9d92bd4e874622539c3e13ee4258a1b8c7061 docs/spells/ebwizardry/summon_zombie.md
-1d5ec66c0c4fededd56a873c1abfecabc67574d0 docs/spells/ebwizardry/telekinesis.md
+4d25354c15f6256b310b8440b0cb5e2500431bb8 docs/spells/ebwizardry/telekinesis.md
 ab7165228ce52bb3ecd7fd6ab2cc7f6c47ca718e docs/spells/ebwizardry/thunderbolt.md
 7fa223cb29ccd620a5d146ed9e58e719c7e81b92 docs/spells/ebwizardry/tornado.md
 7665974c857f2b5778c4e49ff90dc014bed60d25 docs/spells/ebwizardry/vanishing_box.md

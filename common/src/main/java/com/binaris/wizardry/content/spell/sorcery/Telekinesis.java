@@ -39,13 +39,29 @@ public class Telekinesis extends RaySpell {
             return true;
         }
 
-        if (target instanceof ItemEntity) {
-            target.setDeltaMovement((origin.x - target.getX()) / 6, (origin.y - target.getY()) / 6, (origin.z - target.getZ()) / 6);
-            return true;
+        if (!(target instanceof ItemEntity item)) return false;
 
+        // This check is thanks to Physics mod, let see if it will fix item despawning
+        if (!ctx.world().isClientSide() && ctx.caster() instanceof Player caster) {
+            Vec3 toCaster = origin.subtract(item.position());
+            double distSq = toCaster.lengthSqr();
+
+            // if the item is really close it will add it to the inventory directly
+            if (distSq < 4.0) {
+                ItemStack stack = item.getItem();
+                if (caster.getInventory().add(stack)) {
+                    item.discard();
+                } else {
+                    item.setItem(stack);
+                }
+                return true;
+            }
+
+            // set limit of pull speed
+            double pullSpeed = Math.min(toCaster.length() / 6.0, 1.0);
+            item.setDeltaMovement(toCaster.normalize().scale(pullSpeed));
         }
-
-        return false;
+        return true;
     }
 
     @Override
@@ -83,7 +99,7 @@ public class Telekinesis extends RaySpell {
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.NOVICE, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.POINT, 5, 0, 5)
-                .add(DefaultProperties.RANGE, 8F)
+                .add(DefaultProperties.RANGE, 10F)
                 .build();
     }
 }

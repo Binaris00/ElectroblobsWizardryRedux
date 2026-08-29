@@ -15,6 +15,7 @@
     "ItemEntityMixin",
     "ItemStackMixin",
     "LivingEntityMixin",
+    "MonsterMixin",
     "PersistentEntitySectionManagerMixin",
     "PlayerMixin",
     "ReloadCommandMixin",
