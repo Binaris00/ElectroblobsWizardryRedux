@@ -36,7 +36,7 @@ public class BoulderConstruct extends ScaledConstructEntity {
         super(type, world);
         this.noPhysics = false;
         this.setNoGravity(false);
-        lifetime = Spells.BOULDER.property(DefaultProperties.DURATION);
+        this.setLifetime(Spells.BOULDER.property(DefaultProperties.DURATION));
         this.setBaseSize(2.375f, 2.375f);
     }
 
@@ -44,7 +44,7 @@ public class BoulderConstruct extends ScaledConstructEntity {
         super(EBEntities.BOULDER.get(), world);
         this.noPhysics = false;
         this.setNoGravity(false);
-        lifetime = Spells.BOULDER.property(DefaultProperties.DURATION);
+        this.setLifetime(Spells.BOULDER.property(DefaultProperties.DURATION));
         this.setBaseSize(2.375f, 2.375f);
     }
 

@@ -99,7 +99,7 @@ public class FrostBarrier extends Spell {
         IceBarrierConstruct barrier = new IceBarrierConstruct(EBEntities.ICE_BARRIER.get(), world);
         barrier.setPos(position.x, position.y - yOffset, position.z);
         barrier.setCaster(caster);
-        barrier.lifetime = 400;
+        barrier.setLifetime(400);
         barrier.damageMultiplier = 1;
         barrier.setRot((float) Math.toDegrees(Mth.atan2(-direction.x, direction.z)), barrier.getXRot());
         barrier.setSizeMultiplier(scale);

@@ -17,13 +17,13 @@ import java.util.List;
 public class BlizzardConstruct extends ScaledConstructEntity {
     public BlizzardConstruct(EntityType<?> type, Level level) {
         super(type, level);
-        this.lifetime = Spells.BLIZZARD.property(DefaultProperties.DURATION);
+        this.setLifetime(Spells.BLIZZARD.property(DefaultProperties.DURATION));
         this.setBaseSize(Spells.BLIZZARD.property(DefaultProperties.EFFECT_RADIUS) * 2, 3);
     }
 
     public BlizzardConstruct(Level world) {
         super(EBEntities.BLIZZARD.get(), world);
-        this.lifetime = Spells.BLIZZARD.property(DefaultProperties.DURATION);
+        this.setLifetime(Spells.BLIZZARD.property(DefaultProperties.DURATION));
         this.setBaseSize(Spells.BLIZZARD.property(DefaultProperties.EFFECT_RADIUS) * 2, 3);
     }
 

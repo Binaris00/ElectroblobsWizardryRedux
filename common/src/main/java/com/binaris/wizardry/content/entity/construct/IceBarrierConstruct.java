@@ -27,7 +27,7 @@ public class IceBarrierConstruct extends ScaledConstructEntity {
 
     public void setDelay(int delay) {
         this.delay = delay;
-        this.lifetime += delay;
+        this.setLifetime(this.lifetime + delay);
     }
 
     @Override
