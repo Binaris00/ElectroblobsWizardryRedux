@@ -47,7 +47,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
     /// Radius around the pedestal to spawn evil wizards
     private static final int WIZARD_SPAWN_RADIUS = 5;
     /// Delay before the pedestal regenerates after being conquered (in ticks)
-    private static final int REGENERATION_DELAY_TICKS = 100; // 3 hours in ticks
+    private static final int REGENERATION_DELAY_TICKS = 216000; // 3 hours in ticks
     /// List of UUIDs of spawned evil wizards for this pedestal event, used to check if they are alive and manage the event state,
     /// if all wizards are dead, the players will be released from containment and finish the event.
     private final List<UUID> spawnedWizards;
