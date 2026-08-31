@@ -142,7 +142,7 @@ public class Contents {
      * @return The number of lines this contents takes up.
      * @throws JsonSyntaxException if at any point the formatting is found to be invalid.
      */
-    public int format(HandBookScreen screen, Font font, int startPage, int startLine, int left, int top) {
+    public int format(Button.OnPress onPress, Font font, int startPage, int startLine, int left, int top) {
         this.buttons.clear();
         this.visibleEntries = new ArrayList<>(entries); // Need to copy the collection first!
         this.visibleEntries.removeIf(s -> !s.isUnlocked());
@@ -159,7 +159,7 @@ public class Contents {
                 int x = HandBookScreen.isRightPage(startPage) ? left + HandBookScreen.GUI_WIDTH - HandBookScreen.TEXT_INSET_X - HandBookScreen.PAGE_WIDTH : left + HandBookScreen.TEXT_INSET_X;
                 int y = top + HandBookScreen.TEXT_INSET_Y + startLine * font.lineHeight;
 
-                list.add(new GuiButtonHyperlink.Internal(x, y, font, entry.title, entry, 0, "", maxLineNumber - startLine, HandBookScreen.isRightPage(startPage), false, screen::linkButton));
+                list.add(new GuiButtonHyperlink.Internal(x, y, font, entry.title, entry, 0, "", maxLineNumber - startLine, HandBookScreen.isRightPage(startPage), false, onPress));
                 startLine++;
 
                 if (startLine == maxLineNumber) {

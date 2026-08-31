@@ -1339,5 +1339,10 @@
   "subtitles.ebwizardry.entity.wizard.no": "Wizard No",
   "subtitles.ebwizardry.entity.wizard.trading": "Wizard Trading",
   "subtitles.ebwizardry.entity.wizard.yes": "Wizard Yes",
-  "subtitles.ebwizardry.entity.zombie_spawner.spawn": "Zombie Spawner Spawns"
+  "subtitles.ebwizardry.entity.zombie_spawner.spawn": "Zombie Spawner Spawns",
+  "subtitles.ebwizardry.misc.discover_spell": "Discover Spell",
+  "subtitles.ebwizardry.misc.book_open": "Book Open",
+  "subtitles.ebwizardry.misc.page_turn": "Page Turn",
+  "subtitles.ebwizardry.misc.freeze": "Freeze",
+  "subtitles.ebwizardry.misc.spell_fail": "Spell Fail"
 }

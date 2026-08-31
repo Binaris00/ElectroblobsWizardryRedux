@@ -7,6 +7,7 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * <b>[Server -> Client]</b> This packet is fired on login and on advancement gain to update the handbook progress.
@@ -14,20 +15,20 @@ import java.util.ArrayList;
 public class AdvancementSyncPacketS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("advancement_sync");
     public final boolean showToasts;
-    public final ResourceLocation[] completedAdvancements;
+    public final List<ResourceLocation> completedAdvancements;
 
-    public AdvancementSyncPacketS2C(boolean showToasts, ResourceLocation[] completedAdvancements) {
+    public AdvancementSyncPacketS2C(boolean showToasts, List<ResourceLocation> completedAdvancements) {
         this.showToasts = showToasts;
         this.completedAdvancements = completedAdvancements;
     }
 
     public AdvancementSyncPacketS2C(FriendlyByteBuf buf) {
         this.showToasts = buf.readBoolean();
-        ArrayList<ResourceLocation> advancements = new ArrayList<>();
+        List<ResourceLocation> advancements = new ArrayList<>();
         while(buf.isReadable())
             advancements.add(buf.readResourceLocation());
 
-        this.completedAdvancements = advancements.toArray(new ResourceLocation[0]);
+        this.completedAdvancements = advancements;
     }
 
     @Override
@@ -45,6 +46,11 @@ public class AdvancementSyncPacketS2C implements Message {
 
     @Override
     public void handleClient() {
-        ClientMessageHandler.handleAdvancementSyncPacket(this);
+        ClientMessageHandler.advancementSync(this);
+    }
+
+    @Override
+    public String toString() {
+        return ID.getPath();
     }
 }

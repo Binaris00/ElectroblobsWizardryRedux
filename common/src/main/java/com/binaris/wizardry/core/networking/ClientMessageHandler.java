@@ -118,7 +118,7 @@ public final class ClientMessageHandler {
         }
     }
 
-    public static void handleAdvancementSyncPacket(AdvancementSyncPacketS2C m) {
+    public static void advancementSync(AdvancementSyncPacketS2C m) {
         HandBookScreen.updateUnlockStatus(m.showToasts, m.completedAdvancements);
     }
 

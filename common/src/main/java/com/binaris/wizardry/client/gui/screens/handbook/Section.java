@@ -70,7 +70,7 @@ public class Section {
     /**
      * Parses the given JSON object and constructs a new {@code Section} from it, setting all the relevant fields
      * and references. This method converts the JSON object to a {@code Section} object and retrieves any resources;
-     * the section is not formatted in any way until GUI load, in {@link Section#format(HandBookScreen, Font, int, int, int)}.
+     * the section is not formatted in any way until GUI load, in {@link Section#format(net.minecraft.client.gui.components.Button.OnPress, Font, int, int, int)}.
      *
      * @param json A JSON object representing the section to be constructed. This must contain at least a "title"
      *             string.
@@ -235,7 +235,7 @@ public class Section {
      * @return The <b>single-page</b> index of the next blank page after the end of this section.
      * @throws JsonSyntaxException if at any point the formatting is found to be invalid.
      */
-    public int format(HandBookScreen screen, Font font, int startPage, int left, int top) {
+    public int format(Button.OnPress onPress, Font font, int startPage, int left, int top) {
         this.buttons.clear();
         this.pages.clear();
 
@@ -255,7 +255,7 @@ public class Section {
 
         // Adds space for the contents if it exists
         if (this.contents != null) {
-            lines.addAll(Collections.nCopies(this.contents.format(screen, font, startPage, lines.size(), left, top), ""));
+            lines.addAll(Collections.nCopies(this.contents.format(onPress, font, startPage, lines.size(), left, top), ""));
             // Line break between contents and first paragraph
             if ((lines.size() % maxLineNumber) != 0) lines.add("");
         }
@@ -378,7 +378,7 @@ public class Section {
                         }
 
                         // The button id only does what you use it for, so we're just not using it at all.
-                        this.buttons.get(pageRelative).add(GuiButtonHyperlink.create(x, y, font, upToLink, arguments, suffix, maxLineNumber - lineNumber - 1, HandBookScreen.isRightPage(page), spaceless, screen::linkButton));
+                        this.buttons.get(pageRelative).add(GuiButtonHyperlink.create(x, y, font, upToLink, arguments, suffix, maxLineNumber - lineNumber - 1, HandBookScreen.isRightPage(page), spaceless, onPress));
 
                         // The link button should exactly overlay the display text in the main string
                         // If the link has no display text specified, it displays the unformatted target string
@@ -420,10 +420,10 @@ public class Section {
      * Called on login and advancement completion to update this section's unlock status and display toast
      * notifications if applicable.
      */
-    public void updateUnlockStatus(boolean showToasts, ResourceLocation... completedAdvancements) {
+    public void updateUnlockStatus(boolean showToasts, List<ResourceLocation> completedAdvancements) {
         if (triggers == null) return;
 
-        List<ResourceLocation> completed = new ArrayList<>(Arrays.asList(completedAdvancements));
+        List<ResourceLocation> completed = new ArrayList<>(List.copyOf(completedAdvancements));
         completed.retainAll(Arrays.asList(triggers));
 
         // Only shows the toast when the section was locked before and is now unlocked

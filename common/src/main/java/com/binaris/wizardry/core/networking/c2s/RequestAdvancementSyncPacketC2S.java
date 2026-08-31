@@ -5,15 +5,15 @@ import com.binaris.wizardry.core.networking.abst.Message;
 import com.binaris.wizardry.core.networking.s2c.AdvancementSyncPacketS2C;
 import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.AdvancementProgress;
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.network.protocol.game.ClientboundUpdateAdvancementsPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
+/** <b>[Client -> Server]</b> Fired on resource reload to request that the server re-sync the player's advancements. */
 public class RequestAdvancementSyncPacketC2S implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("request_advancement_sync");
 
@@ -28,28 +28,20 @@ public class RequestAdvancementSyncPacketC2S implements Message {
 
     @Override
     public void encode(FriendlyByteBuf buf) {
+        // Don't need to put anything in here!
     }
 
     @Override
     public void handleServer(MinecraftServer server, ServerPlayer player) {
-        List<Advancement> advancements = new ArrayList<>();
-        Map<ResourceLocation, AdvancementProgress> progresses = new HashMap<>();
-        List<ResourceLocation> resourceLocations = new ArrayList<>();
+        // Just to make sure that the side is correct
+        List<ResourceLocation> advancements = new ArrayList<>();
 
         for (Advancement advancement : server.getAdvancements().getAllAdvancements()) {
             if (player.getAdvancements().getOrStartProgress(advancement).isDone())
-                advancements.add(advancement);
+                advancements.add(advancement.getId());
         }
 
-        for (Advancement advancement : advancements) {
-            AdvancementProgress progress = player.getAdvancements().getOrStartProgress(advancement);
-            progresses.put(advancement.getId(), progress);
-            resourceLocations.add(advancement.getId());
-        }
-
-        ClientboundUpdateAdvancementsPacket packet = new ClientboundUpdateAdvancementsPacket(false, advancements, Set.of(), progresses);
-        AdvancementSyncPacketS2C packet2 = new AdvancementSyncPacketS2C(true, resourceLocations.toArray(new ResourceLocation[0]));
-        Services.NETWORK_HELPER.sendToServer(packet2);
-        player.connection.send(packet);
+        AdvancementSyncPacketS2C packet = new AdvancementSyncPacketS2C(true, advancements);
+        Services.NETWORK_HELPER.sendTo(player, packet);
     }
 }

@@ -2,6 +2,8 @@ package com.binaris.wizardry.datagen.provider;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.event.DiscoverSpellEvent;
+import com.binaris.wizardry.content.advancement.SpellCastTrigger;
+import com.binaris.wizardry.content.advancement.SpellPredicate;
 import com.binaris.wizardry.content.advancement.WizardryAdvancementTrigger;
 import com.binaris.wizardry.setup.registries.*;
 import net.minecraft.advancements.Advancement;
@@ -14,6 +16,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.ItemLike;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.ForgeAdvancementProvider;
 import org.jetbrains.annotations.NotNull;
@@ -41,6 +44,13 @@ public class EBAdvancementsProvider implements ForgeAdvancementProvider.Advancem
 
         builder.requirements(RequirementsStrategy.AND);
         return builder.save(consumer, WizardryMainMod.location(location), existingFileHelper);
+    }
+
+    private static Advancement buildItem(Consumer<Advancement> consumer, String key, ItemLike item, ExistingFileHelper existingFileHelper) {
+        InventoryChangeTrigger.TriggerInstance trigger = InventoryChangeTrigger.TriggerInstance.hasItems(item);
+        return Advancement.Builder.advancement()
+                .addCriterion(key, trigger)
+                .save(consumer, WizardryMainMod.location(key), existingFileHelper);
     }
 
     @Override
@@ -79,5 +89,76 @@ public class EBAdvancementsProvider implements ForgeAdvancementProvider.Advancem
         Advancement discoverMaster = Advancement.Builder.advancement().parent(spellFailure).display(Items.BLAZE_POWDER, Component.translatable("advancement.ebwizardry.discover_master_spell"), Component.translatable("advancement.ebwizardry.discover_master_spell.desc"), null, FrameType.CHALLENGE, true, true, false).addCriterion("criterion", new com.binaris.wizardry.content.advancement.SpellDiscoveryTrigger.TriggerInstance(new com.binaris.wizardry.content.advancement.SpellPredicate(null, Set.of(SpellTiers.MASTER), Set.of()), DiscoverSpellEvent.Sources.CASTING)).save(consumer, WizardryMainMod.location("discover_master_spell"), existingFileHelper);
         Advancement createElementalArmor = buildArmor("create_elemental_armor", EBAdvancementTriggers.IMBUEMENT_ALTAR.getId(), restoreImbuementAltar, EBItems.WIZARD_HAT_LIGHTNING.get(), Component.translatable("advancement.ebwizardry.create_elemental_armor"), Component.translatable("advancement.ebwizardry.create_elemental_armor.desc"), WIZARD_ITEMS, consumer, existingFileHelper);
         Advancement battlemage = buildArmor("battlemage", EBAdvancementTriggers.ARCANE_WORKBENCH.getId(), armorSet, EBItems.BATTLEMAGE_BOOTS.get(), Component.translatable("advancement.ebwizardry.battlemage"), Component.translatable("advancement.ebwizardry.battlemage.desc"), BATTLEMAGE_ITEMS, consumer, existingFileHelper);
+        Advancement artefact = null;
+
+        Advancement spells = buildItem(consumer, "handbook/spells", EBItems.SPELL_BOOK.get(), existingFileHelper);
+        Advancement arcaneWorkbench = buildItem(consumer, "handbook/arcane_workbench", EBBlocks.ARCANE_WORKBENCH.get(), existingFileHelper);
+        Advancement tome = buildItem(consumer, "handbook/tome_of_arcana", EBItems.ARCANE_TOME.get(), existingFileHelper);
+        Advancement scroll = buildItem(consumer, "handbook/scrolls", EBItems.SCROLL.get(), existingFileHelper);
+        Advancement crystalFlowers = buildItem(consumer, "handbook/crystal_flowers", EBBlocks.CRYSTAL_FLOWER.get(), existingFileHelper);
+        // Impossible Trigger
+        Advancement onSubsectionUnlock = Advancement.Builder.advancement()
+                .addCriterion("on_subsection_unlock", new ImpossibleTrigger.TriggerInstance())
+                .save(consumer, WizardryMainMod.location("handbook/on_subsection_unlock"), existingFileHelper);
+        // Obelisks
+        Advancement obelisks = Advancement.Builder.advancement()
+                .addCriterion("earth_obelisk", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(EBWorldGen.EARTH_OBELISK)))
+                .addCriterion("healing_obelisk", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(EBWorldGen.FIRE_OBELISK)))
+                .addCriterion("ice_obelisk", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(EBWorldGen.HEALING_OBELISK)))
+                .addCriterion("lightning_obelisk", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(EBWorldGen.ICE_OBELISK)))
+                .addCriterion("necromancy_obelisk", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(EBWorldGen.NECROMANCY_OBELISK)))
+                .addCriterion("sorcery_obelisk", PlayerTrigger.TriggerInstance.located(LocationPredicate.inStructure(EBWorldGen.SORCERY_OBELISK)))
+                .save(consumer, WizardryMainMod.location("handbook/obelisks"), existingFileHelper);
+        // Magical Creatures
+        Advancement magicalCreatures = Advancement.Builder.advancement()
+                .addCriterion("ice_wraith", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(EBEntities.ICE_WRAITH.get()).build()))
+                .addCriterion("lightning_wraith", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(EBEntities.LIGHTNING_WRAITH.get()).build()))
+                // .addCriterion("spirit_wolf", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(EBEntities.SPIRIT_WOLF.get()).build()))
+                // .addCriterion("spirit_horse", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(EBEntities.SPIRIT_HORSE.get()).build()))
+                // .addCriterion("phoenix", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(EBEntities.PHOENIX).build()))
+                .addCriterion("ice_giant", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(EBEntities.ICE_GIANT.get()).build()))
+                .addCriterion("shadow_wraith", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(EBEntities.SHADOW_WRAITH.get()).build()))
+                .addCriterion("storm_elemental", KilledTrigger.TriggerInstance.playerKilledEntity(EntityPredicate.Builder.entity().of(EBEntities.STORM_ELEMENTAL.get()).build()))
+
+                .addCriterion("silverfish_swarm", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SILVERFISH_SWARM).build()))
+                .addCriterion("spider_swarm", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SPIDER_SWARM).build()))
+                .addCriterion("vex_swarm", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.VEX_SWARM).build()))
+                .addCriterion("summon_blaze", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_BLAZE).build()))
+                .addCriterion("summon_ice_giant", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_ICE_GIANT).build()))
+                // .addCriterion("summon_ice_wraith", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_ICE_WRAITH).build()))
+                // .addCriterion("summon_iron_golem", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_IRON_GOLEM).build()))
+                .addCriterion("summon_lightning_wraith", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_LIGHTNING_WRAITH).build()))
+                // .addCriterion("summon_phoenix", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_PHOENIX).build()))
+                // .addCriterion("summon_shadow_wraith", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_SHADOW_WRAITH).build()))
+                .addCriterion("summon_skeleton", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_SKELETON).build()))
+                .addCriterion("summon_skeleton_legion", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_SKELETON_LEGION).build()))
+                .addCriterion("summon_snow_golem", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_SNOW_GOLEM).build()))
+                // .addCriterion("summon_spirit_horse", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_SPIRIT_HORSE).build()))
+                // .addCriterion("summon_spirit_wolf", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_SPIRIT_WOLF).build()))
+                // .addCriterion("summon_storm_elemental", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_STORM_ELEMENTAL).build()))
+                .addCriterion("summon_wither_skeleton", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_WITHER_SKELETON).build()))
+                .addCriterion("summon_zombie", SpellCastTrigger.TriggerInstance.castSpell(SpellPredicate.Builder.builder().spell(Spells.SUMMON_ZOMBIE).build()))
+                .save(consumer, WizardryMainMod.location("handbook/magical_creatures"), existingFileHelper);
+        // All Elements
+        Advancement elements = Advancement.Builder.advancement()
+                .addCriterion("fire", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.MAGIC_CRYSTAL_FIRE.get()))
+                .addCriterion("ice", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.MAGIC_CRYSTAL_ICE.get()))
+                .addCriterion("lightning", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.MAGIC_CRYSTAL_LIGHTNING.get()))
+                .addCriterion("necromancy", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.MAGIC_CRYSTAL_NECROMANCY.get()))
+                .addCriterion("earth", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.MAGIC_CRYSTAL_EARTH.get()))
+                .addCriterion("sorcery", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.MAGIC_CRYSTAL_SORCERY.get()))
+                .addCriterion("healing", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.MAGIC_CRYSTAL_HEALING.get()))
+                .save(consumer, WizardryMainMod.location("handbook/elements"), existingFileHelper);
+        // Mana Flasks
+        Advancement manaFlasks = Advancement.Builder.advancement()
+                .addCriterion("mana_flask_small", RecipeUnlockedTrigger.unlocked(WizardryMainMod.location("mana_flask_small")))
+                .save(consumer, WizardryMainMod.location("handbook/mana_flasks"), existingFileHelper);
+        // Throwable Bombs
+        Advancement throwables = Advancement.Builder.advancement()
+                .addCriterion("firebomb", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.FIREBOMB.get()))
+                .addCriterion("poison_bomb", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.POISON_BOMB.get()))
+                .addCriterion("smoke_bomb", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.SMOKE_BOMB.get()))
+                .addCriterion("spark_bomb", InventoryChangeTrigger.TriggerInstance.hasItems(EBItems.SPARK_BOMB.get()))
+                .save(consumer, WizardryMainMod.location("handbook/throwables"), existingFileHelper);
     }
 }

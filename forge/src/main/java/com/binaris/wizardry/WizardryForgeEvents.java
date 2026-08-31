@@ -40,6 +40,7 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegisterGameTestsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -84,6 +85,11 @@ public class WizardryForgeEvents {
                 player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
                 player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
             }
+        }
+
+        @SubscribeEvent
+        public static void onAdvancementEvent(AdvancementEvent event) {
+            WizardryEventBus.fireEvent(new EBAdvancementEvent(event.getEntity(), event.getAdvancement()));
         }
 
         @SubscribeEvent

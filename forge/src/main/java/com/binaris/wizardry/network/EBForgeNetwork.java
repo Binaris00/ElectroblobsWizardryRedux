@@ -2,6 +2,7 @@ package com.binaris.wizardry.network;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.ClientPacketHandler;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.networking.abst.Message;
 import com.binaris.wizardry.core.networking.c2s.BlockUsePacketC2S;
 import com.binaris.wizardry.core.networking.c2s.ControlInputPacketC2S;
@@ -43,6 +44,7 @@ public class EBForgeNetwork {
         register(ArcaneLockSyncPacketS2C.class, ArcaneLockSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ParticleBuilderS2C.class, ParticleBuilderS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ConfigSyncS2C.class, ConfigSyncS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+        EBLogger.warn("注册成功");
         register(AdvancementSyncPacketS2C.class, AdvancementSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
     }
 

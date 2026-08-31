@@ -72,7 +72,7 @@
     },
     "classes": {
       "location": "ebwizardry:textures/gui/handbook/pictures/classes.png",
-      "caption": "The Three Classes",
+      "caption": "三种类型",
       "u": 0,
       "v": 0,
       "width": 96,
@@ -506,17 +506,17 @@
 
         "#image classes",
 
-        "The Sage",
+        "贤者",
 
-        "By devoting their life to the pursuit of knowledge, the sage has perfected the art of efficient spellcasting, allowing them to cast spells using the smallest possible amount of mana. The finery of their silken robes belies the substantial protection they provide, as the sage is also an adept enchanter - though they are still no match for solid metal plating. Spending such long periods in the safety of a library does, however, make them rather sluggish in combat.",
+        "贤者将一生奉献于追求知识，从而精通了高效施法的艺术，能够以最少的法力释放法术。其丝绸长袍的华美外表掩盖了它们所提供的实质性防护，因为贤者同时也是娴熟的附魔师——尽管仍无法与坚固的金属甲胄相匹敌。然而，长期待在安全的图书馆中，也使他们战斗时显得相当迟钝。",
 
-        "The Battlemage",
+        "战斗法师",
 
-        "The battlemage is geared for combat, clad in a combination of toughened cloth and crystal-silver plating sourced from the most skilled of foundries. Through discipline and training, the battlemage has also improved their speed and reactions, allowing them to cast spells more often. This does not come cheap, however, and a battlemage must be careful not to burn through mana too quickly.",
+        "战斗法师专为战斗而生，身着由最精湛的铸造厂锻造的强化布料与水晶银甲板制成的战甲。通过训练与磨砺，战斗法师的速度与反应能力得以提升，使其能够更频繁地施放法术。然而，这种能力代价不菲，战斗法师必须谨慎行事，以免过快耗尽法力值。",
 
-        "The Warlock",
+        "巫术师",
 
-        "The warlock lives for exploration, pushing the boundaries of what is possible to unearth lost arcane secrets. This, along with a willingness to experiment with what others may deem forbidden, has allowed them to break the constraints of traditional training and cast spells at a formidable rate, as well as reducing their mana usage. Their lightweight robes, though good for exploration, provide less protection in combat than their counterparts."
+        "巫术师以探索为生，不断突破可能的边界，以发掘失落的奥术秘密。这一点，加上他们愿意尝试他人可能视为禁忌的实验，使他们打破了传统训练的束缚，能够以惊人的速度施法，同时减少法力消耗。他们的轻便长袍虽然适合探索，但在战斗中提供的保护却不及其他同行。"
 
       ]
     },

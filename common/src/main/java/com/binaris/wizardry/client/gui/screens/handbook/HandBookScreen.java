@@ -33,7 +33,8 @@ import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
-import org.lwjgl.glfw.GLFW;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.*;
 import java.io.BufferedReader;
@@ -136,6 +137,7 @@ public class HandBookScreen extends Screen {
      * The distance of the page numbers from the bottom of the GUI.
      */
     private static final int PAGE_NUMBER_INSET = 22;
+    private static final Logger log = LoggerFactory.getLogger(HandBookScreen.class);
 
     // Handbook content
 
@@ -223,8 +225,8 @@ public class HandBookScreen extends Screen {
     }
 
     private static void initFormatTags() {
-        addFormatTag("next_spell_key", EBKeyBinding.NEXT_SPELL.getName());
-        addFormatTag("previous_spell_key", EBKeyBinding.PREVIOUS_SPELL.getName());
+        addFormatTag("next_spell_key", EBKeyBinding.NEXT_SPELL.getTranslatedKeyMessage().getString());
+        addFormatTag("previous_spell_key", EBKeyBinding.PREVIOUS_SPELL.getTranslatedKeyMessage().getString());
         addFormatTag("example_charging_loss", "" + (EBServerConfig.MANA_PER_CRYSTAL.get() - 30));
         addFormatTag("mana_per_crystal", "" + EBServerConfig.MANA_PER_CRYSTAL.get());
         addFormatTag("novice_max_charge", "" + SpellTiers.NOVICE.getMaxCharge());
@@ -364,7 +366,7 @@ public class HandBookScreen extends Screen {
     }
 
     // Overridden to make it public
-    public static void updateUnlockStatus(boolean showToasts, ResourceLocation... completedAdvancements) {
+    public static void updateUnlockStatus(boolean showToasts, List<ResourceLocation> completedAdvancements) {
         sections.values().forEach(s -> s.updateUnlockStatus(showToasts, completedAdvancements));
     }
 
@@ -427,7 +429,7 @@ public class HandBookScreen extends Screen {
         // Formats all the unlocked sections in order
         for (Section section : sections.values()) {
             if (section.isUnlocked()) {
-                pageCount = section.format(this, font, pageCount, left, top);
+                pageCount = section.format(this::linkButton, font, pageCount, left, top);
                 section.getButtons().forEach(this::addRenderableWidget);
             }
         }
@@ -520,6 +522,7 @@ public class HandBookScreen extends Screen {
         recipes.values().forEach(r -> r.drawTooltips(guiGraphics, font, currentPage, left, top, mouseX, mouseY));
     }
 
+    /*
     @Override
     public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
         if (modifiers == GLFW.GLFW_REPEAT) {
@@ -527,6 +530,7 @@ public class HandBookScreen extends Screen {
         }
         return super.keyPressed(keyCode, scanCode, modifiers);
     }
+    */
 
     // Controls
     @Override

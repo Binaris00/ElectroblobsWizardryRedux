@@ -5,6 +5,7 @@ import com.binaris.wizardry.client.gui.screens.handbook.HandBookScreen;
 import net.fabricmc.fabric.api.resource.SimpleSynchronousResourceReloadListener;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.ResourceManager;
+import org.jetbrains.annotations.NotNull;
 
 public class HandbookResourceReloader implements SimpleSynchronousResourceReloadListener {
     public static final HandbookResourceReloader INSTANCE = new HandbookResourceReloader();
@@ -15,7 +16,7 @@ public class HandbookResourceReloader implements SimpleSynchronousResourceReload
     }
 
     @Override
-    public void onResourceManagerReload(ResourceManager resourceManager) {
+    public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
         HandBookScreen.loadHandbookFile(resourceManager);
     }
 }
