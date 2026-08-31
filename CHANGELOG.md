@@ -1,40 +1,11 @@
-## Features
-
-- feat: Added item tags for armor upgrades, magic crystal shards, spectral dust, and wand upgrades
-- feat: sounds.json can now be generated with datagen via `EBSoundProvider`
-
-## Refactors
-
-- refactor: `IArtifactEffect` now extends `IEventEffect<ArtifactEffectContext>` for general use in other contexts (e.g., mob effects)
-- refactor: `GeometryUtils` renamed to `VecUtils`, `DrawingUtils` moved to `ClientUtils`
-- refactor: `InventoryUtils` deleted and moved to `EntityUtils`
-- refactor: Entity immunities system deleted
-- refactor: `SpellCastEvent` constructors now use `CastContext`; old constructors deprecated
-- refactor: `SpellCastEvent.Source` enum changed to `SpellCastEvent.Source` interface + `Sources` enum for custom cast sources
-- refactor: `EventResult` and `EventResultHolder` classes deleted
-- refactor: `EBDiscoverSpellEvent` renamed to `DiscoverSpellEvent` with new `Source` interface for custom discovery sources
-- refactor: `SpellType` changed from enum to interface; built-in types moved to `SpellTypes` enum; new `SpellTypeRegistry` for addon registration
-- refactor: `SpellContext` changed from enum to interface; built-in contexts moved to `SpellContexts` enum
-- refactor: `WizardArmorType` renamed to `WizardArmorTypes`
-- refactor: `ISpellVar` and `IStoredSpellVar` rewritten with Codecs; `Persistence` renamed to `VarPersistence`
-- refactor: `NBTExtras` utility class deleted
-- refactor: `ICustomHitbox` interface deleted
-- refactor: `SpellHUDSkin` class and `spell_hud/` assets deleted; spell HUD customization now uses resource packs
-- refactor: `MagicProjectileEntity` now extends `ThrowableProjectile`; new `MagicItemProjectileEntity` for item-based projectiles
-- refactor: `MagicArrowEntity` refactored with new utility methods for damage, sound, particles, and effects
-- refactor: `SpellModifiers` refactored with `Operation` enum (`ADDITION`, `MULTIPLY_BASE`, `MULTIPLY_TOTAL`) and `ModifiersInstance`; old methods removed
-- refactor: `EBClientConstants` deleted; constants moved to `ArcaneWorkbenchScreen`
-- refactor: Particle system cleaned up (`ParticleWizardry`, `ParticleTargeted`); `ICustomHitbox` removed
-- refactor: `MagicDamageSource` simplified; damage type registration updated
-- refactor: Sounds and spell modifiers refactored for datagen support
-
-### Bug Fixes
-
-- fix: scaled construct entities now can actually scale, increasing width and height depending on the size multiplier (blast upgrade)
-- fix: Meteor spell can be used to attack direct targets, not just pointing at a block
-- fix: (German translation) fix to Magic Scroll name
-- fix: healing aura doesn't grow too much based on effect radius
-- fix: summons can't pick up loot by default now
-- fix: flash name fix inside arcane workbench
-- fix: wizards can only trade spells of their own element (except neutral wizards)
-- fix: unregistered mob effects in fabric
+- feature(lang): Added Chinese translations
+- feature(lang): Added Spanish translation
+- feature(lang): Turkish translation (by @xlorsh on discord)
+- feature(event): added WizardTradeSetupEvent for add-ons to create/modify Wizard's trades without mixins
+- feature(fishing): now you can get different magic items when fishing
+- fix(minions): Summons shouldn't drop loot or xp
+- fix(sound): Added missing sound subtitles
+- fix(spells): Telekinesis spell disappearing items with Physics Item mod and Speed Time not affecting crops
+- fix(armor): Ethereal Crystal Weave now converts wizard armor to Warlock (As how it should be)
+- refactor(worldgen): Added biome tags for more custom modification for spawn crystal flower, crystal ore and evil wizards
+- refactor(gui): created getSpellIcon() to have better mixin control
