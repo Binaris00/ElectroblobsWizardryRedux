@@ -2,6 +2,7 @@
   "spell.discover": "Discovered the spell %s!",
   "spell.disabled": "%s has been disabled in the config",
   "spell.resist": "%s resisted %s",
+  "handbook.toast.title": "New Handbook Section Unlocked!",
   "ebwizardry.raw_line": "========================================================",
   "ebwizardry.creativetab.desc": "EBWIZARDRY TABS",
   "ebwizardry.raw_line_1": "========================================================",
@@ -1046,6 +1047,7 @@
   "item.ebwizardry.wizard_boots_necromancy": "Necromancer Boots",
   "item.ebwizardry.wizard_boots_sorcery": "Sorcerer Boots",
   "item.ebwizardry.wizard_handbook": "The Wizard's Handbook",
+  "item.ebwizardry.wizard_handbook.author": "By Electroblob",
   "item.ebwizardry.wizard_hat": "Wizard Hat",
   "item.ebwizardry.wizard_hat_earth": "Earth Mage Hat",
   "item.ebwizardry.wizard_hat_fire": "Pyromancer Hat",
@@ -1337,5 +1339,10 @@
   "subtitles.ebwizardry.entity.wizard.no": "Wizard No",
   "subtitles.ebwizardry.entity.wizard.trading": "Wizard Trading",
   "subtitles.ebwizardry.entity.wizard.yes": "Wizard Yes",
-  "subtitles.ebwizardry.entity.zombie_spawner.spawn": "Zombie Spawner Spawns"
+  "subtitles.ebwizardry.entity.zombie_spawner.spawn": "Zombie Spawner Spawns",
+  "subtitles.ebwizardry.misc.discover_spell": "Discover Spell",
+  "subtitles.ebwizardry.misc.book_open": "Book Open",
+  "subtitles.ebwizardry.misc.page_turn": "Page Turn",
+  "subtitles.ebwizardry.misc.freeze": "Freeze",
+  "subtitles.ebwizardry.misc.spell_fail": "Spell Fail"
 }

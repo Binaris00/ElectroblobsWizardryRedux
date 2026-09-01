@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "handbook/crystal_flowers": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:crystal_flower"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "handbook/crystal_flowers"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

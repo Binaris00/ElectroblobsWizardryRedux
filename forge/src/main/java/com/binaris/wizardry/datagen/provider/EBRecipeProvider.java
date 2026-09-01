@@ -141,6 +141,10 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .requires(Items.GLASS_BOTTLE)
                 .requires(Items.GUNPOWDER)
                 .unlockedBy("has_gunpowder", has(Items.GUNPOWDER)).save(consumer);
+        ShapelessRecipeBuilder.shapeless(RecipeCategory.MISC, EBItems.WIZARD_HANDBOOK.get(), 1)
+                .requires(EBItems.MAGIC_CRYSTAL.get())
+                .requires(Items.BOOK)
+                .unlockedBy("has_magic_crystal", has(EBItems.MAGIC_CRYSTAL.get())).save(consumer);
 
         ShapedRecipeBuilder.shaped(RecipeCategory.MISC, EBItems.MAGIC_SILK.get(), 2)
                 .pattern(" x ")
