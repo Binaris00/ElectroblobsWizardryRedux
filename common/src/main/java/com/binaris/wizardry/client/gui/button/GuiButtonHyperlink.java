@@ -24,9 +24,7 @@ import java.util.List;
 
 public class GuiButtonHyperlink extends Button {
     public static final String URL_REGEX = "^((https?|ftp)://|(www|ftp)\\.)?[a-z0-9-]+(\\.[a-z0-9-]+)+([/?].*)?$";
-    /**
-     * Pulse period of links to new sections, in milliseconds.
-     */
+    /// Pulse period of links to new sections, in milliseconds.
     private static final float PULSATION_PERIOD = 1500;
     private final int indent;
     private final List<String> lines;
@@ -79,20 +77,18 @@ public class GuiButtonHyperlink extends Button {
         }
     }
 
-    /**
-     * Creates a new hyperlink button from the given arguments, automatically differentiating between URLs and sections.
-     *
-     * @param x         The x position of the button
-     * @param y         The y position of the button
-     * @param font      A reference to the FontRenderer object
-     * @param upToLink  The paragraph (as a list of lines) up to the link, used to determine positioning and word wrap
-     * @param arguments The link arguments - that is, everything between the two @ signs, split by spaces
-     * @param suffix    The text directly after the link, up to the first whitespace; used for word wrap. Usually this is
-     *                  either empty or contains a single punctuation mark.
-     * @return The resulting button
-     * @throws IllegalArgumentException if the given argument array is empty or contains more than 2 arguments
-     * @throws JsonSyntaxException      if the specified link target is not a URL or a valid section ID
-     */
+    /// Creates a new hyperlink button from the given arguments, automatically differentiating between URLs and sections.
+    /// 
+    /// @param x         The x position of the button
+    /// @param y         The y position of the button
+    /// @param font      A reference to the FontRenderer object
+    /// @param upToLink  The paragraph (as a list of lines) up to the link, used to determine positioning and word wrap
+    /// @param arguments The link arguments - that is, everything between the two @ signs, split by spaces
+    /// @param suffix    The text directly after the link, up to the first whitespace; used for word wrap. Usually this is
+    ///                   either empty or contains a single punctuation mark.
+    /// @return The resulting button
+    /// @throws IllegalArgumentException if the given argument array is empty or contains more than 2 arguments
+    /// @throws JsonSyntaxException      if the specified link target is not a URL or a valid section ID
     public static GuiButtonHyperlink create(int x, int y, Font font, List<String> upToLink, String[] arguments, String suffix, int linesLeft, boolean rightPage, boolean spaceless, OnPress onPress) {
         if (arguments.length == 0 || arguments.length > 2)
             throw new IllegalArgumentException("Incorrect array length!");

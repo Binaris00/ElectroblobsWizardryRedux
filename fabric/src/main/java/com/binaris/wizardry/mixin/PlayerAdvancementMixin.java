@@ -11,9 +11,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-/**
- * @see net.fabricmc.fabric.mixin.event.interaction.PlayerAdvancementTrackerMixin PlayerAdvancementTrackerMixin
- */
+/// @see net.fabricmc.fabric.mixin.event.interaction.PlayerAdvancementTrackerMixin PlayerAdvancementTrackerMixin
 @Mixin(PlayerAdvancements.class)
 public abstract class PlayerAdvancementMixin {
     @Shadow

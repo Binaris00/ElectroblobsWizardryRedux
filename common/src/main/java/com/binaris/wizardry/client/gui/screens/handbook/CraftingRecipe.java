@@ -37,15 +37,12 @@ public class CraftingRecipe {
         this.locations = locations;
     }
 
-    /**
-     * Parses the given JSON object and constructs a new {@code Image} from it, setting all the relevant fields
-     * and references.
-     *
-     * @param json A JSON object representing the image to be constructed. This must contain at least a "locations"
-     *             string.
-     * @return The resulting {@code Image} object.
-     * @throws JsonSyntaxException if at any point the JSON object is found to be invalid.
-     */
+    /// Parses the given JSON object and constructs a new {@code Image} from it, setting all the relevant fields
+    /// and references.
+    /// 
+    /// @param json A JSON object representing the image to be constructed. This must contain at least a "locations" string.
+    /// @return The resulting {@code Image} object.
+    /// @throws JsonSyntaxException if at any point the JSON object is found to be invalid.
     public static CraftingRecipe fromJson(JsonObject json) {
         ResourceLocation[] locations = Streams.stream(GsonHelper.getAsJsonArray(json, "locations"))
                 .map(je -> new ResourceLocation(je.getAsString())).toArray(ResourceLocation[]::new);
@@ -133,28 +130,22 @@ public class CraftingRecipe {
         return mouseX >= left - 1 && mouseX < left + width + 1 && mouseY >= top - 1 && mouseY < top + height + 1;
     }
 
-    /**
-     * Adds an instance of this recipe to the list.
-     *
-     * @param page The index of the <b>single</b> page this image is on.
-     * @param x    The x-coordinate of the top-left corner of the image, <i>relative</i> to the top-left corner of the GUI.
-     * @param y    The y-coordinate of the top-left corner of the image, <i>relative</i> to the top-left corner of the GUI.
-     */
+    /// Adds an instance of this recipe to the list.
+    /// 
+    /// @param page The index of the <b>single</b> page this image is on.
+    /// @param x    The x-coordinate of the top-left corner of the image, <i>relative</i> to the top-left corner of the GUI.
+    /// @param y    The y-coordinate of the top-left corner of the image, <i>relative</i> to the top-left corner of the GUI.
     public void addInstance(int page, int x, int y) {
         instances.add(new int[]{page, x, y});
     }
 
-    /**
-     * Removes all instances of this recipe from the list.
-     */
+    /// Removes all instances of this recipe from the list.
     public void clearInstances() {
         instances.clear();
     }
 
-    /**
-     * Called on GUI open to load the actual recipe object from the registry. This cannot be done on JSON load since
-     * the recipes aren't necessarily loaded at that point.
-     */
+    /// Called on GUI open to load the actual recipe object from the registry. This cannot be done on JSON load since
+    /// the recipes aren't necessarily loaded at that point.
     public void load() {
         recipes = new ArrayList<>(locations.length);
 
@@ -166,15 +157,13 @@ public class CraftingRecipe {
         }
     }
 
-    /**
-     * Draws all instances of this recipe that are located on the given double-page spread.
-     *
-     * @param font         The font renderer object.
-     * @param itemRenderer The item renderer object.
-     * @param doublePage   The double-page index of the page to be drawn.
-     * @param left         The x coordinate of the left side of the GUI.
-     * @param top          The y coordinate of the top of the GUI.
-     */
+    /// Draws all instances of this recipe that are located on the given double-page spread.
+    /// 
+    /// @param font         The font renderer object.
+    /// @param itemRenderer The item renderer object.
+    /// @param doublePage   The double-page index of the page to be drawn.
+    /// @param left         The x coordinate of the left side of the GUI.
+    /// @param top          The y coordinate of the top of the GUI.
     public void draw(GuiGraphics guiGraphics, Font font, ResourceLocation texture, ItemRenderer itemRenderer, int doublePage, int left, int top) {
 
         int index = (int) (System.currentTimeMillis() % Integer.MAX_VALUE) / 2000;
@@ -186,15 +175,13 @@ public class CraftingRecipe {
         }
     }
 
-    /**
-     * Draws the tooltips for all instances of this recipe that are located on the given double-page spread. This has to
-     * be done separately so that the tooltips are on top of everything else.
-     *
-     * @param font       The item renderer object.
-     * @param doublePage The double-page index of the page to be drawn.
-     * @param left       The x coordinate of the left side of the GUI.
-     * @param top        The y coordinate of the top of the GUI.
-     */
+    /// Draws the tooltips for all instances of this recipe that are located on the given double-page spread. This has to
+    /// be done separately so that the tooltips are on top of everything else.
+    /// 
+    /// @param font       The item renderer object.
+    /// @param doublePage The double-page index of the page to be drawn.
+    /// @param left       The x coordinate of the left side of the GUI.
+    /// @param top        The y coordinate of the top of the GUI.
     public void drawTooltips(GuiGraphics guiGraphics, Font font, int doublePage, int left, int top, int mouseX, int mouseY) {
         if (recipes.isEmpty()) return;
 

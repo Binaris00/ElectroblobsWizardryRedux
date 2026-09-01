@@ -14,18 +14,16 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Instances of this class represent tables of contents in the wizard's handbook. Each {@link Section} can have a
- * single table of contents, which can reference any other sections in the handbook (though it is normal to list
- * top-level sections in a main contents and have subsections listed in their respective parent sections' contents).
- * <br>
- * This class handles JSON parsing, formatting and drawing of the contents itself, working on a line-by-line basis
- * (as opposed to sections, which work on a page-by-page basis). It also stores its own list of buttons.
- *
- * @author Electroblob
- * @author Crystal
- * @since Wizardry 0.8.6-alpha
- */
+/// Instances of this class represent tables of contents in the wizard's handbook. Each {@link Section} can have a
+/// single table of contents, which can reference any other sections in the handbook (though it is normal to list
+/// top-level sections in a main contents and have subsections listed in their respective parent sections' contents).
+/// <br>
+/// This class handles JSON parsing, formatting and drawing of the contents itself, working on a line-by-line basis
+/// (as opposed to sections, which work on a page-by-page basis). It also stores its own list of buttons.
+/// 
+/// @author Electroblob
+/// @author Crystal
+/// @since Wizardry 0.8.6-alpha
 public class Contents {
     // Final fields are mandatory, the rest are optional
     public final String id;
@@ -48,16 +46,14 @@ public class Contents {
         this.visibleEntries = new ArrayList<>();
     }
 
-    /**
-     * Parses the given JSON object and constructs a new {@code Contents} from it, setting all the relevant fields
-     * and references.
-     *
-     * @param parent The parent section for this contents.
-     * @param json   A JSON object representing the contents to be constructed. This must contain at least an "id"
-     *               string.
-     * @return The resulting {@code Contents} object.
-     * @throws JsonSyntaxException if at any point the JSON object is found to be invalid.
-     */
+    /// Parses the given JSON object and constructs a new {@code Contents} from it, setting all the relevant fields
+    /// and references.
+    /// 
+    /// @param parent The parent section for this contents.
+    /// @param json A JSON object representing the contents to be constructed. This must contain at least an "id" string.
+    /// @return The resulting {@code Contents} object.
+    /// @throws JsonSyntaxException if at any point the JSON object is found to be invalid.
+
     public static Contents fromJson(Section parent, JsonObject json) {
 
         Contents contents = new Contents(GsonHelper.getAsString(json, "id"), parent);
@@ -69,9 +65,7 @@ public class Contents {
         return contents;
     }
 
-    /**
-     * Returns an unmodifiable, flattened collection of all the buttons in this contents.
-     */
+    /// Returns an unmodifiable, flattened collection of all the buttons in this contents.
     public Collection<Button> getButtons() {
         return JavaUtils.flatten(buttons);
     }
@@ -80,15 +74,13 @@ public class Contents {
         this.entries.add(section);
     }
 
-    /**
-     * Draws this contents for the given double-page spread and shows/hides buttons accordingly. Will draw nothing
-     * if the given page is outside of this contents.
-     *
-     * @param font       The font renderer object.
-     * @param doublePage The index of the <b>double-page</b> to be drawn.
-     * @param left       The x coordinate of the left side of the GUI.
-     * @param top        The y coordinate of the top of the GUI.
-     */
+    /// Draws this contents for the given double-page spread and shows/hides buttons accordingly. Will draw nothing
+    /// if the given page is outside of this contents.
+    /// 
+    /// @param font       The font renderer object.
+    /// @param doublePage The index of the <b>double-page</b> to be drawn.
+    /// @param left       The x coordinate of the left side of the GUI.
+    /// @param top        The y coordinate of the top of the GUI.
     public void draw(GuiGraphics guiGraphics, Font font, int doublePage, int left, int top) {
         // Show/hide buttons
         int i = 0;
@@ -130,18 +122,16 @@ public class Contents {
         }
     }
 
-    /**
-     * Called on GUI load to format the section and all subsections, contents tables and other elements. Does not
-     * perform any actual drawing.
-     *
-     * @param font      The font renderer object, for measurement purposes.
-     * @param startPage The index of the first page (single side, not double-page) of this section.
-     * @param startLine The index of the first line of this contents.
-     * @param left      The x coordinate of the left side of the GUI.
-     * @param top       The y coordinate of the top of the GUI.
-     * @return The number of lines this contents takes up.
-     * @throws JsonSyntaxException if at any point the formatting is found to be invalid.
-     */
+    /// Called on GUI load to format the section and all subsections, contents tables and other elements. Does not
+    /// perform any actual drawing.
+    /// 
+    /// @param font      The font renderer object, for measurement purposes.
+    /// @param startPage The index of the first page (single side, not double-page) of this section.
+    /// @param startLine The index of the first line of this contents.
+    /// @param left      The x coordinate of the left side of the GUI.
+    /// @param top       The y coordinate of the top of the GUI.
+    /// @return The number of lines this contents takes up.
+    /// @throws JsonSyntaxException if at any point the formatting is found to be invalid.
     public int format(Button.OnPress onPress, Font font, int startPage, int startLine, int left, int top) {
         this.buttons.clear();
         this.visibleEntries = new ArrayList<>(entries); // Need to copy the collection first!

@@ -13,7 +13,7 @@ import net.minecraft.server.level.ServerPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-/** <b>[Client -> Server]</b> Fired on resource reload to request that the server re-sync the player's advancements. */
+/// <b>\[Client-> Server\]</b> Fired on resource reload to request that the server re-sync the player's advancements.
 public class RequestAdvancementSyncPacketC2S implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("request_advancement_sync");
 

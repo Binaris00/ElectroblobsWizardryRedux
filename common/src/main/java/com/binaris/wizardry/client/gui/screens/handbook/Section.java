@@ -21,37 +21,32 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
-/**
- * Instances of this class represent sections in the wizard's handbook. As of wizardry 0.8.6, this class handles
- * everything within the section itself, including JSON parsing, unlock triggers and drawing the actual text.
- * Sections may now also be nested and have other elements within them, such as images and a table of contents, a
- * behaviour which is also handled within this class.
- * <p></p>
- * The formatting of the book is now done 'dynamically' - that is, the exact positions and page numbers of
- * sections, images and so on are determined on GUI load and depend on which of the previous sections have been
- * unlocked, amongst other factors. This means that all of the unlocked sections must be formatted in order on GUI
- * load, so that each section knows the previous section's length and therefore where to start.
- *
- * @author Electroblob
- * @author Crystal
- * @since Wizardry 0.8.6-alpha
- */
 // Because these are now generated on resource pack reload (not on handbook open, as before), this class can no longer
 // be a non-static inner class
+
+/// Instances of this class represent sections in the wizard's handbook. As of wizardry 0.8.6, this class handles
+/// everything within the section itself, including JSON parsing, unlock triggers and drawing the actual text.
+/// Sections may now also be nested and have other elements within them, such as images and a table of contents, a
+/// behaviour which is also handled within this class.
+/// <br>
+/// The formatting of the book is now done 'dynamically' - that is, the exact positions and page numbers of
+/// sections, images and so on are determined on GUI load and depend on which of the previous sections have been
+/// unlocked, amongst other factors. This means that all of the unlocked sections must be formatted in order on GUI
+/// load, so that each section knows the previous section's length and therefore where to start.
+/// 
+/// @author Electroblob
+/// @author Crystal
+/// @since Wizardry 0.8.6-alpha
 public class Section {
     private static final Set<String> SPACELESS_LANGUAGES = ImmutableSet.of("zh_cn", "zh_tw");
     private final List<List<Button>> buttons;
-    /**
-     * A list of <b>single</b> pages, which are themselves lists of paragraphs (each paragraph is a single
-     * string which may include line breaks and other escape characters).
-     */
+    /// A list of <b>single</b> pages, which are themselves lists of paragraphs (each paragraph is a single
+    /// string which may include line breaks and other escape characters).
     private final List<List<String>> pages;
     private final Map<String, Section> subsections;
     // Final fields are mandatory (none here though), the rest are optional
     public String title;
-    /**
-     * The <b>single-page</b> index of the first page of this section.
-     */
+    /// The <b>single-page</b> index of the first page of this section.
     public int startPage;
     private String[] rawText;
     private Contents contents;
@@ -67,16 +62,13 @@ public class Section {
         this.subsections = new LinkedHashMap<>();
     }
 
-    /**
-     * Parses the given JSON object and constructs a new {@code Section} from it, setting all the relevant fields
-     * and references. This method converts the JSON object to a {@code Section} object and retrieves any resources;
-     * the section is not formatted in any way until GUI load, in {@link Section#format(net.minecraft.client.gui.components.Button.OnPress, Font, int, int, int)}.
-     *
-     * @param json A JSON object representing the section to be constructed. This must contain at least a "title"
-     *             string.
-     * @return The resulting {@code Section} object.
-     * @throws JsonSyntaxException if at any point the JSON object is found to be invalid.
-     */
+    /// Parses the given JSON object and constructs a new {@code Section} from it, setting all the relevant fields
+    /// and references. This method converts the JSON object to a {@code Section} object and retrieves any resources;
+    /// the section is not formatted in any way until GUI load, in {@link Section#format(net.minecraft.client.gui.components.Button.OnPress, Font, int, int, int)}.
+    /// 
+    /// @param json A JSON object representing the section to be constructed. This must contain at least a "title" string.
+    /// @return The resulting {@code Section} object.
+    /// @throws JsonSyntaxException if at any point the JSON object is found to be invalid.
     public static Section fromJson(JsonObject json) {
         Section section = new Section();
         section.title = GsonHelper.getAsString(json, "title", "");
@@ -143,17 +135,12 @@ public class Section {
         return JavaUtils.flatten(buttons);
     }
 
-    /**
-     * Returns true if the given page is within this section, false if not (or if the section is locked).
-     */
+    /// Returns true if the given page is within this section, false if not (or if the section is locked).
     public boolean containsPage(int page) {
         return this.isUnlocked() && startPage <= page && startPage + pages.size() > page;
     }
 
-    /**
-     * Returns true if this section is unlocked for the client player, false if not. Always returns true if
-     * handbook progression is disabled in the config.
-     */
+    /// Returns true if this section is unlocked for the client player, false if not. Always returns true if handbook progression is disabled in the config.
     public boolean isUnlocked() {
         if (Minecraft.getInstance().player.isCreative()) return true;
         if (!EBClientConfig.HANDBOOK_PROGRESSION.get()) return true; // Always unlocked if handbook progression is off
@@ -167,25 +154,22 @@ public class Section {
         return unlocked;
     }
 
-    /**
-     * Returns true if this section has been unlocked and not read yet. Also returns true if any subsections are new.
-     */
+    /// Returns true if this section has been unlocked and not read yet. Also returns true if any subsections are new.
     public boolean isNew() {
         if (!EBClientConfig.HANDBOOK_PROGRESSION.get()) return false;
         return isNew || this.subsections.values().stream().anyMatch(Section::isNew);
     }
 
-    /**
-     * Actually draws the contents of the given section for the given double-page spread. Will do nothing if the
-     * given page is outside of this section.
-     *
-     * @param font       The font renderer object.
-     * @param doublePage The index of the <b>double-page</b> to be drawn.
-     * @param left       The x coordinate of the left side of the GUI.
-     * @param top        The y coordinate of the top of the GUI.
-     */
     // This method is supposed to be 'idiot-proof' in the sense that the code calling it need not check whether the
     // section actually needs drawing, so it can just dumbly call draw(...) for all the sections in order.
+	
+    /// Actually draws the contents of the given section for the given double-page spread. Will do nothing if the
+    /// given page is outside of this section.
+    /// 
+    /// @param font       The font renderer object.
+    /// @param doublePage The index of the <b>double-page</b> to be drawn.
+    /// @param left       The x coordinate of the left side of the GUI.
+    /// @param top        The y coordinate of the top of the GUI.
     public void draw(GuiGraphics guiGraphics, Font font, ResourceLocation texture, int doublePage, int left, int top) {
         // Show/hide buttons
 
@@ -224,17 +208,15 @@ public class Section {
         }
     }
 
-    /**
-     * Called on GUI load to format the section, contents tables and other elements, <b>excluding</b> subsections.
-     * Does not perform any actual drawing.
-     *
-     * @param font      The font renderer object, for measurement purposes.
-     * @param startPage The index of the first page (single side, not double-page) of this section.
-     * @param left      The x coordinate of the left side of the GUI.
-     * @param top       The y coordinate of the top of the GUI.
-     * @return The <b>single-page</b> index of the next blank page after the end of this section.
-     * @throws JsonSyntaxException if at any point the formatting is found to be invalid.
-     */
+    /// Called on GUI load to format the section, contents tables and other elements, <b>excluding</b> subsections.
+    /// Does not perform any actual drawing.
+    /// 
+    /// @param font      The font renderer object, for measurement purposes.
+    /// @param startPage The index of the first page (single side, not double-page) of this section.
+    /// @param left      The x coordinate of the left side of the GUI.
+    /// @param top       The y coordinate of the top of the GUI.
+    /// @return The <b>single-page</b> index of the next blank page after the end of this section.
+    /// @throws JsonSyntaxException if at any point the formatting is found to be invalid.
     public int format(Button.OnPress onPress, Font font, int startPage, int left, int top) {
         this.buttons.clear();
         this.pages.clear();
@@ -416,10 +398,8 @@ public class Section {
         return startPage + pages.size();
     }
 
-    /**
-     * Called on login and advancement completion to update this section's unlock status and display toast
-     * notifications if applicable.
-     */
+    /// Called on login and advancement completion to update this section's unlock status and display toast
+    /// notifications if applicable.
     public void updateUnlockStatus(boolean showToasts, List<ResourceLocation> completedAdvancements) {
         if (triggers == null) return;
 

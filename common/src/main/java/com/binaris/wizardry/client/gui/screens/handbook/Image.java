@@ -34,15 +34,12 @@ public class Image {
         this.height = height;
     }
 
-    /**
-     * Parses the given JSON object and constructs a new {@code Image} from it, setting all the relevant fields
-     * and references.
-     *
-     * @param json A JSON object representing the image to be constructed. This must contain at least a "location"
-     *             string.
-     * @return The resulting {@code Image} object.
-     * @throws JsonSyntaxException if at any point the JSON object is found to be invalid.
-     */
+    /// Parses the given JSON object and constructs a new {@code Image} from it, setting all the relevant fields
+    /// and references.
+    ///
+    /// @param json A JSON object representing the image to be constructed. This must contain at least a "location" string.
+    /// @return The resulting {@code Image} object.
+    /// @throws JsonSyntaxException if at any point the JSON object is found to be invalid.
     public static Image fromJson(JsonObject json) {
         Image image = new Image(new ResourceLocation(GsonHelper.getAsString(json, "location")),
                 GsonHelper.getAsInt(json, "width"), GsonHelper.getAsInt(json, "height"));
@@ -69,46 +66,36 @@ public class Image {
         }
     }
 
-    /**
-     * Returns the width of the image.
-     */
+    /// Returns the width of the image.
     public int getWidth() {
         return width;
     }
 
-    /**
-     * Returns the total height of the image, including caption if it has one.
-     */
+    /// Returns the total height of the image, including caption if it has one.
     public int getHeight(Font font) {
         return caption.isEmpty() ? height : height + CAPTION_OFFSET + font.lineHeight;
     }
 
-    /**
-     * Adds an instance of this image to the list.
-     *
-     * @param page The index of the <b>single</b> page this image is on.
-     * @param x    The x-coordinate of the top-left corner of the image, <i>relative</i> to the top-left corner of the GUI.
-     * @param y    The y-coordinate of the top-left corner of the image, <i>relative</i> to the top-left corner of the GUI.
-     */
+    /// Adds an instance of this image to the list.
+    ///
+    /// @param page The index of the <b>single</b> page this image is on.
+    /// @param x    The x-coordinate of the top-left corner of the image, <i>relative</i> to the top-left corner of the GUI.
+    /// @param y    The y-coordinate of the top-left corner of the image, <i>relative</i> to the top-left corner of the GUI.
     public void addInstance(int page, int x, int y) {
         instances.add(new int[]{page, x, y});
     }
 
-    /**
-     * Removes all instances of this image from the list.
-     */
+    /// Removes all instances of this image from the list.
     public void clearInstances() {
         instances.clear();
     }
 
-    /**
-     * Draws all instances of this image that are located on the given double-page spread.
-     *
-     * @param font       The font renderer object.
-     * @param doublePage The double-page index of the page to be drawn.
-     * @param left       The x coordinate of the left side of the GUI.
-     * @param top        The y coordinate of the top of the GUI.
-     */
+    /// Draws all instances of this image that are located on the given double-page spread.
+    ///
+    /// @param font       The font renderer object.
+    /// @param doublePage The double-page index of the page to be drawn.
+    /// @param left       The x coordinate of the left side of the GUI.
+    /// @param top        The y coordinate of the top of the GUI.
     public void draw(GuiGraphics guiGraphics, Font font, ResourceLocation texture, int doublePage, int left, int top) {
         // Images
         for (int[] instance : instances) {

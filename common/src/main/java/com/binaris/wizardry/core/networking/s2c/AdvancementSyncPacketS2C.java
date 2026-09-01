@@ -9,9 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * <b>[Server -> Client]</b> This packet is fired on login and on advancement gain to update the handbook progress.
- */
+/// <b>\[Server -> Client\]</b> This packet is fired on login and on advancement gain to update the handbook progress.
 public class AdvancementSyncPacketS2C implements Message {
     public static final ResourceLocation ID = WizardryMainMod.location("advancement_sync");
     public final boolean showToasts;
