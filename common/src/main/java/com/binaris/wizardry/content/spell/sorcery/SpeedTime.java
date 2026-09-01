@@ -67,7 +67,7 @@ public class SpeedTime extends Spell {
         }
 
         // Advance random-ticking blocks in the sphere
-        if (!world.isClientSide) {
+        if (!world.isClientSide && world.getGameTime() % 3 == 0) {
             List<BlockPos> sphere = BlockUtil.getBlockSphere(caster.blockPosition(), radius);
             for (BlockPos pos : sphere) {
                 BlockState state = world.getBlockState(pos);
@@ -123,9 +123,8 @@ public class SpeedTime extends Spell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY,
-                        SpellTypes.UTILITY, SpellAction.POINT_UP, 15, 0, 0)
-                .add(DefaultProperties.EFFECT_RADIUS)
+                .assignBaseProperties(SpellTiers.MASTER, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.POINT_UP, 15, 0, 0)
+                .add(DefaultProperties.EFFECT_RADIUS, 8)
                 .add(TIME_INCREMENT)
                 .add(EXTRA_TICKS)
                 .build();

@@ -1,7 +1,7 @@
 {
   "type": "ebwizardry:utility",
   "base_properties": {
-    "effect_radius": 0,
+    "effect_radius": 8,
     "extra_ticks": 1,
     "time_increment": 30.0
   },

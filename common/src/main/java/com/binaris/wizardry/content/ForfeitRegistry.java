@@ -120,7 +120,7 @@ public class ForfeitRegistry {
                 double z = p.getZ() + 2 - w.random.nextFloat() * 4;
                 Integer y = BlockUtil.getNearestSurface(w, BlockPos.containing(x, p.getY(), z), Direction.UP, 2, true,
                         BlockUtil.SurfaceCriteria.basedOn(ForfeitRegistry::isCollisionShapeFullBlock));
-                iceSpike.lifetime = 45 + w.random.nextInt(15);
+                iceSpike.setLifetime(45 + w.random.nextInt(15));
                 if (y == null) break;
                 iceSpike.setFacing(Direction.UP);
                 iceSpike.setPos(x, y, z);
