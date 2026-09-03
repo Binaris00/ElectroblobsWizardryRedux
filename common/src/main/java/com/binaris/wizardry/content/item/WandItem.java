@@ -12,7 +12,6 @@ import com.binaris.wizardry.api.content.spell.internal.CastContext;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.*;
-import com.binaris.wizardry.content.recipe.WizardryRecipes;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.config.EBServerConfig;
@@ -61,7 +60,6 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         super(new Properties().stacksTo(1).durability(tier.getMaxCharge()));
         this.tier = tier;
         this.element = element;
-        WizardryRecipes.addToManaFlaskCharging(this);
     }
 
     @Override

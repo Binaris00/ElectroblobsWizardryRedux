@@ -5,16 +5,14 @@ import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
-import com.binaris.wizardry.content.item.*;
+import com.binaris.wizardry.content.item.WandItem;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
 import com.binaris.wizardry.content.recipe.ArcaneWorkbenchRecipe;
-import com.binaris.wizardry.content.recipe.WizardryRecipes;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import com.binaris.wizardry.setup.registries.EBItems;
-import com.binaris.wizardry.setup.registries.WandUpgrades;
-import com.google.common.collect.Streams;
+import com.binaris.wizardry.setup.registries.EBTags;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -25,15 +23,16 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchRecipe> {
     public static final ResourceLocation TEXTURE = WizardryMainMod.location("textures/integration/jei/arcane_workbench_background.png");
@@ -70,12 +69,12 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
     }
 
     @Override
-    public RecipeType<ArcaneWorkbenchRecipe> getRecipeType() {
+    public @NotNull RecipeType<ArcaneWorkbenchRecipe> getRecipeType() {
         return ARCANE_WORKBENCH;
     }
 
     @Override
-    public Component getTitle() {
+    public @NotNull Component getTitle() {
         return Component.translatable("gui.better_ebwizardry.arcane_workbench.title");
     }
 
@@ -85,62 +84,53 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
     }
 
     @Override
-    public void draw(ArcaneWorkbenchRecipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(ArcaneWorkbenchRecipe recipe, @NotNull IRecipeSlotsView view, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         this.background.draw(guiGraphics);
         // Can't do this in IRecipeCategory#drawExtras because we have no access to the recipe there!
         // ArcaneWorkbenchRecipeCategory.TEXTURE is already bound at this point
-        int bookSlots = recipe.getBookSlots();
-        for(int i = 0; i < bookSlots; i++) {
-            int x = CENTRE_SLOT_X + ArcaneWorkbenchMenu.getBookSlotXOffset(i, bookSlots);
-            int y = CENTRE_SLOT_Y + ArcaneWorkbenchMenu.getBookSlotYOffset(i, bookSlots);
+        int slots = recipe.getSlots();
+        for(int i = 0; i < slots; i++) {
+            int x = CENTRE_SLOT_X + ArcaneWorkbenchMenu.getBookSlotXOffset(i, slots);
+            int y = CENTRE_SLOT_Y + ArcaneWorkbenchMenu.getBookSlotYOffset(i, slots);
             this.bookSlots.draw(guiGraphics, x - 8, y - 8);
         }
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, ArcaneWorkbenchRecipe recipe, IFocusGroup iFocusGroup) {
-        // IGuiItemStackGroup slots = recipeLayout.getItemStacks();
+    public void setRecipe(IRecipeLayoutBuilder builder, ArcaneWorkbenchRecipe recipe, @NotNull IFocusGroup focusGroup) {
         // Center Item
         ItemStack center = recipe.getCentreStack();
         // Crystal Item
-        List<ItemStack> crystals = recipe.getCrystals();
+        Ingredient crystals = recipe.getCrystals();
         // Upgrade Item
-        List<ItemStack> upgrades = recipe.getUpgrades();
+        Ingredient upgrades = recipe.getUpgrades();
         // Input Item
-        List<List<ItemStack>> input = recipe.getInputs();
+        List<ItemStack> input = recipe.getInputs();
         // Result Item
         ItemStack output = recipe.getResult();
+        // Slot Number
+        int slots = recipe.getSlots();
 
         // Output Slot
         builder.addSlot(RecipeIngredientRole.OUTPUT, OUTPUT_SLOT_X, OUTPUT_SLOT_Y)
                 .addItemStack(output);
 
-        // Spell Book Slot Count
-        int bookSlots = 0;
-        if (center.getItem() instanceof IWorkbenchItem item) {
-            bookSlots = item.getSpellSlotCount(center);
-        }
-
         // Slot initialisation
-        int i = 0;
-        /* Set Spell Book Slot */
-        while (i < bookSlots) {
-            int x = CENTRE_SLOT_X + ArcaneWorkbenchMenu.getBookSlotXOffset(i, bookSlots);
-            int y = CENTRE_SLOT_Y + ArcaneWorkbenchMenu.getBookSlotYOffset(i, bookSlots);
-            builder.addSlot(RecipeIngredientRole.CATALYST, x ,y)
-                    .addItemStacks(input.get(i));
-            i++;
+        for (int i = 0; i < slots; i++) {
+            int x = CENTRE_SLOT_X + ArcaneWorkbenchMenu.getBookSlotXOffset(i, slots);
+            int y = CENTRE_SLOT_Y + ArcaneWorkbenchMenu.getBookSlotYOffset(i, slots);
+            builder.addSlot(RecipeIngredientRole.CATALYST, x ,y).addItemStacks(input);
         }
 
         // Crystal Slot
         builder.addSlot(RecipeIngredientRole.CATALYST, CRYSTAL_SLOT_X, CRYSTAL_SLOT_Y)
-                .addItemStacks(crystals);
+                .addIngredients(crystals);
         // Center Slot
         builder.addSlot(RecipeIngredientRole.INPUT, CENTRE_SLOT_X, CENTRE_SLOT_Y)
                 .addItemStack(center);
         // Upgrade Slot
         builder.addSlot(RecipeIngredientRole.CATALYST, UPGRADE_SLOT_X, UPGRADE_SLOT_Y)
-                .addItemStacks(upgrades);
+                .addIngredients(upgrades);
     }
 
     public static List<ArcaneWorkbenchRecipe> generateRecipes() {
@@ -157,53 +147,40 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
     private static List<ArcaneWorkbenchRecipe> generateUpgradeRecipes() {
         // Recipes
         List<ArcaneWorkbenchRecipe> recipes = new ArrayList<>();
-        // Upgrades
-        List<ItemStack> upgrades = new ArrayList<>();
+        // Upgrades Item, include Arcane Tome, Armor Upgrade
+        ItemStack[] wandUpgrades = Ingredient.of(EBTags.WAND_UPGRADES).getItems();
+        ItemStack[] armorUpgrade = Ingredient.of(EBTags.ARMOR_UPGRADE).getItems();
+        // Get all items that implement the IWorkbenchItem interface.
+        // WandItem, ScrollItem, BlankScrollItem, WizardArmorItem
+        ItemStack[] wands = Ingredient.of(EBTags.WAND).getItems();
+        ItemStack[] armors = Ingredient.of(EBTags.WIZARD_ARMOR).getItems();
 
-        for(Item item : BuiltInRegistries.ITEM){
-            if(item instanceof ArcaneTomeItem || item instanceof ArmorUpgradeItem){
-                NonNullList<ItemStack> variants = NonNullList.create();
-                variants.add(new ItemStack(item));
-                upgrades.addAll(variants);
+        // Wand Upgrade
+        for (ItemStack origin : wands) {
+            if (origin.getItem() instanceof IWorkbenchItem workbenchItem) {
+                for (ItemStack upgrade : wandUpgrades) {
+                    // Copy both input stacks to ignore any modifications to them during the upgrading process
+                    ItemStack result = workbenchItem.applyUpgrade(null, origin.copy(), upgrade.copy());
+                    // It's only a valid 'recipe' if something actually changed
+                    if (!ItemStack.isSameItem(origin, result)) {
+                        recipes.add(ArcaneWorkbenchRecipe.addUpgradeItem(origin, Ingredient.of(upgrade), result));
+                        break;
+                    }
+                }
+                // Condense all special upgrades into one ingredient in an effort to reduce the number of separate recipes
+                if (origin.getItem() instanceof WandItem)
+                    recipes.add(ArcaneWorkbenchRecipe.addUpgradeItem(origin, Ingredient.of(EBTags.SPECIAL_UPGRADES), origin));
             }
         }
 
-        // Condense all special upgrades into one ingredient in an effort to reduce the number of separate recipes
-        List<ItemStack> specialUpgrades = new ArrayList<>();
-
-        for(Item item : WandUpgrades.getSpecialUpgrades()){
-            NonNullList<ItemStack> variants = NonNullList.create();
-            variants.add(new ItemStack(item));
-            specialUpgrades.addAll(variants);
-        }
-
-        for (Item item : BuiltInRegistries.ITEM) {
-            if (item instanceof IWorkbenchItem workbenchItem) {
-                ItemStack origin = new ItemStack(item);
-
-                for (ItemStack upgrade : upgrades) {
-                    // Copy both input stacks to ignore any modifications to them during the upgrading process
-                    ItemStack result = workbenchItem.applyUpgrade(null, origin.copy(), upgrade.copy());
-                    // It's only a valid 'recipe' if something actually changed
-                    if (!ItemStack.isSameItem(origin, result)) {
-                        recipes.add(new ArcaneWorkbenchRecipe(origin, Collections.emptyList(), Collections.emptyList(),
-                                Collections.singletonList(upgrade), result));
+        // Armor Upgrade
+        for (ItemStack upgrade : armorUpgrade) {
+            for (ItemStack armor : armors) {
+                if (armor.getItem() instanceof IWorkbenchItem workbenchItem) {
+                    ItemStack result = workbenchItem.applyUpgrade(null, armor.copy(), upgrade.copy());
+                    if (!ItemStack.isSameItem(armor, result)) {
+                        recipes.add(ArcaneWorkbenchRecipe.addUpgradeItem(armor, Ingredient.of(upgrade), result));
                     }
-                }
-
-                List<ItemStack> applicableSpecialUpgrades = new ArrayList<>();
-                for (ItemStack upgrade : specialUpgrades) {
-                    // Copy both input stacks to ignore any modifications to them during the upgrading process
-                    ItemStack result = workbenchItem.applyUpgrade(null, origin.copy(), upgrade.copy());
-                    // It's only a valid 'recipe' if something actually changed
-                    if (!ItemStack.isSameItem(origin, result)) {
-                        applicableSpecialUpgrades.add(upgrade);
-                    }
-                }
-
-                if (!applicableSpecialUpgrades.isEmpty()) {
-                    recipes.add(new ArcaneWorkbenchRecipe(origin, Collections.emptyList(), Collections.emptyList(),
-                            applicableSpecialUpgrades, origin)); // Wands with special upgrades look no different anyway
                 }
             }
         }
@@ -213,32 +190,26 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
 
     private static List<ArcaneWorkbenchRecipe> generateChargingRecipes() {
         List<ArcaneWorkbenchRecipe> recipes = new ArrayList<>();
+        ItemStack[] chargeableItems = Ingredient.of(EBTags.MANA_ITEM).getItems();
 
-        List<ItemStack> crystals = new ArrayList<>();
-
-        ArcaneWorkbenchRecipe.getAllCrystal(crystals);
-
-        List<ItemStack> shard = Collections.singletonList(new ItemStack(EBItems.MAGIC_CRYSTAL_GRAND.get()));
-        List<ItemStack> grandCrystal = Collections.singletonList(new ItemStack(EBItems.MAGIC_CRYSTAL_GRAND.get()));
-
-        for (Item chargeable : WizardryRecipes.getChargeableItems()) {
-            if(!(chargeable instanceof IManaItem manaItem))
+        for (ItemStack chargeable : chargeableItems) {
+            if(!(chargeable.getItem() instanceof IManaItem manaItem))
                 throw new IllegalArgumentException("Item to be charged must be an instance of IManaItem");
 
-            ItemStack input = new ItemStack(chargeable);
+            ItemStack input = chargeable.copy();
             manaItem.setMana(input, 0);
 
-            ItemStack result = new ItemStack(chargeable);
+            ItemStack result = chargeable.copy();
             manaItem.setMana(result, EBServerConfig.MANA_PER_CRYSTAL.get());
-            recipes.add(new ArcaneWorkbenchRecipe(input, Collections.emptyList(), crystals, Collections.emptyList(), result));
+            recipes.add(ArcaneWorkbenchRecipe.addMagicValue(input, Ingredient.of(EBTags.NORMAL_MAGIC_CRYSTAL), result));
 
-            result = new ItemStack(chargeable);
+            result = chargeable.copy();
             manaItem.setMana(result, EBServerConfig.MANA_PER_SHARD.get());
-            recipes.add(new ArcaneWorkbenchRecipe(input, Collections.emptyList(), shard, Collections.emptyList(), result));
+            recipes.add(ArcaneWorkbenchRecipe.addMagicValue(input, Ingredient.of(EBTags.MAGIC_SHARD_ITEM), result));
 
-            result = new ItemStack(chargeable);
+            result = chargeable.copy();
             manaItem.setMana(result, EBServerConfig.GRAND_CRYSTAL_MANA.get());
-            recipes.add(new ArcaneWorkbenchRecipe(input, Collections.emptyList(), grandCrystal, Collections.emptyList(), result));
+            recipes.add(ArcaneWorkbenchRecipe.addMagicValue(input, Ingredient.of(EBTags.GRAND_MAGIC_CRYSTAL), result));
         }
 
         return recipes;
@@ -246,22 +217,13 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
 
     private static List<ArcaneWorkbenchRecipe> generateScrollRecipes() {
         List<ArcaneWorkbenchRecipe> recipes = new ArrayList<>();
-
-        ItemStack blankScroll = new ItemStack(EBItems.BLANK_SCROLL.get());
         // We need not make people register these manually since spells already have control over what they can be put on
-        List<Item> spellBooks = Streams.stream(BuiltInRegistries.ITEM).filter(item -> item instanceof SpellBookItem).toList();
-        List<Item> scrolls = Streams.stream(BuiltInRegistries.ITEM).filter(item -> item instanceof ScrollItem).toList();
+        ItemStack blankScroll = new ItemStack(EBItems.BLANK_SCROLL.get());
 
         for (Spell spell : Services.REGISTRY_UTIL.getSpells()) {
-            for(Item spellBook : spellBooks) {
-                for(Item scroll : scrolls) {
-                    if (spell.applicableForItem(spellBook) && spell.applicableForItem(scroll)) {
-                        List<ItemStack> books = Collections.singletonList(setMetaData(spellBook, spell));
-                        ItemStack result = setMetaData(scroll, spell);
-                        recipes.add(new ArcaneWorkbenchRecipe(blankScroll, books, spell.getCost(), Collections.emptyList(), result));
-                    }
-                }
-            }
+            ItemStack book = setMetaData(EBItems.SPELL_BOOK.get(), spell);
+            ItemStack result = setMetaData(EBItems.SCROLL.get(), spell);
+            recipes.add(ArcaneWorkbenchRecipe.recipe(blankScroll, book, Ingredient.of(EBTags.MAGIC_CRYSTAL_ITEM), result));
         }
 
         return recipes;
@@ -272,5 +234,4 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
         RegistryUtils.setSpell(stack, spell);
         return stack;
     }
-
 }

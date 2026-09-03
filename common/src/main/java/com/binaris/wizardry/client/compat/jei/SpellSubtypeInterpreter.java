@@ -7,9 +7,7 @@ import mezz.jei.api.ingredients.subtypes.UidContext;
 import net.minecraft.world.item.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
-/**
- * @see <a href="https://github.com/mezz/JustEnoughItems/blob/1.20.1/Library/src/main/java/mezz/jei/library/plugins/vanilla/ingredients/subtypes/PotionSubtypeInterpreter.java">PotionSubtypeInterpreter</a>
- */
+/// @see <a href="https://github.com/mezz/JustEnoughItems/blob/1.20.1/Library/src/main/java/mezz/jei/library/plugins/vanilla/ingredients/subtypes/PotionSubtypeInterpreter.java">PotionSubtypeInterpreter</a>
 public class SpellSubtypeInterpreter implements IIngredientSubtypeInterpreter<ItemStack>  {
     public static final SpellSubtypeInterpreter INSTANCE = new SpellSubtypeInterpreter();
 

@@ -21,9 +21,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/**
- * JEI recipe category implementation for all 'recipes' in the imbuement altar.
- */
+/// JEI recipe category implementation for all 'recipes' in the imbuement altar.
 public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRecipe> {
     public static final ResourceLocation TEXTURE = WizardryMainMod.location("textures/integration/jei/imbuement_altar_background.png");
     public static final RecipeType<ImbuementAltarRecipe> IMBUE_TYPE = new RecipeType<>(WizardryMainMod.location("imbuement_altar"), ImbuementAltarRecipe.class);
