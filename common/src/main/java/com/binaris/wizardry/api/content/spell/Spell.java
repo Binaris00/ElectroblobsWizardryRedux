@@ -11,6 +11,7 @@ import com.binaris.wizardry.content.spell.abstr.RaySpell;
 import com.binaris.wizardry.content.spell.ice.FrostRay;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
 import com.binaris.wizardry.core.platform.Services;
+import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.SpellTiers;
 import net.minecraft.Util;
@@ -19,10 +20,12 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static com.binaris.wizardry.core.ClientSpellSoundManager.playSpellSoundLoop;
@@ -88,9 +91,22 @@ public abstract class Spell {
     private ResourceLocation icon;
     /// The properties of this spell, loaded from the data files.
     private SpellProperties properties = SpellProperties.empty();
+    /** List of items for which this spell is applicable (used by default behaviour of {@link Spell#applicableForItem(Item)}). */
+    protected Item[] applicableItems = {EBItems.SPELL_BOOK.get(), EBItems.SCROLL.get()};
 
     public Spell() {
         this.properties = properties();
+    }
+
+    /**
+     * Sets which items this spell can appear on (these default to the regular spell book and scroll).
+     * @param applicableItems The items this spell should naturally appear on (or no items at all).
+     * @return The spell instance, allowing this method to be chained onto the constructor. Note that since this method
+     * only returns a {@code Spell}, if you are chaining multiple methods onto the constructor this should be called last.
+     */
+    public Spell items(Item... applicableItems){
+        this.applicableItems = applicableItems;
+        return this;
     }
 
     // ===================================================
@@ -190,6 +206,14 @@ public abstract class Spell {
     /// code should only be run on the server and the client of the player casting it.
     public boolean requiresPacket() {
         return true;
+    }
+
+    /** Returns true if the given item has a variant for this spell. By default, returns true if the given item is
+     * in this spell's {@link Spell#applicableItems} list (set using {@link Spell#items(Item...)}). Override to do
+     * something more complex.
+     */
+    public boolean applicableForItem(Item item){
+        return Arrays.asList(applicableItems).contains(item);
     }
 
     // ===================================================
@@ -354,6 +378,11 @@ public abstract class Spell {
     /// @return The cooldown of this spell in ticks.
     public int getCooldown() {
         return properties.getCooldown();
+    }
+
+    /** Returns the list of items this spell is applicable to. */
+    public List<Item> getApplicableItems() {
+        return Arrays.asList(applicableItems);
     }
 
     /// Checks if this spell is enabled in the given context. By default, all contexts are enabled, it's the user's
