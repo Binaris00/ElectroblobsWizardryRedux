@@ -3,6 +3,7 @@ package com.binaris.wizardry.client.compat;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.compat.jei.ArcaneWorkbenchCategory;
 import com.binaris.wizardry.client.compat.jei.ImbuementAltarCategory;
+import com.binaris.wizardry.client.compat.jei.MagicRepairRecipeMaker;
 import com.binaris.wizardry.client.compat.jei.SpellSubtypeInterpreter;
 import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe;
 import com.binaris.wizardry.setup.registries.EBBlocks;
@@ -10,7 +11,11 @@ import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBRecipeTypes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
-import mezz.jei.api.registration.*;
+import mezz.jei.api.constants.RecipeTypes;
+import mezz.jei.api.registration.IRecipeCatalystRegistration;
+import mezz.jei.api.registration.IRecipeCategoryRegistration;
+import mezz.jei.api.registration.IRecipeRegistration;
+import mezz.jei.api.registration.ISubtypeRegistration;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -47,6 +52,7 @@ public class WizardryJeiPlugin implements IModPlugin {
 
         register.addRecipes(ImbuementAltarCategory.IMBUE_TYPE, imbuementAltarRecipes);
         register.addRecipes(ArcaneWorkbenchCategory.ARCANE_WORKBENCH, ArcaneWorkbenchCategory.generateRecipes());
+        register.addRecipes(RecipeTypes.CRAFTING, MagicRepairRecipeMaker.createRecipes());
 
         // Item Info
         register.addIngredientInfo(EBItems.MAGIC_CRYSTAL.get(), Component.translatable("item.ebwizardry.magic_crystal.desc"));

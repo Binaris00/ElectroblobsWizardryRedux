@@ -334,6 +334,11 @@ public final class EBItemTagProvider extends ItemTagsProvider {
                 .addTag(EBTags.ARMOR_UPGRADE)
                 .replace(false);
 
+        this.tag(EBTags.MANA_FLASK)
+                .add(EBItems.SMALL_MANA_FLASK.get())
+                .add(EBItems.MEDIUM_MANA_FLASK.get())
+                .add(EBItems.LARGE_MANA_FLASK.get());
+
         for (Map.Entry<DeferredObject<? extends Item>, ArtifactItem.Type> entry : EBItems.getArtifacts().entrySet()) {
             if (entry.getValue() == ArtifactItem.Type.CHARM) {
                 this.tag(EBTags.CHARM_ACCESSORIES).add(entry.getKey().get()).replace(false);

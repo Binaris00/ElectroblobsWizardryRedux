@@ -25,6 +25,7 @@ public final class EBTags {
     public static final TagKey<Item> SAGE_ARMOR = createItemTag("sage_armor");
     public static final TagKey<Item> WARLOCK_ARMOR = createItemTag("warlock_armor");
     public static final TagKey<Item> BATTLEMAGE_ARMOR = createItemTag("battlemage_armor");
+    public static final TagKey<Item> MANA_FLASK = createItemTag("mana_flask");
 
     public static final TagKey<Item> GILDED_WOOD_ITEM = createItemTag("gilded_wood");
     public static final TagKey<Item> RING_ACCESSORIES = createItemTag("accessories", "ring");
