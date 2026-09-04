@@ -8,7 +8,6 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.util.*;
-import com.binaris.wizardry.content.recipe.WizardryRecipes;
 import com.google.common.collect.ImmutableMultimap;
 import com.google.common.collect.Multimap;
 import net.minecraft.ChatFormatting;
@@ -54,7 +53,6 @@ public class WizardArmorItem extends ArmorItem implements IManaItem, ICustomDama
         super(material, type, new Properties());
         this.wizardArmorType = material;
         this.element = element;
-        WizardryRecipes.addToManaFlaskCharging(this);
     }
 
     public WizardArmorItem(Type type, Element element) {
