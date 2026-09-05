@@ -73,8 +73,8 @@ sourceSets.main.resources.srcDir 'src/generated/resources'
 
 repositories {
     mavenCentral()
-    maven { url 'https://maven.wispforest.io/releases' }
-    maven { url 'https://maven.su5ed.dev/releases' }
+    maven { url = "https://maven.wispforest.io/releases" }
+    maven { url = "https://maven.su5ed.dev/releases" }
     maven { url = "https://maven.shedaniel.me/" }
 
     maven {
@@ -99,6 +99,10 @@ dependencies {
     modImplementation("me.shedaniel.cloth:cloth-config-forge:${project.cloth_config_version}") {
         exclude group: 'net.fabricmc', module: 'fabric-loader'
     }
+
+    modCompileOnly("mezz.jei:jei-${minecraft_version}-forge-api:${jei_version}")
+    // at runtime, use the full JEI jar for Forge
+    modRuntimeOnly("mezz.jei:jei-${minecraft_version}-forge:${jei_version}")
 }
 
 sourceSets.main.resources {
