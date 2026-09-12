@@ -63,7 +63,8 @@ public final class CastItemDataHelper {
             for (Tag element : list) {
                 if (element instanceof StringTag stringTag) {
                     ResourceLocation location = ResourceLocation.tryParse(stringTag.getAsString());
-                    if (location != null) spells.add(Services.REGISTRY_UTIL.getSpell(location));
+                    Spell spell = location != null ? Services.REGISTRY_UTIL.getSpell(location) : null;
+                    spells.add(spell == null ? Spells.NONE : spell);
                 }
             }
         }
