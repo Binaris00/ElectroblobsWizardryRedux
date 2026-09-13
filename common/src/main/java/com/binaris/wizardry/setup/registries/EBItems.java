@@ -64,7 +64,7 @@ public final class EBItems {
     public static final DeferredObject<Item> RUINED_SPELL_BOOK = item("ruined_spell_book");
     public static final DeferredObject<Item> SCROLL = item("scroll", () -> new ScrollItem(new Item.Properties().stacksTo(16)));
     public static final DeferredObject<Item> SPELL_BOOK = item("spell_book", () -> new SpellBookItem(new Item.Properties().stacksTo(16)));
-    public static final DeferredObject<Item> WIZARD_HANDBOOK = item("wizard_handbook");
+    public static final DeferredObject<Item> WIZARD_HANDBOOK = item("wizard_handbook", () -> new HandBookItem(new Item.Properties().stacksTo(1)));
     public static final DeferredObject<Item> RANDOM_SPELL_BOOK = item("random_spell_book", () -> new RandomSpellBookItem(new Item.Properties().stacksTo(1)), true, false);
     public static final DeferredObject<Item> ASTRAL_DIAMOND = item("astral_diamond");
     public static final DeferredObject<Item> CRYSTAL_SILVER_PLATING = armorUpgrade("crystal_silver_plating", WizardArmorTypes.BATTLEMAGE);

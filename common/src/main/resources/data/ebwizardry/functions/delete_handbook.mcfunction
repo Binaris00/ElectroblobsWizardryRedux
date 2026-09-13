@@ -1,0 +1,11 @@
+advancement revoke @p only ebwizardry:handbook/spells
+advancement revoke @p only ebwizardry:handbook/arcane_workbench
+advancement revoke @p only ebwizardry:handbook/tome_of_arcana
+advancement revoke @p only ebwizardry:handbook/scrolls
+advancement revoke @p only ebwizardry:handbook/on_subsection_unlock
+advancement revoke @p only ebwizardry:handbook/crystal_flowers
+advancement revoke @p only ebwizardry:handbook/obelisks
+advancement revoke @p only ebwizardry:handbook/magical_creatures
+advancement revoke @p only ebwizardry:handbook/elements
+advancement revoke @p only ebwizardry:handbook/throwables
+advancement revoke @p only ebwizardry:handbook/mana_flasks
