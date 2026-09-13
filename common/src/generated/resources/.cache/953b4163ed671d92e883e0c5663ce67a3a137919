@@ -1,16 +1,30 @@
-// 1.20.1	2026-07-23T22:28:37.117481071	Tags for minecraft:item mod id ebwizardry
+// 1.20.1	2026-09-04T20:29:05.1085027	Tags for minecraft:item mod id ebwizardry
 b3c794cc2ff5977589f3cc0e4eb6d5c318553b6f data/accessories/tags/items/charm.json
 4d7295d9563a9726be37d291b741e0b91cebbfa9 data/accessories/tags/items/necklace.json
 08816f782037602f02231f8b1fbc76b1bb1c8848 data/accessories/tags/items/ring.json
 b3c794cc2ff5977589f3cc0e4eb6d5c318553b6f data/curios/tags/items/charm.json
 4d7295d9563a9726be37d291b741e0b91cebbfa9 data/curios/tags/items/necklace.json
 08816f782037602f02231f8b1fbc76b1bb1c8848 data/curios/tags/items/ring.json
+d1c602376b9fe2f1efcfeb2de3a5e06a1048b483 data/ebwizardry/tags/items/arcane_tomes.json
+431d2429ad1bc6c44a151b5ab275800e1d88912c data/ebwizardry/tags/items/armor.json
 73c77e26bf31e48f7a4921b0c1e659b99c5b5590 data/ebwizardry/tags/items/armor_upgrade.json
+c14e6f630fcd7404d9e343214b23500747354d4e data/ebwizardry/tags/items/battlemage_armor.json
 026654df8432db60dca779913e84fd4599e6f648 data/ebwizardry/tags/items/gilded_wood.json
+68bae0c3f67e8b1e8c9ba6be511e84ec25ce41d8 data/ebwizardry/tags/items/grand_magic_crystal.json
 065a2aee5d675eb3f1ace700e49c1a56274442f3 data/ebwizardry/tags/items/magic_crystal.json
 f531986ca5422b4ff46fbe57a4eb9216097e94f1 data/ebwizardry/tags/items/magic_crystal_shard.json
+cd857bf1936d174bc2aab51c22e6dc2705ef820c data/ebwizardry/tags/items/mana_flask.json
+161695b7cbbec10cd8dc5e31720b280cfa129809 data/ebwizardry/tags/items/mana_item.json
+67d696e4654626b9895a1bb9c1e956a9b555881e data/ebwizardry/tags/items/normal_magic_crystal.json
+c9c54b89a9efc3b0561360fcb7b45b396362da9e data/ebwizardry/tags/items/sage_armor.json
+61817d38bd826d1da1c8ee82964e0bc551379b4f data/ebwizardry/tags/items/special_upgrades.json
 ea8a34a8c019ebf772883416cb37d2f4285f6365 data/ebwizardry/tags/items/spectral_dust.json
+da9fb5f8c705fba286490c11e09373a4be397e1a data/ebwizardry/tags/items/upgrade.json
+88c5d07c4d887aa4f55166c570faa5b46c47de66 data/ebwizardry/tags/items/wand.json
 4b6119642f276c64a684a75627b66583132823c2 data/ebwizardry/tags/items/wand_upgrade.json
+8a9ed8d871a509a583c223e58185424bfe4abd5b data/ebwizardry/tags/items/warlock_armor.json
+c4693722fd8a30b2e16ecf64a1d6a41e54bd45fe data/ebwizardry/tags/items/wizard_armor.json
+4ca6fcb49b20a3fd48b42c8e8b1597e72123e1a1 data/ebwizardry/tags/items/workbench_item.json
 4d7295d9563a9726be37d291b741e0b91cebbfa9 data/trinkets/tags/items/chest/necklace.json
 b3c794cc2ff5977589f3cc0e4eb6d5c318553b6f data/trinkets/tags/items/hand/glove.json
 08816f782037602f02231f8b1fbc76b1bb1c8848 data/trinkets/tags/items/hand/ring.json

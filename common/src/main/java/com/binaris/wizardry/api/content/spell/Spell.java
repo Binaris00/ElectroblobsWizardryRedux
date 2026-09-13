@@ -84,7 +84,7 @@ public abstract class Spell {
     private String descriptionId;
     /// Location is where the spell is registered, e.g. "ebwizardry:fireball"
     private ResourceLocation location;
-    /// Icon is the resource location of the spell's icon, by default: "textures/spells/[namespace]/[path].png"
+    /// Icon is the resource location of the spell's icon, by default: "textures/spells/\[namespace\]/\[path\].png"
     private ResourceLocation icon;
     /// The properties of this spell, loaded from the data files.
     private SpellProperties properties = SpellProperties.empty();
@@ -197,7 +197,7 @@ public abstract class Spell {
     // ==================================================
 
     /// Gets the formatted description for this spell (e.g. Fireball with dark red color). By default, this is a translatable
-    /// component with the key "spell.[namespace].[path]", where [namespace] and [path] are the namespace and path of this
+    /// component with the key "spell.\[namespace\].\[path\]", where \[namespace\] and \[path\] are the namespace and path of this
     /// spell's location, respectively, and with the color of this spell's element.
     public Component getDescriptionFormatted() {
         return Component.translatable(getOrCreateDescriptionId()).withStyle(this.getElement().getColor());
@@ -208,7 +208,7 @@ public abstract class Spell {
     /// description ID manually for every spell, as it can be easily obtained from the registry and formatted.
     ///
     /// @return The description ID for this spell, used for formatting and translations. By default, this is
-    /// "spell.[namespace].[path]", where [namespace] and [path] are the namespace and path of this spell's location,
+    /// "spell.\[namespace\].\[path\]", where \[namespace\] and \[path\] are the namespace and path of this spell's location,
     /// respectively.
     protected String getOrCreateDescriptionId() {
         if (this.descriptionId == null)
@@ -220,7 +220,7 @@ public abstract class Spell {
     /// if you want the location instead, use [#getLocation()]
     ///
     /// @return The description ID for this spell, used for formatting and translations. By default, this is
-    /// "spell.[namespace].[path]", where [namespace] and [path] are the namespace and path of this spell's location,
+    /// "spell.\[namespace\].\[path\]", where \[namespace\] and \[path\] are the namespace and path of this spell's location,
     /// respectively.
     public String getDescriptionId() {
         return this.getOrCreateDescriptionId();
@@ -245,7 +245,7 @@ public abstract class Spell {
     }
 
     /// Gets the description for this spell. By default, this is a translatable component with the key
-    /// "spell.[namespace].[path].desc", where [namespace] and [path] are the namespace and path of this spell's location,
+    /// "spell.\[namespace\].\[path\].desc", where \[namespace\] and \[path\] are the namespace and path of this spell's location,
     /// respectively. You can override this method to provide a custom description for your spell in a different way.
     ///
     /// @return The description for this spell.
@@ -253,8 +253,8 @@ public abstract class Spell {
         return Component.translatable(getOrCreateDescriptionId() + ".desc");
     }
 
-    /// Gets the icon for this spell. By default, this is "textures/spells/[namespace]/[path].png", where [namespace] and
-    /// [path] are the namespace and path of this spell's location, respectively. You can override this method to provide a
+    /// Gets the icon for this spell. By default, this is "textures/spells/\[namespace\]/\[path\].png", where \[namespace\] and
+    /// \[path\] are the namespace and path of this spell's location, respectively. You can override this method to provide a
     /// custom icon for your spell in a different way.
     ///
     /// @return The ResourceLocation of the icon for this spell.
@@ -517,8 +517,8 @@ public abstract class Spell {
     /// the standard continuous spell sound loop. Keep in mind that if you want to add more than 3 sound events, you will
     /// need to make your own implementation to handle the extra sound events.
     ///
-    /// By default, this method assumes that the sound events are named "spell.[namespace].[path].start",
-    /// "spell.[namespace].[path].loop", and "spell.[namespace].[path].end", where [namespace] and [path] are the namespace
+    /// By default, this method assumes that the sound events are named spell.\[namespace\].\[path\].start",
+    /// "spell.\[namespace\].\[path\].loop", and "spell.\[namespace\].\[path\].end", where \[namespace\] and \[path\] are the namespace
     /// and path of this spell's location, respectively.
     ///
     /// @return By default, an array of 3 sound events, in the order of start, loop, and end sounds.
