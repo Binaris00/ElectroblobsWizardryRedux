@@ -25,6 +25,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.inventory.MerchantMenu;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.*;
@@ -107,6 +108,12 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
     @Override
     protected void customServerAiStep() {
         super.customServerAiStep();
+        // Clear the trading player once their trade screen is no longer open (closed it, disconnected, died, etc.).
+        // Otherwise the wizard would stay stuck in "trading" mode and refuse new trades.
+        if (this.customer != null && !(this.customer.containerMenu instanceof MerchantMenu)) {
+            this.customer = null;
+        }
+
         if (this.isTrading() || this.timeUntilReset < 0) return;
         --this.timeUntilReset;
 
@@ -131,6 +138,12 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
         }
 
         return InteractionResult.FAIL;
+    }
+
+    @Override
+    public void die(@NotNull DamageSource source) {
+        this.setTradingPlayer(null);
+        super.die(source);
     }
 
     @Override
@@ -490,7 +503,10 @@ public class Wizard extends AbstractWizard implements Npc, Merchant {
 
     @Override
     public void overrideXp(int xp) {
-        this.wizardXp = xp;
+        // Intentionally a no-op, like AbstractVillager.overrideXp: vanilla's MerchantResultSlot.onTake() calls
+        // overrideXp(getVillagerXp() + offer.getXp()) unconditionally after notifyTrade(), so writing the field here
+        // would grant the wizard's XP a second time (and a third time with the Charm of the Haggler). XP is handled
+        // exclusively in notifyTrade().
     }
 
     @Override
