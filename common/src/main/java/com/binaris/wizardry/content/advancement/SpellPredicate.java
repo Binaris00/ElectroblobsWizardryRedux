@@ -12,9 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.GsonHelper;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SpellPredicate {
@@ -106,5 +104,39 @@ public class SpellPredicate {
         }
 
         return json;
+    }
+
+    public static class Builder {
+        private Spell spell;
+        private Set<SpellTier> tiers;
+        private Set<Element> elements;
+
+        public Builder() {
+            this.tiers = new HashSet<>();
+            this.elements = new HashSet<>();
+        }
+
+        public static Builder builder() {
+            return new Builder();
+        }
+
+        public Builder spell(Spell spell) {
+            this.spell = spell;
+            return this;
+        }
+
+        public Builder tier(SpellTier tier) {
+            this.tiers = Collections.singleton(tier);
+            return this;
+        }
+
+        public Builder element(Element element) {
+            this.elements = Collections.singleton(element);
+            return this;
+        }
+
+        public SpellPredicate build() {
+            return new SpellPredicate(spell, tiers, elements);
+        }
     }
 }

@@ -4,12 +4,10 @@ import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.minecraft.advancements.CriterionTrigger;
-import net.minecraft.advancements.critereon.AbstractCriterionTriggerInstance;
-import net.minecraft.advancements.critereon.DeserializationContext;
-import net.minecraft.advancements.critereon.EntityPredicate;
-import net.minecraft.advancements.critereon.ItemPredicate;
+import net.minecraft.advancements.critereon.*;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.PlayerAdvancements;
 import net.minecraft.server.level.ServerPlayer;
@@ -23,15 +21,14 @@ import java.util.Set;
 
 // todo legacy code, needed for advancement of "all spell casted"
 public class SpellCastTrigger implements CriterionTrigger<SpellCastTrigger.TriggerInstance> {
-    private final ResourceLocation ID;
+    private final static ResourceLocation ID = WizardryMainMod.location("cast_spell");
     private final Map<PlayerAdvancements, Listeners> listeners = Maps.newHashMap();
 
     public SpellCastTrigger() {
-        this.ID = WizardryMainMod.location("cast_spell");
     }
 
     public @NotNull ResourceLocation getId() {
-        return this.ID;
+        return ID;
     }
 
     public void addPlayerListener(@NotNull PlayerAdvancements advancements, @NotNull Listener<TriggerInstance> listener) {
@@ -51,7 +48,7 @@ public class SpellCastTrigger implements CriterionTrigger<SpellCastTrigger.Trigg
     }
 
     public @NotNull SpellCastTrigger.TriggerInstance createInstance(@NotNull JsonObject json, @NotNull DeserializationContext context) {
-        return new TriggerInstance(this.ID, SpellPredicate.deserialize(json.get("spell")), ItemPredicate.fromJson(json.get("item")), json, context);
+        return new TriggerInstance(ID, SpellPredicate.deserialize(json.get("spell")), ItemPredicate.fromJson(json.get("item")), EntityPredicate.fromJson(json, "spell", context));
     }
 
     public void trigger(ServerPlayer player, Spell spell, ItemStack stack) {
@@ -62,14 +59,27 @@ public class SpellCastTrigger implements CriterionTrigger<SpellCastTrigger.Trigg
         private final SpellPredicate spell;
         private final ItemPredicate item;
 
-        public TriggerInstance(ResourceLocation criterion, SpellPredicate spell, ItemPredicate item, JsonObject json, DeserializationContext context) {
-            super(criterion, EntityPredicate.fromJson(json, "spell", context));
+        public TriggerInstance(ResourceLocation criterion, SpellPredicate spell, ItemPredicate item, ContextAwarePredicate entity) {
+            super(criterion, entity);
             this.spell = spell;
             this.item = item;
         }
 
+        public static TriggerInstance castSpell(SpellPredicate spellPredicate) {
+            return new TriggerInstance(ID, spellPredicate, ItemPredicate.ANY, ContextAwarePredicate.ANY);
+        }
+
         public boolean test(Spell spell, ItemStack stack) {
             return this.spell.test(spell) && item.matches(stack);
+        }
+
+        @Override
+        public @NotNull JsonObject serializeToJson(@NotNull SerializationContext conditions) {
+            JsonObject jsonObject = super.serializeToJson(conditions);
+            JsonElement spellJson = this.spell.serialize();
+            jsonObject.add("spell", this.item.serializeToJson());
+            if (spellJson != null) jsonObject.add("spell", spellJson);
+            return jsonObject;
         }
     }
 

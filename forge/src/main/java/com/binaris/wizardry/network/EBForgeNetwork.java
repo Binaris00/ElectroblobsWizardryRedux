@@ -2,9 +2,11 @@ package com.binaris.wizardry.network;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.ClientPacketHandler;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.networking.abst.Message;
 import com.binaris.wizardry.core.networking.c2s.BlockUsePacketC2S;
 import com.binaris.wizardry.core.networking.c2s.ControlInputPacketC2S;
+import com.binaris.wizardry.core.networking.c2s.RequestAdvancementSyncPacketC2S;
 import com.binaris.wizardry.core.networking.c2s.SpellAccessPacketC2S;
 import com.binaris.wizardry.core.networking.s2c.*;
 import net.minecraft.network.FriendlyByteBuf;
@@ -29,6 +31,8 @@ public class EBForgeNetwork {
         register(BlockUsePacketC2S.class, BlockUsePacketC2S::new, NetworkDirection.PLAY_TO_SERVER);
         register(ControlInputPacketC2S.class, ControlInputPacketC2S::new, NetworkDirection.PLAY_TO_SERVER);
         register(SpellAccessPacketC2S.class, SpellAccessPacketC2S::new, NetworkDirection.PLAY_TO_SERVER);
+        register(RequestAdvancementSyncPacketC2S.class, RequestAdvancementSyncPacketC2S::decode, NetworkDirection.PLAY_TO_SERVER);
+
         register(SpellGlyphPacketS2C.class, SpellGlyphPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(SpellPropertiesSyncS2C.class, SpellPropertiesSyncS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(NPCSpellCastS2C.class, NPCSpellCastS2C::new, NetworkDirection.PLAY_TO_CLIENT);
@@ -40,6 +44,8 @@ public class EBForgeNetwork {
         register(ArcaneLockSyncPacketS2C.class, ArcaneLockSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ParticleBuilderS2C.class, ParticleBuilderS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ConfigSyncS2C.class, ConfigSyncS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+        EBLogger.warn("注册成功");
+        register(AdvancementSyncPacketS2C.class, AdvancementSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
     }
 
     private static <T extends Message> void register(Class<T> clazz, Function<FriendlyByteBuf, T> factory, NetworkDirection direction) {

@@ -1,21 +1,19 @@
 package com.binaris.wizardry;
 
 import com.binaris.wizardry.api.content.event.*;
-import com.binaris.wizardry.setup.registries.RegisterFunction;
 import com.binaris.wizardry.capabilities.*;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.PropertiesForgeDataManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.core.registry.EBRegistries;
+import com.binaris.wizardry.mixin.LootPoolAccessor;
+import com.binaris.wizardry.mixin.LootTableAccessor;
 import com.binaris.wizardry.network.ArcaneLockSyncPacketS2C;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticleProviders;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import com.binaris.wizardry.setup.registries.client.EBRenderers;
-import com.binaris.wizardry.core.EBLogger;
-import com.binaris.wizardry.mixin.LootPoolAccessor;
-import com.binaris.wizardry.mixin.LootTableAccessor;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Entity;
@@ -42,6 +40,7 @@ import net.minecraftforge.event.LootTableLoadEvent;
 import net.minecraftforge.event.RegisterGameTestsEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.event.entity.player.AdvancementEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.level.BlockEvent;
@@ -86,6 +85,11 @@ public class WizardryForgeEvents {
                 player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
                 player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
             }
+        }
+
+        @SubscribeEvent
+        public static void onAdvancementEvent(AdvancementEvent event) {
+            WizardryEventBus.fireEvent(new EBAdvancementEvent(event.getEntity(), event.getAdvancement()));
         }
 
         @SubscribeEvent
@@ -262,7 +266,8 @@ public class WizardryForgeEvents {
                 register(event, EBEntities::register);
             else if (event.getRegistryKey() == Registries.ITEM)
                 register(event, EBItems::register);
-            else if (event.getRegistryKey() == Registries.PARTICLE_TYPE) register(event, EBParticles::registerType);
+            else if (event.getRegistryKey() == Registries.PARTICLE_TYPE)
+                register(event, EBParticles::registerType);
             else if (event.getRegistryKey() == Registries.SOUND_EVENT)
                 register(event, EBSounds::register);
             else if (event.getRegistryKey() == Registries.LOOT_FUNCTION_TYPE)
@@ -277,7 +282,8 @@ public class WizardryForgeEvents {
                 register(event, EBRecipeTypes::register);
             else if (event.getRegistryKey() == Registries.RECIPE_SERIALIZER)
                 register(event, EBRecipeTypes::registerSerializers);
-            else if (event.getRegistryKey() == EBRegistries.ELEMENT) registerForge(event, Elements::registerNull);
+            else if (event.getRegistryKey() == EBRegistries.ELEMENT)
+                registerForge(event, Elements::registerNull);
             else if (event.getRegistryKey() == EBRegistries.TIER)
                 registerForge(event, SpellTiers::registerNull);
             else if (event.getRegistryKey() == EBRegistries.SPELL)

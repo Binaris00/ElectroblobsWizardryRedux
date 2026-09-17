@@ -1,9 +1,11 @@
 package com.binaris.wizardry.core.config;
 
+import com.binaris.wizardry.api.content.event.EBAdvancementEvent;
 import com.binaris.wizardry.api.content.event.EBPlayerJoinServerEvent;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.config.option.ConfigOption;
 import com.binaris.wizardry.core.config.util.ConfigType;
+import com.binaris.wizardry.core.networking.s2c.AdvancementSyncPacketS2C;
 import com.binaris.wizardry.core.networking.s2c.ConfigSyncS2C;
 import com.binaris.wizardry.core.platform.Services;
 import com.google.gson.GsonBuilder;
@@ -11,6 +13,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.mojang.serialization.JsonOps;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 
@@ -21,6 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class ConfigManager {
@@ -103,6 +107,17 @@ public final class ConfigManager {
 
     public static void onPlayerJoin(EBPlayerJoinServerEvent event) {
         syncToPlayer(event.getPlayer());
+    }
+
+    public static void syncAdvancements(EBAdvancementEvent event) {
+        if (!(event.player() instanceof ServerPlayer player)) return;
+        EBLogger.info("Synchronising advancements for " + player.getName().getString());
+
+        List<ResourceLocation> advancements = new ArrayList<>();
+        if (player.getAdvancements().getOrStartProgress(event.advancement()).isDone())
+            advancements.add(event.advancement().getId());
+
+        Services.NETWORK_HELPER.sendTo(player, new AdvancementSyncPacketS2C(true, advancements));
     }
 
     /// Syncs the config to a player, sending a ConfigSyncS2C message to the player for each config provider (common/server)

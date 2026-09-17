@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "handbook/spells": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:spell_book"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "handbook/spells"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
