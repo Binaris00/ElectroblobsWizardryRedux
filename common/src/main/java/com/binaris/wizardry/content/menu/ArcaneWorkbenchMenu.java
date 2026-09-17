@@ -97,7 +97,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
     /// @param i             The index of the book slot (0-7).
     /// @param bookSlotCount The number of book slots to arrange in a circle (1 - 8).
     /// @return The X offset of the book slot at the given index.
-    private static int getBookSlotXOffset(int i, int bookSlotCount) {
+    public static int getBookSlotXOffset(int i, int bookSlotCount) {
         float angle = i * (2 * (float) Math.PI) / bookSlotCount;
         return Math.round(SLOT_RADIUS * Mth.sin(angle));
     }
@@ -108,7 +108,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
     /// @param i             The index of the book slot (0-7).
     /// @param bookSlotCount The number of book slots to arrange in a circle (1 - 8).
     /// @return The Y offset of the book slot at the given index.
-    private static int getBookSlotYOffset(int i, int bookSlotCount) {
+    public static int getBookSlotYOffset(int i, int bookSlotCount) {
         float angle = i * (2 * (float) Math.PI) / bookSlotCount;
         return Math.round(SLOT_RADIUS * -Mth.cos(angle));
     }
