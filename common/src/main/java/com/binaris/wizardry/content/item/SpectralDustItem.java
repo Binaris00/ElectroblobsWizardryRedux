@@ -17,7 +17,10 @@ public class SpectralDustItem extends Item implements IElementValue {
         return element;
     }
 
+    /// @deprecated Receptacle placement is now driven by imbuement altar recipes; see
+    ///             {@link IElementValue#validForReceptacle()}.
     @Override
+    @Deprecated(forRemoval = true)
     public boolean validForReceptacle() {
         return true;
     }

@@ -15,6 +15,7 @@ import net.minecraft.data.recipes.*;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.ItemTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
@@ -220,7 +221,7 @@ public final class EBRecipeProvider extends RecipeProvider {
 
         ElementData[] data = new ElementData[]{
                 new ElementData(
-                        EBItems.SPECTRAL_DUST_SORCERY.get(),
+                        EBTags.SORCERY_ELEMENTAL_DUST,
                         new ArmorData(EBItems.WIZARD_HAT_SORCERY.get(), EBItems.WIZARD_ROBE_SORCERY.get(), EBItems.WIZARD_LEGGINGS_SORCERY.get(), EBItems.WIZARD_BOOTS_SORCERY.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
                         new ArmorData(EBItems.SAGE_HAT_SORCERY.get(), EBItems.SAGE_ROBE_SORCERY.get(), EBItems.SAGE_LEGGINGS_SORCERY.get(), EBItems.SAGE_BOOTS_SORCERY.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
                         new ArmorData(EBItems.WARLOCK_HOOD_SORCERY.get(), EBItems.WARLOCK_ROBE_SORCERY.get(), EBItems.WARLOCK_LEGGINGS_SORCERY.get(), EBItems.WARLOCK_BOOTS_SORCERY.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
@@ -228,7 +229,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 ),
 
                 new ElementData(
-                        EBItems.SPECTRAL_DUST_FIRE.get(),
+                        EBTags.FIRE_ELEMENTAL_DUST,
                         new ArmorData(EBItems.WIZARD_HAT_FIRE.get(), EBItems.WIZARD_ROBE_FIRE.get(), EBItems.WIZARD_LEGGINGS_FIRE.get(), EBItems.WIZARD_BOOTS_FIRE.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
                         new ArmorData(EBItems.SAGE_HAT_FIRE.get(), EBItems.SAGE_ROBE_FIRE.get(), EBItems.SAGE_LEGGINGS_FIRE.get(), EBItems.SAGE_BOOTS_FIRE.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
                         new ArmorData(EBItems.WARLOCK_HOOD_FIRE.get(), EBItems.WARLOCK_ROBE_FIRE.get(), EBItems.WARLOCK_LEGGINGS_FIRE.get(), EBItems.WARLOCK_BOOTS_FIRE.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
@@ -236,7 +237,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 ),
 
                 new ElementData(
-                        EBItems.SPECTRAL_DUST_EARTH.get(),
+                        EBTags.EARTH_ELEMENTAL_DUST,
                         new ArmorData(EBItems.WIZARD_HAT_EARTH.get(), EBItems.WIZARD_ROBE_EARTH.get(), EBItems.WIZARD_LEGGINGS_EARTH.get(), EBItems.WIZARD_BOOTS_EARTH.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
                         new ArmorData(EBItems.SAGE_HAT_EARTH.get(), EBItems.SAGE_ROBE_EARTH.get(), EBItems.SAGE_LEGGINGS_EARTH.get(), EBItems.SAGE_BOOTS_EARTH.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
                         new ArmorData(EBItems.WARLOCK_HOOD_EARTH.get(), EBItems.WARLOCK_ROBE_EARTH.get(), EBItems.WARLOCK_LEGGINGS_EARTH.get(), EBItems.WARLOCK_BOOTS_EARTH.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
@@ -244,7 +245,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 ),
 
                 new ElementData(
-                        EBItems.SPECTRAL_DUST_HEALING.get(),
+                        EBTags.HEALING_ELEMENTAL_DUST,
                         new ArmorData(EBItems.WIZARD_HAT_HEALING.get(), EBItems.WIZARD_ROBE_HEALING.get(), EBItems.WIZARD_LEGGINGS_HEALING.get(), EBItems.WIZARD_BOOTS_HEALING.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
                         new ArmorData(EBItems.SAGE_HAT_HEALING.get(), EBItems.SAGE_ROBE_HEALING.get(), EBItems.SAGE_LEGGINGS_HEALING.get(), EBItems.SAGE_BOOTS_HEALING.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
                         new ArmorData(EBItems.WARLOCK_HOOD_HEALING.get(), EBItems.WARLOCK_ROBE_HEALING.get(), EBItems.WARLOCK_LEGGINGS_HEALING.get(), EBItems.WARLOCK_BOOTS_HEALING.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
@@ -252,7 +253,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 ),
 
                 new ElementData(
-                        EBItems.SPECTRAL_DUST_ICE.get(),
+                        EBTags.ICE_ELEMENTAL_DUST,
                         new ArmorData(EBItems.WIZARD_HAT_ICE.get(), EBItems.WIZARD_ROBE_ICE.get(), EBItems.WIZARD_LEGGINGS_ICE.get(), EBItems.WIZARD_BOOTS_ICE.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
                         new ArmorData(EBItems.SAGE_HAT_ICE.get(), EBItems.SAGE_ROBE_ICE.get(), EBItems.SAGE_LEGGINGS_ICE.get(), EBItems.SAGE_BOOTS_ICE.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
                         new ArmorData(EBItems.WARLOCK_HOOD_ICE.get(), EBItems.WARLOCK_ROBE_ICE.get(), EBItems.WARLOCK_LEGGINGS_ICE.get(), EBItems.WARLOCK_BOOTS_ICE.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
@@ -260,7 +261,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 ),
 
                 new ElementData(
-                        EBItems.SPECTRAL_DUST_LIGHTNING.get(),
+                        EBTags.LIGHTNING_ELEMENTAL_DUST,
                         new ArmorData(EBItems.WIZARD_HAT_LIGHTNING.get(), EBItems.WIZARD_ROBE_LIGHTNING.get(), EBItems.WIZARD_LEGGINGS_LIGHTNING.get(), EBItems.WIZARD_BOOTS_LIGHTNING.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
                         new ArmorData(EBItems.SAGE_HAT_LIGHTNING.get(), EBItems.SAGE_ROBE_LIGHTNING.get(), EBItems.SAGE_LEGGINGS_LIGHTNING.get(), EBItems.SAGE_BOOTS_LIGHTNING.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
                         new ArmorData(EBItems.WARLOCK_HOOD_LIGHTNING.get(), EBItems.WARLOCK_ROBE_LIGHTNING.get(), EBItems.WARLOCK_LEGGINGS_LIGHTNING.get(), EBItems.WARLOCK_BOOTS_LIGHTNING.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
@@ -268,7 +269,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 ),
 
                 new ElementData(
-                        EBItems.SPECTRAL_DUST_NECROMANCY.get(),
+                        EBTags.NECROMANCY_ELEMENTAL_DUST,
                         new ArmorData(EBItems.WIZARD_HAT_NECROMANCY.get(), EBItems.WIZARD_ROBE_NECROMANCY.get(), EBItems.WIZARD_LEGGINGS_NECROMANCY.get(), EBItems.WIZARD_BOOTS_NECROMANCY.get(), EBItems.WIZARD_HAT.get(), EBItems.WIZARD_ROBE.get(), EBItems.WIZARD_LEGGINGS.get(), EBItems.WIZARD_BOOTS.get()),
                         new ArmorData(EBItems.SAGE_HAT_NECROMANCY.get(), EBItems.SAGE_ROBE_NECROMANCY.get(), EBItems.SAGE_LEGGINGS_NECROMANCY.get(), EBItems.SAGE_BOOTS_NECROMANCY.get(), EBItems.SAGE_HAT.get(), EBItems.SAGE_ROBE.get(), EBItems.SAGE_LEGGINGS.get(), EBItems.SAGE_BOOTS.get()),
                         new ArmorData(EBItems.WARLOCK_HOOD_NECROMANCY.get(), EBItems.WARLOCK_ROBE_NECROMANCY.get(), EBItems.WARLOCK_LEGGINGS_NECROMANCY.get(), EBItems.WARLOCK_BOOTS_NECROMANCY.get(), EBItems.WARLOCK_HOOD.get(), EBItems.WARLOCK_ROBE.get(), EBItems.WARLOCK_LEGGINGS.get(), EBItems.WARLOCK_BOOTS.get()),
@@ -280,10 +281,10 @@ public final class EBRecipeProvider extends RecipeProvider {
             ArmorData[] armors = new ArmorData[]{datum.normal(), datum.sage(), datum.warlock(), datum.battleMage()};
 
             for (ArmorData armorData : armors) {
-                imbuementArmor(armorData.defaultHat(), datum.dust(), armorData.hat(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.hat()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.hat()).getPath()), consumer);
-                imbuementArmor(armorData.defaultChest(), datum.dust(), armorData.chest(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.chest()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.chest()).getPath()), consumer);
-                imbuementArmor(armorData.defaultLegs(), datum.dust(), armorData.legs(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.legs()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.legs()).getPath()), consumer);
-                imbuementArmor(armorData.defaultBoots(), datum.dust(), armorData.boots(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.boots()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.boots()).getPath()), consumer);
+                imbuementArmor(armorData.defaultHat(), datum.elementalDust(), armorData.hat(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.hat()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.hat()).getPath()), consumer);
+                imbuementArmor(armorData.defaultChest(), datum.elementalDust(), armorData.chest(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.chest()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.chest()).getPath()), consumer);
+                imbuementArmor(armorData.defaultLegs(), datum.elementalDust(), armorData.legs(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.legs()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.legs()).getPath()), consumer);
+                imbuementArmor(armorData.defaultBoots(), datum.elementalDust(), armorData.boots(), WizardryMainMod.location(BuiltInRegistries.ITEM.getKey(armorData.boots()).getNamespace(), "imbuement/" + BuiltInRegistries.ITEM.getKey(armorData.boots()).getPath()), consumer);
             }
         }
     }
@@ -293,8 +294,8 @@ public final class EBRecipeProvider extends RecipeProvider {
     }
 
 
-    private void imbuementArmor(Item baseArmor, Item spectralDust, Item result, ResourceLocation location, @NotNull Consumer<FinishedRecipe> consumer) {
-        ImbuementAltarRecipeBuilder.imbuement(Ingredient.of(baseArmor), Ingredient.of(spectralDust), result)
+    private void imbuementArmor(Item baseArmor, TagKey<Item> elementalKey, Item result, ResourceLocation location, @NotNull Consumer<FinishedRecipe> consumer) {
+        ImbuementAltarRecipeBuilder.imbuement(Ingredient.of(baseArmor), Ingredient.of(elementalKey), result)
                 .save(consumer, location);
     }
 

@@ -78,6 +78,34 @@ public final class EBItemTagProvider extends ItemTagsProvider {
                 .add(EBItems.RESPLENDENT_THREAD.get())
                 .replace(false);
 
+        this.tag(EBTags.FIRE_ELEMENTAL_DUST)
+                .add(EBItems.SPECTRAL_DUST_FIRE.get())
+                .replace(false);
+
+        this.tag(EBTags.EARTH_ELEMENTAL_DUST)
+                .add(EBItems.SPECTRAL_DUST_EARTH.get())
+                .replace(false);
+
+        this.tag(EBTags.HEALING_ELEMENTAL_DUST)
+                .add(EBItems.SPECTRAL_DUST_HEALING.get())
+                .replace(false);
+
+        this.tag(EBTags.ICE_ELEMENTAL_DUST)
+                .add(EBItems.SPECTRAL_DUST_ICE.get())
+                .replace(false);
+
+        this.tag(EBTags.LIGHTNING_ELEMENTAL_DUST)
+                .add(EBItems.SPECTRAL_DUST_LIGHTNING.get())
+                .replace(false);
+
+        this.tag(EBTags.NECROMANCY_ELEMENTAL_DUST)
+                .add(EBItems.SPECTRAL_DUST_NECROMANCY.get())
+                .replace(false);
+
+        this.tag(EBTags.SORCERY_ELEMENTAL_DUST)
+                .add(EBItems.SPECTRAL_DUST_SORCERY.get())
+                .replace(false);
+
         for (Map.Entry<DeferredObject<? extends Item>, ArtifactItem.Type> entry : EBItems.getArtifacts().entrySet()) {
             if (entry.getValue() == ArtifactItem.Type.CHARM) {
                 this.tag(EBTags.CHARM_ACCESSORIES).add(entry.getKey().get()).replace(false);

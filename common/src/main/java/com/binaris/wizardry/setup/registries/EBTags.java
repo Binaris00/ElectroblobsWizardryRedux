@@ -24,6 +24,15 @@ public final class EBTags {
     public static final TagKey<Item> GLOVE_TRINKETS = createItemTag("trinkets", "hand/glove");
     public static final TagKey<Item> NECKLACE_TRINKETS = createItemTag("trinkets", "chest/necklace");
 
+    public static final TagKey<Item> FIRE_ELEMENTAL_DUST = createItemTag("fire_elemental_dust");
+    public static final TagKey<Item> LIGHTNING_ELEMENTAL_DUST = createItemTag("lightning_elemental_dust");
+    public static final TagKey<Item> NECROMANCY_ELEMENTAL_DUST = createItemTag("necromancy_elemental_dust");
+    public static final TagKey<Item> EARTH_ELEMENTAL_DUST = createItemTag("earth_elemental_dust");
+    public static final TagKey<Item> SORCERY_ELEMENTAL_DUST = createItemTag("sorcery_elemental_dust");
+    public static final TagKey<Item> HEALING_ELEMENTAL_DUST = createItemTag("healing_elemental_dust");
+    public static final TagKey<Item> ICE_ELEMENTAL_DUST = createItemTag("ice_elemental_dust");
+
+    
     public static final TagKey<Block> GILDED_WOOD_BLOCK = createBlockTag("gilded_wood");
 
     private EBTags() {

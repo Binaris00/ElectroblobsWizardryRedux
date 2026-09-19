@@ -574,7 +574,10 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         return this.element;
     }
 
+    /// @deprecated Receptacle placement is now driven by imbuement altar recipes; see
+    ///             {@link IElementValue#validForReceptacle()}.
     @Override
+    @Deprecated(forRemoval = true)
     public boolean validForReceptacle() {
         return false;
     }

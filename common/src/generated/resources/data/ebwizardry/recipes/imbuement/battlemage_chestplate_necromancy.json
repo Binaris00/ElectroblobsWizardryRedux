@@ -5,16 +5,16 @@
   },
   "receptacles": [
     {
-      "item": "ebwizardry:spectral_dust_necromancy"
+      "tag": "ebwizardry:necromancy_elemental_dust"
     },
     {
-      "item": "ebwizardry:spectral_dust_necromancy"
+      "tag": "ebwizardry:necromancy_elemental_dust"
     },
     {
-      "item": "ebwizardry:spectral_dust_necromancy"
+      "tag": "ebwizardry:necromancy_elemental_dust"
     },
     {
-      "item": "ebwizardry:spectral_dust_necromancy"
+      "tag": "ebwizardry:necromancy_elemental_dust"
     }
   ],
   "result": {

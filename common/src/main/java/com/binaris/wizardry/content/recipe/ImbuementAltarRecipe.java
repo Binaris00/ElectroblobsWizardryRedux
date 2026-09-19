@@ -161,6 +161,21 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
         return centerIngredient;
     }
 
+    /// Checks whether the given item stack is used as a receptacle ingredient by any registered
+    /// imbuement altar recipe.
+    ///
+    /// Used to decide whether an item can be placed on a receptacle pedestal.
+    ///
+    /// @param level the level whose recipe manager is queried.
+    /// @param stack the item stack to test.
+    /// @return true if the item is required by at least one recipe, false otherwise.
+    public static boolean isReceptacleItem(Level level, ItemStack stack) {
+        return level.getRecipeManager().getAllRecipesFor(EBRecipeTypes.IMBUEMENT_ALTAR).stream()
+                .filter(r -> r instanceof ImbuementAltarRecipe)
+                .map(r -> (ImbuementAltarRecipe) r)
+                .anyMatch(r -> r.receptacleIngredients.stream().anyMatch(ingredient -> ingredient.test(stack)));
+    }
+
     /// Reads and writes {@code ImbuementAltarRecipe} instances from JSON, network packets, and
     /// data generation output.
     ///

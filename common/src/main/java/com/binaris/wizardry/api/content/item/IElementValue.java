@@ -12,6 +12,11 @@ public interface IElementValue {
 
     /// Determines if this item is valid for use in a receptacle.
     ///
+    /// @deprecated Will be removed in a future version. Receptacle placement is now determined
+    ///             entirely by the imbuement altar recipes: an item can be placed if it is used as
+    ///             a receptacle ingredient in any recipe. Check {@code ImbuementAltarRecipe.isReceptacleItem}
+    ///             instead of consulting this method.
     /// @return true if the item can be used in a receptacle, false otherwise.
+    @Deprecated(forRemoval = true)
     boolean validForReceptacle();
 }
