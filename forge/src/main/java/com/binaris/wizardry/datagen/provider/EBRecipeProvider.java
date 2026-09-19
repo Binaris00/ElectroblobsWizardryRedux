@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.registries.ForgeRegistries;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.LinkedHashMap;
 import java.util.function.Consumer;
 
 public final class EBRecipeProvider extends RecipeProvider {
@@ -203,13 +204,7 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .unlockedBy("has_gunpowder", has(Items.GUNPOWDER))
                 .save(consumer);
 
-        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_EARTH.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_earth"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_earth"), consumer);
-        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_FIRE.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_fire"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_fire"), consumer);
-        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_HEALING.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_healing"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_healing"), consumer);
-        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_ICE.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_ice"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_ice"), consumer);
-        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_LIGHTNING.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_lightning"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_lightning"), consumer);
-        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_NECROMANCY.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_necromancy"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_necromancy"), consumer);
-        imbuementFixRuinedBook(EBItems.SPECTRAL_DUST_SORCERY.get(), WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_sorcery"), WizardryMainMod.location("imbuement/fix_ruined_spell_book_sorcery"), consumer);
+        imbuementFixRuinedBook(consumer);
 
         imbuementDustToCrystal(EBItems.SPECTRAL_DUST_EARTH.get(), EBItems.MAGIC_CRYSTAL_EARTH.get(), WizardryMainMod.location("imbuement/magic_crystal_earth"), consumer);
         imbuementDustToCrystal(EBItems.SPECTRAL_DUST_FIRE.get(), EBItems.MAGIC_CRYSTAL_FIRE.get(), WizardryMainMod.location("imbuement/magic_crystal_fire"), consumer);
@@ -299,10 +294,23 @@ public final class EBRecipeProvider extends RecipeProvider {
                 .save(consumer, location);
     }
 
-    private void imbuementFixRuinedBook(Item spectralDust, ResourceLocation loot, ResourceLocation location, @NotNull Consumer<FinishedRecipe> consumer) {
-        ImbuementAltarRecipeBuilder.imbuement(Ingredient.of(EBItems.RUINED_SPELL_BOOK.get()), Ingredient.of(spectralDust), EBItems.RANDOM_SPELL_BOOK.get())
-                .withNbt(nbtForRandomSpellBook(loot.toString())).unlockedBy("has_ruined_spell_book", has(EBItems.RUINED_SPELL_BOOK.get()))
-                .save(consumer, location);
+    private void imbuementFixRuinedBook(@NotNull Consumer<FinishedRecipe> consumer) {
+        LinkedHashMap<TagKey<Item>, ImbuementAltarRecipeBuilder.ResultEntry> results = new LinkedHashMap<>();
+        results.put(EBTags.EARTH_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_earth")));
+        results.put(EBTags.FIRE_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_fire")));
+        results.put(EBTags.HEALING_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_healing")));
+        results.put(EBTags.ICE_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_ice")));
+        results.put(EBTags.LIGHTNING_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_lightning")));
+        results.put(EBTags.NECROMANCY_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_necromancy")));
+        results.put(EBTags.SORCERY_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_sorcery")));
+
+        ImbuementAltarRecipeBuilder.imbuementPoll(Ingredient.of(EBItems.RUINED_SPELL_BOOK.get()), EBItems.RANDOM_SPELL_BOOK.get(), results)
+                .unlockedBy("has_ruined_spell_book", has(EBItems.RUINED_SPELL_BOOK.get()))
+                .save(consumer, WizardryMainMod.location("imbuement/fix_ruined_spell_book"));
+    }
+
+    private ImbuementAltarRecipeBuilder.ResultEntry ruinedBookResult(ResourceLocation loot) {
+        return new ImbuementAltarRecipeBuilder.ResultEntry(EBItems.RANDOM_SPELL_BOOK.get(), 1, nbtForRandomSpellBook(loot.toString()));
     }
 
     private void imbuementDustToCrystal(Item spectralDust, Item crystal, ResourceLocation location, @NotNull Consumer<FinishedRecipe> consumer) {
