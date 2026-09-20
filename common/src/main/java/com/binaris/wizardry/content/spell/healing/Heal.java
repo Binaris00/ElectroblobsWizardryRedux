@@ -43,7 +43,7 @@ public class Heal extends BuffSpell {
     @Override
     protected @NotNull SpellProperties properties() {
         return SpellProperties.builder()
-                .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.POINT_UP, 5, 0, 20)
+                .assignBaseProperties(SpellTiers.NOVICE, Elements.HEALING, SpellTypes.DEFENCE, SpellAction.POINT_UP, 15, 0, 60)
                 .add(DefaultProperties.HEALTH, 4F).build();
     }
 }

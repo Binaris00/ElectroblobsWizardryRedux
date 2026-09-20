@@ -17,8 +17,10 @@ import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.datagen.EBDataGenProcessor;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.block.entity.BannerPattern;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
@@ -130,6 +132,14 @@ public final class EBItems {
     public static final DeferredObject<Item> MAGIC_CRYSTAL_NECROMANCY = crystal("magic_crystal_necromancy", EBServerConfig.MANA_PER_CRYSTAL.get());
     public static final DeferredObject<Item> MAGIC_CRYSTAL_SORCERY = crystal("magic_crystal_sorcery", EBServerConfig.MANA_PER_CRYSTAL.get());
     public static final DeferredObject<Item> MAGIC_CRYSTAL_GRAND = crystal("magic_crystal_grand", EBServerConfig.GRAND_CRYSTAL_MANA.get());
+    //Banner Patterns
+    public static final DeferredObject<Item> EARTH_BANNER_PATTERN = bannerPattern("earth_banner_pattern", EBTags.EARTH_PATTERN_ITEM);
+    public static final DeferredObject<Item> FIRE_BANNER_PATTERN = bannerPattern("fire_banner_pattern", EBTags.FIRE_PATTERN_ITEM);
+    public static final DeferredObject<Item> HEALING_BANNER_PATTERN = bannerPattern("healing_banner_pattern", EBTags.HEALING_PATTERN_ITEM);
+    public static final DeferredObject<Item> ICE_BANNER_PATTERN = bannerPattern("ice_banner_pattern", EBTags.ICE_PATTERN_ITEM);
+    public static final DeferredObject<Item> LIGHTNING_BANNER_PATTERN = bannerPattern("lightning_banner_pattern", EBTags.LIGHTNING_PATTERN_ITEM);
+    public static final DeferredObject<Item> NECROMANCY_BANNER_PATTERN = bannerPattern("necromancy_banner_pattern", EBTags.NECROMANCY_PATTERN_ITEM);
+    public static final DeferredObject<Item> SORCERY_BANNER_PATTERN = bannerPattern("sorcery_banner_pattern", EBTags.SORCERY_PATTERN_ITEM);
     //Wand Upgrades
     public static final DeferredObject<Item> ATTUNEMENT_UPGRADE = wandUpgrade("attunement_upgrade");
     public static final DeferredObject<Item> BLAST_UPGRADE = wandUpgrade("blast_upgrade");
@@ -404,6 +414,13 @@ public final class EBItems {
      */
     static DeferredObject<Item> crystal(String name, int capacity) {
         return item(name, () -> new CrystalItem(capacity), true, true);
+    }
+
+    /**
+     * Add banner pattern stencils with a default model and inside the item creative tab
+     */
+    static DeferredObject<Item> bannerPattern(String name, TagKey<BannerPattern> tag) {
+        return item(name, () -> new BannerPatternItem(tag, new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)), true, true);
     }
 
     /**

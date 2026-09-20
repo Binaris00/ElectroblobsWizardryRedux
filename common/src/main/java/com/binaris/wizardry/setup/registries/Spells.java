@@ -731,14 +731,14 @@ public final class Spells {
                         .build()
         ));
 
-        CONJURE_SWORD = spell("conjure_sword", () -> new ConjureItemSpell(EBItems.SPECTRAL_SWORD.get()).assignProperties(
+        CONJURE_SWORD = spell("conjure_sword", () -> new ConjureSword().assignProperties(
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.SUMMON, 25, 0, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)
                         .build()
         ));
 
-        CONJURE_PICKAXE = spell("conjure_pickaxe", () -> new ConjureItemSpell(EBItems.SPECTRAL_PICKAXE.get()).assignProperties(
+        CONJURE_PICKAXE = spell("conjure_pickaxe", () -> new ConjurePickaxe().assignProperties(
                 SpellProperties.builder()
                         .assignBaseProperties(SpellTiers.APPRENTICE, Elements.SORCERY, SpellTypes.UTILITY, SpellAction.SUMMON, 25, 0, 50)
                         .add(DefaultProperties.ITEM_LIFETIME, 1200)

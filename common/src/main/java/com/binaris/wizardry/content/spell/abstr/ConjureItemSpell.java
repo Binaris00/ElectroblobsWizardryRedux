@@ -7,6 +7,7 @@ import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
 import com.binaris.wizardry.api.content.spell.properties.SpellProperties;
 import com.binaris.wizardry.content.spell.DefaultProperties;
+import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.Spells;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -145,6 +146,20 @@ public class ConjureItemSpell extends Spell {
     /// @return the modified item stack with any additional properties or NBT data added
     protected ItemStack addItemExtras(PlayerCastContext ctx, ItemStack stack) {
         return stack;
+    }
+
+    /// Gets the potency level of the cast, derived exclusively from the potency modifier (0 = novice, 1 = apprentice,
+    /// 2 = advanced, 3 = master).
+    ///
+    /// Wands increase the potency modifier based on their tier (matching element), and other sources (artifacts,
+    /// attributes) can boost it further, so this method makes conjured items scale purely with the actual potency of the
+    /// cast. When no potency bonus is present (e.g. scrolls, mismatched wand element) it defaults to 0.
+    ///
+    /// @param ctx the context of the spell cast
+    /// @return the potency level of the cast, unbounded (values above master will be higher than 3)
+    protected int getPotencyLevel(PlayerCastContext ctx) {
+        float potency = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
+        return Math.max(0, (int) ((potency - 1.0f) / EBServerConfig.POTENCY_INCREASE_PER_TIER.get()) - 1);
     }
 
     @Override

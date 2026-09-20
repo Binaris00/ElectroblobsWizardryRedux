@@ -35,6 +35,5 @@ public class WizardTradeGoal extends Goal {
 
     @Override
     public void stop() {
-        this.wizard.setTradingPlayer(null);
     }
 }

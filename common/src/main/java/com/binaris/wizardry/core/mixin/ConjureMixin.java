@@ -42,7 +42,7 @@ public class ConjureMixin {
     public void EBWIZARDRY$conjureGetBarColor(CallbackInfoReturnable<Integer> cir) {
         ConjureData data = Services.OBJECT_DATA.getConjureData(stack);
         if (data == null || !data.isSummoned()) return;
-        cir.setReturnValue(ClientUtils.mixColor(0xff8bfe, 0x8e2ee4, stack.getBarWidth()));
+        cir.setReturnValue(ClientUtils.mixColor(0xa5f3ff, 0x37c8ff, stack.getBarWidth()));
     }
 
     @Inject(method = "getTooltipLines", at = @At("RETURN"))

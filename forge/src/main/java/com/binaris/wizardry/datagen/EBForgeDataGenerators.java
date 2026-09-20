@@ -50,6 +50,7 @@ public class EBForgeDataGenerators {
 
         EBBlockTagProvider blockTagProvider = generator.addProvider(event.includeServer(), new EBBlockTagProvider(packOutput, lookupProvider, existingFileHelper));
         generator.addProvider(event.includeServer(), new EBItemTagProvider(packOutput, lookupProvider, blockTagProvider.contentsGetter(), existingFileHelper));
+        generator.addProvider(event.includeServer(), new EBBannerPatternTagsProvider(packOutput, lookupProvider, existingFileHelper));
 
         event.getGenerator().addProvider(event.includeServer(), (DataProvider.Factory<EBRecipeProvider>) EBRecipeProvider::new);
     }

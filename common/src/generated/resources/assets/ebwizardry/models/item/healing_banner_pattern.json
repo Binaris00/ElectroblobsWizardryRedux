@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "ebwizardry:item/healing_banner_pattern"
+  }
+}

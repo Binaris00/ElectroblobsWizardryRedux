@@ -24,13 +24,16 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     private boolean restartGoals;
     private boolean searchNearbyTargets = true;
     private int pickUpLootPosibility = 0;
+    private boolean dirty = false;
 
     public MinionDataHolder(Mob provider) {
         this.provider = provider;
     }
 
     public void sync() {
+        if (provider.level().isClientSide() || !dirty) return;
         EBComponents.MINION_DATA.sync(provider);
+        dirty = false;
     }
 
     @Override
@@ -66,7 +69,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setLifetime(int lifetime) {
         this.lifetime = lifetime;
-        sync();
+        this.dirty = true;
     }
 
     @Override
@@ -77,7 +80,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setSummoned(boolean summoned) {
         this.summoned = summoned;
-        sync();
+        this.dirty = true;
     }
 
     @Override
@@ -88,6 +91,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setShouldDeleteGoals(boolean shouldDeleteGoals) {
         this.shouldDeleteGoals = shouldDeleteGoals;
+        this.dirty = true;
     }
 
     @Override
@@ -98,6 +102,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setShouldFollowOwner(boolean shouldFollowOwner) {
         this.shouldFollowOwner = shouldFollowOwner;
+        this.dirty = true;
     }
 
     @Override
@@ -108,6 +113,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setSearchNearbyTargets(boolean searchNearbyTargets) {
         this.searchNearbyTargets = searchNearbyTargets;
+        this.dirty = true;
     }
 
     @Override
@@ -118,6 +124,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setPickUpLootPosibility(int pickUpLootPosibility) {
         this.pickUpLootPosibility = pickUpLootPosibility;
+        this.dirty = true;
     }
 
     @Override
@@ -128,7 +135,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setOwnerUUID(UUID ownerUUID) {
         this.ownerUUID = ownerUUID;
-        sync();
+        this.dirty = true;
     }
 
     @Override
@@ -142,7 +149,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
     @Override
     public void setOwner(LivingEntity owner) {
         this.ownerUUID = owner.getUUID();
-        sync();
+        this.dirty = true;
     }
 
     @Override
@@ -165,6 +172,7 @@ public class MinionDataHolder implements MinionData, ComponentV3, AutoSyncedComp
         if (tag.contains("ownerUUID")) {
             this.ownerUUID = tag.getUUID("ownerUUID");
         }
+        this.dirty = true;
     }
 
     @Override
