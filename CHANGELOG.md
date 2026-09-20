@@ -1,11 +1,12 @@
-- feature(lang): Added Chinese translations
-- feature(lang): Added Spanish translation
-- feature(lang): Turkish translation (by @xlorsh on discord)
-- feature(event): added WizardTradeSetupEvent for add-ons to create/modify Wizard's trades without mixins
-- feature(fishing): now you can get different magic items when fishing
-- fix(minions): Summons shouldn't drop loot or xp
-- fix(sound): Added missing sound subtitles
-- fix(spells): Telekinesis spell disappearing items with Physics Item mod and Speed Time not affecting crops
-- fix(armor): Ethereal Crystal Weave now converts wizard armor to Warlock (As how it should be)
-- refactor(worldgen): Added biome tags for more custom modification for spawn crystal flower, crystal ore and evil wizards
-- refactor(gui): created getSpellIcon() to have better mixin control
+- feature: added banners with custom textures
+- feature: added ruined spell book fix with multiple spectral dust
+- feature: added item tags for recipes inside the imbuement altar
+- feature: added structure tags (wizard tower, obelisk, shrine)
+- feature: added custom mob effect containers for spells and curses
+- feature: Conjure Pickaxe and Conjure Sword reworks
+- fix: wizard trading wasn't working due to sync issues
+- fix: structures won't appear in water
+- fix: avoid null results in CastItemDataHelper#getSpells (avoiding crash when deleting spells in you already created world)
+- fix: now you can't downgrade your want to lower tiers
+- fix: Construct spells disappear on client side
+- fix: shrine event stop bricking after all players are dead
