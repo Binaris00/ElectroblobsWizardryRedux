@@ -31,10 +31,7 @@ public final class RegistryUtils {
     /// The NBT key used to store spells on items.
     public static String SPELL_KEY = "Spell";
 
-    /**
-     * Items whose {@link Item#isEnchantable(ItemStack)} override threw at least once. We remember them so we only
-     * log the warning once and avoid paying the cost of the exception on every subsequent check.
-     */
+    /// Items whose [Item#isEnchantable(ItemStack)] override threw at least once. (Very raw fix)
     private static final Set<Item> BROKEN_ENCHANTABILITY = ConcurrentHashMap.newKeySet();
 
     /// Returns the wand Item corresponding to the given tier and element.

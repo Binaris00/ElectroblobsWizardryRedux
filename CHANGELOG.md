@@ -1,12 +1,2 @@
-- feature: added banners with custom textures
-- feature: added ruined spell book fix with multiple spectral dust
-- feature: added item tags for recipes inside the imbuement altar
-- feature: added structure tags (wizard tower, obelisk, shrine)
-- feature: added custom mob effect containers for spells and curses
-- feature: Conjure Pickaxe and Conjure Sword reworks
-- fix: wizard trading wasn't working due to sync issues
-- fix: structures won't appear in water
-- fix: avoid null results in CastItemDataHelper#getSpells (avoiding crash when deleting spells in you already created world)
-- fix: now you can't downgrade your want to lower tiers
-- fix: Construct spells disappear on client side
-- fix: shrine event stop bricking after all players are dead
+- fix: added bridge between EBW and "Create Stuff 'N Additions" to prevent incompatibility
+- fix: solved crash when using ebw items with JEED
