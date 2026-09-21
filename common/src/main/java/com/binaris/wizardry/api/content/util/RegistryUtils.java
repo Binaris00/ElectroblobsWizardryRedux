@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.SpellTier;
 import com.binaris.wizardry.content.item.armor.WizardArmorMaterial;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
@@ -20,6 +21,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -27,6 +30,12 @@ import java.util.stream.Collectors;
 public final class RegistryUtils {
     /// The NBT key used to store spells on items.
     public static String SPELL_KEY = "Spell";
+
+    /**
+     * Items whose {@link Item#isEnchantable(ItemStack)} override threw at least once. We remember them so we only
+     * log the warning once and avoid paying the cost of the exception on every subsequent check.
+     */
+    private static final Set<Item> BROKEN_ENCHANTABILITY = ConcurrentHashMap.newKeySet();
 
     /// Returns the wand Item corresponding to the given tier and element.
     ///
@@ -156,6 +165,29 @@ public final class RegistryUtils {
         if (tag == null) return Spells.NONE;
         Spell byId = Services.REGISTRY_UTIL.getSpell(ResourceLocation.tryParse(tag.getString(SPELL_KEY)));
         return byId == null ? Spells.NONE : byId;
+    }
+
+    /// Same as [ItemStack#isEnchantable()] but never lets a misbehaving mod crash the game.
+    // Thanks "Create Stuff 'N Additions"... ; ;
+    // Why would you execute the Minecraft (client) inside a server-side used method?... ; ;
+    public static boolean isSafelyEnchantable(ItemStack stack) {
+        if (stack.isEmpty()) return false;
+
+        Item item = stack.getItem();
+        if (BROKEN_ENCHANTABILITY.contains(item)) return false;
+
+        try {
+            return stack.isEnchantable();
+        } catch (Exception | LinkageError e) {
+            if (BROKEN_ENCHANTABILITY.add(item)) {
+                EBLogger.warn("Item '{}' threw an exception while checking isEnchantable(), so it will be treated... Error: {}", BuiltInRegistries.ITEM.getKey(item), e.toString());
+            }
+            return false;
+        }
+    }
+
+    public static boolean isSafelyEnchantable(Item item) {
+        return isSafelyEnchantable(item.getDefaultInstance());
     }
 
     private RegistryUtils() {
