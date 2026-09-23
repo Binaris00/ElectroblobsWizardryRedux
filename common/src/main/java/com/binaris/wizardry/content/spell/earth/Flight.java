@@ -16,7 +16,6 @@ import net.minecraft.world.phys.Vec3;
 import org.jetbrains.annotations.NotNull;
 
 public class Flight extends Spell {
-    private static final double Y_NUDGE_ACCELERATION = 0.075;
 
     @Override
     public boolean cast(PlayerCastContext ctx) {
@@ -53,36 +52,22 @@ public class Flight extends Spell {
         double newVelY = currentVelocity.y;
         double newVelZ = currentVelocity.z;
 
-        if (Math.abs(lookAngle.x) > 0.01) {
-            double targetVelX = lookAngle.x * speed;
-            if (Math.abs(currentVelocity.x) < Math.abs(targetVelX)) {
-                newVelX = Math.min(Math.max(currentVelocity.x + lookAngle.x * acceleration, -speed), speed);
-            }
+        if (Math.abs(lookAngle.x) > 0.01
+                && (Math.abs(currentVelocity.x) < speed || currentVelocity.x * lookAngle.x < 0)) {
+            newVelX = Math.min(Math.max(currentVelocity.x + lookAngle.x * acceleration, -speed), speed);
         }
 
-        if (Math.abs(lookAngle.z) > 0.01) {
-            double targetVelZ = lookAngle.z * speed;
-            if (Math.abs(currentVelocity.z) < Math.abs(targetVelZ)) {
-                newVelZ = Math.min(Math.max(currentVelocity.z + lookAngle.z * acceleration, -speed), speed);
-            }
+        if (Math.abs(lookAngle.z) > 0.01
+                && (Math.abs(currentVelocity.z) < speed || currentVelocity.z * lookAngle.z < 0)) {
+            newVelZ = Math.min(Math.max(currentVelocity.z + lookAngle.z * acceleration, -speed), speed);
         }
 
         if (Math.abs(lookAngle.y) > 0.01) {
-            double targetVelY = lookAngle.y * speed;
-            if (Math.abs(currentVelocity.y) < Math.abs(targetVelY)) {
-                double yAcceleration = lookAngle.y * acceleration;
-
-                if (lookAngle.y < 0) {
-                    yAcceleration += 0.10;
-                } else {
-                    yAcceleration += Y_NUDGE_ACCELERATION;
-                }
-
-                newVelY = currentVelocity.y + yAcceleration;
-                newVelY = Math.min(Math.max(newVelY, -speed), speed);
+            if (Math.abs(currentVelocity.y) < speed || currentVelocity.y * lookAngle.y < 0) {
+                newVelY = Math.min(Math.max(currentVelocity.y + lookAngle.y * acceleration, -speed), speed);
             }
         } else {
-            newVelY = Math.min(currentVelocity.y + Y_NUDGE_ACCELERATION, speed * 0.5);
+            newVelY = currentVelocity.y * 0.8;
         }
 
         ctx.caster().setDeltaMovement(newVelX, newVelY, newVelZ);

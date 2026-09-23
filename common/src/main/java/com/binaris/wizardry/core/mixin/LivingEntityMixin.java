@@ -3,12 +3,14 @@ package com.binaris.wizardry.core.mixin;
 import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
+import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.effect.FrostStepEffect;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
+import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -110,5 +112,11 @@ public abstract class LivingEntityMixin {
             FrostStepEffect.onEntityMoved(livingEntity, livingEntity.level(), pos,
                     livingEntity.getEffect(EBMobEffects.FROST_STEP.get()).getAmplifier());
         }
+    }
+
+    @Redirect(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;isNoGravity()Z"))
+    private boolean EBWIZARDRY$flightIgnoresGravity(LivingEntity entity) {
+        if (EntityUtil.isCasting(entity, Spells.FLIGHT)) return true;
+        return entity.isNoGravity();
     }
 }
