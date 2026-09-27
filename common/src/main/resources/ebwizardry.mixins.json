@@ -42,7 +42,8 @@
     "client.EffectRenderingInventoryScreenMixin",
     "client.GuiMixin",
     "client.LocalPlayerMixin",
-    "client.MouseHandlerMixin"
+    "client.MouseHandlerMixin",
+    "client.LivingEntityRendererMixin"
   ],
   "server": [
   ],
