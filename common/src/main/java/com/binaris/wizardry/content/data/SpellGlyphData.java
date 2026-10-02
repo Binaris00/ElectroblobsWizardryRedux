@@ -72,8 +72,11 @@ public class SpellGlyphData extends SavedData {
     }
 
     public static String getGlyphName(Spell spell, SpellGlyphData data) {
-        Map<Spell, String> names = data.randomNames;
-        return names == null ? "" : names.getOrDefault(spell, "");
+        if (data != null) {
+            Map<Spell, String> names = data.randomNames;
+            return names == null ? "" : names.getOrDefault(spell, "");
+        }
+        return "";
     }
 
     public static String getGlyphDescription(Spell spell, SpellGlyphData data) {

@@ -27,6 +27,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 @JeiPlugin
 public class WizardryJeiPlugin implements IModPlugin {
@@ -37,16 +38,16 @@ public class WizardryJeiPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerCategories(IRecipeCategoryRegistration register) {
+    public void registerCategories(@NotNull IRecipeCategoryRegistration register) {
         IModPlugin.super.registerCategories(register);
         register.addRecipeCategories(new ImbuementAltarCategory(register.getJeiHelpers().getGuiHelper()));
         register.addRecipeCategories(new ArcaneWorkbenchCategory(register.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
-    public void registerRecipes(IRecipeRegistration register) {
+    public void registerRecipes(@NotNull IRecipeRegistration register) {
         IModPlugin.super.registerRecipes(register);
-        RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
+        RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
         List<ImbuementAltarRecipe> imbuementAltarRecipes = recipeManager.getAllRecipesFor(EBRecipeTypes.IMBUEMENT_ALTAR);
 
@@ -90,7 +91,7 @@ public class WizardryJeiPlugin implements IModPlugin {
     }
 
     @Override
-    public void registerRecipeCatalysts(IRecipeCatalystRegistration register) {
+    public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration register) {
         IModPlugin.super.registerRecipeCatalysts(register);
         register.addRecipeCatalyst(new ItemStack(EBBlocks.IMBUEMENT_ALTAR.get()), ImbuementAltarCategory.IMBUE_TYPE);
         register.addRecipeCatalyst(new ItemStack(EBBlocks.ARCANE_WORKBENCH.get()), ArcaneWorkbenchCategory.ARCANE_WORKBENCH);
