@@ -64,7 +64,6 @@ public class ArcaneWorkbenchRecipe {
     /// Returns a list of item stacks, one for each type of crystal (regular, elemental, grand and shards), each with
     /// the minimum quantity needed to supply the given amount of mana. Types of crystal for which more than the max.
     /// stack size would be needed are ignored.
-    @Deprecated
     public static List<ItemStack> generateCrystalStacks(int mana) {
         if (mana < 0)
             throw new IllegalArgumentException("Cannot create an arcane workbench recipe with negative mana!");
