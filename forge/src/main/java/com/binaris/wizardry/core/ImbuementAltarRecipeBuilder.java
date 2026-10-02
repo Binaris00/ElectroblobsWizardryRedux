@@ -9,6 +9,7 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeBuilder;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
@@ -16,6 +17,9 @@ import net.minecraft.world.level.ItemLike;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.function.Consumer;
 
 public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
@@ -27,6 +31,10 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
     private CompoundTag nbt;
     @Nullable
     private String group;
+    @Nullable
+    private List<TagKey<Item>> poll;
+    @Nullable
+    private LinkedHashMap<TagKey<Item>, ResultEntry> results;
 
     private ImbuementAltarRecipeBuilder(Ingredient centerIngredient, Ingredient[] receptacleIngredients, ItemLike result, int count) {
         if (receptacleIngredients.length != 4) {
@@ -48,6 +56,26 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
 
     public static ImbuementAltarRecipeBuilder imbuement(Ingredient centerIngredient, Ingredient receptacle1, Ingredient receptacle2, Ingredient receptacle3, Ingredient receptacle4, ItemLike result, int count) {
         return new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{receptacle1, receptacle2, receptacle3, receptacle4}, result, count);
+    }
+
+    /// Creates a poll recipe: the four receptacles accept any item matching one of the poll tags
+    /// and the outcome is randomly chosen among {@code results}, weighted by how many receptacle
+    /// items match each result's tag. No {@code "receptacles"} field is written to the generated
+    /// JSON since the poll tags define what can be placed. The {@code result} item is only used
+    /// as metadata (e.g. for advancement lookup) and is not written to the generated JSON.
+    ///
+    /// @param centerIngredient the ingredient placed on the altar.
+    /// @param result the representative result item.
+    /// @param results the poll tags mapped to their winning output, preserving iteration order.
+    public static ImbuementAltarRecipeBuilder imbuementPoll(Ingredient centerIngredient, ItemLike result, LinkedHashMap<TagKey<Item>, ResultEntry> results) {
+        ImbuementAltarRecipeBuilder builder = new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY}, result, 1);
+        builder.poll = new ArrayList<>(results.keySet());
+        builder.results = results;
+        return builder;
+    }
+
+    /// The output of a poll recipe entry: the item, its count and optional NBT tag data.
+    public record ResultEntry(ItemLike item, int count, @Nullable CompoundTag nbt) {
     }
 
     public ImbuementAltarRecipeBuilder withNbt(CompoundTag nbt) {
@@ -73,7 +101,7 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(Consumer<FinishedRecipe> finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
-        finishedRecipeConsumer.accept(new Result(recipeId, this.group == null ? "" : this.group, this.centerIngredient, this.receptacleIngredients, this.result, this.count, this.nbt, recipeId.withPrefix("recipes/imbuement_altar/")));
+        finishedRecipeConsumer.accept(new Result(recipeId, this.group == null ? "" : this.group, this.centerIngredient, this.receptacleIngredients, this.result, this.count, this.nbt, this.poll, this.results, recipeId.withPrefix("recipes/imbuement_altar/")));
     }
 
 
@@ -86,9 +114,13 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
         private final int count;
         @Nullable
         private final CompoundTag nbt;
+        @Nullable
+        private final List<TagKey<Item>> poll;
+        @Nullable
+        private final LinkedHashMap<TagKey<Item>, ResultEntry> results;
         private final ResourceLocation advancementId;
 
-        public Result(ResourceLocation id, String group, Ingredient centerIngredient, Ingredient[] receptacleIngredients, Item result, int count, @Nullable CompoundTag nbt, ResourceLocation advancementId) {
+        public Result(ResourceLocation id, String group, Ingredient centerIngredient, Ingredient[] receptacleIngredients, Item result, int count, @Nullable CompoundTag nbt, @Nullable List<TagKey<Item>> poll, @Nullable LinkedHashMap<TagKey<Item>, ResultEntry> results, ResourceLocation advancementId) {
             this.id = id;
             this.group = group;
             this.centerIngredient = centerIngredient;
@@ -96,6 +128,8 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
             this.result = result;
             this.count = count;
             this.nbt = nbt;
+            this.poll = poll;
+            this.results = results;
             this.advancementId = advancementId;
         }
 
@@ -106,6 +140,31 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
             }
 
             json.add("center", this.centerIngredient.toJson());
+
+            if (this.poll != null) {
+                JsonArray pollArray = new JsonArray();
+                for (TagKey<Item> tag : this.poll) {
+                    JsonObject pollObject = new JsonObject();
+                    pollObject.addProperty("tag", tag.location().toString());
+                    pollArray.add(pollObject);
+                }
+                json.add("poll", pollArray);
+
+                JsonArray resultsArray = new JsonArray();
+                for (var entry : this.results.entrySet()) {
+                    ResultEntry resultEntry = entry.getValue();
+                    JsonObject resultObject = new JsonObject();
+                    resultObject.addProperty("key", entry.getKey().location().toString());
+                    resultObject.addProperty("item", BuiltInRegistries.ITEM.getKey(resultEntry.item().asItem()).toString());
+                    resultObject.addProperty("count", resultEntry.count());
+                    if (resultEntry.nbt() != null) {
+                        resultObject.addProperty("nbt", resultEntry.nbt().toString());
+                    }
+                    resultsArray.add(resultObject);
+                }
+                json.add("results", resultsArray);
+                return;
+            }
 
             JsonArray receptaclesArray = new JsonArray();
             for (Ingredient ingredient : this.receptacleIngredients) {

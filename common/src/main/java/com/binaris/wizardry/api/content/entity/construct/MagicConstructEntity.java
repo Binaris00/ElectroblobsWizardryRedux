@@ -4,6 +4,9 @@ import com.binaris.wizardry.api.content.item.ICastItem;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.core.AllyDesignation;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.syncher.EntityDataAccessor;
+import net.minecraft.network.syncher.EntityDataSerializers;
+import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity;
@@ -22,6 +25,7 @@ import java.util.UUID;
 /// class are areas of effect which deal with damage or apply effects over time, including black hole, blizzard, tornado and
 /// a few others. The caster UUID, lifetime and damage multiplier are stored here, and lifetime is also synced here.
 public abstract class MagicConstructEntity extends Entity implements OwnableEntity {
+    private static final EntityDataAccessor<Integer> LIFETIME = SynchedEntityData.defineId(MagicConstructEntity.class, EntityDataSerializers.INT);
     /// The time in ticks this magical construct lasts for; defaults to 600 (30 seconds). If this is -1 the construct
     /// doesn't despawn.
     public int lifetime = 600;
@@ -63,12 +67,33 @@ public abstract class MagicConstructEntity extends Entity implements OwnableEnti
 
     @Override
     protected void defineSynchedData() {
+        this.entityData.define(LIFETIME, 600);
+    }
+
+    /// Sets the lifetime of this construct in ticks, syncing it to all clients. A negative value means the construct
+    /// never despawns.
+    public void setLifetime(int lifetime) {
+        this.lifetime = lifetime;
+        this.entityData.set(LIFETIME, lifetime);
+    }
+
+    /// Gets the time in ticks this construct lasts for; -1 means it never despawns.
+    public int getLifetime() {
+        return lifetime;
+    }
+
+    @Override
+    public void onSyncedDataUpdated(EntityDataAccessor<?> key) {
+        if (LIFETIME.equals(key)) {
+            this.lifetime = this.entityData.get(LIFETIME);
+        }
+        super.onSyncedDataUpdated(key);
     }
 
     @Override
     protected void readAdditionalSaveData(CompoundTag compoundTag) {
         if (compoundTag.contains("casterUUID")) casterUUID = compoundTag.getUUID("casterUUID");
-        lifetime = compoundTag.getInt("lifetime");
+        this.setLifetime(compoundTag.getInt("lifetime"));
         damageMultiplier = compoundTag.getFloat("damageMultiplier");
     }
 

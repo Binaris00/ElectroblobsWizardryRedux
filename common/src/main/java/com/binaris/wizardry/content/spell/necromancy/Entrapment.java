@@ -51,7 +51,7 @@ public class Entrapment extends RaySpell {
         BubbleConstruct bubble = new BubbleConstruct(ctx.world());
         bubble.setPos(target.getX(), target.getY(), target.getZ());
         bubble.setCaster(ctx.caster());
-        bubble.lifetime = ((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION).floatValue())));
+        bubble.setLifetime(((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.EFFECT_DURATION).floatValue()))));
         bubble.setDarkOrb(true);
         bubble.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
 

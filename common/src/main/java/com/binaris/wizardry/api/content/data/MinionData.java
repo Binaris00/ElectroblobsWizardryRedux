@@ -116,6 +116,23 @@ public interface MinionData {
     ///                            false otherwise
     void setSearchNearbyTargets(boolean searchNearbyTargets);
 
+    /// Determines whether this minion plays the appear/disappear animation when summoned and when its lifetime runs out.
+    /// This only affects the visual overlay rendered on the entity.
+    ///
+    /// @return true to render the animation, false to skip it
+    default boolean hasAnimation() {
+        return true;
+    }
+
+    /// Returns the color used to tint this minion's appear/disappear animation. By default, this is black, which
+    /// gives the dark summoning effect used by most necromancy spells.
+    ///
+    /// @param animationProgress a value between 0 and 1 indicating how far through the animation this minion is
+    /// @return the color of the animation, as an RGB int
+    default int getAnimationColor(float animationProgress) {
+        return 0x000000;
+    }
+
     /// Gets the UUID of the owner of the minion.
     ///
     /// @return the owner's UUID

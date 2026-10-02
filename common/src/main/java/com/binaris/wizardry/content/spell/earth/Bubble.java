@@ -48,7 +48,7 @@ public class Bubble extends RaySpell {
         BubbleConstruct bubble = new BubbleConstruct(ctx.world());
         bubble.setPos(target.getX(), target.getY(), target.getZ());
         if (ctx.caster() != null) bubble.setCaster(ctx.caster());
-        bubble.lifetime = ((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION).floatValue())));
+        bubble.setLifetime(((int) (ctx.modifiers().get(SpellModifiers.DURATION, property(DefaultProperties.DURATION).floatValue()))));
         bubble.setDarkOrb(false);
         bubble.damageMultiplier = ctx.modifiers().getFactor(SpellModifiers.POTENCY);
         ctx.world().addFreshEntity(bubble);

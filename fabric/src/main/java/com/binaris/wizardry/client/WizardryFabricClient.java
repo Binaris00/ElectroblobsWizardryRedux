@@ -3,6 +3,7 @@ package com.binaris.wizardry.client;
 import com.binaris.wizardry.api.content.spell.SpellAction;
 import com.binaris.wizardry.client.effect.ArcaneLockRender;
 import com.binaris.wizardry.client.effect.ContainmentFieldRender;
+import com.binaris.wizardry.client.effect.WingsRender;
 import com.binaris.wizardry.core.config.ConfigManager;
 import com.binaris.wizardry.network.EBFabricClientNetwork;
 import com.binaris.wizardry.setup.registries.EBBlocks;
@@ -79,5 +80,6 @@ public final class WizardryFabricClient implements ClientModInitializer {
     private void renderContainmentField(WorldRenderContext ctx) {
         ContainmentFieldRender.render(ctx.camera(), ctx.matrixStack(), ctx.tickDelta());
         ArcaneLockRender.render(ctx.camera(), ctx.matrixStack(), ctx.tickDelta());
+        WingsRender.render(ctx.camera(), ctx.matrixStack(), ctx.tickDelta());
     }
 }

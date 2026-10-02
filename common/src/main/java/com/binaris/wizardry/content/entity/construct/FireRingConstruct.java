@@ -23,7 +23,7 @@ public class FireRingConstruct extends ScaledConstructEntity {
 
     public FireRingConstruct(Level world) {
         super(EBEntities.RING_OF_FIRE.get(), world);
-        this.lifetime = Spells.RING_OF_FIRE.property(DefaultProperties.DURATION);
+        this.setLifetime(Spells.RING_OF_FIRE.property(DefaultProperties.DURATION));
         this.setBaseSize(Spells.RING_OF_FIRE.property(DefaultProperties.EFFECT_RADIUS).floatValue() * 2, 1);
     }
 

@@ -21,6 +21,7 @@ import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.Mth;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
@@ -78,11 +79,12 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
     public static <T extends BlockEntity> void tick(Level level, BlockPos pos, BlockState state, T entity) {
         if (!(entity instanceof RunestonePedestalBlockEntity pedestal) || level == null || level.isClientSide) return;
 
-        if (pedestal.conquered && EBServerConfig.SHRINE_REGENERATION_ENABLED.get() && pedestal.regenerationTime > 0) {
-            if (level.getGameTime() >= pedestal.regenerationTime) {
+        // While conquered, the pedestal is in cooldown and cannot be activated again until it regenerates
+        if (pedestal.conquered && pedestal.regenerationTime > 0) {
+            if (EBServerConfig.SHRINE_REGENERATION_ENABLED.get() && level.getGameTime() >= pedestal.regenerationTime) {
                 regenerate(pedestal, pos);
-                return;
             }
+            return;
         }
 
         if (!pedestal.natural) {
@@ -96,9 +98,45 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         }
 
         long gameTime = level.getGameTime();
+        // Each second check if the pedestal should activate by nearby players
         if (!pedestal.activated && gameTime % 20 == 0) pedestal.checkEvent(pos);
+        // If the pedestal is activated it updates the containment effect for all the players
         if (pedestal.activated) pedestal.containmentEffect();
-        if (pedestal.activated && !pedestal.playersInContainment.isEmpty()) pedestal.checkWizardsAlive();
+
+        // Checks if the players are all alive / connected, if not, remove them from the list, if the list is empty, the event is finished without being conquered
+        if (pedestal.activated) pedestal.checkPlayersInContainment();
+
+        if (pedestal.activated && !pedestal.playersInContainment.isEmpty()) {
+            // If the pedestal is activated and there are players in containment, check if the wizards are still alive, if not, the event is conquered
+            pedestal.checkWizardsAlive();
+        }
+    }
+
+    private void checkPlayersInContainment() {
+        if (!(level instanceof ServerLevel serverLevel)) return;
+
+        // Remove players that are dead, offline or spectating, they are no longer part of the event
+        playersInContainment.removeIf(uuid -> {
+            Player player = serverLevel.getPlayerByUUID(uuid);
+            return player == null || !player.isAlive() || player.isSpectator();
+        });
+
+        // Invalid shrine effect, all players have left
+        if (!playersInContainment.isEmpty()) return;
+
+        // Reset the shrine so it can be used again, keeping the container loot untouched
+        activated = false;
+        spawnedWizards.forEach((uuid) -> {
+            Entity entity = serverLevel.getEntity(uuid);
+            if (entity != null) entity.discard();
+        });
+        spawnedWizards.clear();
+
+        if (linkedPos != null) {
+            ArcaneLockData data = Services.OBJECT_DATA.getArcaneLockData(level.getBlockEntity(linkedPos));
+            if (data != null) data.clearArcaneLockOwner();
+        }
+        sync();
     }
 
     private static void regenerate(RunestonePedestalBlockEntity pedestal, BlockPos pos) {
@@ -178,7 +216,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
 
         playersInContainment.removeIf(uuid -> {
             Player player = serverLevel.getPlayerByUUID(uuid);
-            if (player == null || !player.isAlive() || player.isDeadOrDying() || player.isRemoved()) return true;
+            if (player == null || !player.isAlive() || player.isSpectator() || player.isDeadOrDying() || player.isRemoved()) return true;
             setContainmentPos(player);
             player.addEffect(new MobEffectInstance(EBMobEffects.CONTAINMENT.get(), 200, 0, false, false, true));
             return false;
@@ -208,7 +246,7 @@ public class RunestonePedestalBlockEntity extends BlockEntity {
         if (spawnedWizards.isEmpty()) {
             playersInContainment.removeIf(uuid -> {
                 Player player = serverLevel.getPlayerByUUID(uuid);
-                return player == null || !player.isAlive() || player.isDeadOrDying() || player.isRemoved();
+                return player == null || !player.isAlive() || player.isSpectator() || player.isDeadOrDying() || player.isRemoved();
             });
             conquered();
         }

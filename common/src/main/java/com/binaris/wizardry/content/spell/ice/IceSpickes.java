@@ -65,7 +65,7 @@ public class IceSpickes extends ConstructRangedSpell<IceSpikeConstruct> {
 
     @Override
     protected void addConstructExtras(CastContext ctx, IceSpikeConstruct construct, Direction side) {
-        construct.lifetime = 30 + construct.level().random.nextInt(15);
+        construct.setLifetime(30 + construct.level().random.nextInt(15));
         construct.setFacing(side);
     }
 

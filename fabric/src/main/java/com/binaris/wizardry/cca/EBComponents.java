@@ -1,6 +1,7 @@
 package com.binaris.wizardry.cca;
 
 import com.binaris.wizardry.WizardryMainMod;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.cca.blockentity.ArcaneLockDataHolder;
 import com.binaris.wizardry.cca.entity.ContainmentDataHolder;
 import com.binaris.wizardry.cca.entity.MinionDataHolder;
@@ -51,7 +52,7 @@ public class EBComponents implements EntityComponentInitializer, ItemComponentIn
     @Override
     public void registerItemComponentFactories(ItemComponentFactoryRegistry registry) {
         registry.register(ConjureItemSpell::isSummonableItem, CONJURE, ConjureDataHolder::new);
-        registry.register(item -> item instanceof TieredItem && item.isEnchantable(item.getDefaultInstance()), IMBUEMENT_ENCHANTS, ImbuementEnchantDataHolder::new);
+        registry.register(item -> item instanceof TieredItem && RegistryUtils.isSafelyEnchantable(item), IMBUEMENT_ENCHANTS, ImbuementEnchantDataHolder::new);
     }
 
     @Override

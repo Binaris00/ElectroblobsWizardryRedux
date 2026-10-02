@@ -18,7 +18,7 @@ public class HailstormConstruct extends ScaledConstructEntity {
 
     public HailstormConstruct(Level level) {
         super(EBEntities.HAILSTORM.get(), level);
-        this.lifetime = Spells.HAILSTORM.property(DefaultProperties.DURATION);
+        this.setLifetime(Spells.HAILSTORM.property(DefaultProperties.DURATION));
         this.setBaseSize(4, 5);
     }
 
