@@ -47,6 +47,7 @@ public final class EBTags {
     public static final TagKey<Item> HEALING_ELEMENTAL_DUST = createItemTag("healing_elemental_dust");
     public static final TagKey<Item> ICE_ELEMENTAL_DUST = createItemTag("ice_elemental_dust");
 
+    
     public static final TagKey<Block> GILDED_WOOD_BLOCK = createBlockTag("gilded_wood");
 
     // Banner pattern tags: each stencil item references one of these; the loom shows every

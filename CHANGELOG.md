@@ -1,11 +1,4 @@
-- feature(lang): Added Chinese translations
-- feature(lang): Added Spanish translation
-- feature(lang): Turkish translation (by @xlorsh on discord)
-- feature(event): added WizardTradeSetupEvent for add-ons to create/modify Wizard's trades without mixins
-- feature(fishing): now you can get different magic items when fishing
-- fix(minions): Summons shouldn't drop loot or xp
-- fix(sound): Added missing sound subtitles
-- fix(spells): Telekinesis spell disappearing items with Physics Item mod and Speed Time not affecting crops
-- fix(armor): Ethereal Crystal Weave now converts wizard armor to Warlock (As how it should be)
-- refactor(worldgen): Added biome tags for more custom modification for spawn crystal flower, crystal ore and evil wizards
-- refactor(gui): created getSpellIcon() to have better mixin control
+- fix: added bridge between EBW and "Create Stuff 'N Additions" to prevent incompatibility
+- fix: solved crash when using ebw items with JEED
+
+(very early fix)

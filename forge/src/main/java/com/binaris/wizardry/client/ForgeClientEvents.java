@@ -3,6 +3,7 @@ package com.binaris.wizardry.client;
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.effect.ArcaneLockRender;
 import com.binaris.wizardry.client.effect.ContainmentFieldRender;
+import com.binaris.wizardry.client.effect.WingsRender;
 import com.binaris.wizardry.core.config.ConfigManager;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ClientPlayerNetworkEvent;
@@ -21,6 +22,7 @@ public class ForgeClientEvents {
 
         ContainmentFieldRender.render(event.getCamera(), event.getPoseStack(), event.getPartialTick());
         ArcaneLockRender.render(event.getCamera(), event.getPoseStack(), event.getPartialTick());
+        WingsRender.render(event.getCamera(), event.getPoseStack(), event.getPartialTick());
     }
 
     @SubscribeEvent

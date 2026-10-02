@@ -35,7 +35,7 @@ public abstract class HumanoidModelMixin<T> {
             spell = CastItemDataHelper.getCurrentSpell(stack);
         }
 
-        if (spell != Spells.NONE && spell.getAction().shouldRender(livingEntity, spell, stack, InteractionHand.MAIN_HAND)) {
+        if (spell != null && spell != Spells.NONE && spell.getAction().shouldRender(livingEntity, spell, stack, InteractionHand.MAIN_HAND)) {
             spell.getAction().renderArms(livingEntity, model, InteractionHand.MAIN_HAND);
             ci.cancel();
         }
@@ -53,7 +53,7 @@ public abstract class HumanoidModelMixin<T> {
             spell = CastItemDataHelper.getCurrentSpell(stack);
         }
 
-        if (spell != Spells.NONE && spell.getAction().shouldRender(livingEntity, spell, stack, InteractionHand.OFF_HAND)) {
+        if (spell != null && spell != Spells.NONE && spell.getAction().shouldRender(livingEntity, spell, stack, InteractionHand.OFF_HAND)) {
             spell.getAction().renderArms(livingEntity, model, InteractionHand.OFF_HAND);
             ci.cancel();
         }

@@ -1,0 +1,73 @@
+{
+  "type": "ebwizardry:imbuement_altar",
+  "center": {
+    "item": "ebwizardry:ruined_spell_book"
+  },
+  "poll": [
+    {
+      "tag": "ebwizardry:earth_elemental_dust"
+    },
+    {
+      "tag": "ebwizardry:fire_elemental_dust"
+    },
+    {
+      "tag": "ebwizardry:healing_elemental_dust"
+    },
+    {
+      "tag": "ebwizardry:ice_elemental_dust"
+    },
+    {
+      "tag": "ebwizardry:lightning_elemental_dust"
+    },
+    {
+      "tag": "ebwizardry:necromancy_elemental_dust"
+    },
+    {
+      "tag": "ebwizardry:sorcery_elemental_dust"
+    }
+  ],
+  "results": [
+    {
+      "count": 1,
+      "item": "ebwizardry:random_spell_book",
+      "key": "ebwizardry:earth_elemental_dust",
+      "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_earth\"}"
+    },
+    {
+      "count": 1,
+      "item": "ebwizardry:random_spell_book",
+      "key": "ebwizardry:fire_elemental_dust",
+      "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_fire\"}"
+    },
+    {
+      "count": 1,
+      "item": "ebwizardry:random_spell_book",
+      "key": "ebwizardry:healing_elemental_dust",
+      "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_healing\"}"
+    },
+    {
+      "count": 1,
+      "item": "ebwizardry:random_spell_book",
+      "key": "ebwizardry:ice_elemental_dust",
+      "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_ice\"}"
+    },
+    {
+      "count": 1,
+      "item": "ebwizardry:random_spell_book",
+      "key": "ebwizardry:lightning_elemental_dust",
+      "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_lightning\"}"
+    },
+    {
+      "count": 1,
+      "item": "ebwizardry:random_spell_book",
+      "key": "ebwizardry:necromancy_elemental_dust",
+      "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_necromancy\"}"
+    },
+    {
+      "count": 1,
+      "item": "ebwizardry:random_spell_book",
+      "key": "ebwizardry:sorcery_elemental_dust",
+      "nbt": "{LootTable:\"ebwizardry:gameplay/imbuement/ruined_spell_book_sorcery\"}"
+    }
+  ]
+}

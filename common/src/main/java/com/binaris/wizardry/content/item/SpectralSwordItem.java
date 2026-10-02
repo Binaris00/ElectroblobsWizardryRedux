@@ -8,7 +8,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class SpectralSwordItem extends SwordItem {
     public SpectralSwordItem() {
-        super(Tiers.IRON, 3, -2.4F, new Properties().durability(1200).rarity(Rarity.UNCOMMON));
+        super(Tiers.IRON, 3, -1.6F, new Properties().durability(1200).rarity(Rarity.UNCOMMON));
     }
 
     @Override

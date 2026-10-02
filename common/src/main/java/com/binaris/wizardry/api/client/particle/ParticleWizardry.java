@@ -93,6 +93,8 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
     /// Previous-tick velocity, used in collision detection.
     private double prevVelX, prevVelY, prevVelZ;
 
+    private final Vector3f scratch = new Vector3f();
+
     public ParticleWizardry(ClientLevel world, double x, double y, double z, SpriteSet spriteSet, boolean updateTextureOnTick) {
         super(world, x, y, z);
         this.spriteSet = spriteSet;
@@ -248,19 +250,35 @@ public abstract class ParticleWizardry extends TextureSheetParticle {
 
         int light = this.getLightColor(partialTicks);
 
-        Vector3f[] corners = new Vector3f[]{
-                new Vector3f(-1, -1, 0),
-                new Vector3f(-1, 1, 0),
-                new Vector3f(1, 1, 0),
-                new Vector3f(1, -1, 0)
-        };
-
-        float[][] uvs = {{u1, v1}, {u1, v0}, {u0, v0}, {u0, v1}};
-
         for (int i = 0; i < 4; i++) {
-            Vector3f corner = corners[i].rotate(rotation).mul(size).add(x, y, z);
-            buffer.vertex(corner.x(), corner.y(), corner.z())
-                    .uv(uvs[i][0], uvs[i][1])
+            float u, v;
+            switch (i) {
+                case 0 -> {
+                    scratch.set(-1, -1, 0);
+                    u = u1;
+                    v = v1;
+                }
+                case 1 -> {
+                    scratch.set(-1, 1, 0);
+                    u = u1;
+                    v = v0;
+                }
+                case 2 -> {
+                    scratch.set(1, 1, 0);
+                    u = u0;
+                    v = v0;
+                }
+                default -> {
+                    scratch.set(1, -1, 0);
+                    u = u0;
+                    v = v1;
+                }
+            }
+            scratch.rotate(rotation);
+            scratch.mul(size);
+            scratch.add(x, y, z);
+            buffer.vertex(scratch.x, scratch.y, scratch.z)
+                    .uv(u, v)
                     .color(this.rCol, this.gCol, this.bCol, this.alpha)
                     .uv2(light)
                     .endVertex();
