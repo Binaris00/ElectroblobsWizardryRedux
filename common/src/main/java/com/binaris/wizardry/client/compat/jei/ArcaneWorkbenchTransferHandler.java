@@ -10,7 +10,6 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,20 +37,26 @@ public class ArcaneWorkbenchTransferHandler implements IRecipeTransferInfo<Arcan
         return true;
     }
 
+    /// Arcane workbench maths doesn't work like crafting maths!
     @Override
     public boolean requireCompleteSets(@NotNull ArcaneWorkbenchMenu container, @NotNull ArcaneWorkbenchRecipe recipe) {
-        return IRecipeTransferInfo.super.requireCompleteSets(container, recipe);
+        return false;
     }
 
     @Override
-    public @NotNull List<Slot> getRecipeSlots(ArcaneWorkbenchMenu menu, ArcaneWorkbenchRecipe recipe) {
-        return menu.slots.subList(0, ArcaneWorkbenchMenu.UPGRADE_SLOT + 1);
+    public @NotNull List<Slot> getRecipeSlots(ArcaneWorkbenchMenu menu, @NotNull ArcaneWorkbenchRecipe recipe) {
+        return menu.slots.subList(0, ArcaneWorkbenchMenu.UPGRADE_SLOT);
     }
 
+    /// # Slot List
+    /// 0~7 Spell Book Slots <br>
+    /// 8 Crystal Slots <br>
+    /// 9 Centre Slots <br>
+    /// 10 Upgrade Slots <br>
+    /// 11~19 Player HotBat Slots <br>
+    /// 20~46 Player Bag Slots
     @Override
     public @NotNull List<Slot> getInventorySlots(ArcaneWorkbenchMenu menu, @NotNull ArcaneWorkbenchRecipe recipe) {
-        List<Slot> slots = new ArrayList<>(menu.slots.subList(ArcaneWorkbenchMenu.UPGRADE_SLOT + 1, ArcaneWorkbenchMenu.UPGRADE_SLOT + 37));
-        // slots.add(menu.getSlot(0));
-        return slots;
+        return menu.slots.subList(ArcaneWorkbenchMenu.UPGRADE_SLOT + 1, ArcaneWorkbenchMenu.UPGRADE_SLOT + 37);
     }
 }

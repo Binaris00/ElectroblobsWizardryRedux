@@ -1,10 +1,7 @@
 package com.binaris.wizardry.client.compat;
 
 import com.binaris.wizardry.WizardryMainMod;
-import com.binaris.wizardry.client.compat.jei.ArcaneWorkbenchCategory;
-import com.binaris.wizardry.client.compat.jei.ImbuementAltarCategory;
-import com.binaris.wizardry.client.compat.jei.MagicRepairRecipeMaker;
-import com.binaris.wizardry.client.compat.jei.SpellSubtypeInterpreter;
+import com.binaris.wizardry.client.compat.jei.*;
 import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import com.binaris.wizardry.setup.registries.EBItems;
@@ -12,10 +9,7 @@ import com.binaris.wizardry.setup.registries.EBRecipeTypes;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
 import mezz.jei.api.constants.RecipeTypes;
-import mezz.jei.api.registration.IRecipeCatalystRegistration;
-import mezz.jei.api.registration.IRecipeCategoryRegistration;
-import mezz.jei.api.registration.IRecipeRegistration;
-import mezz.jei.api.registration.ISubtypeRegistration;
+import mezz.jei.api.registration.*;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -102,6 +96,12 @@ public class WizardryJeiPlugin implements IModPlugin {
         IModPlugin.super.registerItemSubtypes(register);
         register.registerSubtypeInterpreter(EBItems.SCROLL.get(), SpellSubtypeInterpreter.INSTANCE);
         register.registerSubtypeInterpreter(EBItems.SPELL_BOOK.get(), SpellSubtypeInterpreter.INSTANCE);
+    }
+
+    @Override
+    public void registerRecipeTransferHandlers(@NotNull IRecipeTransferRegistration register) {
+        IModPlugin.super.registerRecipeTransferHandlers(register);
+        register.addRecipeTransferHandler(new ArcaneWorkbenchTransferHandler());
     }
 
     private void addWandUpgradeInfo(IRecipeRegistration register, Item item) {
