@@ -1,11 +1,11 @@
 package com.binaris.wizardry.content.block;
 
 import com.binaris.wizardry.api.client.ParticleBuilder;
-import com.binaris.wizardry.api.content.item.IElementValue;
 import com.binaris.wizardry.api.content.spell.Element;
 import com.binaris.wizardry.api.content.util.BlockUtil;
 import com.binaris.wizardry.content.blockentity.ImbuementAltarBlockEntity;
 import com.binaris.wizardry.content.blockentity.ReceptacleBlockEntity;
+import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -65,7 +65,7 @@ public class ReceptacleBlock extends Block implements EntityBlock {
         }
 
         // If wanting to add an item to an empty receptacle
-        if (stack.isEmpty() && !heldItem.isEmpty() && heldItem.getItem() instanceof IElementValue value && value.validForReceptacle()) {
+        if (stack.isEmpty() && !heldItem.isEmpty() && ImbuementAltarRecipe.isReceptacleItem(level, heldItem)) {
             ItemStack receptacleItem = player.getAbilities().instabuild ? heldItem.copy() : heldItem;
             blockEntity.setStack(receptacleItem.split(1));
             level.playLocalSound(pos.getX(), pos.getY(), pos.getZ(), EBSounds.BLOCK_RECEPTACLE_IGNITE.get(), SoundSource.BLOCKS, 0.7f, 0.7f, false);

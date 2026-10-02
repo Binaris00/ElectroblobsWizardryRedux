@@ -1,6 +1,7 @@
 package com.binaris.wizardry;
 
 import com.binaris.wizardry.api.content.event.*;
+import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.setup.registries.RegisterFunction;
 import com.binaris.wizardry.capabilities.*;
 import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
@@ -13,7 +14,6 @@ import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticleProviders;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
 import com.binaris.wizardry.setup.registries.client.EBRenderers;
-import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.mixin.LootPoolAccessor;
 import com.binaris.wizardry.mixin.LootTableAccessor;
 import net.minecraft.core.registries.Registries;
@@ -184,7 +184,7 @@ public class WizardryForgeEvents {
                 event.addCapability(ConjureDataHolder.LOCATION, provider);
             }
 
-            if (stack.getItem() instanceof TieredItem && stack.isEnchantable()) {
+            if (stack.getItem() instanceof TieredItem && RegistryUtils.isSafelyEnchantable(stack)) {
                 event.addCapability(ImbuementEnchantDataHolder.LOCATION, new ImbuementEnchantDataHolder.Provider(stack));
             }
         }
@@ -262,6 +262,8 @@ public class WizardryForgeEvents {
                 register(event, EBEntities::register);
             else if (event.getRegistryKey() == Registries.ITEM)
                 register(event, EBItems::register);
+            else if (event.getRegistryKey() == Registries.BANNER_PATTERN)
+                register(event, EBBannerPatterns::register);
             else if (event.getRegistryKey() == Registries.PARTICLE_TYPE) register(event, EBParticles::registerType);
             else if (event.getRegistryKey() == Registries.SOUND_EVENT)
                 register(event, EBSounds::register);

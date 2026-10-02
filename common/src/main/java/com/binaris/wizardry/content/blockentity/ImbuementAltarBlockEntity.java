@@ -92,6 +92,17 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         return items;
     }
 
+    private ImbuementAltarRecipe findRecipe(ItemStack[] receptacleItems) {
+        if (level == null) return null;
+        return level.getRecipeManager()
+                .getAllRecipesFor(EBRecipeTypes.IMBUEMENT_ALTAR)
+                .stream()
+                .filter(Objects::nonNull)
+                .filter(r -> r.matches(stack, receptacleItems))
+                .findFirst()
+                .orElse(null);
+    }
+
     public void checkRecipe() {
         if (level == null || level.isClientSide) return;
 
@@ -108,13 +119,7 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         }
 
         // Find matching recipe
-        ImbuementAltarRecipe recipe = level.getRecipeManager()
-                .getAllRecipesFor(EBRecipeTypes.IMBUEMENT_ALTAR)
-                .stream()
-                .filter(r -> r instanceof ImbuementAltarRecipe)
-                .filter(r -> r.matches(stack, receptacleItems))
-                .findFirst()
-                .orElse(null);
+        ImbuementAltarRecipe recipe = findRecipe(receptacleItems);
 
         if (recipe != null && imbuementTimer == 0) {
             imbuementTimer = 1; // Start the imbuement process
@@ -135,16 +140,12 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
             return;
         }
 
-        ImbuementAltarRecipe recipe = level.getRecipeManager()
-                .getAllRecipesFor(EBRecipeTypes.IMBUEMENT_ALTAR)
-                .stream()
-                .filter(r -> r instanceof ImbuementAltarRecipe)
-                .filter(r -> r.matches(stack, receptacleItems))
-                .findFirst()
-                .orElse(null);
+        ImbuementAltarRecipe recipe = findRecipe(receptacleItems);
 
         if (recipe != null) {
-            ItemStack result = recipe.getResultItem(level.registryAccess()).copy();
+            ItemStack result = recipe.hasPoll()
+                    ? recipe.getResultForElement(element, level.random, receptacleItems)
+                    : recipe.getResultItem(level.registryAccess()).copy();
 
             stack.shrink(1);
             for (int i = 0; i < 4; i++) {
@@ -176,6 +177,14 @@ public class ImbuementAltarBlockEntity extends BlockEntity {
         ItemStack[] receptacleItems = getReceptacleItems(level, worldPosition);
         if (Arrays.stream(receptacleItems).anyMatch(Objects::isNull)) {
             element = null;
+            return;
+        }
+
+        ImbuementAltarRecipe recipe = findRecipe(receptacleItems);
+
+        // Poll recipes select their element from the weighted roll so particles match the result
+        if (recipe != null && recipe.hasPoll()) {
+            element = recipe.getPollElement(level.random, receptacleItems);
             return;
         }
 

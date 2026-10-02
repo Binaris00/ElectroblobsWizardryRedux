@@ -1,4 +1,4 @@
-// 1.20.1	2026-02-12T10:43:11.687968	Item Models: ebwizardry
+// 1.20.1	2026-08-20T20:25:34.471213585	Item Models: ebwizardry
 89bb34411d51f6f233bba5222d0f678fb09f0db7 assets/ebwizardry/models/item/amulet_absorption.json
 5d768537586b85e2822265776cd201221e20ad88 assets/ebwizardry/models/item/amulet_anchoring.json
 0580922d9a4bededf0168a7c330267c6c36f48e8 assets/ebwizardry/models/item/amulet_arcane_defence.json
@@ -85,10 +85,15 @@ ffcf0f356a068629b0626e61a6011f3044922211 assets/ebwizardry/models/item/cooldown_
 4bb4cdf42856e97fa0e1efb14d47353b1c8b9651 assets/ebwizardry/models/item/crystal_flower.json
 7bc9b845735fe70579466cc3aa887c9aa15f12e6 assets/ebwizardry/models/item/crystal_silver_plating.json
 8cdeb1aa0e67a07d12489e9c434576263e23b44f assets/ebwizardry/models/item/duration_upgrade.json
+db2a4581f6298acfb36ff4c86af0aef61dc2e70c assets/ebwizardry/models/item/earth_banner_pattern.json
 0a0f51c3ba5109e34a47f5a848569a7e7d83ba96 assets/ebwizardry/models/item/ethereal_crystal_weave.json
 63ec6c618a3a23eab4cab9c52d7d3250de9b516e assets/ebwizardry/models/item/evil_wizard_spawn_egg.json
+76036c7d090f08a9c70c1e85bf36e04ad5cb1a9d assets/ebwizardry/models/item/fire_banner_pattern.json
 de60bf6bfadb52e009d724bd406e45c1d3440063 assets/ebwizardry/models/item/firebomb.json
+d6084c054d05800d1a874c88b444215e8f4edf1d assets/ebwizardry/models/item/healing_banner_pattern.json
+2a1b8eb924420829a6d16d51fba76838f70aba11 assets/ebwizardry/models/item/ice_banner_pattern.json
 ea8e9017119e2136734d2f7c4cf1ec12df0db745 assets/ebwizardry/models/item/identification_scroll.json
+86d119e3faefb756c3bd09d47b3fd4f5c28aa730 assets/ebwizardry/models/item/lightning_banner_pattern.json
 cd36b63baf6eb12d25548711fcd3339a10601a39 assets/ebwizardry/models/item/magic_crystal.json
 39358c16e514c7bcee08db0f95f6d0d2525dc974 assets/ebwizardry/models/item/magic_crystal_earth.json
 9b969e738a28bfe921302f1457d4fcb4102e0a0c assets/ebwizardry/models/item/magic_crystal_fire.json
@@ -104,6 +109,7 @@ ae440d4d25b1b296433c8ee8ba5e51cfd00bc134 assets/ebwizardry/models/item/mana_flas
 9d99e48ea8802dd1aae4afe398e5b8c395c458be assets/ebwizardry/models/item/mana_flask_medium.json
 4c94697b95c1bcf6bccee14ca8ec7e324f57a07c assets/ebwizardry/models/item/mana_flask_small.json
 7fed11d8b42d2d5247c660c2ed6f960aecc41d52 assets/ebwizardry/models/item/melee_upgrade.json
+8d670da0dc28a0e86342e5a707b330b073b700de assets/ebwizardry/models/item/necromancy_banner_pattern.json
 4b15180f342e1709d9e34e7898759e7f7a2805a0 assets/ebwizardry/models/item/poison_bomb.json
 fb141580e999958da54fbc4ff681d1e934b89548 assets/ebwizardry/models/item/purifying_elixir.json
 796eb2f579cac673da717879a36ad5b81251d899 assets/ebwizardry/models/item/random_spell_book.json
@@ -179,6 +185,7 @@ fdf9a5fecd3e9f77b891b7c78c872092f94377ad assets/ebwizardry/models/item/sage_robe
 011e6d4fb414791b82d06142637cb5f62453ddc1 assets/ebwizardry/models/item/scroll.json
 ac099db29d93cc18304c6da17d81eb106bf4c45e assets/ebwizardry/models/item/siphon_upgrade.json
 ca1b92246364b4ce8ea1fadcbc5d09bbd52cd9dc assets/ebwizardry/models/item/smoke_bomb.json
+b050a7c5d4c3d216815c2540a9d3e35acffeddf5 assets/ebwizardry/models/item/sorcery_banner_pattern.json
 d514b404b2e80d493b8e75a794d8a7b911459a19 assets/ebwizardry/models/item/spark_bomb.json
 3ee6cdfb0b27303cc6e2022d85e7a684e4ef77a2 assets/ebwizardry/models/item/spectral_boots.json
 995e8f7c5a2618c9abfd5ca8ba416ad521473057 assets/ebwizardry/models/item/spectral_chestplate.json
