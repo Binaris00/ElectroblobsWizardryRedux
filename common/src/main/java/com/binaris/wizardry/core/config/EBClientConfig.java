@@ -18,6 +18,7 @@ public final class EBClientConfig implements ConfigProvider {
     public static final ConfigOption<Boolean> SHOW_CHARGE_METER = add(BoolConfigOption.booleanOption("show_charge_meter", true));
     public static final ConfigOption<Boolean> SHOW_SPELL_HUD = add(BoolConfigOption.booleanOption("show_spell_hud", true));
     public static final ConfigOption<Boolean> HANDBOOK_PROGRESSION = add(BoolConfigOption.booleanOption("handbook_progression", true));
+    public static final ConfigOption<Boolean> SCREEN_SHAKE = add(BoolConfigOption.booleanOption("screen_shake", true));
 
     private static <T> ConfigOption<T> add(ConfigOption<T> option) {
         OPTIONS.add(option);

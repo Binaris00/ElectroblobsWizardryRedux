@@ -3,6 +3,7 @@ package com.binaris.wizardry.content.entity.construct;
 import com.binaris.wizardry.api.content.entity.construct.ScaledConstructEntity;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
+import com.binaris.wizardry.client.ScreenShakeHandler;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.earth.Boulder;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
@@ -18,6 +19,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -127,8 +129,8 @@ public class BoulderConstruct extends ScaledConstructEntity {
     }
 
     private void shakeNearbyPlayers() {
-        // TODO Shake screen
-        //EntityUtil.getEntitiesWithinRadius(10, getX(), getY(), getZ(), level(), Player.class).forEach(p -> Wizardry.proxy.shakeScreen(p, 8));
+        EntityUtil.getEntitiesWithinRadius(10, getX(), getY(), getZ(), level(), Player.class)
+            .forEach(p -> ScreenShakeHandler.shakeScreen(8F));
     }
 
     @Override

@@ -29,7 +29,7 @@ public class ScreenShakeS2C implements Message {
 
     @Override
     public void handleClient() {
-        ScreenShakeHandler.triggerScreenShake(intensity, duration);
+        ScreenShakeHandler.shakeScreen(intensity, duration);
     }
 
     public float getIntensity() {
