@@ -3,21 +3,27 @@ package com.binaris.wizardry.core.mixin;
 import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
 import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.event.EBLivingTick;
+import com.binaris.wizardry.api.content.effect.MagicMobEffect;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.content.effect.FrostStepEffect;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
+import com.binaris.wizardry.core.networking.MagicEffectSync;
+import com.binaris.wizardry.core.networking.s2c.MagicEffectSyncS2C;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBMobEffects;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.particles.ParticleOptions;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -96,6 +102,34 @@ public abstract class LivingEntityMixin {
         if (livingEntity instanceof Mob mob) {
             if (Services.OBJECT_DATA.isMinion(mob)) cir.setReturnValue(false);
         }
+    }
+
+    @Inject(method = "onEffectAdded", at = @At("TAIL"))
+    private void EBWIZARDRY$syncMagicEffectAdded(MobEffectInstance instance, Entity source, CallbackInfo ci) {
+        // This already includes the needed checks in the method
+        MagicEffectSync.sendToTracking(livingEntity, instance, MagicEffectSyncS2C.Action.ADD);
+    }
+
+    @Inject(method = "onEffectUpdated", at = @At("TAIL"))
+    private void EBWIZARDRY$syncMagicEffectUpdated(MobEffectInstance instance, boolean same, Entity source, CallbackInfo ci) {
+        // This already includes the needed checks in the method
+        MagicEffectSync.sendToTracking(livingEntity, instance, MagicEffectSyncS2C.Action.ADD);
+    }
+
+    @Inject(method = "onEffectRemoved", at = @At("TAIL"))
+    private void EBWIZARDRY$syncMagicEffectRemoved(MobEffectInstance instance, CallbackInfo ci) {
+        // This already includes the needed checks in the method
+        MagicEffectSync.sendToTracking(livingEntity, instance, MagicEffectSyncS2C.Action.REMOVE);
+    }
+
+
+    // Removes the vanilla effect particles in case any effect asks for that
+    @Redirect(method = "tickEffects", at = @At(value = "INVOKE",
+            target = "Lnet/minecraft/world/level/Level;addParticle(Lnet/minecraft/core/particles/ParticleOptions;DDDDDD)V"))
+    private void EBWIZARDRY$hideVanillaEffectParticles(Level level, ParticleOptions options,
+                                                      double x, double y, double z, double vx, double vy, double vz) {
+        if (level.isClientSide && MagicMobEffect.hidesVanillaParticles(livingEntity)) return;
+        level.addParticle(options, x, y, z, vx, vy, vz);
     }
 
     @Redirect(method = "aiStep", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;hurt(Lnet/minecraft/world/damagesource/DamageSource;F)Z"))

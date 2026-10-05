@@ -2,6 +2,7 @@ package com.binaris.wizardry.core.networking;
 
 import com.binaris.wizardry.api.client.util.ClientUtils;
 import com.binaris.wizardry.api.client.util.GlyphClientHandler;
+import com.binaris.wizardry.api.content.effect.MagicMobEffectInstance;
 import com.binaris.wizardry.api.content.entity.living.ISpellCaster;
 import com.binaris.wizardry.api.content.event.SpellCastEvent;
 import com.binaris.wizardry.api.content.spell.NoneSpell;
@@ -24,8 +25,10 @@ import com.google.gson.JsonElement;
 import com.mojang.serialization.JsonOps;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -120,6 +123,34 @@ public final class ClientMessageHandler {
     public static void particleBuilder(ParticleBuilderS2C m) {
         // Use ParticleSpawner to avoid loading client classes in ParticleData
         ParticleSpawner.spawnClientParticle(m.getData());
+    }
+
+    /// Mirrors a wizardry mob effect of another entity onto the local client, since vanilla never syncs the effect
+    /// list of entities you don't own. Without this, client side effects (custom particles, vanilla particle hiding)
+    /// are silently skipped for every observer but the affected player.
+    public static void magicEffectSync(MagicEffectSyncS2C m) {
+        Level level = Minecraft.getInstance().level;
+        if (level == null) return;
+        if (!(level.getEntity(m.getEntityId()) instanceof LivingEntity living)) return;
+
+        MobEffect effect = BuiltInRegistries.MOB_EFFECT.get(m.getEffectId());
+        if (effect == null) {
+            EBLogger.warn("Received magic effect sync for unknown effect: {}", m.getEffectId());
+            return;
+        }
+
+        if (m.getAction() == MagicEffectSyncS2C.Action.REMOVE) {
+            living.removeEffectNoUpdate(effect);
+            return;
+        }
+
+        // Infinite effects must stay infinite, otherwise the local copy would run out and never come back.
+        int duration = m.getDuration() > 0 ? m.getDuration() + MagicEffectSync.CLIENT_DURATION_SLACK : m.getDuration();
+
+        // forceAddEffect skips canBeAffected (which also holds the artifact immunities), exactly like the vanilla
+        // client does when it receives its own ClientboundUpdateMobEffectPacket.
+        living.forceAddEffect(new MagicMobEffectInstance(effect, duration, m.getAmplifier(),
+                m.isAmbient(), m.isVisible(), m.isShowIcon()), null);
     }
 
     public static void configSync(ConfigSyncS2C m) {

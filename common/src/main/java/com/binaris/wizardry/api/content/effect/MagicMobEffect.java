@@ -24,7 +24,7 @@ public abstract class MagicMobEffect extends MobEffect implements CustomMobEffec
     private int particleCount = 1;
     private double particleOffsetScale = 1.0;
     private int particleTickInterval = 1;
-    private boolean hideVanillaParticles = true;
+    private boolean hideVanillaParticles = false;
 
     public MagicMobEffect(MobEffectCategory category, int color) {
         super(category, color);
@@ -64,6 +64,8 @@ public abstract class MagicMobEffect extends MobEffect implements CustomMobEffec
         return this;
     }
 
+    /// Hides the vanilla potion particles of any entity holding this effect, so only the custom particles from
+    /// [#spawnCustomParticle] are drawn. False by default
     protected MagicMobEffect hideVanillaParticles() {
         this.hideVanillaParticles = true;
         return this;
@@ -71,6 +73,18 @@ public abstract class MagicMobEffect extends MobEffect implements CustomMobEffec
 
     public boolean shouldHideVanillaParticles() {
         return hideVanillaParticles;
+    }
+
+    /// Returns true if any effect currently active on the entity is a wizardry effect that asked for the vanilla
+    /// potion particles to be hidden. The change only applies on client side
+    ///
+    /// @param entity the entity to check
+    /// @return true if the vanilla potion particles of this entity must not be spawned
+    public static boolean hidesVanillaParticles(LivingEntity entity) {
+        for (MobEffectInstance instance : entity.getActiveEffects()) {
+            if (instance.getEffect() instanceof MagicMobEffect magic && magic.shouldHideVanillaParticles()) return true;
+        }
+        return false;
     }
 
     /// This class is used to call the event methods of the MagicMobEffect, you shouldn't use it directly.

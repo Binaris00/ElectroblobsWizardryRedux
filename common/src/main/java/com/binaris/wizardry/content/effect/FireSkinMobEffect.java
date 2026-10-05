@@ -21,6 +21,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class FireSkinMobEffect extends MagicMobEffect {
     public FireSkinMobEffect() {
         super(MobEffectCategory.BENEFICIAL, 0);
+        hideVanillaParticles();
     }
 
     @Override

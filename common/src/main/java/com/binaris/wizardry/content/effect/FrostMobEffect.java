@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 public class FrostMobEffect extends MagicMobEffect {
     public FrostMobEffect() {
         super(MobEffectCategory.HARMFUL, 0);
+        hideVanillaParticles();
         this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "35dded48-2f19-4541-8510-b29e2dc2cd51", -0.5, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 

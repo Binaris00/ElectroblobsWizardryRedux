@@ -18,6 +18,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class StaticAuraMobEffect extends MagicMobEffect {
     public StaticAuraMobEffect() {
         super(MobEffectCategory.BENEFICIAL, 0);
+        hideVanillaParticles();
     }
 
     @Override

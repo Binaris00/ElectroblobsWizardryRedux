@@ -15,6 +15,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class WardMobEffect extends MagicMobEffect {
     public WardMobEffect() {
         super(MobEffectCategory.BENEFICIAL, 0xc991d0);
+        hideVanillaParticles();
     }
 
     @Override

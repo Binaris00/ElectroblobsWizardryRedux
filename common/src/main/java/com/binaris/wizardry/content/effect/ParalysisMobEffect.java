@@ -9,6 +9,7 @@ import net.minecraft.world.level.Level;
 public class ParalysisMobEffect extends MagicMobEffect {
     public ParalysisMobEffect() {
         super(MobEffectCategory.HARMFUL, 0);
+        hideVanillaParticles();
     }
 
     @Override

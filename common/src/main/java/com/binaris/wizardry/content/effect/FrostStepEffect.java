@@ -20,6 +20,7 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 public class FrostStepEffect extends MagicMobEffect {
     public FrostStepEffect() {
         super(MobEffectCategory.BENEFICIAL, 0);
+        hideVanillaParticles();
     }
 
     @Override

@@ -19,6 +19,7 @@
     "PlayerMixin",
     "ReloadCommandMixin",
     "ServerGamePacketListenerMixin",
+    "ServerEntityMixin",
     "ServerLevelMixin",
     "ServerPlayerMixin",
     "SlotMixin",
