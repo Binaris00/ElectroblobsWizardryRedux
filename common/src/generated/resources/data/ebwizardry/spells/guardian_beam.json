@@ -1,0 +1,28 @@
+{
+  "type": "ebwizardry:attack",
+  "base_properties": {
+    "air_depletion": 70,
+    "damage": 5.0,
+    "effect_duration": 60,
+    "effect_strength": 2,
+    "knockback": 0.6,
+    "range": 16.0
+  },
+  "chargeup": 0,
+  "cooldown": 50,
+  "cost": 15,
+  "element": "ebwizardry:sorcery",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
+  "spell_action": "ebwizardry:point",
+  "tier": "ebwizardry:advanced"
+}

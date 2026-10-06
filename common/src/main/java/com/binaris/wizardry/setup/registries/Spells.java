@@ -214,7 +214,7 @@ public final class Spells {
     // storm cloud
     // withering totem
     public static final Spell FANGS;
-    // guardian beam
+    public static final Spell GUARDIAN_BEAM;
     // radiant totem
     public static final Spell FIRESTORM;
     public static final Spell FLAMECATCHER;
@@ -522,6 +522,8 @@ public final class Spells {
         EVADE = spell("evade", Evade::new);
 
         FANGS = spell("fangs", Fangs::new);
+
+        GUARDIAN_BEAM = spell("guardian_beam", GuardianBeam::new);
 
         DRAGON_FIREBALL = spell("dragon_fireball", DragonFireball::new);
 
