@@ -54,6 +54,7 @@ public final class WizardryFabricClient implements ClientModInitializer {
         EBBlockEntityRenderers.init();
         EBBlockEntityRenderers.register(BlockEntityRenderers::register);
 
+        BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.SPECTRAL_BLOCK.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.VANISHING_COBWEB.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.CRYSTAL_FLOWER.get(), RenderType.cutout());
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.POTTED_CRYSTAL_FLOWER.get(), RenderType.cutout());

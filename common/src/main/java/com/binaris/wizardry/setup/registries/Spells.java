@@ -116,7 +116,7 @@ public final class Spells {
     public static final Spell LEVITATION;
     public static final Spell FORCE_ORB;
     // transportation
-    // spectral pathway
+    public static final Spell SPECTRAL_PATHWAY;
     public static final Spell PHASE_STEP;
     public static final Spell VANISHING_BOX;
     public static final Spell GREATER_HEAL;
@@ -175,7 +175,7 @@ public final class Spells {
     // earthquake
     public static final Spell FONT_OF_MANA;
     // mine
-    // conjure block
+    public static final Spell CONJURE_BLOCK;
     // muffle
     public static final Spell WARD;
     public static final Spell EVADE;
@@ -404,6 +404,7 @@ public final class Spells {
                         .add(DefaultProperties.BLAST_RADIUS, 4F)
                         .build()));
 
+    SPECTRAL_PATHWAY = spell("spectral_pathway", SpectralPathway::new);
 
         DARKNESS_ORB = spell("darkness_orb", () -> new ProjectileSpell<>(DarknessOrbEntity::new)
                 .soundValues(0.5f, 0.4f, 0.2f).assignProperties(SpellProperties.builder()
@@ -440,6 +441,8 @@ public final class Spells {
         ));
 
         FONT_OF_MANA = spell("font_of_mana", FontOfMana::new);
+
+        CONJURE_BLOCK = spell("conjure_block", ConjureBlock::new);
 
         INVISIBILITY = spell("invisibility", () -> new BuffSpell(0, 0.5f, 0.5f, () -> MobEffects.INVISIBILITY).assignProperties(
                 SpellProperties.builder()
