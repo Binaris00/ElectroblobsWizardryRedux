@@ -1,0 +1,213 @@
+{
+  "criteria": {
+    "ice_giant": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "ebwizardry:ice_giant"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "ice_wraith": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "ebwizardry:ice_wraith"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "lightning_wraith": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "ebwizardry:lightning_wraith"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "shadow_wraith": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "ebwizardry:shadow_wraith"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "silverfish_swarm": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:silverfish_swarm"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "spider_swarm": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:spider_swarm"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "storm_elemental": {
+      "conditions": {
+        "entity": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "ebwizardry:storm_elemental"
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:player_killed_entity"
+    },
+    "summon_blaze": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:summon_blaze"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "summon_ice_giant": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:summon_ice_giant"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "summon_lightning_wraith": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:summon_lightning_wraith"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "summon_skeleton": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:summon_skeleton"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "summon_skeleton_legion": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:summon_skeleton_legion"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "summon_snow_golem": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:summon_snow_golem"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "summon_wither_skeleton": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:summon_wither_skeleton"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "summon_zombie": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:summon_zombie"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    },
+    "vex_swarm": {
+      "conditions": {
+        "spell": {
+          "spell": "ebwizardry:vex_swarm"
+        }
+      },
+      "trigger": "ebwizardry:cast_spell"
+    }
+  },
+  "requirements": [
+    [
+      "ice_wraith"
+    ],
+    [
+      "lightning_wraith"
+    ],
+    [
+      "ice_giant"
+    ],
+    [
+      "shadow_wraith"
+    ],
+    [
+      "storm_elemental"
+    ],
+    [
+      "silverfish_swarm"
+    ],
+    [
+      "spider_swarm"
+    ],
+    [
+      "vex_swarm"
+    ],
+    [
+      "summon_blaze"
+    ],
+    [
+      "summon_ice_giant"
+    ],
+    [
+      "summon_lightning_wraith"
+    ],
+    [
+      "summon_skeleton"
+    ],
+    [
+      "summon_skeleton_legion"
+    ],
+    [
+      "summon_snow_golem"
+    ],
+    [
+      "summon_wither_skeleton"
+    ],
+    [
+      "summon_zombie"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

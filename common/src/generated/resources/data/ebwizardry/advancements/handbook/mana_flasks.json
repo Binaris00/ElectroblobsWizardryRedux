@@ -1,0 +1,16 @@
+{
+  "criteria": {
+    "mana_flask_small": {
+      "conditions": {
+        "recipe": "ebwizardry:mana_flask_small"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "mana_flask_small"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

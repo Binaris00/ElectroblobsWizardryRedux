@@ -23,7 +23,6 @@ public final class NotImplementedItems {
             EBItems.RING_INTERDICTION.get(),
             EBItems.RING_MIND_CONTROL.get(),
             EBItems.RING_STORMCLOUD.get(),
-            EBItems.WIZARD_HANDBOOK.get(),
             EBItems.LIGHTNING_HAMMER.get(),
             EBItems.AMULET_FIRE_CLOAKING.get(),
             EBItems.AMULET_FROST_WARDING.get(),

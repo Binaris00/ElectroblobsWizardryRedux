@@ -5,6 +5,7 @@ import com.binaris.wizardry.client.NotImplementedItems;
 import com.binaris.wizardry.content.menu.BookshelfMenu;
 import com.binaris.wizardry.core.PropertiesFabricDataManager;
 import com.binaris.wizardry.core.event.WizardryEventBus;
+import com.binaris.wizardry.event.AdvancementEvents;
 import com.binaris.wizardry.network.EBFabricServerNetwork;
 import com.binaris.wizardry.setup.registries.*;
 import com.binaris.wizardry.setup.registries.client.EBParticles;
@@ -41,6 +42,8 @@ public final class WizardryFabricMod implements ModInitializer {
         ServerWorldEvents.LOAD.register(((minecraftServer, serverLevel) -> WizardryEventBus.fireEvent(new EBServerLevelLoadEvent(serverLevel))));
 
         ServerLifecycleEvents.SERVER_STARTING.register((server) -> WizardryEventBus.fireEvent(new EBServerLoad(server)));
+
+        AdvancementEvents.GRANT.register(((player, advancement, progress) -> WizardryEventBus.fireEvent(new EBAdvancementEvent(player, advancement))));
 
         EBBlocks.register(Registry::register);
         EBBlockEntities.register(Registry::register);

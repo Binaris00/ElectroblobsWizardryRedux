@@ -1,0 +1,37 @@
+{
+  "criteria": {
+    "handbook/throwables": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:firebomb"
+            ]
+          },
+          {
+            "items": [
+              "ebwizardry:poison_bomb"
+            ]
+          },
+          {
+            "items": [
+              "ebwizardry:smoke_bomb"
+            ]
+          },
+          {
+            "items": [
+              "ebwizardry:spark_bomb"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "handbook/throwables"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

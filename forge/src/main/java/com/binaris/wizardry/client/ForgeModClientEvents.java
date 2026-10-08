@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -80,5 +81,10 @@ public class ForgeModClientEvents {
         for (int i = 0; i < EBKeyBinding.SPELL_QUICK_ACCESS.length; i++) {
             event.register(EBKeyBinding.SPELL_QUICK_ACCESS[i]);
         }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterClientReloadListener(RegisterClientReloadListenersEvent event) {
+        event.registerReloadListener(ResourceManagerListener.INSTANCE);
     }
 }
