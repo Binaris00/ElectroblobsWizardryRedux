@@ -283,7 +283,7 @@ public final class EBItemTagProvider extends ItemTagsProvider {
 
         this.tag(EBTags.BATTLEMAGE_ARMOR)
                 .add(EBItems.BATTLEMAGE_HELMET.get())
-                .add(EBItems.BATTLEMAGE_CHESTPLATE_EARTH.get())
+                .add(EBItems.BATTLEMAGE_CHESTPLATE.get())
                 .add(EBItems.BATTLEMAGE_LEGGINGS.get())
                 .add(EBItems.BATTLEMAGE_BOOTS.get())
 
@@ -327,6 +327,7 @@ public final class EBItemTagProvider extends ItemTagsProvider {
                 .addTag(EBTags.WIZARD_ARMOR)
                 .addTag(EBTags.WARLOCK_ARMOR)
                 .addTag(EBTags.BATTLEMAGE_ARMOR)
+                .addTag(EBTags.SAGE_ARMOR)
                 .replace(false);
 
         this.tag(EBTags.UPGRADE)

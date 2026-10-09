@@ -2,10 +2,6 @@ package com.binaris.wizardry.content.recipe;
 
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
 import com.binaris.wizardry.content.item.BlankScrollItem;
-import com.binaris.wizardry.core.config.EBServerConfig;
-import com.binaris.wizardry.setup.registries.EBItems;
-import com.binaris.wizardry.setup.registries.EBTags;
-import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -14,6 +10,7 @@ import java.util.*;
 public class ArcaneWorkbenchRecipe {
     /// Center Slot (Only one Item)
     private final ItemStack centreStack;
+    // Spell Book Slot (A book corresponds to one scroll.)
     private final ItemStack book;
     /// Crystal Slot
     private final Ingredient crystals;
@@ -23,7 +20,7 @@ public class ArcaneWorkbenchRecipe {
     private final ItemStack result;
     /// Five Input Slots
     private final List<ItemStack> inputs;
-    /// Input Slot Number (slot <= 5)
+    /// Input Slot Number
     private final int slots;
 
     public ArcaneWorkbenchRecipe(ItemStack centreStack, List<ItemStack> inputs, ItemStack book, Ingredient crystals, Ingredient upgrades, ItemStack result, int slots) {
@@ -39,8 +36,8 @@ public class ArcaneWorkbenchRecipe {
     public static ArcaneWorkbenchRecipe recipe(ItemStack origin, Ingredient upgrades, Ingredient crystals, ItemStack result) {
         List<ItemStack> inputs = new ArrayList<>();
         int slots = 0;
-        if (origin.getItem() instanceof IWorkbenchItem) {
-            slots = ((IWorkbenchItem) origin.getItem()).getSpellSlotCount(origin);
+        if (origin.getItem() instanceof IWorkbenchItem workbenchItem) {
+            slots = workbenchItem.getSpellSlotCount(origin);
             for (int i = 0; i < slots; i++) inputs.add(ItemStack.EMPTY);
         }
         return new ArcaneWorkbenchRecipe(origin, inputs, ItemStack.EMPTY, crystals, upgrades, result, slots);
@@ -59,42 +56,6 @@ public class ArcaneWorkbenchRecipe {
 
     public static ArcaneWorkbenchRecipe addMagicValue(ItemStack origin, Ingredient crystals, ItemStack result) {
         return recipe(origin, Ingredient.EMPTY, crystals, result);
-    }
-
-    /// Returns a list of item stacks, one for each type of crystal (regular, elemental, grand and shards), each with
-    /// the minimum quantity needed to supply the given amount of mana. Types of crystal for which more than the max.
-    /// stack size would be needed are ignored.
-    public static List<ItemStack> generateCrystalStacks(int mana) {
-        if (mana < 0)
-            throw new IllegalArgumentException("Cannot create an arcane workbench recipe with negative mana!");
-
-        if (mana == 0) return Collections.emptyList();
-
-        List<ItemStack> crystalStacks = new ArrayList<>();
-
-        // Normal Crystal
-        int count = Mth.ceil((float) mana / EBServerConfig.MANA_PER_CRYSTAL.get());
-        // A stack of crystals will almost certainly be enough mana, but you never know!
-        // Using ItemStack.EMPTY to avoid deprecated method; crystals' stack size is not stack-sensitive so it doesn't matter
-        if (count <= EBItems.MAGIC_CRYSTAL.get().getMaxStackSize()) {
-            crystalStacks.addAll(Arrays.stream(Ingredient.of(EBTags.NORMAL_MAGIC_CRYSTAL).getItems()).toList());
-        }
-
-        // Small Crystal
-        count = Mth.ceil((float) mana / EBServerConfig.MANA_PER_SHARD.get());
-
-        if (count <= EBItems.MAGIC_CRYSTAL_SHARD.get().getMaxStackSize()) {
-            crystalStacks.add(new ItemStack(EBItems.MAGIC_CRYSTAL_SHARD.get(), count));
-        }
-
-        // Grand Crystal
-        count = Mth.ceil((float) mana / EBServerConfig.GRAND_CRYSTAL_MANA.get());
-
-        if(count <= EBItems.MAGIC_CRYSTAL_GRAND.get().getMaxStackSize()){
-            crystalStacks.add(new ItemStack(EBItems.MAGIC_CRYSTAL_GRAND.get(), count));
-        }
-
-        return crystalStacks;
     }
 
     public ItemStack getCentreStack() {

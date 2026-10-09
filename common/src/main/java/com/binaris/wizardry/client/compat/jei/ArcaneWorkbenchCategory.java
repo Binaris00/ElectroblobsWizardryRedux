@@ -56,7 +56,7 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
 
     public ArcaneWorkbenchCategory(IGuiHelper helper) {
         this.background = helper.createDrawable(TEXTURE, 0, 0, 166, 126);
-        // Imbuement Altar Block
+        // Arcane Workbench Block
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(EBBlocks.ARCANE_WORKBENCH.get()));
         // Spell Book Slots
         this.bookSlots = helper.createDrawable(TEXTURE, 2, 128, 32, 32);
@@ -164,7 +164,6 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
                     // It's only a valid 'recipe' if something actually changed
                     if (!ItemStack.isSameItem(origin, result)) {
                         recipes.add(ArcaneWorkbenchRecipe.addUpgradeItem(origin, Ingredient.of(upgrade), result));
-                        break;
                     }
                 }
                 // Condense all special upgrades into one ingredient in an effort to reduce the number of separate recipes
@@ -229,7 +228,10 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
         return recipes;
     }
 
-    public static ItemStack setMetaData(Item item, Spell spell) {
+    /// Set the spell book's(or scroll) spell data, for example:
+    /// @param item The Item with the Spell NBT tag.
+    /// @param spell spell
+    private static ItemStack setMetaData(Item item, Spell spell) {
         ItemStack stack = new ItemStack(item);
         RegistryUtils.setSpell(stack, spell);
         return stack;

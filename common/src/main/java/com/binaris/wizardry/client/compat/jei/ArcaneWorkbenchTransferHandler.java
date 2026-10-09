@@ -57,6 +57,6 @@ public class ArcaneWorkbenchTransferHandler implements IRecipeTransferInfo<Arcan
     /// 20~46 Player Bag Slots
     @Override
     public @NotNull List<Slot> getInventorySlots(ArcaneWorkbenchMenu menu, @NotNull ArcaneWorkbenchRecipe recipe) {
-        return menu.slots.subList(ArcaneWorkbenchMenu.UPGRADE_SLOT + 1, ArcaneWorkbenchMenu.UPGRADE_SLOT + 37);
+        return menu.slots.subList(ArcaneWorkbenchMenu.UPGRADE_SLOT + 1, ArcaneWorkbenchMenu.UPGRADE_SLOT + 36);
     }
 }

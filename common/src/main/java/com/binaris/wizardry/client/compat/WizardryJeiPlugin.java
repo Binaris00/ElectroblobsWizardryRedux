@@ -68,9 +68,9 @@ public class WizardryJeiPlugin implements IModPlugin {
                 register.addIngredientInfo(item.get(), Component.translatable("item.ebwizardry." + type.toString().toLowerCase(Locale.ROOT) + ".generic.desc"))
         );
 
+        // Special Upgrade Info (Total: 9)
         addWandUpgradeInfo(register, EBItems.BLAST_UPGRADE.get());
         addWandUpgradeInfo(register, EBItems.ATTUNEMENT_UPGRADE.get());
-        addWandUpgradeInfo(register, EBItems.BLAST_UPGRADE.get());
         addWandUpgradeInfo(register, EBItems.CONDENSER_UPGRADE.get());
         addWandUpgradeInfo(register, EBItems.COOLDOWN_UPGRADE.get());
         addWandUpgradeInfo(register, EBItems.DURATION_UPGRADE.get());
@@ -78,6 +78,8 @@ public class WizardryJeiPlugin implements IModPlugin {
         addWandUpgradeInfo(register, EBItems.RANGE_UPGRADE.get());
         addWandUpgradeInfo(register, EBItems.SIPHON_UPGRADE.get());
         addWandUpgradeInfo(register, EBItems.STORAGE_UPGRADE.get());
+
+        // Arcane Tome Info
         addWandUpgradeInfo(register, EBItems.ARCANE_TOME.get());
         addWandUpgradeInfo(register, EBItems.APPRENTICE_ARCANE_TOME.get());
         addWandUpgradeInfo(register, EBItems.ADVANCED_ARCANE_TOME.get());

@@ -30,6 +30,7 @@ public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRec
     private final IDrawable icon;
 
     public ImbuementAltarCategory(IGuiHelper helper) {
+        // Imbuement Altar Texture Display
         this.background = helper.createDrawable(TEXTURE, 0, 0, 134, 74);
         // Imbuement Altar Block
         this.icon = helper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(EBBlocks.IMBUEMENT_ALTAR.get()));
@@ -50,6 +51,7 @@ public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRec
         return Component.translatable("gui.better_ebwizardry.imbuement_altar.title");
     }
 
+    /// Imbuement Altar Block Icon
     @Override
     public @Nullable IDrawable getIcon() {
         return this.icon;
@@ -62,15 +64,16 @@ public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRec
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ImbuementAltarRecipe recipe, IFocusGroup group) {
-        // 输出材料
-        builder.addSlot(RecipeIngredientRole.INPUT, 113, 29)
+        // Output Material
+        builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 29)
                 .addItemStack(recipe.getResultItem(null));
-        // 中心材料
+        // Center Material
         builder.addSlot(RecipeIngredientRole.INPUT, 29, 29)
                 .addIngredients(recipe.getCenterIngredient());
+        // All Receptacle Ingredients
         NonNullList<Ingredient> list = recipe.getReceptacleIngredients();
-        // 四周材料
-        if (recipe.getReceptacleIngredients().size() == 4 && !list.isEmpty()) {
+        // Round Material
+        if (list != null && list.size() == 4) {
             builder.addSlot(RecipeIngredientRole.INPUT, 29, 1)
                     .addIngredients(list.get(0));
             builder.addSlot(RecipeIngredientRole.INPUT, 57, 29)

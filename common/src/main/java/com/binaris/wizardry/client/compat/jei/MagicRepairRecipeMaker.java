@@ -21,12 +21,11 @@ public class MagicRepairRecipeMaker {
 
     public static List<CraftingRecipe> createRecipes() {
         List<CraftingRecipe> recipes = new ArrayList<>();
-        ItemStack[] items1 = Ingredient.of(EBTags.MANA_FLASK).getItems();
-        ItemStack[] items2 = Ingredient.of(EBTags.MANA_ITEM).getItems();
-        for (ItemStack manaFlask : items1) {
-            for (ItemStack manaItem : items2) {
+        ItemStack[] manaFlasks = Ingredient.of(EBTags.MANA_FLASK).getItems();
+        ItemStack[] manaItems = Ingredient.of(EBTags.MANA_ITEM).getItems();
+        for (ItemStack manaFlask : manaFlasks) {
+            for (ItemStack manaItem : manaItems)
                 recipes.add(createRecipe(manaFlask, manaItem));
-            }
         }
         return recipes;
     }
