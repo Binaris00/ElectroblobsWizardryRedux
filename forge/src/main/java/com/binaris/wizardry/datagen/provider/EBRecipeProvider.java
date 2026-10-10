@@ -2,6 +2,7 @@ package com.binaris.wizardry.datagen.provider;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
+import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe;
 import com.binaris.wizardry.core.ImbuementAltarRecipeBuilder;
 import com.binaris.wizardry.datagen.help.ArmorData;
 import com.binaris.wizardry.datagen.help.ElementData;
@@ -312,7 +313,7 @@ public final class EBRecipeProvider extends RecipeProvider {
         results.put(EBTags.NECROMANCY_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_necromancy")));
         results.put(EBTags.SORCERY_ELEMENTAL_DUST, ruinedBookResult(WizardryMainMod.location("gameplay/imbuement/ruined_spell_book_sorcery")));
 
-        ImbuementAltarRecipeBuilder.imbuementPoll(Ingredient.of(EBItems.RUINED_SPELL_BOOK.get()), EBItems.RANDOM_SPELL_BOOK.get(), results)
+        ImbuementAltarRecipeBuilder.imbuementPoll(Ingredient.of(EBItems.RUINED_SPELL_BOOK.get()), EBItems.RANDOM_SPELL_BOOK.get(), results, ImbuementAltarRecipe.Category.FIX)
                 .unlockedBy("has_ruined_spell_book", has(EBItems.RUINED_SPELL_BOOK.get()))
                 .save(consumer, WizardryMainMod.location("imbuement/fix_ruined_spell_book"));
     }

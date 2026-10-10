@@ -1,4 +1,4 @@
-// 1.20.1	2026-08-20T20:25:34.465850796	Spell Documentation: ebwizardry
+// 1.20.1	2026-10-09T19:26:43.224943	Spell Documentation: ebwizardry
 1d50810377674211a4aff00d60fafeeb3f615dab docs/spells.md
 b5ed5dfb6422a93452ce6148862262c78c017981 docs/spells/ebwizardry/agility.md
 ab2bb9f5beba5ca49328cf74e07a5089fcc63917 docs/spells/ebwizardry/arc.md
@@ -21,8 +21,8 @@ fd94a1df2c76c9ae4c98b81064f4109936f73af1 docs/spells/ebwizardry/cure_effects.md
 55fc24a8b3ae3008e2cf745606a95e077049dbf6 docs/spells/ebwizardry/curse_of_enfeeblement.md
 6842264aa40493d0b83c1e7a59173946eee41649 docs/spells/ebwizardry/curse_of_soulbinding.md
 3b1f9bc27779ad37b42849d253cae95f051831dd docs/spells/ebwizardry/curse_of_undeath.md
-56677c0379189e193473de7a282980d83a507b09 docs/spells/ebwizardry/dark_vision.md
 cab2f0f8156535feac48cd3feec89128a65f6de4 docs/spells/ebwizardry/darkness_orb.md
+56677c0379189e193473de7a282980d83a507b09 docs/spells/ebwizardry/dark_vision.md
 6fe0cb923fb7aa7479363115c726116ff237df3b docs/spells/ebwizardry/dart.md
 002027c29a14ac25563c5c74e74c4daf49f3ca8f docs/spells/ebwizardry/decay.md
 0dd93a316b20aa6024ee5df16d47cb559e9e2bce docs/spells/ebwizardry/detonate.md
@@ -31,16 +31,16 @@ cab2f0f8156535feac48cd3feec89128a65f6de4 docs/spells/ebwizardry/darkness_orb.md
 d5e463ac90a5e1a12616c604782a38546d2f5d7b docs/spells/ebwizardry/entrapment.md
 02bb81f483138a77a20a3e376dfdd4a204dcd905 docs/spells/ebwizardry/evade.md
 a7e19140fc3563a69eca30c7a05145dfc9b49781 docs/spells/ebwizardry/fangs.md
-60a247f7d1f3fcb6eed4e81028b56d1924bd6901 docs/spells/ebwizardry/fire_breath.md
-83deb6f11008d293ad8d44383f4092b2bfb1b505 docs/spells/ebwizardry/fire_resistance.md
-0eefe6d6db2d41f0cdf64e96c68a6580154d75a4 docs/spells/ebwizardry/fire_sigil.md
-78bf4bbbb69e15065a3b865edf547ebea731ba45 docs/spells/ebwizardry/fire_skin.md
 77f860bb56927ff0c6b81eb8daa5f5d4de58e6a7 docs/spells/ebwizardry/fireball.md
 e02c652dbdaa05f705a3d54f45d4ff3d7228ac4b docs/spells/ebwizardry/firebolt.md
 52516641f9f8fd324ba9266498d6055082f4758c docs/spells/ebwizardry/firebomb.md
 b4d5c945240cb3aed28c464c5d1089727a28ef2e docs/spells/ebwizardry/firestorm.md
-f34e9ab13cce8d81610c0b50098dd4d907312101 docs/spells/ebwizardry/flame_ray.md
+60a247f7d1f3fcb6eed4e81028b56d1924bd6901 docs/spells/ebwizardry/fire_breath.md
+83deb6f11008d293ad8d44383f4092b2bfb1b505 docs/spells/ebwizardry/fire_resistance.md
+0eefe6d6db2d41f0cdf64e96c68a6580154d75a4 docs/spells/ebwizardry/fire_sigil.md
+78bf4bbbb69e15065a3b865edf547ebea731ba45 docs/spells/ebwizardry/fire_skin.md
 f019bf144070bef2fbd7a6658de12e1fbf1b53bf docs/spells/ebwizardry/flamecatcher.md
+f34e9ab13cce8d81610c0b50098dd4d907312101 docs/spells/ebwizardry/flame_ray.md
 d4e5f9cdd1884e774c5e6469ee0abfa92e23d98f docs/spells/ebwizardry/flaming_axe.md
 a6c031039389b96c44d0c5e073b720b4bcc1c888 docs/spells/ebwizardry/flaming_weapon.md
 c22c71f1edda12034ab1bad4ef5cd231fd6fed68 docs/spells/ebwizardry/flight.md
@@ -60,15 +60,15 @@ eed92435c497d4e30913ebbfee6cf3141e5f0d28 docs/spells/ebwizardry/greater_ward.md
 b3d6bcbf0d2c154360ccfe538879b699a8622341 docs/spells/ebwizardry/growth_aura.md
 a5e36af797dd1506d175b13bae7ec02f7e9877e0 docs/spells/ebwizardry/hailstorm.md
 b281b1051884a078508be888dbcfcab57cad9e7f docs/spells/ebwizardry/heal.md
-ded8d6a4348a0130d1881c759e65f703ac69636d docs/spells/ebwizardry/heal_ally.md
 f5f4c5b01a9f571a4ddb9125fa533354dec75285 docs/spells/ebwizardry/healing_aura.md
+ded8d6a4348a0130d1881c759e65f703ac69636d docs/spells/ebwizardry/heal_ally.md
 f7ebae33a2ed8447f5360df9115b797414b980c2 docs/spells/ebwizardry/homing_spark.md
+3c5e2da212f132e9860f025afa0ccd3f63ab5268 docs/spells/ebwizardry/iceball.md
 55ee840afebb5f62cab1a5a7625a1639c7baabff docs/spells/ebwizardry/ice_age.md
 6f221c21250d1c5d83661913cb1983c03d14489e docs/spells/ebwizardry/ice_charge.md
 92e0235e784287972da47a6d88eaef950dd7610c docs/spells/ebwizardry/ice_lance.md
 b427db3569c54e36f549f60d6631ec3ee2b7c042 docs/spells/ebwizardry/ice_shard.md
 bfdb349a20a361b85f7ca208aff6fcf813f778ae docs/spells/ebwizardry/ice_spikes.md
-3c5e2da212f132e9860f025afa0ccd3f63ab5268 docs/spells/ebwizardry/iceball.md
 39fa9a6c6a10ec2ee375841f13004570f931650b docs/spells/ebwizardry/ignite.md
 95db75a384c9c70e285f4e382f401b2f154d2901 docs/spells/ebwizardry/invigorating_presence.md
 0c15ad8156db0e8dd7668a2f9d9149dac20d90f0 docs/spells/ebwizardry/invisibility.md
@@ -98,7 +98,7 @@ d049eedf2db33637d02361ef7ce2b55fac8bf939 docs/spells/ebwizardry/reversal.md
 9d7d902a55295508cc0e41cbeda6cd65cb02257e docs/spells/ebwizardry/slime.md
 f5de4b19b03e662b7c88484a897ee682bb0bc672 docs/spells/ebwizardry/smoke_bomb.md
 3e5efb288e3e3dfa9e2c72a67dbf6c11754ff621 docs/spells/ebwizardry/spark_bomb.md
-d5460f3dc9a3d4589bd0c570c9afda5e1bc2182b docs/spells/ebwizardry/speed_time.md
+b0282fee327bb79de1feb92f441ccc3fa85237f5 docs/spells/ebwizardry/speed_time.md
 8e451f779ea6c10134791fce1e4634854d9482de docs/spells/ebwizardry/spider_swarm.md
 5363bc28a9afe79872fe444cc924bcf7888e198c docs/spells/ebwizardry/static_aura.md
 f3e7f67b0f18f0cf0e48008602a9e5d13415e584 docs/spells/ebwizardry/summon_blaze.md
@@ -108,7 +108,7 @@ c45d4825fb7d2db812092c78a9ef9da98064f7fc docs/spells/ebwizardry/summon_skeleton_
 726219f38a36a7b141e8517a7364fa5cdcd33982 docs/spells/ebwizardry/summon_snow_golem.md
 6f09ce38883929b1fbb49a05260dc30b93c69121 docs/spells/ebwizardry/summon_wither_skeleton.md
 52e9d92bd4e874622539c3e13ee4258a1b8c7061 docs/spells/ebwizardry/summon_zombie.md
-1d5ec66c0c4fededd56a873c1abfecabc67574d0 docs/spells/ebwizardry/telekinesis.md
+4d25354c15f6256b310b8440b0cb5e2500431bb8 docs/spells/ebwizardry/telekinesis.md
 ab7165228ce52bb3ecd7fd6ab2cc7f6c47ca718e docs/spells/ebwizardry/thunderbolt.md
 7fa223cb29ccd620a5d146ed9e58e719c7e81b92 docs/spells/ebwizardry/tornado.md
 7665974c857f2b5778c4e49ff90dc014bed60d25 docs/spells/ebwizardry/vanishing_box.md

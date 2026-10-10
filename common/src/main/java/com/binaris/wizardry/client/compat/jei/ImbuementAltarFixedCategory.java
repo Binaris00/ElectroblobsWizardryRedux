@@ -1,7 +1,10 @@
 package com.binaris.wizardry.client.compat.jei;
 
 import com.binaris.wizardry.WizardryMainMod;
+import com.binaris.wizardry.client.compat.tag.ItemTag;
+import com.binaris.wizardry.client.compat.tag.TagTypes;
 import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe;
+import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe.Category;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
@@ -13,23 +16,25 @@ import mezz.jei.api.recipe.RecipeIngredientRole;
 import mezz.jei.api.recipe.RecipeType;
 import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.gui.GuiGraphics;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.crafting.Ingredient;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-/// JEI recipe category implementation for all 'recipes' in the imbuement altar.
-public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRecipe> {
+import java.util.List;
+import java.util.Objects;
+
+public class ImbuementAltarFixedCategory implements IRecipeCategory<ImbuementAltarRecipe> {
     public static final ResourceLocation TEXTURE = WizardryMainMod.location("textures/integration/jei/imbuement_altar_background.png");
-    public static final RecipeType<ImbuementAltarRecipe> IMBUE_TYPE = new RecipeType<>(WizardryMainMod.location("imbuement_altar"), ImbuementAltarRecipe.class);
+    public static final RecipeType<ImbuementAltarRecipe> FIX_TYPE = new RecipeType<>(WizardryMainMod.location("imbuement_altar_fixed"), ImbuementAltarRecipe.class);
 
     private final IDrawable background;
     private final IDrawable icon;
 
-    public ImbuementAltarCategory(IGuiHelper helper) {
+    public ImbuementAltarFixedCategory(IGuiHelper helper) {
         // Imbuement Altar Texture Display
         this.background = helper.createDrawable(TEXTURE, 0, 0, 134, 74);
         // Imbuement Altar Block
@@ -43,15 +48,14 @@ public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRec
 
     @Override
     public @NotNull RecipeType<ImbuementAltarRecipe> getRecipeType() {
-        return IMBUE_TYPE;
+        return FIX_TYPE;
     }
 
     @Override
     public @NotNull Component getTitle() {
-        return Component.translatable("gui.better_ebwizardry.imbuement_altar.title");
+        return Component.translatable("gui.better_ebwizardry.imbuement_altar_fixed.title");
     }
 
-    /// Imbuement Altar Block Icon
     @Override
     public @Nullable IDrawable getIcon() {
         return this.icon;
@@ -64,25 +68,23 @@ public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRec
 
     @Override
     public void setRecipe(IRecipeLayoutBuilder builder, ImbuementAltarRecipe recipe, IFocusGroup group) {
-        if (!ImbuementAltarRecipe.Category.IMBUE.equals(recipe.getCategory())) return;
-        // Output Material
-        builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 29)
-                .addItemStack(recipe.getResultItem(null));
+        if (!Category.FIX.equals(recipe.getCategory())) return;
+        // Output Materials (Results)
+        builder.addSlot(RecipeIngredientRole.OUTPUT,  113, 29)
+                .addItemStacks(recipe.getResults().stream().toList());
         // Center Material
         builder.addSlot(RecipeIngredientRole.INPUT, 29, 29)
                 .addIngredients(recipe.getCenterIngredient());
-        // All Receptacle Ingredients
-        NonNullList<Ingredient> list = recipe.getReceptacleIngredients();
-        // Round Material
-        if (list != null && list.size() == 4) {
-            builder.addSlot(RecipeIngredientRole.INPUT, 29, 1)
-                    .addIngredients(list.get(0));
-            builder.addSlot(RecipeIngredientRole.INPUT, 57, 29)
-                    .addIngredients(list.get(1));
-            builder.addSlot(RecipeIngredientRole.INPUT, 29, 57)
-                    .addIngredients(list.get(2));
-            builder.addSlot(RecipeIngredientRole.INPUT, 1, 29)
-                    .addIngredients(list.get(3));
-        }
+        // All Poll Ingredients
+        List<TagKey<Item>> polls = Objects.requireNonNull(recipe.getPoll());
+        // Four Receptacle Ingredients
+        builder.addSlot(RecipeIngredientRole.INPUT, 29, 1)
+                .addIngredients(TagTypes.TAG_TYPE, ItemTag.of(polls));
+        builder.addSlot(RecipeIngredientRole.INPUT, 57, 29)
+                .addIngredients(TagTypes.TAG_TYPE, ItemTag.of(polls));
+        builder.addSlot(RecipeIngredientRole.INPUT, 29, 57)
+                .addIngredients(TagTypes.TAG_TYPE, ItemTag.of(polls));
+        builder.addSlot(RecipeIngredientRole.INPUT, 1, 29)
+                .addIngredients(TagTypes.TAG_TYPE, ItemTag.of(polls));
     }
 }

@@ -1,5 +1,6 @@
 {
   "type": "ebwizardry:imbuement_altar",
+  "category": "imbue",
   "center": {
     "item": "ebwizardry:sage_hat"
   },

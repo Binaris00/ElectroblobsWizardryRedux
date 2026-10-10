@@ -2,7 +2,11 @@ package com.binaris.wizardry.client.compat;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.compat.jei.*;
+import com.binaris.wizardry.client.compat.tag.ItemTagHelper;
+import com.binaris.wizardry.client.compat.tag.ItemTagRenderer;
+import com.binaris.wizardry.client.compat.tag.TagTypes;
 import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe;
+import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBRecipeTypes;
@@ -19,9 +23,7 @@ import net.minecraft.world.item.crafting.RecipeManager;
 import net.minecraft.world.item.enchantment.Enchantment;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
+import java.util.*;
 
 @JeiPlugin
 public class WizardryJeiPlugin implements IModPlugin {
@@ -35,6 +37,7 @@ public class WizardryJeiPlugin implements IModPlugin {
     public void registerCategories(@NotNull IRecipeCategoryRegistration register) {
         IModPlugin.super.registerCategories(register);
         register.addRecipeCategories(new ImbuementAltarCategory(register.getJeiHelpers().getGuiHelper()));
+        register.addRecipeCategories(new ImbuementAltarFixedCategory(register.getJeiHelpers().getGuiHelper()));
         register.addRecipeCategories(new ArcaneWorkbenchCategory(register.getJeiHelpers().getGuiHelper()));
     }
 
@@ -43,9 +46,19 @@ public class WizardryJeiPlugin implements IModPlugin {
         IModPlugin.super.registerRecipes(register);
         RecipeManager recipeManager = Objects.requireNonNull(Minecraft.getInstance().level).getRecipeManager();
 
-        List<ImbuementAltarRecipe> imbuementAltarRecipes = recipeManager.getAllRecipesFor(EBRecipeTypes.IMBUEMENT_ALTAR);
+        List<ImbuementAltarRecipe> imbues = new ArrayList<>();
+        List<ImbuementAltarRecipe> fixes = new ArrayList<>();
+        for (ImbuementAltarRecipe recipe : recipeManager.getAllRecipesFor(EBRecipeTypes.IMBUEMENT_ALTAR)) {
+            if (recipe.getCategory() == ImbuementAltarRecipe.Category.IMBUE) {
+                imbues.add(recipe);
+            } else {
+                fixes.add(recipe);
+                EBLogger.warn(recipe.toString());
+            }
+        }
 
-        register.addRecipes(ImbuementAltarCategory.IMBUE_TYPE, imbuementAltarRecipes);
+        register.addRecipes(ImbuementAltarCategory.IMBUE_TYPE, imbues);
+        register.addRecipes(ImbuementAltarFixedCategory.FIX_TYPE, fixes);
         register.addRecipes(ArcaneWorkbenchCategory.ARCANE_WORKBENCH, ArcaneWorkbenchCategory.generateRecipes());
         register.addRecipes(RecipeTypes.CRAFTING, MagicRepairRecipeMaker.createRecipes());
 
@@ -90,6 +103,7 @@ public class WizardryJeiPlugin implements IModPlugin {
     public void registerRecipeCatalysts(@NotNull IRecipeCatalystRegistration register) {
         IModPlugin.super.registerRecipeCatalysts(register);
         register.addRecipeCatalyst(new ItemStack(EBBlocks.IMBUEMENT_ALTAR.get()), ImbuementAltarCategory.IMBUE_TYPE);
+        register.addRecipeCatalyst(new ItemStack(EBBlocks.IMBUEMENT_ALTAR.get()), ImbuementAltarFixedCategory.FIX_TYPE);
         register.addRecipeCatalyst(new ItemStack(EBBlocks.ARCANE_WORKBENCH.get()), ArcaneWorkbenchCategory.ARCANE_WORKBENCH);
     }
 
@@ -104,6 +118,12 @@ public class WizardryJeiPlugin implements IModPlugin {
     public void registerRecipeTransferHandlers(@NotNull IRecipeTransferRegistration register) {
         IModPlugin.super.registerRecipeTransferHandlers(register);
         register.addRecipeTransferHandler(new ArcaneWorkbenchTransferHandler());
+    }
+
+    @Override
+    public void registerIngredients(@NotNull IModIngredientRegistration register) {
+        IModPlugin.super.registerIngredients(register);
+        register.register(TagTypes.TAG_TYPE, Collections.emptyList(), new ItemTagHelper(), new ItemTagRenderer());
     }
 
     private void addWandUpgradeInfo(IRecipeRegistration register, Item item) {

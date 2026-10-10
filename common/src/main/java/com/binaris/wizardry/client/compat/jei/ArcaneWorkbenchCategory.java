@@ -62,7 +62,6 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
         this.bookSlots = helper.createDrawable(TEXTURE, 2, 128, 32, 32);
     }
 
-    @Deprecated
     @Override
     public @Nullable IDrawable getBackground() {
         return this.background;
@@ -86,7 +85,6 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
     @Override
     public void draw(ArcaneWorkbenchRecipe recipe, @NotNull IRecipeSlotsView view, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         this.background.draw(guiGraphics);
-        // Can't do this in IRecipeCategory#drawExtras because we have no access to the recipe there!
         // ArcaneWorkbenchRecipeCategory.TEXTURE is already bound at this point
         int slots = recipe.getSlots();
         for(int i = 0; i < slots; i++) {
@@ -148,7 +146,7 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
         // Recipes
         List<ArcaneWorkbenchRecipe> recipes = new ArrayList<>();
         // Upgrades Item, include Arcane Tome, Armor Upgrade
-        ItemStack[] wandUpgrades = Ingredient.of(EBTags.WAND_UPGRADES).getItems();
+        ItemStack[] wandUpgrades = Ingredient.of(EBTags.UPGRADE).getItems();
         ItemStack[] armorUpgrade = Ingredient.of(EBTags.ARMOR_UPGRADE).getItems();
         // Get all items that implement the IWorkbenchItem interface.
         // WandItem, ScrollItem, BlankScrollItem, WizardArmorItem

@@ -1,5 +1,6 @@
 package com.binaris.wizardry.core;
 
+import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe.Category;
 import com.binaris.wizardry.setup.registries.EBRecipeTypes;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -27,6 +28,7 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
     private final Ingredient[] receptacleIngredients;
     private final Item result;
     private final int count;
+    private final Category category;
     @Nullable
     private CompoundTag nbt;
     @Nullable
@@ -36,7 +38,7 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
     @Nullable
     private LinkedHashMap<TagKey<Item>, ResultEntry> results;
 
-    private ImbuementAltarRecipeBuilder(Ingredient centerIngredient, Ingredient[] receptacleIngredients, ItemLike result, int count) {
+    private ImbuementAltarRecipeBuilder(Ingredient centerIngredient, Ingredient[] receptacleIngredients, ItemLike result, int count, Category category) {
         if (receptacleIngredients.length != 4) {
             throw new IllegalArgumentException("ImbuementAltarRecipe must have exactly 4 receptacle ingredients");
         }
@@ -44,18 +46,23 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
         this.receptacleIngredients = receptacleIngredients;
         this.result = result.asItem();
         this.count = count;
+        this.category = category;
     }
 
     public static ImbuementAltarRecipeBuilder imbuement(Ingredient centerIngredient, Ingredient receptacle, ItemLike result) {
-        return new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{receptacle, receptacle, receptacle, receptacle}, result, 1);
+        return imbuement(centerIngredient, receptacle, result, Category.IMBUE);
     }
 
-    public static ImbuementAltarRecipeBuilder imbuement(Ingredient centerIngredient, Ingredient receptacle1, Ingredient receptacle2, Ingredient receptacle3, Ingredient receptacle4, ItemLike result) {
-        return new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{receptacle1, receptacle2, receptacle3, receptacle4}, result, 1);
+    public static ImbuementAltarRecipeBuilder imbuement(Ingredient centerIngredient, Ingredient receptacle, ItemLike result, Category category) {
+        return new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{receptacle, receptacle, receptacle, receptacle}, result, 1, category);
     }
 
-    public static ImbuementAltarRecipeBuilder imbuement(Ingredient centerIngredient, Ingredient receptacle1, Ingredient receptacle2, Ingredient receptacle3, Ingredient receptacle4, ItemLike result, int count) {
-        return new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{receptacle1, receptacle2, receptacle3, receptacle4}, result, count);
+    public static ImbuementAltarRecipeBuilder imbuement(Ingredient centerIngredient, Ingredient receptacle1, Ingredient receptacle2, Ingredient receptacle3, Ingredient receptacle4, ItemLike result, Category category) {
+        return new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{receptacle1, receptacle2, receptacle3, receptacle4}, result, 1, category);
+    }
+
+    public static ImbuementAltarRecipeBuilder imbuement(Ingredient centerIngredient, Ingredient receptacle1, Ingredient receptacle2, Ingredient receptacle3, Ingredient receptacle4, ItemLike result, int count, Category category) {
+        return new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{receptacle1, receptacle2, receptacle3, receptacle4}, result, count, category);
     }
 
     /// Creates a poll recipe: the four receptacles accept any item matching one of the poll tags
@@ -67,8 +74,8 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
     /// @param centerIngredient the ingredient placed on the altar.
     /// @param result the representative result item.
     /// @param results the poll tags mapped to their winning output, preserving iteration order.
-    public static ImbuementAltarRecipeBuilder imbuementPoll(Ingredient centerIngredient, ItemLike result, LinkedHashMap<TagKey<Item>, ResultEntry> results) {
-        ImbuementAltarRecipeBuilder builder = new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY}, result, 1);
+    public static ImbuementAltarRecipeBuilder imbuementPoll(Ingredient centerIngredient, ItemLike result, LinkedHashMap<TagKey<Item>, ResultEntry> results, Category category) {
+        ImbuementAltarRecipeBuilder builder = new ImbuementAltarRecipeBuilder(centerIngredient, new Ingredient[]{Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY, Ingredient.EMPTY}, result, 1, category);
         builder.poll = new ArrayList<>(results.keySet());
         builder.results = results;
         return builder;
@@ -101,7 +108,7 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
 
     @Override
     public void save(Consumer<FinishedRecipe> finishedRecipeConsumer, @NotNull ResourceLocation recipeId) {
-        finishedRecipeConsumer.accept(new Result(recipeId, this.group == null ? "" : this.group, this.centerIngredient, this.receptacleIngredients, this.result, this.count, this.nbt, this.poll, this.results, recipeId.withPrefix("recipes/imbuement_altar/")));
+        finishedRecipeConsumer.accept(new Result(recipeId, this.group == null ? "" : this.group, this.centerIngredient, this.receptacleIngredients, this.result, this.count, this.nbt, this.poll, this.results, recipeId.withPrefix("recipes/imbuement_altar/"), this.category));
     }
 
 
@@ -119,8 +126,9 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
         @Nullable
         private final LinkedHashMap<TagKey<Item>, ResultEntry> results;
         private final ResourceLocation advancementId;
+        private final Category category;
 
-        public Result(ResourceLocation id, String group, Ingredient centerIngredient, Ingredient[] receptacleIngredients, Item result, int count, @Nullable CompoundTag nbt, @Nullable List<TagKey<Item>> poll, @Nullable LinkedHashMap<TagKey<Item>, ResultEntry> results, ResourceLocation advancementId) {
+        public Result(ResourceLocation id, String group, Ingredient centerIngredient, Ingredient[] receptacleIngredients, Item result, int count, @Nullable CompoundTag nbt, @Nullable List<TagKey<Item>> poll, @Nullable LinkedHashMap<TagKey<Item>, ResultEntry> results, ResourceLocation advancementId, Category category) {
             this.id = id;
             this.group = group;
             this.centerIngredient = centerIngredient;
@@ -131,6 +139,7 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
             this.poll = poll;
             this.results = results;
             this.advancementId = advancementId;
+            this.category = category;
         }
 
         @Override
@@ -140,6 +149,7 @@ public class ImbuementAltarRecipeBuilder implements RecipeBuilder {
             }
 
             json.add("center", this.centerIngredient.toJson());
+            json.addProperty("category", this.category.getName());
 
             if (this.poll != null) {
                 JsonArray pollArray = new JsonArray();

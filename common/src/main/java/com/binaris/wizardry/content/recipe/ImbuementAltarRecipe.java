@@ -19,6 +19,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.GsonHelper;
 import net.minecraft.util.RandomSource;
+import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.Container;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -27,10 +28,7 @@ import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /// Defines a crafting recipe for the Imbuement Altar, requiring a center item placed on the
 /// altar block and exactly four receptacle ingredients placed in surrounding Wall Receptacle
@@ -56,19 +54,21 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
     private final List<TagKey<Item>> poll;
     @Nullable
     private final LinkedHashMap<TagKey<Item>, ItemStack> results;
+    private final Category category;
 
     public ImbuementAltarRecipe(ResourceLocation id, NonNullList<Ingredient> receptacleIngredients, Ingredient centerIngredient, ItemStack output) {
-        this(id, receptacleIngredients, centerIngredient, output, null, null);
+        this(id, receptacleIngredients, centerIngredient, output, null, null, Category.IMBUE);
     }
 
     public ImbuementAltarRecipe(ResourceLocation id, @Nullable NonNullList<Ingredient> receptacleIngredients, Ingredient centerIngredient, ItemStack output,
-                                @Nullable List<TagKey<Item>> poll, @Nullable LinkedHashMap<TagKey<Item>, ItemStack> results) {
+                                @Nullable List<TagKey<Item>> poll, @Nullable LinkedHashMap<TagKey<Item>, ItemStack> results, Category category) {
         this.id = id;
         this.receptacleIngredients = receptacleIngredients;
         this.centerIngredient = centerIngredient;
         this.output = output;
         this.poll = poll;
         this.results = results;
+        this.category = category;
     }
 
     /// Reads an item stack from a JSON object.
@@ -361,8 +361,10 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
         @Override
         public @NotNull ImbuementAltarRecipe fromJson(@NotNull ResourceLocation id, @NotNull JsonObject json) {
             Ingredient centerIngredient = Ingredient.fromJson(GsonHelper.getAsJsonObject(json, "center"));
+            String categoryStr = GsonHelper.getAsString(json, "category");
+            Category category = Category.CODEC.byName(categoryStr, Category.IMBUE);
 
-            if (json.has("poll")) {
+            if (json.has("poll") && category == Category.FIX) {
                 List<TagKey<Item>> poll = new ArrayList<>();
                 for (JsonElement element : GsonHelper.getAsJsonArray(json, "poll")) {
                     JsonObject pollObject = GsonHelper.convertToJsonObject(element, "poll entry");
@@ -384,7 +386,7 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
                     receptacleIngredients = readReceptacles(json);
                 }
 
-                return new ImbuementAltarRecipe(id, receptacleIngredients, centerIngredient, ItemStack.EMPTY, poll, results);
+                return new ImbuementAltarRecipe(id, receptacleIngredients, centerIngredient, ItemStack.EMPTY, poll, results, category);
             }
 
             NonNullList<Ingredient> receptacleIngredients = readReceptacles(json);
@@ -441,8 +443,9 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
         @Override
         public @NotNull ImbuementAltarRecipe fromNetwork(@NotNull ResourceLocation id, @NotNull FriendlyByteBuf buf) {
             Ingredient centerIngredient = Ingredient.fromNetwork(buf);
+            Category category = buf.readEnum(Category.class);
 
-            if (buf.readBoolean()) {
+            if (buf.readBoolean() && category == Category.FIX) {
                 NonNullList<Ingredient> receptacleIngredients = buf.readBoolean() ? readReceptaclesFromNetwork(buf) : null;
 
                 int pollSize = buf.readVarInt();
@@ -457,7 +460,7 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
                     results.put(TagKey.create(Registries.ITEM, buf.readResourceLocation()), buf.readItem());
                 }
 
-                return new ImbuementAltarRecipe(id, receptacleIngredients, centerIngredient, ItemStack.EMPTY, poll, results);
+                return new ImbuementAltarRecipe(id, receptacleIngredients, centerIngredient, ItemStack.EMPTY, poll, results, category);
             }
 
             NonNullList<Ingredient> receptacleIngredients = readReceptaclesFromNetwork(buf);
@@ -508,6 +511,40 @@ public class ImbuementAltarRecipe implements Recipe<Container> {
                 ingredient.toNetwork(buf);
             }
             buf.writeItem(recipe.output);
+        }
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public @Nullable List<TagKey<Item>> getPoll() {
+        return this.poll;
+    }
+
+    public Collection<ItemStack> getResults() {
+        return Objects.requireNonNull(results).values();
+    }
+
+    public enum Category implements StringRepresentable {
+        /// (DEFAULT) Eg: Magic Crystal Healing Crafting Recipe
+        IMBUE("imbue"),
+        /// Eg: Fix Ruined Spell Book Recipe
+        FIX("fix");
+        public static final StringRepresentable.EnumCodec<Category> CODEC = StringRepresentable.fromEnum(Category::values);
+        private final String name;
+
+        Category(String name) {
+            this.name = name;
+        }
+
+        @Override
+        public @NotNull String getSerializedName() {
+            return this.name;
+        }
+
+        public String getName() {
+            return this.name;
         }
     }
 }

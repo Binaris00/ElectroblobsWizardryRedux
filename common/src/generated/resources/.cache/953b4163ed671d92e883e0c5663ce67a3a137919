@@ -1,4 +1,4 @@
-// 1.20.1	2026-10-02T15:59:02.8745894	Tags for minecraft:item mod id ebwizardry
+// 1.20.1	2026-10-09T19:26:43.2367114	Tags for minecraft:item mod id ebwizardry
 b3c794cc2ff5977589f3cc0e4eb6d5c318553b6f data/accessories/tags/items/charm.json
 4d7295d9563a9726be37d291b741e0b91cebbfa9 data/accessories/tags/items/necklace.json
 08816f782037602f02231f8b1fbc76b1bb1c8848 data/accessories/tags/items/ring.json
@@ -6,9 +6,9 @@ b3c794cc2ff5977589f3cc0e4eb6d5c318553b6f data/curios/tags/items/charm.json
 4d7295d9563a9726be37d291b741e0b91cebbfa9 data/curios/tags/items/necklace.json
 08816f782037602f02231f8b1fbc76b1bb1c8848 data/curios/tags/items/ring.json
 d1c602376b9fe2f1efcfeb2de3a5e06a1048b483 data/ebwizardry/tags/items/arcane_tomes.json
-431d2429ad1bc6c44a151b5ab275800e1d88912c data/ebwizardry/tags/items/armor.json
+45b34480511b68ed4c2c488ff00f18fa93f86417 data/ebwizardry/tags/items/armor.json
 73c77e26bf31e48f7a4921b0c1e659b99c5b5590 data/ebwizardry/tags/items/armor_upgrade.json
-c14e6f630fcd7404d9e343214b23500747354d4e data/ebwizardry/tags/items/battlemage_armor.json
+ea0450fbf63da4cdf4322d27b858f1f07f6ee0bf data/ebwizardry/tags/items/battlemage_armor.json
 34611d40a55a35b00b41820beb1ae3879ce8396a data/ebwizardry/tags/items/earth_elemental_dust.json
 358748c7fe9163d9449b75bdcd263593eda5ba65 data/ebwizardry/tags/items/fire_elemental_dust.json
 026654df8432db60dca779913e84fd4599e6f648 data/ebwizardry/tags/items/gilded_wood.json
