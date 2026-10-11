@@ -12,6 +12,7 @@ import net.minecraft.world.level.Level;
 public class FontOfManaMobEffect extends MagicMobEffect {
     public FontOfManaMobEffect() {
         super(MobEffectCategory.BENEFICIAL, 0x66ccff);
+        hideVanillaParticles();
     }
 
     // Event handler to reduce cooldowns when caster has the buff

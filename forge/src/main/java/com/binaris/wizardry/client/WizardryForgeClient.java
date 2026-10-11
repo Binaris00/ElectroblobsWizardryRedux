@@ -39,6 +39,7 @@ public class WizardryForgeClient {
 
         // Set render types for blocks that need transparency/cutout
         event.enqueueWork(() -> {
+            ItemBlockRenderTypes.setRenderLayer(EBBlocks.SPECTRAL_BLOCK.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(EBBlocks.VANISHING_COBWEB.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(EBBlocks.CRYSTAL_FLOWER.get(), RenderType.cutout());
             ItemBlockRenderTypes.setRenderLayer(EBBlocks.POTTED_CRYSTAL_FLOWER.get(), RenderType.cutout());

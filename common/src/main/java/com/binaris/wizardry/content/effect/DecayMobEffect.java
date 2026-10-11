@@ -19,6 +19,7 @@ import java.util.List;
 public class DecayMobEffect extends MagicMobEffect {
     public DecayMobEffect() {
         super(MobEffectCategory.HARMFUL, 0x3c006c);
+        hideVanillaParticles();
         this.addAttributeModifier(Attributes.MOVEMENT_SPEED, "85602e0b-4801-4a87-94f3-bf617c97014e", -0.2, AttributeModifier.Operation.MULTIPLY_TOTAL);
     }
 

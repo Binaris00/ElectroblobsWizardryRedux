@@ -1,0 +1,24 @@
+{
+  "type": "ebwizardry:utility",
+  "base_properties": {
+    "duration": 900,
+    "length": 12
+  },
+  "chargeup": 15,
+  "cooldown": 200,
+  "cost": 40,
+  "element": "ebwizardry:sorcery",
+  "enabled": {
+    "book": true,
+    "commands": true,
+    "dispensers": true,
+    "looting": true,
+    "npcs": true,
+    "scroll": true,
+    "trades": true,
+    "treasure": true,
+    "wands": true
+  },
+  "spell_action": "ebwizardry:point",
+  "tier": "ebwizardry:advanced"
+}

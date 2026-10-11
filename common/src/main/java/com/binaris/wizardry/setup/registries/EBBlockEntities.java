@@ -48,6 +48,11 @@ public final class EBBlockEntities {
             "imbuement_altar", () -> BlockEntityType.Builder.of(ImbuementAltarBlockEntity::new, EBBlocks.IMBUEMENT_ALTAR.get()).build(null)
     );
 
+    public static final DeferredObject<BlockEntityType<SpectralBlockEntity>> SPECTRAL_BLOCK = blockEntity(
+            "spectral_block",
+            () -> BlockEntityType.Builder.of(SpectralBlockEntity::new, EBBlocks.SPECTRAL_BLOCK.get()).build(null)
+    );
+
     public static final DeferredObject<BlockEntityType<BookshelfBlockEntity>> BOOKSHELF = blockEntity(
             "bookshelf", () -> BlockEntityType.Builder.of(BookshelfBlockEntity::new,
                             EBBlocks.OAK_BOOKSHELF.get(), EBBlocks.SPRUCE_BOOKSHELF.get(), EBBlocks.BIRCH_BOOKSHELF.get(),

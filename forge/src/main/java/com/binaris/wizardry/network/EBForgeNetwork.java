@@ -43,6 +43,7 @@ public class EBForgeNetwork {
         register(PlayerCapabilitySyncPacketS2C.class, PlayerCapabilitySyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ArcaneLockSyncPacketS2C.class, ArcaneLockSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ParticleBuilderS2C.class, ParticleBuilderS2C::new, NetworkDirection.PLAY_TO_CLIENT);
+        register(MagicEffectSyncS2C.class, MagicEffectSyncS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         register(ConfigSyncS2C.class, ConfigSyncS2C::new, NetworkDirection.PLAY_TO_CLIENT);
         EBLogger.warn("注册成功");
         register(AdvancementSyncPacketS2C.class, AdvancementSyncPacketS2C::new, NetworkDirection.PLAY_TO_CLIENT);

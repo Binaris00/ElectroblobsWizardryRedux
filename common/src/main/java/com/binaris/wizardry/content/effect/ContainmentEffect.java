@@ -16,6 +16,7 @@ import org.jetbrains.annotations.NotNull;
 public class ContainmentEffect extends MagicMobEffect {
     public ContainmentEffect() {
         super(MobEffectCategory.NEUTRAL, 0x7988cc);
+        hideVanillaParticles();
     }
 
     public static float getContainmentDistance(int effectStrength) {

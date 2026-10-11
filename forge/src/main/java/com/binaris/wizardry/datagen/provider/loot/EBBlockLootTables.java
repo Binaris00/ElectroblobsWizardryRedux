@@ -37,6 +37,7 @@ public final class EBBlockLootTables extends BlockLootSubProvider {
         this.add(EBBlocks.PERMAFROST.get(), noDrop());
         this.add(EBBlocks.VANISHING_COBWEB.get(), noDrop());
         this.add(EBBlocks.OBSIDIAN_CRUST.get(), noDrop());
+        this.add(EBBlocks.SPECTRAL_BLOCK.get(), noDrop());
     }
 
     @Override
