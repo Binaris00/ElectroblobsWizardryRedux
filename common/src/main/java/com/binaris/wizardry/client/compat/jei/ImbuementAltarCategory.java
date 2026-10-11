@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 /// JEI recipe category implementation for all 'recipes' in the imbuement altar.
 public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRecipe> {
     public static final ResourceLocation TEXTURE = WizardryMainMod.location("textures/integration/jei/imbuement_altar_background.png");
-    public static final RecipeType<ImbuementAltarRecipe> IMBUE_TYPE = new RecipeType<>(WizardryMainMod.location("imbuement_altar"), ImbuementAltarRecipe.class);
+    public static final RecipeType<ImbuementAltarRecipe> IMBUE_TYPE = new RecipeType<>(WizardryMainMod.location("imbue_type"), ImbuementAltarRecipe.class);
 
     private final IDrawable background;
     private final IDrawable icon;
@@ -58,12 +58,12 @@ public class ImbuementAltarCategory implements IRecipeCategory<ImbuementAltarRec
     }
 
     @Override
-    public void draw(ImbuementAltarRecipe recipe, IRecipeSlotsView view, GuiGraphics guiGraphics, double mouseX, double mouseY) {
+    public void draw(@NotNull ImbuementAltarRecipe recipe, @NotNull IRecipeSlotsView view, @NotNull GuiGraphics guiGraphics, double mouseX, double mouseY) {
         this.background.draw(guiGraphics);
     }
 
     @Override
-    public void setRecipe(IRecipeLayoutBuilder builder, ImbuementAltarRecipe recipe, IFocusGroup group) {
+    public void setRecipe(@NotNull IRecipeLayoutBuilder builder, ImbuementAltarRecipe recipe, @NotNull IFocusGroup group) {
         if (!ImbuementAltarRecipe.Category.IMBUE.equals(recipe.getCategory())) return;
         // Output Material
         builder.addSlot(RecipeIngredientRole.OUTPUT, 113, 29)

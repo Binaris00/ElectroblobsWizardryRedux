@@ -13,9 +13,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 
-/// JEI recipe transfer handler for the arcane workbench. This differs from a standard recipe handler in that it returns
-/// the active bookshelf (virtual) slots from the workbench as part of the inventory slots, and does not require complete
-/// sets of ingredients.
+/// JEI recipe transfer handler for the arcane workbench, and does not require complete sets of ingredients.
 public class ArcaneWorkbenchTransferHandler implements IRecipeTransferInfo<ArcaneWorkbenchMenu, ArcaneWorkbenchRecipe> {
     @Override
     public @NotNull Class<? extends ArcaneWorkbenchMenu> getContainerClass() {

@@ -226,7 +226,7 @@ public class ArcaneWorkbenchCategory implements IRecipeCategory<ArcaneWorkbenchR
         return recipes;
     }
 
-    /// Set the spell book's(or scroll) spell data, for example:
+    /// Set the spell book's(or scroll) spell data
     /// @param item The Item with the Spell NBT tag.
     /// @param spell spell
     private static ItemStack setMetaData(Item item, Spell spell) {

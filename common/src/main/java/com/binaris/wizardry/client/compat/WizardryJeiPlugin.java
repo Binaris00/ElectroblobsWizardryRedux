@@ -2,11 +2,7 @@ package com.binaris.wizardry.client.compat;
 
 import com.binaris.wizardry.WizardryMainMod;
 import com.binaris.wizardry.client.compat.jei.*;
-import com.binaris.wizardry.client.compat.tag.ItemTagHelper;
-import com.binaris.wizardry.client.compat.tag.ItemTagRenderer;
-import com.binaris.wizardry.client.compat.tag.TagTypes;
 import com.binaris.wizardry.content.recipe.ImbuementAltarRecipe;
-import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBRecipeTypes;
@@ -49,12 +45,9 @@ public class WizardryJeiPlugin implements IModPlugin {
         List<ImbuementAltarRecipe> imbues = new ArrayList<>();
         List<ImbuementAltarRecipe> fixes = new ArrayList<>();
         for (ImbuementAltarRecipe recipe : recipeManager.getAllRecipesFor(EBRecipeTypes.IMBUEMENT_ALTAR)) {
-            if (recipe.getCategory() == ImbuementAltarRecipe.Category.IMBUE) {
+            if (recipe.getCategory() == ImbuementAltarRecipe.Category.IMBUE)
                 imbues.add(recipe);
-            } else {
-                fixes.add(recipe);
-                EBLogger.warn(recipe.toString());
-            }
+            else fixes.add(recipe);
         }
 
         register.addRecipes(ImbuementAltarCategory.IMBUE_TYPE, imbues);
@@ -118,12 +111,6 @@ public class WizardryJeiPlugin implements IModPlugin {
     public void registerRecipeTransferHandlers(@NotNull IRecipeTransferRegistration register) {
         IModPlugin.super.registerRecipeTransferHandlers(register);
         register.addRecipeTransferHandler(new ArcaneWorkbenchTransferHandler());
-    }
-
-    @Override
-    public void registerIngredients(@NotNull IModIngredientRegistration register) {
-        IModPlugin.super.registerIngredients(register);
-        register.register(TagTypes.TAG_TYPE, Collections.emptyList(), new ItemTagHelper(), new ItemTagRenderer());
     }
 
     private void addWandUpgradeInfo(IRecipeRegistration register, Item item) {
