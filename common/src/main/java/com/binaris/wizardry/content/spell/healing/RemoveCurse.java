@@ -15,6 +15,9 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.level.Level;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class RemoveCurse extends BuffSpell {
     public RemoveCurse() {
         super(1, 1, 0.3f);
@@ -22,19 +25,19 @@ public class RemoveCurse extends BuffSpell {
 
     @Override
     protected boolean applyEffects(CastContext ctx, LivingEntity caster) {
-        if (!caster.getActiveEffects().isEmpty()) {
-            boolean flag = false;
-            for (MobEffectInstance effect : caster.getActiveEffects()) {
-                if (effect.getEffect() instanceof CurseMobEffect) {
-                    caster.removeEffect(effect.getEffect());
-                    flag = true;
-                }
-            }
+        if (caster.getActiveEffects().isEmpty()) return false;
 
-            return flag;
+        boolean flag = false;
+        List<MobEffectInstance> effectsCopy = new ArrayList<>(caster.getActiveEffects());
+
+        for (MobEffectInstance effect : effectsCopy) {
+            if (effect.getEffect() instanceof CurseMobEffect) {
+                caster.removeEffect(effect.getEffect());
+                flag = true;
+            }
         }
 
-        return false;
+        return flag;
     }
 
     @Override
