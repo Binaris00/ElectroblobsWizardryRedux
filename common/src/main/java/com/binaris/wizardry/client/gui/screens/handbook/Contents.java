@@ -20,10 +20,6 @@ import java.util.List;
 /// <br>
 /// This class handles JSON parsing, formatting and drawing of the contents itself, working on a line-by-line basis
 /// (as opposed to sections, which work on a page-by-page basis). It also stores its own list of buttons.
-/// 
-/// @author Electroblob
-/// @author Crystal
-/// @since Wizardry 0.8.6-alpha
 public class Contents {
     // Final fields are mandatory, the rest are optional
     public final String id;

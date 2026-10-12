@@ -34,7 +34,6 @@ import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.util.GsonHelper;
 import org.jetbrains.annotations.NotNull;
 
-import java.awt.*;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -43,14 +42,11 @@ import java.util.*;
 import java.util.List;
 
 /// GUI class for the wizard's handbook. Like any GUI class, this is instantiated each time the book is opened. As of
-/// Wizardry 0.8.6, the handbook text is defined as a JSON file rather than a plain text file, and is loaded only on
+/// Wizardry mod, the handbook text is defined as a JSON file rather than a plain text file, and is loaded only on
 /// resource pack reload, rather than every time the book is opened. This means all the data structures (sections, images,
 /// etc.) are built before the GUI instance exists at all. However, since some things depend on positioning, these have to
 /// be initialised on GUI creation. (Previously, everything was done on GUI load)
 ///
-/// @author Electroblob
-/// @author Crystal
-/// @version Wizardry 0.8.6-alpha
 /// @see Section
 /// @see Contents
 /// @see Image
@@ -97,7 +93,8 @@ public class HandBookScreen extends Screen {
     /// with mappings as specified by the handbook JSON file for the current language. The keys in the map correspond to
     /// the keys in the recipes object in that file. This map is not sorted.
     public static final Map<String, CraftingRecipe> recipes = new HashMap<>();
-    private static final ResourceLocation DEFAULT = new ResourceLocation(WizardryMainMod.MOD_ID, "texts/handbook_en_us.json");
+    // Default Language: English US
+    private static final ResourceLocation DEFAULT = WizardryMainMod.location("texts/handbook_en_us.json");
 
     // Global variables
     private static final List<String> ADDONS = new ArrayList<>();
@@ -229,36 +226,37 @@ public class HandBookScreen extends Screen {
             sections.clear();
             contentsList.clear();
             colours.clear();
+            recipes.clear();
 
             bookmarkSection = null; // Also need to wipe the reference to the old bookmarked section
 
             for (Resource handbookFile : handbookFiles) {
                 BufferedReader reader;
                 try {
-                    reader = new BufferedReader(new InputStreamReader(handbookFile.open(), StandardCharsets.UTF_8));
+                    // for example: handbook_en_us.json
+                    reader = new BufferedReader(new InputStreamReader(Objects.requireNonNull(handbookFile).open(), StandardCharsets.UTF_8));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
 
-                JsonElement je = gson.fromJson(reader, JsonElement.class);
-                JsonObject json = je.getAsJsonObject();
-
-                GsonHelper.getAsJsonObject(json, "colours").entrySet().forEach(e -> colours.put(e.getKey(),
-                        Color.decode(e.getValue().getAsString()).getRGB()));
-
+                JsonElement jsonElement = gson.fromJson(reader, JsonElement.class);
+                JsonObject json = jsonElement.getAsJsonObject();
+                // get all colours, include text, caption, hyperlink, highlight and new_section
+                GsonHelper.getAsJsonObject(json, "colours").entrySet()
+                        .forEach(element -> colours.put(element.getKey(), (int) Long.parseLong(element.getValue().getAsString(), 16)));
                 // Repopulates the remaining maps
                 Image.populate(images, json);
                 CraftingRecipe.populate(recipes, json);
                 Section.populate(sections, json);
-
-                sectionList = List.copyOf(sections.values());
+                // Get 15 sections (Excluding internal subsections)
+                HandBookScreen.sectionList = List.copyOf(sections.values());
 
                 if (sections.isEmpty()) {
                     EBLogger.warn("Handbook has no sections! Aborting loading...");
                     return;
                 }
-
-                bookmarkSection = GsonHelper.getAsString(json, "bookmark_start_section");
+                // Get the bookmark. Default section is "introduction"
+                HandBookScreen.bookmarkSection = GsonHelper.getAsString(json, "bookmark_start_section");
                 if (!sections.containsKey(bookmarkSection))
                     throw new JsonSyntaxException("Section with id " + bookmarkSection + " is undefined");
             }
@@ -277,48 +275,41 @@ public class HandBookScreen extends Screen {
     /// @param manager The resource manager instance to use.
     /// @return The handbook JSON file, as an IResource, or null if it was not found.
     private static List<Resource> getHandbookResource(ResourceManager manager) {
-
-        // TODO: Implement resource pack stacking to allow addon mods and texture packs to add/overwrite content
-
-        Resource handbookFile = null;
         List<Resource> handbookFiles = new ArrayList<>();
+        // Current Language, for example: handbook_en_us.json
+        String currentCode = Minecraft.getInstance().getLanguageManager().getSelected();
 
-        try {
-            handbookFile = manager.getResourceOrThrow(new ResourceLocation(WizardryMainMod.MOD_ID, "texts/handbook_"
-                    + Minecraft.getInstance().getLanguageManager().getSelected() + ".json"));
-        } catch (Exception e) {
-            EBLogger.info("Wizard handbook JSON file missing for the current language (" + Minecraft.getInstance()
-                    .getLanguageManager().getSelected() + "). Using default (English-US) instead.");
-
-            try {
-                handbookFile = manager.getResourceOrThrow(DEFAULT);
-            } catch (IOException x) {
-                EBLogger.error("Couldn't find file: " + DEFAULT + ". The file may be missing; please try re-downloading and reinstalling Wizardry.", x);
-            }
-        }
-
-        handbookFiles.add(handbookFile);
-
-        for (String id : ADDONS) {
-            // Addons
-            EBLogger.info("Registering addon Wizard's Handbook contents for " + id);
-            try {
-                handbookFile = manager.getResourceOrThrow(new ResourceLocation(id, "texts/handbook_"
-                        + Minecraft.getInstance().getLanguageManager().getSelected() + ".json"));
-            } catch (Exception e) {
-                EBLogger.info("Wizard handbook JSON file missing for the current language (" + Minecraft.getInstance()
-                        .getLanguageManager().getSelected() + "). Using default (English-US) instead.");
-
-                try {
-                    handbookFile = manager.getResourceOrThrow(new ResourceLocation(id, "texts/handbook_en_us.json"));
-                } catch (IOException x) {
-                    EBLogger.error("Couldn't find file: " + DEFAULT + ". The file may be missing; please try re-downloading and reinstalling Wizardry.", x);
-                }
-            }
+        Resource handbookFile = getAddonResource(manager, WizardryMainMod.MOD_ID, currentCode);
+        if (handbookFile != null) {
+            handbookFiles.add(handbookFile);
+        } else {
+            // If there is no currently selected language, then choose the default language.
+            handbookFile = manager.getResource(DEFAULT).orElse(null);
             handbookFiles.add(handbookFile);
         }
 
+        // Addon mod
+        for (String id : ADDONS) {
+            handbookFile = getAddonResource(manager, id, currentCode);
+            if (handbookFile != null) handbookFiles.add(handbookFile);
+        }
+
         return handbookFiles;
+    }
+
+    /// Implement resource pack stacking to allow addon mods and texture packs to add/overwrite content
+    /// @param manager The resource manager instance to use.
+    /// @param id The addon mod is namespace
+    /// @param currentCode Select the language currently.
+    public static Resource getAddonResource(ResourceManager manager, String id, String currentCode) {
+        // Addons
+        EBLogger.info("Registering addon Wizard's Handbook contents for " + id);
+        try {
+            return manager.getResourceOrThrow(new ResourceLocation(id, "texts/handbook_" + currentCode + ".json"));
+        } catch (IOException e) {
+            EBLogger.error("Wizard handbook JSON file missing for the current language (" + currentCode + ").");
+        }
+        return null;
     }
 
     // Overridden to make it public
@@ -477,16 +468,6 @@ public class HandBookScreen extends Screen {
         // Recipe tooltips
         recipes.values().forEach(r -> r.drawTooltips(guiGraphics, font, currentPage, left, top, mouseX, mouseY));
     }
-
-    /*
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (modifiers == GLFW.GLFW_REPEAT) {
-            return false;
-        }
-        return super.keyPressed(keyCode, scanCode, modifiers);
-    }
-    */
 
 	// ===================================================
 	// Controls

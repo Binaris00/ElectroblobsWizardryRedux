@@ -77,8 +77,11 @@ public class SpellCastTrigger implements CriterionTrigger<SpellCastTrigger.Trigg
         public @NotNull JsonObject serializeToJson(@NotNull SerializationContext conditions) {
             JsonObject jsonObject = super.serializeToJson(conditions);
             JsonElement spellJson = this.spell.serialize();
-            jsonObject.add("spell", this.item.serializeToJson());
-            if (spellJson != null) jsonObject.add("spell", spellJson);
+            JsonElement itemJson = this.item.serializeToJson();
+
+            if (spellJson != null)
+                jsonObject.add("spell", spellJson);
+            jsonObject.add("item", itemJson);
             return jsonObject;
         }
     }

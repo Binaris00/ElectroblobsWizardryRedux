@@ -33,10 +33,6 @@ import java.util.*;
 /// sections, images and so on are determined on GUI load and depend on which of the previous sections have been
 /// unlocked, amongst other factors. This means that all of the unlocked sections must be formatted in order on GUI
 /// load, so that each section knows the previous section's length and therefore where to start.
-/// 
-/// @author Electroblob
-/// @author Crystal
-/// @since Wizardry 0.8.6-alpha
 public class Section {
     private static final Set<String> SPACELESS_LANGUAGES = ImmutableSet.of("zh_cn", "zh_tw");
     private final List<List<Button>> buttons;
@@ -331,7 +327,7 @@ public class Section {
 
                         List<String> upToLink = DrawingUtils.listFormattedStringToWidth(font, paragraph.substring(0, linkStart), HandBookScreen.PAGE_WIDTH);
                         if (upToLink.isEmpty())
-                            throw new NullPointerException("Paragraphs cannot start with '@': " + paragraph);
+                            throw new JsonSyntaxException("Paragraphs cannot start with '@': " + paragraph);
 
                         String linkRaw = paragraph.substring(linkStart, linkEnd + 1);
                         String[] arguments = paragraph.substring(linkStart + 1, linkEnd).split("\\s", 2);
@@ -408,7 +404,6 @@ public class Section {
 
         // Only shows the toast when the section was locked before and is now unlocked
         if (!this.unlocked && !completed.isEmpty() && showToasts && EBClientConfig.HANDBOOK_PROGRESSION.get()) {
-            // Mmmmm toast...
             Minecraft minecraft = Minecraft.getInstance();
             minecraft.getToasts().addToast(new HandbookToast(this));
             this.isNew = true;

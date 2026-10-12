@@ -1,6 +1,5 @@
 {
   "bookmark_start_section": "introduction",
-
   "colours": {
     "text": "#000000",
     "caption": "#666666",
@@ -8,7 +7,6 @@
     "highlight": "#dd4c1d",
     "new_section": "#ee88f7"
   },
-
   "images": {
     "workbench": {
       "location": "ebwizardry:textures/gui/handbook/pictures/arcane_workbench.png",
@@ -130,7 +128,6 @@
       "border": false
     }
   },
-
   "recipes": {
     "arcane_workbench": {
       "locations": [ "ebwizardry:arcane_workbench" ]
@@ -281,34 +278,25 @@
       "locations": [ "ebwizardry:receptacle" ]
     }
   },
-
   "sections": {
-
     "inside_cover": {
       "centre": {
         "x": true,
         "y": true
       },
       "text": [
-
         "The Wizard's Handbook",
-
         "By Electroblob"
       ]
     },
-
     "introduction": {
       "title": "Introduction",
       "text": [
-
         "Greetings, wizard! This book explains the many ways of the arcane and how to use them. This is no ordinary book, though - its pages will materialize before you as you discover more about the magical world.",
-
         "Use the arrow buttons to turn between pages, and the double-arrow buttons to quickly flip between sections. Use the central menu button to return to the main contents page.",
-
         "Click on any purple link text to jump straight to the relevant page. Right-click the bookmark to move it to the current page, and left-click to return to the bookmarked page."
       ]
     },
-
     "main_contents": {
       "title": "Contents",
       "contents": {
@@ -318,30 +306,20 @@
         "separator": "."
       }
     },
-
     "setting_up": {
       "title": "Setting Up",
       "include_in_contents": "main_contents",
       "text": [
-
         "To get started with wizardry, you will need:",
-
         "- A magic wand, crafted as shown:",
-
         "#recipe magic_wand",
-
         "- An @arcane_workbench arcane workbench@, crafted like so:",
-
         "#recipe arcane_workbench",
-
         "- A @spells spell@ book. These can be found in chests, dropped as loot, purchased from wizards, or you can make a beginner's spell, magic missile, as shown:",
-
         "#recipe magic_missile_spell_book",
-
         "You will also need a bunch more magic crystals to supply your wand with @mana@."
       ]
     },
-
     "mana": {
       "title": "Mana",
       "include_in_contents": "main_contents",
@@ -349,17 +327,12 @@
         "ebwizardry:crystal"
       ],
       "text": [
-
         "Mana is the arcane energy that gives wizards their powers. It is not a physical substance in its own right; rather, it is an everpresent aura which permeates everything in the world. In particular, it manifests itself in naturally occurring crystals, which can be found embedded in rocks underground. @wands Wands@ can store mana within them, and this mana is channeled into the @spells@ that you cast. Different spells require different amounts of mana, depending on how powerful they are and how long they last.",
-
         "#image crystal_ore",
-
         "#image magic_crystal",
-
         "It is widely accepted that mana cannot be created or destroyed, and that when a spell is cast, the mana it channels is simply dissipated into the surroundings. Indeed, this is how the vast majority of mana exists - spread thinly throughout the world. However, to be of any use, it must be concentrated, either naturally over thousands of years, as is the case with crystals underground, or artificially - an advanced subject not covered in this book. There also exist various ways of making spells more mana-efficient and recovering some of the mana dissipated during spellcasting."
       ]
     },
-
     "wands": {
       "title": "Wands",
       "include_in_contents": "main_contents",
@@ -367,21 +340,14 @@
         "ebwizardry:arcane_initiate"
       ],
       "text": [
-
         "The wand is the implement of choice for a wizard. With it, you can cast any @spells spell@ provided the wand can contain its power (see @tiers Tiers@). Wands come in many different varieties but you will almost certainly start with a basic magic wand.",
-
         "#image magic_wand",
-
         "Most wands begin their life as a simple arrangement of a magic crystal of some sort attached to a wooden stick, with a gold nugget affixed to the other end. The crystal is, of course, the source of the wand's power, as it provides the focus necessary to channel @spells@. The rest of the wand is important too though, as it provides not only a means with which to hold the wand, but also a path through which @mana@ can be channeled and directed.",
-
         "As more spells are cast with a wand, it grows more effective at channeling @spells@, and can therefore cast spells of greater power. This effect can be discerned from subtle changes that occur in the shape and appearance of the wand itself: as a wand grows more powerful, its crystal will become more vibrant,  its colour may change depending on its @elements element@, and after a while, the wood from which it is made will start to grow and twist into more complex shapes.",
-
         "When holding a wand, a small heads-up display will show in the corner of the screen. This indicates the spell that is currently selected along with a pictorial representation of it, and, if the spell has been cast, a cooldown bar indicating the time until that spell can be cast again. It also shows the names of the next and previous spells bound to the wand. To switch between spells, use the #next_spell_key and #previous_spell_key keys (these can be changed in options -> controls). You can also switch spells by scrolling the mouse wheel while sneaking.",
-
         "When viewing an inventory, hovering over a wand will display how much @mana@ is stored in it, along with its currently selected @spells spell@ and any specific abilities it may have. More in-depth information about a wand can be viewed by placing it in an @arcane_workbench arcane workbench@."
       ]
     },
-
     "spells": {
       "title": "Spells",
       "include_in_contents": "main_contents",
@@ -389,19 +355,13 @@
         "ebwizardry:handbook/spells"
       ],
       "text": [
-
         "A @wands wand@ is useless without spells to cast with it. Spells are recorded in two forms: in books, which are permanent, and in scrolls, which are temporary.",
-
         "Spell books are of little use on their own; instead they are used to bind the spell they contain to @wands@. Spell books can be found throughout the world and it will not take long for you to come across one. When you do find one, you can mouse over the spell book to see basic information about the spell at a glance. You can also right-click whilst holding a spell book to read more about it.",
-
         "Scrolls, on the other hand, serve a different purpose: right-clicking whilst holding one will cast the spell that is bound to it, destroying the scroll in the process. Like spell books, scrolls can be found throughout the world, but you can also make them yourself (see @enchanting_scrolls Enchanting Scrolls@).",
-
         "Scrolls are quite useful when you need to use a spell once or twice on a particular quest but don't want it to take up a slot on your @wands wand@. They also have the advantage of being able to instantly cast spells that would normally require a charge-up period. It should be noted, however, that they are an inefficient method of casting spells compared to using a wand.",
-
         "To the untrained eye, the magical runes with which spells are written are unreadable. In order to identify a spell, you could, of course, cast it and see what happens - though doing so may cause unwanted side-effects, and many spells need certain conditions in order to work. Futhermore, there is always a chance of misreading an unknown spell when casting, with potentially dangerous consequences depending on how powerful the spell is. A safer and more reliable option is to use a scroll of identification, which can be found in chests or purchased from a wizard. Right-clicking whilst holding one will identify the first unknown spell book or scroll on your hotbar, consuming the scroll of identification in the process."
       ]
     },
-
     "arcane_workbench": {
       "title": "Arcane Workbench",
       "include_in_contents": "main_contents",
@@ -415,13 +375,9 @@
         "ebwizardry:handbook/arcane_workbench"
       ],
       "text": [
-
         "The arcane workbench is a block similar in appearance to the enchantment table where you can charge, upgrade, and bind @spells@ to your @wands wand@. It may be crafted as follows:",
-
         "#recipe arcane_workbench",
-
         "The following pages explain the various actions that may be performed in the arcane workbench.",
-
         "#image workbench"
       ],
       "sections": {
@@ -432,7 +388,6 @@
             "ebwizardry:handbook/arcane_workbench"
           ],
           "text": [
-
             "To bind a @spells spell@ to your @wands wand@, simply place your wand in the central slot of the workbench, then place the spell book in one of the surrounding slots and press apply. You will notice that the spell book is left untouched during this process - this is because the act of spell binding does not 'take' the spell from the spell book; rather, it attunes the wand to the spell. As such, you may change the spells bound to your wand as much as you wish by simply repeating the spell binding process. You can bind up to five spells to a wand at one time, though this number may be increased with attunement upgrades."
           ]
         },
@@ -477,7 +432,6 @@
         }
       }
     },
-
     "wizard_armour": {
       "title": "Wizard Armor",
       "include_in_contents": "main_contents",
@@ -485,41 +439,26 @@
         "ebwizardry:arcane_initiate"
       ],
       "text": [
-
         "As a wizard, you will need something to protect you from the creatures you fight. No ordinary armor will do though. To make the most of your spells, you will need wizard armor: hat, robes, leggings and boots. Unlike ordinary armor, these will not break. Instead, they use arcane energy to shield the wearer. This of course means that they must be charged with magic crystals, just like wands. Fortunately, these garments do not consume much @mana@. Charge them as you would a wand in the @arcane_workbench arcane workbench@ or with a @mana_flasks mana flask@, but be careful - if they run out of mana, you will find yourself defenseless.",
-
         "#image wizard_armour",
-
         "You can obtain wizard armor by crafting it from magical silk:",
-
         "#recipe magic_silk",
         "#recipe wizard_hat",
         "#recipe wizard_robe",
         "#recipe wizard_leggings",
         "#recipe wizard_boots",
-
         "One may enchant wizard armor using a normal enchantment table, and due to the inherent properties of magical silk, it tends to be quite effective at holding enchantments. Of particular utility to a wizard are the Magic, Frost and Shock Protection enchantments, which may prove useful defending against other wielders of magic.",
-
         "Those wizards who devote themselves to the practise of one element sometimes wear special garments which grant bonuses for that element. Full sets of such garments are very sought after among wizards and are not easy to find.",
-
         "Once they have mastered the fundamentals of magic, many wizards choose to follow a particular path, or class, to further their training. There are three main classes that a wizard may align themselves with: sage, battlemage and warlock. Members of each class can easily be distinguished by their robes, which are modified - usually with rare and exotic materials - to better suit their needs.",
-
         "#image classes",
-
         "The Sage",
-
         "By devoting their life to the pursuit of knowledge, the sage has perfected the art of efficient spellcasting, allowing them to cast spells using the smallest possible amount of mana. The finery of their silken robes belies the substantial protection they provide, as the sage is also an adept enchanter - though they are still no match for solid metal plating. Spending such long periods in the safety of a library does, however, make them rather sluggish in combat.",
-
         "The Battlemage",
-
         "The battlemage is geared for combat, clad in a combination of toughened cloth and crystal-silver plating sourced from the most skilled of foundries. Through discipline and training, the battlemage has also improved their speed and reactions, allowing them to cast spells more often. This does not come cheap, however, and a battlemage must be careful not to burn through mana too quickly.",
-
         "The Warlock",
-
         "The warlock lives for exploration, pushing the boundaries of what is possible to unearth lost arcane secrets. This, along with a willingness to experiment with what others may deem forbidden, has allowed them to break the constraints of traditional training and cast spells at a formidable rate, as well as reducing their mana usage. Their lightweight robes, though good for exploration, provide less protection in combat than their counterparts."
       ]
     },
-
     "magical_world": {
       "title": "Magic in the World",
       "include_in_contents": "main_contents",
@@ -533,9 +472,7 @@
         "ebwizardry:handbook/on_subsection_unlock"
       ],
       "text": [
-
         "One cannot master the arcane just by staying at home - there is a world full of magic out there to explore! Ancient ruins, relics and mysterious beings good and bad await discovery - if you know where to look. The greatest wizards are also the most curious, and gain much of their knowledge and power through exploration of the environment around them, and experimenting with what they find.",
-
         "Whilst much of a wizard's time is inevitably spent alone, the sharing of knowledge is also vital to learning the arcane arts. Seek out fellow practicioners of magic, and learn as much as you can from them: communication is arguably the greatest power of all."
       ],
       "sections": {
@@ -665,7 +602,6 @@
         }
       }
     },
-
     "tiers": {
       "title": "Tiers",
       "include_in_contents": "main_contents",
@@ -673,25 +609,16 @@
         "ebwizardry:handbook/tome_of_arcana"
       ],
       "text":[
-
         "-@wands Wands@ and @spells@ come in four tiers: #colour_novicenovice#colour_reset, #colour_apprenticeapprentice#colour_reset, #colour_advancedadvanced #colour_resetand #colour_mastermaster#colour_reset. Each tier is more powerful than the last.",
-
         "#image tiers",
-
         "#colour_noviceNovice #colour_resetwands are the ones that can be crafted. They hold up to #novice_max_charge mana, and can only cast novice spells. Novice spells are simple enough to be cast by anyone and they do not usually cost much mana. This does not necessarily mean that they are useless at higher tiers however; their low cost makes some novice spells useful even when you have access to master spells.",
-
         "#colour_apprenticeApprentice #colour_resetwands are the next tier up from novice wands. They hold up to #apprentice_max_charge mana and can cast novice and apprentice spells. Apprentice spells are a little more impressive than novice spells but usually cost more.",
-
         "#colour_advancedAdvanced #colour_resetwands are quite rare and are much more powerful. They can cast all spells except master spells, and hold #advanced_max_charge mana. Advanced spells can grant superhuman powers such as invisibility and wreak havoc on foes.",
-
         "#colour_masterMaster #colour_resetwands are the most powerful wands in existence. They hold up to #master_max_charge mana, and can cast any spell. Master spell books are very rare and the spells can cause complete devastation not only to enemies but even the world itself. Use with caution.",
-
         "To be upgraded to a higher tier, a wand must first become powerful enough to channel spells of that tier. Wands gain power as spells are cast with them. Spell variety, spell power, elemental effects and other external factors may all have an effect on how quickly a wand matures.",
-
         "Once a wand is sufficiently powerful, a tome of arcana provides the final catalyst needed to elevate the wand to the next tier (see @upgrading_wands Upgrading Wands@), and once this has happened, the maturing process can begin again for the next tier."
       ]
     },
-
     "elements": {
       "title": "Elements",
       "include_in_contents": "main_contents",
@@ -699,31 +626,19 @@
         "ebwizardry:handbook/elements"
       ],
       "text": [
-
         "-@spells Spells@ belong to different elements, which determine the nature of the spell and also grant perks when used with certain @wands@.",
-
         "#image elements",
-
         "#colour_fireFire#colour_reset \nPerhaps the most destructive element, fire concerns burning, lava, and explosions. A powerful pyromancer will unleash hell upon their enemies and probably set the world alight in the process. Most fire attack spells set fire to their target, causing ongoing damage over time. However, be wary that fire spells may have no effect on nether mobs.",
-
         "#colour_iceIce#colour_reset \nThe element of ice is made of all that is cold. Frost spells often slow enemies down or freeze them completely, and are especially effective on creatures of fire. Frost magic can prove equally useful outside of combat, such as freezing water to cross a river.",
-
         "#colour_lightningLightning#colour_reset \nThis element concerns lightning, storms, and the weather. A powerful storm mage is a force to be reckoned with, and some posess the ability to call down lightning at will. Lightning spells often damage multiple enemies at once and usually seek their target, making them an effective attack against any mob... but beware of creepers.",
-
         "#colour_necromancyNecromancy#colour_reset \nNecromancy is the element of darkness, chaos and the undead. Necromancers are mysterious and often regarded as evil, though this is usually not the case. Necromancy spells are commonly used to summon @creatures@ to fight for you or even bend the will of your enemies.",
-
         "#colour_earthEarth#colour_reset \nThe element of earth is focused on the natural world: animals, plants, the wind, and such like. Earth magic is diverse and takes a wide variety of forms, from poisoning enemies to unleashing the fury of the weather. Earth spells are a mixture of attack, defense and utility.",
-
         "#colour_sorcerySorcery#colour_reset \nSorcery is the element of force and change. Sorcerers manipulate light, gravity and even reality itself to fit their needs. Sorcery spells can be used, among other things, to grant their caster magical powers or move objects to their will.",
-
         "#colour_healingHealing#colour_reset \nThe element of healing is concerned with defense and regeneration. Healers seek to protect themselves and their allies as much as possible and as such can be very difficult opponents. Though generally not used as an attack, the purifying light of some healing spells will do considerable damage to the undead. Healing spells are indispensable when in combat.",
-
         "The boundaries between the different elements are not always distinct, and some spells bear traits of elements other than their own.",
-
         "If you are lucky, you may happen upon an elemental crystal. Elemental crystals are magic crystals that have absorbed elemental properties as they have grown - though the exact conditions required and mechanism by which this happens remain a mystery. We do know, however, that such crystals may be used to create elemental wands, which allow spells of the right element to be cast with more potency than usual."
       ]
     },
-
     "miscellaneous": {
       "title": "Miscellaneous",
       "include_in_contents": "main_contents",
@@ -744,19 +659,13 @@
             "ebwizardry:handbook/mana_flasks"
           ],
           "text": [
-
             "Arkendur's Arcane Supplies Co. - magical items for your every need!",
-
-            "Need to recharge your @wands wand@ on the go? No problem! @mana Mana@ can now be bottled. Simply craft a mana flask with a glass bottle and eight magic crystals and take it with you. When you need to use it, simply craft it with your wand and it will restore some of the charge. *",
-
+            "Need to recharge your @wands wand@ on the go? No problem! @mana Mana@ can now be bottled. Simply craft a mana flask with a glass bottle and eight magic crystals and take it with you. When you need to use it, simply craft it with your wand and it will restore some of the charge.",
             "#recipe medium_mana_flask",
-
             "NEW! Introducing the brand-new small and large mana flasks - now you can choose a size of mana flask to meet your needs!",
-
             "#recipe small_mana_flask",
             "#recipe large_mana_flask",
-
-            "* This process will destroy the bottle. Some mana is lost during bottling."
+            "This process will destroy the bottle. Some mana is lost during bottling."
           ]
         },
         "throwable_items": {
@@ -788,12 +697,10 @@
         }
       }
     },
-
     "crafting_recipes": {
       "title": "Crafting Recipes",
       "include_in_contents": "main_contents",
       "text": [
-
         "#recipe arcane_workbench",
         "#recipe novice_wands",
         "#recipe magic_missile_spell_book",
@@ -823,39 +730,24 @@
         "#recipe receptacle"
       ]
     },
-
     "credits": {
       "title": "Credits",
       "include_in_contents": "main_contents",
       "text": [
-
         "Electroblob's Wizardry \nVersion #version \nFor Minecraft #mcversion",
-
         "Designed, coded and textured by Electroblob",
-
         "Thanks to Minecraft Forge and MCP, without which this mod would not have been possible.",
-
         "Thanks also to the Minecraft modding community, which always has an answer to my modding problems!",
-
         "In addition, I'd like to thank the following individuals for their contributions to the mod:",
-
         "Code:",
-
-        "- Corail31 \n- 12foo \n- Shadows-of-Fire \n- HellFirePvP \n- Tora-B \n- Avatair \n- Aeronica \n- UltraHex \n- Azim-Palmer \n- raoulvdberge \n- rafasoares \n- xinyuan-liu \n- SettingDust",
-
+        "- Corail31 \n- 12foo \n- Shadows-of-Fire \n- HellFirePvP \n- Tora-B \n- Avatair \n- Aeronica \n- UltraHex \n- Azim-Palmer \n- raoulvdberge \n- rafasoares \n- xinyuan-liu \n- SettingDust \n- Crystal",
         "Translations:",
-
         "- Spanish: MadWrist, Alsentar \n- Mexican Spanish: MadWrist \n- Russian: VilagVil, kellixon, bigenergy, MugGod2, DrHesperus \n- French: Hahdrim \n- Brazilian Portuguese: lorrampi \n- Chinese (Simplified): ZHENGLOC, dragon-evol, Hokorizero, TUsama, Determancer \n- Korean: shejery, rewi_wire, 방통, red1854th \n- Polish: Trozuu, Olej \n- German: BirdyDragon, Lemopav \n- Chinese (Traditional): chesterccj305 \n- Hungarian: Bombadil",
-
         "Sound Effects:",
-
         "- OhhWowProductions\n- fredzed\n- deleted_user_3277771\n- DiscoveryME\n- OGSoundFX\n- leosalom\n- juskiddink",
-
         "For more information, check out the @https://github.com/Electroblob77/Wizardry/wiki wiki@.",
-
         "Can't get enough wizardry? Join the @https://discord.gg/hs8yJP2 Discord server@ for the latest news, discussions and extras!"
       ]
     }
-
   }
 }

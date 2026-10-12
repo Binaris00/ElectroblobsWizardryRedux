@@ -41,7 +41,7 @@ public class RequestAdvancementSyncPacketC2S implements Message {
                 advancements.add(advancement.getId());
         }
 
-        AdvancementSyncPacketS2C packet = new AdvancementSyncPacketS2C(true, advancements);
+        AdvancementSyncPacketS2C packet = new AdvancementSyncPacketS2C(false, advancements);
         Services.NETWORK_HELPER.sendTo(player, packet);
     }
 }
