@@ -1,5 +1,6 @@
 {
   "type": "ebwizardry:imbuement_altar",
+  "category": "fix",
   "center": {
     "item": "ebwizardry:ruined_spell_book"
   },

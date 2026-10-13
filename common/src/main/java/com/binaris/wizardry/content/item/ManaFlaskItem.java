@@ -106,6 +106,10 @@ public class ManaFlaskItem extends Item {
         tooltip.add(Component.translatable("item.ebwizardry.mana_flask.desc", size.capacity).withStyle(ChatFormatting.GRAY));
     }
 
+    public Size getSize() {
+        return this.size;
+    }
+
     public enum Size {
         SMALL(75, 25, Rarity.COMMON),
         MEDIUM(350, 40, Rarity.COMMON),
