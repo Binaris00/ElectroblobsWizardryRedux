@@ -64,7 +64,7 @@ public final class Spells {
     public static final Spell LIGHTNING_ARROW;
     public static final Spell LIFE_DRAIN;
     public static final Spell SUMMON_SKELETON;
-    // metamorphosis
+    public static final Spell METAMORPHOSIS;
     public static final Spell WITHER;
     public static final Spell POISON;
     public static final Spell GROWTH_AURA;
@@ -831,6 +831,8 @@ public final class Spells {
                                 .add(DefaultProperties.SUMMON_RADIUS, 2)
                                 .build()
                 ));
+
+        METAMORPHOSIS = spell("metamorphosis", Metamorphosis::new);
 
         SLIME = spell("slime", TrapSlime::new);
 

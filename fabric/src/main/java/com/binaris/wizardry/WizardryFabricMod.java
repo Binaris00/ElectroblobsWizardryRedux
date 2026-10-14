@@ -107,6 +107,7 @@ public final class WizardryFabricMod implements ModInitializer {
         EBFabricServerNetwork.registerC2SMessages();
         ResourceManagerHelper.get(PackType.SERVER_DATA).registerReloadListener(new PropertiesFabricDataManager());
         WandUpgrades.initUpgrades();
+        EntityTransformations.init();
         NotImplementedItems.init();
         EBParticles.registerType(Registry::register);
     }

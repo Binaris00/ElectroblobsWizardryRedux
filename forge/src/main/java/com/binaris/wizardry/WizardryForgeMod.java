@@ -8,6 +8,7 @@ import com.binaris.wizardry.network.EBForgeNetwork;
 import com.binaris.wizardry.registry.EBArgumentTypesForge;
 import com.binaris.wizardry.registry.EBRegistriesForge;
 import com.binaris.wizardry.setup.registries.WandUpgrades;
+import com.binaris.wizardry.setup.registries.EntityTransformations;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -38,6 +39,7 @@ public final class WizardryForgeMod {
         EBForgeNetwork.registerMessages();
         BookshelfMenu.initBookItems();
         WandUpgrades.initUpgrades();
+        EntityTransformations.init();
         NotImplementedItems.init();
         CuriosIntegration.load();
     }
