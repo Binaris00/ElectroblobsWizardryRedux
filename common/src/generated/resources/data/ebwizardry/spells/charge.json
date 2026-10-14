@@ -1,7 +1,9 @@
 {
   "type": "ebwizardry:attack",
   "base_properties": {
+    "charge_air_multiplier": 0.7,
     "charge_speed": 2.0,
+    "charge_vertical_cap": 0.6,
     "damage": 8.0,
     "duration": 10,
     "knockback": 1.0

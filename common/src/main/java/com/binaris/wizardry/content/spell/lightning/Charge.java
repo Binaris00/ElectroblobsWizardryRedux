@@ -30,7 +30,9 @@ import java.util.List;
 
 public class Charge extends Spell {
     public static final ISpellVar<SpellModifiers> CHARGE_MODIFIERS = new SpellVar<>(VarPersistence.NEVER);
-    public static final SpellProperty<Float> CHARGE_SPEED = SpellProperty.floatProperty("charge_speed");
+    public static final SpellProperty<Float> CHARGE_SPEED = SpellProperty.floatProperty("charge_speed", 2.0F);
+    public static final SpellProperty<Float> CHARGE_VERTICAL_CAP = SpellProperty.floatProperty("charge_vertical_cap", 0.6F);
+    public static final SpellProperty<Float> CHARGE_AIR_MULTIPLIER = SpellProperty.floatProperty("charge_air_multiplier", 0.7F);
     public static final ISpellVar<Integer> CHARGE_TIME = new SpellVar<Integer>(VarPersistence.NEVER).withTicker(Charge::update);
 
     public Charge() {
@@ -38,43 +40,45 @@ public class Charge extends Spell {
     }
 
     private static int update(Player player, Integer chargeTime) {
-        if (chargeTime == null) chargeTime = 0;
+        if (chargeTime == null || chargeTime <= 0) return 0;
 
-        if (chargeTime > 0 && !player.level().isClientSide) {
-            SpellModifiers modifiers = Services.OBJECT_DATA.getSpellManagerData(player).getVariable(CHARGE_MODIFIERS);
-            if (modifiers == null) modifiers = new SpellModifiers();
-
-            Vec3 look = player.getLookAngle();
-
-            float speed = modifiers.get(SpellModifiers.RANGE, Spells.CHARGE.property(Charge.CHARGE_SPEED));
-
-            player.setDeltaMovement(look.x * speed, player.getDeltaMovement().y, look.z * speed);
-
-            if (player.level().isClientSide) {
-                for (int i = 0; i < 5; i++) {
-                    ParticleBuilder.create(EBParticles.SPARK, player).spawn(player.level());
-                }
+        if (player.level().isClientSide) {
+            for (int i = 0; i < 2; i++) {
+                ParticleBuilder.create(EBParticles.SPARK, player.level().random, player.getX(),
+                        player.getY() + player.getBbHeight() / 2, player.getZ(), 0.6).spawn(player.level());
             }
 
-            List<LivingEntity> collided = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1));
-
-            collided.remove(player);
-            float damage = modifiers.get(SpellModifiers.POTENCY, Spells.CHARGE.property(DefaultProperties.DAMAGE));
-            float knockback = Spells.CHARGE.property(DefaultProperties.KNOCKBACK);
-
-            collided.forEach(e -> e.hurt(MagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), damage));
-            collided.forEach(e -> e.push(player.getDeltaMovement().x * knockback, player.getDeltaMovement().y * knockback + 0.3f, player.getDeltaMovement().z * knockback));
-
-            if (player.level().isClientSide)
-                player.level().addParticle(ParticleTypes.EXPLOSION_EMITTER, player.getX() + player.getDeltaMovement().x, player.getY() + player.getBbHeight() / 2, player.getZ() + player.getDeltaMovement().z, 0, 0, 0);
-
-            if (collided.isEmpty()) chargeTime--;
-            else {
-                EntityUtil.playSoundAtPlayer(player, SoundEvents.GENERIC_HURT, 1, 1);
-                chargeTime = 0;
-            }
-            player.hurtMarked = true;
+            return chargeTime - 1;
         }
+
+        SpellModifiers modifiers = Services.OBJECT_DATA.getSpellManagerData(player).getVariable(CHARGE_MODIFIERS);
+        if (modifiers == null) modifiers = new SpellModifiers();
+
+        player.fallDistance = 0;
+        Vec3 look = player.getLookAngle();
+
+        float speed = modifiers.get(SpellModifiers.RANGE, Spells.CHARGE.property(Charge.CHARGE_SPEED));
+        if (!player.onGround()) speed *= Spells.CHARGE.property(Charge.CHARGE_AIR_MULTIPLIER);
+        double verticalSpeed = Math.min(look.y * speed, Spells.CHARGE.property(Charge.CHARGE_VERTICAL_CAP));
+
+        player.setDeltaMovement(look.x * speed, verticalSpeed, look.z * speed);
+
+        List<LivingEntity> collided = player.level().getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(1));
+
+        collided.remove(player);
+        float damage = modifiers.get(SpellModifiers.POTENCY, Spells.CHARGE.property(DefaultProperties.DAMAGE));
+        float knockback = Spells.CHARGE.property(DefaultProperties.KNOCKBACK);
+
+        collided.forEach(e -> e.hurt(MagicDamageSource.causeDirectMagicDamage(player, EBDamageSources.SHOCK), damage));
+        collided.forEach(e -> e.push(player.getDeltaMovement().x * knockback, player.getDeltaMovement().y * knockback + 0.3f, player.getDeltaMovement().z * knockback));
+
+        if (collided.isEmpty()) chargeTime--;
+        else {
+            EntityUtil.playSoundAtPlayer(player, SoundEvents.GENERIC_HURT, 1, 1);
+            chargeTime = 0;
+        }
+        player.hurtMarked = true;
+
         return chargeTime;
     }
 
@@ -110,6 +114,8 @@ public class Charge extends Spell {
         return SpellProperties.builder()
                 .assignBaseProperties(SpellTiers.APPRENTICE, Elements.LIGHTNING, SpellTypes.ATTACK, SpellAction.POINT, 20, 0, 50)
                 .add(CHARGE_SPEED, 2.0F)
+                .add(CHARGE_VERTICAL_CAP, 0.6F)
+                .add(CHARGE_AIR_MULTIPLIER, 0.7F)
                 .add(DefaultProperties.DURATION, 10)
                 .add(DefaultProperties.DAMAGE, 8F)
                 .add(DefaultProperties.KNOCKBACK, 1.0F)
