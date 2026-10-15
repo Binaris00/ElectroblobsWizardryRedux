@@ -139,7 +139,7 @@ public final class Spells {
     public static final Spell FLIGHT;
     public static final Spell SILVERFISH_SWARM;
     // black hole
-    // shockwave
+    public static final Spell SHOCKWAVE;
     // summon iron golem
     public static final Spell ARROW_RAIN;
     // diamond flesh
@@ -798,6 +798,8 @@ public final class Spells {
                                 .add(DefaultProperties.SENSIBLE, true)
                                 .build()
                 );
+
+        SHOCKWAVE = spell("shockwave", Shockwave::new);
 
         VEX_SWARM = spell("vex_swarm", () -> new MinionSpell<>((l) -> new Vex(EntityType.VEX, l)))
                 .soundValues(1, 1.1f, 0.1f)

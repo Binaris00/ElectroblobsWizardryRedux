@@ -7,6 +7,7 @@ import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 /// A counter-based pitch oscillation: the remaining duration determines both the
 /// time left and the magnitude, which naturally decays as the counter decreases.
@@ -37,6 +38,13 @@ public final class ScreenShakeHandler {
 
     public static void sendScreenShake(ServerPlayer player, float intensity, int duration) {
         Services.NETWORK_HELPER.sendTo(player, new ScreenShakeS2C(intensity, duration));
+    }
+
+    public static void shakeScreenNear(Vec3 pos, double radius, float intensity) {
+        Player player = Minecraft.getInstance().player;
+        if (player != null && player.distanceToSqr(pos) <= radius * radius) {
+            shakeScreen(intensity);
+        }
     }
 
     public static void onClientTick(EBClientTickEvent event) {
