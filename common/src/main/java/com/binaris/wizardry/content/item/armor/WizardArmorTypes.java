@@ -17,10 +17,10 @@ import java.util.Map;
 /// Implementation note: This enum implements ArmorMaterial so that the armor material can be accessed directly from
 /// the enum value.
 public enum WizardArmorTypes implements WizardArmorMaterial {
-    WIZARD("wizard", 15, 0.1F, 0, SoundEvents.ARMOR_EQUIP_DIAMOND, new int[]{2, 4, 5, 2}, 15, "hat", "robe", "leggings", "boots"),
-    SAGE("sage", 15, 0.2f, 0, EBSounds.ITEM_ARMOR_EQUIP_SAGE.get(), new int[]{2, 5, 6, 3}, 15, "hat", "robe", "leggings", "boots"),
-    BATTLEMAGE("battlemage", 15, 0.05f, 0.05f, EBSounds.ITEM_ARMOR_EQUIP_BATTLEMAGE.get(), new int[]{3, 6, 8, 3}, 15, "helmet", "chestplate", "leggings", "boots"),
-    WARLOCK("warlock", 20, 0.1f, 0.1f, EBSounds.ITEM_ARMOR_EQUIP_WARLOCK.get(), new int[]{2, 4, 5, 2}, 15, "hood", "robe", "leggings", "boots");
+    WIZARD("wizard", 15, 0.06F, 0, SoundEvents.ARMOR_EQUIP_DIAMOND, new int[]{2, 4, 5, 2}, 15, "hat", "robe", "leggings", "boots"),
+    SAGE("sage", 15, 0.12f, 0, EBSounds.ITEM_ARMOR_EQUIP_SAGE.get(), new int[]{2, 5, 6, 3}, 15, "hat", "robe", "leggings", "boots"),
+    BATTLEMAGE("battlemage", 15, 0.03f, 0.03f, EBSounds.ITEM_ARMOR_EQUIP_BATTLEMAGE.get(), new int[]{3, 6, 8, 3}, 15, "helmet", "chestplate", "leggings", "boots"),
+    WARLOCK("warlock", 15, 0.07f, 0.06f, EBSounds.ITEM_ARMOR_EQUIP_WARLOCK.get(), new int[]{2, 4, 5, 2}, 15, "hood", "robe", "leggings", "boots");
 
     final String name;
     final int[] protectionValues;

@@ -16,7 +16,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 
 public class SageArmorItem extends WizardArmorItem {
-    private static final float SAGE_OTHER_COST_REDUCTION = 0.2f;
+    private static final float SAGE_OTHER_COST_REDUCTION = 0.1f;
 
     public SageArmorItem(Type type, Element element) {
         super(WizardArmorTypes.SAGE, type, element);
