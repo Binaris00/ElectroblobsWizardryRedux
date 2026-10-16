@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "handbook/scrolls": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:scroll"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "handbook/scrolls"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

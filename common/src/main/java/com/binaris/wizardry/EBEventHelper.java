@@ -62,6 +62,7 @@ public final class EBEventHelper {
         onServerLoad(bus);
         onItemPickup(bus);
         onPlayerItemPickup(bus);
+        onAdvancementEvent(bus);
     }
 
     private static void onLivingHurtEvent(WizardryEventBus bus) {
@@ -95,6 +96,10 @@ public final class EBEventHelper {
         bus.register(EBPlayerJoinServerEvent.class, (event -> SpellGlyphData.get((ServerLevel) event.getPlayer().level()).sync((ServerPlayer) event.getPlayer())));
         bus.register(EBPlayerJoinServerEvent.class, (SpellProperties::onPlayerJoin));
         bus.register(EBPlayerJoinServerEvent.class, ConfigManager::onPlayerJoin);
+    }
+
+    private static void onAdvancementEvent(WizardryEventBus bus) {
+        bus.register(EBAdvancementEvent.class, ConfigManager::syncAdvancements);
     }
 
     private static void onServerLevelLoad(WizardryEventBus bus) {

@@ -3,6 +3,7 @@ package com.binaris.wizardry.api.client.util;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
 import com.binaris.wizardry.client.gui.screens.SpellBookScreen;
+import com.binaris.wizardry.client.gui.screens.handbook.HandBookScreen;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.core.mixin.accessor.MerchantMenuAccessor;
 import com.binaris.wizardry.core.networking.s2c.SpellGlyphPacketS2C;
@@ -106,6 +107,10 @@ public final class ClientUtils {
     /// @param stack The spell book item stack.
     public static void openSpellBook(ItemStack stack) {
         Minecraft.getInstance().setScreen(new SpellBookScreen(stack));
+    }
+
+    public static void openHandbook() {
+        Minecraft.getInstance().setScreen(new HandBookScreen());
     }
 
     /// Calculates a smooth scaling factor over time, commonly used for visual fading/scaling animations

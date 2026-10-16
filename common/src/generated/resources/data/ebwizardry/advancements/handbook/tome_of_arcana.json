@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "handbook/tome_of_arcana": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:arcane_tome"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "handbook/tome_of_arcana"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

@@ -18,6 +18,15 @@ public final class EBWorldGen {
     public static final ResourceKey<Structure> SHRINE = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("shrine"));
     public static final ResourceKey<Structure> LIBRARY_RUINS = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("library_ruins"));
     public static final ResourceKey<Structure> UNDERGROUND_LIBRARY_RUINS = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("underground_library_ruins")); // todo underground library ruins
+    // Obelisk Structure
+    public static final ResourceKey<Structure> EARTH_OBELISK = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("earth_obelisk"));
+    public static final ResourceKey<Structure> FIRE_OBELISK = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("fire_obelisk"));
+    public static final ResourceKey<Structure> HEALING_OBELISK = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("healing_obelisk"));
+    public static final ResourceKey<Structure> ICE_OBELISK = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("ice_obelisk"));
+    public static final ResourceKey<Structure> LIGHTNING_OBELISK = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("lightning_obelisk"));
+    public static final ResourceKey<Structure> NECROMANCY_OBELISK = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("necromancy_obelisk"));
+    public static final ResourceKey<Structure> SORCERY_OBELISK = ResourceKey.create(Registries.STRUCTURE, WizardryMainMod.location("sorcery_obelisk"));
+
 
     private EBWorldGen() {
     }

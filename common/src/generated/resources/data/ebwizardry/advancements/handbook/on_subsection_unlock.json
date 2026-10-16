@@ -1,0 +1,13 @@
+{
+  "criteria": {
+    "on_subsection_unlock": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "on_subsection_unlock"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

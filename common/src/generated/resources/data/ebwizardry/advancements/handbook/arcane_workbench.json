@@ -1,0 +1,22 @@
+{
+  "criteria": {
+    "handbook/arcane_workbench": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "ebwizardry:arcane_workbench"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "requirements": [
+    [
+      "handbook/arcane_workbench"
+    ]
+  ],
+  "sends_telemetry_event": true
+}
