@@ -6,6 +6,7 @@ import com.binaris.wizardry.api.content.spell.NoneSpell;
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.spell.internal.PlayerCastContext;
 import com.binaris.wizardry.api.content.spell.internal.SpellModifiers;
+import com.binaris.wizardry.api.content.util.CastItemUtils;
 import com.binaris.wizardry.cca.EBComponents;
 import com.binaris.wizardry.core.event.WizardryEventBus;
 import com.binaris.wizardry.core.platform.Services;
@@ -41,25 +42,32 @@ public class CastCommandDataHolder implements CastCommandData, ComponentV3, Auto
         this.castCommandSpell = spell;
         this.castCommandModifiers = modifiers;
         this.castCommandDuration = duration;
+        this.castCommandTick = 0;
         sync();
-        // TODO PACKET SENDING FOR CONTINUOUS SPELL SYNC TO CLIENT
     }
 
     @Override
     public void stopCastingContinuousSpell() {
+        if (isCommandCasting() && !castCommandSpell.isInstantCast()) {
+            PlayerCastContext ctx = new PlayerCastContext(provider.level(), provider, InteractionHand.MAIN_HAND, this.castCommandTick, this.castCommandModifiers);
+            WizardryEventBus.fireEvent(new SpellCastEvent.Finish(SpellCastEvent.Sources.COMMAND, castCommandSpell, ctx));
+            castCommandSpell.endCast(ctx);
+        }
+
         this.castCommandSpell = Spells.NONE;
         this.castCommandTick = 0;
+        this.castCommandDuration = 0;
         this.castCommandModifiers.reset();
         sync();
-        // TODO PACKET SENDING FOR CONTINUOUS SPELL SYNC TO CLIENT
     }
 
     @Override
     public void tick() {
         if (!isCommandCasting()) return;
 
-        if ((this.castCommandSpell == null || this.castCommandSpell instanceof NoneSpell) || this.castCommandSpell.isInstantCast()) {
-            this.castCommandTick = 0;
+        if (castCommandSpell == null || castCommandSpell instanceof NoneSpell || castCommandSpell.isInstantCast()) {
+            this.stopCastingContinuousSpell();
+            return;
         }
 
         if (castCommandTick >= castCommandDuration) {
@@ -74,12 +82,14 @@ public class CastCommandDataHolder implements CastCommandData, ComponentV3, Auto
             return;
         }
 
-        if (this.castCommandSpell.cast(ctx) && this.castCommandTick == 0) {
-            WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.COMMAND, castCommandSpell, ctx));
+        if (this.castCommandSpell.cast(ctx)) {
+            if (this.castCommandTick == 0) {
+                WizardryEventBus.fireEvent(new SpellCastEvent.Post(SpellCastEvent.Sources.COMMAND, castCommandSpell, ctx));
+            }
+            CastItemUtils.sendSpellCastPacket(provider, castCommandSpell, ctx);
         }
 
         castCommandTick++;
-        sync();
     }
 
     @Override

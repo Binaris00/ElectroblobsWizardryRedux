@@ -40,7 +40,12 @@ public final class DataEvents {
 
     public static void onPlayerTick(EBLivingTick event) {
         if (!(event.getEntity() instanceof Player player)) return;
-        if (player.isDeadOrDying()) return;
+
+        if (player.isDeadOrDying()) {
+            CastCommandData castData = Services.OBJECT_DATA.getCastCommandData(player);
+            if (castData.isCommandCasting()) castData.stopCastingContinuousSpell();
+            return;
+        }
 
         spellDataTick(player);
         castCommandTick(player);

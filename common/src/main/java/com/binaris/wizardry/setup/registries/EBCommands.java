@@ -18,15 +18,14 @@ import java.util.function.BiConsumer;
  *
  */
 public final class EBCommands {
-    // TODO CastCommand::register
     public static final List<BiConsumer<CommandDispatcher<CommandSourceStack>, CommandBuildContext>> COMMANDS_TO_REGISTER = ImmutableList.of(
+            CastCommand::register,
             AllyCommand::register,
             DiscoverSpellCommand::register,
             UnDiscoverSpellCommand::register,
             MagicAttributeCommand::register
     );
     public static final List<BiConsumer<CommandDispatcher<CommandSourceStack>, CommandBuildContext>> DEBUG_COMMANDS = ImmutableList.of(
-            CastCommand::register,
             ForfeitTestCommand::register,
             GenWandCommand::register,
             GenArmorCommand::register,

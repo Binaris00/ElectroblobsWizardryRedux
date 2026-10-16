@@ -15,4 +15,16 @@ public interface CastCommandData {
 
     /// Returns whether the player is currently casting a spell via the cast command.
     boolean isCommandCasting();
+
+    /// Returns the spell currently being cast via the cast command, or the none spell if none.
+    Spell getSpell();
+
+    /// Returns the spell modifiers used for the current cast command cast.
+    SpellModifiers getModifiers();
+
+    /// Returns the number of ticks the current cast command cast has been running for.
+    int getCastingTick();
+
+    /// Returns the total duration in ticks of the current cast command cast.
+    int getDuration();
 }
