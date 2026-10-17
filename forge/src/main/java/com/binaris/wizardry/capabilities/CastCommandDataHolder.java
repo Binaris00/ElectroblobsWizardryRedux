@@ -114,6 +114,26 @@ public class CastCommandDataHolder implements INBTSerializable<CompoundTag>, Cas
     }
 
     @Override
+    public Spell getSpell() {
+        return this.castCommandSpell;
+    }
+
+    @Override
+    public SpellModifiers getModifiers() {
+        return this.castCommandModifiers;
+    }
+
+    @Override
+    public int getCastingTick() {
+        return this.castCommandTick;
+    }
+
+    @Override
+    public int getDuration() {
+        return this.castCommandDuration;
+    }
+
+    @Override
     public CompoundTag serializeNBT() {
         CompoundTag tag = new CompoundTag();
         tag.put("castCommandSpell", StringTag.valueOf(castCommandSpell.getLocation().toString()));

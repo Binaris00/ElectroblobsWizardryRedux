@@ -98,6 +98,26 @@ public class CastCommandDataHolder implements CastCommandData, ComponentV3, Auto
     }
 
     @Override
+    public Spell getSpell() {
+        return this.castCommandSpell;
+    }
+
+    @Override
+    public SpellModifiers getModifiers() {
+        return this.castCommandModifiers;
+    }
+
+    @Override
+    public int getCastingTick() {
+        return this.castCommandTick;
+    }
+
+    @Override
+    public int getDuration() {
+        return this.castCommandDuration;
+    }
+
+    @Override
     public void readFromNbt(@NotNull CompoundTag tag) {
         ResourceLocation spellLocation = ResourceLocation.tryParse(tag.getString("castCommandSpell"));
         Spell spell = Services.REGISTRY_UTIL.getSpell(spellLocation);
