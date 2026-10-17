@@ -4,7 +4,7 @@
     {
       "model": "ebwizardry:item/wand_advanced_necromancy_casting",
       "predicate": {
-        "minecraft:casting": 1.0
+        "minecraft:pointing": 1.0
       }
     }
   ],

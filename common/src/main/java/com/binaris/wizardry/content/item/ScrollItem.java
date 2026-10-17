@@ -62,14 +62,15 @@ public class ScrollItem extends Item implements ICastItem, IWorkbenchItem {
             return InteractionResultHolder.consume(stack);
         }
 
-        // For instant spells, cast immediately
+        player.startUsingItem(hand);
         if (cast(stack, spell, ctx)) {
             if (!level.isClientSide && spell.requiresPacket()) {
                 Services.NETWORK_HELPER.sendToDimension(level.getServer(), new SpellCastS2C(player.getId(), hand, spell, modifiers), level.dimension());
             }
-            return InteractionResultHolder.success(stack);
+            return InteractionResultHolder.consume(stack);
         }
 
+        player.stopUsingItem();
         return InteractionResultHolder.fail(stack);
     }
 

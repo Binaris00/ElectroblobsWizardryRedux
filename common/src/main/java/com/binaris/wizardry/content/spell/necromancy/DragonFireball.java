@@ -35,7 +35,6 @@ public class DragonFireball extends Spell {
         }
 
         this.playSound(ctx.world(), ctx.caster(), ctx.castingTicks(), -1);
-        ctx.caster().swing(InteractionHand.MAIN_HAND);
         return true;
     }
 

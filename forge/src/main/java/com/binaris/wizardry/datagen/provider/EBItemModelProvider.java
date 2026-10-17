@@ -90,7 +90,7 @@ public final class EBItemModelProvider extends ItemModelProvider {
 
         withExistingParent(name, new ResourceLocation("item/handheld"))
                 .texture("layer0", new ResourceLocation(WizardryMainMod.MOD_ID, "item/" + name))
-                .override().predicate(new ResourceLocation("casting"), 1)
+                .override().predicate(new ResourceLocation("pointing"), 1)
                 .model(pointModel).end();
     }
 

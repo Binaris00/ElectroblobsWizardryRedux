@@ -42,6 +42,7 @@
     "client.ClientPacketListenerMixin",
     "client.EffectRenderingInventoryScreenMixin",
     "client.GuiMixin",
+    "client.ItemInHandRendererMixin",
     "client.LocalPlayerMixin",
     "client.MouseHandlerMixin",
     "client.LivingEntityRendererMixin"

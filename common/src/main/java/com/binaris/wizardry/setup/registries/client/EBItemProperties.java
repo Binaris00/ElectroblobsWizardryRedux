@@ -1,6 +1,8 @@
 package com.binaris.wizardry.setup.registries.client;
 
 import com.binaris.wizardry.api.content.data.ConjureData;
+import com.binaris.wizardry.api.content.spell.SpellAction;
+import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.core.mixin.accessor.ItemPropertiesAccessor;
 import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.setup.datagen.EBDataGenProcessor;
@@ -30,8 +32,23 @@ public final class EBItemProperties {
     }
 
     private static void registerWandProperties(Item wand) {
+        ItemPropertiesAccessor.callRegister(wand, new ResourceLocation("pointing"), (stack, clientLevel, entity, seed) ->
+                entity != null && entity.isUsingItem() && entity.getUseItem() == stack
+                        && isPointingAction(CastItemDataHelper.getCurrentSpell(stack).getAction()) ? 1.0F : 0.0F);
+
+        // Kept for backwards compatibility with models and addons that still use the old 'casting' property.
         ItemPropertiesAccessor.callRegister(wand, new ResourceLocation("casting"), (stack, clientLevel, entity, seed) ->
                 entity != null && entity.isUsingItem() && entity.getUseItem() == stack ? 1.0F : 0.0F);
+    }
+
+    private static boolean isPointingAction(SpellAction action) {
+        return action == SpellAction.POINT
+                || action == SpellAction.POINT_UP
+                || action == SpellAction.POINT_DOWN
+                || action == SpellAction.GRAPPLE
+                || action == SpellAction.SUMMON
+                || action == SpellAction.THRUST
+                || action == SpellAction.IMBUE;
     }
 
     private static void pullingItem(Item item) {

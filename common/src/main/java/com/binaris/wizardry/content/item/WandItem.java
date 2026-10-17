@@ -72,20 +72,6 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
         if (!canCastRequirements(stack, spell, ctx)) return InteractionResultHolder.fail(stack);
         int charge = CastItemUtils.calcCharge(spell, ctx.modifiers());
 
-        // if it requires charging or is a continuous spell
-        if (!(!spell.isInstantCast() || charge > 0)) {
-            // Instant spell without charge
-            if (canCast(stack, spell, ctx)) {
-                if (!level.isClientSide) {
-                    consumeManaAndSetCooldown(stack, spell, player, ctx.modifiers());
-                }
-                if (cast(stack, spell, ctx)) {
-                    return InteractionResultHolder.success(stack);
-                }
-            }
-            return InteractionResultHolder.fail(stack);
-        }
-
         return startCharging(level, player, hand, stack, charge, ctx);
     }
 
@@ -152,7 +138,8 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
             String string = data.toggleAlly(playerTarget) ? "item.ebwizardry.wand.add_ally" : "item.ebwizardry.wand.remove_ally";
             if (!player.level().isClientSide)
                 player.sendSystemMessage(Component.translatable(string, playerTarget.getName()));
-            return InteractionResult.SUCCESS;
+            // Consume instead of success to avoid the vanilla swing animation.
+            return InteractionResult.CONSUME;
         }
 
         return InteractionResult.FAIL;
@@ -230,8 +217,10 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
                 consumeManaAndSetCooldown(stack, spell, ctx.caster(), ctx.modifiers());
             }
             cast(stack, spell, ctx);
+        } else {
+            // Only stop using when the spell cannot be cast.
+            ctx.caster().stopUsingItem();
         }
-        ctx.caster().stopUsingItem();
     }
 
     /// Handles the logic for continuous spell casting on `useTick`. If the current `useTick` is greater than
@@ -270,7 +259,8 @@ public class WandItem extends Item implements ICastItem, IManaItem, IWorkbenchIt
             if (charge > 0 && level.isClientSide) {
                 ClientSpellSoundManager.playChargeSound(player);
             }
-            return InteractionResultHolder.success(stack);
+            // Consume instead of success to avoid the vanilla swing animation when starting to charge.
+            return InteractionResultHolder.consume(stack);
         }
         return InteractionResultHolder.fail(stack);
     }
