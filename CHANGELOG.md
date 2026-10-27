@@ -1,4 +1,15 @@
-- fix: added bridge between EBW and "Create Stuff 'N Additions" to prevent incompatibility
-- fix: solved crash when using ebw items with JEED
-
-(very early fix)
+- feat: Change display names for runestones/runestone pedestals/crystal blocks/spectral dust
+- feat: clean and redone “animations”/“movements” when casting using wands
+- feat: added cast command
+- feat: added Shockwave spell
+- feat: Charge spell rework
+- feat: nerf to magic armors values
+- feat: Metamorphosis spell rework
+- feat: added Spectral Pathway and Conjure Block spells
+- feat: added Guardian Beam spell
+- feat: added effect sync (particles) and hide vanilla particles
+- feat: added screen shake to mod, included in Meteor and Boulder spells
+- feat: added render layer for minions
+- feat: added part of the Flight spell rework
+- fix: added missing cast command holder getters
+- fix: ConcurrentModificationException on remove curse spell
