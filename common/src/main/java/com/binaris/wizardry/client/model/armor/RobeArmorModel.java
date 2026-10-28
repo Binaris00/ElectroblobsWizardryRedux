@@ -28,18 +28,18 @@ public class RobeArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
         super(root);
         this.showHeadWithBody = showHeadWithBody;
         this.armorBody = root.getChild("body");
+        this.robe = this.armorBody.getChild("robe");
         this.left_shoe = root.getChild("left_shoe");
         this.right_shoe = root.getChild("right_shoe");
         this.left_arm = root.getChild("left_arm");
         this.right_arm = root.getChild("right_arm");
         this.armorHead = root.getChild("head");
-        this.robe = root.getChild("robe");
     }
 
     public static LayerDefinition createBodyLayer() {
         MeshDefinition meshdefinition = HumanoidModel.createMesh(new CubeDeformation(0.75F), 0.0F);
         PartDefinition partdefinition = meshdefinition.getRoot();
-        partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 10.0F, 4.0F, new CubeDeformation(0.75F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 10.0F, 4.0F, new CubeDeformation(0.75F)), PartPose.offset(0.0F, 0.0F, 0.0F));
 
         PartDefinition left_shoe = partdefinition.addOrReplaceChild("left_shoe", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.1F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.75F)).mirror(false), PartPose.offset(2.0F, 12.0F, 0.0F));
         left_shoe.addOrReplaceChild("left_wing2_r1", CubeListBuilder.create().texOffs(0, 24).addBox(4.725F, -4.0F, -2.0F, 0.0F, 5.0F, 8.0F, new CubeDeformation(0.0F))
@@ -55,22 +55,16 @@ public class RobeArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
                         .texOffs(0, 0).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(0.501F))
                         .texOffs(32, 0).addBox(-4.0F, -9.0F, -4.0F, 8.0F, 8.0F, 8.0F, new CubeDeformation(1.0F)),
                 PartPose.offset(0.0F, 0.0F, 0.0F));
-        partdefinition.addOrReplaceChild("robe", CubeListBuilder.create().texOffs(16, 34).addBox(-4.0F, -12.5F, -2.0F, 8.0F, 7.0F, 4.0F, new CubeDeformation(0.75F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        body.addOrReplaceChild("robe", CubeListBuilder.create().texOffs(16, 34).addBox(-4.0F, -0.5F, -2.0F, 8.0F, 7.0F, 4.0F, new CubeDeformation(0.75F)), PartPose.offset(0.0F, 12.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
     @Override
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        if (this.crouching) {
-            this.robe.z = 4;
-        } else {
-            this.robe.z = 0;
-        }
-
-        this.robe.xRot = (this.leftLeg.xRot + this.rightLeg.xRot) / 2f;
-        this.robe.yRot = this.body.yRot;
-        this.robe.zRot = (this.leftLeg.zRot + this.rightLeg.zRot) / 2f;
+        this.robe.xRot = (this.leftLeg.xRot + this.rightLeg.xRot) / 2f - this.body.xRot;
+        this.robe.yRot = 0.0F;
+        this.robe.zRot = (this.leftLeg.zRot + this.rightLeg.zRot) / 2f - this.body.zRot;
 
         armorBody.copyFrom(body);
         armorHead.copyFrom(head);
@@ -85,7 +79,6 @@ public class RobeArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
         left_arm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         right_shoe.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         left_shoe.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        robe.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         rightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         leftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }

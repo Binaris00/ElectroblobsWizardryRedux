@@ -29,7 +29,7 @@ public class WizardArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
         this.right_shoe = root.getChild("right_shoe");
         this.left_shoe = root.getChild("left_shoe");
         this.armorBody = root.getChild("body");
-        this.robe = root.getChild("robe");
+        this.robe = this.armorBody.getChild("robe");
     }
 
     public static LayerDefinition createBodyLayer() {
@@ -48,23 +48,17 @@ public class WizardArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
         partdefinition.addOrReplaceChild("left_arm", CubeListBuilder.create().texOffs(40, 16).mirror().addBox(-1.0F, -2.0F, -2.0F, 4.0F, 13.0F, 4.0F, new CubeDeformation(0.501F)).mirror(false), PartPose.offset(5.0F, 2.0F, 0.0F));
         partdefinition.addOrReplaceChild("right_shoe", CubeListBuilder.create().texOffs(0, 16).addBox(-1.9F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.501F)), PartPose.offset(-2.0F, 12.0F, 0.0F));
         partdefinition.addOrReplaceChild("left_shoe", CubeListBuilder.create().texOffs(0, 16).mirror().addBox(-2.1F, 0.0F, -2.0F, 4.0F, 12.0F, 4.0F, new CubeDeformation(0.501F)).mirror(false), PartPose.offset(2.0F, 12.0F, 0.0F));
-        partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 9.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.offset(0.0F, 0.0F, 0.0F));
-        partdefinition.addOrReplaceChild("robe", CubeListBuilder.create().texOffs(16, 29).addBox(-4.0F, -14.0F, -2.0F, 8.0F, 11.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.offset(0.0F, 24.0F, 0.0F));
+        PartDefinition body = partdefinition.addOrReplaceChild("body", CubeListBuilder.create().texOffs(16, 16).addBox(-4.0F, 0.0F, -2.0F, 8.0F, 9.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.offset(0.0F, 0.0F, 0.0F));
+        body.addOrReplaceChild("robe", CubeListBuilder.create().texOffs(16, 29).addBox(-4.0F, -2.0F, -2.0F, 8.0F, 11.0F, 4.0F, new CubeDeformation(0.51F)), PartPose.offset(0.0F, 12.0F, 0.0F));
 
         return LayerDefinition.create(meshdefinition, 64, 64);
     }
 
     @Override
     public void renderToBuffer(@NotNull PoseStack poseStack, @NotNull VertexConsumer vertexConsumer, int packedLight, int packedOverlay, float red, float green, float blue, float alpha) {
-        if (this.crouching) {
-            this.robe.z = 4;
-        } else {
-            this.robe.z = 0;
-        }
-
-        this.robe.xRot = (this.leftLeg.xRot + this.rightLeg.xRot) / 2f;
-        this.robe.yRot = this.body.yRot;
-        this.robe.zRot = (this.leftLeg.zRot + this.rightLeg.zRot) / 2f;
+        this.robe.xRot = (this.leftLeg.xRot + this.rightLeg.xRot) / 2f - this.body.xRot;
+        this.robe.yRot = 0.0F;
+        this.robe.zRot = (this.leftLeg.zRot + this.rightLeg.zRot) / 2f - this.body.zRot;
 
         armorBody.copyFrom(body);
         hat.copyFrom(head);
@@ -79,7 +73,6 @@ public class WizardArmorModel<T extends LivingEntity> extends HumanoidModel<T> {
         left_arm.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         right_shoe.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         left_shoe.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
-        robe.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         rightLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
         leftLeg.render(poseStack, vertexConsumer, packedLight, packedOverlay, red, green, blue, alpha);
     }
