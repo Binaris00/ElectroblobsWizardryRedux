@@ -2,6 +2,7 @@ package com.binaris.wizardry.network;
 
 import com.binaris.wizardry.capabilities.*;
 import com.binaris.wizardry.client.effect.ArcaneLockRender;
+import com.binaris.wizardry.core.EBLogger;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -57,7 +58,10 @@ public final class ClientMessageHandlerForge {
     public static void playerCapabilitySync(PlayerCapabilitySyncPacketS2C m) {
         Minecraft minecraft = Minecraft.getInstance();
         Player player = minecraft.player;
-        if (player == null) return;
+        if (player == null) {
+            EBLogger.warn("Received {} sync before the local player existed; dropping it.", m.getType());
+            return;
+        }
 
         switch (m.getType()) {
             case CAST_COMMAND -> player.getCapability(CastCommandDataHolder.INSTANCE)

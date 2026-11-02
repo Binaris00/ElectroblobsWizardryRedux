@@ -82,9 +82,7 @@ public class WizardryForgeEvents {
             WizardryEventBus.fireEvent(new EBPlayerJoinServerEvent(event.getEntity(), event.getEntity().getServer()));
             Player player = event.getEntity();
             if (!player.level().isClientSide()) {
-                player.getCapability(WizardDataHolder.INSTANCE).ifPresent(WizardDataHolder::sync);
-                player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
-                player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
+                Services.OBJECT_DATA.syncPlayerData(player);
             }
         }
 
@@ -214,9 +212,7 @@ public class WizardryForgeEvents {
             // Sync all capabilities to client after respawn to ensure the client has the correct data
             Player player = event.getEntity();
             if (!player.level().isClientSide()) {
-                player.getCapability(WizardDataHolder.INSTANCE).ifPresent(WizardDataHolder::sync);
-                player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
-                player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
+                Services.OBJECT_DATA.syncPlayerData(player);
             }
         }
 
@@ -225,9 +221,7 @@ public class WizardryForgeEvents {
             // Sync all capabilities to client after dimension change to ensure the client has the correct data
             Player player = event.getEntity();
             if (!player.level().isClientSide()) {
-                player.getCapability(WizardDataHolder.INSTANCE).ifPresent(WizardDataHolder::sync);
-                player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
-                player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
+                Services.OBJECT_DATA.syncPlayerData(player);
             }
         }
 

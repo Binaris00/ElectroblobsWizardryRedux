@@ -44,6 +44,14 @@ public interface IObjectData {
     /// @return the spell manager data
     SpellManagerData getSpellManagerData(Player player);
 
+    /// Re-sends all per-player data to the client of the given player.
+    ///
+    /// @param player The player whose data should be synchronized.
+    default void syncPlayerData(Player player) {
+        if (player.level().isClientSide()) return;
+        getSpellManagerData(player).sync();
+    }
+
     /// Registers one or more stored spell variables to this SpellHandlerData.
     /// Stored spell variables are those that implement the IStoredSpellVar interface.
     ///

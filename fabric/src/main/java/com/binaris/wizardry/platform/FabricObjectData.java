@@ -58,6 +58,14 @@ public class FabricObjectData implements IObjectData {
     }
 
     @Override
+    public void syncPlayerData(Player player) {
+        if (player.level().isClientSide()) return;
+        EBComponents.WIZARD_DATA.sync(player);
+        EBComponents.CAST_COMMAND_DATA.sync(player);
+        EBComponents.SPELL_MANAGER_DATA.sync(player);
+    }
+
+    @Override
     public void spellStoredVariables(IStoredSpellVar<?>... variables) {
         SpellManagerDataHolder.storedVariables.addAll(Arrays.asList(variables));
     }

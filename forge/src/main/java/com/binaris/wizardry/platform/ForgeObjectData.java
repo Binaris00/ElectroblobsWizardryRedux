@@ -61,6 +61,14 @@ public class ForgeObjectData implements IObjectData {
     }
 
     @Override
+    public void syncPlayerData(Player player) {
+        if (player.level().isClientSide()) return;
+        player.getCapability(WizardDataHolder.INSTANCE).ifPresent(WizardDataHolder::sync);
+        player.getCapability(CastCommandDataHolder.INSTANCE).ifPresent(CastCommandDataHolder::sync);
+        player.getCapability(SpellManagerDataHolder.INSTANCE).ifPresent(SpellManagerDataHolder::sync);
+    }
+
+    @Override
     public void spellStoredVariables(IStoredSpellVar<?>... variables) {
         SpellManagerDataHolder.storedVariables.addAll(Arrays.asList(variables));
     }

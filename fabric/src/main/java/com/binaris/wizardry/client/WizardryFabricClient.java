@@ -5,6 +5,8 @@ import com.binaris.wizardry.client.effect.ArcaneLockRender;
 import com.binaris.wizardry.client.effect.ContainmentFieldRender;
 import com.binaris.wizardry.client.effect.WingsRender;
 import com.binaris.wizardry.core.config.ConfigManager;
+import com.binaris.wizardry.core.networking.c2s.RequestPlayerDataSyncC2S;
+import com.binaris.wizardry.core.platform.Services;
 import com.binaris.wizardry.network.EBFabricClientNetwork;
 import com.binaris.wizardry.setup.registries.EBBlocks;
 import com.binaris.wizardry.setup.registries.client.*;
@@ -67,6 +69,10 @@ public final class WizardryFabricClient implements ClientModInitializer {
         BlockRenderLayerMap.INSTANCE.putBlock(EBBlocks.IMBUEMENT_ALTAR.get(), RenderType.cutoutMipped());
 
         WorldRenderEvents.AFTER_TRANSLUCENT.register(this::renderContainmentField);
+
+        ClientPlayConnectionEvents.JOIN.register((handler, sender, client) -> {
+            Services.NETWORK_HELPER.sendToServer(new RequestPlayerDataSyncC2S());
+        });
 
         ClientPlayConnectionEvents.DISCONNECT.register((handler, client) -> {
             ConfigManager.restoreLocalConfigs();
