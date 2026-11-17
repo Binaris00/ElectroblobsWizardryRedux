@@ -132,6 +132,11 @@ public final class EBTestCentral {
             ConjureSpellsTestHandler.conjureItemDespawn(helper, EBItems.FLAMECATCHER.get());
         }
 
+        /** Tests that a conjured spectral sword keeps the sword's base attributes instead of losing them. */
+        public static void conjureSwordHasBaseStats(GameTestHelper helper) {
+            ConjureSpellsTestHandler.conjureSwordHasBaseStats(helper);
+        }
+
         public static void buildTable(GameTestHelper helper) {
             ConjureSpellsTestHandler.buildTable(helper);
         }

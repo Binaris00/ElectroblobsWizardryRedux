@@ -17,6 +17,11 @@ public class ConjureItemTest {
     }
 
     @GameTest(template = "ebwizardry:empty_3x3x3")
+    public static void conjureSwordHasBaseStats(GameTestHelper helper) {
+        EBTestCentral.ConjureSpells.conjureSwordHasBaseStats(helper);
+    }
+
+    @GameTest(template = "ebwizardry:empty_3x3x3")
     public static void balanceTable(GameTestHelper helper) {
         EBTestCentral.ConjureSpells.buildTable(helper);
     }

@@ -21,4 +21,9 @@ public class ConjureItemTest {
     public static void conjureItemDespawn(GameTestHelper helper) {
         EBTestCentral.ConjureSpells.conjureItemDespawn(helper);
     }
+
+    @GameTest(template = "empty_3x3x3")
+    public static void conjureSwordHasBaseStats(GameTestHelper helper) {
+        EBTestCentral.ConjureSpells.conjureSwordHasBaseStats(helper);
+    }
 }

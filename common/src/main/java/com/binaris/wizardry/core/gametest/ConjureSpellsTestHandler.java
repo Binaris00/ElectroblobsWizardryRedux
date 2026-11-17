@@ -9,10 +9,14 @@ import com.binaris.wizardry.content.spell.abstr.ConjureItemSpell;
 import com.binaris.wizardry.core.DataEvents;
 import com.binaris.wizardry.core.EBLogger;
 import com.binaris.wizardry.core.platform.Services;
+import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.Elements;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.gametest.framework.GameTestHelper;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -28,6 +32,31 @@ public final class ConjureSpellsTestHandler {
         EntityUtil.getAllItems(player).stream().filter(stack -> stack.getItem().equals(expectedItem)).findAny()
                 .ifPresentOrElse(stack -> helper.succeed(),
                         () -> helper.fail("Player did not receive the conjured item (flamecatcher)"));
+    }
+
+    static void conjureSwordHasBaseStats(GameTestHelper helper) {
+        Player player = GST.mockPlayer(helper, PLAYER_POS);
+        Spells.CONJURE_SWORD.cast(new PlayerCastContext(helper.getLevel(), player, InteractionHand.MAIN_HAND, 0, new SpellModifiers()));
+
+        ItemStack sword = EntityUtil.getAllItems(player).stream()
+                .filter(stack -> stack.getItem() == EBItems.SPECTRAL_SWORD.get())
+                .findFirst()
+                .orElse(null);
+
+        if (sword == null) {
+            helper.fail("Player did not receive the conjured spectral sword");
+            return;
+        }
+
+        double attackDamage = sword.getAttributeModifiers(EquipmentSlot.MAINHAND)
+                .get(Attributes.ATTACK_DAMAGE).stream()
+                .mapToDouble(AttributeModifier::getAmount)
+                .sum();
+
+        GST.assertTrue(helper,
+                "Conjured spectral sword should keep its base attack damage (was " + attackDamage + ")",
+                attackDamage >= 5.0D);
+        helper.succeed();
     }
 
     static void conjureItemDespawn(GameTestHelper helper, Item itemToConjure) {
