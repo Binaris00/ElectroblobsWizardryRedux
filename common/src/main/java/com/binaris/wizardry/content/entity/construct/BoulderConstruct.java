@@ -3,10 +3,10 @@ package com.binaris.wizardry.content.entity.construct;
 import com.binaris.wizardry.api.content.entity.construct.ScaledConstructEntity;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.MagicDamageSource;
-import com.binaris.wizardry.client.ScreenShakeHandler;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.content.spell.earth.Boulder;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
+import com.binaris.wizardry.core.networking.ScreenShakeHelper;
 import com.binaris.wizardry.setup.registries.EBDamageSources;
 import com.binaris.wizardry.setup.registries.EBEntities;
 import com.binaris.wizardry.setup.registries.EBSounds;
@@ -19,7 +19,6 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.MoverType;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -128,9 +127,12 @@ public class BoulderConstruct extends ScaledConstructEntity {
         target.knockback(strength, dx, dz);
     }
 
+    /// Sends the shake packet from the server. Never call client-only camera code from the construct, because
+    /// this entity also ticks on dedicated servers.
     private void shakeNearbyPlayers() {
-        EntityUtil.getEntitiesWithinRadius(10, getX(), getY(), getZ(), level(), Player.class)
-            .forEach(p -> ScreenShakeHandler.shakeScreen(8F));
+        if (!level().isClientSide) {
+            ScreenShakeHelper.sendScreenShakeNear(level(), position(), 10, 8F, 8);
+        }
     }
 
     @Override
@@ -174,8 +176,9 @@ public class BoulderConstruct extends ScaledConstructEntity {
 
             if (distance > 1.2) {
                 level().playLocalSound(getX(), getY(), getZ(), EBSounds.ENTITY_BOULDER_LAND.get(), SoundSource.BLOCKS, Math.min(2, distance / 4), 1, false);
-                shakeNearbyPlayers();
             }
+        } else if (distance > 1.2) {
+            shakeNearbyPlayers();
         }
         return super.causeFallDamage(distance, damageMultiplier, source);
     }

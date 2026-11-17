@@ -2,8 +2,7 @@ package com.binaris.wizardry.client;
 
 import com.binaris.wizardry.api.content.event.EBClientTickEvent;
 import com.binaris.wizardry.core.config.EBClientConfig;
-import com.binaris.wizardry.core.networking.s2c.ScreenShakeS2C;
-import com.binaris.wizardry.core.platform.Services;
+import com.binaris.wizardry.core.networking.ScreenShakeHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
@@ -36,8 +35,11 @@ public final class ScreenShakeHandler {
         }
     }
 
+    /// @deprecated Use {@link ScreenShakeHelper#sendScreenShake(ServerPlayer, float, int)} from common/server code.
+    /// This method remains for source compatibility and delegates to the server-safe helper.
+    @Deprecated
     public static void sendScreenShake(ServerPlayer player, float intensity, int duration) {
-        Services.NETWORK_HELPER.sendTo(player, new ScreenShakeS2C(intensity, duration));
+        ScreenShakeHelper.sendScreenShake(player, intensity, duration);
     }
 
     public static void shakeScreenNear(Vec3 pos, double radius, float intensity) {

@@ -1,20 +1,17 @@
 package com.binaris.wizardry.content.entity;
 
-import com.binaris.wizardry.api.content.util.EntityUtil;
-import com.binaris.wizardry.client.ScreenShakeHandler;
 import com.binaris.wizardry.content.spell.DefaultProperties;
 import com.binaris.wizardry.core.ClientSpellSoundManager;
+import com.binaris.wizardry.core.networking.ScreenShakeHelper;
 import com.binaris.wizardry.setup.registries.EBEntities;
 import com.binaris.wizardry.setup.registries.EBSounds;
 import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MoverType;
 import net.minecraft.world.entity.item.FallingBlockEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
@@ -82,9 +79,8 @@ public class MeteorEntity extends FallingBlockEntity {
                     Spells.METEOR.property(DefaultProperties.DAMAGE) * blastMultiplier,
                     damageBlocks, damageBlocks ? Level.ExplosionInteraction.BLOCK : Level.ExplosionInteraction.NONE);
 
-            EntityUtil.getEntitiesWithinRadius(15, getX(), getY(), getZ(), level(), Player.class)
-                .forEach(p -> ScreenShakeHandler.sendScreenShake((ServerPlayer) p, 8F, 8));
-                
+            ScreenShakeHelper.sendScreenShakeNear(level(), position(), 15, 8F, 8);
+
             this.discard();
             
 
