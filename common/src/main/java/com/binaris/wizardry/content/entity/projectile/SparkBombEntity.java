@@ -37,6 +37,8 @@ public class SparkBombEntity extends BombEntity {
     }
 
     protected void splashEffect() {
+        if (level().isClientSide) return;
+
         double range = Spells.SPARK_BOMB.property(DefaultProperties.EFFECT_RADIUS);
         List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(range, getX(), getY(), getZ(), level());
 
@@ -47,9 +49,19 @@ public class SparkBombEntity extends BombEntity {
 
             target.playSound(EBSounds.ENTITY_SPARK_BOMB_CHAIN.get(), 1.0F, random.nextFloat() * 0.4F + 1.5F);
             MagicDamageSource.causeMagicDamage(this, target, Spells.SPARK_BOMB.property(DefaultProperties.SPLASH_DAMAGE), EBDamageSources.SHOCK);
+        }
+    }
+
+    private void spawnChainParticles() {
+        double range = Spells.SPARK_BOMB.property(DefaultProperties.EFFECT_RADIUS);
+        List<LivingEntity> targets = EntityUtil.getLivingWithinRadius(range, getX(), getY(), getZ(), level());
+
+        for (int i = 0; i < Math.min(targets.size(), Spells.SPARK_BOMB.property(DefaultProperties.MAX_TARGETS)); i++) {
+            LivingEntity target = targets.get(i);
+            if (!this.isValidTarget(target)) continue;
+
             ParticleBuilder.create(EBParticles.LIGHTNING)
-                    .pos(this.position()).target(target).time(1)
-                    .allowServer(true).spawn(level());
+                    .pos(this.position()).target(target).time(1).spawn(level());
         }
     }
 
@@ -87,6 +99,7 @@ public class SparkBombEntity extends BombEntity {
     @Override
     protected void spawnHitParticles(HitResult.Type type) {
         ParticleBuilder.spawnShockParticles(this.level(), this.getX(), this.getY() + this.getBbHeight(), this.getZ());
+        spawnChainParticles();
     }
 
 
