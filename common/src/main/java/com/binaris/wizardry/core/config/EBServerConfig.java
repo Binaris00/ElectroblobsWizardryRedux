@@ -62,6 +62,7 @@ public class EBServerConfig implements ConfigProvider {
     public static final ConfigOption<Boolean> BLOCK_PLAYERS_ALLIES_DAMAGE = addOption(BoolConfigOption.booleanOption("block_players_allies_damage", true));
     public static final ConfigOption<Boolean> BLOCK_OWNED_ALLIES_DAMAGE = addOption(BoolConfigOption.booleanOption("block_owned_allies_damage", true));
     public static final ConfigOption<Float> FORFEIT_CHANCE = addOption(NumberConfigOption.floating("forfeit_chance", 0.2F, 0.0F, 1.0F));
+    public static final ConfigOption<Integer> LECTERN_SEARCH_RADIUS = addOption(NumberConfigOption.integer("lectern_search_radius", 8, 1, 32));
 
     private static <T> ConfigOption<T> addOption(ConfigOption<T> option) {
         OPTIONS.add(option);

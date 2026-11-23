@@ -3,7 +3,10 @@ package com.binaris.wizardry.network;
 import com.binaris.wizardry.core.networking.abst.Message;
 import com.binaris.wizardry.core.networking.c2s.BlockUsePacketC2S;
 import com.binaris.wizardry.core.networking.c2s.ControlInputPacketC2S;
+import com.binaris.wizardry.core.networking.c2s.LecternSpellPacketC2S;
 import com.binaris.wizardry.core.networking.c2s.RequestPlayerDataSyncC2S;
+import com.binaris.wizardry.core.networking.c2s.WorkbenchTakeBookPacketC2S;
+import com.binaris.wizardry.core.networking.c2s.WorkbenchStoreBookPacketC2S;
 import com.binaris.wizardry.core.networking.c2s.SpellAccessPacketC2S;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
@@ -17,6 +20,9 @@ public class EBFabricServerNetwork {
         registerServerMessage(ControlInputPacketC2S.ID, ControlInputPacketC2S::new);
         registerServerMessage(SpellAccessPacketC2S.ID, SpellAccessPacketC2S::new);
         registerServerMessage(RequestPlayerDataSyncC2S.ID, RequestPlayerDataSyncC2S::new);
+        registerServerMessage(LecternSpellPacketC2S.ID, LecternSpellPacketC2S::new);
+        registerServerMessage(WorkbenchTakeBookPacketC2S.ID, WorkbenchTakeBookPacketC2S::new);
+        registerServerMessage(WorkbenchStoreBookPacketC2S.ID, WorkbenchStoreBookPacketC2S::new);
     }
 
     private static <T extends Message> void registerServerMessage(ResourceLocation id, Function<FriendlyByteBuf, T> decoder) {

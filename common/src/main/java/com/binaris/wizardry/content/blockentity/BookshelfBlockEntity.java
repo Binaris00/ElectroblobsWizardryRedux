@@ -12,11 +12,13 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.RandomizableContainerBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -28,6 +30,19 @@ public class BookshelfBlockEntity extends RandomizableContainerBlockEntity {
     public BookshelfBlockEntity(BlockPos pos, BlockState state) {
         super(EBBlockEntities.BOOKSHELF.get(), pos, state);
         inventory = NonNullList.withSize(BookShelfBlock.SLOT_COUNT, ItemStack.EMPTY);
+    }
+
+    /// Naturally generated bookshelves keep their loot table until something asks for the contents. Without this, the
+    /// shelf renders empty until a player opens it. Unpack it as soon as a player is close enough to see it.
+    public static void serverTick(Level level, BlockPos pos, BlockState state, BookshelfBlockEntity entity) {
+        if (level.isClientSide || entity.lootTable == null) return;
+
+        Player player = level.getNearestPlayer(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, 32.0,
+                candidate -> !candidate.isSpectator());
+        if (player != null) {
+            entity.unpackLootTable(player);
+            entity.setChanged();
+        }
     }
 
     @Override
@@ -56,17 +71,18 @@ public class BookshelfBlockEntity extends RandomizableContainerBlockEntity {
     }
 
     @Override
-    public void setItem(int slot, @NotNull ItemStack stack) {
-        super.setItem(slot, stack);
-        this.setChanged();
+    public void setChanged() {
+        super.setChanged();
+        if (!(this.level instanceof ServerLevel serverLevel)) return;
+
+        serverLevel.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
+        serverLevel.getChunkSource().blockChanged(worldPosition);
     }
 
     @Override
-    public void setChanged() {
-        super.setChanged();
-        if (level != null && !level.isClientSide) {
-            level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), 3);
-        }
+    public void setItem(int slot, @NotNull ItemStack stack) {
+        super.setItem(slot, stack);
+        this.setChanged();
     }
 
     @Override
@@ -82,7 +98,9 @@ public class BookshelfBlockEntity extends RandomizableContainerBlockEntity {
     @Override
     public void load(@NotNull CompoundTag tag) {
         super.load(tag);
-        if (inventory == null) this.inventory = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
+        // Updates only serialize occupied slots. Reusing the old list leaves removed entries untouched (notably on
+        // Forge), so the renderer and nearby screens continue to see books that no longer exist on the server.
+        this.inventory = NonNullList.withSize(BookShelfBlock.SLOT_COUNT, ItemStack.EMPTY);
         if (!this.tryLoadLootTable(tag)) {
             ContainerHelper.loadAllItems(tag, this.inventory);
         }

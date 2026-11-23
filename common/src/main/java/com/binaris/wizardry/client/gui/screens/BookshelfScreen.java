@@ -38,9 +38,8 @@ public class BookshelfScreen extends AbstractContainerScreen<BookshelfMenu> {
 
     @Override
     protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
-        Component component = this.playerInventory.getDisplayName();
-        guiGraphics.drawString(this.font, component.getString(), 8, 6, 4210752, false);
-        guiGraphics.drawString(this.font, component, 8, this.imageHeight - 96 + 2, 4210752, false);
+        guiGraphics.drawString(this.font, this.title, 8, 6, 4210752, false);
+        guiGraphics.drawString(this.font, this.playerInventory.getDisplayName(), 8, this.imageHeight - 96 + 2, 4210752, false);
     }
 
 }

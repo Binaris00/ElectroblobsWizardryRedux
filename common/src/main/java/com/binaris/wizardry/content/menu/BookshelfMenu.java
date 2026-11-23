@@ -63,6 +63,7 @@ public class BookshelfMenu extends AbstractContainerMenu {
         registerBookItem(Items.WRITABLE_BOOK);
         registerBookItem(Items.ENCHANTED_BOOK);
         registerBookItem(EBItems.SPELL_BOOK.get());
+        registerBookItem(EBItems.WIZARD_HANDBOOK.get());
         registerBookItem(EBItems.ARCANE_TOME.get());
         registerBookItem(EBItems.APPRENTICE_ARCANE_TOME.get());
         registerBookItem(EBItems.ADVANCED_ARCANE_TOME.get());
@@ -90,40 +91,32 @@ public class BookshelfMenu extends AbstractContainerMenu {
 
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int clickedSlotId) {
-        ItemStack remainder = ItemStack.EMPTY;
         Slot slot = this.slots.get(clickedSlotId);
-        if (!slot.hasItem()) return remainder;
+        if (!slot.hasItem()) return ItemStack.EMPTY;
 
         ItemStack stack = slot.getItem();
-        remainder = stack.copy();
+        ItemStack original = stack.copy();
+        boolean moved;
 
         if (clickedSlotId < BookShelfBlock.SLOT_COUNT) {
-            if (!this.moveItemStackTo(stack, BookShelfBlock.SLOT_COUNT, this.slots.size(), true))
-                return ItemStack.EMPTY;
+            moved = this.moveItemStackTo(stack, BookShelfBlock.SLOT_COUNT, this.slots.size(), true);
         } else {
-            int minSlotId = 0;
-            int maxSlotId = BookShelfBlock.SLOT_COUNT - 1;
-
             if (!isBook(stack)) return ItemStack.EMPTY;
-
-            if (!this.moveItemStackTo(stack, minSlotId, maxSlotId + 1, false)) {
-                return ItemStack.EMPTY;
-            }
+            moved = this.moveItemStackTo(stack, 0, BookShelfBlock.SLOT_COUNT, false);
         }
 
+        // Match vanilla's quick-move contract: only report a remainder when something actually moved, and keep the
+        // slot and the client in sync when the stack is partially transferred.
+        if (!moved || stack.getCount() == original.getCount()) return ItemStack.EMPTY;
+
         if (stack.isEmpty()) {
-            slot.set(ItemStack.EMPTY);
+            slot.setByPlayer(ItemStack.EMPTY);
         } else {
             slot.setChanged();
         }
 
-        if (stack.getCount() == remainder.getCount()) {
-            return ItemStack.EMPTY;
-        }
-
         slot.onTake(player, stack);
-
-        return remainder;
+        return original;
     }
 
     public static class SlotBookshelf extends Slot {

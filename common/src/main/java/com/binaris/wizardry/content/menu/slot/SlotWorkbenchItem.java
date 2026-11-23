@@ -1,8 +1,8 @@
 package com.binaris.wizardry.content.menu.slot;
 
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
+import com.binaris.wizardry.content.item.BlankScrollItem;
 import com.binaris.wizardry.content.menu.ArcaneWorkbenchMenu;
-import com.binaris.wizardry.core.platform.Services;
 import net.minecraft.world.Container;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.Slot;
@@ -36,11 +36,12 @@ public class SlotWorkbenchItem extends Slot {
     }
 
     @Override
-    public boolean mayPlace(@NotNull ItemStack stack) {
-        if (getMaxStackSize() > 0 && stack.getCount() > getMaxStackSize() && Services.PLATFORM.getPlatformName().equals("Fabric")) {
-            return false;
-        }
+    public int getMaxStackSize(@NotNull ItemStack stack) {
+        return stack.getItem() instanceof BlankScrollItem ? 16 : 1;
+    }
 
+    @Override
+    public boolean mayPlace(@NotNull ItemStack stack) {
         return stack.getItem() instanceof IWorkbenchItem workbenchItem && workbenchItem.canPlace(stack);
     }
 }

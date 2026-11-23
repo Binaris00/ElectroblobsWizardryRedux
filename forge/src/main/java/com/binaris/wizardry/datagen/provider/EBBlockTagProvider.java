@@ -98,6 +98,14 @@ public final class EBBlockTagProvider extends BlockTagsProvider {
                 .add(EBBlocks.JUNGLE_BOOKSHELF.get())
                 .add(EBBlocks.SPRUCE_BOOKSHELF.get());
 
+        this.tag(EBTags.BOOKSHELF)
+                .add(EBBlocks.ACACIA_BOOKSHELF.get())
+                .add(EBBlocks.BIRCH_BOOKSHELF.get())
+                .add(EBBlocks.DARK_OAK_BOOKSHELF.get())
+                .add(EBBlocks.OAK_BOOKSHELF.get())
+                .add(EBBlocks.JUNGLE_BOOKSHELF.get())
+                .add(EBBlocks.SPRUCE_BOOKSHELF.get());
+
         this.tag(EBTags.GILDED_WOOD_BLOCK)
                 .add(EBBlocks.GILDED_ACACIA_WOOD.get())
                 .add(EBBlocks.GILDED_BIRCH_WOOD.get())

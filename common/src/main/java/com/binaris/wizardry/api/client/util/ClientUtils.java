@@ -2,6 +2,7 @@ package com.binaris.wizardry.api.client.util;
 
 import com.binaris.wizardry.api.content.spell.Spell;
 import com.binaris.wizardry.api.content.util.RegistryUtils;
+import com.binaris.wizardry.client.gui.screens.MagicLecternScreen;
 import com.binaris.wizardry.client.gui.screens.SpellBookScreen;
 import com.binaris.wizardry.content.data.SpellGlyphData;
 import com.binaris.wizardry.core.mixin.accessor.MerchantMenuAccessor;
@@ -11,6 +12,7 @@ import com.binaris.wizardry.setup.registries.Spells;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.inventory.MerchantScreen;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -106,6 +108,10 @@ public final class ClientUtils {
     /// @param stack The spell book item stack.
     public static void openSpellBook(ItemStack stack) {
         Minecraft.getInstance().setScreen(new SpellBookScreen(stack));
+    }
+
+    public static void openLectern(BlockPos pos) {
+        Minecraft.getInstance().setScreen(new MagicLecternScreen(pos));
     }
 
     /// Calculates a smooth scaling factor over time, commonly used for visual fading/scaling animations

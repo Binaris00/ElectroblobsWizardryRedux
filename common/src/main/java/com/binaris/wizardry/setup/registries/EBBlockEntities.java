@@ -59,6 +59,12 @@ public final class EBBlockEntities {
                             EBBlocks.JUNGLE_BOOKSHELF.get(), EBBlocks.ACACIA_BOOKSHELF.get(), EBBlocks.DARK_OAK_BOOKSHELF.get())
                     .build(null));
 
+    public static final DeferredObject<BlockEntityType<MagicLecternBlockEntity>> MAGIC_LECTERN = blockEntity(
+            "magic_lectern", () -> BlockEntityType.Builder.of(MagicLecternBlockEntity::new,
+                            EBBlocks.OAK_LECTERN.get(), EBBlocks.SPRUCE_LECTERN.get(), EBBlocks.BIRCH_LECTERN.get(),
+                            EBBlocks.JUNGLE_LECTERN.get(), EBBlocks.ACACIA_LECTERN.get(), EBBlocks.DARK_OAK_LECTERN.get())
+                    .build(null));
+
 
     public static final DeferredObject<BlockEntityType<RunestonePedestalBlockEntity>> RUNESTONE_PEDESTAL = blockEntity(
             "runestone_pedestal", () -> BlockEntityType.Builder.of(RunestonePedestalBlockEntity::new,

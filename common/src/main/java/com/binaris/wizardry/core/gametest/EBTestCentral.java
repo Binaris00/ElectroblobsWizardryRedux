@@ -241,6 +241,18 @@ public final class EBTestCentral {
         }
     }
 
+    public static class BookshelfLectern {
+        /** Checks that only registered book items can be stored in a bookshelf. */
+        public static void bookshelfAcceptsOnlyBooks(GameTestHelper helper) {
+            BookshelfLecternTestHandler.bookshelfAcceptsOnlyBooks(helper);
+        }
+
+        /** Checks that a lectern finds spells in nearby bookshelves and remembers a selected spell. */
+        public static void lecternFindsNearbySpells(GameTestHelper helper) {
+            BookshelfLecternTestHandler.lecternFindsNearbySpells(helper);
+        }
+    }
+
     private EBTestCentral() {
     }
 }

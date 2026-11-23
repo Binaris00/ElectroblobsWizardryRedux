@@ -35,6 +35,9 @@ public final class EBTags {
 
     
     public static final TagKey<Block> GILDED_WOOD_BLOCK = createBlockTag("gilded_wood");
+    /// Blocks that count as bookshelves for the lectern's spell index. Addon shelves can join by adding themselves to
+    /// this tag and exposing a {@link net.minecraft.world.Container} block entity.
+    public static final TagKey<Block> BOOKSHELF = createBlockTag("bookshelf");
 
     // Banner pattern tags: each stencil item references one of these; the loom shows every
     // banner pattern contained in the referenced tag.

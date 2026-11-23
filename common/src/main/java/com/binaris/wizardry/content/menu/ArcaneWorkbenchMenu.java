@@ -2,6 +2,8 @@ package com.binaris.wizardry.content.menu;
 
 import com.binaris.wizardry.api.content.event.SpellBindEvent;
 import com.binaris.wizardry.api.content.item.IWorkbenchItem;
+import com.binaris.wizardry.content.block.LecternBookshelfUtils;
+import com.binaris.wizardry.content.blockentity.ArcaneWorkbenchBlockEntity;
 import com.binaris.wizardry.content.item.SpellBookItem;
 import com.binaris.wizardry.content.menu.slot.SlotItemClassList;
 import com.binaris.wizardry.content.menu.slot.SlotItemList;
@@ -12,6 +14,7 @@ import com.binaris.wizardry.setup.registries.EBAdvancementTriggers;
 import com.binaris.wizardry.setup.registries.EBItems;
 import com.binaris.wizardry.setup.registries.EBMenus;
 import com.binaris.wizardry.setup.registries.WandUpgrades;
+import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
@@ -46,6 +49,7 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
     public Container container;
     public boolean needsRefresh;
     private final Player player;
+    private @Nullable BlockPos clientWorkbenchPos;
 
     public ArcaneWorkbenchMenu(int i, Inventory playerInv) {
         this(i, playerInv, new SimpleContainer(11));
@@ -122,46 +126,75 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
     /// @return The rest of the stack that couldn't be moved, or ItemStack.EMPTY if the entire stack was moved.
     @Override
     public @NotNull ItemStack quickMoveStack(@NotNull Player player, int index) {
-        ItemStack itemstack = ItemStack.EMPTY;
         Slot slot = this.slots.get(index);
+        if (!slot.hasItem()) return ItemStack.EMPTY;
 
-        if (!slot.hasItem()) return itemstack;
-
-        ItemStack itemstack1 = slot.getItem();
-        itemstack = itemstack1.copy();
+        ItemStack stack = slot.getItem();
+        ItemStack original = stack.copy();
+        boolean moved = false;
 
         // If shift-clicking from workbench slots (0-10)
         if (index < 11) {
             // Try to move to player inventory (slots 11-46)
-            if (!this.moveItemStackTo(itemstack1, 11, 11 + PLAYER_INVENTORY_SIZE, true)) {
-                return ItemStack.EMPTY;
-            }
+            moved = this.moveItemStackTo(stack, 11, 11 + PLAYER_INVENTORY_SIZE, true);
         }
         // If shift-clicking from player inventory
         else if (index < 11 + PLAYER_INVENTORY_SIZE) {
-            int[] slotRange = findSlotRangeForItem(itemstack1);
+            int[] slotRange = findSlotRangeForItem(stack);
 
             if (slotRange != null) {
-                // Try to move to the appropriate workbench slot(s)
-                if (!this.moveItemStackTo(itemstack1, slotRange[0], slotRange[1] + 1, false)) {
-                    return ItemStack.EMPTY;
-                }
+                moved = this.moveIntoWorkbenchSlot(stack, slotRange[0], slotRange[1] + 1);
+            }
+
+            // Any spell books left over are stored as stacks rather than split across one bookshelf slot per item.
+            // This runs on both sides: the client consumes the predicted amount from the source stack, while only the
+            // server mutates the bookshelf. Keeping the source stack identical prevents vanilla's QUICK_MOVE loop from
+            // repeatedly flashing books through every workbench spell slot.
+            if (stack.getItem() instanceof SpellBookItem && !stack.isEmpty()) {
+                moved |= this.insertBookStackIntoNearbyBookshelf(stack);
             }
         }
 
-        if (itemstack1.isEmpty()) {
+        if (!moved || stack.getCount() == original.getCount()) return ItemStack.EMPTY;
+
+        if (stack.isEmpty()) {
             slot.setByPlayer(ItemStack.EMPTY);
         } else {
             slot.setChanged();
         }
 
-        if (itemstack1.getCount() == itemstack.getCount()) {
-            return ItemStack.EMPTY;
+        slot.onTake(player, stack);
+        return original;
+    }
+
+    private boolean moveIntoWorkbenchSlot(ItemStack stack, int startIndex, int endIndex) {
+        for (int index = startIndex; index < endIndex && !stack.isEmpty(); index++) {
+            Slot target = this.getSlot(index);
+            ItemStack present = target.getItem();
+            if (!target.mayPlace(stack) || present.isEmpty() || !ItemStack.isSameItemSameTags(present, stack)) {
+                continue;
+            }
+
+            int amount = Math.min(stack.getCount(), target.getMaxStackSize(stack) - present.getCount());
+            if (amount <= 0) continue;
+
+            present.grow(amount);
+            stack.shrink(amount);
+            target.setChanged();
+            return true;
         }
 
-        slot.onTake(player, itemstack1);
+        for (int index = startIndex; index < endIndex && !stack.isEmpty(); index++) {
+            Slot target = this.getSlot(index);
+            if (target.hasItem() || !target.mayPlace(stack)) continue;
 
-        return itemstack;
+            int amount = Math.min(stack.getCount(), target.getMaxStackSize(stack));
+            target.set(stack.split(amount));
+            target.setChanged();
+            return true;
+        }
+
+        return false;
     }
 
 
@@ -286,6 +319,151 @@ public class ArcaneWorkbenchMenu extends AbstractContainerMenu {
         }
     }
 
+
+    /// Returns the position of the workbench backing this menu.
+    public @Nullable BlockPos getWorkbenchPos() {
+        return this.container instanceof ArcaneWorkbenchBlockEntity workbench
+                ? workbench.getBlockPos()
+                : this.clientWorkbenchPos;
+    }
+
+    /// Supplies the workbench position to the client menu, whose vanilla menu factory only creates a SimpleContainer.
+    public void setClientWorkbenchPos(@Nullable BlockPos pos) {
+        if (this.player.level().isClientSide) {
+            this.clientWorkbenchPos = pos == null ? null : pos.immutable();
+        }
+    }
+
+    public boolean takeBookToCursor(Container bookshelf, int shelfSlot) {
+        if (bookshelf == null || shelfSlot < 0 || shelfSlot >= bookshelf.getContainerSize()) return false;
+
+        ItemStack stack = bookshelf.getItem(shelfSlot);
+        if (!(stack.getItem() instanceof SpellBookItem)) return false;
+
+        ItemStack carried = this.getCarried();
+        if (this.getCarried().isEmpty()) {
+            this.setCarried(bookshelf.removeItem(shelfSlot, 1));
+            bookshelf.setChanged();
+            return true;
+        }
+
+        if (ItemStack.isSameItemSameTags(carried, stack) && carried.getCount() < carried.getMaxStackSize()) {
+            ItemStack taken = bookshelf.removeItem(shelfSlot, 1);
+            carried.grow(taken.getCount());
+            this.setCarried(carried);
+            bookshelf.setChanged();
+            return true;
+        }
+
+        return false;
+    }
+
+    /// Moves one spell book from the given bookshelf slot into the spell slots or the player inventory, as used by
+    /// shift-clicking in the bookshelf panel.
+    public boolean storeBook(Container bookshelf, int shelfSlot) {
+        if (bookshelf == null || shelfSlot < 0 || shelfSlot >= bookshelf.getContainerSize()) return false;
+
+        ItemStack stack = bookshelf.getItem(shelfSlot);
+        if (!(stack.getItem() instanceof SpellBookItem)) return false;
+
+        ItemStack taken = bookshelf.removeItem(shelfSlot, 1);
+        bookshelf.setChanged();
+        if (taken.isEmpty()) return false;
+
+        Slot centre = this.getSlot(CENTRE_SLOT);
+        if (centre.getItem().getItem() instanceof IWorkbenchItem workbenchItem) {
+            int spellSlots = Math.min(workbenchItem.getSpellSlotCount(centre.getItem()), CRYSTAL_SLOT);
+            for (int i = 0; i < spellSlots; i++) {
+                Slot spellSlot = this.getSlot(i);
+                if (spellSlot.mayPlace(taken) && !spellSlot.hasItem()) {
+                    spellSlot.set(taken);
+                    spellSlot.setChanged();
+                    return true;
+                }
+            }
+        }
+
+        if (!this.player.getInventory().add(taken)) this.player.drop(taken, false);
+        return true;
+    }
+
+    /// Inserts one spell book from the player's cursor into the first available nearby bookshelf slot.
+    public boolean storeCarriedBookInNearbyBookshelf(@Nullable BlockPos targetPos, int targetSlot) {
+        ItemStack carried = this.getCarried();
+        if (!(carried.getItem() instanceof SpellBookItem)) return false;
+
+        if (targetPos != null) {
+            BlockPos workbenchPos = this.getWorkbenchPos();
+            if (workbenchPos == null
+                    || !LecternBookshelfUtils.findBookshelfPositions(this.player.level(), workbenchPos).contains(targetPos)) {
+                return false;
+            }
+
+            Container bookshelf = LecternBookshelfUtils.getBookshelf(this.player.level(), targetPos);
+            if (bookshelf == null || targetSlot < 0 || targetSlot >= bookshelf.getContainerSize()) return false;
+
+            ItemStack shelfStack = bookshelf.getItem(targetSlot);
+            if (!shelfStack.isEmpty() && !(shelfStack.getItem() instanceof SpellBookItem)) return false;
+
+            bookshelf.setItem(targetSlot, carried.copy());
+            bookshelf.setChanged();
+            this.setCarried(shelfStack.copy());
+            return true;
+        }
+
+        if (!this.insertBookStackIntoNearbyBookshelf(carried)) return false;
+        if (carried.isEmpty()) this.setCarried(ItemStack.EMPTY);
+        return true;
+    }
+
+    /// Tries to insert as much of a spell-book stack as possible into nearby bookshelves.
+    private boolean insertBookStackIntoNearbyBookshelf(ItemStack stack) {
+        if (!(stack.getItem() instanceof SpellBookItem)) return false;
+
+        BlockPos workbenchPos = this.getWorkbenchPos();
+        if (workbenchPos == null) return false;
+
+        boolean clientSide = this.player.level().isClientSide;
+        boolean moved = false;
+        for (BlockPos pos : LecternBookshelfUtils.findBookshelfPositions(this.player.level(), workbenchPos)) {
+            Container bookshelf = LecternBookshelfUtils.getBookshelf(this.player.level(), pos);
+            if (bookshelf == null) continue;
+
+            // Fill compatible stacks before consuming a new bookshelf slot.
+            for (int slot = 0; slot < bookshelf.getContainerSize() && !stack.isEmpty(); slot++) {
+                ItemStack shelfStack = bookshelf.getItem(slot);
+                if (!ItemStack.isSameItemSameTags(shelfStack, stack)) continue;
+
+                int limit = Math.min(shelfStack.getMaxStackSize(), bookshelf.getMaxStackSize());
+                int amount = Math.min(stack.getCount(), limit - shelfStack.getCount());
+                if (amount <= 0) continue;
+
+                if (!clientSide) {
+                    shelfStack.grow(amount);
+                    bookshelf.setChanged();
+                }
+                stack.shrink(amount);
+                moved = true;
+            }
+
+            for (int slot = 0; slot < bookshelf.getContainerSize(); slot++) {
+                if (stack.isEmpty()) return true;
+                if (!bookshelf.getItem(slot).isEmpty()) continue;
+
+                int amount = Math.min(stack.getCount(),
+                        Math.min(stack.getMaxStackSize(), bookshelf.getMaxStackSize()));
+                if (clientSide) {
+                    stack.shrink(amount);
+                } else {
+                    bookshelf.setItem(slot, stack.split(amount));
+                    bookshelf.setChanged();
+                }
+                moved = true;
+            }
+        }
+
+        return moved;
+    }
 
     /// Finds the range of slots that the given item can go into. This is used for shift-clicking. Returns null if
     /// there are no valid slots.

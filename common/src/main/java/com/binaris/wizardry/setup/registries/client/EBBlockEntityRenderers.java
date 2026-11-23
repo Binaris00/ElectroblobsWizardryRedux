@@ -4,6 +4,7 @@ import com.binaris.wizardry.api.content.DeferredObject;
 import com.binaris.wizardry.client.renderer.blockentity.ArcaneWorkbenchRender;
 import com.binaris.wizardry.client.renderer.blockentity.BookshelfRenderer;
 import com.binaris.wizardry.client.renderer.blockentity.ImbuementAltarRenderer;
+import com.binaris.wizardry.client.renderer.blockentity.MagicLecternRenderer;
 import com.binaris.wizardry.setup.registries.EBBlockEntities;
 import com.google.common.collect.Maps;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -26,6 +27,7 @@ public final class EBBlockEntityRenderers {
         registerBlockEntityRenderer(EBBlockEntities.ARCANE_WORKBENCH, ArcaneWorkbenchRender::new);
         registerBlockEntityRenderer(EBBlockEntities.IMBUEMENT_ALTAR, ImbuementAltarRenderer::new);
         registerBlockEntityRenderer(EBBlockEntities.BOOKSHELF, BookshelfRenderer::new);
+        registerBlockEntityRenderer(EBBlockEntities.MAGIC_LECTERN, MagicLecternRenderer::new);
     }
 
     private static <T extends BlockEntity> void registerBlockEntityRenderer(
