@@ -1,14 +1,17 @@
 package com.binaris.wizardry.content.item;
 
 import com.binaris.wizardry.api.content.event.EBLivingDeathEvent;
+import com.binaris.wizardry.api.content.event.EBLivingHurtEvent;
 import com.binaris.wizardry.api.content.item.IManaItem;
 import com.binaris.wizardry.api.content.util.EntityUtil;
 import com.binaris.wizardry.api.content.util.CastItemDataHelper;
 import com.binaris.wizardry.core.config.EBServerConfig;
 import com.binaris.wizardry.core.integrations.ArtifactChannel;
 import com.binaris.wizardry.setup.registries.EBItems;
+import com.binaris.wizardry.setup.registries.EBSounds;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -46,6 +49,25 @@ public class WandUpgradeItem extends Item {
 
             }
         }
+    }
+
+    public static void onLivingHurt(EBLivingHurtEvent event) {
+        if (event.getSource().isIndirect() || !(event.getSource().getEntity() instanceof Player player)) return;
+
+        ItemStack stack = player.getMainHandItem();
+        if (!(stack.getItem() instanceof IManaItem manaItem)) return;
+
+        int level = CastItemDataHelper.getUpgradeLevel(stack, EBItems.MELEE_UPGRADE.get());
+        if (level <= 0) return;
+
+        int manaCost = EBServerConfig.MELEE_MANA_PER_LEVEL.get() * level;
+        if (!player.isCreative() && manaItem.getMana(stack) < manaCost) return;
+
+        if (manaCost > 0) manaItem.consumeMana(stack, manaCost, player);
+        event.setAmount(event.getAmount() + EBServerConfig.MELEE_DAMAGE_PER_LEVEL.get() * level);
+
+        player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
+                EBSounds.ITEM_WAND_MELEE.get(), SoundSource.PLAYERS, 0.7f, 1.0f);
     }
 
     @Override

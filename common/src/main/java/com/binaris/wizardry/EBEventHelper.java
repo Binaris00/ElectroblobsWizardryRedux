@@ -73,6 +73,7 @@ public final class EBEventHelper {
         bus.register(EBLivingHurtEvent.class, MagicMobEffect.EventCaller::callHurtEntityEvent);
         bus.register(EBLivingHurtEvent.class, MagicMobEffect.EventCaller::callUserHurtEvent);
         bus.register(EBLivingHurtEvent.class, AllyDesignation::onLivingHurt);
+        bus.register(EBLivingHurtEvent.class, WandUpgradeItem::onLivingHurt);
     }
 
     private static void onLivingTickEvent(WizardryEventBus bus) {

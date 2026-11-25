@@ -44,6 +44,8 @@ public class EBServerConfig implements ConfigProvider {
     public static final ConfigOption<Float> RANGE_INCREASE_PER_LEVEL = addOption(NumberConfigOption.floating("range_increase_per_level", 0.25f, 0.0f, 1.0f));
     public static final ConfigOption<Float> COOLDOWN_REDUCTION_PER_LEVEL = addOption(NumberConfigOption.floating("cooldown_reduction_per_level", 0.15f, 0.0f, 1.0f));
     public static final ConfigOption<Integer> SIPHON_MANA_PER_LEVEL = addOption(NumberConfigOption.integer("siphon_mana_per_level", 5, 1, Integer.MAX_VALUE));
+    public static final ConfigOption<Float> MELEE_DAMAGE_PER_LEVEL = addOption(NumberConfigOption.floating("melee_damage_per_level", 1.0f, 0.0f, 100.0f));
+    public static final ConfigOption<Integer> MELEE_MANA_PER_LEVEL = addOption(NumberConfigOption.integer("melee_mana_per_level", 20, 0, Integer.MAX_VALUE));
     public static final ConfigOption<Integer> CONDENSER_TICK_INTERVAL = addOption(NumberConfigOption.integer("condenser_tick_interval", 50, 1, Integer.MAX_VALUE));
     public static final ConfigOption<Integer> RECENT_SPELL_EXPIRY_TICKS = addOption(NumberConfigOption.integer("recent_spell_expiry_ticks", 1200, 1, Integer.MAX_VALUE));
     public static final ConfigOption<Boolean> CREATIVE_MODE_BYPASS_ARCANE_LOCK = addOption(BoolConfigOption.booleanOption("creative_mode_bypass_arcane_lock", false));
