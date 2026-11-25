@@ -1,1 +1,11 @@
+- feature: implementation of bookshelfs (render and functionality)
+- feature: implementation of lecterns + compt with bookshelfs
+- feature: arcane workbench compatibility with bookshelfs
+- fix: melee upgrade wasn't working
+- fix: added shield textures and not just copy-pasted the banner textures
+- fix: now spark bomb particles are client-side to avoid crashes
+- fix: conjured spectral sword losing its attack damage and speed
+- fix: boulder and meteor screen shake crashing dedicated servers
+- fix: pocket workbench not updating the crafting result
 - fix: identified spell books and scrolls showing as unknown again after relogging
+- fix: weird armor placement when sitting
