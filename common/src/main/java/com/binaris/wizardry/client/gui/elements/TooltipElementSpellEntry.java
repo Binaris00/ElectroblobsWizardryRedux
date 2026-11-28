@@ -77,7 +77,8 @@ public class TooltipElementSpellEntry extends TooltipElementText {
     protected void drawBackground(GuiGraphics guiGraphics, int x, int y, ItemStack stack, float partialTicks, int mouseX, int mouseY) {
         Spell spell = getSpell(stack);
         if (shouldFlash(stack)) RenderSystem.setShaderColor(1, 1, 1, getAlpha(partialTicks));
-        guiGraphics.blit(ClientUtils.shouldDisplayDiscovered(spell, null) ? spell.getElement().getIconId() : Elements.MAGIC.getIconId(), x, y, 0, 0, 8, 8);
+        ResourceLocation icon = ClientUtils.shouldDisplayDiscovered(spell, null) ? spell.getElement().getIconId() : Elements.MAGIC.getIconId();
+        guiGraphics.blit(icon, x, y, 0, 0, 8, 8, 8, 8);
         RenderSystem.setShaderColor(1, 1, 1, 1);
     }
 
